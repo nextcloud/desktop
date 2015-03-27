@@ -410,7 +410,5 @@ qint64 SelectiveSyncDialog::estimatedSize()
 }
 
 
-
-
 }
 

@@ -29,6 +29,7 @@ class QModelIndex;
 class QStandardItem;
 class QNetworkReply;
 class QListWidgetItem;
+class QLabel;
 
 namespace OCC {
 
@@ -37,9 +38,10 @@ class AccountSettings;
 }
 
 class FolderMan;
-class IgnoreListEditor;
+
 class Account;
 class AccountState;
+class FolderStatusModel;
 
 class AccountSettings : public QWidget
 {
@@ -62,27 +64,22 @@ public slots:
     void slotUpdateFolderState( Folder* );
     void slotDoubleClicked( const QModelIndex& );
     void slotSetProgress(const QString& folder, const Progress::Info& progress);
-    void slotButtonsSetEnabled();
 
     void slotUpdateQuota( qint64,qint64 );
-    void slotIgnoreFilesEditor();
     void slotAccountStateChanged(int state);
 
     void setGeneralErrors( const QStringList& errors );
-    void setFolderList( const Folder::Map& );
 
 protected slots:
     void slotAddFolder();
-    void slotAddFolder( Folder* );
     void slotEnableCurrentFolder();
     void slotSyncCurrentFolderNow();
     void slotRemoveCurrentFolder();
     void slotResetCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
-    void slotOpenAccountWizard();
     void slotHideProgress();
-    void slotSelectiveSync();
+    void refreshSelectiveSyncStatus();
 
 private:
     QString shortenFilename( const QString& folder, const QString& file ) const;
@@ -91,16 +88,18 @@ private:
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 
     Ui::AccountSettings *ui;
-    QPointer<IgnoreListEditor> _ignoreEditor;
-    QStandardItemModel *_model;
+
+    FolderStatusModel *_model;
     QUrl   _OCUrl;
     QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QStringList _generalErrors;
     bool _wasDisabledBefore;
     AccountState *_accountState;
+    QLabel *_quotaLabel;
 private slots:
     void slotFolderSyncStateChange();
     void slotAccountStateChanged(AccountState*);
+    void slotCustomContextMenuRequested(const QPoint&);
 };
 
 } // namespace OCC

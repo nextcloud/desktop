@@ -19,9 +19,12 @@
 #include "application.h"
 #include "utility.h"
 #include "configfile.h"
+#include "owncloudsetupwizard.h"
+
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
+#include "ignorelisteditor.h"
 
 #include "config.h"
 
@@ -68,6 +71,9 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     QString themeDir = QString::fromLatin1(":/client/theme/%1/")
             .arg(Theme::instance()->systrayIconFlavor(true));
     _ui->monoIconsCheckBox->setVisible(QDir(themeDir).exists());
+
+    connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
+    connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -118,5 +124,25 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
 }
+
+void GeneralSettings::slotIgnoreFilesEditor()
+{
+    if (_ignoreEditor.isNull()) {
+        _ignoreEditor = new IgnoreListEditor(this);
+        _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
+        _ignoreEditor->open();
+    } else {
+        ownCloudGui::raiseDialog(_ignoreEditor);
+    }
+}
+
+void GeneralSettings::slotOpenAccountWizard()
+{
+    if (QSystemTrayIcon::isSystemTrayAvailable()) {
+        topLevelWidget()->close();
+    }
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
+}
+
 
 } // namespace OCC

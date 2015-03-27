@@ -15,9 +15,10 @@
 #define MIRALL_GENERALSETTINGS_H
 
 #include <QWidget>
-
+#include <QPointer>
 
 namespace OCC {
+class IgnoreListEditor;
 
 namespace Ui {
 class GeneralSettings;
@@ -36,11 +37,15 @@ private slots:
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalDesktopNotifications(bool);
     void slotUpdateInfo();
+    void slotIgnoreFilesEditor();
+    void slotOpenAccountWizard();
+
 
 private:
     void loadMiscSettings();
 
     Ui::GeneralSettings *_ui;
+    QPointer<IgnoreListEditor> _ignoreEditor;
 };
 
 

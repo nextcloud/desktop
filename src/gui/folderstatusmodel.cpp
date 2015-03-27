@@ -13,7 +13,10 @@
  */
 
 #include "folderstatusmodel.h"
+#include "folderman.h"
 #include "utility.h"
+#include <theme.h>
+#include <account.h>
 
 #include <QtCore>
 #include <QtGui>
@@ -21,17 +24,42 @@
 #include <QtWidgets>
 #endif
 
+Q_DECLARE_METATYPE(QPersistentModelIndex)
+
 namespace OCC {
 
-FolderStatusModel::FolderStatusModel()
-    :QStandardItemModel()
-{
+static const char propertyParentIndexC[] = "oc_parentIndex";
 
+FolderStatusModel::FolderStatusModel(QObject *parent)
+    :QAbstractItemModel(parent)
+{
 }
 
-Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex&  ) const
+FolderStatusModel::~FolderStatusModel()
+{ }
+
+
+void FolderStatusModel::setAccount(const AccountPtr& account)
 {
-    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    beginResetModel();
+    _dirty = false;
+    _folders.clear();
+    _account = account;
+    endResetModel();
+}
+
+
+Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
+{
+    switch (classify(index)) {
+        case AddButton:
+            return Qt::ItemIsEnabled;
+        case RootFolder:
+            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+        case SubFolder:
+            return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+    }
+    return 0;
 }
 
 QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
@@ -41,9 +69,432 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     if (role == Qt::EditRole)
         return QVariant();
-    else
-        return QStandardItemModel::data(index,role);
+
+    switch(classify(index)) {
+    case AddButton:
+        if (role == FolderStatusDelegate::AddButton)
+            return QVariant(true);
+        return QVariant();
+    case SubFolder:
+    {
+        const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs[index.row()];
+        switch (role) {
+        case Qt::ToolTipRole:
+        case Qt::DisplayRole:
+            return x._name;
+        case Qt::CheckStateRole:
+            return x._checked;
+        case Qt::DecorationRole:
+            return QFileIconProvider().icon(QFileIconProvider::Folder);
+        }
+    }
+        return QVariant();
+    case RootFolder:
+        break;
+    }
+
+    auto folderList = FolderMan::instance()->map().values();
+    auto f = folderList.at(index.row());
+    if (!f)
+        return QVariant();
+
+    bool accountConnected = true; // FIXME
+
+    switch (role) {
+    case FolderStatusDelegate::FolderPathRole         : return  f->nativePath();
+    case FolderStatusDelegate::FolderSecondPathRole   : return  f->remotePath();
+    case FolderStatusDelegate::FolderAliasRole        : return  f->alias();
+    case FolderStatusDelegate::FolderSyncPaused       : return  f->syncPaused();
+    case FolderStatusDelegate::FolderAccountConnected : return  accountConnected;
+    case Qt::ToolTipRole:
+        return Theme::instance()->statusHeaderText(f->syncResult().status());
+    case FolderStatusDelegate::FolderStatusIconRole:
+        if ( accountConnected ) {
+            auto theme = Theme::instance();
+            auto status = f->syncResult().status();
+            if( f->syncPaused() ) {
+                return theme->folderDisabledIcon( );
+            } else {
+                if( status == SyncResult::SyncPrepare ) {
+                    return theme->syncStateIcon(SyncResult::SyncRunning);
+                } else if( status == SyncResult::Undefined ) {
+                    return theme->syncStateIcon( SyncResult::SyncRunning);
+                } else {
+                    // kepp the previous icon for the prepare phase.
+                    if( status == SyncResult::Problem) {
+                        return theme->syncStateIcon( SyncResult::Success);
+                    } else {
+                        return theme->syncStateIcon( status );
+                    }
+                }
+            }
+        } else {
+            return Theme::instance()->folderOfflineIcon();
+        }
+    }
+    return QVariant();
 }
+
+bool FolderStatusModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if(role == Qt::CheckStateRole) {
+        auto info = infoForIndex(index);
+        Qt::CheckState checked = static_cast<Qt::CheckState>(value.toInt());
+
+        if (info && info->_checked != checked) {
+            info->_checked = checked;
+            if (checked == Qt::Checked) {
+                // If we are checked, check that we may need to check the parent as well if
+                // all the sibilings are also checked
+                QModelIndex parent = index.parent();
+                auto parentInfo = infoForIndex(parent);
+                if (parentInfo && parentInfo->_checked != Qt::Checked) {
+                    bool hasUnchecked = false;
+                    foreach(const auto &sub, parentInfo->_subs) {
+                        if (sub._checked != Qt::Checked) {
+                            hasUnchecked = true;
+                            break;
+                        }
+                    }
+                    if (!hasUnchecked) {
+                        setData(parent, Qt::Checked, Qt::CheckStateRole);
+                    } else if (parentInfo->_checked == Qt::Unchecked) {
+                        setData(parent, Qt::PartiallyChecked, Qt::CheckStateRole);
+                    }
+                }
+                // also check all the children
+                for (int i = 0; i < info->_subs.count(); ++i) {
+                    if (info->_subs[i]._checked != Qt::Checked) {
+                        setData(index.child(i, 0), Qt::Checked, Qt::CheckStateRole);
+                    }
+                }
+            }
+
+            if (checked == Qt::Unchecked) {
+                QModelIndex parent = index.parent();
+                auto parentInfo = infoForIndex(parent);
+                if (parentInfo && parentInfo->_checked == Qt::Checked) {
+                    setData(parent, Qt::PartiallyChecked, Qt::CheckStateRole);
+                }
+
+                // Uncheck all the children
+                for (int i = 0; i < info->_subs.count(); ++i) {
+                    if (info->_subs[i]._checked != Qt::Unchecked) {
+                        setData(index.child(i, 0), Qt::Unchecked, Qt::CheckStateRole);
+                    }
+                }
+            }
+
+            if (checked == Qt::PartiallyChecked) {
+                QModelIndex parent = index.parent();
+                auto parentInfo = infoForIndex(parent);
+                if (parentInfo && parentInfo->_checked != Qt::PartiallyChecked) {
+                    setData(parent, Qt::PartiallyChecked, Qt::CheckStateRole);
+                }
+            }
+
+        }
+        _dirty = true;
+        emit dirtyChanged();
+        dataChanged(index, index, QVector<int>() << role);
+        return true;
+    }
+    return QAbstractItemModel::setData(index, value, role);
+}
+
+
+int FolderStatusModel::columnCount(const QModelIndex&) const
+{
+    return 1;
+}
+
+int FolderStatusModel::rowCount(const QModelIndex& parent) const
+{
+    if (!parent.isValid()) {
+        return FolderMan::instance()->map().count() + 1;
+    }
+
+    auto info = infoForIndex(parent);
+    if (!info)
+        return 0;
+    return info->_subs.count();
+}
+
+FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex& index) const
+{
+    if (index.internalPointer()) {
+        return SubFolder;
+    }
+    //FIXME:
+    auto folderList = FolderMan::instance()->map(); //.values();
+    if (index.row() < folderList.count()) {
+        return RootFolder;
+    }
+    return AddButton;
+}
+
+FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIndex& index) const
+{
+    if (!index.isValid())
+        return 0;
+    if (auto parentInfo = index.internalPointer()) {
+        return &static_cast<SubFolderInfo*>(parentInfo)->_subs[index.row()];
+    } else {
+        auto folders = FolderMan::instance()->map(); // FIXME
+        if (index.row() >= folders.count()) {
+            // AddButton
+            return 0;
+        }
+        if (_folders.size() <=  index.row()) {
+            _folders.resize(index.row() + 1);
+        }
+        auto info = &_folders[index.row()];
+        if (info->_pathIdx.isEmpty()) {
+            info->_pathIdx << index.row();
+            info->_name = folders.values().at(index.row())->alias();
+            info->_path = "/";
+            info->_folder = folders.values().at(index.row());
+        }
+        return info;
+    }
+}
+
+
+QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& parent) const
+{
+    if (!parent.isValid()) {
+        return createIndex(row, column, nullptr);
+    }
+    switch(classify(parent)) {
+        case AddButton: return QModelIndex();
+        case RootFolder:
+            if (_folders.count() <= parent.row())
+                return QModelIndex(); // should not happen
+            return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
+        case SubFolder:
+            //return QModelIndex();
+            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.count() <= parent.row())
+                return QModelIndex(); // should not happen
+            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.at(parent.row())._subs.count() <= row)
+                return QModelIndex(); // should not happen
+            return createIndex(row, column, &static_cast<SubFolderInfo*>(parent.internalPointer())->_subs[parent.row()]);
+    }
+    return QModelIndex();
+}
+
+QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
+{
+    if (!child.isValid()) {
+        return QModelIndex();
+    }
+    switch(classify(child)) {
+        case RootFolder:
+        case AddButton:
+            return QModelIndex();
+        case SubFolder:
+            break;
+    }
+    auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_subs[child.row()]._pathIdx;
+    int i = 1;
+    Q_ASSERT(pathIdx.at(0) < _folders.count());
+    if (pathIdx.count() == 2) {
+        return createIndex(pathIdx.at(0), 0, nullptr);
+    }
+
+    const SubFolderInfo *info = &_folders[pathIdx.at(0)];
+    while (i < pathIdx.count() - 2) {
+        Q_ASSERT(pathIdx.at(i) < info->_subs.count());
+        info = &info->_subs[pathIdx.at(i)];
+        ++i;
+    }
+    return createIndex(pathIdx.at(i), 0, const_cast<SubFolderInfo *>(info));
+}
+
+bool FolderStatusModel::hasChildren(const QModelIndex& parent) const
+{
+    if (!parent.isValid())
+        return true;
+
+    auto info = infoForIndex(parent);
+    if (!info)
+        return false;
+
+    if (!info->_fetched)
+        return true;
+
+    if (info->_subs.isEmpty())
+        return false;
+
+    return true;
+}
+
+
+bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
+{
+    auto info = infoForIndex(parent);
+    if (!info || info->_fetched || info->_fetching)
+        return false;
+    return true;
+}
+
+
+void FolderStatusModel::fetchMore(const QModelIndex& parent)
+{
+    auto info = infoForIndex(parent);
+    if (!info || info->_fetched || info->_fetching)
+        return;
+
+    info->_fetching = true;
+    LsColJob *job = new LsColJob(_account, info->_folder->remotePath() + "/" + info->_path, this);
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
+            SLOT(slotUpdateDirectories(QStringList)));
+    job->start();
+    job->setProperty(propertyParentIndexC , QVariant::fromValue<QPersistentModelIndex>(parent));
+}
+
+void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
+{
+    auto job = qobject_cast<LsColJob *>(sender());
+    Q_ASSERT(job);
+    QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
+    if (!idx.isValid()) {
+        return;
+    }
+    auto parentInfo = infoForIndex(idx);
+
+    auto list = list_;
+    list.removeFirst(); // remove the parent item
+
+    beginInsertRows(idx, 0, list.count());
+
+    QUrl url = parentInfo->_folder->remoteUrl();
+    QString pathToRemove = url.path();
+    if (!pathToRemove.endsWith('/'))
+        pathToRemove += '/';
+
+    parentInfo->_fetched = true;
+    parentInfo->_fetching = false;
+
+    int i = 0;
+    foreach (QString path, list) {
+        SubFolderInfo newInfo;
+        newInfo._folder = parentInfo->_folder;
+        newInfo._pathIdx = parentInfo->_pathIdx;
+        newInfo._pathIdx << i++;
+        auto size = job ? job->_sizes.value(path) : 0;
+        newInfo._size = size;
+        path.remove(pathToRemove);
+        newInfo._path = path;
+        newInfo._name = path.split('/', QString::SkipEmptyParts).last();
+
+        if (path.isEmpty())
+            continue;
+
+        if (parentInfo->_checked == Qt::Unchecked) {
+            newInfo._checked = Qt::Unchecked;
+        } else {
+            auto *f = FolderMan::instance()->map().values().at(parentInfo->_pathIdx.first());
+            foreach(const QString &str , f->selectiveSyncBlackList()) {
+                if (str == path || str == QLatin1String("/")) {
+                    newInfo._checked = Qt::Unchecked;
+                    break;
+                } else if (str.startsWith(path)) {
+                    newInfo._checked = Qt::PartiallyChecked;
+                }
+            }
+        }
+        parentInfo->_subs.append(newInfo);
+    }
+
+    endInsertRows();
+}
+
+/*void SelectiveSyncTreeView::slotLscolFinishedWithError(QNetworkReply *r)
+{
+    if (r->error() == QNetworkReply::ContentNotFoundError) {
+        _loading->setText(tr("No subfolders currently on the server."));
+    } else {
+        _loading->setText(tr("An error occured while loading the list of sub folders."));
+    }
+    _loading->resize(_loading->sizeHint()); // because it's not in a layout
+}*/
+
+QStringList FolderStatusModel::createBlackList(FolderStatusModel::SubFolderInfo *root,
+                                               const QStringList &oldBlackList) const
+{
+    if (!root) return QStringList();
+
+    switch(root->_checked) {
+        case Qt::Unchecked:
+            return QStringList(root->_path);
+        case  Qt::Checked:
+            return QStringList();
+        case Qt::PartiallyChecked:
+            break;
+    }
+
+    QStringList result;
+    if (root->_fetched) {
+        for (int i = 0; i < root->_subs.count(); ++i) {
+            result += createBlackList(&root->_subs[i], oldBlackList);
+        }
+    } else {
+        // We did not load from the server so we re-use the one from the old black list
+        QString path = root->_path;
+        foreach (const QString & it, oldBlackList) {
+            if (it.startsWith(path))
+                result += it;
+        }
+    }
+    return result;
+}
+
+void FolderStatusModel::slotApplySelectiveSync()
+{
+    if (!_dirty)
+        return;
+    auto folderList = FolderMan::instance()->map().values(); //FIXME
+
+    for (int i = 0; i < folderList.count(); ++i) {
+        if (i >= _folders.count()) break;
+        if (!_folders[i]._fetched) continue;
+        auto folder = folderList.at(i);
+
+        auto oldBlackList = folder->selectiveSyncBlackList();
+        QStringList blackList = createBlackList(&_folders[i], oldBlackList);
+        folder->setSelectiveSyncBlackList(blackList);
+
+        // FIXME: Use ConfigFile
+        QSettings settings(folder->configFile(), QSettings::IniFormat);
+        settings.beginGroup(FolderMan::escapeAlias(folder->alias()));
+        settings.setValue("blackList", blackList);
+        FolderMan *folderMan = FolderMan::instance();
+        auto blackListSet = blackList.toSet();
+        auto oldBlackListSet = oldBlackList.toSet();
+        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        if (!changes.isEmpty()) {
+            if (folder->isBusy()) {
+                folder->slotTerminateSync();
+            }
+            //The part that changed should not be read from the DB on next sync because there might be new folders
+            // (the ones that are no longer in the blacklist)
+            foreach(const auto &it, changes) {
+                folder->journalDb()->avoidReadFromDbOnNextSync(it);
+            }
+            folderMan->slotScheduleSync(folder->alias());
+        }
+    }
+
+    resetFolders();
+}
+
+
+void FolderStatusModel::resetFolders()
+{
+    setAccount(_account);
+}
+
 
 // ====================================================================================
 
@@ -62,6 +513,12 @@ FolderStatusDelegate::~FolderStatusDelegate()
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
+
+    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
+
+
   Q_UNUSED(option)
   QFont aliasFont = option.font;
   QFont font = option.font;
@@ -101,8 +558,17 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                  const QModelIndex &index) const
 {
+  if (qvariant_cast<bool>(index.data(AddButton))) {
+      painter->drawText(option.rect, "[+ Add Folder]");
+      return;
+  }
+
+
   QStyledItemDelegate::paint(painter,option,index);
 
+  if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+      return;
+  }
   painter->save();
 
   QFont aliasFont = option.font;
@@ -141,7 +607,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
   QRect iconRect = option.rect;
   QRect aliasRect = option.rect;
 
-  iconRect.setLeft( aliasMargin );
+  iconRect.setLeft( option.rect.left() + aliasMargin );
   iconRect.setTop( iconRect.top() + aliasMargin ); // (iconRect.height()-iconsize.height())/2);
 
   // alias box
@@ -313,11 +779,14 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
       painter->restore();
   }
+
   painter->restore();
 }
 
-bool FolderStatusDelegate::editorEvent ( QEvent * /*event*/, QAbstractItemModel * /*model*/, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/ )
+bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model,
+                                         const QStyleOptionViewItem & option, const QModelIndex & index )
 {
+    return QStyledItemDelegate::editorEvent(event, model, option, index);
     return false;
 }
 

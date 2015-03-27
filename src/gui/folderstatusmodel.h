@@ -17,16 +17,72 @@
 
 #include <QStyledItemDelegate>
 #include <QStandardItemModel>
+#include <accountfwd.h>
+
+#ifndef Q_DECL_OVERRIDE
+#define Q_DECL_OVERRIDE
+#endif
 
 namespace OCC {
 
-class FolderStatusModel : public QStandardItemModel
-{
-public:
-    FolderStatusModel();
-    virtual Qt::ItemFlags flags( const QModelIndex& ) const Q_DECL_OVERRIDE;
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+class Folder;
 
+class FolderStatusModel : public QAbstractItemModel
+{
+    Q_OBJECT
+public:
+    FolderStatusModel(QObject * parent = 0);
+    ~FolderStatusModel();
+    void setAccount(const OCC::AccountPtr& account);
+
+    Qt::ItemFlags flags( const QModelIndex& ) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex parent(const QModelIndex& child) const Q_DECL_OVERRIDE;
+    bool canFetchMore(const QModelIndex& parent) const Q_DECL_OVERRIDE;
+    void fetchMore(const QModelIndex& parent) Q_DECL_OVERRIDE;
+    bool hasChildren(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+
+
+    struct SubFolderInfo {
+//        QWeakPointer<SubFolderInfo> parent;
+        QString _name;
+        QString _path;
+        QVector<int> _pathIdx;
+        int _size = 0;
+        bool _fetched = false; // If we did the LSCOL for this folder already
+        bool _fetching = false;
+        QVector<SubFolderInfo> _subs;
+        Qt::CheckState _checked = Qt::Checked;
+        Folder *_folder;
+    };
+
+    mutable QVector<SubFolderInfo> _folders;
+
+    enum ItemType { RootFolder, SubFolder, AddButton, SelectiveSyncText };
+    ItemType classify(const QModelIndex &index) const;
+    SubFolderInfo *infoForIndex(const QModelIndex &index) const;
+
+    bool isDirty() { return _dirty; }
+
+public slots:
+    void slotApplySelectiveSync();
+    void resetFolders();
+
+private slots:
+    void slotUpdateDirectories(const QStringList &);
+
+private:
+    QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
+                                const QStringList& oldBlackList) const;
+    AccountPtr _account;
+    bool _dirty = false;
+
+signals:
+    void dirtyChanged();
 };
 
 class FolderStatusDelegate : public QStyledItemDelegate
@@ -51,7 +107,9 @@ class FolderStatusDelegate : public QStyledItemDelegate
                     SyncProgressItemString,
                     AddProgressSpace,
                     WarningCount,
-                    SyncRunning
+                    SyncRunning,
+
+                    AddButton
                   };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
