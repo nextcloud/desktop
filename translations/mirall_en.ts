@@ -776,12 +776,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="387"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="390"/>
         <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="388"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="391"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1856,7 +1856,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="102"/>
-        <location filename="../src/gui/sharedialog.cpp" line="618"/>
+        <location filename="../src/gui/sharedialog.cpp" line="612"/>
         <source>%1 path: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1881,62 +1881,62 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="438"/>
+        <location filename="../src/gui/sharedialog.cpp" line="432"/>
         <source>Choose a password for the public link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="490"/>
+        <location filename="../src/gui/sharedialog.cpp" line="484"/>
         <source>Check to &amp;share by public link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="491"/>
+        <location filename="../src/gui/sharedialog.cpp" line="485"/>
         <source>&amp;Shared by public link (uncheck to delete share)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="509"/>
+        <location filename="../src/gui/sharedialog.cpp" line="503"/>
         <source>OCS API error code: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="531"/>
+        <location filename="../src/gui/sharedialog.cpp" line="525"/>
         <source>There is no sync folder configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="543"/>
+        <location filename="../src/gui/sharedialog.cpp" line="537"/>
         <source>Cannot find an folder to upload to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="550"/>
+        <location filename="../src/gui/sharedialog.cpp" line="544"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="565"/>
+        <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="577"/>
+        <location filename="../src/gui/sharedialog.cpp" line="571"/>
         <source>Waiting to upload...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="579"/>
+        <location filename="../src/gui/sharedialog.cpp" line="573"/>
         <source>Unable to register in sync space.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="610"/>
+        <location filename="../src/gui/sharedialog.cpp" line="604"/>
         <source>The file cannot be synced.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="620"/>
+        <location filename="../src/gui/sharedialog.cpp" line="614"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation type="unfinished"></translation>
     </message>
