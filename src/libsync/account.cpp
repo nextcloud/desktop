@@ -131,6 +131,15 @@ void Account::save()
     if (!certs.isEmpty()) {
         settings->setValue( QLatin1String(caCertsKeyC), certs );
     }
+
+    // Save cookies.
+    if (_am) {
+        CookieJar* jar = qobject_cast<CookieJar*>(_am->cookieJar());
+        if (jar) {
+            qDebug() << "Saving cookies.";
+            jar->save();
+        }
+    }
 }
 
 AccountPtr Account::restore()
