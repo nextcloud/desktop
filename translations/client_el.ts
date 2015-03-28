@@ -235,12 +235,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>Επικύρωση πιστοποιητικού  χρήστη SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής πιθανόν απαιτεί  πιστοποιητικό  χρήστη SSL </translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -250,7 +250,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>Περιήγηση...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -669,7 +669,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε Τι θα Συγχρονιστεί: Μπορείτε προαιρετικά να καταργήστε την επιλογή υποφακέλων που δεν επιθυμείτε να συγχρονίσετε.</translation>
     </message>
 </context>
 <context>

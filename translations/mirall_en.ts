@@ -309,23 +309,23 @@ Total time left %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="140"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="142"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="150"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>Unable to connect to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="151"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="155"/>
         <source>timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="182"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="186"/>
         <source>The provided credentials are not correct</source>
         <translation type="unfinished"></translation>
     </message>
@@ -776,12 +776,12 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="390"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="398"/>
         <source>Enter Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="391"/>
+        <location filename="../src/libsync/creds/httpcredentials.cpp" line="399"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1435,17 +1435,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="81"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="85"/>
         <source>; Restoration Failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="108"/>
         <source>Continue blacklisting:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="204"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1649,12 +1649,12 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="261"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="256"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="264"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="259"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation type="unfinished">
@@ -1663,7 +1663,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="265"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="260"/>
         <source>%n files are partially downloaded.
 </source>
         <translation type="unfinished">
@@ -1672,7 +1672,7 @@ It is not advisable to use it.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="266"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="261"/>
         <source>Try to sync these again.</source>
         <translation type="unfinished"></translation>
     </message>
