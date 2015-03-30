@@ -16,6 +16,7 @@
 #pragma once
 
 #include <QNetworkReply>
+#include <QDebug>
 #include "syncfileitem.h"
 
 namespace OCC {

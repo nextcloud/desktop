@@ -25,6 +25,7 @@
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 #include <cmath>
 
 namespace OCC {
