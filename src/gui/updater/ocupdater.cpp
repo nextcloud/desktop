@@ -52,9 +52,10 @@ bool OCUpdater::performUpdate()
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
     if (!updateFile.isEmpty() && QFile(updateFile).exists()) {
-        if (QMessageBox::information(0, tr("New Update Ready"),
-                                     tr("A new update is about to be installed. The updater may ask\n"
-                                        "for additional privileges during the process."), QMessageBox::Ok)) {
+        const QString name = Theme::instance()->appNameGUI();
+        if (QMessageBox::information(0, tr("New %1 Update Ready").arg(name),
+                                     tr("A new update for %1 is about to be installed. The updater may ask\n"
+                                        "for additional privileges during the process.").arg(name), QMessageBox::Ok)) {
             slotStartInstaller();
             return true;
         }
