@@ -704,22 +704,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="122"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="123"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="129"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="130"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="156"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
         <source>Server returned wrong content-range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="261"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="262"/>
         <source>Connection Timeout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -923,27 +923,27 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="256"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="257"/>
         <source>New Version Available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="262"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="263"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="275"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
         <source>Skip this version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="277"/>
         <source>Skip this time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="277"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="278"/>
         <source>Get update</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1052,53 +1052,53 @@ Checked items will also be deleted if they prevent a directory from being remove
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="55"/>
-        <source>New Update Ready</source>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
+        <source>New %1 Update Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
-        <source>A new update is about to be installed. The updater may ask
+        <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
+        <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="77"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
         <source>Downloading version %1. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="79"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="80"/>
         <source>Version %1 available. Restart application to start the update.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="81"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="82"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="83"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="84"/>
         <source>Could not check for new updates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="85"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="86"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="87"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="88"/>
         <source>Checking update server...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="89"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="90"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="93"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="94"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1417,17 +1417,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="286"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="461"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
         <source>The file could not be downloaded completely.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="497"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1435,17 +1435,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="85"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="108"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="204"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"></translation>
     </message>
