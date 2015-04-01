@@ -695,7 +695,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="156"/>
         <source>Server returned wrong content-range</source>
-        <translation>Le serveur a retourné une gamme de contenu erronnée</translation>
+        <translation>Le serveur a retourné une gamme de contenu erronée</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="257"/>
