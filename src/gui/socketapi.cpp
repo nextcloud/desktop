@@ -136,7 +136,9 @@ SocketApi::~SocketApi()
 {
     DEBUG << "dtor";
     _localServer.close();
-    qDeleteAll(_listeners);
+    // All remaining sockets will be destroyed with _localServer, their parent
+    Q_ASSERT(_listeners.isEmpty() || _listeners.first()->parent() == &_localServer);
+    _listeners.clear();
     slotClearExcludesList();
 }
 
