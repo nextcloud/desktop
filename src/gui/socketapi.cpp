@@ -165,7 +165,7 @@ void SocketApi::slotReadExcludes()
 
 void SocketApi::slotNewConnection()
 {
-    SocketType* socket = _localServer.nextPendingConnection();
+    QLocalSocket* socket = _localServer.nextPendingConnection();
 
     if( ! socket ) {
         return;
@@ -197,7 +197,7 @@ void SocketApi::onLostConnection()
 {
     DEBUG << "Lost connection " << sender();
 
-    SocketType* socket = qobject_cast<SocketType*>(sender());
+    QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
     _listeners.removeAll(socket);
     socket->deleteLater();
 }
@@ -205,7 +205,7 @@ void SocketApi::onLostConnection()
 
 void SocketApi::slotReadSocket()
 {
-    SocketType* socket = qobject_cast<SocketType*>(sender());
+    QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
@@ -213,12 +213,12 @@ void SocketApi::slotReadSocket()
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
 
-        QString functionWithArguments = function + QLatin1String("(QString,SocketType*)");
+        QString functionWithArguments = function + QLatin1String("(QString,QLocalSocket*)");
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
         if(indexOfMethod != -1) {
-            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(SocketType*, socket));
+            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QLocalSocket*, socket));
         } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
@@ -230,7 +230,7 @@ void SocketApi::slotRegisterPath( const QString& alias )
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         QString message = buildRegisterPathMessage(f->path());
-        foreach(SocketType *socket, _listeners) {
+        foreach(QLocalSocket *socket, _listeners) {
             sendMessage(socket, message);
         }
     }
@@ -335,7 +335,7 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
 
 
 
-void SocketApi::sendMessage(SocketType *socket, const QString& message, bool doWait)
+void SocketApi::sendMessage(QLocalSocket *socket, const QString& message, bool doWait)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
@@ -370,12 +370,12 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
 
     // sendMessage already has a debug output
     //DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
-    foreach(SocketType *socket, _listeners) {
+    foreach(QLocalSocket *socket, _listeners) {
         sendMessage(socket, msg, doWait);
     }
 }
 
-void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket)
+void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
@@ -383,7 +383,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketTy
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
-void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket)
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
 {
     if( !socket ) {
         qDebug() << "No valid socket object.";
@@ -411,7 +411,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType
     sendMessage(socket, message);
 }
 
-void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
+void SocketApi::command_SHARE(const QString& localFile, QLocalSocket* socket)
 {
     if (!socket) {
         qDebug() << Q_FUNC_INFO << "No valid socket object.";
@@ -445,12 +445,12 @@ void SocketApi::command_SHARE(const QString& localFile, SocketType* socket)
     }
 }
 
-void SocketApi::command_VERSION(const QString&, SocketType* socket)
+void SocketApi::command_VERSION(const QString&, QLocalSocket* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketType* socket)
+void SocketApi::command_SHARE_MENU_TITLE(const QString &, QLocalSocket* socket)
 {
     sendMessage(socket, QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
