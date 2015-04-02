@@ -692,7 +692,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         return;
     }
 
-    _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
+    qDebug() << "<<#### Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
 
     _progressInfo = Progress::Info();
 
@@ -793,6 +793,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         emit(started());
 
     _propagator->start(_syncedItems);
+
+    qDebug() << "<<#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished"));
 }
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)
