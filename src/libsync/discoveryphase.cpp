@@ -268,7 +268,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         }
 
 
-        csync_vio_file_stat_t *file_stat = propertyMapToFileStat(map);
+        FileStatPointer file_stat(propertyMapToFileStat(map));
         file_stat->name = strdup(file.toUtf8());
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
             qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
@@ -319,15 +319,6 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     connect(discoveryJob, SIGNAL(doOpendirSignal(QString,DiscoveryDirectoryResult*)),
             this, SLOT(doOpendirSlot(QString,DiscoveryDirectoryResult*)),
             Qt::QueuedConnection);
-    connect(discoveryJob, SIGNAL(doClosedirSignal(QString)),
-            this, SLOT(doClosedirSlot(QString)),
-            Qt::QueuedConnection);
-}
-
-void DiscoveryMainThread::doClosedirSlot(QString path)
-{
-    //qDebug() << Q_FUNC_INFO << "Invalidating" << path;
-    deleteCacheEntry(path);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -352,8 +343,8 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
 
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t *>)),
-                     this, SLOT(singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>)));
+    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(const QList<FileStatPointer> &)),
+                     this, SLOT(singleDirectoryJobResultSlot(const QList<FileStatPointer> &)));
     QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int,QString)),
                      this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
     QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
@@ -364,7 +355,7 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
 }
 
 
-void DiscoveryMainThread::singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t *> result)
+void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPointer> & result)
 {
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
@@ -372,11 +363,9 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(QLinkedList<csync_vio_fil
     qDebug() << Q_FUNC_INFO << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
 
 
-    _directoryContents.insert(_currentDiscoveryDirectoryResult->path, result);
-
     _currentDiscoveryDirectoryResult->list = result;
     _currentDiscoveryDirectoryResult->code = 0;
-    _currentDiscoveryDirectoryResult->iterator = _currentDiscoveryDirectoryResult->list.begin();
+    _currentDiscoveryDirectoryResult->listIndex = 0;
      _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
 
     _discoveryJob->_vioMutex.lock();
@@ -414,7 +403,7 @@ void DiscoveryMainThread::abort() {
     if (_singleDirJob) {
         _singleDirJob->disconnect(SIGNAL(finishedWithError(int,QString)), this);
         _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
-        _singleDirJob->disconnect(SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t*>)), this);
+        _singleDirJob->disconnect(SIGNAL(finishedWithResult(const QList<FileStatPointer> &)), this);
         _singleDirJob->abort();
     }
     if (_currentDiscoveryDirectoryResult) {
@@ -469,9 +458,8 @@ csync_vio_file_stat_t* DiscoveryJob::remote_vio_readdir_hook (csync_vio_handle_t
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*>(dhandle);
-        if (directoryResult->iterator != directoryResult->list.end()) {
-            csync_vio_file_stat_t *file_stat = *(directoryResult->iterator);
-            directoryResult->iterator++;
+        if (directoryResult->listIndex < directoryResult->list.size()) {
+            csync_vio_file_stat_t *file_stat = directoryResult->list.at(directoryResult->listIndex++).data();
             // Make a copy, csync_update will delete the copy
             return csync_vio_file_stat_copy(file_stat);
         }
@@ -487,7 +475,6 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
         QString path = directoryResult->path;
         qDebug() << Q_FUNC_INFO << discoveryJob << path;
         delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
-        emit discoveryJob->doClosedirSignal(path);
     }
 }
 
