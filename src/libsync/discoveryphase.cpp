@@ -270,6 +270,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
 
         csync_vio_file_stat_t *file_stat = propertyMapToFileStat(map);
         file_stat->name = strdup(file.toUtf8());
+        if (!file_stat->etag || strlen(file_stat->etag) == 0) {
+            qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+        }
         //qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
         _results.append(file_stat);
     }
