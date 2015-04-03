@@ -341,7 +341,7 @@ Total time left %5</source>
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="419"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="422"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2348,59 +2348,59 @@ It is not advisable to use it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="940"/>
-        <location filename="../src/libsync/syncengine.cpp" line="947"/>
+        <location filename="../src/libsync/syncengine.cpp" line="942"/>
+        <location filename="../src/libsync/syncengine.cpp" line="949"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="965"/>
+        <location filename="../src/libsync/syncengine.cpp" line="967"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="971"/>
+        <location filename="../src/libsync/syncengine.cpp" line="973"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="978"/>
+        <location filename="../src/libsync/syncengine.cpp" line="980"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="998"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1000"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1035"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1017"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1037"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1050"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1103"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1112"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1114"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1113"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1115"/>
         <source>the destination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1113"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1115"/>
         <source>the source</source>
         <translation type="unfinished"></translation>
     </message>
