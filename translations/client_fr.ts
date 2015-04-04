@@ -757,12 +757,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="400"/>
         <source>Enter Password</source>
-        <translation>Entrez le mot de passe</translation>
+        <translation>Saisissez le mot de passe</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="401"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation>Veuillez entrer le mot de passe %1 pour l&apos;utilisateur &apos;%2&apos; :</translation>
+        <translation>Veuillez saisir le mot de passe %1 pour l&apos;utilisateur &apos;%2&apos; :</translation>
     </message>
 </context>
 <context>
@@ -770,7 +770,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Éditeur de modification des fichiers ignorés</translation>
+        <translation>Éditeur de la liste des fichiers ignorés</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="53"/>
@@ -789,7 +789,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Les fichiers ou dossiers correspondants à un motif ne seront pas synchronisés.
 
-Les items cochés seront également supprimés s&apos;ils empêchent la suppression d&apos;un dossier. Cela est utile pour les meta-données.</translation>
+Les motifs cochés seront également supprimés s&apos;ils empêchent la suppression d&apos;un dossier. Cela est utile pour les meta-données.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
