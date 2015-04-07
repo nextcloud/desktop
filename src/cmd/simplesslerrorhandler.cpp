@@ -15,9 +15,10 @@
 #include "account.h"
 #include "simplesslerrorhandler.h"
 
-bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, OCC::AccountPtr account)
+bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr account)
 {
     (void) account;
+    (void) conf;
 
     if (!certs) {
         qDebug() << "Certs parameter required but is NULL!";

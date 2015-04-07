@@ -34,8 +34,9 @@ namespace Utility {
 }
 #endif
 
-bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, AccountPtr account)
+bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr account)
 {
+	(void) conf;
     if (!certs) {
         qDebug() << "Certs parameter required but is NULL!";
         return false;
