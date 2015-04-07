@@ -30,7 +30,9 @@ csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
 csync_vio_file_stat_t* csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat) {
     csync_vio_file_stat_t *file_stat_cpy = csync_vio_file_stat_new();
     memcpy(file_stat_cpy, file_stat, sizeof(csync_vio_file_stat_t));
-    file_stat_cpy->etag = c_strdup(file_stat_cpy->etag);
+    if (file_stat_cpy->fields & CSYNC_VIO_FILE_STAT_FIELDS_ETAG) {
+        file_stat_cpy->etag = c_strdup(file_stat_cpy->etag);
+    }
     if (file_stat_cpy->directDownloadCookies) {
         file_stat_cpy->directDownloadCookies = c_strdup(file_stat_cpy->directDownloadCookies);
     }
