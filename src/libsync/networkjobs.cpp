@@ -647,8 +647,9 @@ bool PropfindJob::finished()
             if (type == QXmlStreamReader::StartElement) {
                 if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
                     items.insert(reader.name().toString(), reader.readElementText());
+                } else {
+                    curElement.push(reader.name().toString());
                 }
-                curElement.push(reader.name().toString());
             }
             if (type == QXmlStreamReader::EndElement) {
                 if(curElement.top() == reader.name()) {
