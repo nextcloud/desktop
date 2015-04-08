@@ -253,8 +253,6 @@
   <zorder>widget_shareLink</zorder>
   <zorder>buttonBox</zorder>
   <zorder>checkBox_password</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
