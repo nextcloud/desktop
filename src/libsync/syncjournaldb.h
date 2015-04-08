@@ -97,7 +97,8 @@ public:
      */
     void avoidReadFromDbOnNextSync(const QString& fileName);
 
-    bool postSyncCleanup( const QSet<QString>& items );
+    bool postSyncCleanup(const QSet<QString>& filepathsToKeep,
+                         const QSet<QString>& prefixesToKeep);
 
     /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.

@@ -384,6 +384,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         item._errorString = QLatin1String("Directory temporarily not available on server.");
         item._status = SyncFileItem::SoftError;
+        _temporarilyUnavailablePaths.insert(item._file);
         break;
     default:
         Q_ASSERT("Non handled error-status");
@@ -700,6 +701,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _hasRemoveFile = false;
     bool walkOk = true;
     _seenFiles.clear();
+    _temporarilyUnavailablePaths.clear();
 
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
@@ -863,7 +865,7 @@ void SyncEngine::slotFinished()
     _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
 
     // emit the treewalk results.
-    if( ! _journal->postSyncCleanup( _seenFiles ) ) {
+    if( ! _journal->postSyncCleanup( _seenFiles, _temporarilyUnavailablePaths ) ) {
         qDebug() << "Cleaning of synced ";
     }
 
