@@ -608,10 +608,14 @@ void SyncEngine::startSync()
     if (fileRecordCount >= 1 && isUpdateFrom_1_5) {
         qDebug() << "detected update from 1.5" << fileRecordCount << isUpdateFrom_1_5;
         // Disable the read from DB to be sure to re-read all the fileid and etags.
-        csync_set_read_from_db(_csync_ctx, false);
+        _csync_ctx->read_remote_from_db = false;
     } else {
-        csync_set_read_from_db(_csync_ctx, true);
+        _csync_ctx->read_remote_from_db = true;
     }
+
+    // This tells csync to never read from the DB if it is empty
+    // thereby speeding up the initial discovery significantly.
+    _csync_ctx->db_is_empty = (fileRecordCount == 0);
 
     bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
