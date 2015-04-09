@@ -103,6 +103,12 @@ public:
 
     int timeout() const;
 
+    // send a checksum as a header along with the transmission or not.
+    // possible values:
+    // empty: no checksum calculated or expected.
+    // or "Adler32", "MD5", "SHA1"
+    QString transmissionChecksum() const;
+
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
