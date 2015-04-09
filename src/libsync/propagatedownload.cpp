@@ -30,7 +30,6 @@
 
 namespace OCC {
 
-
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
 // This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
@@ -508,6 +507,54 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
     return conflictFileName;
 }
 
+QStringList parseRecallFile(QString fn) {
+
+    qDebug() << "parsingRecallFile: " << fn;
+
+    QStringList result;
+
+    QFile file(fn);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << file.errorString();
+        return result;
+    }
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+
+        line.chop(1); // remove trailing \n
+
+        qDebug() << "recall item: " << line;
+
+        result.append(line);
+    }
+
+    return result;
+
+}
+
+QString makeRecallFileName(const QString &fn)
+{
+    QString recallFileName(fn);
+    // Add _recall-XXXX  before the extention.
+    int dotLocation = recallFileName.lastIndexOf('.');
+    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
+        dotLocation = recallFileName.size();
+    }
+
+    QString timeString = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
+
+    // Additional marker
+    QByteArray recallFileUserName = qgetenv("CSYNC_RECALL_FILE_USERNAME");
+    if (recallFileUserName.isEmpty())
+        recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
+    else
+        recallFileName.insert(dotLocation, "_.sys.admin#recall#_" + QString::fromUtf8(recallFileUserName)  + "-" + timeString);
+
+    return recallFileName;
+}
+
 void PropagateDownloadFileQNAM::downloadFinished()
 {
     QString fn = _propagator->getFilePath(_item._file);
@@ -592,6 +639,33 @@ void PropagateDownloadFileQNAM::downloadFinished()
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
+
+
+
+    // handle the special recall file
+    QFileInfo existingFile(fn);
+    if(existingFile.fileName()==".sys.admin#recall#")
+    {
+        //FileSystem::setFileHidden(existingFile.fileName(), true);
+
+        QDir thisDir = existingFile.dir();
+
+        QStringList recall_files = parseRecallFile(existingFile.filePath());
+
+        for (int i = 0; i < recall_files.size(); ++i)
+        {
+            QString fpath = thisDir.filePath(recall_files.at(i));
+            QString rpath = thisDir.filePath(makeRecallFileName(recall_files.at(i)));
+
+            // if previously recalled file exists then remove it (copy will not overwrite it)
+            QFile(rpath).remove();
+
+            qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
+
+            QFile::copy(fpath,rpath);
+        }
+
+    }
 }
 
 void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
