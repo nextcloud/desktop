@@ -196,7 +196,9 @@ public:
     virtual bool wizardSelectiveSyncDefaultNothing() const;
 
 protected:
+#ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
+#endif
     Theme();
 
 signals:
@@ -208,7 +210,9 @@ private:
 
     static Theme* _instance;
     bool _mono;
+#ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
+#endif
 };
 
 }

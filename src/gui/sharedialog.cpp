@@ -21,6 +21,7 @@
 #include "folder.h"
 #include "theme.h"
 #include "syncresult.h"
+#include "configfile.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -44,6 +45,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _resharingAllowed(resharingAllowed)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+    setObjectName("SharingDialog"); // required as group for saveGeometry call
+
     _ui->setupUi(this);
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
     _ui->pushButton_copy->setEnabled(false);
@@ -84,24 +87,31 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     QIcon icon = icon_provider.icon(f_info);
     _ui->label_icon->setPixmap(icon.pixmap(40,40));
 
-    QString name;
-    if( f_info.isDir() ) {
-        name = tr("Share Directory");
-    } else {
-        name = tr("Share File");
-    }
-    _ui->groupBox->setTitle(name);
-
-    QString lPath(_localPath);
-    if( lPath.length() > 50) {
-        lPath = QLatin1String("...")+lPath.right(50);
-    }
-    _ui->label_name->setText(tr("Local path: %1").arg(lPath));
+    QFileInfo lPath(_localPath);
+    QString fileName = lPath.fileName();
+    _ui->label_name->setText(tr("%1").arg(fileName));
+    QFont f( _ui->label_name->font());
+    f.setPointSize( f.pointSize() * 1.4 );
+    _ui->label_name->setFont( f );
 
     _ui->label_sharePath->setWordWrap(true);
-    _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
+    QString ocDir(_sharePath);
+    ocDir.truncate(ocDir.length()-fileName.length());
+
+    if( ocDir == QLatin1String("/")) {
+        _ui->label_sharePath->setText(QString());
+    } else {
+        if( ocDir.startsWith(QLatin1Char('/')) ) {
+            ocDir = ocDir.mid(1, -1);
+        }
+        if( ocDir.endsWith(QLatin1Char('/')) ) {
+            ocDir.chop(1);
+        }
+        _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
+    }
+
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
-    _ui->label_password->setText(tr("Set p&assword"));
+    _ui->checkBox_password->setText(tr("P&assword protect"));
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
@@ -126,6 +136,12 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->errorLabel->setFrameShape(QFrame::Box);
     _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
     _ui->errorLabel->hide();
+}
+
+void ShareDialog::done( int r ) {
+    ConfigFile cfg;
+    cfg.saveGeometry(this);
+    QDialog::done(r);
 }
 
 void ShareDialog::setExpireDate(const QDate &date)
@@ -331,19 +347,40 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     }
 }
 
+void ShareDialog::resizeEvent(QResizeEvent *e)
+{
+    QDialog::resizeEvent(e);
+    redrawElidedUrl();
+}
+
+void ShareDialog::redrawElidedUrl()
+{
+    QString u;
+
+    if( !_shareUrl.isEmpty() ) {
+        QFontMetrics fm( _ui->_labelShareLink->font() );
+        int linkLengthPixel = _ui->_labelShareLink->width();
+
+        const QUrl realUrl(_shareUrl);
+        QString elidedUrl = fm.elidedText(_shareUrl, Qt::ElideRight, linkLengthPixel);
+
+        u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(elidedUrl);
+    }
+    _ui->_labelShareLink->setText(u);
+}
+
 void ShareDialog::setShareLink( const QString& url )
 {
     // FIXME: shorten the url for output.
     const QUrl realUrl(url);
     if( realUrl.isValid() ) {
-        const QString u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(url);
-        _ui->_labelShareLink->setText(u);
         _shareUrl = url;
         _ui->pushButton_copy->setEnabled(true);
     } else {
         _shareUrl.clear();
         _ui->_labelShareLink->setText(QString::null);
     }
+    redrawElidedUrl();
 
 }
 
@@ -407,7 +444,7 @@ void ShareDialog::slotCreateShareFetched(const QString &reply)
         // there needs to be a password
         _ui->checkBox_password->setChecked(true);
         _ui->checkBox_password->setVisible(false);
-        _ui->label_password->setText(tr("Public sh&aring requires a password:"));
+        _ui->checkBox_password->setText(tr("Public sh&aring requires a password:"));
         _ui->lineEdit_password->setFocus();
         _ui->widget_shareLink->show();
 
@@ -481,8 +518,8 @@ int ShareDialog::checkJsonReturnCode(const QString &reply, QString &message)
 
 void ShareDialog::setShareCheckBoxTitle(bool haveShares)
 {
-    const QString noSharesTitle(tr("Check to &share by public link"));
-    const QString haveSharesTitle(tr("&Shared by public link (uncheck to delete share)"));
+    const QString noSharesTitle(tr("&Share link"));
+    const QString haveSharesTitle(tr("&Share link"));
 
     if( haveShares ) {
         _ui->checkBox_shareLink->setText( haveSharesTitle );

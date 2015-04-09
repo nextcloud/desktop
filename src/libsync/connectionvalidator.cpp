@@ -63,6 +63,8 @@ void ConnectionValidator::checkServerAndAuth()
         reportResult( NotConfigured );
         return;
     }
+    qDebug() << "Checking server and authentication";
+
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
@@ -84,10 +86,8 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
         return;
     }
 
-    if (proxy.type() != QNetworkProxy::DefaultProxy) {
-        qDebug() << Q_FUNC_INFO << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
-        _account->networkAccessManager()->setProxy(proxy);
-    }
+    qDebug() << Q_FUNC_INFO << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+    _account->networkAccessManager()->setProxy(proxy);
 
     slotCheckServerAndAuth();
 }
@@ -139,6 +139,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
+    qDebug() << Q_FUNC_INFO << reply->error() << reply->errorString();
     if( reply && ! _account->credentials()->stillValid(reply)) {
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     }  else {

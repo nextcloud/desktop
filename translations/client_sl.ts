@@ -226,7 +226,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="820"/>
         <source>No %1 connection configured.</source>
-        <translation>Ni nastavljenih %1 povezav.</translation>
+        <translation>Ni nastavljene povezave %1.</translation>
     </message>
 </context>
 <context>
@@ -234,7 +234,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>SSL overjanje potrdila odjemalca</translation>
+        <translation>Overitev odjemalca s potrdilom SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -329,7 +329,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="41"/>
         <source>Connection timed out</source>
-        <translation>Povezava je potekla</translation>
+        <translation>Povezava je časovno potekla</translation>
     </message>
 </context>
 <context>
@@ -2473,7 +2473,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="477"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation>Poteka preučevanje %1</translation>
+        <translation>Poteka preučevanje &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="482"/>

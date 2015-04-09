@@ -76,11 +76,15 @@ private slots:
     void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
+
+    void done( int r );
 private:
     void setShareCheckBoxTitle(bool haveShares);
     void displayError(int code);
     void displayError(const QString& errMsg);
     void setShareLink( const QString& url );
+    void resizeEvent(QResizeEvent *e);
+    void redrawElidedUrl();
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;

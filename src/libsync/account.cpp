@@ -486,7 +486,7 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
         return;
     }
 
-    if (_sslErrorHandler->handleErrors(errors, &approvedCerts, sharedFromThis())) {
+    if (_sslErrorHandler->handleErrors(errors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
         QSslSocket::addDefaultCaCertificates(approvedCerts);
         addApprovedCerts(approvedCerts);
         // all ssl certs are known and accepted. We can ignore the problems right away.

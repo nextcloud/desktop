@@ -384,6 +384,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         item._errorString = QLatin1String("Directory temporarily not available on server.");
         item._status = SyncFileItem::SoftError;
+        _temporarilyUnavailablePaths.insert(item._file);
         break;
     default:
         Q_ASSERT("Non handled error-status");
@@ -607,10 +608,14 @@ void SyncEngine::startSync()
     if (fileRecordCount >= 1 && isUpdateFrom_1_5) {
         qDebug() << "detected update from 1.5" << fileRecordCount << isUpdateFrom_1_5;
         // Disable the read from DB to be sure to re-read all the fileid and etags.
-        csync_set_read_from_db(_csync_ctx, false);
+        _csync_ctx->read_remote_from_db = false;
     } else {
-        csync_set_read_from_db(_csync_ctx, true);
+        _csync_ctx->read_remote_from_db = true;
     }
+
+    // This tells csync to never read from the DB if it is empty
+    // thereby speeding up the initial discovery significantly.
+    _csync_ctx->db_is_empty = (fileRecordCount == 0);
 
     bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
@@ -692,7 +697,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         return;
     }
 
-    _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
+    qDebug() << "<<#### Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile Finished"));
 
     _progressInfo = Progress::Info();
 
@@ -700,6 +705,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _hasRemoveFile = false;
     bool walkOk = true;
     _seenFiles.clear();
+    _temporarilyUnavailablePaths.clear();
 
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
@@ -793,6 +799,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         emit(started());
 
     _propagator->start(_syncedItems);
+
+    qDebug() << "<<#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished"));
 }
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)
@@ -861,7 +869,7 @@ void SyncEngine::slotFinished()
     _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
 
     // emit the treewalk results.
-    if( ! _journal->postSyncCleanup( _seenFiles ) ) {
+    if( ! _journal->postSyncCleanup( _seenFiles, _temporarilyUnavailablePaths ) ) {
         qDebug() << "Cleaning of synced ";
     }
 

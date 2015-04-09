@@ -306,7 +306,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                                                             || !c_streq(fs->remotePerm, tmp->remotePerm)))
                              || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
         if (type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
-                && !metadata_differ && !ctx->read_from_db_disabled) {
+                && !metadata_differ && ctx->read_remote_from_db) {
             /* If both etag and file id are equal for a directory, read all contents from
              * the database.
              * The metadata comparison ensure that we fetch all the file id or permission when

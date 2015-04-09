@@ -194,6 +194,9 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     if (options->target_url.startsWith("http"))
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
+    if (!options->source_dir.endsWith('/')) {
+        options->source_dir.append('/');
+    }
     if( !QFile::exists( options->source_dir )) {
         std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);

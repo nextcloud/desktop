@@ -167,16 +167,11 @@ void ProtocolWidget::cleanIgnoreItems(const QString& folder)
 
 QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
 {
-    QLocale loc = QLocale::system();
-    QString timeStr;
-
-    if( format == QLocale::NarrowFormat ) {
-        timeStr = loc.toString(dt, QLocale::NarrowFormat);
-    } else {
-        timeStr = loc.toString(dt, format);
-    }
-
-    return timeStr;
+    const QLocale loc = QLocale::system();
+    QString dtFormat = loc.dateTimeFormat(format);
+    static const QRegExp re("HH:mm(?!:ss)");
+    dtFormat.replace(re, "HH:mm:ss");
+    return loc.toString(dt, dtFormat);
 }
 
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )

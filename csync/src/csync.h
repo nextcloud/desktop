@@ -550,11 +550,6 @@ void csync_resume(CSYNC *ctx);
  */
 int  csync_abort_requested(CSYNC *ctx);
 
-/**
- * Specify if it is allowed to read the remote tree from the DB (default to enabled)
- */
-int csync_set_read_from_db(CSYNC* ctx, int enabled);
-
 char *csync_normalize_etag(const char *);
 time_t oc_httpdate_parse( const char *date );
 

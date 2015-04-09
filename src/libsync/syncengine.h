@@ -159,7 +159,21 @@ private:
     QPointer<DiscoveryMainThread> _discoveryMainThread;
     QSharedPointer <OwncloudPropagator> _propagator;
     QString _lastDeleted; // if the last item was a path and it has been deleted
+
+    // After a sync, only the syncdb entries whose filenames appear in this
+    // set will be kept. See _temporarilyUnavailablePaths.
     QSet<QString> _seenFiles;
+
+    // Some paths might be temporarily unavailable on the server, for
+    // example due to 503 Storage not available. Deleting information
+    // about the files from the database in these cases would lead to
+    // incorrect synchronization.
+    // Therefore all syncdb entries whose filename starts with one of
+    // the paths in this set will be kept.
+    // The specific case that fails otherwise is deleting a local file
+    // while the remote says storage not available.
+    QSet<QString> _temporarilyUnavailablePaths;
+
     QThread _thread;
 
     Progress::Info _progressInfo;
