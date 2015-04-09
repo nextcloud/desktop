@@ -62,10 +62,11 @@ private slots:
     void slotNoOwnCloudFoundAuthTimeout(const QUrl&url);
 
     void slotConnectToOCUrl(const QString&);
-    void slotConnectionCheck(QNetworkReply*);
+    void slotAuthNetworkError(QNetworkReply*);
+    void slotAuthError();
 
     void slotCreateLocalAndRemoteFolders(const QString&, const QString&);
-    void slotAuthCheckReply(QNetworkReply*);
+    void slotRemoteFolderExists(QNetworkReply*);
     void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError);
     void slotAssistantFinished( int );
     void slotSkipFolderConfiguration();
