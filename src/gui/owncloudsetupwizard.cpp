@@ -29,6 +29,7 @@
 #include "account.h"
 #include "networkjobs.h"
 #include "sslerrordialog.h"
+#include "accountmanager.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -80,14 +81,9 @@ void OwncloudSetupWizard::startWizard()
     FolderMan *folderMan = FolderMan::instance();
     bool multiFolderSetup = folderMan->map().count() > 1;
     // ###
-    AccountPtr account = Account::restore();
-    if (!account) {
-        _ocWizard->setConfigExists(false);
-        account = Account::create();
-        account->setCredentials(CredentialsFactory::create("dummy"));
-    } else {
-        _ocWizard->setConfigExists(true);
-    }
+    AccountPtr account = Account::create();
+    _ocWizard->setConfigExists(false);
+    account->setCredentials(CredentialsFactory::create("dummy"));
     account->setSslErrorHandler(new SslDialogErrorHandler);
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
@@ -421,7 +417,7 @@ void OwncloudSetupWizard::replaceDefaultAccountWith(AccountPtr newAccount)
     // new Account
     AccountManager *mgr = AccountManager::instance();
     mgr->setAccount(newAccount);
-    newAccount->save();
+    mgr->save();
 }
 
 // Method executed when the user ends has finished the basic setup.

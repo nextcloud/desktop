@@ -17,6 +17,7 @@
 #include "wizard/owncloudwizard.h"
 
 #include "wizard/abstractcredswizardpage.h"
+#include <accountmanager.h>
 
 namespace OCC {
 

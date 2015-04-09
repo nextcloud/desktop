@@ -36,6 +36,7 @@ set(client_UI
 qt_wrap_ui(client_UI_SRCS ${client_UI})
 
 set(client_SRCS
+    accountmanager.cpp
     accountsettings.cpp
     application.cpp
     folder.cpp

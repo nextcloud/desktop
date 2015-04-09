@@ -39,24 +39,6 @@ typedef QSharedPointer<Account> AccountPtr;
 class QuotaInfo;
 class AccessManager;
 
-class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
-    Q_OBJECT
-public:
-    static AccountManager *instance();
-    ~AccountManager() {}
-
-    void setAccount(AccountPtr account);
-    AccountPtr account() { return _account; }
-
-Q_SIGNALS:
-    void accountAdded(AccountPtr account);
-    void accountRemoved(AccountPtr account);
-
-private:
-    AccountManager() {}
-    AccountPtr _account;
-    static AccountManager *_instance;
-};
 
 /* Reimplement this to handle SSL errors */
 class AbstractSslErrorHandler {
@@ -79,16 +61,6 @@ public:
 
     void setSharedThis(AccountPtr sharedThis);
     AccountPtr sharedFromThis();
-
-    /**
-     * Saves the account to a given settings file
-     */
-    void save();
-
-    /**
-     * Creates an account object from from a given settings file.
-     */
-    static AccountPtr restore();
 
     /**
      * @brief Checks the Account instance is different from \param other
@@ -191,6 +163,7 @@ private:
     QString _pemPrivateKey;  
     QString _davPath; // default "remote.php/webdav/";
     bool _wasMigrated;
+    friend class AccountManager;
 };
 
 }

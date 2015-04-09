@@ -27,6 +27,7 @@
 #include "theme.h"
 #include "configfile.h"
 #include "selectivesyncdialog.h"
+#include <accountmanager.h>
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 

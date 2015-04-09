@@ -13,6 +13,7 @@
 
 #include "accountstate.h"
 #include "quotainfo.h"
+#include "accountmanager.h"
 #include "account.h"
 #include "creds/abstractcredentials.h"
 

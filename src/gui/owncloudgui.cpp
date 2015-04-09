@@ -31,6 +31,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "openfilemanager.h"
+#include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>

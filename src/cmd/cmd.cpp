@@ -366,8 +366,6 @@ int main(int argc, char **argv) {
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
-    AccountManager::instance()->setAccount(account);
-
 restart_sync:
 
     CSYNC *_csync_ctx;

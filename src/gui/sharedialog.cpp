@@ -19,6 +19,7 @@
 #include "json.h"
 #include "folderman.h"
 #include "folder.h"
+#include "accountmanager.h"
 #include "theme.h"
 #include "syncresult.h"
 

@@ -34,6 +34,7 @@
 #include "sharedialog.h"
 
 #include "updater/updater.h"
+#include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 
 #include "config.h"
@@ -126,10 +127,8 @@ Application::Application(int &argc, char **argv) :
     // account manager.
     AccountStateManager::instance();
 
-    AccountPtr account = Account::restore();
-    if (account) {
-        account->setSslErrorHandler(new SslDialogErrorHandler);
-        AccountManager::instance()->setAccount(account);
+    if (AccountManager::instance()->restore()) {
+        AccountManager::instance()->account()->setSslErrorHandler(new SslDialogErrorHandler);
     }
 
     FolderMan::instance()->setSyncEnabled(false);
@@ -230,10 +229,7 @@ void Application::slotCleanup()
 {
     // explicitly close windows. This is somewhat of a hack to ensure
     // that saving the geometries happens ASAP during a OS shutdown
-    AccountPtr account = AccountManager::instance()->account();
-    if (account) {
-        account->save();
-    }
+    AccountManager::instance()->save();
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
     _gui->slotShutdown();

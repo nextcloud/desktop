@@ -26,6 +26,7 @@
 #include "accountstate.h"
 #include "quotainfo.h"
 #include "creds/abstractcredentials.h"
+#include "accountmanager.h"
 
 #include <math.h>
 
