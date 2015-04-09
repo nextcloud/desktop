@@ -131,6 +131,16 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         } else {
             return Theme::instance()->folderOfflineIcon();
         }
+    case FolderStatusDelegate::AddProgressSpace:
+        return !_progresses.value(index.row()).isNull();
+    case FolderStatusDelegate::SyncProgressItemString:
+        return _progresses.value(index.row())._progressString;
+    case FolderStatusDelegate::WarningCount:
+        return _progresses.value(index.row())._warningCount;
+    case FolderStatusDelegate::SyncProgressOverallPercent:
+        return _progresses.value(index.row())._overallPercent;
+    case FolderStatusDelegate::SyncProgressOverallString:
+        return _progresses.value(index.row())._overallSyncString;
     }
     return QVariant();
 }

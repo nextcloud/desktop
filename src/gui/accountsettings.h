@@ -19,14 +19,11 @@
 #include <QPointer>
 #include <QHash>
 #include <QTimer>
-#include <QStandardItem>
 
 #include "folder.h"
 #include "progressdispatcher.h"
 
-class QStandardItemModel;
 class QModelIndex;
-class QStandardItem;
 class QNetworkReply;
 class QListWidgetItem;
 class QLabel;
@@ -83,15 +80,12 @@ protected slots:
 
 private:
     QString shortenFilename( const QString& folder, const QString& file ) const;
-    void folderToModelItem(QStandardItem *, Folder * , bool accountConnected);
-    QStandardItem* itemForFolder(const QString& );
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
     QUrl   _OCUrl;
-    QHash<QStandardItem*, QTimer*> _hideProgressTimers;
     QStringList _generalErrors;
     bool _wasDisabledBefore;
     AccountState *_accountState;

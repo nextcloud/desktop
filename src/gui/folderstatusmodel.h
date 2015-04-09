@@ -48,7 +48,6 @@ public:
 
 
     struct SubFolderInfo {
-//        QWeakPointer<SubFolderInfo> parent;
         QString _name;
         QString _path;
         QVector<int> _pathIdx;
@@ -67,6 +66,17 @@ public:
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
     bool isDirty() { return _dirty; }
+
+    struct ProgressInfo {
+        bool isNull() const
+        { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
+        QString _progressString;
+        QString _overallSyncString;
+        int _warningCount = 0;
+        int _overallPercent = 0;
+    };
+    QVector<ProgressInfo> _progresses;
+
 
 public slots:
     void slotApplySelectiveSync();

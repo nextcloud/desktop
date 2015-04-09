@@ -232,70 +232,6 @@ void AccountSettings::setGeneralErrors( const QStringList& errors )
     }
 }
 
-void AccountSettings::folderToModelItem( QStandardItem *item, Folder *f, bool accountConnected )
-{
-    if( ! item || !f ) return;
-
-    item->setData( f->nativePath(),        FolderStatusDelegate::FolderPathRole );
-    item->setData( f->remotePath(),        FolderStatusDelegate::FolderSecondPathRole );
-    item->setData( f->alias(),             FolderStatusDelegate::FolderAliasRole );
-    item->setData( f->syncPaused(),        FolderStatusDelegate::FolderSyncPaused );
-    item->setData( accountConnected,       FolderStatusDelegate::FolderAccountConnected );
-    SyncResult res = f->syncResult();
-    SyncResult::Status status = res.status();
-
-    QStringList errorList = res.errorStrings();
-
-    Theme *theme = Theme::instance();
-    item->setData( theme->statusHeaderText( status ),  Qt::ToolTipRole );
-    if ( accountConnected ) {
-        if( f->syncPaused() ) {
-            item->setData( theme->folderDisabledIcon( ), FolderStatusDelegate::FolderStatusIconRole ); // size 48 before
-            _wasDisabledBefore = false;
-        } else {
-            if( status == SyncResult::SyncPrepare ) {
-                if( _wasDisabledBefore ) {
-                    // if the folder was disabled before, set the sync icon
-                    item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
-                }  // we keep the previous icon for the SyncPrepare state.
-            } else if( status == SyncResult::Undefined ) {
-                // startup, the sync was never done.
-                qDebug() << "XXX FIRST time sync, setting icon to sync running!";
-                item->setData( theme->syncStateIcon( SyncResult::SyncRunning), FolderStatusDelegate::FolderStatusIconRole );
-            } else {
-                // kepp the previous icon for the prepare phase.
-                if( status == SyncResult::Problem) {
-                    item->setData( theme->syncStateIcon( SyncResult::Success), FolderStatusDelegate::FolderStatusIconRole );
-                } else {
-                    item->setData( theme->syncStateIcon( status ), FolderStatusDelegate::FolderStatusIconRole );
-                }
-            }
-        }
-    } else {
-        item->setData( theme->folderOfflineIcon(), FolderStatusDelegate::FolderStatusIconRole);
-    }
-
-    item->setData( theme->statusHeaderText( status ), FolderStatusDelegate::FolderStatus );
-
-    if( errorList.isEmpty() ) {
-        if( (status == SyncResult::Error ||
-             status == SyncResult::SetupError ||
-             status == SyncResult::SyncAbortRequested )) {
-            errorList <<  theme->statusHeaderText(status);
-        }
-    }
-
-    item->setData( errorList, FolderStatusDelegate::FolderErrorMsg);
-
-    bool ongoing = false;
-    item->setData( QVariant(res.warnCount()), FolderStatusDelegate::WarningCount );
-    if( status == SyncResult::SyncRunning ) {
-        ongoing = true;
-    }
-    item->setData( ongoing, FolderStatusDelegate::SyncRunning);
-
-}
-
 void AccountSettings::slotRemoveCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
@@ -452,38 +388,19 @@ void AccountSettings::slotSyncCurrentFolderNow()
 
 void AccountSettings::slotUpdateFolderState( Folder *folder )
 {
-    QStandardItem *item = 0;
-    int row = 0;
-
     if( ! folder ) return;
-#if 0
-    item = _model->item( row );
 
-    while( item ) {
-        if( item->data( FolderStatusDelegate::FolderAliasRole ) == folder->alias() ) {
-            // its the item to update!
-            break;
-        }
-        item = _model->item( ++row );
-    }
-
-    if( item ) {
-        folderToModelItem( item, folder, _accountState->isConnectedOrMaintenance() );
-    } else {
-        // the dialog is not visible.
-    }
-#endif
+    auto folderList = FolderMan::instance()->map().values();
+    auto folderIndex = folderList.indexOf(folder);
+    if (folderIndex < 0) { return; }
+    emit _model->dataChanged(_model->index(folderIndex), _model->index(folderIndex),
+                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
 }
 
 void AccountSettings::slotOpenOC()
 {
   if( _OCUrl.isValid() )
     QDesktopServices::openUrl( _OCUrl );
-}
-
-QStandardItem* AccountSettings::itemForFolder(const QString& folder)
-{
-    return nullptr;
 }
 
 QString AccountSettings::shortenFilename( const QString& folder, const QString& file ) const
@@ -508,26 +425,35 @@ QString AccountSettings::shortenFilename( const QString& folder, const QString& 
 
 void AccountSettings::slotSetProgress(const QString& folder, const Progress::Info &progress )
 {
-#if 0
     if (!isVisible()) {
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
-    QStandardItem *item = itemForFolder( folder );
-    if( !item ) return;
 
-    // switch on extra space.
-    item->setData( QVariant(true), FolderStatusDelegate::AddProgressSpace );
+    Folder *f = FolderMan::instance()->folder(folder);
+    if( !f ) { return; }
+
+    auto folderList = FolderMan::instance()->map().values();
+    auto folderIndex = folderList.indexOf(f);
+    if (folderIndex < 0) { return; }
+
+    if (_model->_progresses.size() <= folderIndex) {
+        _model->_progresses.resize(folderIndex + 1);
+    }
+    FolderStatusModel::ProgressInfo *progressInfo = &_model->_progresses[folderIndex];
+
+    QVector<int> roles;
+    roles << FolderStatusDelegate::AddProgressSpace << FolderStatusDelegate::SyncProgressItemString
+        << FolderStatusDelegate::WarningCount;
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        item->setData( tr("Discovering '%1'").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
+        progressInfo->_progressString = tr("Discovering '%1'").arg(progress._currentDiscoveredFolder);
+        emit _model->dataChanged(_model->index(folderIndex), _model->index(folderIndex), roles);
         return;
     }
 
     if(!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
-        int warnCount = item->data(FolderStatusDelegate::WarningCount).toInt();
-        warnCount++;
-        item->setData( QVariant(warnCount), FolderStatusDelegate::WarningCount );
+        progressInfo->_warningCount++;
     }
 
     // find the single item to display:  This is going to be the bigger item, or the last completed
@@ -571,7 +497,7 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         //: Example text: "uploading foobar.png"
         fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
     }
-    item->setData( fileProgressString,FolderStatusDelegate::SyncProgressItemString);
+    progressInfo->_progressString = fileProgressString;
 
     // overall progress
     quint64 completedSize = progress.completedSize();
@@ -593,80 +519,55 @@ void AccountSettings::slotSetProgress(const QString& folder, const Progress::Inf
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
     }
 
-    item->setData( overallSyncString, FolderStatusDelegate::SyncProgressOverallString );
+    progressInfo->_overallSyncString =  overallSyncString;
 
     int overallPercent = 0;
     if( totalFileCount > 0 ) {
         // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
         overallPercent = qRound(double(completedSize + progress._completedFileCount)/double(totalSize + totalFileCount) * 100.0);
     }
-    overallPercent = qBound(0, overallPercent, 100);
-    item->setData( overallPercent, FolderStatusDelegate::SyncProgressOverallPercent);
-#endif
+    progressInfo->_overallPercent = qBound(0, overallPercent, 100);
+    emit _model->dataChanged(_model->index(folderIndex), _model->index(folderIndex), roles);
 }
 
 void AccountSettings::slotHideProgress()
 {
-#if 0
-    QTimer *send_timer = qobject_cast<QTimer*>(this->sender());
-    QHash<QStandardItem*, QTimer*>::const_iterator i = _hideProgressTimers.constBegin();
-    while (i != _hideProgressTimers.constEnd()) {
-        if( i.value() == send_timer ) {
-            QStandardItem *item = i.key();
+    auto folderIndex = sender()->property("owncloud_folderIndex").toInt();
+    if (folderIndex < 0) { return; }
 
-            /* Check if this item is still existing */
-            bool ok = false;
-            for( int r = 0; !ok && r < _model->rowCount(); r++) {
-                if( item == _model->item(r,0) ) {
-                    ok = true;
-                }
-            }
-
-            if( ok ) {
-                item->setData( false,     FolderStatusDelegate::AddProgressSpace );
-                item->setData( QString(), FolderStatusDelegate::SyncProgressOverallString );
-                item->setData( QString(), FolderStatusDelegate::SyncProgressItemString );
-                item->setData( 0,         FolderStatusDelegate::SyncProgressOverallPercent );
-            }
-            _hideProgressTimers.remove(item);
-            break;
-        }
-        ++i;
+    if (_model->_progresses.size() <= folderIndex) {
+        return;
     }
 
-    send_timer->deleteLater();
-#endif
+    _model->_progresses[folderIndex] = FolderStatusModel::ProgressInfo();
+    emit _model->dataChanged(_model->index(folderIndex), _model->index(folderIndex),
+                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
 }
 
 void AccountSettings::slotFolderSyncStateChange()
 {
-#if 0
     Folder* folder = qobject_cast<Folder *>(sender());
     if (!folder) return;
-
-    QStandardItem *item = itemForFolder( folder->alias() );
-    if( !item ) return;
+    auto folderList = FolderMan::instance()->map().values();
+    auto folderIndex = folderList.indexOf(folder);
+    if (folderIndex < 0) { return; }
 
     SyncResult::Status state = folder->syncResult().status();
     if (state == SyncResult::SyncPrepare)  {
-        item->setData( QVariant(0), FolderStatusDelegate::WarningCount );
+        if (_model->_progresses.size() > folderIndex) {
+            _model->_progresses[folderIndex] = FolderStatusModel::ProgressInfo();
+        }
     } else if (state == SyncResult::Success || state == SyncResult::Problem) {
         // start a timer to stop the progress display
         QTimer *timer;
-        if( _hideProgressTimers.contains(item) ) {
-            timer = _hideProgressTimers[item];
-            // there is already one timer running.
-        } else {
-            timer = new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
-            timer->setSingleShot(true);
-            _hideProgressTimers.insert(item, timer);
-        }
+        timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
+        connect(timer, SIGNAL(timeout()), timer, SLOT(deleteLater()));
+        timer->setSingleShot(true);
+        timer->setProperty("owncloud_folderIndex", folderIndex);
         timer->start(5000);
     }
-#endif
 }
-
 
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {
