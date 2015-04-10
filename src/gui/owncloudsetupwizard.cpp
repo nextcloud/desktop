@@ -241,7 +241,7 @@ void OwncloudSetupWizard::slotAuthError()
 
         // strip the expected path
         QString path = redirectUrl.path();
-        static QString expectedPath = "/remote.php/webdav/";
+        static QString expectedPath = "/" + _ocWizard->account()->davPath();
         if (path.endsWith(expectedPath)) {
             path.chop(expectedPath.size());
             redirectUrl.setPath(path);
