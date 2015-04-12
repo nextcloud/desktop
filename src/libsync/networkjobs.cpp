@@ -223,7 +223,10 @@ void AbstractNetworkJob::start()
     _durationTimer.start();
     _duration = 0;
 
-    qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
+    const QUrl url = account()->url();
+    const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
+
+    qDebug() << "!!!" << metaObject()->className() << "created for" << displayUrl << "+" << path();
 }
 
 void AbstractNetworkJob::slotTimeout()
