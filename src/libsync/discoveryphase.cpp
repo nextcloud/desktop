@@ -285,6 +285,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
 
 void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 {
+    if (!_ignoredFirst) {
+        // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
+        // which means somehow the server XML was bogus
+        emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        deleteLater();
+        return;
+    }
     emit etagConcatenation(_etagConcatenation);
     emit finishedWithResult(_results);
     deleteLater();
