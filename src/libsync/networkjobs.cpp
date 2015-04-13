@@ -400,6 +400,9 @@ static QString readContentsAsString(QXmlStreamReader &reader) {
     return result;
 }
 
+// TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
+// would allow us to be more asynchronous in processing while data is coming from the network,
+// not in all in one big blobb at the end.
 bool LsColJob::finished()
 {
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
@@ -479,13 +482,20 @@ bool LsColJob::finished()
                 }
             }
         }
-        emit directoryListingSubfolders(folders);
-        emit finishedWithoutError();
+
+        if (reader.hasError()) {
+            // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
+            qDebug() << "ERROR" << reader.errorString();
+            emit finishedWithError(reply());
+        } else {
+            emit directoryListingSubfolders(folders);
+            emit finishedWithoutError();
+        }
     } else if (httpCode == 207) {
         // wrong content type
         emit finishedWithError(reply());
     } else {
-        // wrong HTTP code
+        // wrong HTTP code or any other network error
         emit finishedWithError(reply());
     }
     return true;
