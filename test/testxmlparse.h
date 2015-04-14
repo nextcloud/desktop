@@ -197,6 +197,28 @@ private slots:
         QVERIFY(_subdirs.size() == 0);
     }
 
+    void testParserEmptyXmlNoDav() {
+        const QByteArray testXml = "<html><body>I am under construction</body></html>";
+
+        LsColXMLParser parser;
+
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
+
+        QHash <QString, qint64> sizes;
+        QVERIFY(false == parser.parse( testXml, &sizes )); // verify false
+
+        QVERIFY(!_success);
+        QVERIFY(sizes.size() == 0 ); // No quota info in the XML
+
+        QVERIFY(_items.size() == 0 ); // FIXME: We should change the parser to not emit during parsing but at the end
+        QVERIFY(_subdirs.size() == 0);
+    }
+
     void testParserEmptyXml() {
         const QByteArray testXml = "";
 

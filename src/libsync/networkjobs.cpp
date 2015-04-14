@@ -363,6 +363,7 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
     bool currentPropsHaveHttp200 = false;
     bool insidePropstat = false;
     bool insideProp = false;
+    bool insideMultiStatus = false;
 
     while (!reader.atEnd()) {
         QXmlStreamReader::TokenType type = reader.readNext();
@@ -383,6 +384,9 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
                 }
             } else if (name == QLatin1String("prop")) {
                 insideProp = true;
+                continue;
+            } else if (name == QLatin1String("multistatus")) {
+                insideMultiStatus = true;
                 continue;
             }
         }
@@ -428,7 +432,10 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
 
     if (reader.hasError()) {
         // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
-        qDebug() << "ERROR" << reader.errorString();
+        qDebug() << "ERROR" << reader.errorString() << xml;
+        return false;
+    } else if (!insideMultiStatus) {
+        qDebug() << "ERROR no WebDAV response?" << xml;
         return false;
     } else {
         emit directoryListingSubfolders(folders);
