@@ -108,7 +108,7 @@ private slots:
                  this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, qint64> sizes;
-        parser.parse( testXml, &sizes );
+        QVERIFY(parser.parse( testXml, &sizes ));
 
         QVERIFY(_success);
         QVERIFY(sizes.size() == 0 ); // No quota info in the XML
