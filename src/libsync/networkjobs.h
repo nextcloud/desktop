@@ -132,6 +132,21 @@ private slots:
 /**
  * @brief The LsColJob class
  */
+class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject {
+    Q_OBJECT
+public:
+    explicit LsColXMLParser();
+
+    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes);
+
+signals:
+    void directoryListingSubfolders(const QStringList &items);
+    void directoryListingIterated(const QString &name, const QMap<QString,QString> &properties);
+    void finishedWithError(QNetworkReply *reply);
+    void finishedWithoutError();
+
+};
+
 class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
