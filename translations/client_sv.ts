@@ -668,7 +668,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Välj Vad du vill Synka: Du har även möjlighet att avmarkera mappar på servern som du ej vill synkronisera.</translation>
     </message>
 </context>
 <context>
@@ -733,7 +733,7 @@ Detta kan bero på att konfigurationen för mappen ändrats, eller att alla file
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Visa kraschrapporteringsverktyg</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -1420,7 +1420,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation type="unfinished"/>
+        <translation>Fortsätt svartlista:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -1477,7 +1477,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
         <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Fel HTTP-kod returnerades av servern. Förväntade 204, men tog emot &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>

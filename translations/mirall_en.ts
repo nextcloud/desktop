@@ -341,7 +341,7 @@ Total time left %5</source>
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="411"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="420"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"></translation>
     </message>
