@@ -18,6 +18,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QMetaType>
+#include <QSharedPointer>
 
 #include <csync.h>
 
@@ -167,9 +168,12 @@ public:
     } log;
 };
 
+typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
+inline bool operator<(const SyncFileItemPtr& item1, const SyncFileItemPtr& item2) {
+    return *item1 < *item2;
+}
 
-
-typedef QVector<SyncFileItem> SyncFileItemVector;
+typedef QVector<SyncFileItemPtr> SyncFileItemVector;
 
 }
 

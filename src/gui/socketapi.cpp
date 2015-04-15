@@ -128,10 +128,10 @@ SocketApi::SocketApi(QObject* parent)
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem)),
-            SLOT(slotJobCompleted(QString,SyncFileItem)));
-    connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString,SyncFileItem)),
-            this, SLOT(slotSyncItemDiscovered(QString,SyncFileItem)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString, const SyncFileItem &)),
+            SLOT(slotJobCompleted(QString, const SyncFileItem &)));
+    connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString, const SyncFileItem &)),
+            this, SLOT(slotSyncItemDiscovered(QString, const SyncFileItem &)));
 }
 
 SocketApi::~SocketApi()

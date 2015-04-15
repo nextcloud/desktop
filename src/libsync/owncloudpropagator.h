@@ -125,11 +125,11 @@ protected:
      * It is displayed in the activity view.
      */
     QString restoreJobMsg() const {
-        return _item._isRestoration ? _item._errorString : QString();
+        return _item->_isRestoration ? _item->_errorString : QString();
     }
     void setRestoreJobMsg( const QString& msg = QString() ) {
-        _item._isRestoration = true;
-        _item._errorString = msg;
+        _item->_isRestoration = true;
+        _item->_errorString = msg;
     }
 
 protected slots:
@@ -139,7 +139,7 @@ private:
     QScopedPointer<PropagateItemJob> _restoreJob;
 
 public:
-    PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItem &item)
+    PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator), _item(item) {}
 
     bool scheduleNextJob() Q_DECL_OVERRIDE {
@@ -151,7 +151,7 @@ public:
         return true;
     }
 
-    SyncFileItem  _item;
+    SyncFileItemPtr  _item;
 
 public slots:
     virtual void start() = 0;
@@ -170,13 +170,13 @@ public:
     // all the sub files or sub directories.
     QVector<PropagatorJob *> _subJobs;
 
-    SyncFileItem _item;
+    SyncFileItemPtr _item;
 
     int _current; // index of the current running job
     int _runningNow; // number of subJob running now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
-    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItem &item = SyncFileItem())
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
         , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus)
     { }
@@ -199,7 +199,7 @@ public:
     }
 
     void increaseAffectedCount() {
-        _firstJob->_item._affectedItems++;
+        _firstJob->_item->_affectedItems++;
     }
 
     void finalize();
@@ -208,8 +208,8 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-            connect(next, SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-            connect(next, SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
+            connect(next, SIGNAL(completed(const SyncFileItem &)), this, SIGNAL(completed(const SyncFileItem &)));
+            connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
             _runningNow++;
         }
@@ -224,18 +224,18 @@ private slots:
 class PropagateIgnoreJob : public PropagateItemJob {
     Q_OBJECT
 public:
-    PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE {
-        SyncFileItem::Status status = _item._status;
-        done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item._errorString);
+        SyncFileItem::Status status = _item->_status;
+        done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item->_errorString);
     }
 };
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
 
-    PropagateItemJob *createJob(const SyncFileItem& item);
+    PropagateItemJob *createJob(const SyncFileItemPtr& item);
     QScopedPointer<PropagateDirectory> _rootJob;
     bool useLegacyJobs();
 

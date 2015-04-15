@@ -337,11 +337,11 @@ void Folder::bubbleUpSyncResult()
     int renamedItems = 0;
     int errorItems = 0;
 
-    SyncFileItem firstItemNew;
-    SyncFileItem firstItemDeleted;
-    SyncFileItem firstItemUpdated;
-    SyncFileItem firstItemRenamed;
-    SyncFileItem firstItemError;
+    SyncFileItemPtr firstItemNew;
+    SyncFileItemPtr firstItemDeleted;
+    SyncFileItemPtr firstItemUpdated;
+    SyncFileItemPtr firstItemRenamed;
+    SyncFileItemPtr firstItemError;
 
     SyncRunFileLog syncFileLog;
 
@@ -350,52 +350,52 @@ void Folder::bubbleUpSyncResult()
     QElapsedTimer timer;
     timer.start();
 
-    foreach (const SyncFileItem &item, _syncResult.syncFileItemVector() ) {
+    foreach (const SyncFileItemPtr &item, _syncResult.syncFileItemVector() ) {
         // Log the item
-        syncFileLog.logItem( item );
+        syncFileLog.logItem( *item );
 
         // and process the item to the gui
-        if( item._status == SyncFileItem::FatalError || item._status == SyncFileItem::NormalError ) {
-            slotSyncError( tr("%1: %2").arg(item._file, item._errorString) );
+        if( item->_status == SyncFileItem::FatalError || item->_status == SyncFileItem::NormalError ) {
+            slotSyncError( tr("%1: %2").arg(item->_file, item->_errorString) );
             errorItems++;
-            if (firstItemError.isEmpty()) {
+            if (!firstItemError) {
                 firstItemError = item;
             }
-        } else if( item._status == SyncFileItem::FileIgnored ) {
+        } else if( item->_status == SyncFileItem::FileIgnored ) {
             // ignored files don't show up in notifications
             continue;
         } else {
             // add new directories or remove gone away dirs to the watcher
-            if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_NEW ) {
-                FolderMan::instance()->addMonitorPath( alias(), path()+item._file );
+            if (item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NEW ) {
+                FolderMan::instance()->addMonitorPath( alias(), path()+item->_file );
             }
-            if (item._isDirectory && item._instruction == CSYNC_INSTRUCTION_REMOVE ) {
-                FolderMan::instance()->removeMonitorPath( alias(), path()+item._file );
+            if (item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_REMOVE ) {
+                FolderMan::instance()->removeMonitorPath( alias(), path()+item->_file );
             }
 
-            if (!item.hasErrorStatus() && item._direction == SyncFileItem::Down) {
-                switch (item._instruction) {
+            if (!item->hasErrorStatus() && item->_direction == SyncFileItem::Down) {
+                switch (item->_instruction) {
                 case CSYNC_INSTRUCTION_NEW:
                     newItems++;
-                    if (firstItemNew.isEmpty())
+                    if (!firstItemNew)
                         firstItemNew = item;
                     break;
                 case CSYNC_INSTRUCTION_REMOVE:
                     removedItems++;
-                    if (firstItemDeleted.isEmpty())
+                    if (!firstItemDeleted)
                         firstItemDeleted = item;
                     break;
                 case CSYNC_INSTRUCTION_CONFLICT:
                 case CSYNC_INSTRUCTION_SYNC:
                     updatedItems++;
-                    if (firstItemUpdated.isEmpty())
+                    if (!firstItemUpdated)
                         firstItemUpdated = item;
                     break;
                 case CSYNC_INSTRUCTION_ERROR:
                     qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
                     break;
                 case CSYNC_INSTRUCTION_RENAME:
-                    if (firstItemRenamed.isEmpty()) {
+                    if (!firstItemRenamed) {
                         firstItemRenamed = item;
                     }
                     renamedItems++;
@@ -404,8 +404,8 @@ void Folder::bubbleUpSyncResult()
                     // nothing.
                     break;
                 }
-            } else if( item._direction == SyncFileItem::None ) { // ignored files counting.
-                if( item._instruction == CSYNC_INSTRUCTION_IGNORE ) {
+            } else if( item->_direction == SyncFileItem::None ) { // ignored files counting.
+                if( item->_instruction == CSYNC_INSTRUCTION_IGNORE ) {
                     ignoredItems++;
                 }
             }
@@ -416,28 +416,28 @@ void Folder::bubbleUpSyncResult()
     qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
 
-    if( !firstItemNew.isEmpty() ) {
-        createGuiLog( firstItemNew._file,     SyncFileStatus::STATUS_NEW, newItems );
+    if( firstItemNew ) {
+        createGuiLog( firstItemNew->_file,     SyncFileStatus::STATUS_NEW, newItems );
     }
-    if( !firstItemDeleted.isEmpty() ) {
-        createGuiLog( firstItemDeleted._file, SyncFileStatus::STATUS_REMOVE, removedItems );
+    if( firstItemDeleted ) {
+        createGuiLog( firstItemDeleted->_file, SyncFileStatus::STATUS_REMOVE, removedItems );
     }
-    if( ! firstItemUpdated.isEmpty() ) {
-        createGuiLog( firstItemUpdated._file, SyncFileStatus::STATUS_UPDATED, updatedItems );
+    if( firstItemUpdated ) {
+        createGuiLog( firstItemUpdated->_file, SyncFileStatus::STATUS_UPDATED, updatedItems );
     }
 
-    if( !firstItemRenamed.isEmpty() ) {
+    if( firstItemRenamed ) {
         SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
         // if the path changes it's rather a move
-        QDir renTarget = QFileInfo(firstItemRenamed._renameTarget).dir();
-        QDir renSource = QFileInfo(firstItemRenamed._file).dir();
+        QDir renTarget = QFileInfo(firstItemRenamed->_renameTarget).dir();
+        QDir renSource = QFileInfo(firstItemRenamed->_file).dir();
         if(renTarget != renSource) {
             status.set(SyncFileStatus::STATUS_MOVE);
         }
-        createGuiLog( firstItemRenamed._file, status, renamedItems, firstItemRenamed._renameTarget );
+        createGuiLog( firstItemRenamed->_file, status, renamedItems, firstItemRenamed->_renameTarget );
     }
 
-    createGuiLog( firstItemError._file,   SyncFileStatus::STATUS_ERROR, errorItems );
+    createGuiLog( firstItemError->_file,   SyncFileStatus::STATUS_ERROR, errorItems );
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
@@ -578,9 +578,9 @@ QString Folder::configFile()
 }
 
 static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
-    Q_FOREACH(const SyncFileItem &item, items) {
-        if (item.hasErrorStatus()) {
-            set->insert(item._file);
+    Q_FOREACH(const SyncFileItemPtr &item, items) {
+        if (item->hasErrorStatus()) {
+            set->insert(item->_file);
         }
     }
 }
@@ -805,8 +805,8 @@ void Folder::startSync(const QStringList &pathList)
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
     connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(Progress::Info)), this, SLOT(slotTransmissionProgress(Progress::Info)));
-    connect(_engine.data(), SIGNAL(jobCompleted(SyncFileItem)), this, SLOT(slotJobCompleted(SyncFileItem)));
-    connect(_engine.data(), SIGNAL(syncItemDiscovered(SyncFileItem)), this, SLOT(slotSyncItemDiscovered(SyncFileItem)));
+    connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
+    connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
 
     setDirtyNetworkLimits();
     _engine->setSelectiveSyncBlackList(selectiveSyncBlackList());

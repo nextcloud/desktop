@@ -25,10 +25,10 @@ void PropagateRemoteMkdir::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item._file;
+    qDebug() << Q_FUNC_INFO << _item->_file;
 
     _job = new MkColJob(_propagator->account(),
-                        _propagator->_remoteFolder + _item._file,
+                        _propagator->_remoteFolder + _item->_file,
                         this);
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
     _propagator->_activeJobs++;
@@ -52,32 +52,32 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->reply()->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
-    _item._httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    if (_item._httpErrorCode == 405) {
+    if (_item->_httpErrorCode == 405) {
         // This happens when the directory already exist. Nothing to do.
     } else if (err != QNetworkReply::NoError) {
-        SyncFileItem::Status status = classifyError(err, _item._httpErrorCode);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode);
         auto errorString = _job->reply()->errorString();
         if (_job->reply()->hasRawHeader("OC-ErrorString")) {
             errorString = _job->reply()->rawHeader("OC-ErrorString");
         }
         done(status, errorString);
         return;
-    } else if (_item._httpErrorCode != 201) {
+    } else if (_item->_httpErrorCode != 201) {
         // Normaly we expect "201 Created"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
         done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")
-            .arg(_item._httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
+            .arg(_item->_httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
         return;
     }
 
-    _item._requestDuration = _job->duration();
-    _item._responseTimeStamp = _job->responseTimestamp();
-    _item._fileId = _job->reply()->rawHeader("OC-FileId");
+    _item->_requestDuration = _job->duration();
+    _item->_responseTimeStamp = _job->responseTimestamp();
+    _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
-    if (_item._fileId.isEmpty()) {
+    if (_item->_fileId.isEmpty()) {
         // Owncloud 7.0.0 and before did not have a header with the file id.
         // (https://github.com/owncloud/core/issues/9000)
         // So we must get the file id using a PROPFIND
@@ -99,10 +99,10 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 {
     _propagator->_activeJobs--;
     if (result.contains("getetag")) {
-        _item._etag = result["getetag"].toByteArray();
+        _item->_etag = result["getetag"].toByteArray();
     }
     if (result.contains("id")) {
-        _item._fileId = result["id"].toByteArray();
+        _item->_fileId = result["id"].toByteArray();
     }
     success();
 }
@@ -117,7 +117,7 @@ void PropagateRemoteMkdir::propfindError()
 void PropagateRemoteMkdir::success()
 {
     // save the file id already so we can detect rename or remove
-    SyncJournalFileRecord record(_item, _propagator->_localDir + _item.destination());
+    SyncJournalFileRecord record(*_item, _propagator->_localDir + _item->destination());
     _propagator->_journal->setFileRecord(record);
 
     done(SyncFileItem::Success);

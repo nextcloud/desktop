@@ -280,25 +280,25 @@ void PropagateDownloadFileQNAM::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item._file << _propagator->_activeJobs;
+    qDebug() << Q_FUNC_INFO << _item->_file << _propagator->_activeJobs;
 
     // do a klaas' case clash check.
-    if( _propagator->localFileNameClash(_item._file) ) {
+    if( _propagator->localFileNameClash(_item->_file) ) {
         done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
-              .arg(QDir::toNativeSeparators(_item._file)) );
+              .arg(QDir::toNativeSeparators(_item->_file)) );
         return;
     }
 
-    emit progress(_item, 0);
+    emit progress(*_item, 0);
 
     QString tmpFileName;
     QByteArray expectedEtagForResume;
-    const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
+    const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item->_file);
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
-        if (progressInfo._etag != _item._etag) {
+        if (progressInfo._etag != _item->_etag) {
             QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
-            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+            _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
             expectedEtagForResume = progressInfo._etag;
@@ -307,7 +307,7 @@ void PropagateDownloadFileQNAM::start()
     }
 
     if (tmpFileName.isEmpty()) {
-        tmpFileName = _item._file;
+        tmpFileName = _item->_file;
         //add a dot at the begining of the filename to hide the file.
         int slashPos = tmpFileName.lastIndexOf('/');
         tmpFileName.insert(slashPos+1, '.');
@@ -325,10 +325,10 @@ void PropagateDownloadFileQNAM::start()
 
     {
         SyncJournalDb::DownloadInfo pi;
-        pi._etag = _item._etag;
+        pi._etag = _item->_etag;
         pi._tmpfile = tmpFileName;
         pi._valid = true;
-        _propagator->_journal->setDownloadInfo(_item._file, pi);
+        _propagator->_journal->setDownloadInfo(_item->_file, pi);
         _propagator->_journal->commit("download file start");
     }
 
@@ -337,27 +337,27 @@ void PropagateDownloadFileQNAM::start()
 
     quint64 startSize = _tmpFile.size();
     if (startSize > 0) {
-        if (startSize == _item._size) {
+        if (startSize == _item->_size) {
             qDebug() << "File is already complete, no need to download";
             downloadFinished();
             return;
         }
     }
 
-    if (_item._directDownloadUrl.isEmpty()) {
+    if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(_propagator->account(),
-                            _propagator->_remoteFolder + _item._file,
+                            _propagator->_remoteFolder + _item->_file,
                             &_tmpFile, headers, expectedEtagForResume, startSize);
     } else {
         // We were provided a direct URL, use that one
-        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item._file << _item._directDownloadUrl;
+        qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item->_file << _item->_directDownloadUrl;
 
-        if (!_item._directDownloadCookies.isEmpty()) {
-            headers["Cookie"] = _item._directDownloadCookies.toUtf8();
+        if (!_item->_directDownloadCookies.isEmpty()) {
+            headers["Cookie"] = _item->_directDownloadCookies.toUtf8();
         }
 
-        QUrl url = QUrl::fromUserInput(_item._directDownloadUrl);
+        QUrl url = QUrl::fromUserInput(_item->_directDownloadUrl);
         _job = new GETFileJob(_propagator->account(),
                               url,
                               &_tmpFile, headers, expectedEtagForResume, startSize);
@@ -383,11 +383,11 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         // If we sent a 'Range' header and get 416 back, we want to retry
         // without the header.
-        bool badRangeHeader = job->resumeStart() > 0 && _item._httpErrorCode == 416;
+        bool badRangeHeader = job->resumeStart() > 0 && _item->_httpErrorCode == 416;
         if (badRangeHeader) {
             qDebug() << Q_FUNC_INFO << "server replied 416 to our range request, trying again without";
             _propagator->_anotherSyncNeeded = true;
@@ -398,13 +398,13 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         if (_tmpFile.size() == 0 || badRangeHeader) {
             _tmpFile.close();
             _tmpFile.remove();
-            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+            _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         }
 
-        if(!_item._directDownloadUrl.isEmpty() && err != QNetworkReply::OperationCanceledError) {
+        if(!_item->_directDownloadUrl.isEmpty() && err != QNetworkReply::OperationCanceledError) {
             // If this was with a direct download, retry without direct download
-            qWarning() << "Direct download of" << _item._directDownloadUrl << "failed. Retrying through owncloud.";
-            _item._directDownloadUrl.clear();
+            qWarning() << "Direct download of" << _item->_directDownloadUrl << "failed. Retrying through owncloud.";
+            _item->_directDownloadUrl.clear();
             start();
             return;
         }
@@ -422,7 +422,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
 
         if (status == SyncFileItem::NoStatus) {
-            status = classifyError(err, _item._httpErrorCode);
+            status = classifyError(err, _item->_httpErrorCode);
         }
         if (badRangeHeader) {
             // Can't do this in classifyError() because 416 without a
@@ -436,15 +436,15 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     if (!job->etag().isEmpty()) {
         // The etag will be empty if we used a direct download URL.
         // (If it was really empty by the server, the GETFileJob will have errored
-        _item._etag = parseEtag(job->etag());
+        _item->_etag = parseEtag(job->etag());
     }
     if (job->lastModified()) {
         // It is possible that the file was modified on the server since we did the discovery phase
         // so make sure we have the up-to-date time
-        _item._modtime = job->lastModified();
+        _item->_modtime = job->lastModified();
     }
-    _item._requestDuration = job->duration();
-    _item._responseTimeStamp = job->responseTimestamp();
+    _item->_requestDuration = job->duration();
+    _item->_responseTimeStamp = job->responseTimestamp();
 
     _tmpFile.close();
     _tmpFile.flush();
@@ -490,23 +490,23 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 void PropagateDownloadFileQNAM::downloadFinished()
 {
 
-    QString fn = _propagator->getFilePath(_item._file);
+    QString fn = _propagator->getFilePath(_item->_file);
 
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
-    if (_propagator->localFileNameClash(_item._file)) {
+    if (_propagator->localFileNameClash(_item->_file)) {
         done( SyncFileItem::NormalError, tr("File %1 cannot be saved because of a local file name clash!")
-              .arg(QDir::toNativeSeparators(_item._file)) );
+              .arg(QDir::toNativeSeparators(_item->_file)) );
         return;
     }
 
     // In case of conflict, make a backup of the old file
     // Ignore conflicts where both files are binary equal
-    bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
+    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
+        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::SoftError, renameError);
@@ -519,10 +519,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
         _tmpFile.setPermissions(existingFile.permissions());
     }
 
-    FileSystem::setModTime(_tmpFile.fileName(), _item._modtime);
+    FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file system such as FAT have a less than a second
     // Accuracy, and we really need the time from the file system. (#3103)
-    _item._modtime = FileSystem::getModTime(_tmpFile.fileName());
+    _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
 
     QString error;
     _propagator->addTouchedFile(fn);
@@ -547,10 +547,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
-    _item._size = FileSystem::getSize(fn);
+    _item->_size = FileSystem::getSize(fn);
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
-    _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn));
+    _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }
@@ -558,7 +558,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
 void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
 {
     if (!_job) return;
-    emit progress(_item, received + _job->resumeStart());
+    emit progress(*_item, received + _job->resumeStart());
 }
 
 

@@ -79,15 +79,15 @@ static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
 {
     _state = Finished;
-    if (_item._isRestoration) {
+    if (_item->_isRestoration) {
         if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
             status = SyncFileItem::Restoration;
         } else {
-            _item._errorString += tr("; Restoration Failed: %1").arg(errorString);
+            _item->_errorString += tr("; Restoration Failed: %1").arg(errorString);
         }
     } else {
-        if( _item._errorString.isEmpty() ) {
-            _item._errorString = errorString;
+        if( _item->_errorString.isEmpty() ) {
+            _item->_errorString = errorString;
         }
     }
 
@@ -103,20 +103,20 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // do not blacklist in case of soft error or fatal error.
         break;
     case SyncFileItem::NormalError:
-        if (blacklist(_propagator->_journal, _item) && _item._hasBlacklistEntry) {
+        if (blacklist(_propagator->_journal, *_item) && _item->_hasBlacklistEntry) {
             // do not error if the item was, and continues to be, blacklisted
             status = SyncFileItem::FileIgnored;
-            _item._errorString.prepend(tr("Continue blacklisting:") + " ");
+            _item->_errorString.prepend(tr("Continue blacklisting:") + " ");
         }
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
-        if( _item._hasBlacklistEntry ) {
+        if( _item->_hasBlacklistEntry ) {
             // wipe blacklist entry.
-            _propagator->_journal->wipeErrorBlacklistEntry(_item._file);
+            _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
             // remove a blacklist entry in case the file was moved.
-            if( _item._originalFile != _item._file ) {
-                _propagator->_journal->wipeErrorBlacklistEntry(_item._originalFile);
+            if( _item->_originalFile != _item->_file ) {
+                _propagator->_journal->wipeErrorBlacklistEntry(_item->_originalFile);
             }
         }
         break;
@@ -127,9 +127,9 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         break;
     }
 
-    _item._status = status;
+    _item->_status = status;
 
-    emit completed(_item);
+    emit completed(*_item);
     emit finished(status);
 }
 
@@ -143,24 +143,24 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
 {
     PropagateItemJob *newJob = NULL;
 
-    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item._file )) {
-        if( !_item._isDirectory ) {
-            SyncFileItem downloadItem(_item);
-            if (downloadItem._instruction == CSYNC_INSTRUCTION_NEW) {
+    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item->_file )) {
+        if( !_item->_isDirectory ) {
+            SyncFileItemPtr downloadItem(new SyncFileItem(*_item));
+            if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW) {
                 // don't try to recover pushing new files
                 return false;
-            } else if (downloadItem._instruction == CSYNC_INSTRUCTION_SYNC) {
+            } else if (downloadItem->_instruction == CSYNC_INSTRUCTION_SYNC) {
                 // we modified the file locally, jsut create a conflict then
-                downloadItem._instruction = CSYNC_INSTRUCTION_CONFLICT;
+                downloadItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
 
                 // HACK to avoid continuation: See task #1448:  We do not know the _modtime from the
                 //  server, at this point, so just set the current one. (rather than the one locally)
-                downloadItem._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+                downloadItem->_modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
             } else {
                 // the file was removed or renamed, just recover the old one
-                downloadItem._instruction = CSYNC_INSTRUCTION_SYNC;
+                downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
-            downloadItem._direction = SyncFileItem::Down;
+            downloadItem->_direction = SyncFileItem::Down;
 #ifdef USE_NEON
             newJob = new PropagateDownloadFileLegacy(_propagator, downloadItem);
 #else
@@ -169,20 +169,20 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
-            SyncFileItem mkdirItem(_item);
-            mkdirItem._instruction = CSYNC_INSTRUCTION_SYNC;
-            mkdirItem._direction = SyncFileItem::Down;
+            SyncFileItemPtr mkdirItem(new SyncFileItem(*_item));
+            mkdirItem->_instruction = CSYNC_INSTRUCTION_SYNC;
+            mkdirItem->_direction = SyncFileItem::Down;
             newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
-            _propagator->_journal->avoidRenamesOnNextSync(_item._file);
+            _propagator->_journal->avoidRenamesOnNextSync(_item->_file);
             _propagator->_anotherSyncNeeded = true;
         }
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(completed(SyncFileItem)),
-                    this, SLOT(slotRestoreJobCompleted(SyncFileItem)));
+            connect(_restoreJob.data(), SIGNAL(completed(const SyncFileItemPtr &)),
+                    this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &)));
             QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
@@ -208,25 +208,25 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
 
 // ================================================================================
 
-PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
-    switch(item._instruction) {
+PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
+    switch(item->_instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
-            if (item._direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
+            if (item->_direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
             else return new PropagateRemoteDelete(this, item);
         case CSYNC_INSTRUCTION_NEW:
-            if (item._isDirectory) {
-                if (item._direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
+            if (item->_isDirectory) {
+                if (item->_direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
                 else return new PropagateRemoteMkdir(this, item);
             }   //fall trough
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
-            if (item._isDirectory) {
+            if (item->_isDirectory) {
                 // Should we set the mtime?
                 return 0;
             }
 #ifdef USE_NEON
             if (useLegacyJobs()) {
-                if (item._direction != SyncFileItem::Up) {
+                if (item->_direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileLegacy(this, item);
                 } else {
                     return new PropagateUploadFileLegacy(this, item);
@@ -234,14 +234,14 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItem& item) {
             } else
 #endif
             {
-                if (item._direction != SyncFileItem::Up) {
+                if (item->_direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileQNAM(this, item);
                 } else {
                     return new PropagateUploadFileQNAM(this, item);
                 }
             }
         case CSYNC_INSTRUCTION_RENAME:
-            if (item._direction == SyncFileItem::Up) {
+            if (item->_direction == SyncFileItem::Up) {
                 return new PropagateRemoteMove(this, item);
             } else {
                 return new PropagateLocalRename(this, item);
@@ -269,13 +269,13 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
     directories.push(qMakePair(QString(), _rootJob.data()));
     QVector<PropagatorJob*> directoriesToRemove;
     QString removedDirectory;
-    foreach(const SyncFileItem &item, items) {
+    foreach(const SyncFileItemPtr &item, items) {
 
-        if (!removedDirectory.isEmpty() && item._file.startsWith(removedDirectory)) {
+        if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
             PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.last());
 
-            if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 //already taken care of.  (by the removal of the parent directory)
 
                 // increase the number of subjobs that would be there.
@@ -283,7 +283,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item._instruction == CSYNC_INSTRUCTION_NEW && item._isDirectory) {
+            } else if (item->_instruction == CSYNC_INSTRUCTION_NEW && item->_isDirectory) {
                 // create a new directory within a deleted directory? That can happen if the directory
                 // etag were not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
@@ -291,39 +291,39 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item._instruction == CSYNC_INSTRUCTION_IGNORE) {
+            } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
                 continue;
             }
 
             qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
-                       << item._file << item._instruction;
+                       << item->_file << item->_instruction;
         }
 
-        while (!item.destination().startsWith(directories.top().first)) {
+        while (!item->destination().startsWith(directories.top().first)) {
             directories.pop();
         }
 
-        if (item._isDirectory) {
+        if (item->_isDirectory) {
             PropagateDirectory *dir = new PropagateDirectory(this, item);
             dir->_firstJob.reset(createJob(item));
-            if (item._instruction == CSYNC_INSTRUCTION_REMOVE) {
+            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 //We do the removal of directories at the end, because there might be moves from
                 // this directories that will happen later.
                 directoriesToRemove.append(dir);
-                removedDirectory = item._file + "/";
+                removedDirectory = item->_file + "/";
 
                 // We should not update the etag of parent directories of the removed directory
                 // since it would be done before the actual remove (issue #1845)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
                 for (int i = 0; i < directories.size(); ++i) {
-                    directories[i].second->_item._should_update_etag = false;
+                    directories[i].second->_item->_should_update_etag = false;
                 }
             } else {
                 PropagateDirectory* currentDirJob = directories.top().second;
                 currentDirJob->append(dir);
             }
-            directories.push(qMakePair(item.destination() + "/" , dir));
+            directories.push(qMakePair(item->destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
             directories.top().second->append(current);
         }
@@ -333,8 +333,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->append(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(completed(SyncFileItem)), this, SIGNAL(completed(SyncFileItem)));
-    connect(_rootJob.data(), SIGNAL(progress(SyncFileItem,quint64)), this, SIGNAL(progress(SyncFileItem,quint64)));
+    connect(_rootJob.data(), SIGNAL(completed(const SyncFileItem &)), this, SIGNAL(completed(const SyncFileItem &)));
+    connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished()));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
 
@@ -616,19 +616,19 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 
 void PropagateDirectory::finalize()
 {
-    if (!_item.isEmpty() && _hasError == SyncFileItem::NoStatus) {
-        if( !_item._renameTarget.isEmpty() ) {
-            _item._file = _item._renameTarget;
+    if (!_item->isEmpty() && _hasError == SyncFileItem::NoStatus) {
+        if( !_item->_renameTarget.isEmpty() ) {
+            _item->_file = _item->_renameTarget;
         }
 
-        if (_item._should_update_etag && _item._instruction != CSYNC_INSTRUCTION_REMOVE) {
+        if (_item->_should_update_etag && _item->_instruction != CSYNC_INSTRUCTION_REMOVE) {
             if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
                 // special case from MKDIR, get the fileId from the job there
-                if (_item._fileId.isEmpty() && !mkdir->_item._fileId.isEmpty()) {
-                    _item._fileId = mkdir->_item._fileId;
+                if (_item->_fileId.isEmpty() && !mkdir->_item->_fileId.isEmpty()) {
+                    _item->_fileId = mkdir->_item->_fileId;
                 }
             }
-            SyncJournalFileRecord record(_item,  _propagator->_localDir + _item._file);
+            SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
             _propagator->_journal->setFileRecord(record);
         }
     }
@@ -649,9 +649,9 @@ void CleanupPollsJob::start()
 
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
-    SyncFileItem item;
-    item._file = info._file;
-    item._modtime = info._modtime;
+    SyncFileItemPtr item(new SyncFileItem);
+    item->_file = info._file;
+    item->_modtime = info._modtime;
     PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
     job->start();
@@ -661,13 +661,13 @@ void CleanupPollsJob::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
-    if (job->_item._status == SyncFileItem::FatalError) {
-        emit aborted(job->_item._errorString);
+    if (job->_item->_status == SyncFileItem::FatalError) {
+        emit aborted(job->_item->_errorString);
         return;
-    } else if (job->_item._status != SyncFileItem::Success) {
-        qDebug() << "There was an error with file " << job->_item._file << job->_item._errorString;
+    } else if (job->_item->_status != SyncFileItem::Success) {
+        qDebug() << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        _journal->setFileRecord(SyncJournalFileRecord(job->_item, _localPath + job->_item._file));
+        _journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file));
     }
     // Continue with the next entry, or finish
     start();

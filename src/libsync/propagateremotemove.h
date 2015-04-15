@@ -39,7 +39,7 @@ class PropagateRemoteMove : public PropagateItemJob {
     Q_OBJECT
     QPointer<MoveJob> _job;
 public:
-    PropagateRemoteMove (OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateRemoteMove (OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;

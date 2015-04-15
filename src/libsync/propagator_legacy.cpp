@@ -186,7 +186,7 @@ void PropagateUploadFileLegacy::start()
             _item._modtime = trans->oc_header_modtime;
 
         }
-        emit progress(_item, 0);
+        emit progress(*_item, 0);
 
         if (progressInfo._valid) {
             if (Utility::qDateTimeToTime_t(progressInfo._modtime) == _item._modtime) {
@@ -267,7 +267,7 @@ void PropagateUploadFileLegacy::start()
                 return;
         }
 
-        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
+        _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item._file)));
         // Remove from the progress database:
         _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
@@ -569,7 +569,7 @@ void PropagateDownloadFileLegacy::start()
         return;
     }
 
-    emit progress(_item, 0);
+    emit progress(*_item, 0);
 
     QString tmpFileName;
     const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
@@ -721,7 +721,7 @@ void PropagateDownloadFileLegacy::start()
 
     FileSystem::setModTime(fn, _item._modtime);
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn));
     _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
