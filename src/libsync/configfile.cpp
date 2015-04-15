@@ -40,7 +40,7 @@
 
 namespace OCC {
 
-static const char caCertsKeyC[] = "CaCertificates";
+//static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char monoIconsC[] = "monoIcons";
@@ -315,20 +315,6 @@ bool ConfigFile::dataExists(const QString& group, const QString& key) const
 
     settings.beginGroup(con);
     return settings.contains(key);
-}
-
-QByteArray ConfigFile::caCerts( )
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value( QLatin1String(caCertsKeyC) ).toByteArray();
-}
-
-void ConfigFile::setCaCerts( const QByteArray & certs )
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-
-    settings.setValue( QLatin1String(caCertsKeyC), certs );
-    settings.sync();
 }
 
 int ConfigFile::remotePollInterval( const QString& connection ) const
