@@ -22,6 +22,7 @@ trans.pt_BR = client_pt_BR.ts
 trans.ru = client_ru.ts
 trans.sl = client_sl.ts
 trans.sv = client_sv.ts
+trans.sr = client_sr.ts
 trans.tr = client_tr.ts
 trans.uk = client_uk.ts
 trans.zh_TW = client_zh_TW.ts
