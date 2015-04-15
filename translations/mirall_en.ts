@@ -1690,22 +1690,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="337"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="360"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="350"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="373"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="351"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="374"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="357"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
         <source>Choose What to Sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1713,28 +1713,28 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncTreeView</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="36"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="59"/>
         <source>Loading ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="47"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="70"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="48"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="144"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="191"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="193"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
         <translation type="unfinished"></translation>
     </message>
