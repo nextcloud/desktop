@@ -999,8 +999,8 @@ void SyncEngine::checkForPermission()
                     it->_direction = SyncFileItem::Down;
                     it->_isRestoration = true;
                     // take the things to write to the db from the "other" node (i.e: info from server)
-                    // ^^ FIXME This might not be needed anymore since we merge the info in treewalkFile
                     it->_modtime = it->log._other_modtime;
+                    it->_size = it->log._other_size;
                     it->_fileId = it->log._other_fileId;
                     it->_etag = it->log._other_etag;
                     it->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");

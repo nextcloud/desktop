@@ -695,7 +695,8 @@ void PropagateDownloadFileLegacy::start()
         && !FileSystem::fileEquals(fn, tmpFile.fileName()); // compare the files to see if there was an actual conflict.
     //In case of conflict, make a backup of the old file
     if (isConflict) {
-        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item._modtime));
+        auto conflictDate = FileSystem::fileExists(fn) ? FileSystem::getModTime(fn) : _item._modtime;
+        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(conflictDate));
         QString renameError;
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
