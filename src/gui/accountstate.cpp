@@ -57,12 +57,14 @@ void AccountStateManager::slotAccountAdded(AccountPtr account)
 AccountState::AccountState(AccountPtr account)
     : QObject(account.data())
     , _account(account)
-    , _quotaInfo(new QuotaInfo(this))
+    , _quotaInfo(0)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
 {
     qRegisterMetaType<AccountState*>("AccountState*");
+
+    _quotaInfo = new QuotaInfo(this); // Need to be initialized when 'this' is fully initialized
 
     connect(account.data(), SIGNAL(invalidCredentials()),
             SLOT(slotInvalidCredentials()));

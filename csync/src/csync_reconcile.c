@@ -156,8 +156,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             }
 
             if( tmp ) {
-                if( tmp->path ) {
-                    len = strlen( tmp->path );
+                len = strlen( tmp->path );
+                if( len > 0 ) {
                     h = c_jhash64((uint8_t *) tmp->path, len, 0);
                     /* First, check that the file is NOT in our tree (another file with the same name was added) */
                     node = c_rbtree_find(ctx->current == REMOTE_REPLICA ? ctx->remote.tree : ctx->local.tree, &h);

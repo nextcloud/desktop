@@ -194,6 +194,9 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     if (options->target_url.startsWith("http"))
         options->target_url.replace(0, 4, "owncloud");
     options->source_dir = args.takeLast();
+    if (!options->source_dir.endsWith('/')) {
+        options->source_dir.append('/');
+    }
     if( !QFile::exists( options->source_dir )) {
         std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);
@@ -440,7 +443,9 @@ restart_sync:
         if (!f.open(QFile::ReadOnly)) {
             qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
         } else {
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n');
+            // filter out empty lines and comments
+            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
+
             for (int i = 0; i < selectiveSyncList.count(); ++i) {
                 if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
                     selectiveSyncList[i].append(QLatin1Char('/'));

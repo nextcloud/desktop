@@ -1,6 +1,6 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Afficher les notes de version"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Le(s) processus en cours d’exécution ${APPLICATION_EXECUTABLE} doit (doivent) être stoppé(s) afin de poursuivre.$\nVoulez-vous que le programme d’installation s’en charge pour vous ?"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Les processus ${APPLICATION_EXECUTABLE} en cours d’exécution doivent être stoppés avant de poursuivre.$\nVoulez-vous que le programme d’installation s’en charge pour vous ?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Fermeture des processus ${APPLICATION_EXECUTABLE}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Le processus à stopper n'a pas été trouvé !"
 StrCpy $PageReinstall_NEW_Field_1 "Une ancienne version de ${APPLICATION_NAME} est installée sur votre système. Il est recommandé de désinstaller cette version avant de continuer. Sélectionnez l'opération que vous voulez exécuter et cliquez sur Suivant pour continuer."

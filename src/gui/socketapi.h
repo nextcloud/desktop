@@ -37,8 +37,6 @@ class QStringList;
 
 namespace OCC {
 
-typedef QLocalSocket SocketType;
-
 class SyncFileStatus;
 class Folder;
 
@@ -72,24 +70,20 @@ private:
     SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
     SqlQuery *getSqlQuery( Folder *folder );
 
-    void sendMessage(SocketType* socket, const QString& message, bool doWait = false);
+    void sendMessage(QLocalSocket* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketType* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketType* socket);
-    Q_INVOKABLE void command_SHARE(const QString& localFile, SocketType* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_SHARE(const QString& localFile, QLocalSocket* socket);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_VERSION(const QString& argument, QLocalSocket* socket);
 
-    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, SocketType* socket);
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QLocalSocket* socket);
     QString buildRegisterPathMessage(const QString& path);
 
-#ifdef SOCKETAPI_TCP
-    QTcpServer _localServer;
-#else
     QLocalServer _localServer;
-#endif
-    QList<SocketType*> _listeners;
+    QList<QLocalSocket*> _listeners;
     c_strlist_t *_excludes;
     QHash<Folder*, SqlQuery*> _dbQueries;
     QHash<Folder*, SqlDatabase*> _openDbs;

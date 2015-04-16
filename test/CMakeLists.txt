@@ -32,5 +32,5 @@ owncloud_add_test(SyncJournalDB "")
 owncloud_add_test(SyncFileItem "")
 owncloud_add_test(ConcatUrl "")
 
-
+owncloud_add_test(XmlParse "")
 

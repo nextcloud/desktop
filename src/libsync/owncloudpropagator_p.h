@@ -16,6 +16,7 @@
 #pragma once
 
 #include <QNetworkReply>
+#include <QDebug>
 #include "syncfileitem.h"
 
 namespace OCC {
@@ -33,9 +34,14 @@ inline QByteArray parseEtag(const char *header) {
 
 inline QByteArray getEtagFromReply(QNetworkReply *reply)
 {
-    QByteArray ret = parseEtag(reply->rawHeader("OC-ETag"));
+    QByteArray ocEtag = parseEtag(reply->rawHeader("OC-ETag"));
+    QByteArray etag = parseEtag(reply->rawHeader("ETag"));
+    QByteArray ret = ocEtag;
     if (ret.isEmpty()) {
-        ret = parseEtag(reply->rawHeader("ETag"));
+        ret = etag;
+    }
+    if (ocEtag.length() > 0 && ocEtag != etag) {
+        qDebug() << "Quite peculiar, we have an etag != OC-Etag [no problem!]" << etag << ocEtag;
     }
     return ret;
 }

@@ -576,7 +576,8 @@ int csync_commit(CSYNC *ctx) {
   _csync_clean_ctx(ctx);
 
   ctx->remote.read_from_db = 0;
-  ctx->read_from_db_disabled = 0;
+  ctx->read_remote_from_db = true;
+  ctx->db_is_empty = false;
 
 
   /* Create new trees */
@@ -771,12 +772,5 @@ int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
     (void)ctx, (void)key, (void)value;
     return 0;
 #endif
-}
-
-
-int csync_set_read_from_db(CSYNC* ctx, int enabled)
-{
-    ctx->read_from_db_disabled = !enabled;
-    return 0;
 }
 

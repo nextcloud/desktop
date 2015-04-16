@@ -151,7 +151,17 @@ struct csync_s {
   int status;
   volatile int abort;
   void *rename_info;
-  int  read_from_db_disabled;
+
+  /**
+   * Specify if it is allowed to read the remote tree from the DB (default to enabled)
+   */
+  bool read_remote_from_db;
+
+  /**
+   * If true, the DB is considered empty and all reads are skipped. (default is false)
+   * This is useful during the initial local discovery as it speeds it up significantly.
+   */
+  bool db_is_empty;
 
   struct csync_owncloud_ctx_s *owncloud_context;
 

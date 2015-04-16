@@ -155,10 +155,19 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}
 
 qt_add_translation(client_I18N ${TRANSLATIONS})
 
+IF( WIN32 )
+    configure_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
+      ${CMAKE_CURRENT_BINARY_DIR}/version.rc
+      @ONLY)
+    set(client_version ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+ENDIF()
+
 set( final_src
     ${MIRALL_RC_SRC}
     ${client_SRCS}
     ${client_UI_SRCS}
+    ${client_version}
     ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}

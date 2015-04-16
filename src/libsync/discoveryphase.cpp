@@ -268,8 +268,11 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         }
 
 
-        csync_vio_file_stat_t *file_stat = propertyMapToFileStat(map);
+        FileStatPointer file_stat(propertyMapToFileStat(map));
         file_stat->name = strdup(file.toUtf8());
+        if (!file_stat->etag || strlen(file_stat->etag) == 0) {
+            qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+        }
         //qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
         _results.append(file_stat);
     }
@@ -282,6 +285,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
 
 void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 {
+    if (!_ignoredFirst) {
+        // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
+        // which means somehow the server XML was bogus
+        emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        deleteLater();
+        return;
+    }
     emit etagConcatenation(_etagConcatenation);
     emit finishedWithResult(_results);
     deleteLater();
@@ -293,7 +303,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
-    int errnoCode = 0;
+    int errnoCode = EIO; // Something went wrong
     qDebug() << Q_FUNC_INFO << r->errorString() << httpCode << r->error();
     if (httpCode != 0 && httpCode != 207) {
         errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
@@ -302,6 +312,8 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     } else if (!contentType.contains("application/xml; charset=utf-8")) {
         msg = QLatin1String("Server error: PROPFIND reply is not XML formatted!");
         errnoCode = ERRNO_WRONG_CONTENT;
+    } else {
+        // Default keep at EIO, see above
     }
 
     emit finishedWithError(errnoCode, msg);
@@ -316,15 +328,6 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     connect(discoveryJob, SIGNAL(doOpendirSignal(QString,DiscoveryDirectoryResult*)),
             this, SLOT(doOpendirSlot(QString,DiscoveryDirectoryResult*)),
             Qt::QueuedConnection);
-    connect(discoveryJob, SIGNAL(doClosedirSignal(QString)),
-            this, SLOT(doClosedirSlot(QString)),
-            Qt::QueuedConnection);
-}
-
-void DiscoveryMainThread::doClosedirSlot(QString path)
-{
-    //qDebug() << Q_FUNC_INFO << "Invalidating" << path;
-    deleteCacheEntry(path);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -349,8 +352,8 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
 
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t *>)),
-                     this, SLOT(singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>)));
+    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(const QList<FileStatPointer> &)),
+                     this, SLOT(singleDirectoryJobResultSlot(const QList<FileStatPointer> &)));
     QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int,QString)),
                      this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
     QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
@@ -361,7 +364,7 @@ void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResul
 }
 
 
-void DiscoveryMainThread::singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t *> result)
+void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPointer> & result)
 {
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
@@ -369,11 +372,9 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(QLinkedList<csync_vio_fil
     qDebug() << Q_FUNC_INFO << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
 
 
-    _directoryContents.insert(_currentDiscoveryDirectoryResult->path, result);
-
     _currentDiscoveryDirectoryResult->list = result;
     _currentDiscoveryDirectoryResult->code = 0;
-    _currentDiscoveryDirectoryResult->iterator = _currentDiscoveryDirectoryResult->list.begin();
+    _currentDiscoveryDirectoryResult->listIndex = 0;
      _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
 
     _discoveryJob->_vioMutex.lock();
@@ -411,7 +412,7 @@ void DiscoveryMainThread::abort() {
     if (_singleDirJob) {
         _singleDirJob->disconnect(SIGNAL(finishedWithError(int,QString)), this);
         _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
-        _singleDirJob->disconnect(SIGNAL(finishedWithResult(QLinkedList<csync_vio_file_stat_t*>)), this);
+        _singleDirJob->disconnect(SIGNAL(finishedWithResult(const QList<FileStatPointer> &)), this);
         _singleDirJob->abort();
     }
     if (_currentDiscoveryDirectoryResult) {
@@ -466,9 +467,8 @@ csync_vio_file_stat_t* DiscoveryJob::remote_vio_readdir_hook (csync_vio_handle_t
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*>(dhandle);
-        if (directoryResult->iterator != directoryResult->list.end()) {
-            csync_vio_file_stat_t *file_stat = *(directoryResult->iterator);
-            directoryResult->iterator++;
+        if (directoryResult->listIndex < directoryResult->list.size()) {
+            csync_vio_file_stat_t *file_stat = directoryResult->list.at(directoryResult->listIndex++).data();
             // Make a copy, csync_update will delete the copy
             return csync_vio_file_stat_copy(file_stat);
         }
@@ -484,7 +484,6 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
         QString path = directoryResult->path;
         qDebug() << Q_FUNC_INFO << discoveryJob << path;
         delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
-        emit discoveryJob->doClosedirSignal(path);
     }
 }
 

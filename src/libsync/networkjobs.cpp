@@ -223,7 +223,10 @@ void AbstractNetworkJob::start()
     _durationTimer.start();
     _duration = 0;
 
-    qDebug() << "!!!" << metaObject()->className() << "created for" << account()->url() << "querying" << path();
+    const QUrl url = account()->url();
+    const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
+
+    qDebug() << "!!!" << metaObject()->className() << "created for" << displayUrl << "+" << path();
 }
 
 void AbstractNetworkJob::slotTimeout()
@@ -318,6 +321,131 @@ bool MkColJob::finished()
 }
 
 /*********************************************************************************************/
+// supposed to read <D:collection> when pointing to <D:resourcetype><D:collection></D:resourcetype>..
+static QString readContentsAsString(QXmlStreamReader &reader) {
+    QString result;
+    int level = 0;
+    do {
+        QXmlStreamReader::TokenType type = reader.readNext();
+        if (type == QXmlStreamReader::StartElement) {
+            level++;
+            result += "<" + reader.name().toString() + ">";
+        } else if (type == QXmlStreamReader::Characters) {
+            result += reader.text();
+        } else if (type == QXmlStreamReader::EndElement) {
+            level--;
+            if (level < 0) {
+                break;
+            }
+            result += "</" + reader.name().toString() + ">";
+        }
+
+    } while (!reader.atEnd());
+    return result;
+}
+
+
+LsColXMLParser::LsColXMLParser()
+{
+
+}
+
+bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes)
+{
+    // Parse DAV response
+    QXmlStreamReader reader(xml);
+    reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+
+    QStringList folders;
+    QString currentHref;
+    QMap<QString, QString> currentTmpProperties;
+    QMap<QString, QString> currentHttp200Properties;
+    bool currentPropsHaveHttp200 = false;
+    bool insidePropstat = false;
+    bool insideProp = false;
+    bool insideMultiStatus = false;
+
+    while (!reader.atEnd()) {
+        QXmlStreamReader::TokenType type = reader.readNext();
+        QString name = reader.name().toString();
+        // Start elements with DAV:
+        if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
+            if (name == QLatin1String("href")) {
+                currentHref = QUrl::fromPercentEncoding(reader.readElementText().toUtf8());
+            } else if (name == QLatin1String("response")) {
+            } else if (name == QLatin1String("propstat")) {
+                insidePropstat = true;
+            } else if (name == QLatin1String("status") && insidePropstat) {
+                QString httpStatus = reader.readElementText();
+                if (httpStatus.startsWith("HTTP/1.1 200")) {
+                    currentPropsHaveHttp200 = true;
+                } else {
+                    currentPropsHaveHttp200 = false;
+                }
+            } else if (name == QLatin1String("prop")) {
+                insideProp = true;
+                continue;
+            } else if (name == QLatin1String("multistatus")) {
+                insideMultiStatus = true;
+                continue;
+            }
+        }
+
+        if (type == QXmlStreamReader::StartElement && insidePropstat && insideProp) {
+            // All those elements are properties
+            QString propertyContent = readContentsAsString(reader);
+            if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
+                folders.append(currentHref);
+            } else if (name == QLatin1String("quota-used-bytes")) {
+                bool ok = false;
+                auto s = propertyContent.toLongLong(&ok);
+                if (ok && sizes) {
+                    sizes->insert(currentHref, s);
+                }
+            }
+            currentTmpProperties.insert(reader.name().toString(), propertyContent);
+        }
+
+        // End elements with DAV:
+        if (type == QXmlStreamReader::EndElement) {
+            if (reader.namespaceUri() == QLatin1String("DAV:")) {
+                if (reader.name() == "response") {
+                    if (currentHref.endsWith('/')) {
+                        currentHref.chop(1);
+                    }
+                    emit directoryListingIterated(currentHref, currentHttp200Properties);
+                    currentHref.clear();
+                    currentHttp200Properties.clear();
+                } else if (reader.name() == "propstat") {
+                    insidePropstat = false;
+                    if (currentPropsHaveHttp200) {
+                        currentHttp200Properties = QMap<QString,QString>(currentTmpProperties);
+                    }
+                    currentTmpProperties.clear();
+                    currentPropsHaveHttp200 = false;
+                } else if (reader.name() == "prop") {
+                    insideProp = false;
+                }
+            }
+        }
+    }
+
+    if (reader.hasError()) {
+        // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
+        qDebug() << "ERROR" << reader.errorString() << xml;
+        return false;
+    } else if (!insideMultiStatus) {
+        qDebug() << "ERROR no WebDAV response?" << xml;
+        return false;
+    } else {
+        emit directoryListingSubfolders(folders);
+        emit finishedWithoutError();
+    }
+    return true;
+
+}
+
+/*********************************************************************************************/
 
 LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -374,117 +502,36 @@ void LsColJob::start()
     AbstractNetworkJob::start();
 }
 
-// supposed to read <D:collection> when pointing to <D:resourcetype><D:collection></D:resourcetype>..
-static QString readContentsAsString(QXmlStreamReader &reader) {
-    QString result;
-    int level = 0;
-    do {
-        QXmlStreamReader::TokenType type = reader.readNext();
-        if (type == QXmlStreamReader::StartElement) {
-            level++;
-            result += "<" + reader.name().toString() + ">";
-        } else if (type == QXmlStreamReader::Characters) {
-            result += reader.text();
-        } else if (type == QXmlStreamReader::EndElement) {
-            level--;
-            if (level < 0) {
-                break;
-            }
-            result += "</" + reader.name().toString() + ">";
-        }
-
-    } while (!reader.atEnd());
-    return result;
-}
-
+// TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
+// would allow us to be more asynchronous in processing while data is coming from the network,
+// not in all in one big blobb at the end.
 bool LsColJob::finished()
 {
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
-        // Parse DAV response
-        QByteArray xml = reply()->readAll();
-        QXmlStreamReader reader(xml);
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+        LsColXMLParser parser;
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SIGNAL(directoryListingSubfolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithError(QNetworkReply *)),
+                 this, SIGNAL(finishedWithError(QNetworkReply *)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SIGNAL(finishedWithoutError()) );
 
-        QStringList folders;
-        QString currentHref;
-        QMap<QString, QString> currentTmpProperties;
-        QMap<QString, QString> currentHttp200Properties;
-        bool currentPropsHaveHttp200 = false;
-        bool insidePropstat = false;
-        bool insideProp = false;
-
-        while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            QString name = reader.name().toString();
-            // Start elements with DAV:
-            if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
-                if (name == QLatin1String("href")) {
-                    currentHref = QUrl::fromPercentEncoding(reader.readElementText().toUtf8());
-                } else if (name == QLatin1String("response")) {
-                } else if (name == QLatin1String("propstat")) {
-                    insidePropstat = true;
-                } else if (name == QLatin1String("status") && insidePropstat) {
-                    QString httpStatus = reader.readElementText();
-                    if (httpStatus.startsWith("HTTP/1.1 200")) {
-                        currentPropsHaveHttp200 = true;
-                    } else {
-                        currentPropsHaveHttp200 = false;
-                    }
-                } else if (name == QLatin1String("prop")) {
-                    insideProp = true;
-                    continue;
-                }
-            }
-
-            if (type == QXmlStreamReader::StartElement && insidePropstat && insideProp) {
-                // All those elements are properties
-                QString propertyContent = readContentsAsString(reader);
-                if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
-                    folders.append(currentHref);
-                } else if (name == QLatin1String("quota-used-bytes")) {
-                    bool ok = false;
-                    auto s = propertyContent.toLongLong(&ok);
-                    if (ok) {
-                        _sizes[currentHref] = s;
-                    }
-                }
-                currentTmpProperties.insert(reader.name().toString(), propertyContent);
-            }
-
-            // End elements with DAV:
-            if (type == QXmlStreamReader::EndElement) {
-                if (reader.namespaceUri() == QLatin1String("DAV:")) {
-                    if (reader.name() == "response") {
-                        if (currentHref.endsWith('/')) {
-                            currentHref.chop(1);
-                        }
-                        emit directoryListingIterated(currentHref, currentHttp200Properties);
-                        currentHref.clear();                        
-                        currentHttp200Properties.clear();
-                    } else if (reader.name() == "propstat") {
-                        insidePropstat = false;
-                        if (currentPropsHaveHttp200) {
-                            currentHttp200Properties = QMap<QString,QString>(currentTmpProperties);
-                        }
-                        currentTmpProperties.clear();
-                        currentPropsHaveHttp200 = false;
-                    } else if (reader.name() == "prop") {
-                        insideProp = false;
-                    }
-                }
-            }
+        if( !parser.parse( reply()->readAll(), &_sizes ) ) {
+            // XML parse error
+            emit finishedWithError(reply());
         }
-        emit directoryListingSubfolders(folders);
-        emit finishedWithoutError();
     } else if (httpCode == 207) {
         // wrong content type
         emit finishedWithError(reply());
     } else {
-        // wrong HTTP code
+        // wrong HTTP code or any other network error
         emit finishedWithError(reply());
     }
+
     return true;
 }
 
@@ -647,8 +694,9 @@ bool PropfindJob::finished()
             if (type == QXmlStreamReader::StartElement) {
                 if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
                     items.insert(reader.name().toString(), reader.readElementText());
+                } else {
+                    curElement.push(reader.name().toString());
                 }
-                curElement.push(reader.name().toString());
             }
             if (type == QXmlStreamReader::EndElement) {
                 if(curElement.top() == reader.name()) {

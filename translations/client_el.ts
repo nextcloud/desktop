@@ -235,12 +235,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>Επικύρωση πιστοποιητικού  χρήστη SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής πιθανόν απαιτεί  πιστοποιητικό  χρήστη SSL </translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -250,7 +250,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>Περιήγηση...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -669,7 +669,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="444"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε Τι θα Συγχρονιστεί: Μπορείτε προαιρετικά να καταργήστε την επιλογή υποφακέλων που δεν επιθυμείτε να συγχρονίσετε.</translation>
     </message>
 </context>
 <context>
@@ -734,7 +734,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση αναφοράς κατάρρευσης</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -1203,7 +1203,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="193"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Λήξη χρονικού ορίου κατά τη σύνδεση σε %1 σε %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="204"/>
@@ -1213,7 +1213,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Απαγόρευση πρόσβασης από τον διακομιστή. Για να επιβεβαιώσετε ότι έχετε δικαιώματα πρόσβασης, &lt;a href=&quot;%1&quot;&gt;πατήστε εδώ&lt;/a&gt; για να προσπελάσετε την υπηρεσία με το πρόγραμμα πλοήγησής σας.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1362,7 +1362,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Λανθασμένη απάντηση JSON από την ιστοσελίδα poll</translation>
     </message>
 </context>
 <context>
@@ -1421,7 +1421,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="104"/>
         <source>Continue blacklisting: </source>
-        <translation type="unfinished"/>
+        <translation>Συνέχεια μαύρη λίστα:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="200"/>
@@ -1478,7 +1478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="103"/>
         <source>Wrong HTTP code returned by server. Expected 204, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 204, ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1486,7 +1486,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="67"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 201, ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1509,7 +1509,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>Wrong HTTP code returned by server. Expected 201, but recieved &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε εσφαλμένο κωδικό HTTP. Αναμενόταν 201, ελήφθη &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1552,7 +1552,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Η διεύθυνση poll URL λείπει</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>
@@ -1646,13 +1646,19 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n αρχεία αγνοήθηκαν λόγω προηγούμενων σφαλμάτων.
+
+</numerusform><numerusform>%n αρχεία αγνοήθηκαν λόγω προηγούμενων σφαλμάτων.
+
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="266"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n αρχεία λήφθηκαν μερικώς.
+</numerusform><numerusform>%n αρχεία λήφθηκαν μερικώς.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="267"/>
@@ -1670,12 +1676,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="318"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε Τι θα Συγχρονιστεί: Επιλέξτε τους απομακρυσμένους υποφακέλους που επιθυμείτε να συγχρονίσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="319"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε Τι θα Συγχρονιστεί: Επιλέξτε τους απομακρυσμένους υποφακέλους που δεν επιθυμείτε να συγχρονίσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="325"/>
@@ -1778,7 +1784,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός ετικέτας</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="75"/>
@@ -1804,7 +1810,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.cpp" line="67"/>
         <location filename="../src/gui/sharedialog.cpp" line="461"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 διαδρομή: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
@@ -1824,7 +1830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="351"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS API κωδικός λάθους: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
@@ -1839,12 +1845,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"/>
+        <translation>Ο  διαμοιρασμός εξωτερικών καταλόγων δεν λειτουργεί ακόμα.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="408"/>
         <source>A sync file with the same name exists. The file can not be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Ήδη υπάρχει αρχείο συγχρονισμού με το ίδιο όνομα. Το αρχείο δεν μπορεί να καταχωρηθεί προς συγχρονισμό.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="420"/>
@@ -1854,7 +1860,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="422"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία καταχώρησης στο χώρο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="453"/>
@@ -1864,7 +1870,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="463"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation type="unfinished"/>
+        <translation>Ο συγχρονισμός του καταχωρημένου αρχείου δεν πέτυχε ακόμη.</translation>
     </message>
 </context>
 <context>
@@ -2123,7 +2129,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε να φορτώσει ο αρχείο καταλόγου. Το αρχείο καταλόγου έχει καταστραφεί.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="102"/>
@@ -2346,7 +2352,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="237"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Πνευματικά δικαιώματα ownCloud, Ανώνυμη Εταιρία&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="238"/>
@@ -2454,7 +2460,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>Crash now</source>
-        <translation type="unfinished"/>
+        <translation>Κατάρρευση τώρα</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
@@ -2502,7 +2508,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Έκδοση %2. Για περισσότερες πληροφορίες επισκεφθείτε &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Των Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz και άλλων.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Πνευματικά δικαιώματα ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Αδειοδότηση υπό την GNU General Public License (GPL) Έκδοση 2.0&lt;br/&gt;το ownCloud και το λογότυπο ownCloud είναι σήματα κατατεθέντα της ownCloud, Inc. στις Η.Π.Α., σε άλλες χώρες ή και στα δύο&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2561,7 +2567,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>Σ&amp;υγχρονισμός όλων από τον διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2579,7 +2585,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Αποτυχία σύνδεσης στην ασφαλή διεύθυνση διακομιστή που ορίστηκε. Πώς θέλετε να συνεχίσετε;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -2589,17 +2595,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Επανάληψη χωρίς κρυπτογράφηση μέσω HTTP (ανασφαλής)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Διαμόρφωση πιστοποιητικού TLS του δέκτη</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="18"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt; Αποτυχία σύνδεσης με ασφαλή διεύθυνση του διακομιστή &lt;em&gt;%1&lt;/em&gt;. Πώς θέλετε να συνεχίσετε;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

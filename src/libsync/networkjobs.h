@@ -94,6 +94,9 @@ protected:
     QElapsedTimer _durationTimer;
     quint64       _duration;
     bool          _timedout;  // set to true when the timeout slot is recieved
+
+    // Automatically follows redirects. Note that this only works for
+    // GET requests that don't set up any HTTP body or other flags.
     bool          _followRedirects;
 
 private slots:
@@ -129,6 +132,21 @@ private slots:
 /**
  * @brief The LsColJob class
  */
+class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject {
+    Q_OBJECT
+public:
+    explicit LsColXMLParser();
+
+    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes);
+
+signals:
+    void directoryListingSubfolders(const QStringList &items);
+    void directoryListingIterated(const QString &name, const QMap<QString,QString> &properties);
+    void finishedWithError(QNetworkReply *reply);
+    void finishedWithoutError();
+
+};
+
 class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:

@@ -64,7 +64,6 @@ set(libsync_SRCS
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
-    creds/http/httpconfigfile.cpp
     creds/credentialscommon.cpp
     ../3rdparty/qjson/json.cpp
     ../3rdparty/certificates/p12topem.cpp

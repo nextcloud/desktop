@@ -26,9 +26,32 @@
 #include <QDebug>
 #include <QSettings>
 #include <QScopedValueRollback>
+#include <QTreeWidgetItem>
 #include <QLabel>
 
 namespace OCC {
+
+
+class SelectiveSyncTreeViewItem : public QTreeWidgetItem {
+public:
+    SelectiveSyncTreeViewItem(int type = QTreeWidgetItem::Type)
+        : QTreeWidgetItem(type) { }
+    SelectiveSyncTreeViewItem(const QStringList &strings, int type = QTreeWidgetItem::Type)
+        : QTreeWidgetItem(strings, type) { }
+    SelectiveSyncTreeViewItem(QTreeWidget *view, int type = QTreeWidgetItem::Type)
+        : QTreeWidgetItem(view, type) { }
+    SelectiveSyncTreeViewItem(QTreeWidgetItem *parent, int type = QTreeWidgetItem::Type)
+        : QTreeWidgetItem(parent, type) { }
+
+private:
+    bool operator<(const QTreeWidgetItem &other)const {
+        int column = treeWidget()->sortColumn();
+        if (column == 1) {
+            return data(1, Qt::UserRole).toLongLong() < other.data(1, Qt::UserRole).toLongLong();
+        }
+        return QTreeWidgetItem::operator <(other);
+    }
+};
 
 SelectiveSyncTreeView::SelectiveSyncTreeView(AccountPtr account, QWidget* parent)
     : QTreeWidget(parent), _inserting(false), _account(account)
@@ -101,9 +124,9 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
     } else {
-        QTreeWidgetItem *item = findFirstChild(parent, pathTrail.first());
+        SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem*>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
-            item = new QTreeWidgetItem(parent);
+            item = new SelectiveSyncTreeViewItem(parent);
             if (parent->checkState(0) == Qt::Checked
                     || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
@@ -138,7 +161,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    QTreeWidgetItem *root = topLevelItem(0);
+    SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem*>(topLevelItem(0));
 
     if (!root && list.size() <= 1) {
         _loading->setText(tr("No subfolders currently on the server."));
@@ -149,7 +172,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
     }
 
     if (!root) {
-        root = new QTreeWidgetItem(this);
+        root = new SelectiveSyncTreeViewItem(this);
         root->setText(0, _rootName);
         root->setIcon(0, Theme::instance()->applicationIcon());
         root->setData(0, Qt::UserRole, QString());

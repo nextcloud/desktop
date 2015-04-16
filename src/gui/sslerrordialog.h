@@ -33,7 +33,7 @@ class SslErrorDialog;
 
 class SslDialogErrorHandler : public AbstractSslErrorHandler {
 public:
-    bool handleErrors(QList<QSslError> errors, QList<QSslCertificate> *certs, AccountPtr) Q_DECL_OVERRIDE;
+    bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) Q_DECL_OVERRIDE;
 };
 
 class SslErrorDialog : public QDialog

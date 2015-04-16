@@ -698,7 +698,8 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     return rec;
 }
 
-bool SyncJournalDb::postSyncCleanup(const QSet<QString> &items )
+bool SyncJournalDb::postSyncCleanup(const QSet<QString>& filepathsToKeep,
+                                    const QSet<QString>& prefixesToKeep)
 {
     QMutexLocker locker(&_mutex);
 
@@ -719,8 +720,16 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &items )
 
     while(query.next()) {
         const QString file = query.stringValue(1);
-        bool contained = items.contains(file);
-        if( !contained ) {
+        bool keep = filepathsToKeep.contains(file);
+        if( !keep ) {
+            foreach( const QString & prefix, prefixesToKeep ) {
+                if( file.startsWith(prefix) ) {
+                    keep = true;
+                    break;
+                }
+            }
+        }
+        if( !keep ) {
             superfluousItems.append(query.stringValue(0));
         }
     }

@@ -34,12 +34,36 @@ class Account;
  * if the files are new, or changed.
  */
 
+class FileStatPointer {
+public:
+    FileStatPointer(csync_vio_file_stat_t *stat)
+        : _stat(stat)
+    { }
+    FileStatPointer(const FileStatPointer &other)
+        : _stat(csync_vio_file_stat_copy(other._stat))
+    { }
+    ~FileStatPointer() {
+        csync_vio_file_stat_destroy(_stat);
+    }
+    FileStatPointer &operator=(const FileStatPointer &other) {
+        csync_vio_file_stat_destroy(_stat);
+        _stat = csync_vio_file_stat_copy(other._stat);
+        return *this;
+    }
+    inline csync_vio_file_stat_t *data() const { return _stat; }
+    inline csync_vio_file_stat_t *operator->() const { return _stat; }
+
+private:
+    csync_vio_file_stat_t *_stat;
+};
+
 struct DiscoveryDirectoryResult {
     QString path;
     QString msg;
     int code;
-    QLinkedList<csync_vio_file_stat_t*>::iterator iterator;
-    QLinkedList<csync_vio_file_stat_t *> list;
+    QList<FileStatPointer> list;
+    int listIndex;
+    DiscoveryDirectoryResult() : code(EIO), listIndex(0) { }
 };
 
 // Run in the main thread, reporting to the DiscoveryJobMainThread object
@@ -53,14 +77,14 @@ public:
 signals:
     void firstDirectoryPermissions(const QString &);
     void etagConcatenation(const QString &);
-    void finishedWithResult(QLinkedList<csync_vio_file_stat_t*>);
+    void finishedWithResult(const QList<FileStatPointer> &);
     void finishedWithError(int csyncErrnoCode, QString msg);
 private slots:
     void directoryListingIteratedSlot(QString,QMap<QString,QString>);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply*);
 private:
-    QLinkedList<csync_vio_file_stat_t*> _results;
+    QList<FileStatPointer> _results;
     QString _subPath;
     QString _etagConcatenation;
     AccountPtr _account;
@@ -73,11 +97,6 @@ class DiscoveryJob;
 class DiscoveryMainThread : public QObject {
     Q_OBJECT
 
-    // For non-recursive and recursive
-    // If it is not in this map it needs to be requested
-    QMap<QString, QLinkedList<csync_vio_file_stat_t*> > _directoryContents;
-
-
     QPointer<DiscoveryJob> _discoveryJob;
     QPointer<DiscoverySingleDirectoryJob> _singleDirJob;
     QString _pathPrefix;
@@ -88,32 +107,15 @@ public:
     DiscoveryMainThread(AccountPtr account) : QObject(), _account(account), _currentDiscoveryDirectoryResult(0) {
 
     }
-    void deleteCacheEntry(QString path) {
-        //qDebug() << path << _directoryContents.value(path).count();
-        foreach (csync_vio_file_stat_t* stat, _directoryContents.value(path)) {
-            csync_vio_file_stat_destroy(stat);
-        }
-        _directoryContents.remove(path);
-    }
-
-    ~DiscoveryMainThread() {
-        // Delete the _contents_ of the list-map explicitly:
-        foreach (const QLinkedList<csync_vio_file_stat_t*> & list, _directoryContents) {
-            foreach (csync_vio_file_stat_t* stat, list) {
-                csync_vio_file_stat_destroy(stat);
-            }
-        }
-    }
     void abort();
 
 
 public slots:
     // From DiscoveryJob:
     void doOpendirSlot(QString url, DiscoveryDirectoryResult* );
-    void doClosedirSlot(QString path);
 
     // From Job:
-    void singleDirectoryJobResultSlot(QLinkedList<csync_vio_file_stat_t*>);
+    void singleDirectoryJobResultSlot(const QList<FileStatPointer> &);
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(QString);
 signals:
@@ -175,8 +177,6 @@ signals:
 
     // After the discovery job has been woken up again (_vioWaitCondition)
     void doOpendirSignal(QString url, DiscoveryDirectoryResult*);
-    // to tell the main thread to invalidate its directory data
-    void doClosedirSignal(QString path);
 };
 
 }

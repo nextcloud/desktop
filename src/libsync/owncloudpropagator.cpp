@@ -41,6 +41,7 @@
 #include <QTimer>
 #include <QObject>
 #include <QTimerEvent>
+#include <QDebug>
 
 namespace OCC {
 

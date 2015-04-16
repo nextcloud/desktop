@@ -298,7 +298,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   csync_file_stat_t *st = NULL;
   int rc;
 
-  if( !ctx ) {
+  if( !ctx || ctx->db_is_empty ) {
       return NULL;
   }
 
@@ -341,7 +341,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
         return 0;
     }
 
-    if( !ctx ) {
+    if( !ctx || ctx->db_is_empty ) {
         return NULL;
     }
 
@@ -381,7 +381,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
       return NULL;
   }
 
-  if( !ctx ) {
+  if( !ctx || ctx->db_is_empty ) {
       return NULL;
   }
 
@@ -448,7 +448,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         return -1;
     }
 
-    if( !ctx ) {
+    if( !ctx || ctx->db_is_empty ) {
         return -1;
     }
 

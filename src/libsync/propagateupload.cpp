@@ -524,8 +524,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
     // But if the upload is ongoing, because not all chunks were uploaded
     // yet, the upload can be stopped and an error can be displayed, because
     // the server hasn't registered the new file yet.
-    bool finished = job->reply()->hasRawHeader("ETag")
-            || job->reply()->hasRawHeader("OC-ETag");
+    QByteArray etag = getEtagFromReply(job->reply());
+    bool finished = etag.length() > 0;
 
     // Check if the file still exists
     const QString fullFilePath(_propagator->getFilePath(_item._file));
@@ -595,7 +595,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
         _item._fileId = fid;
     }
 
-    QByteArray etag = getEtagFromReply(job->reply());
     _item._etag = etag;
 
     _item._responseTimeStamp = job->responseTimestamp();
