@@ -264,6 +264,8 @@ def CopyFramework(path):
   commands.append(args)
 
   info_plist = os.path.join(os.path.split(path)[0], '..', '..', 'Contents', 'Info.plist')
+  if not os.path.exists(info_plist):
+    info_plist = os.path.join(os.path.split(path)[0], 'Resources', 'Info.plist')
   if os.path.exists(info_plist):
     args = ['cp', '-r', info_plist, os.path.join(frameworks_dir, framework, "Resources")]
     commands.append(args)
