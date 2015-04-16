@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="610"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Rozpoznaję &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
@@ -1446,12 +1446,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="57"/>
         <source>Error removing &apos;%1&apos;: %2; </source>
-        <translation type="unfinished"/>
+        <translation>Błąd usuwania &apos;%1&apos;: %2; </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="68"/>
         <source>Could not remove directory &apos;%1&apos;; </source>
-        <translation type="unfinished"/>
+        <translation>Nie mogę usunąć katalogu &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="83"/>
@@ -1535,7 +1535,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="156"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Usunięto plik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
@@ -2473,7 +2473,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="477"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Rozpoznaję &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="482"/>
@@ -2748,22 +2748,22 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="113"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="116"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
