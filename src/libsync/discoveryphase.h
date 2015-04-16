@@ -63,7 +63,7 @@ struct DiscoveryDirectoryResult {
     int code;
     QList<FileStatPointer> list;
     int listIndex;
-    DiscoveryDirectoryResult() : code(0), listIndex(0) { }
+    DiscoveryDirectoryResult() : code(EIO), listIndex(0) { }
 };
 
 // Run in the main thread, reporting to the DiscoveryJobMainThread object

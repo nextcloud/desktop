@@ -285,6 +285,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
 
 void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 {
+    if (!_ignoredFirst) {
+        // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
+        // which means somehow the server XML was bogus
+        emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        deleteLater();
+        return;
+    }
     emit etagConcatenation(_etagConcatenation);
     emit finishedWithResult(_results);
     deleteLater();
@@ -296,7 +303,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
-    int errnoCode = 0;
+    int errnoCode = EIO; // Something went wrong
     qDebug() << Q_FUNC_INFO << r->errorString() << httpCode << r->error();
     if (httpCode != 0 && httpCode != 207) {
         errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
@@ -305,6 +312,8 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     } else if (!contentType.contains("application/xml; charset=utf-8")) {
         msg = QLatin1String("Server error: PROPFIND reply is not XML formatted!");
         errnoCode = ERRNO_WRONG_CONTENT;
+    } else {
+        // Default keep at EIO, see above
     }
 
     emit finishedWithError(errnoCode, msg);

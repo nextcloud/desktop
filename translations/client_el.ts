@@ -1362,7 +1362,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="121"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>Λανθασμένη απάντηση JSON από την ιστοσελίδα poll</translation>
     </message>
 </context>
 <context>
@@ -1552,7 +1552,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="468"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Η διεύθυνση poll URL λείπει</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="493"/>

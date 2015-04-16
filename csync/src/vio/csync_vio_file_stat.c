@@ -20,6 +20,7 @@
 
 #include "c_lib.h"
 #include "csync.h"
+#include "csync_log.h"
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void) {
   csync_vio_file_stat_t *file_stat = (csync_vio_file_stat_t *) c_malloc(sizeof(csync_vio_file_stat_t));
@@ -70,6 +71,7 @@ void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t *dst, const char* sr
 void csync_vio_set_file_id( char* dst, const char *src ) {
     if( src && dst ) {
         if( strlen(src) > FILE_ID_BUF_SIZE ) {
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Ignoring file_id because it is too long: %s", src);
             strcpy(dst, "");
         } else {
             strcpy(dst, src);

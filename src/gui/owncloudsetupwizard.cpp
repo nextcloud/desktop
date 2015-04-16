@@ -217,9 +217,51 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     auto *job = new PropfindJob(account, "/", this);
     job->setIgnoreCredentialFailure(true);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, SIGNAL(result(QVariantMap)),  _ocWizard, SLOT(successfulStep()));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotConnectionCheck(QNetworkReply*)));
+    connect(job, SIGNAL(result(QVariantMap)), _ocWizard, SLOT(successfulStep()));
+    connect(job, SIGNAL(finishedWithError()), this, SLOT(slotAuthError()));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotAuthNetworkError(QNetworkReply*)));
     job->start();
+}
+
+void OwncloudSetupWizard::slotAuthError()
+{
+    QString errorMsg;
+
+    PropfindJob* job = qobject_cast<PropfindJob*>(sender());
+    if (!job) {
+        qWarning() << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
+        return;
+    }
+
+    // If there were redirects on the *authed* requests, also store
+    // the updated server URL, similar to redirects on status.php.
+    QUrl redirectUrl = job->reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (!redirectUrl.isEmpty()) {
+        qDebug() << "authed request was redirected to" << redirectUrl.toString();
+
+        // strip the expected path
+        QString path = redirectUrl.path();
+        static QString expectedPath = "/" + _ocWizard->account()->davPath();
+        if (path.endsWith(expectedPath)) {
+            path.chop(expectedPath.size());
+            redirectUrl.setPath(path);
+
+            qDebug() << "setting account url to" << redirectUrl.toString();
+            _ocWizard->account()->setUrl(redirectUrl);
+            testOwnCloudConnect();
+            return;
+        } else {
+            errorMsg = tr("The authenticated request to the server was redirected to "
+                          "'%1'. The URL is bad, the server is misconfigured.")
+                       .arg(redirectUrl.toString());
+        }
+    }
+
+    if (errorMsg.isEmpty()) {
+        errorMsg = tr("There was an invalid response to an authenticated webdav request");
+    }
+    _ocWizard->displayError(errorMsg, false);
+    _ocWizard->show();
 }
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
@@ -245,7 +287,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
     return true;
 }
 
-void OwncloudSetupWizard::slotConnectionCheck(QNetworkReply* reply)
+void OwncloudSetupWizard::slotAuthNetworkError(QNetworkReply* reply)
 {
     QString msg = reply->errorString();
     switch (reply->error()) {
@@ -294,7 +336,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     }
     if (nextStep) {
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
-        connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotAuthCheckReply(QNetworkReply*)));
+        connect(job, SIGNAL(exists(QNetworkReply*)), SLOT(slotRemoteFolderExists(QNetworkReply*)));
         job->start();
     } else {
         finalizeSetup( false );
@@ -302,7 +344,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
 }
 
 // ### TODO move into EntityExistsJob once we decide if/how to return gui strings from jobs
-void OwncloudSetupWizard::slotAuthCheckReply(QNetworkReply *reply)
+void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 {
     bool ok = true;
     QString error;
@@ -522,8 +564,10 @@ bool DetermineAuthTypeJob::finished()
     } else if (redirection.toString().endsWith(account()->davPath())) {
         // do a new run
         _redirects++;
+        resetTimeout();
         setReply(getRequest(redirection));
         setupConnections(reply());
+        return false; // don't discard
     } else {
         QRegExp shibbolethyWords("SAML|wayf");
 

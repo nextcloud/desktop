@@ -1210,7 +1210,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>サーバからアクセスが拒否されました。適切なアクセス権の検証には、&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してブラウザからサービスにアクセスしてください。</translation>
+        <translation>サーバーによってアクセスが拒否されています。適切なアクセス権があるか検証するには、&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してブラウザーでサービスにアクセスしてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1828,12 +1828,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="374"/>
         <source>There is no sync folder configured.</source>
-        <translation>同期フォルダが設定されていません。</translation>
+        <translation>同期フォルダーが設定されていません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>Can not find an folder to upload to.</source>
-        <translation>アップロード先のフォルダが見つけられません。</translation>
+        <translation>アップロード先のフォルダーが見つかりません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="393"/>
@@ -2237,7 +2237,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="340"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>同期機能は、シンボリックリンクをサポートしていません。</translation>
+        <translation>同期機能はシンボリックリンクをサポートしていません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="343"/>

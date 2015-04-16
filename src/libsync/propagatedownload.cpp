@@ -519,10 +519,14 @@ void PropagateDownloadFileQNAM::downloadFinished()
         _tmpFile.setPermissions(existingFile.permissions());
     }
 
-    FileSystem::setFileHidden(_tmpFile.fileName(), false);
+    FileSystem::setModTime(_tmpFile.fileName(), _item._modtime);
+    // We need to fetch the time again because some file system such as FAT have a less than a second
+    // Accuracy, and we really need the time from the file system. (#3103)
+    _item._modtime = FileSystem::getModTime(_tmpFile.fileName());
 
     QString error;
     _propagator->addTouchedFile(fn);
+    FileSystem::setFileHidden(_tmpFile.fileName(), false);
     if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
         qDebug() << Q_FUNC_INFO << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
         // If we moved away the original file due to a conflict but can't
@@ -543,7 +547,6 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
-    FileSystem::setModTime(fn, _item._modtime);
     _item._size = FileSystem::getSize(fn);
 
     _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));

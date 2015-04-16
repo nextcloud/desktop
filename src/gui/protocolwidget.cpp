@@ -169,8 +169,8 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
 {
     const QLocale loc = QLocale::system();
     QString dtFormat = loc.dateTimeFormat(format);
-    static const QRegExp re("HH:mm(?!:ss)");
-    dtFormat.replace(re, "HH:mm:ss");
+    static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
+    dtFormat.replace(re, "\\1:mm:ss");
     return loc.toString(dt, dtFormat);
 }
 
