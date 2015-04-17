@@ -82,8 +82,8 @@ private:
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QLocalSocket* socket);
     QString buildRegisterPathMessage(const QString& path);
 
-    QLocalServer _localServer;
     QList<QLocalSocket*> _listeners;
+    QLocalServer _localServer;
     c_strlist_t *_excludes;
     QHash<Folder*, SqlQuery*> _dbQueries;
     QHash<Folder*, SqlDatabase*> _openDbs;
