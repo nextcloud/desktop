@@ -260,14 +260,18 @@ def CopyFramework(path):
   commands.append(args)
   args = ['chmod', 'u+w', os.path.join(full_path, parts[-1])]
   commands.append(args)
-  args = ['chmod', 'u+w', os.path.join(frameworks_dir, framework, "Resources")]
+  resources_dir = os.path.join(frameworks_dir, framework, "Resources")
+
+  args = ['mkdir', resources_dir]
+  commands.append(args)
+  args = ['chmod', 'u+w', resources_dir]
   commands.append(args)
 
   info_plist = os.path.join(os.path.split(path)[0], '..', '..', 'Contents', 'Info.plist')
   if not os.path.exists(info_plist):
     info_plist = os.path.join(os.path.split(path)[0], 'Resources', 'Info.plist')
   if os.path.exists(info_plist):
-    args = ['cp', '-r', info_plist, os.path.join(frameworks_dir, framework, "Resources")]
+    args = ['cp', '-r', info_plist, resources_dir]
     commands.append(args)
   return os.path.join(full_path, parts[-1])
 
