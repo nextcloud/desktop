@@ -285,7 +285,7 @@ void ShareDialog::slotSharesFetched(const QString &reply)
     bool success = false;
     QVariantMap json = QtJson::parse(reply, success).toMap();
     ShareDialog::_shares = json.value("ocs").toMap().value("data").toList();
-    const QString versionString = AccountManager::instance()->account()->serverVersion();
+    const QString versionString = _account->serverVersion();
 
     Q_FOREACH(auto share, ShareDialog::_shares) {
         QVariantMap data = share.toMap();

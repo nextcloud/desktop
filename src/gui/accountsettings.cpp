@@ -26,7 +26,6 @@
 #include "accountstate.h"
 #include "quotainfo.h"
 #include "creds/abstractcredentials.h"
-#include "accountmanager.h"
 
 #include <math.h>
 
@@ -57,11 +56,11 @@ static const char progressBarStyleC[] =
         "background-color: %1; width: 1px;"
         "}";
 
-AccountSettings::AccountSettings(QWidget *parent) :
+AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
     _wasDisabledBefore(false),
-    _accountState(AccountStateManager::instance()->accountState())
+    _accountState(accountState)
 {
     ui->setupUi(this);
 
@@ -119,9 +118,17 @@ AccountSettings::AccountSettings(QWidget *parent) :
 
     ui->connectLabel->setText(tr("No account configured."));
 
-    connect(AccountStateManager::instance(), SIGNAL(accountStateAdded(AccountState*)),
-            this, SLOT(slotAccountStateChanged(AccountState*)));
-    slotAccountStateChanged(AccountStateManager::instance()->accountState());
+    connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+    slotAccountStateChanged(_accountState->state());
+
+    QuotaInfo *quotaInfo = _accountState->quotaInfo();
+    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
+            this, SLOT(slotUpdateQuota(qint64,qint64)));
+    slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
+
+    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
+             this, SLOT(slotSetProgress(QString, Progress::Info)) );
+
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
@@ -149,28 +156,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     menu->exec(tv->mapToGlobal(pos));
 }
 
-
-void AccountSettings::slotAccountStateChanged(AccountState *newAccountState)
-{
-    if (_accountState) {
-        disconnect(_accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-        disconnect(_accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
-                    this, SLOT(slotUpdateQuota(qint64,qint64)));
-        disconnect(_accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-    }
-
-    _accountState = newAccountState;
-    if (_accountState) {
-        connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
-        slotAccountStateChanged(_accountState->state());
-
-        QuotaInfo *quotaInfo = _accountState->quotaInfo();
-        connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
-                this, SLOT(slotUpdateQuota(qint64,qint64)));
-        slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
-    }
-}
-
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
@@ -184,7 +169,7 @@ void AccountSettings::slotAddFolder()
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(AccountManager::instance()->account(), this);
+    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
 
     connect(folderWizard, SIGNAL(accepted()), SLOT(slotFolderWizardAccepted()));
     connect(folderWizard, SIGNAL(rejected()), SLOT(slotFolderWizardRejected()));

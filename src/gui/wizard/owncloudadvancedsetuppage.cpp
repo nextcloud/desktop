@@ -27,7 +27,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "selectivesyncdialog.h"
-#include <accountmanager.h>
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 
@@ -160,25 +159,10 @@ void OwncloudAdvancedSetupPage::updateStatus()
     wizard()->resize(wizard()->sizeHint());
 }
 
+/* obsolete */
 bool OwncloudAdvancedSetupPage::dataChanged()
 {
-    OwncloudWizard* ocWizard(dynamic_cast< OwncloudWizard* >(wizard()));
-    AccountPtr oldAccount = AccountManager::instance()->account();
-
-    if (!ocWizard || !oldAccount) {
-        // If there was no account configured before, the data is new (hence changed)
-        return true;
-    }
-
-    const QString url(field("OCUrl").toString());
-    AbstractCredentials* newCredentials(ocWizard->getCredentials());
-    AbstractCredentials* oldCredentials(oldAccount->credentials());
-    const bool differentCreds(oldCredentials->changed(newCredentials));
-    delete newCredentials;
-    const QString newLocalFolder(QDir::toNativeSeparators(_ui.pbSelectLocalFolder->text()));
-    const QString oldLocalFolder(QDir::toNativeSeparators(_oldLocalFolder));
-
-    return ((url != oldAccount->url().toString()) || differentCreds || (oldLocalFolder != newLocalFolder));
+    return true;
 }
 
 void OwncloudAdvancedSetupPage::startSpinner()

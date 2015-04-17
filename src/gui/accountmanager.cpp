@@ -12,6 +12,7 @@
  */
 
 #include "accountmanager.h"
+#include "sslerrordialog.h"
 #include <theme.h>
 #include <creds/credentialsfactory.h>
 #include <creds/abstractcredentials.h>
@@ -35,17 +36,6 @@ AccountManager *AccountManager::instance()
 {
     static AccountManager instance;
     return &instance;
-}
-
-void AccountManager::setAccount(AccountPtr account)
-{
-    if (_account) {
-        emit accountRemoved(_account);
-    }
-    _account = account;
-    if (account) {
-        emit accountAdded(account);
-    }
 }
 
 bool AccountManager::restore()
@@ -113,7 +103,8 @@ bool AccountManager::restore()
         settings->beginGroup(QLatin1String("General"));
         acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
         acc->setMigrated(migratedCreds);
-        setAccount(acc);
+        acc->setSslErrorHandler(new SslDialogErrorHandler);
+        addAccount(acc);
         return true;
     }
     return false;
@@ -122,8 +113,13 @@ bool AccountManager::restore()
 
 void AccountManager::save()
 {
-    auto acc = account();
-    if (!acc) { return; }
+    foreach (const auto &acc , _accounts) {
+        save(acc->account());
+    }
+}
+
+void AccountManager::save(const AccountPtr& acc)
+{
     QScopedPointer<QSettings> settings(Account::settingsWithGroup(Theme::instance()->appName()));
     settings->setValue(QLatin1String(urlC), acc->_url.toString());
     if (acc->_credentials) {
@@ -157,6 +153,22 @@ void AccountManager::save()
             qDebug() << "Saving cookies.";
             jar->save();
         }
+    }
+}
+
+void AccountManager::addAccount(const AccountPtr& newAccount)
+{
+    AccountStatePtr newAccountState(new AccountState(newAccount));
+    _accounts << newAccountState;
+    emit accountAdded(newAccountState.data());
+}
+
+void AccountManager::shutdown()
+{
+    auto accountsCopy = _accounts;
+    _accounts.clear();
+    foreach (const auto &acc, accountsCopy) {
+        emit accountRemoved(acc.data());
     }
 }
 

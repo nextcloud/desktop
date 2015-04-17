@@ -454,14 +454,6 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder) {
     return renameOk;
 }
 
-void OwncloudSetupWizard::replaceDefaultAccountWith(AccountPtr newAccount)
-{
-    // new Account
-    AccountManager *mgr = AccountManager::instance();
-    mgr->setAccount(newAccount);
-    mgr->save();
-}
-
 // Method executed when the user ends has finished the basic setup.
 void OwncloudSetupWizard::slotAssistantFinished( int result )
 {
@@ -511,26 +503,9 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 void OwncloudSetupWizard::applyAccountChanges()
 {
     AccountPtr newAccount = _ocWizard->account();
-    AccountPtr origAccount = AccountManager::instance()->account();
+    auto manager = AccountManager::instance();
 
-    bool isInitialSetup = (origAccount == 0);
-
-    // check if either the account changed in a major way
-    bool reinitRequired =
-            newAccount->changed(origAccount, true /* ignoreProtocol, allows http->https */);
-
-    // If this is a completely new account, replace it entirely
-    // thereby clearing all folder definitions.
-    if (isInitialSetup || reinitRequired) {
-        replaceDefaultAccountWith(newAccount);
-        qDebug() << "Significant changes or first setup: switched to new account";
-    }
-    // Otherwise, set only URL and credentials
-    else {
-        origAccount->setUrl(newAccount->url());
-        origAccount->setCredentials(_ocWizard->getCredentials());
-        qDebug() << "Only password or schema was changed, adjusted existing account";
-    }
+    manager->addAccount(newAccount);
 }
 
 

@@ -136,7 +136,7 @@ void ownCloudGui::setupOverlayIcons()
 void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
 {
     // if account is set up, start the configuration wizard.
-    if( AccountManager::instance()->account() ) {
+    if( !AccountManager::instance()->accounts().isEmpty() ) {
         if( openSettings ) {
             if (_settingsDialog.isNull() || !_settingsDialog->isVisible()) {
                 slotShowSettings();
@@ -207,16 +207,14 @@ void ownCloudGui::slotAccountStateChanged()
 void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fails )
 {
     _startupFails = fails; // store that for the settings dialog once it appears.
-    if( !_settingsDialog.isNull() ) {
-        _settingsDialog->setGeneralErrors( _startupFails );
-    }
 
     slotComputeOverallSyncStatus();
 }
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
-    if (AccountState *a = AccountStateManager::instance()->accountState()) {
+#warning FIXME
+    if (AccountState *a = AccountManager::instance()->accounts().value(0).data()) {
         if (a->isSignedOut()) {
             _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
             _tray->setToolTip(tr("Please sign in"));
@@ -233,10 +231,6 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map map = folderMan->map();
     SyncResult overallResult = FolderMan::accountStatus(map.values());
-
-    // if there have been startup problems, show an error message.
-    if( !_settingsDialog.isNull() )
-        _settingsDialog->setGeneralErrors( _startupFails );
 
     if( !_startupFails.isEmpty() ) {
         trayMessage = _startupFails.join(QLatin1String("\n"));
@@ -281,7 +275,8 @@ void ownCloudGui::setupContextMenu()
 {
     FolderMan *folderMan = FolderMan::instance();
 
-    AccountState *a = AccountStateManager::instance()->accountState();
+#warning FIXME
+    AccountState *a = AccountManager::instance()->accounts().value(0).data();
 
     bool isConfigured = (a != 0);
     _actionOpenoC->setEnabled(isConfigured);
@@ -560,7 +555,6 @@ void ownCloudGui::slotShowSettings()
         _settingsDialog->setAttribute( Qt::WA_DeleteOnClose, true );
         _settingsDialog->show();
     }
-    _settingsDialog->setGeneralErrors( _startupFails );
     raiseDialog(_settingsDialog.data());
 }
 
@@ -595,8 +589,8 @@ void ownCloudGui::slotToggleLogBrowser()
 
 void ownCloudGui::slotOpenOwnCloud()
 {
-    if (AccountPtr account = AccountManager::instance()->account()) {
-        QDesktopServices::openUrl(account->url());
+    if (auto account = AccountManager::instance()->accounts().value(0)) {
+        QDesktopServices::openUrl(account->account()->url());
     }
 }
 
@@ -645,14 +639,15 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 
 void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed)
 {
-    AccountPtr account = AccountManager::instance()->account();
+#warning FIXME
+    auto account = AccountManager::instance()->accounts().value(0);
     if (!account) {
         qDebug() << "Could not open share dialog because no account is configured";
         return;
     }
 
     qDebug() << Q_FUNC_INFO << "Opening share dialog";
-    ShareDialog *w = new ShareDialog(account, sharePath, localPath, resharingAllowed);
+    ShareDialog *w = new ShareDialog(account->account(), sharePath, localPath, resharingAllowed);
     w->getShares();
     w->setAttribute( Qt::WA_DeleteOnClose, true );
     raiseDialog(w);

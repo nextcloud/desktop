@@ -27,29 +27,6 @@ class AccountState;
 class Account;
 class AbstractCredentials;
 
-class AccountStateManager : public QObject {
-    Q_OBJECT
-public:
-    static AccountStateManager *instance();
-
-    AccountStateManager();
-    ~AccountStateManager();
-
-    AccountState *accountState() { return _accountState; }
-
-signals:
-    void accountStateAdded(AccountState *accountState);
-    void accountStateRemoved(AccountState *accountState);
-
-private slots:
-    void slotAccountAdded(AccountPtr account);
-
-private:
-    void setAccountState(AccountState *account);
-
-    AccountState *_accountState;
-};
-
 /**
  * @brief Extra info about an ownCloud server account.
  */
@@ -108,6 +85,9 @@ public:
     /// connection status and errors.
     void checkConnectivity();
 
+    // The name of the account as shown in the toolbar
+    QString displayName();
+
 private:
     void setState(State state);
 
@@ -120,9 +100,7 @@ protected Q_SLOTS:
     void slotCredentialsFetched(AbstractCredentials* creds);
 
 private:
-    // A strong reference here would keep Account and AccountState
-    // alive indefinitely since Account is the parent of AccountState.
-    QWeakPointer<Account> _account;
+    AccountPtr _account;
     QuotaInfo *_quotaInfo;
     State _state;
     ConnectionStatus _connectionStatus;

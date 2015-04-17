@@ -23,6 +23,7 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "protocolwidget.h"
+#include "accountmanager.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -47,8 +48,7 @@ namespace OCC {
 //
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent)
-    , _ui(new Ui::SettingsDialog)
-    , _accountSettings(new AccountSettings)
+    , _ui(new Ui::SettingsDialog), _gui(gui)
 
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -72,11 +72,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     setWindowTitle(Theme::instance()->appNameGUI());
 
-    QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
-    QAction *accountAction = toolBar->addAction(accountIcon, tr("Account"));
-    accountAction->setCheckable(true);
-    _ui->stack->addWidget(_accountSettings);
-
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolAction = toolBar->addAction(protocolIcon, tr("Activity"));
     _protocolAction->setCheckable(true);
@@ -95,29 +90,27 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actions.insert(accountAction, _accountSettings);
     _actions.insert(_protocolAction, protocolWidget);
     _actions.insert(generalAction, generalSettings);
     _actions.insert(networkAction, networkSettings);
 
     QActionGroup *group = new QActionGroup(this);
-    group->addAction(accountAction);
     group->addAction(_protocolAction);
     group->addAction(generalAction);
     group->addAction(networkAction);
     group->setExclusive(true);
     connect(group, SIGNAL(triggered(QAction*)), SLOT(slotSwitchPage(QAction*)));
 
-    connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
-    connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
-             gui, SLOT(slotFolderOpenAction(QString)));
-
-    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
-             _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
-
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
+            this, SLOT(accountAdded(AccountState*)));
+    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
+            this, SLOT(accountRemoved(AccountState*)));
+    foreach (auto ai , AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
 
     // default to Account
-    accountAction->setChecked(true);
+    toolBar->actions().at(0)->setChecked(true);
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
@@ -134,11 +127,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 SettingsDialog::~SettingsDialog()
 {
     delete _ui;
-}
-
-void SettingsDialog::setGeneralErrors(const QStringList &errors)
-{
-    _accountSettings->setGeneralErrors(errors);
 }
 
 // close event is not being called here
@@ -165,6 +153,45 @@ void SettingsDialog::showActivityPage()
         slotSwitchPage(_protocolAction);
     }
 }
+
+void SettingsDialog::accountAdded(AccountState *s)
+{
+    QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
+    auto toolBar = qobject_cast<QToolBar*>(layout()->menuBar());
+    Q_ASSERT(toolBar);
+    auto accountAction = new QAction(accountIcon, s->displayName(), this);
+    toolBar->insertAction(toolBar->actions().at(0), accountAction);
+    accountAction->setCheckable(true);
+    auto accountSettings = new AccountSettings(s, this);
+    _ui->stack->insertWidget(0 , accountSettings);
+    _actions.insert(accountAction, accountSettings);
+
+    auto group = findChild<QActionGroup*>(QString(), Qt::FindDirectChildrenOnly);
+    Q_ASSERT(group);
+    group->addAction(accountAction);
+
+    connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
+    connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
+             _gui, SLOT(slotFolderOpenAction(QString)));
+
+}
+
+void SettingsDialog::accountRemoved(AccountState *s)
+{
+    for (auto it = _actions.begin(); it != _actions.end(); ++it) {
+        auto as = qobject_cast<AccountSettings *>(*it);
+        if (!as) {
+            continue;
+        }
+        if (as->accountsState() == s) {
+            delete it.key();
+            delete it.value();
+            _actions.erase(it);
+            break;
+        }
+    }
+}
+
 
 
 } // namespace OCC

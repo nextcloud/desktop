@@ -14,17 +14,17 @@
 #pragma once
 
 #include "account.h"
+#include "accountstate.h"
 
 namespace OCC {
+
+typedef QSharedPointer<AccountState> AccountStatePtr;
 
 class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
     Q_OBJECT
 public:
     static AccountManager *instance();
     ~AccountManager() {}
-
-    void setAccount(AccountPtr account);
-    AccountPtr account() { return _account; }
 
     /**
      * Saves the account to a given settings file
@@ -37,13 +37,30 @@ public:
      */
     bool restore();
 
+    /**
+     * Add this account in the list of saved account.
+     * Typically called from the wizard
+     */
+    void addAccount(const AccountPtr &newAccount);
+
+    /**
+     * remove all accounts
+     */
+    void shutdown();
+
+    QList<AccountStatePtr> accounts() { return _accounts; }
+
+private:
+    void save(const AccountPtr &account);
+
+
 Q_SIGNALS:
-    void accountAdded(AccountPtr account);
-    void accountRemoved(AccountPtr account);
+    void accountAdded(AccountState *account);
+    void accountRemoved(AccountState *account);
 
 private:
     AccountManager() {}
-    AccountPtr _account;
+    QList<AccountStatePtr> _accounts;
 };
 
 }

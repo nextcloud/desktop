@@ -76,7 +76,7 @@ FolderMan::FolderMan(QObject *parent) :
     connect(&_startScheduledSyncTimer, SIGNAL(timeout()),
             SLOT(slotStartScheduledFolderSync()));
 
-    connect(AccountStateManager::instance(), SIGNAL(accountStateRemoved(AccountState*)),
+    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
             SLOT(slotRemoveFoldersForAccount(AccountState*)));
 }
 
@@ -200,15 +200,6 @@ int FolderMan::setupFolders()
   //We need to include hidden files just in case the alias starts with '.'
   dir.setFilter(QDir::Files | QDir::Hidden);
   QStringList list = dir.entryList();
-
-  if( list.count() == 0 ) {
-      // maybe the account was just migrated.
-      AccountPtr acc = AccountManager::instance()->account();
-      if ( acc && acc->wasMigrated() ) {
-          AccountMigrator accMig;
-          list = accMig.migrateFolderDefinitons();
-      }
-  }
 
   foreach ( const QString& alias, list ) {
     Folder *f = setupFolderFromConfigFile( alias );
@@ -354,7 +345,8 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         targetPath.remove(0,1);
     }
 
-    AccountState* accountState = AccountStateManager::instance()->accountState();
+#warning fixme
+    AccountState* accountState = AccountManager::instance()->accounts().value(0).data();
     if (!accountState) {
         qWarning() << "can't create folder without an account";
         return 0;

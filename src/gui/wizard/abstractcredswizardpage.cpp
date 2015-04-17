@@ -25,13 +25,7 @@ void AbstractCredentialsWizardPage::cleanupPage()
 {
     // Reset the credentials when the 'Back' button is used.
 
-    // Unfortunately this code is also run when the Wizard finishes
-    // prematurely with 'Skip Folder Configuration'. Therefore we need to
-    // avoid resetting credentials on active accounts.
     AccountPtr account = static_cast<OwncloudWizard*>(wizard())->account();
-    if (account == AccountManager::instance()->account())
-        return;
-
     AbstractCredentials *creds = account->credentials();
     if (creds) {
         if (!creds->inherits("DummyCredentials")) {

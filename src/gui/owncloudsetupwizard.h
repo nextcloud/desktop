@@ -79,7 +79,6 @@ private:
     void createRemoteFolder();
     void finalizeSetup( bool );
     bool ensureStartFromScratch(const QString &localFolder);
-    void replaceDefaultAccountWith(AccountPtr newAccount);
     void applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply* reply);
 

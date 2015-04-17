@@ -123,13 +123,7 @@ Application::Application(int &argc, char **argv) :
 
     connect(this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseMessage(QString, QObject*)));
 
-    // Create the account info manager to ensure it's listening to the
-    // account manager.
-    AccountStateManager::instance();
-
-    if (AccountManager::instance()->restore()) {
-        AccountManager::instance()->account()->setSslErrorHandler(new SslDialogErrorHandler);
-    }
+    AccountManager::instance()->restore();
 
     FolderMan::instance()->setSyncEnabled(false);
 
@@ -149,12 +143,12 @@ Application::Application(int &argc, char **argv) :
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
 
-    connect(AccountStateManager::instance(), SIGNAL(accountStateAdded(AccountState*)),
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountStateAdded(AccountState*)));
-    connect(AccountStateManager::instance(), SIGNAL(accountStateRemoved(AccountState*)),
+    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
             SLOT(slotAccountStateRemoved(AccountState*)));
-    if (AccountState *ai = AccountStateManager::instance()->accountState()) {
-        slotAccountStateAdded(ai);
+    foreach (auto ai , AccountManager::instance()->accounts()) {
+        slotAccountStateAdded(ai.data());
     }
 
     connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString, bool)),
@@ -180,22 +174,26 @@ Application::Application(int &argc, char **argv) :
 Application::~Application()
 {
     // Remove the account from the account manager so it can be deleted.
-    AccountManager::instance()->setAccount(AccountPtr());
+    AccountManager::instance()->shutdown();
 }
 
 void Application::slotLogin()
 {
-    AccountState *a = AccountStateManager::instance()->accountState();
-    if (a) {
+    auto list = AccountManager::instance()->accounts();
+    if (!list.isEmpty()) {
         FolderMan::instance()->setupFolders();
+    }
+
+    foreach (const auto &a, list) {
         a->setSignedOut(false);
     }
 }
 
 void Application::slotLogout()
 {
-    AccountState* ai = AccountStateManager::instance()->accountState();
-    if (ai) {
+    auto list = AccountManager::instance()->accounts();
+
+    foreach (const auto &ai, list) {
         AccountPtr a = ai->account();
         // invalidate & forget token/password
         a->credentials()->invalidateToken();
@@ -206,6 +204,9 @@ void Application::slotLogout()
         ai->setSignedOut(true);
         // show result
         _gui->slotComputeOverallSyncStatus();
+    }
+    if (!list.isEmpty()) {
+        FolderMan::instance()->setupFolders();
     }
 }
 
@@ -244,12 +245,12 @@ void Application::slotStartUpdateDetector()
 
 void Application::slotCheckConnection()
 {
-    AccountState *accountState = AccountStateManager::instance()->accountState();
-
-    if( accountState ) {
+    auto list = AccountManager::instance()->accounts();
+    foreach (const auto &accountState , list) {
         accountState->checkConnectivity();
+    }
 
-    } else {
+    if (list.isEmpty()) {
         // let gui open the setup wizard
         _gui->slotOpenSettingsDialog( true );
 
@@ -301,10 +302,13 @@ void Application::slotUpdateConnectionErrors(int accountState)
         _startupNetworkError = accountState == AccountState::NetworkError;
     }
 
+#warning FIXME
+#if 0
     AccountState *as = AccountStateManager::instance()->accountState();
     if (as) {
         _gui->setConnectionErrors( isConnected, as->connectionErrors() );
     }
+#endif
 }
 
 void Application::slotownCloudWizardDone( int res )

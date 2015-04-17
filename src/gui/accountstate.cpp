@@ -21,39 +21,6 @@
 
 namespace OCC {
 
-Q_GLOBAL_STATIC(AccountStateManager, g_accountStateManager)
-
-AccountStateManager *AccountStateManager::instance()
-{
-    return g_accountStateManager();
-}
-
-AccountStateManager::AccountStateManager()
-    : _accountState(0)
-{
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountPtr)),
-            SLOT(slotAccountAdded(AccountPtr)));
-}
-
-AccountStateManager::~AccountStateManager()
-{}
-
-void AccountStateManager::setAccountState(AccountState *accountState)
-{
-    if (_accountState) {
-        emit accountStateRemoved(_accountState);
-    }
-    _accountState = accountState;
-    if (accountState) {
-        emit accountStateAdded(accountState);
-    }
-}
-
-void AccountStateManager::slotAccountAdded(AccountPtr account)
-{
-    setAccountState(new AccountState(account));
-}
-
 AccountState::AccountState(AccountPtr account)
     : QObject(account.data())
     , _account(account)
@@ -78,7 +45,7 @@ AccountState::~AccountState()
 
 AccountPtr AccountState::account() const
 {
-    return _account.toStrongRef();
+    return _account;
 }
 
 AccountState::ConnectionStatus AccountState::connectionStatus() const
@@ -266,5 +233,13 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
 
     checkConnectivity();
 }
+
+QString AccountState::displayName()
+{
+    auto user = account()->credentials()->user();
+    auto url = account()->url();
+    return tr("%1@%2").arg(user, url.host());
+}
+
 
 } // namespace OCC

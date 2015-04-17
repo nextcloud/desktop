@@ -45,7 +45,7 @@ class AccountSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AccountSettings(QWidget *parent = 0);
+    explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
     ~AccountSettings();
 
 
@@ -66,6 +66,7 @@ public slots:
     void slotAccountStateChanged(int state);
 
     void setGeneralErrors( const QStringList& errors );
+    AccountState* accountsState() { return _accountState; };
 
 protected slots:
     void slotAddFolder();
@@ -92,7 +93,6 @@ private:
     QLabel *_quotaLabel;
 private slots:
     void slotFolderSyncStateChange();
-    void slotAccountStateChanged(AccountState*);
     void slotCustomContextMenuRequested(const QPoint&);
 };
 

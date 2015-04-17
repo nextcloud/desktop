@@ -24,6 +24,8 @@ class QStandardItemModel;
 
 namespace OCC {
 
+class AccountState;
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -41,7 +43,6 @@ public:
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
-    void setGeneralErrors( const QStringList& errors );
 
 public slots:
     void showActivityPage();
@@ -52,12 +53,14 @@ protected:
     void accept() Q_DECL_OVERRIDE;
 
 private slots:
+    void accountAdded(AccountState *);
+    void accountRemoved(AccountState *);
 
 private:
     Ui::SettingsDialog * const _ui;
     QHash<QAction*, QWidget*> _actions;
-    AccountSettings * const _accountSettings;
     QAction * _protocolAction;
+    ownCloudGui *_gui;
 };
 
 }
