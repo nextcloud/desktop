@@ -26,6 +26,8 @@
 
 #include "csync_private.h"
 
+#include "csync_version.h"
+
 
 /*
  * helper method to build up a user text for SSL problems, called from the
@@ -437,8 +439,8 @@ int dav_connect(CSYNC *csyncCtx,  const char *base_url) {
     // Should never take more than some seconds, 30 is really a max.
     ne_set_connect_timeout(ctx->dav_session.ctx, 30);
 
-    snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) csyncoC/%s",
-              csync_owncloud_get_platform(), CSYNC_STRINGIFY( LIBCSYNC_VERSION ));
+    snprintf( uaBuf, sizeof(uaBuf), "Mozilla/5.0 (%s) mirall/%s (csyncoC)",
+              CSYNC_STRINGIFY( MIRALL_VERSION ), csync_owncloud_get_platform() );
     ne_set_useragent( ctx->dav_session.ctx, uaBuf);
     ne_set_server_auth(ctx->dav_session.ctx, authentication_callback_by_neon, ctx);
 
