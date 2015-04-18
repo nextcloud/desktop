@@ -341,7 +341,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="420"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Interrumpido por el usuario</translation>
     </message>
 </context>
 <context>
@@ -1852,7 +1852,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
