@@ -19,6 +19,7 @@
 #include <QFile>
 #include <QDateTime>
 #include <QNetworkCookie>
+#include <QDataStream>
 
 namespace OCC {
 
