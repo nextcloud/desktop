@@ -653,7 +653,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Autenticazione non riuscita durante l&apos;accesso a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -1238,12 +1238,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>La richiesta autenticata al server è stata rediretta a &apos;%1&apos;. L&apos;URL è errato, il server non è configurato correttamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Ricevuta una risposta non valida a una richiesta webdav autenticata.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
@@ -1258,7 +1258,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Creazione della cartella locale di sincronizzazione %1... </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
@@ -1513,7 +1513,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Codice HTTP errato restituito dal server. Atteso 204, ma ricevuto &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1521,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Codice HTTP errato restituito dal server. Atteso 201, ma ricevuto &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1544,7 +1544,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Codice HTTP errato restituito dal server. Atteso 201, ma ricevuto &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1878,7 +1878,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Il file non può essere condiviso poiché è stato condiviso senza il permesso di condivisione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
@@ -1914,7 +1914,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un file di sincronizzazione con lo stesso nome esiste già. Il file non può essere registrato per la sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
@@ -2288,7 +2288,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync non è riuscito ad accedere</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
@@ -2870,7 +2870,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="251"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Compilato dalla revisione Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; il %3, %4 utilizzando Qt %5, %6&lt;/small&gt;&lt;p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2888,7 +2888,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Scaricato, file in conflitto rinominato</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>

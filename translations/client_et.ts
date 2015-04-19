@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>Loo kaust</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -234,37 +234,37 @@ Aega kokku jäänud %5</translation>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSL kliendisertifikaadiga autentimine</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>See server nõuab tõenäoliselt SSL kliendisertifikaati</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaat:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>Lehitse...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaadi parool:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="37"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>Vali sertifikaat</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="37"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikaadifailid (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -638,7 +638,7 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="268"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Loo kaugkaust</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="269"/>
@@ -859,7 +859,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Otsi;</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
@@ -1157,7 +1157,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="298"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="319"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1205,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="163"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Edasi &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="295"/>
@@ -1571,7 +1571,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="180"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Fail eemaldatud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="194"/>
@@ -1859,7 +1859,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Kaust: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
@@ -1890,7 +1890,7 @@ Selle kasutamine pole soovitatav.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="521"/>
         <location filename="../src/gui/sharedialog.cpp" line="522"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Jaga linki</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="540"/>
@@ -2825,22 +2825,22 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="113"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="116"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>

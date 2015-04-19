@@ -310,7 +310,7 @@ Totaal resterende tijd %5</translation>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Authenticatiefout: Gebruikersnaam of wachtwoord is onjuist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
@@ -653,7 +653,7 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Authenticatie mislukt bij benaderen %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -694,12 +694,12 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Waarschuwing:&lt;/b&gt;  %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Waarschuwing:&lt;/b&gt; </translation>
     </message>
 </context>
 <context>
@@ -859,7 +859,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zoeken:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
@@ -899,7 +899,7 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon niet schrijven naar logbestand %1</translation>
     </message>
 </context>
 <context>
@@ -1057,13 +1057,14 @@ Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat ee
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe %1 update is klaar</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Er wordt een nieuwe update voor %1 geïnstalleerd. De updater kan
+vragen om extra autorisaties tijdens installatie.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1131,7 +1132,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sync directory &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1238,12 +1239,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>De geauthentiseerde aanvraag voor de server werd omgeleid naar &apos;%1&apos;. De URL is onjuist, de server is verkeerd geconfigureerd.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Er was een ongeldig antwoord op een geauthenticeerde webdav opvraging</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
@@ -1258,7 +1259,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Creëren lokale sync map %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
@@ -1451,12 +1452,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Herstel mislukte: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>Doorgaan met zwarte lijst:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
@@ -1482,12 +1483,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="60"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij verwijderen &apos;%1&quot;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
         <source>Could not remove directory &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>Kon directory &apos;%1&apos; niet verwijderen;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="86"/>
@@ -1513,7 +1514,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht was 204, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1522,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht was 201, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1544,7 +1545,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Foutieve HTTP code ontvangen van de server. Verwacht werd 201, maar ontvangen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1733,12 +1734,12 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Momenteel geen submappen op de server.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het laden van de lijst met submappen.</translation>
     </message>
 </context>
 <context>
@@ -1818,17 +1819,17 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>OwnCloud Pad:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Instellen &amp;wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Instellen &amp;vervaldatum in</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -1838,7 +1839,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Link &amp;kopiëren</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -1863,12 +1864,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Map: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Wachtwoord beveiligd</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="196"/>
@@ -1878,12 +1879,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
         <source>Public sh&amp;aring requires a password:</source>
-        <translation type="unfinished"/>
+        <translation>Openbaar de&amp;len vergt een wachtwoord:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="469"/>
@@ -1894,7 +1895,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="521"/>
         <location filename="../src/gui/sharedialog.cpp" line="522"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>$Delen link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="540"/>
@@ -1909,17 +1910,17 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="574"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Kan geen map vinden om naar te uploaden.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Er bestaat al een sync bestand met dezelfde naam. Het bestand kan niet worden aangemeld voor sync.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand kan niet worden gesynchroniseerd.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2288,22 +2289,22 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync kreeg geen toegang</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>De dienst is tijdelijk niet beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het openen van een directory</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Een interne fout met nummer %1 is opgetreden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
@@ -2333,7 +2334,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam is te lang.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -2870,7 +2871,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="251"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Gebouwd van Git revisie &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; op %3, %4 gebruik makend van Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2888,7 +2889,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Gedownloaded, conflicterend bestand hernoemd</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>

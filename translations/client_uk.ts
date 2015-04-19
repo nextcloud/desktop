@@ -310,7 +310,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Помилка автентифікації: ім&apos;я користувача або пароль невірні.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
@@ -1735,12 +1735,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>На сервері зараз немає підтек.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Виникла помилка, поки завантажувався перелік підтек.</translation>
     </message>
 </context>
 <context>
@@ -1820,7 +1820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Шлях до ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
@@ -1880,7 +1880,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Цей файл неможливо поширити, бо ним поділилися без права на поширення.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
@@ -1911,17 +1911,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="574"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо знайти папку для завантаження в неї.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Файл синхронізації з такою ж назвою існує. Цей файл неможливо зареєструвати для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Файл неможливо синхронізувати</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2295,12 +2295,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Служба тимчасово недоступна</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>Виникла помилка під час відкривання теки</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
@@ -2335,7 +2335,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Шлях до файлу занадто довгий.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -2890,7 +2890,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Завантажено, перейменовано конфліктний файл</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
