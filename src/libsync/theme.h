@@ -15,6 +15,7 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include <QObject>
 #include "syncresult.h"
 
 
