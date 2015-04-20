@@ -653,7 +653,7 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Erreur d&apos;authentification lors de l&apos;accès à %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -1229,7 +1229,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="196"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation>Délai dépassé dans la tentative de connexion de %1 à %2.</translation>
+        <translation>Délai d&apos;attente dépassé lors de la connexion à %1 sur %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="207"/>
@@ -1346,7 +1346,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Impossible de supprimer et de sauvegarder le dossier parce que ce dossier ou un de ces fichiers est ouvert dans un autre programme. Veuillez fermer le dossier ou le fichier et cliquez sur ré-essayer ou annuler l&apos;installation.</translation>
+        <translation>Impossible de supprimer et de sauvegarder le dossier parce que ce dossier ou un de ses fichiers est ouvert dans un autre programme. Veuillez fermer le dossier ou le fichier et ré-essayer, ou annuler l&apos;installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
@@ -1398,7 +1398,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="143"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>L&apos;URL interrogé a renvoyé une réponse json invalide</translation>
+        <translation>L&apos;URL interrogéé a renvoyé une réponse json non valide</translation>
     </message>
 </context>
 <context>
@@ -1583,12 +1583,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="477"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de confit.</translation>
+        <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de conflit.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="511"/>
         <source>Poll URL missing</source>
-        <translation>URL de sondage manquant</translation>
+        <translation>URL de sondage manquante</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="534"/>
@@ -1846,12 +1846,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
         <source>Set password</source>
-        <translation>Configurer le mot de passe</translation>
+        <translation>Définir le mot de passe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="649"/>
         <source>%1 path: %2</source>
-        <translation>%1 chemin : %2</translation>
+        <translation>Chemin %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
@@ -1897,7 +1897,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="521"/>
         <location filename="../src/gui/sharedialog.cpp" line="522"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Partager par lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="540"/>
@@ -1917,7 +1917,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un fichier synchronisé avec le même nom existe déjà. Le fichier ne peut être ajouté à la synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
@@ -1942,7 +1942,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation>La synchronisation du fichier n&apos;est pas encore réalisée avec succès.</translation>
+        <translation>La synchronisation du fichier n&apos;a pas encore pu être effectuée.</translation>
     </message>
 </context>
 <context>
@@ -2291,7 +2291,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync n&apos;a pas pu accéder à</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
@@ -2891,7 +2891,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Téléchargé. Le fichier en conflit a été renommé.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
