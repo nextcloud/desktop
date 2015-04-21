@@ -241,6 +241,11 @@ QString Theme::updateCheckUrl() const
     return QLatin1String("https://updates.owncloud.com/client/");
 }
 
+QString Theme::transmissionChecksum() const
+{
+    return QString::null; // No transmission by default.
+}
+
 QString Theme::gitSHA1() const
 {
     QString devString;

@@ -122,7 +122,15 @@ int ConfigFile::timeout() const
 QString ConfigFile::transmissionChecksum() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(transmissionChecksumC), QString()).toString();
+
+    QString checksum = settings.value(QLatin1String(transmissionChecksumC), QString()).toString();
+
+    if( checksum.isEmpty() ) {
+        // if the config file setting is empty, maybe the Branding requires it.
+        checksum = Theme::instance()->transmissionChecksum();
+    }
+
+    return checksum;
 }
 
 void ConfigFile::setOptionalDesktopNotifications(bool show)
