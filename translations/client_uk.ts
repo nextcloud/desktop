@@ -2290,7 +2290,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync не вдалося отримати доступ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
