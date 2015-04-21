@@ -18,9 +18,6 @@ and then use their package managers to install the desktop sync client. Linux
 users will also update their sync clients via package manager, and the client 
 will display a notification when an update is available.
 
-Linux users must also have a password manager enabled, such as GNOME Keyring or 
-KWallet, so that the sync client can login automatically.
-
 Improvements and New Features
 -----------------------------
 
@@ -34,6 +31,9 @@ including:
 * File manager integration: share files from Windows Explorer, Mac OS X Finder, 
   and Nautilus on Linux.
 * Faster uploads and downloads.
+
+.. note:: When you upgrade from 1.7, restart Windows to ensure that all new 
+   features are visible.
 
 Installation
 ------------
