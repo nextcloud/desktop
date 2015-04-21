@@ -49,7 +49,6 @@ class ShareDialog;
 
 class AbstractCredentials;
 class QuotaInfo;
-class MirallAccessManager;
 class SyncResult;
 
 class ShareDialog : public QDialog
