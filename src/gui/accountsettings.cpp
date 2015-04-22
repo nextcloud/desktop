@@ -119,8 +119,6 @@ AccountSettings::AccountSettings(QWidget *parent) :
     connect(folderMan, SIGNAL(folderListLoaded(Folder::Map)),
             this, SLOT(setFolderList(Folder::Map)));
     setFolderList(FolderMan::instance()->map());
-
-    _lastProgressUpdate.start();
 }
 
 void AccountSettings::slotAccountStateChanged(AccountState *newAccountState)
@@ -608,15 +606,6 @@ void AccountSettings::slotSetProgress(const QString& folder, const ProgressInfo 
         item->setData( tr("Discovering '%1'").arg(progress._currentDiscoveredFolder) , FolderStatusDelegate::SyncProgressItemString );
         return;
     }
-
-    // Don't update progess too often.
-    const int msBetweenProgressUpdates = 500;
-    if (_lastProgressUpdate.elapsed() < msBetweenProgressUpdates) {
-        qDebug() << "skip progress";
-        return;
-    }
-    _lastProgressUpdate.restart();
-
 
     if(!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {

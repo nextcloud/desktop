@@ -98,7 +98,6 @@ private:
     QStringList _generalErrors;
     bool _wasDisabledBefore;
     AccountState *_accountState;
-    QElapsedTimer _lastProgressUpdate;
 private slots:
     void slotFolderSyncStateChange();
     void slotAccountStateChanged(AccountState*);
