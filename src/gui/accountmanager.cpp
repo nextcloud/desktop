@@ -84,8 +84,7 @@ bool AccountManager::restore()
     }
 
     if (!settings->childKeys().isEmpty()) {
-        acc = AccountPtr(new Account);
-        acc->setSharedThis(acc);
+        acc = Account::create();
 
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
 
