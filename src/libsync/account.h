@@ -62,6 +62,9 @@ public:
     void setSharedThis(AccountPtr sharedThis);
     AccountPtr sharedFromThis();
 
+    /// The name of the account as shown in the toolbar
+    QString displayName() const;
+
     /**
      * @brief Checks the Account instance is different from \param other
      *

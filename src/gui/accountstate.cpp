@@ -234,12 +234,5 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
     checkConnectivity();
 }
 
-QString AccountState::displayName()
-{
-    auto user = account()->credentials()->user();
-    auto url = account()->url();
-    return tr("%1@%2").arg(user, url.host());
-}
-
 
 } // namespace OCC

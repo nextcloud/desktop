@@ -85,9 +85,6 @@ public:
     /// connection status and errors.
     void checkConnectivity();
 
-    // The name of the account as shown in the toolbar
-    QString displayName();
-
 private:
     void setState(State state);
 

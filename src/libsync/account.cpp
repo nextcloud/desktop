@@ -71,6 +71,12 @@ AccountPtr Account::sharedFromThis()
 }
 
 
+QString Account::displayName() const
+{
+    auto user = _credentials->user();
+    return tr("%1@%2").arg(user, _url.host());
+}
+
 static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)
 {
     return (url1.host() != url2.host() ||

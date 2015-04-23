@@ -159,7 +159,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
     auto toolBar = qobject_cast<QToolBar*>(layout()->menuBar());
     Q_ASSERT(toolBar);
-    auto accountAction = new QAction(accountIcon, s->displayName(), this);
+    auto accountAction = new QAction(accountIcon, s->account()->displayName(), this);
     toolBar->insertAction(toolBar->actions().at(0), accountAction);
     accountAction->setCheckable(true);
     auto accountSettings = new AccountSettings(s, this);
