@@ -639,15 +639,15 @@ void ownCloudGui::raiseDialog( QWidget *raiseWidget )
 
 void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed)
 {
-#warning FIXME
-    auto account = AccountManager::instance()->accounts().value(0);
-    if (!account) {
-        qDebug() << "Could not open share dialog because no account is configured";
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qDebug() << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
     }
+    const auto accountState = folder->accountState();
 
-    qDebug() << Q_FUNC_INFO << "Opening share dialog";
-    ShareDialog *w = new ShareDialog(account->account(), sharePath, localPath, resharingAllowed);
+    qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
+    ShareDialog *w = new ShareDialog(accountState->account(), sharePath, localPath, resharingAllowed);
     w->getShares();
     w->setAttribute( Qt::WA_DeleteOnClose, true );
     raiseDialog(w);
