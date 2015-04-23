@@ -40,13 +40,34 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup("Accounts"));
+
+    // If there are no accounts, check the old format.
+    if (settings->childGroups().isEmpty()) {
+        return restoreFromLegacySettings();
+    }
+
+    foreach (const auto& accountId, settings->childGroups()) {
+        settings->beginGroup(accountId);
+        if (auto acc = load(settings)) {
+            acc->_id = accountId;
+            addAccount(acc);
+        }
+        settings->endGroup();
+    }
+
+    return true;
+}
+
+bool AccountManager::restoreFromLegacySettings()
+{
     // try to open the correctly themed settings
     QScopedPointer<QSettings> settings(Account::settingsWithGroup(Theme::instance()->appName()));
 
-    AccountPtr acc;
     bool migratedCreds = false;
 
     // if the settings file could not be opened, the childKeys list is empty
+    // then try to load settings from a very old place
     if( settings->childKeys().isEmpty() ) {
         // Now try to open the original ownCloud settings to see if they exist.
         QString oCCfgFile = QDir::fromNativeSeparators( settings->fileName() );
@@ -72,7 +93,7 @@ bool AccountManager::restore()
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                << (oCUrl == overrideUrl ? "Yes" : "No");
+                         << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
                     migratedCreds = true;
                     settings.reset( oCSettings );
@@ -83,44 +104,31 @@ bool AccountManager::restore()
         }
     }
 
+    // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
-        acc = Account::create();
-
-        acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
-
-        // We want to only restore settings for that auth type and the user value
-        acc->_settingsMap.insert(QLatin1String(userC), settings->value(userC));
-        QString authTypePrefix = settings->value(authTypeC).toString() + "_";
-        Q_FOREACH(QString key, settings->childKeys()) {
-            if (!key.startsWith(authTypePrefix))
-                continue;
-            acc->_settingsMap.insert(key, settings->value(key));
+        if (auto acc = load(settings)) {
+            if (migratedCreds) {
+                acc->setMigrated(true);
+            }
+            addAccount(acc);
+            return true;
         }
-
-        acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
-
-        // now the cert, it is in the general group
-        settings->beginGroup(QLatin1String("General"));
-        acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
-        acc->setMigrated(migratedCreds);
-        acc->setSslErrorHandler(new SslDialogErrorHandler);
-        addAccount(acc);
-        return true;
     }
     return false;
 }
 
-
 void AccountManager::save()
 {
-    foreach (const auto &acc , _accounts) {
-        save(acc->account());
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup("Accounts"));
+    foreach (const auto &acc, _accounts) {
+        settings->beginGroup(acc->account()->id());
+        save(acc->account(), settings);
+        settings->endGroup();
     }
 }
 
-void AccountManager::save(const AccountPtr& acc)
+void AccountManager::save(const AccountPtr& acc, QScopedPointer<QSettings>& settings)
 {
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup(Theme::instance()->appName()));
     settings->setValue(QLatin1String(urlC), acc->_url.toString());
     if (acc->_credentials) {
         acc->_credentials->persist();
@@ -145,6 +153,7 @@ void AccountManager::save(const AccountPtr& acc)
     if (!certs.isEmpty()) {
         settings->setValue( QLatin1String(caCertsKeyC), certs );
     }
+    settings->endGroup();
 
     // Save cookies.
     if (acc->_am) {
@@ -154,6 +163,31 @@ void AccountManager::save(const AccountPtr& acc)
             jar->save();
         }
     }
+}
+
+AccountPtr AccountManager::load(const QScopedPointer<QSettings>& settings)
+{
+    auto acc = Account::create();
+
+    acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
+
+    // We want to only restore settings for that auth type and the user value
+    acc->_settingsMap.insert(QLatin1String(userC), settings->value(userC));
+    QString authTypePrefix = settings->value(authTypeC).toString() + "_";
+    Q_FOREACH(QString key, settings->childKeys()) {
+        if (!key.startsWith(authTypePrefix))
+            continue;
+        acc->_settingsMap.insert(key, settings->value(key));
+    }
+
+    acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
+
+    // now the cert, it is in the general group
+    settings->beginGroup(QLatin1String("General"));
+    acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
+    acc->setSslErrorHandler(new SslDialogErrorHandler);
+    settings->endGroup();
+    return acc;
 }
 
 void AccountManager::addAccount(const AccountPtr& newAccount)

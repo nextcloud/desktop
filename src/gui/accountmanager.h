@@ -27,12 +27,12 @@ public:
     ~AccountManager() {}
 
     /**
-     * Saves the account to a given settings file
+     * Saves the accounts to a given settings file
      */
     void save();
 
     /**
-     * Creates an account object from from a given settings file.
+     * Creates account objects from from a given settings file.
      * return true if the account was restored
      */
     bool restore();
@@ -51,7 +51,9 @@ public:
     QList<AccountStatePtr> accounts() { return _accounts; }
 
 private:
-    void save(const AccountPtr &account);
+    void save(const AccountPtr& account, QScopedPointer<QSettings>& settings);
+    AccountPtr load(const QScopedPointer<QSettings>& settings);
+    bool restoreFromLegacySettings();
 
 
 Q_SIGNALS:
