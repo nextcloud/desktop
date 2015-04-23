@@ -114,8 +114,12 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (_credentials) {
         credentials()->deleteLater();
     }
-    cred->setAccount(this);
+
+    // The order for these two is important! Reading the credential's
+    // settings accesses the account as well as account->_credentials
     _credentials = cred;
+    cred->setAccount(this);
+
     _am = _credentials->getQNAM();
     if (jar) {
         _am->setCookieJar(jar);

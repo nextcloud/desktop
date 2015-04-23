@@ -186,6 +186,14 @@ QString HttpCredentials::certificatePasswd() const
     return _certificatePasswd;
 }
 
+void HttpCredentials::setAccount(Account* account)
+{
+    AbstractCredentials::setAccount(account);
+    if (_user.isEmpty()) {
+        fetchUser();
+    }
+}
+
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
     AccessManager* qnam = new HttpCredentialsAccessManager(this);

@@ -88,7 +88,6 @@ bool AccountManager::restore()
         acc->setSharedThis(acc);
 
         acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
-        acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
 
         // We want to only restore settings for that auth type and the user value
         acc->_settingsMap.insert(QLatin1String(userC), settings->value(userC));
@@ -98,6 +97,8 @@ bool AccountManager::restore()
                 continue;
             acc->_settingsMap.insert(key, settings->value(key));
         }
+
+        acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
 
         // now the cert, it is in the general group
         settings->beginGroup(QLatin1String("General"));

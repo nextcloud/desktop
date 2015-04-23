@@ -56,6 +56,9 @@ public:
     QString certificatePath() const;
     QString certificatePasswd() const;
 
+    // To fetch the user name as early as possible
+    void setAccount(Account* account) Q_DECL_OVERRIDE;
+
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
     void slotReadJobDone(QKeychain::Job*);
