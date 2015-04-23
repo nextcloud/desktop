@@ -61,7 +61,7 @@ public:
 
     mutable QVector<SubFolderInfo> _folders;
 
-    enum ItemType { RootFolder, SubFolder, AddButton, SelectiveSyncText };
+    enum ItemType { RootFolder, SubFolder, AddButton/*, SelectiveSyncText*/ };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
