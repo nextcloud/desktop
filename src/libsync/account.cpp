@@ -32,6 +32,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QSslKey>
+#include <QUuid>
 
 namespace OCC {
 
@@ -45,6 +46,7 @@ Account::Account(QObject *parent)
     , _wasMigrated(false)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
+    _id = QUuid::createUuid().toString();
 }
 
 AccountPtr Account::create()
@@ -75,6 +77,11 @@ QString Account::displayName() const
 {
     auto user = _credentials->user();
     return tr("%1@%2").arg(user, _url.host());
+}
+
+QString Account::id() const
+{
+    return _id;
 }
 
 static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)

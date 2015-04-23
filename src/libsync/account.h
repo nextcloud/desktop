@@ -65,6 +65,9 @@ public:
     /// The name of the account as shown in the toolbar
     QString displayName() const;
 
+    /// The internal id of the account.
+    QString id() const;
+
     /**
      * @brief Checks the Account instance is different from \param other
      *
@@ -150,6 +153,7 @@ private:
     Account(QObject *parent = 0);
 
     QWeakPointer<Account> _sharedThis;
+    QString _id;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
