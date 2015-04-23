@@ -1436,7 +1436,7 @@ Uporaba ni priporočljiva.</translation>
         <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Datoteke ni mogoče v celoti prejeti.</translation>
     </message>

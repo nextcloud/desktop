@@ -1436,7 +1436,7 @@ It is not advisable to use it.</source>
         <translation>Файл %1 не завантажено, через локальний конфлікт ім&apos;я! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Файл не може бути завантажений повністю.</translation>
     </message>

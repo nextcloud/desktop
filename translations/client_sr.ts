@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation>Изаберите шта синхронизовати</translation>
+        <translation>Избор шта синхронизовати</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -295,7 +295,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="62"/>
         <source>No ownCloud account configured</source>
-        <translation>Нема подешеног ОунКлауд налога</translation>
+        <translation>Нема подешеног оунКлауд налога</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="118"/>
@@ -707,12 +707,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="123"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>Ниједна е-етикета није примљена са сервера, проверите Proxy/Gateway</translation>
+        <translation>Нема е-ознаке са сервера. Проверите прокси или мрежни излаз</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="130"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Добили смо различиту е-етикету за наставак. Покушајте поново касније.</translation>
+        <translation>Добијена је различита е-ознака за наставак преноса. Покушаћу поново следећи пут.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
@@ -792,7 +792,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Уредник фајлова за игнорисање</translation>
+        <translation>Уређивање фајлова за игнорисање</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="53"/>
@@ -831,7 +831,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="106"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Додај нови шаблон за игнорисање:</translation>
+        <translation>Додајте нови шаблон за игнорисање:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
@@ -841,12 +841,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="129"/>
         <source>Edit ignore pattern:</source>
-        <translation>Уреди шаблон за игнорисање:</translation>
+        <translation>Уредите шаблон за игнорисање:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Овај унос је са система на „%1“ и не може се овде изменити.</translation>
+        <translation>Овај унос је системски из „%1“ и не може се овде изменити.</translation>
     </message>
 </context>
 <context>
@@ -966,17 +966,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Без проксија</translation>
+        <translation>без проксија</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Системски прокси</translation>
+        <translation>системски прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Ручно наведи прокси</translation>
+        <translation>ручно наведи прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -991,7 +991,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation>Прокси захтева аутентификацију</translation>
+        <translation>прокси захтева аутентификацију</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -1002,7 +1002,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation>Ограничи на</translation>
+        <translation>ограничи на</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="218"/>
@@ -1014,7 +1014,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/gui/networksettings.ui" line="227"/>
         <location filename="../src/gui/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation>Без ограничења</translation>
+        <translation>без ограничења</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="272"/>
@@ -1024,22 +1024,22 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation>Сам ограничи</translation>
+        <translation>сам ограничи</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Назив прокси сервера</translation>
+        <translation>назив прокси сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>Корисничко име за прокси</translation>
+        <translation>корисничко име за прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>Лозинка за прокси</translation>
+        <translation>лозинка за прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
@@ -1137,7 +1137,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Упозорење:&lt;/strong&gt; Тренутно имате више конфигурисаних фасцикли. Ако наставите са тренутним поставкама, подешавања фасцикли ће бити одбачена и биће формирана синхронизација за појединачну основну фасциклу!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Упозорење:&lt;/strong&gt; Тренутно имате више подешених фасцикли. Ако наставите са тренутним поставкама, подешавања фасцикли ће бити одбачена и биће направљена јединствена синхронизација за корену фасциклу!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="149"/>
@@ -1254,7 +1254,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Локална фасцикла %1 већ постоји, одређујем је за синхронизацију.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Локална фасцикла %1 већ постоји. Одређујем је за синхронизацију.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
@@ -1437,7 +1437,7 @@ It is not advisable to use it.</source>
         <translation>Фајл %1 се не може преузети јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Фајл није могао бити преузет у потпуности.</translation>
     </message>
