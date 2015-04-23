@@ -22,7 +22,7 @@
 namespace OCC {
 
 AccountState::AccountState(AccountPtr account)
-    : QObject(account.data())
+    : QObject()
     , _account(account)
     , _quotaInfo(0)
     , _state(AccountState::Disconnected)
@@ -41,6 +41,7 @@ AccountState::AccountState(AccountPtr account)
 
 AccountState::~AccountState()
 {
+    qDebug() << "Account state for account" << account()->displayName() << "deleted";
 }
 
 AccountPtr AccountState::account() const
