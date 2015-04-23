@@ -212,10 +212,12 @@ void Application::slotLogout()
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    disconnect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
     disconnect(accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
-    connect(accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
-            _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
+    if (_gui) {
+        disconnect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+        disconnect(accountState->quotaInfo(), SIGNAL(quotaUpdated(qint64,qint64)),
+                   _gui, SLOT(slotRefreshQuotaDisplay(qint64,qint64)));
+    }
 }
 
 void Application::slotAccountStateAdded(AccountState *accountState)
