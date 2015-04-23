@@ -264,6 +264,7 @@ void Application::slotAccountStateChanged(int state)
     switch (state) {
     case AccountState::Connected:
         qDebug() << "Enabling sync scheduler, scheduling all folders";
+#warning FIXME: this should schedule a sync for the folders of the account that connected
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
@@ -302,7 +303,7 @@ void Application::slotUpdateConnectionErrors(int accountState)
         _startupNetworkError = accountState == AccountState::NetworkError;
     }
 
-#warning FIXME
+#warning FIXME: connection errors should be shown per account
 #if 0
     AccountState *as = AccountStateManager::instance()->accountState();
     if (as) {

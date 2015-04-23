@@ -213,7 +213,7 @@ void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fa
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
-#warning FIXME
+#warning FIXME: overall status needs to look at all accounts
     if (AccountState *a = AccountManager::instance()->accounts().value(0).data()) {
         if (a->isSignedOut()) {
             _tray->setIcon(Theme::instance()->folderOfflineIcon(true));

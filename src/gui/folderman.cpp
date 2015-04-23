@@ -345,7 +345,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         targetPath.remove(0,1);
     }
 
-#warning fixme
+#warning fixme: which account does this folder use?
     AccountState* accountState = AccountManager::instance()->accounts().value(0).data();
     if (!accountState) {
         qWarning() << "can't create folder without an account";
