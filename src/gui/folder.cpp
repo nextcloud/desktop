@@ -38,6 +38,7 @@
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
+#include <QSettings>
 
 #include <QMessageBox>
 #include <QPushButton>
@@ -54,16 +55,16 @@ static void csyncLogCatcher(int /*verbosity*/,
 
 
 Folder::Folder(AccountState* accountState,
-               const QString& alias,
-               const QString& path,
-               const QString& secondPath,
+               const FolderDefinition& definition,
                QObject* parent)
     : QObject(parent)
       , _accountState(accountState)
-      , _path(path)
-      , _remotePath(secondPath)
-      , _alias(alias)
-      , _paused(false)
+      , _definition(definition)
+      , _alias(_definition.alias)
+      , _path(_definition.localPath)
+      , _remotePath(_definition.targetPath)
+      , _paused(_definition.paused)
+      , _selectiveSyncBlackList(_definition.selectiveSyncBlackList)
       , _csyncError(false)
       , _csyncUnavail(false)
       , _wipeDb(false)
@@ -72,7 +73,7 @@ Folder::Folder(AccountState* accountState,
       , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
-      , _journal(path)
+      , _journal(_path)
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
@@ -84,7 +85,7 @@ Folder::Folder(AccountState* accountState,
     // check if the local path exists
     checkLocalPath();
 
-    _syncResult.setFolder(alias);
+    _syncResult.setFolder(_alias);
 }
 
 bool Folder::init()
@@ -220,16 +221,21 @@ bool Folder::syncPaused() const
 
 void Folder::setSyncPaused( bool paused )
 {
-  _paused = paused;
+    const bool oldPaused = _paused;
+    _paused = paused;
 
-  if( !paused ) {
-      // qDebug() << "Syncing enabled on folder " << name();
-  } else {
-      // do not stop or start the watcher here, that is done internally by
-      // folder class. Even if the watcher fires, the folder does not
-      // schedule itself because it checks the var. _enabled before.
-      setSyncState(SyncResult::Paused);
-  }
+    if (_paused != oldPaused) {
+        saveToSettings();
+    }
+
+    if( !paused ) {
+        // qDebug() << "Syncing enabled on folder " << name();
+    } else {
+        // do not stop or start the watcher here, that is done internally by
+        // folder class. Even if the watcher fires, the folder does not
+        // schedule itself because it checks the var. _enabled before.
+        setSyncState(SyncResult::Paused);
+    }
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -567,16 +573,6 @@ void Folder::slotWatchedPathChanged(const QString& path)
     }
 }
 
-void Folder::setConfigFile( const QString& file )
-{
-    _configFile = file;
-}
-
-QString Folder::configFile()
-{
-    return _configFile;
-}
-
 static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
     Q_FOREACH(const SyncFileItem &item, items) {
         if (item.hasErrorStatus()) {
@@ -638,6 +634,20 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
         }
     }
     return false;
+}
+
+void Folder::saveToSettings() const
+{
+    QScopedPointer<QSettings> settings(_accountState->account()->settings());
+    settings->beginGroup(QLatin1String("Folders"));
+    FolderDefinition::save(*settings, _definition);
+}
+
+void Folder::removeFromSettings() const
+{
+    QScopedPointer<QSettings> settings(_accountState->account()->settings());
+    settings->beginGroup(QLatin1String("Folders"));
+    settings->remove(_definition.alias);
 }
 
 void Folder::watcherSlot(QString fn)
@@ -847,6 +857,7 @@ void Folder::setSelectiveSyncBlackList(const QStringList& blackList)
             _selectiveSyncBlackList[i].append(QLatin1Char('/'));
         }
     }
+    saveToSettings();
 }
 
 
@@ -1020,5 +1031,31 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
         QTimer::singleShot(50, this, SLOT(slotRunEtagJob()));
     }
 }
+
+
+
+void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
+{
+    settings.beginGroup(folder.alias);
+    settings.setValue(QLatin1String("localPath"), folder.localPath);
+    settings.setValue(QLatin1String("targetPath"), folder.targetPath);
+    settings.setValue(QLatin1String("blackList"), folder.selectiveSyncBlackList);
+    settings.setValue(QLatin1String("paused"), folder.paused);
+    settings.endGroup();
+}
+
+bool FolderDefinition::load(QSettings& settings, const QString& alias,
+                            FolderDefinition* folder)
+{
+    settings.beginGroup(alias);
+    folder->alias = alias;
+    folder->localPath = settings.value(QLatin1String("localPath")).toString();
+    folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
+    folder->selectiveSyncBlackList = settings.value(QLatin1String("blackList")).toStringList();
+    folder->paused = settings.value(QLatin1String("paused")).toBool();
+    settings.endGroup();
+    return true;
+}
+
 } // namespace OCC
 

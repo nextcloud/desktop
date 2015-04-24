@@ -41,22 +41,13 @@ public:
     static FolderMan* instance();
 
     int setupFolders();
+    int setupFoldersMigration();
 
     OCC::Folder::Map map();
 
-    /**
-      * Add a folder definition to the config
-      * Params:
-      * QString alias
-      * QString sourceFolder on local machine
-      * QString targetPath on remote
-      *
-      * Ensures any existing journal in the sourceFolder is deleted.
-      * Returns true on success.
+    /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
-    bool addFolderDefinition(const QString& alias, const QString& sourceFolder,
-                             const QString& targetPath,
-                             const QStringList& selectiveSyncBlacklist = QStringList());
+    Folder* addFolder(AccountState* accountState, const FolderDefinition& folderDefinition);
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder* folderForPath(const QString& path);
@@ -145,9 +136,14 @@ private slots:
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
+
     void slotRemoveFoldersForAccount(AccountState* accountState);
 
 private:
+    /** Adds a folder for an account, does not add it to the account settings.
+      */
+    Folder* addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition);
+
     /* unloads a folder object, does not delete it */
     void unloadFolder( const QString& alias );
 

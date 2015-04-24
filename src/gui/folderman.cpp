@@ -187,32 +187,68 @@ void FolderMan::removeMonitorPath( const QString& alias, const QString& path )
 
 int FolderMan::setupFolders()
 {
-  qDebug() << "* Setup folders from " << _folderConfigPath;
+    unloadAndDeleteAllFolders();
 
-  unloadAndDeleteAllFolders();
-
-  ConfigFile cfg;
-  QDir storageDir(cfg.configPath());
-  storageDir.mkpath(QLatin1String("folders"));
-  _folderConfigPath = cfg.configPath() + QLatin1String("folders");
-
-  QDir dir( _folderConfigPath );
-  //We need to include hidden files just in case the alias starts with '.'
-  dir.setFilter(QDir::Files | QDir::Hidden);
-  QStringList list = dir.entryList();
-
-  foreach ( const QString& alias, list ) {
-    Folder *f = setupFolderFromConfigFile( alias );
-    if( f ) {
-        slotScheduleSync(alias);
-        emit( folderSyncStateChange( f->alias() ) );
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String("Accounts")));
+    const auto accountsWithSettings = settings->childGroups();
+    if (accountsWithSettings.isEmpty()) {
+        return setupFoldersMigration();
     }
-  }
 
-  emit folderListLoaded(_folderMap);
+    qDebug() << "* Setup folders from settings file";
 
-  // return the number of valid folders.
-  return _folderMap.size();
+    foreach (const auto& account, AccountManager::instance()->accounts()) {
+        const auto id = account->account()->id();
+        if (!accountsWithSettings.contains(id)) {
+            continue;
+        }
+        settings->beginGroup(id);
+        settings->beginGroup(QLatin1String("Folders"));
+        foreach (const auto& folderAlias, settings->childGroups()) {
+            FolderDefinition folderDefinition;
+            if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
+                Folder* f = addFolderInternal(account.data(), folderDefinition);
+                if (f) {
+                    slotScheduleSync(f->alias());
+                    emit folderSyncStateChange(f->alias());
+                }
+            }
+        }
+        settings->endGroup(); // Folders
+        settings->endGroup(); // <account>
+    }
+
+    emit folderListLoaded(_folderMap);
+
+    return _folderMap.size();
+}
+
+int FolderMan::setupFoldersMigration()
+{
+    ConfigFile cfg;
+    QDir storageDir(cfg.configPath());
+    storageDir.mkpath(QLatin1String("folders"));
+    _folderConfigPath = cfg.configPath() + QLatin1String("folders");
+
+    qDebug() << "* Setup folders from " << _folderConfigPath << "(migration)";
+
+    QDir dir( _folderConfigPath );
+    //We need to include hidden files just in case the alias starts with '.'
+    dir.setFilter(QDir::Files | QDir::Hidden);
+    QStringList list = dir.entryList();
+
+    foreach ( const QString& alias, list ) {
+        Folder *f = setupFolderFromConfigFile( alias );
+        if( f ) {
+            slotScheduleSync(alias);
+            emit( folderSyncStateChange( f->alias() ) );
+        }
+    }
+
+    emit folderListLoaded(_folderMap);
+
+    // return the number of valid folders.
+    return _folderMap.size();
 }
 
 bool FolderMan::ensureJournalGone(const QString &localPath)
@@ -352,9 +388,12 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         return 0;
     }
 
-    folder = new Folder( accountState, alias, path, targetPath, this );
-    folder->setConfigFile(cfgFile.absoluteFilePath());
-    folder->setSelectiveSyncBlackList(blackList);
+    FolderDefinition folderDefinition;
+    folderDefinition.alias = alias;
+    folderDefinition.localPath = path;
+    folderDefinition.targetPath = targetPath;
+    folderDefinition.selectiveSyncBlackList = blackList;
+    folder = new Folder( accountState, folderDefinition, this );
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {
@@ -384,16 +423,12 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
 
     slotScheduleSync(alias);
 
-    // FIXME: Use ConfigFile
-    QSettings settings(f->configFile(), QSettings::IniFormat);
-    settings.beginGroup(escapeAlias(f->alias()));
     if (!paused) {
-        settings.remove("paused");
         _disabledFolders.remove(f);
     } else {
-        settings.setValue("paused", true);
         _disabledFolders.insert(f);
     }
+    f->setSyncPaused(paused);
     emit folderSyncStateChange(alias);
 }
 
@@ -703,25 +738,37 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     startScheduledSyncSoon();
 }
 
-bool FolderMan::addFolderDefinition(const QString& alias, const QString& sourceFolder,
-                                    const QString& targetPath, const QStringList& selectiveSyncBlackList)
+Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
-    if (! ensureJournalGone(sourceFolder))
-        return false;
+    if (!ensureJournalGone(folderDefinition.localPath)) {
+        return 0;
+    }
 
-    QString escapedAlias = escapeAlias(alias);
-    // Create a settings file named after the alias
-    QSettings settings( _folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
-    settings.beginGroup(escapedAlias);
-    settings.setValue(QLatin1String("localPath"),   sourceFolder );
-    settings.setValue(QLatin1String("targetPath"),  targetPath );
-    // for compat reasons
-    settings.setValue(QLatin1String("backend"),     "owncloud" );
-    settings.setValue(QLatin1String("connection"),  Theme::instance()->appName());
-    settings.setValue(QLatin1String("blackList"), selectiveSyncBlackList);
-    settings.sync();
+    auto folder = addFolderInternal(accountState, folderDefinition);
+    folder->saveToSettings();
+}
 
-    return true;
+Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition)
+{
+    auto folder = new Folder( accountState, folderDefinition, this );
+
+    qDebug() << "Adding folder to Folder Map " << folder;
+    _folderMap[folder->alias()] = folder;
+    if (folderDefinition.paused) {
+        folder->setSyncPaused(true);
+        _disabledFolders.insert(folder);
+    }
+
+    /* Use a signal mapper to connect the signals to the alias */
+    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
+    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+
+    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
+
+    registerFolderMonitor(folder);
+    return folder;
 }
 
 Folder *FolderMan::folderForPath(const QString &path)
@@ -776,11 +823,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
     f->setSyncPaused(true);
 
     // remove the folder configuration
-    QFile file(f->configFile() );
-    if( file.exists() ) {
-        qDebug() << "Remove folder config file " << file.fileName();
-        file.remove();
-    }
+    f->removeFromSettings();
 
     unloadFolder( alias );
     if( !currentlyRunning ) {

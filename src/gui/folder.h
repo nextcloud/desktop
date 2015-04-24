@@ -37,19 +37,46 @@
 #include <qelapsedtimer.h>
 
 class QThread;
+class QSettings;
 
 namespace OCC {
 
 class SyncEngine;
 class AccountState;
 
+class FolderDefinition
+{
+public:
+    FolderDefinition()
+        : paused(false)
+    {}
+
+    /// The name of the folder in the ui and internally
+    QString alias;
+    /// path on local machine
+    QString localPath;
+    /// path on remote
+    QString targetPath;
+    /// Which folders not to sync
+    QStringList selectiveSyncBlackList;
+    /// whether the folder is paused
+    bool paused;
+
+    /// Saves the folder definition, creating a new settings group.
+    static void save(QSettings& settings, const FolderDefinition& folder);
+
+    /// Reads a folder definition from a settings group with the name 'alias'.
+    static bool load(QSettings& settings, const QString& alias,
+                     FolderDefinition* folder);
+};
+
 class Folder : public QObject
 {
     Q_OBJECT
 
 public:
-    Folder(AccountState* accountState,
-           const QString&, const QString&, const QString& , QObject*parent = 0L);
+    Folder(AccountState* accountState, const FolderDefinition& definition,
+           QObject* parent = 0L);
 
     ~Folder();
 
@@ -136,6 +163,11 @@ public:
      qint64 msecLastSyncDuration() const { return _lastSyncDuration; }
      int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
 
+     /// Saves the folder data in the account's settings.
+     void saveToSettings() const;
+     /// Removes the folder from the account's settings.
+     void removeFromSettings() const;
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -209,15 +241,17 @@ private:
                        const QString& renameTarget = QString::null );
 
     AccountState* _accountState;
-    QString   _path;
-    QString   _remotePath;
-    QString   _alias;
-    QString   _configFile;
-    bool       _paused;
+    FolderDefinition _definition;
+    // TODO: Remove these.
+    QString&   _path;
+    QString&   _remotePath;
+    QString&   _alias;
+    bool&      _paused;
+    QStringList& _selectiveSyncBlackList;
+
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;
-    QStringList _selectiveSyncBlackList;
     bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;

@@ -475,10 +475,6 @@ void FolderStatusModel::slotApplySelectiveSync()
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->setSelectiveSyncBlackList(blackList);
 
-        // FIXME: Use ConfigFile
-        QSettings settings(folder->configFile(), QSettings::IniFormat);
-        settings.beginGroup(FolderMan::escapeAlias(folder->alias()));
-        settings.setValue("blackList", blackList);
         FolderMan *folderMan = FolderMan::instance();
         auto blackListSet = blackList.toSet();
         auto oldBlackListSet = oldBlackList.toSet();

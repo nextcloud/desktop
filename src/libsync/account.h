@@ -121,6 +121,9 @@ public:
          with the given parent. If no parents is specified, the caller must destroy the settings */
     static QSettings* settingsWithGroup(const QString &group, QObject *parent = 0);
 
+    /** Returns a new settings object for this account, already in the right groups. */
+    QSettings* settings();
+
     // to be called by credentials only
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);

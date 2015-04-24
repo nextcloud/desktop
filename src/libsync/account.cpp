@@ -318,6 +318,13 @@ QSettings *Account::settingsWithGroup(const QString& group, QObject *parent)
     return settings;
 }
 
+QSettings* Account::settings()
+{
+    auto s = settingsWithGroup(QLatin1String("Accounts"));
+    s->beginGroup(id());
+    return s;
+}
+
 QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {

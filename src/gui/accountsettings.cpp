@@ -184,16 +184,13 @@ void AccountSettings::slotFolderWizardAccepted()
 
     qDebug() << "* Folder wizard completed";
 
-    QString alias        = folderWizard->field(QLatin1String("alias")).toString();
-    QString sourceFolder = folderWizard->field(QLatin1String("sourceFolder")).toString();
-    QString targetPath   = folderWizard->property("targetPath").toString();
-    QStringList selectiveSyncBlackList
-                         = folderWizard->property("selectiveSyncBlackList").toStringList();
+    FolderDefinition definition;
+    definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
+    definition.localPath    = folderWizard->field(QLatin1String("sourceFolder")).toString();
+    definition.targetPath   = folderWizard->property("targetPath").toString();
+    definition.selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
-    if (!folderMan->addFolderDefinition(alias, sourceFolder, targetPath, selectiveSyncBlackList))
-        return;
-
-    Folder *f = folderMan->setupFolderFromConfigFile( alias );
+    Folder *f = folderMan->addFolder(_accountState, definition);
     folderMan->setSyncEnabled(true);
     if( f ) {
         folderMan->slotScheduleAllFolders();

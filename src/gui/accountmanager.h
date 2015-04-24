@@ -51,8 +51,8 @@ public:
     QList<AccountStatePtr> accounts() { return _accounts; }
 
 private:
-    void save(const AccountPtr& account, QScopedPointer<QSettings>& settings);
-    AccountPtr load(const QScopedPointer<QSettings>& settings);
+    void save(const AccountPtr& account, QSettings& settings);
+    AccountPtr load(QSettings& settings);
     bool restoreFromLegacySettings();
 
     bool isAccountIdAvailable(const QString& id) const;

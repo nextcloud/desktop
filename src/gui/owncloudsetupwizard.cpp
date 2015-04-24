@@ -480,8 +480,14 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
-            folderMan->addFolderDefinition(Theme::instance()->appName(),
-                                           localFolder, _remoteFolder, _ocWizard->selectiveSyncBlacklist() );
+            FolderDefinition folderDefinition;
+            folderDefinition.alias = Theme::instance()->appName();
+            folderDefinition.localPath = localFolder;
+            folderDefinition.targetPath = _remoteFolder;
+            folderDefinition.selectiveSyncBlackList = _ocWizard->selectiveSyncBlacklist();
+#warning fixme: which account? save the one from addAccount below?
+            AccountState* account = AccountManager::instance()->accounts().value(0).data();
+            folderMan->addFolder(account, folderDefinition);
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
     }

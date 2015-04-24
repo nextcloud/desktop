@@ -27,6 +27,8 @@ static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
 static const char caCertsKeyC[] = "CaCertificates";
+static const char accountsC[] = "Accounts";
+static const char foldersC[] = "Folders";
 }
 
 
@@ -40,7 +42,7 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup("Accounts"));
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()) {
@@ -49,7 +51,7 @@ bool AccountManager::restore()
 
     foreach (const auto& accountId, settings->childGroups()) {
         settings->beginGroup(accountId);
-        if (auto acc = load(settings)) {
+        if (auto acc = load(*settings)) {
             acc->_id = accountId;
             addAccount(acc);
         }
@@ -106,7 +108,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
-        if (auto acc = load(settings)) {
+        if (auto acc = load(*settings)) {
             if (migratedCreds) {
                 acc->setMigrated(true);
             }
@@ -119,41 +121,41 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save()
 {
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup("Accounts"));
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
-        save(acc->account(), settings);
+        save(acc->account(), *settings);
         settings->endGroup();
     }
 }
 
-void AccountManager::save(const AccountPtr& acc, QScopedPointer<QSettings>& settings)
+void AccountManager::save(const AccountPtr& acc, QSettings& settings)
 {
-    settings->setValue(QLatin1String(urlC), acc->_url.toString());
+    settings.setValue(QLatin1String(urlC), acc->_url.toString());
     if (acc->_credentials) {
         acc->_credentials->persist();
         Q_FOREACH(QString key, acc->_settingsMap.keys()) {
-            settings->setValue(key, acc->_settingsMap.value(key));
+            settings.setValue(key, acc->_settingsMap.value(key));
         }
-        settings->setValue(QLatin1String(authTypeC), acc->_credentials->authType());
+        settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
 
         // HACK: Save http_user also as user
         if (acc->_settingsMap.contains(httpUserC))
-            settings->setValue(userC, acc->_settingsMap.value(httpUserC));
+            settings.setValue(userC, acc->_settingsMap.value(httpUserC));
     }
-    settings->sync();
+    settings.sync();
 
     // Save accepted certificates.
-    settings->beginGroup(QLatin1String("General"));
+    settings.beginGroup(QLatin1String("General"));
     qDebug() << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     Q_FOREACH( const QSslCertificate& cert, acc->approvedCerts() ) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
-        settings->setValue( QLatin1String(caCertsKeyC), certs );
+        settings.setValue( QLatin1String(caCertsKeyC), certs );
     }
-    settings->endGroup();
+    settings.endGroup();
 
     // Save cookies.
     if (acc->_am) {
@@ -165,28 +167,29 @@ void AccountManager::save(const AccountPtr& acc, QScopedPointer<QSettings>& sett
     }
 }
 
-AccountPtr AccountManager::load(const QScopedPointer<QSettings>& settings)
+AccountPtr AccountManager::load(QSettings& settings)
 {
     auto acc = Account::create();
 
-    acc->setUrl(settings->value(QLatin1String(urlC)).toUrl());
+    acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
 
     // We want to only restore settings for that auth type and the user value
-    acc->_settingsMap.insert(QLatin1String(userC), settings->value(userC));
-    QString authTypePrefix = settings->value(authTypeC).toString() + "_";
-    Q_FOREACH(QString key, settings->childKeys()) {
+    acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
+    QString authTypePrefix = settings.value(authTypeC).toString() + "_";
+    Q_FOREACH(QString key, settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
             continue;
-        acc->_settingsMap.insert(key, settings->value(key));
+        acc->_settingsMap.insert(key, settings.value(key));
     }
 
-    acc->setCredentials(CredentialsFactory::create(settings->value(QLatin1String(authTypeC)).toString()));
+    acc->setCredentials(CredentialsFactory::create(settings.value(QLatin1String(authTypeC)).toString()));
 
     // now the cert, it is in the general group
-    settings->beginGroup(QLatin1String("General"));
-    acc->setApprovedCerts(QSslCertificate::fromData(settings->value(caCertsKeyC).toByteArray()));
+    settings.beginGroup(QLatin1String("General"));
+    acc->setApprovedCerts(QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray()));
     acc->setSslErrorHandler(new SslDialogErrorHandler);
-    settings->endGroup();
+    settings.endGroup();
+
     return acc;
 }
 

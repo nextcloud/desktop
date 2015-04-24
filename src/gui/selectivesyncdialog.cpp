@@ -400,10 +400,6 @@ void SelectiveSyncDialog::accept()
         QStringList blackList = _treeView->createBlackList();
         _folder->setSelectiveSyncBlackList(blackList);
 
-        // FIXME: Use ConfigFile
-        QSettings settings(_folder->configFile(), QSettings::IniFormat);
-        settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
-        settings.setValue("blackList", blackList);
         FolderMan *folderMan = FolderMan::instance();
         if (_folder->isBusy()) {
             _folder->slotTerminateSync();
