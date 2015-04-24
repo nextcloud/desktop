@@ -1,6 +1,5 @@
-The ownCloud Client packages contain a command line client, `owncloud`, that can 
-be used to synchronize ownCloud files to client machines. The command line 
-client is called ``owncloudcmd``.
+The ownCloud Client packages contain a command line client, ``owncloudcmd``, that can 
+be used to synchronize ownCloud files to client machines.
 
 ``owncloudcmd`` performs a single *sync run* and then exits the synchronization 
 process. In this manner, ``owncloudcmd`` processes the differences between 
