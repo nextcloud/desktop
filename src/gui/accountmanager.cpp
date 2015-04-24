@@ -192,6 +192,12 @@ AccountPtr AccountManager::load(const QScopedPointer<QSettings>& settings)
 
 void AccountManager::addAccount(const AccountPtr& newAccount)
 {
+    auto id = newAccount->id();
+    if (id.isEmpty() || !isAccountIdAvailable(id)) {
+        id = generateFreeAccountId();
+    }
+    newAccount->_id = id;
+
     AccountStatePtr newAccountState(new AccountState(newAccount));
     _accounts << newAccountState;
     emit accountAdded(newAccountState.data());
@@ -206,5 +212,26 @@ void AccountManager::shutdown()
     }
 }
 
+bool AccountManager::isAccountIdAvailable(const QString& id) const
+{
+    foreach (const auto& acc, _accounts) {
+        if (acc->account()->id() == id) {
+            return false;
+        }
+    }
+    return true;
+}
+
+QString AccountManager::generateFreeAccountId() const
+{
+    int i = 0;
+    forever {
+        QString id = QString::number(i);
+        if (isAccountIdAvailable(id)) {
+            return id;
+        }
+        ++i;
+    }
+}
 
 }

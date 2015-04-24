@@ -32,7 +32,6 @@
 #include <QDir>
 #include <QDebug>
 #include <QSslKey>
-#include <QUuid>
 
 namespace OCC {
 
@@ -46,7 +45,6 @@ Account::Account(QObject *parent)
     , _wasMigrated(false)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
-    _id = QUuid::createUuid().toString();
 }
 
 AccountPtr Account::create()

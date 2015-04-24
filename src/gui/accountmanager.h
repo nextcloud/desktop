@@ -55,6 +55,9 @@ private:
     AccountPtr load(const QScopedPointer<QSettings>& settings);
     bool restoreFromLegacySettings();
 
+    bool isAccountIdAvailable(const QString& id) const;
+    QString generateFreeAccountId() const;
+
 
 Q_SIGNALS:
     void accountAdded(AccountState *account);
