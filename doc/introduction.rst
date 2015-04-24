@@ -12,6 +12,5 @@ Your files are always automatically synchronized between your ownCloud server
 and local PC.
 
 .. note:: Because of various technical issues, desktop sync clients older than 
-   1.7 are not allowed to connect and sync with the ownCloud server. It is 
+   1.7 will not allowed to connect and sync with the ownCloud 8.1 server. It is 
    highly recommended to keep your client updated.
-
