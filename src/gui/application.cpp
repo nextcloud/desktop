@@ -270,7 +270,7 @@ void Application::slotAccountStateChanged(int state)
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
-    case AccountState::ServerMaintenance:
+    case AccountState::ServiceUnavailable:
     case AccountState::SignedOut:
     case AccountState::ConfigurationError:
     case AccountState::NetworkError:

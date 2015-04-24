@@ -234,7 +234,7 @@ void AccountSettings::slotAddFolder( Folder *folder )
     if( ! folder || folder->alias().isEmpty() ) return;
 
     QStandardItem *item = new QStandardItem();
-    folderToModelItem( item, folder, _accountState && _accountState->isConnectedOrMaintenance());
+    folderToModelItem( item, folder, _accountState && _accountState->isConnectedOrTemporarilyUnavailable());
     _model->appendRow( item );
     // in order to update the enabled state of the "Sync now" button
     connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
@@ -537,7 +537,7 @@ void AccountSettings::slotUpdateFolderState( Folder *folder )
     }
 
     if( item ) {
-        folderToModelItem( item, folder, _accountState->isConnectedOrMaintenance() );
+        folderToModelItem( item, folder, _accountState->isConnectedOrTemporarilyUnavailable() );
     } else {
         // the dialog is not visible.
     }
@@ -794,7 +794,7 @@ void AccountSettings::slotAccountStateChanged(int state)
         foreach (Folder *folder, folderMan->map().values()) {
             slotUpdateFolderState(folder);
         }
-        if (state == AccountState::Connected || state == AccountState::ServerMaintenance) {
+        if (state == AccountState::Connected || state == AccountState::ServiceUnavailable) {
             QString user;
             if (AbstractCredentials *cred = account->credentials()) {
                user = cred->user();

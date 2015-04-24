@@ -48,8 +48,8 @@ QString ConnectionValidator::statusString( Status stat )
         return QLatin1String("Status not found");
     case UserCanceledCredentials:
         return QLatin1String("User canceled credentials");
-    case ServerMaintenance:
-        return QLatin1String("Server in maintenance mode");
+    case ServiceUnavailable:
+        return QLatin1String("Service unavailable");
     case Timeout:
         return QLatin1String("Timeout");
     }
@@ -192,13 +192,8 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         const int httpStatus =
                 reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if ( httpStatus == 503 ) {
-            // Is this a maintenance mode reply from the server
-            // or a regular 503 from somewhere else?
-            QByteArray body = reply->readAll();
-            if ( body.contains("Sabre\\DAV\\Exception\\ServiceUnavailable") ) {
-                _errors.clear();
-                stat = ServerMaintenance;
-            }
+            _errors.clear();
+            stat = ServiceUnavailable;
         }
     }
 
