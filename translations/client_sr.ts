@@ -1242,114 +1242,114 @@ It is not advisable to use it.</source>
         <translation>Аутентификован захтев серверу је преусмерен на %1. УРЛ је лош, сервер је лоше подешен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Добијен је неисправан одговор на аутентификовани ВебДАВ захтев</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Сервер није дозволио приступ. Да проверите имате ли исправан приступ, &lt;a href=&quot;%1&quot;&gt;кликните овде&lt;/a&gt; да бисте приступили услузи из прегледача.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="317"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локална фасцикла %1 већ постоји. Одређујем је за синхронизацију.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>Creating local sync folder %1...</source>
         <translation>Правим локалну фасциклу синхронизације %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>ok</source>
         <translation>у реду</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="330"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="325"/>
         <source>failed.</source>
         <translation>неуспешно</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>Could not create local folder %1</source>
         <translation>Не могу да направим локалну фасциклу %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="352"/>
         <source>No remote folder specified!</source>
         <translation>Није наведена удаљена фасцикла!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
         <source>Error: %1</source>
         <translation>Грешка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>правим фасциклу у облаку: % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="387"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Удаљена фасцикла %1 је успешно направљена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="394"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Удаљена фасцикла %1 већ постоји. Повезујем се ради синхронизовања.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Прављење фасцикле довело је до ХТТП грешке са кодом %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Прављење удаљене фасцикле није успело због погрешних акредитива!&lt;br/&gt;Идите назад и проверите ваше акредитиве.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Прављење удаљене фасцикле није успело због погрешних акредитива.&lt;/font&gt;&lt;br/&gt;Идите назад и проверите ваше акредитиве.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Прављење удаљене фасцикле %1 није успело због грешке &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="420"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Веза за синхронизацију %1 до удаљеног директоријума %2 је подешена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
         <source>Successfully connected to %1!</source>
         <translation>Успешно повезан са %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Не може се успоставити веза са %1. Проверите поново.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
         <source>Folder rename failed</source>
         <translation>Преименовање није успело</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Не могу да уклоним и направим резервну копију фасцикле јер су фасцикла или фајл отворени у другом програму. Затворите фасциклу или фајл и покушајте поново или одустаните од подешавања.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локална фасцикла за синхронизовање %1 је успешно направљена!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
