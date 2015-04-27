@@ -461,7 +461,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // This may or may not wipe all folder definitions, depending
         // on whether a new account is activated or the existing one
         // is changed.
-        applyAccountChanges();
+        auto account = applyAccountChanges();
 
         // But if the user went through with the folder config wizard,
         // we assume they always want to have only that folder configured.
@@ -480,8 +480,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
             folderDefinition.selectiveSyncBlackList = _ocWizard->selectiveSyncBlacklist();
-#warning fixme: which account? save the one from addAccount below?
-            AccountState* account = AccountManager::instance()->accounts().value(0).data();
             folderMan->addFolder(account, folderDefinition);
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
@@ -501,13 +499,14 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
     emit ownCloudWizardDone( QDialog::Accepted );
 }
 
-void OwncloudSetupWizard::applyAccountChanges()
+AccountState *OwncloudSetupWizard::applyAccountChanges()
 {
     AccountPtr newAccount = _ocWizard->account();
     auto manager = AccountManager::instance();
 
-    manager->addAccount(newAccount);
+    auto newState = manager->addAccount(newAccount);
     manager->save();
+    return newState;
 }
 
 

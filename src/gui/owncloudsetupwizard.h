@@ -29,6 +29,8 @@
 
 namespace OCC {
 
+class AccountState;
+
 class OwncloudWizard;
 
 class DetermineAuthTypeJob : public AbstractNetworkJob {
@@ -78,7 +80,7 @@ private:
     void createRemoteFolder();
     void finalizeSetup( bool );
     bool ensureStartFromScratch(const QString &localFolder);
-    void applyAccountChanges();
+    AccountState *applyAccountChanges();
     bool checkDowngradeAdvised(QNetworkReply* reply);
 
     OwncloudWizard* _ocWizard;

@@ -193,7 +193,7 @@ AccountPtr AccountManager::load(QSettings& settings)
     return acc;
 }
 
-void AccountManager::addAccount(const AccountPtr& newAccount)
+AccountState *AccountManager::addAccount(const AccountPtr& newAccount)
 {
     auto id = newAccount->id();
     if (id.isEmpty() || !isAccountIdAvailable(id)) {
@@ -204,6 +204,7 @@ void AccountManager::addAccount(const AccountPtr& newAccount)
     AccountStatePtr newAccountState(new AccountState(newAccount));
     _accounts << newAccountState;
     emit accountAdded(newAccountState.data());
+    return newAccountState.data();
 }
 
 void AccountManager::shutdown()

@@ -41,13 +41,16 @@ public:
      * Add this account in the list of saved account.
      * Typically called from the wizard
      */
-    void addAccount(const AccountPtr &newAccount);
+    AccountState *addAccount(const AccountPtr &newAccount);
 
     /**
      * remove all accounts
      */
     void shutdown();
 
+    /**
+     * Return a list of all accounts.
+     */
     QList<AccountStatePtr> accounts() { return _accounts; }
 
 private:
