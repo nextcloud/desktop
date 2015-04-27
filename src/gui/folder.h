@@ -153,7 +153,7 @@ public:
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
 
-     QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
+     QStringList selectiveSyncBlackList() { return _definition.selectiveSyncBlackList; }
      void setSelectiveSyncBlackList(const QStringList &blackList);
 
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
@@ -242,12 +242,6 @@ private:
 
     AccountState* _accountState;
     FolderDefinition _definition;
-    // TODO: Remove these.
-    QString&   _path;
-    QString&   _remotePath;
-    QString&   _alias;
-    bool&      _paused;
-    QStringList& _selectiveSyncBlackList;
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;

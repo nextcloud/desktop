@@ -60,11 +60,6 @@ Folder::Folder(AccountState* accountState,
     : QObject(parent)
       , _accountState(accountState)
       , _definition(definition)
-      , _alias(_definition.alias)
-      , _path(_definition.localPath)
-      , _remotePath(_definition.targetPath)
-      , _paused(_definition.paused)
-      , _selectiveSyncBlackList(_definition.selectiveSyncBlackList)
       , _csyncError(false)
       , _csyncUnavail(false)
       , _wipeDb(false)
@@ -73,7 +68,7 @@ Folder::Folder(AccountState* accountState,
       , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
-      , _journal(_path)
+      , _journal(definition.localPath)
       , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
@@ -85,7 +80,7 @@ Folder::Folder(AccountState* accountState,
     // check if the local path exists
     checkLocalPath();
 
-    _syncResult.setFolder(_alias);
+    _syncResult.setFolder(_definition.alias);
 }
 
 bool Folder::init()
@@ -147,27 +142,27 @@ AccountState* Folder::accountState() const
 
 void Folder::checkLocalPath()
 {
-    const QFileInfo fi(_path);
+    const QFileInfo fi(_definition.localPath);
 
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
     } else {
-        if( !FileSystem::fileExists(_path) ) {
+        if( !FileSystem::fileExists(_definition.localPath) ) {
             // try to create the local dir
-            QDir d(_path);
-            if( d.mkpath(_path) ) {
-                qDebug() << "Successfully created the local dir " << _path;
+            QDir d(_definition.localPath);
+            if( d.mkpath(_definition.localPath) ) {
+                qDebug() << "Successfully created the local dir " << _definition.localPath;
             }
         }
         // Check directory again
-        if( !FileSystem::fileExists(_path) ) {
-            _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_path));
+        if( !FileSystem::fileExists(_definition.localPath) ) {
+            _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
             _syncResult.setStatus( SyncResult::SetupError );
         } else if( !fi.isDir() ) {
-            _syncResult.setErrorString(tr("%1 should be a directory but is not.").arg(_path));
+            _syncResult.setErrorString(tr("%1 should be a directory but is not.").arg(_definition.localPath));
             _syncResult.setStatus( SyncResult::SetupError );
         } else if( !fi.isReadable() ) {
-            _syncResult.setErrorString(tr("%1 is not readable.").arg(_path));
+            _syncResult.setErrorString(tr("%1 is not readable.").arg(_definition.localPath));
             _syncResult.setStatus( SyncResult::SetupError );
         }
     }
@@ -175,12 +170,12 @@ void Folder::checkLocalPath()
 
 QString Folder::alias() const
 {
-    return _alias;
+    return _definition.alias;
 }
 
 QString Folder::path() const
 {
-    QString p(_path);
+    QString p(_definition.localPath);
     if( ! p.endsWith(QLatin1Char('/')) ) {
         p.append(QLatin1Char('/'));
     }
@@ -194,7 +189,7 @@ bool Folder::isBusy() const
 
 QString Folder::remotePath() const
 {
-    return _remotePath;
+    return _definition.targetPath;
 }
 
 QUrl Folder::remoteUrl() const
@@ -204,27 +199,25 @@ QUrl Folder::remoteUrl() const
     if (!path.endsWith('/')) {
         path.append('/');
     }
-    path.append(_remotePath);
+    path.append(remotePath());
     url.setPath(path);
     return url;
 }
 
 QString Folder::nativePath() const
 {
-    return QDir::toNativeSeparators(_path);
+    return QDir::toNativeSeparators(path());
 }
 
 bool Folder::syncPaused() const
 {
-  return _paused;
+  return _definition.paused;
 }
 
 void Folder::setSyncPaused( bool paused )
 {
-    const bool oldPaused = _paused;
-    _paused = paused;
-
-    if (_paused != oldPaused) {
+    if (paused != _definition.paused) {
+        _definition.paused = paused;
         saveToSettings();
     }
 
@@ -266,8 +259,8 @@ void Folder::slotRunEtagJob()
         return;
     }
 
-    if (_paused || !_accountState->isConnected()) {
-        qDebug() << "Not syncing.  :"  << alias() << _paused << AccountState::stateString(_accountState->state());
+    if (_definition.paused || !_accountState->isConnected()) {
+        qDebug() << "Not syncing.  :"  << alias() << _definition.paused << AccountState::stateString(_accountState->state());
         return;
     }
 
@@ -515,7 +508,7 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
 int Folder::slotDiscardDownloadProgress()
 {
     // Delete from journal and from filesystem.
-    QDir folderpath(_path);
+    QDir folderpath(_definition.localPath);
     QSet<QString> keep_nothing;
     const QVector<SyncJournalDb::DownloadInfo> deleted_infos =
             _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
@@ -795,7 +788,7 @@ void Folder::startSync(const QStringList &pathList)
         return;
     }
 
-    _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), _remotePath, &_journal));
+    _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), remotePath(), &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
@@ -852,10 +845,10 @@ void Folder::setDirtyNetworkLimits()
 
 void Folder::setSelectiveSyncBlackList(const QStringList& blackList)
 {
-    _selectiveSyncBlackList = blackList;
-    for (int i = 0; i < _selectiveSyncBlackList.count(); ++i) {
-        if (!_selectiveSyncBlackList.at(i).endsWith(QLatin1Char('/'))) {
-            _selectiveSyncBlackList[i].append(QLatin1Char('/'));
+    _definition.selectiveSyncBlackList = blackList;
+    for (int i = 0; i < blackList.count(); ++i) {
+        if (!blackList.at(i).endsWith(QLatin1Char('/'))) {
+            _definition.selectiveSyncBlackList[i].append(QLatin1Char('/'));
         }
     }
     saveToSettings();
