@@ -126,8 +126,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
             this, SLOT(slotUpdateQuota(qint64,qint64)));
     slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
 
-    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
-             this, SLOT(slotSetProgress(QString, Progress::Info)) );
+    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
+             this, SLOT(slotSetProgress(QString, ProgressInfo)) );
 
 }
 

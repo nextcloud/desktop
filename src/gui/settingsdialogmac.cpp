@@ -89,8 +89,8 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
              gui, SLOT(slotFolderOpenAction(QString)));
 
-    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, Progress::Info)),
-             _accountSettings, SLOT(slotSetProgress(QString, Progress::Info)) );
+    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
+             _accountSettings, SLOT(slotSetProgress(QString, ProgressInfo)) );
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
