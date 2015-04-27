@@ -1,6 +1,50 @@
 ChangeLog
 =========
-version 1.8.0 (release 2015-03-xx)
+version 1.8.1 (release 2015-04-xx)
+ * Make "operation canceled" error a soft error
+ * Do not throw an error for files that are scheduled to be removed,
+   but can not be found on the server. #2919
+ * Windows: Reset QNAM to proper function after hibernation. #2899 #2895 #2973
+ * Fix argument verification of --confdir #2453
+ * Fix a crash when accessing a dangling UploadDevice pointer #2984
+ * Add-folder wizard: Make sure there is a scrollbar if folder names
+   are too long #2962
+ * Add-folder Wizard: Select the newly created folder
+ * Activity: Correctly restore column sizes #3005
+ * SSL Button: do not crash on empty certificate chain
+ * SSL Button: Make menu creation lazy #3007 #2990
+ * Lookup system proxy async to avoid hangs #2993 #2802
+ * ShareDialog: Some GUI refinements
+ * ShareDialog: On creation of a share always retrieve the share
+   This makes sure that if a default expiration date is set this is reflected
+   in the dialog. #2889
+ * ShareDialog: Only show share dialog if we are connected.
+ * HttpCreds: Fill pw dialog with previous password. #2848 #2879
+ * HttpCreds: Delete password from old location. #2186
+ * Do not store Session Cookies in the client cookie storage
+ * CookieJar: Don't accidentally overwrite cookies. #2808
+ * ProtocolWidget: Always add seconds to the DateTime locale. #2535
+ * Updater: Give context as to which app is about to be updated #3040
+ * Windows: Add version information for owncloud.exe. This should help us know
+   what version or build number a crash report was generated with.
+ * Fix a crash on shutdown in ~SocketApi #3057
+ * SyncEngine: Show more timing measurements #3064
+ * Discovery: Add warning if returned etag is 0
+ * Fix a crash caused by an invalid DiscoveryDirectoryResult::iterator #3051
+ * Sync: Fix sync of deletions during 503. #2894
+ * Handle redirect of auth request. #3082
+ * Discovery: Fix parsing of broken XML replies
+ * Sort folder sizes SelectiveSyncTreeView numerically #3112
+ * Sync: PropagateDownload: Read the mtime from the file system after writing it #3103
+ * Sync: Propagate download: Fix restoring files for which the conflict file exists #3106
+ * Use identical User Agents and version for csync and the Qt parts
+ * Prevent another crash in ~SocketApi #3118
+ * Windows: Fix rename of finished file. #3073
+ * AccountWizard: Fix auth error handling. #3155
+ * Documentation fixes
+ * Infrastructure/build fixes
+
+version 1.8.0 (release 2015-03-17)
  * Mac OS: HIDPI support
  * Support Sharing from desktop: Added a share dialog that can be
    opened by context menu in the file managers (Win, Mac, Nautilus)

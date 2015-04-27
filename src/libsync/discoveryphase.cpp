@@ -83,21 +83,11 @@ void DiscoveryJob::update_job_update_callback (bool local,
     }
 }
 
-
+// Only use for error cases! It will always set an error errno
 int get_errno_from_http_errcode( int err, const QString & reason ) {
-    int new_errno = 0;
+    int new_errno = EIO;
 
     switch(err) {
-    case 200:           /* OK */
-    case 201:           /* Created */
-    case 202:           /* Accepted */
-    case 203:           /* Non-Authoritative Information */
-    case 204:           /* No Content */
-    case 205:           /* Reset Content */
-    case 207:           /* Multi-Status */
-    case 304:           /* Not Modified */
-        new_errno = 0;
-        break;
     case 401:           /* Unauthorized */
     case 402:           /* Payment Required */
     case 407:           /* Proxy Authentication Required */
@@ -316,7 +306,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         // Default keep at EIO, see above
     }
 
-    emit finishedWithError(errnoCode, msg);
+    emit finishedWithError(errnoCode == 0 ? EIO : errnoCode, msg);
     deleteLater();
 }
 

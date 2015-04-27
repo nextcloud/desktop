@@ -772,6 +772,7 @@ void Folder::startSync(const QStringList &pathList)
     _timeSinceLastSyncStart.restart();
     _syncResult.clearErrors();
     _syncResult.setStatus( SyncResult::SyncPrepare );
+    _syncResult.setSyncFileItemVector(SyncFileItemVector());
     emit syncStateChange();
 
     qDebug() << "*** Start syncing - client version"

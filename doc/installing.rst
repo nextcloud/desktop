@@ -35,6 +35,9 @@ including:
   and Nautilus on Linux.
 * Faster uploads and downloads.
 
+.. note:: When you upgrade from 1.7, restart Windows to ensure that all new 
+   features are visible.
+
 Installation
 ------------
 

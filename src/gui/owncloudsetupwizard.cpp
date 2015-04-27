@@ -219,7 +219,6 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), _ocWizard, SLOT(successfulStep()));
     connect(job, SIGNAL(finishedWithError()), this, SLOT(slotAuthError()));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), this, SLOT(slotAuthNetworkError(QNetworkReply*)));
     job->start();
 }
 
@@ -232,10 +231,11 @@ void OwncloudSetupWizard::slotAuthError()
         qWarning() << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
         return;
     }
+    QNetworkReply* reply = job->reply();
 
     // If there were redirects on the *authed* requests, also store
     // the updated server URL, similar to redirects on status.php.
-    QUrl redirectUrl = job->reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (!redirectUrl.isEmpty()) {
         qDebug() << "authed request was redirected to" << redirectUrl.toString();
 
@@ -250,18 +250,36 @@ void OwncloudSetupWizard::slotAuthError()
             _ocWizard->account()->setUrl(redirectUrl);
             testOwnCloudConnect();
             return;
-        } else {
-            errorMsg = tr("The authenticated request to the server was redirected to "
-                          "'%1'. The URL is bad, the server is misconfigured.")
-                       .arg(redirectUrl.toString());
         }
-    }
+        errorMsg = tr("The authenticated request to the server was redirected to "
+                      "'%1'. The URL is bad, the server is misconfigured.")
+                   .arg(redirectUrl.toString());
 
-    if (errorMsg.isEmpty()) {
+    // A 404 is actually a success: we were authorized to know that the folder does
+    // not exist. It will be created later...
+    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
+        _ocWizard->successfulStep();
+        return;
+
+    // Provide messages for other errors, such as invalid credentials.
+    } else if (reply->error() != QNetworkReply::NoError) {
+        errorMsg = reply->errorString();
+        if (!_ocWizard->account()->credentials()->stillValid(reply)) {
+            errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
+                          "<a href=\"%1\">click here</a> to access the service with your browser.")
+                       .arg(_ocWizard->account()->url().toString());
+        }
+
+    // Something else went wrong, maybe the response was 200 but with invalid data.
+    } else {
         errorMsg = tr("There was an invalid response to an authenticated webdav request");
     }
-    _ocWizard->displayError(errorMsg, false);
+
     _ocWizard->show();
+    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
+        _ocWizard->back();
+    }
+    _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
 }
 
 bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
@@ -285,29 +303,6 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
         return false;
     }
     return true;
-}
-
-void OwncloudSetupWizard::slotAuthNetworkError(QNetworkReply* reply)
-{
-    QString msg = reply->errorString();
-    switch (reply->error()) {
-    case QNetworkReply::NoError:
-    case QNetworkReply::ContentNotFoundError:
-        _ocWizard->successfulStep();
-        break;
-    default:
-        if (!_ocWizard->account()->credentials()->stillValid(reply)) {
-            msg = tr("Access forbidden by server. To verify that you have proper access, "
-                     "<a href=\"%1\">click here</a> to access the service with your browser.")
-                    .arg(_ocWizard->account()->url().toString());
-        }
-        _ocWizard->show();
-        if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
-            _ocWizard->back();
-        }
-        _ocWizard->displayError(msg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
-        break;
-    }
 }
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFolder, const QString& remoteFolder)

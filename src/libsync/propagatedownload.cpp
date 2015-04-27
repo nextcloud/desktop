@@ -339,6 +339,7 @@ void PropagateDownloadFileQNAM::start()
     if (startSize > 0) {
         if (startSize == _item->_size) {
             qDebug() << "File is already complete, no need to download";
+            _tmpFile.close();
             downloadFinished();
             return;
         }
@@ -489,7 +490,6 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 
 void PropagateDownloadFileQNAM::downloadFinished()
 {
-
     QString fn = _propagator->getFilePath(_item->_file);
 
     // In case of file name clash, report an error
