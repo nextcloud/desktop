@@ -228,8 +228,6 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
 void Application::slotCleanup()
 {
-    // explicitly close windows. This is somewhat of a hack to ensure
-    // that saving the geometries happens ASAP during a OS shutdown
     AccountManager::instance()->save();
     FolderMan::instance()->unloadAndDeleteAllFolders();
 
