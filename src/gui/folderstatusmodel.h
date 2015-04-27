@@ -59,12 +59,13 @@ public:
         Folder *_folder;
     };
 
-    mutable QVector<SubFolderInfo> _folders;
+    QVector<SubFolderInfo> _folders;
 
     enum ItemType { RootFolder, SubFolder, AddButton/*, SelectiveSyncText*/ };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
+    // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 
     struct ProgressInfo {
@@ -89,7 +90,7 @@ private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
                                 const QStringList& oldBlackList) const;
     AccountPtr _account;
-    bool _dirty = false;
+    bool _dirty = false;  // If the selective sync checkboxes were changed
 
 signals:
     void dirtyChanged();

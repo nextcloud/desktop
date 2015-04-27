@@ -14,6 +14,7 @@
 
 #include "folderstatusmodel.h"
 #include "folderman.h"
+#include "accountstate.h"
 #include "utility.h"
 #include <theme.h>
 #include <account.h>
@@ -45,6 +46,19 @@ void FolderStatusModel::setAccount(const AccountPtr& account)
     _dirty = false;
     _folders.clear();
     _account = account;
+
+    auto folders = FolderMan::instance()->map();
+    foreach (auto f, folders) {
+        if (f->accountState()->account() != account)
+            continue;
+        SubFolderInfo info;
+        info._pathIdx << _folders.size();
+        info._name = f->alias();
+        info._path = "/";
+        info._folder = f;
+        _folders << info;
+    }
+
     endResetModel();
 }
 
@@ -93,8 +107,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         break;
     }
 
-    auto folderList = FolderMan::instance()->map().values();
-    auto f = folderList.at(index.row());
+    auto f = _folders.at(index.row())._folder;
     if (!f)
         return QVariant();
 
@@ -221,7 +234,7 @@ int FolderStatusModel::columnCount(const QModelIndex&) const
 int FolderStatusModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        return FolderMan::instance()->map().count() + 1;
+        return _folders.count() + 1;
     }
 
     auto info = infoForIndex(parent);
@@ -235,9 +248,7 @@ FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex& index
     if (index.internalPointer()) {
         return SubFolder;
     }
-    //FIXME:
-    auto folderList = FolderMan::instance()->map(); //.values();
-    if (index.row() < folderList.count()) {
+    if (index.row() < _folders.count()) {
         return RootFolder;
     }
     return AddButton;
@@ -250,22 +261,11 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
     if (auto parentInfo = index.internalPointer()) {
         return &static_cast<SubFolderInfo*>(parentInfo)->_subs[index.row()];
     } else {
-        auto folders = FolderMan::instance()->map(); // FIXME
-        if (index.row() >= folders.count()) {
+        if (index.row() >= _folders.count()) {
             // AddButton
             return 0;
         }
-        if (_folders.size() <=  index.row()) {
-            _folders.resize(index.row() + 1);
-        }
-        auto info = &_folders[index.row()];
-        if (info->_pathIdx.isEmpty()) {
-            info->_pathIdx << index.row();
-            info->_name = folders.values().at(index.row())->alias();
-            info->_path = "/";
-            info->_folder = folders.values().at(index.row());
-        }
-        return info;
+        return const_cast<SubFolderInfo *>(&_folders[index.row()]);
     }
 }
 
@@ -404,7 +404,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
         if (parentInfo->_checked == Qt::Unchecked) {
             newInfo._checked = Qt::Unchecked;
         } else {
-            auto *f = FolderMan::instance()->map().values().at(parentInfo->_pathIdx.first());
+            auto *f = _folders.at(parentInfo->_pathIdx.first())._folder;
             foreach(const QString &str , f->selectiveSyncBlackList()) {
                 if (str == path || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
@@ -464,12 +464,10 @@ void FolderStatusModel::slotApplySelectiveSync()
 {
     if (!_dirty)
         return;
-    auto folderList = FolderMan::instance()->map().values(); //FIXME
 
-    for (int i = 0; i < folderList.count(); ++i) {
-        if (i >= _folders.count()) break;
+    for (int i = 0; i < _folders.count(); ++i) {
         if (!_folders[i]._fetched) continue;
-        auto folder = folderList.at(i);
+        auto folder = _folders.at(i)._folder;
 
         auto oldBlackList = folder->selectiveSyncBlackList();
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
