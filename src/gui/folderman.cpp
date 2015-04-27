@@ -746,6 +746,7 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
 
     auto folder = addFolderInternal(accountState, folderDefinition);
     folder->saveToSettings();
+    return folder;
 }
 
 Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition)
