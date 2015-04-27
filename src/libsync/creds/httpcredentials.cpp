@@ -16,6 +16,7 @@
 #include <QMutex>
 #include <QDebug>
 #include <QNetworkReply>
+#include <QAuthenticator>
 #include <QSettings>
 #include <QInputDialog>
 
@@ -79,22 +80,6 @@ const char certifPathC[] = "certificatePath";
 const char certifPasswdC[] = "certificatePasswd";
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
-
-class HttpCredentialsAccessManager : public AccessManager {
-public:
-    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject* parent = 0)
-        : AccessManager(parent), _cred(cred) {}
-protected:
-    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE {
-        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
-        QNetworkRequest req(request);
-        req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
-        //qDebug() << "Request for " << req.url() << "with authorization" << QByteArray::fromBase64(credHash);
-        return AccessManager::createRequest(op, req, outgoingData);
-    }
-private:
-    const HttpCredentials *_cred;
-};
 
 HttpCredentials::HttpCredentials()
     : _user(),
@@ -188,7 +173,7 @@ QString HttpCredentials::certificatePasswd() const
 
 QNetworkAccessManager* HttpCredentials::getQNAM() const
 {
-    AccessManager* qnam = new HttpCredentialsAccessManager(this);
+    AccessManager* qnam = new AccessManager;
 
     connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
              this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
@@ -249,10 +234,7 @@ void HttpCredentials::fetch()
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
-    return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
-            // returned if user or password is incorrect
-            && (reply->error() != QNetworkReply::OperationCanceledError
-                || !reply->property(authenticationFailedC).toBool()));
+    return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
@@ -383,13 +365,18 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
 
 void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
 {
-    Q_UNUSED(authenticator)
-    // we cannot use QAuthenticator, because it sends username and passwords with latin1
-    // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
-    // those credentials were invalid and we terminate.
-    qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    if (reply->property(authenticationFailedC).toBool()) {
+        qDebug() << "Authentication failed for " << reply->url().toString();
+        return;
+    }
+
+    // QNAM sends the user and password in latin-1,  but the server expects UTF-8.
+    // So send mojibake on purpose
+    authenticator->setUser(QString::fromLatin1(user().toUtf8()));
+    authenticator->setPassword(QString::fromLatin1(password().toUtf8()));
+
+    // Set a property so we don't send the same password twice
     reply->setProperty(authenticationFailedC, true);
-    reply->close();
 }
 
 QString HttpCredentialsGui::queryPassword(bool *ok)
