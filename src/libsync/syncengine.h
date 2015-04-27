@@ -99,7 +99,7 @@ signals:
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
 
-    void transmissionProgress( const Progress::Info& progress );
+    void transmissionProgress( const ProgressInfo& progress );
 
     void csyncStateDbFile( const QString& );
     void wipeDb();
@@ -124,7 +124,7 @@ private:
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );
-    bool checkErrorBlacklisting( SyncFileItem *item );
+    bool checkErrorBlacklisting( SyncFileItem &item );
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.
@@ -142,7 +142,7 @@ private:
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
-    QMap<QString, SyncFileItem> _syncItemMap;
+    QMap<QString, SyncFileItemPtr> _syncItemMap;
 
     // should be called _syncItems (present tense). It's the items from the _syncItemMap but
     // sorted and re-adjusted based on permissions.
@@ -176,7 +176,7 @@ private:
 
     QThread _thread;
 
-    Progress::Info _progressInfo;
+    QScopedPointer<ProgressInfo> _progressInfo;
 
     Utility::StopWatch _stopWatch;
 

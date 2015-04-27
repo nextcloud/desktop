@@ -40,8 +40,6 @@
 #include <sys/types.h>
 #include <config_csync.h>
 
-#include "csync_version.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

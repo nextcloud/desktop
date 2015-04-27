@@ -56,7 +56,7 @@ public slots:
     void slotFolderOpenAction( const QString& alias );
     void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotRebuildRecentMenus();
-    void slotUpdateProgress(const QString &folder, const Progress::Info& progress);
+    void slotUpdateProgress(const QString &folder, const ProgressInfo& progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();

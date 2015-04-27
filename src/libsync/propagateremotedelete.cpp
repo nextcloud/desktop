@@ -58,10 +58,10 @@ void PropagateRemoteDelete::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item._file;
+    qDebug() << Q_FUNC_INFO << _item->_file;
 
     _job = new DeleteJob(_propagator->account(),
-                         _propagator->_remoteFolder + _item._file,
+                         _propagator->_remoteFolder + _item->_file,
                          this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
     _propagator->_activeJobs ++;
@@ -86,22 +86,22 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    _item._httpErrorCode = httpStatus;
+    _item->_httpErrorCode = httpStatus;
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
 
-        if( checkForProblemsWithShared(_item._httpErrorCode,
+        if( checkForProblemsWithShared(_item->_httpErrorCode,
             tr("The file has been removed from a read only share. It was restored.")) ) {
             return;
         }
 
-        SyncFileItem::Status status = classifyError(err, _item._httpErrorCode);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode);
         done(status, _job->errorString());
         return;
     }
 
-    _item._requestDuration = _job->duration();
-    _item._responseTimeStamp = _job->responseTimestamp();
+    _item->_requestDuration = _job->duration();
+    _item->_responseTimeStamp = _job->responseTimestamp();
 
     // A 404 reply is also considered a success here: We want to make sure
     // a file is gone from the server. It not being there in the first place
@@ -112,11 +112,11 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
         done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 204, but received \"%1 %2\".")
-            .arg(_item._httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
+            .arg(_item->_httpErrorCode).arg(_job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString()));
         return;
     }
 
-    _propagator->_journal->deleteFileRecord(_item._originalFile, _item._isDirectory);
+    _propagator->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
     _propagator->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }

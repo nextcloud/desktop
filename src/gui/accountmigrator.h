@@ -28,9 +28,6 @@ public:
      * @return the list of migrated folder definitions
      */
     QStringList migrateFolderDefinitons();
-signals:
-
-public slots:
 
 };
 }

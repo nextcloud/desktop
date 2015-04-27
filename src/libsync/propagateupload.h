@@ -87,7 +87,7 @@ public:
 
     QString errorString() {
         return _errorString.isEmpty() ? reply()->errorString() : _errorString;
-    };
+    }
 
     virtual void slotTimeout() Q_DECL_OVERRIDE;
 
@@ -108,9 +108,9 @@ class PollJob : public AbstractNetworkJob {
     SyncJournalDb *_journal;
     QString _localPath;
 public:
-    SyncFileItem _item;
+    SyncFileItemPtr _item;
     // Takes ownership of the device
-    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItem &item,
+    explicit PollJob(AccountPtr account, const QString &path, const SyncFileItemPtr &item,
                      SyncJournalDb *journal, const QString &localPath, QObject *parent)
         : AbstractNetworkJob(account, path, parent), _journal(journal), _localPath(localPath), _item(item) {}
 
@@ -149,7 +149,7 @@ class PropagateUploadFileQNAM : public PropagateItemJob {
     QVector<PUTFileJob*> _jobs; /// network jobs that are currently in transit
     bool _finished; // Tells that all the jobs have been finished
 public:
-    PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
     void start() Q_DECL_OVERRIDE;
 private slots:

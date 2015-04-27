@@ -1,3 +1,4 @@
+=====================
 The Automatic Updater
 =====================
 
@@ -9,11 +10,15 @@ users only need to use their normal package managers. However, on Linux systems
 the Updater will check for updates and notify you when a new version is 
 available.
 
+.. note:: Because of various technical issues, desktop sync clients older than 
+   1.7 will not be allowed to connect and sync with the ownCloud 8.1 server. It is 
+   highly recommended to keep your client updated.
+
 Basic Workflow
 --------------
 
 The following sections describe how to use the Automatic Updater on different 
-operating systems:
+operating systems.
 
 Windows
 ^^^^^^^
@@ -25,6 +30,9 @@ ownCloud client.
 If an update is available, and has been successfully downloaded, the ownCloud
 client starts a silent update prior to its next launch and then restarts
 itself. Should the silent update fail, the client offers a manual download.
+
+When you upgrade from 1.7 you should restart Windows to ensure that all the new 
+features in 1.8 are enabled.
 
 .. note:: Administrative privileges are required to perform the update.
 

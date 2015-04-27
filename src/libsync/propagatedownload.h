@@ -106,7 +106,7 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
 //  QFile *_file;
     QFile _tmpFile;
 public:
-    PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
 private slots:

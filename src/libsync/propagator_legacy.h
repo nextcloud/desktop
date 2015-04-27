@@ -68,7 +68,7 @@ protected:
     int           _httpStatusCode;
 
 public:
-    PropagateNeonJob(OwncloudPropagator* propagator, const SyncFileItem &item)
+    PropagateNeonJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item), _lastProgress(0), _httpStatusCode(0) {
             moveToThread(propagator->_neonThread);
         }
@@ -79,14 +79,14 @@ public:
 class UpdateMTimeAndETagJob : public PropagateNeonJob {
     Q_OBJECT
 public:
-    UpdateMTimeAndETagJob (OwncloudPropagator* propagator, const SyncFileItem& item)  : PropagateNeonJob(propagator, item) {}
+    UpdateMTimeAndETagJob (OwncloudPropagator* propagator, const SyncFileItemPtr& item)  : PropagateNeonJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
 };
 
 class PropagateUploadFileLegacy: public PropagateNeonJob {
     Q_OBJECT
 public:
-    explicit PropagateUploadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
+    explicit PropagateUploadFileLegacy(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateNeonJob(propagator, item)
         , _chunked_done(0), _chunked_total_size(0), _previousFileSize(0) {}
     void start() Q_DECL_OVERRIDE;
@@ -116,7 +116,7 @@ private:
 class PropagateDownloadFileLegacy: public PropagateNeonJob {
     Q_OBJECT
 public:
-    explicit PropagateDownloadFileLegacy(OwncloudPropagator* propagator,const SyncFileItem& item)
+    explicit PropagateDownloadFileLegacy(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateNeonJob(propagator, item), _file(0), _resumeStart(0) {}
     void start() Q_DECL_OVERRIDE;
 private:

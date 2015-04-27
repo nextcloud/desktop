@@ -23,7 +23,7 @@ class PropagateRemoteMkdir : public PropagateItemJob {
     QPointer<AbstractNetworkJob> _job;
     friend class PropagateDirectory; // So it can access the _item;
 public:
-    PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;

@@ -110,19 +110,19 @@ bool PollJob::finished()
 {
     QNetworkReply::NetworkError err = reply()->error();
     if (err != QNetworkReply::NoError) {
-        _item._httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        _item._status = classifyError(err, _item._httpErrorCode);
-        _item._errorString = reply()->errorString();
+        _item->_httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_status = classifyError(err, _item->_httpErrorCode);
+        _item->_errorString = reply()->errorString();
 
         if (reply()->hasRawHeader("OC-ErrorString")) {
-            _item._errorString = reply()->rawHeader("OC-ErrorString");
+            _item->_errorString = reply()->rawHeader("OC-ErrorString");
         }
 
-        if (_item._status == SyncFileItem::FatalError || _item._httpErrorCode >= 400) {
-            if (_item._status != SyncFileItem::FatalError
-                    && _item._httpErrorCode != 503) {
+        if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
+            if (_item->_status != SyncFileItem::FatalError
+                    && _item->_httpErrorCode != 503) {
                 SyncJournalDb::PollInfo info;
-                info._file = _item._file;
+                info._file = _item->_file;
                 // no info._url removes it from the database
                 _journal->setPollInfo(info);
                 _journal->commit("remove poll info");
@@ -140,8 +140,8 @@ bool PollJob::finished()
     qDebug() << Q_FUNC_INFO << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QVariantMap status = QtJson::parse(QString::fromUtf8(jsonData), ok).toMap();
     if (!ok || status.isEmpty()) {
-        _item._errorString = tr("Invalid JSON reply from the poll URL");
-        _item._status = SyncFileItem::NormalError;
+        _item->_errorString = tr("Invalid JSON reply from the poll URL");
+        _item->_status = SyncFileItem::NormalError;
         emit finishedSignal();
         return true;
     }
@@ -151,14 +151,14 @@ bool PollJob::finished()
         return false;
     }
 
-    _item._errorString = status["error"].toString();
-    _item._status = _item._errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
-    _item._fileId = status["fileid"].toByteArray();
-    _item._etag = status["etag"].toByteArray();
-    _item._responseTimeStamp = responseTimestamp();
+    _item->_errorString = status["error"].toString();
+    _item->_status = _item->_errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
+    _item->_fileId = status["fileid"].toByteArray();
+    _item->_etag = status["etag"].toByteArray();
+    _item->_responseTimeStamp = responseTimestamp();
 
     SyncJournalDb::PollInfo info;
-    info._file = _item._file;
+    info._file = _item->_file;
     // no info._url removes it from the database
     _journal->setPollInfo(info);
     _journal->commit("remove poll info");
@@ -174,7 +174,7 @@ void PropagateUploadFileQNAM::start()
         return;
     }
 
-    const QString fullFilePath(_propagator->getFilePath(_item._file));
+    const QString fullFilePath(_propagator->getFilePath(_item->_file));
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -182,14 +182,14 @@ void PropagateUploadFileQNAM::start()
     }
 
     // Update the mtime and size, it might have changed since discovery.
-    _item._modtime = FileSystem::getModTime(fullFilePath);
+    _item->_modtime = FileSystem::getModTime(fullFilePath);
     quint64 fileSize = FileSystem::getSize(fullFilePath);
-    _item._size = fileSize;
+    _item->_size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
-    if (fileIsStillChanging(_item)) {
+    if (fileIsStillChanging(*_item)) {
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during sync."));
         return;
@@ -197,20 +197,20 @@ void PropagateUploadFileQNAM::start()
 
     _chunkCount = std::ceil(fileSize/double(chunkSize()));
     _startChunk = 0;
-    _transferId = qrand() ^ _item._modtime ^ (_item._size << 16);
+    _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16);
 
-    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
+    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item._modtime ) {
+    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime ) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
-        qDebug() << Q_FUNC_INFO << _item._file << ": Resuming from chunk " << _startChunk;
+        qDebug() << Q_FUNC_INFO << _item->_file << ": Resuming from chunk " << _startChunk;
     }
 
     _currentChunk = 0;
     _duration.start();
 
-    emit progress(_item, 0);
+    emit progress(*_item, 0);
     this->startNextChunk();
 }
 
@@ -362,22 +362,22 @@ void PropagateUploadFileQNAM::startNextChunk()
         // is sent last.
         return;
     }
-    quint64 fileSize = _item._size;
+    quint64 fileSize = _item->_size;
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
     headers["OC-Async"] = "1";
     headers["OC-Chunk-Size"]= QByteArray::number(quint64(chunkSize()));
     headers["Content-Type"] = "application/octet-stream";
-    headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
-    if (!_item._etag.isEmpty() && _item._etag != "empty_etag" &&
-            _item._instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
+    headers["X-OC-Mtime"] = QByteArray::number(qint64(_item->_modtime));
+    if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag" &&
+            _item->_instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
             ) {
         // We add quotes because the owncloud server always add quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strip the quotes.
-        headers["If-Match"] = '"' + _item._etag + '"';
+        headers["If-Match"] = '"' + _item->_etag + '"';
     }
 
-    QString path = _item._file;
+    QString path = _item->_file;
 
     UploadDevice *device = new UploadDevice(&_propagator->_bandwidthManager);
     qint64 chunkStart = 0;
@@ -400,7 +400,7 @@ void PropagateUploadFileQNAM::startNextChunk()
         }
     }
 
-    if (! device->prepareAndOpen(_propagator->getFilePath(_item._file), chunkStart, currentChunkSize)) {
+    if (! device->prepareAndOpen(_propagator->getFilePath(_item->_file), chunkStart, currentChunkSize)) {
         qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError( SyncFileItem::SoftError, device->errorString() );
@@ -472,8 +472,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if(checkForProblemsWithShared(_item._httpErrorCode,
+        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if(checkForProblemsWithShared(_item->_httpErrorCode,
             tr("The file was edited locally but is part of a read only share. "
                "It is restored and your edit is in the conflict file."))) {
             return;
@@ -491,20 +491,20 @@ void PropagateUploadFileQNAM::slotPutFinished()
             errorString = job->reply()->rawHeader("OC-ErrorString");
         }
 
-        if (_item._httpErrorCode == 412) {
+        if (_item->_httpErrorCode == 412) {
             // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
-            _propagator->_journal->avoidReadFromDbOnNextSync(_item._file);
+            _propagator->_journal->avoidReadFromDbOnNextSync(_item->_file);
             _propagator->_anotherSyncNeeded = true;
         }
 
-        abortWithError(classifyError(err, _item._httpErrorCode), errorString);
+        abortWithError(classifyError(err, _item->_httpErrorCode), errorString);
         return;
     }
 
-    _item._httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     // The server needs some time to process the request and provide with a poll URL
-    if (_item._httpErrorCode == 202) {
+    if (_item->_httpErrorCode == 202) {
         _finished = true;
         QString path =  QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
@@ -528,7 +528,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
     bool finished = etag.length() > 0;
 
     // Check if the file still exists
-    const QString fullFilePath(_propagator->getFilePath(_item._file));
+    const QString fullFilePath(_propagator->getFilePath(_item->_file));
     if( !FileSystem::fileExists(fullFilePath) ) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
@@ -541,11 +541,11 @@ void PropagateUploadFileQNAM::slotPutFinished()
     // compare expected and real modification time of the file and size
     const time_t new_mtime = FileSystem::getModTime(fullFilePath);
     const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fullFilePath));
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-    if (new_mtime != _item._modtime || new_size != _item._size) {
+    QFileInfo fi(_propagator->getFilePath(_item->_file));
+    if (new_mtime != _item->_modtime || new_size != _item->_size) {
         qDebug() << "The local file has changed during upload:"
-                 << "mtime: " << _item._modtime << "<->" << new_mtime
-                 << ", size: " << _item._size << "<->" << new_size
+                 << "mtime: " << _item->_modtime << "<->" << new_mtime
+                 << ", size: " << _item->_size << "<->" << new_size
                  << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
         _propagator->_anotherSyncNeeded = true;
         if( !finished ) {
@@ -577,8 +577,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
-        pi._modtime =  Utility::qDateTimeFromTime_t(_item._modtime);
-        _propagator->_journal->setUploadInfo(_item._file, pi);
+        pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
+        _propagator->_journal->setUploadInfo(_item->_file, pi);
         _propagator->_journal->commit("Upload info");
         startNextChunk();
         return;
@@ -589,15 +589,15 @@ void PropagateUploadFileQNAM::slotPutFinished()
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
-        if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
-            qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
+        if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
+            qDebug() << "WARN: File ID changed!" << _item->_fileId << fid;
         }
-        _item._fileId = fid;
+        _item->_fileId = fid;
     }
 
-    _item._etag = etag;
+    _item->_etag = etag;
 
-    _item._responseTimeStamp = job->responseTimestamp();
+    _item->_responseTimeStamp = job->responseTimestamp();
 
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
@@ -612,21 +612,21 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // Well, the mtime was not set
 #endif
     }
-    finalize(_item);
+    finalize(*_item);
 }
 
 void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 {
     // Normally, copy == _item,   but when it comes from the UpdateMTimeAndETagJob, we need to do
     // some updates
-    _item._etag = copy._etag;
-    _item._fileId = copy._fileId;
+    _item->_etag = copy._etag;
+    _item->_fileId = copy._fileId;
 
-    _item._requestDuration = _duration.elapsed();
+    _item->_requestDuration = _duration.elapsed();
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item->_file)));
     // Remove from the progress database:
-    _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
+    _propagator->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
 
     _finished = true;
@@ -635,9 +635,14 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 
 void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
 {
+    // Completion is signaled with sent=0, total=0; avoid accidentally
+    // resetting progress due to the sent being zero by ignoring it.
+    // finishedSignal() is bound to be emitted soon anyway.
+    // See https://bugreports.qt.io/browse/QTBUG-44782.
     if (sent == 0 && total == 0) {
-        return; // QNAM bug https://bugreports.qt.io/browse/QTBUG-44782
+        return;
     }
+
     int progressChunk = _currentChunk + _startChunk - 1;
     if (progressChunk >= _chunkCount)
         progressChunk = _currentChunk - 1;
@@ -658,7 +663,7 @@ void PropagateUploadFileQNAM::slotUploadProgress(qint64 sent, qint64 total)
         // sender() is the only current job, no need to look at the byteWritten properties
         amount += sent;
     }
-    emit progress(_item, amount);
+    emit progress(*_item, amount);
 }
 
 void PropagateUploadFileQNAM::startPollJob(const QString& path)
@@ -667,9 +672,9 @@ void PropagateUploadFileQNAM::startPollJob(const QString& path)
                                _propagator->_journal, _propagator->_localDir, this);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
     SyncJournalDb::PollInfo info;
-    info._file = _item._file;
+    info._file = _item->_file;
     info._url = path;
-    info._modtime = _item._modtime;
+    info._modtime = _item->_modtime;
     _propagator->_journal->setPollInfo(info);
     _propagator->_journal->commit("add poll info");
     _propagator->_activeJobs++;
@@ -683,13 +688,13 @@ void PropagateUploadFileQNAM::slotPollFinished()
 
     _propagator->_activeJobs--;
 
-    if (job->_item._status != SyncFileItem::Success) {
+    if (job->_item->_status != SyncFileItem::Success) {
         _finished = true;
-        done(job->_item._status, job->_item._errorString);
+        done(job->_item->_status, job->_item->_errorString);
         return;
     }
 
-    finalize(job->_item);
+    finalize(*job->_item);
 }
 
 void PropagateUploadFileQNAM::slotJobDestroyed(QObject* job)
@@ -701,7 +706,7 @@ void PropagateUploadFileQNAM::abort()
 {
     foreach(auto *job, _jobs) {
         if (job->reply()) {
-            qDebug() << Q_FUNC_INFO << job << this->_item._file;
+            qDebug() << Q_FUNC_INFO << job << this->_item->_file;
             job->reply()->abort();
         }
     }

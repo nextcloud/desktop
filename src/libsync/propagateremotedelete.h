@@ -37,7 +37,7 @@ class PropagateRemoteDelete : public PropagateItemJob {
     Q_OBJECT
     QPointer<DeleteJob> _job;
 public:
-    PropagateRemoteDelete (OwncloudPropagator* propagator,const SyncFileItem& item)
+    PropagateRemoteDelete (OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;

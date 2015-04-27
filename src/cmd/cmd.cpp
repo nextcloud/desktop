@@ -469,7 +469,7 @@ restart_sync:
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
-    QObject::connect(&engine, SIGNAL(transmissionProgress(Progress::Info)), &cmd, SLOT(transmissionProgressSlot()));
+    QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
     engine.setSelectiveSyncBlackList(selectiveSyncList);
 

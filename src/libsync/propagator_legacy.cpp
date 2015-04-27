@@ -77,12 +77,12 @@ bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, in
                     }
                     errorString = QString::fromUtf8( status->reason_phrase );
                     httpStatusCode = status->code;
-                    _item._httpErrorCode = httpStatusCode;
+                    _item->_httpErrorCode = httpStatusCode;
                 }
             } else {
                 errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
                 httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-                _item._httpErrorCode = httpStatusCode;
+                _item->_httpErrorCode = httpStatusCode;
                 if ((httpStatusCode >= 200 && httpStatusCode < 300)
                     || (httpStatusCode != 0 && httpStatusCode == ignoreHttpCode)) {
                     // No error
@@ -96,7 +96,7 @@ bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, in
             errorString = QString::fromUtf8(ne_get_error(_propagator->_session));
             // Check if we don't need to ignore that error.
             httpStatusCode = errorString.mid(0, errorString.indexOf(QChar(' '))).toInt();
-            _item._httpErrorCode = httpStatusCode;
+            _item->_httpErrorCode = httpStatusCode;
             qDebug() << Q_FUNC_INFO << "NE_ERROR" << errorString << httpStatusCode << ignoreHttpCode;
             if (ignoreHttpCode && httpStatusCode == ignoreHttpCode)
                 return false;
@@ -123,8 +123,8 @@ bool PropagateNeonJob::updateErrorFromSession(int neon_code, ne_request* req, in
 void UpdateMTimeAndETagJob::start()
 {
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
-    if (!updateMTimeAndETag(uri.data(), _item._modtime))
+        ne_path_escape((_propagator->_remoteDir + _item->_file).toUtf8()));
+    if (!updateMTimeAndETag(uri.data(), _item->_modtime))
         return;
     done(SyncFileItem::Success);
 }
@@ -134,13 +134,13 @@ void PropagateUploadFileLegacy::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QFile file(_propagator->getFilePath(_item._file));
+    QFile file(_propagator->getFilePath(_item->_file));
     if (!file.open(QIODevice::ReadOnly)) {
         done(SyncFileItem::NormalError, file.errorString());
         return;
     }
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+        ne_path_escape((_propagator->_remoteDir + _item->_file).toUtf8()));
 
     int attempts = 0;
 
@@ -150,7 +150,7 @@ void PropagateUploadFileLegacy::start()
      * If the file has changed, retry.
      */
     qDebug() << "** PUT request to" << uri.data();
-    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item._file);
+    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item->_file);
 
     do {
         Hbf_State state = HBF_SUCCESS;
@@ -182,14 +182,14 @@ void PropagateUploadFileLegacy::start()
             QMetaObject::invokeMethod(_propagator, "adjustTotalTransmissionSize", Qt::QueuedConnection,
                                       Q_ARG(qint64, trans->stat_size - _previousFileSize));
             // update the item's values to the current from trans. hbf_splitlist does a stat
-            _item._size = trans->stat_size;
-            _item._modtime = trans->oc_header_modtime;
+            _item->_size = trans->stat_size;
+            _item->_modtime = trans->oc_header_modtime;
 
         }
-        emit progress(_item, 0);
+        emit progress(*_item, 0);
 
         if (progressInfo._valid) {
-            if (Utility::qDateTimeToTime_t(progressInfo._modtime) == _item._modtime) {
+            if (Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime) {
                 trans->start_id = progressInfo._chunk;
                 trans->transfer_id = progressInfo._transferid;
             }
@@ -199,18 +199,18 @@ void PropagateUploadFileLegacy::start()
         _lastTime.restart();
         _lastProgress = 0;
         _chunked_done = 0;
-        _chunked_total_size = _item._size;
+        _chunked_total_size = _item->_size;
 
         if( state == HBF_SUCCESS ) {
             QByteArray previousEtag;
-            if (!_item._etag.isEmpty() && _item._etag != "empty_etag") {
+            if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag") {
                 // We add quotes because the owncloud server always add quotes around the etag, and
                 //  csync_owncloud.c's owncloud_file_id always strip the quotes.
-                previousEtag = '"' + _item._etag + '"';
+                previousEtag = '"' + _item->_etag + '"';
                 trans->previous_etag = previousEtag.data();
             }
             _chunked_total_size = trans->stat_size;
-            qDebug() << "About to upload " << _item._file << "  (" << previousEtag << _item._size << " bytes )";
+            qDebug() << "About to upload " << _item->_file << "  (" << previousEtag << _item->_size << " bytes )";
             /* Transfer all the chunks through the HTTP session using PUT. */
             state = hbf_transfer( _propagator->_session, trans.data(), "PUT" );
         }
@@ -218,10 +218,10 @@ void PropagateUploadFileLegacy::start()
         // the file id should only be empty for new files up- or downloaded
         QByteArray fid = hbf_transfer_file_id( trans.data() );
         if( !fid.isEmpty() ) {
-            if( !_item._fileId.isEmpty() && _item._fileId != fid ) {
-                qDebug() << "WARN: File ID changed!" << _item._fileId << fid;
+            if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
+                qDebug() << "WARN: File ID changed!" << _item->_fileId << fid;
             }
-            _item._fileId = fid;
+            _item->_fileId = fid;
         }
 
         /* Handle errors. */
@@ -233,7 +233,7 @@ void PropagateUploadFileLegacy::start()
                     qDebug("SOURCE file has changed during upload, retry #%d in %d seconds!", attempts, 2*attempts);
                     Utility::sleep(2*attempts);
                     if( _previousFileSize == 0 ) {
-                        _previousFileSize = _item._size;
+                        _previousFileSize = _item->_size;
                     } else {
                         _previousFileSize = trans->stat_size;
                     }
@@ -247,8 +247,8 @@ void PropagateUploadFileLegacy::start()
                 done( SyncFileItem::SoftError, errMsg );
             } else {
                 // Other HBF error conditions.
-                _item._httpErrorCode = hbf_fail_http_code(trans.data());
-                if(checkForProblemsWithShared(_item._httpErrorCode,
+                _item->_httpErrorCode = hbf_fail_http_code(trans.data());
+                if(checkForProblemsWithShared(_item->_httpErrorCode,
                         tr("The file was edited locally but is part of a read only share. "
                            "It is restored and your edit is in the conflict file.")))
                     return;
@@ -261,15 +261,15 @@ void PropagateUploadFileLegacy::start()
         ne_set_notifier(_propagator->_session, 0, 0);
 
         if( trans->modtime_accepted ) {
-            _item._etag = parseEtag(hbf_transfer_etag( trans.data() ));
+            _item->_etag = parseEtag(hbf_transfer_etag( trans.data() ));
         } else {
             if (!updateMTimeAndETag(uri.data(), trans->oc_header_modtime))
                 return;
         }
 
-        _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, _propagator->getFilePath(_item._file)));
+        _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item->_file)));
         // Remove from the progress database:
-        _propagator->_journal->setUploadInfo(_item._file, SyncJournalDb::UploadInfo());
+        _propagator->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
         _propagator->_journal->commit("upload file start");
 
         if (hbf_validate_source_file(trans.data()) == HBF_SOURCE_FILE_CHANGE) {
@@ -291,9 +291,9 @@ void PropagateUploadFileLegacy::start()
             // Ignore this file for now.
             // Lets remove the file from the server (at least if it is new) as it is different
             // from our file here.
-            if( _item._instruction == CSYNC_INSTRUCTION_NEW ) {
+            if( _item->_instruction == CSYNC_INSTRUCTION_NEW ) {
                 QScopedPointer<char, QScopedPointerPodDeleter> uri(
-                    ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+                    ne_path_escape((_propagator->_remoteDir + _item->_file).toUtf8()));
 
                 int rc = ne_delete(_propagator->_session, uri.data());
                 qDebug() << "Remove the invalid file from server:" << rc;
@@ -321,7 +321,7 @@ void PropagateUploadFileLegacy::chunk_finished_cb(hbf_transfer_s *trans, int chu
         pi._chunk = chunk + 1; // next chunk to start with
         pi._transferid = trans->transfer_id;
         pi._modtime =  Utility::qDateTimeFromTime_t(trans->oc_header_modtime);
-        that->_propagator->_journal->setUploadInfo(that->_item._file, pi);
+        that->_propagator->_journal->setUploadInfo(that->_item->_file, pi);
         that->_propagator->_journal->commit("Upload info");
     }
 }
@@ -332,7 +332,7 @@ void PropagateUploadFileLegacy::notify_status_cb(void* userdata, ne_session_stat
     PropagateUploadFileLegacy* that = reinterpret_cast<PropagateUploadFileLegacy*>(userdata);
 
     if (status == ne_status_sending && info->sr.total > 0) {
-        emit that->progress(that->_item, that->_chunked_done + info->sr.progress);
+        emit that->progress(*that->_item, that->_chunked_done + info->sr.progress);
 
         that->limitBandwidth(that->_chunked_done + info->sr.progress,  that->_propagator->_uploadLimit.fetchAndAddAcquire(0));
     }
@@ -377,17 +377,17 @@ bool PropagateNeonJob::updateMTimeAndETag(const char* uri, time_t mtime)
     if (updateErrorFromSession(neon_stat, req.data())) {
         return false;
     } else {
-        _item._etag = get_etag_from_reply(req.data());
+        _item->_etag = get_etag_from_reply(req.data());
 
         QByteArray fid = parseFileId(req.data());
-        if( _item._fileId.isEmpty() ) {
-            _item._fileId = fid;
-            qDebug() << "FileID was empty, set it to " << _item._fileId;
+        if( _item->_fileId.isEmpty() ) {
+            _item->_fileId = fid;
+            qDebug() << "FileID was empty, set it to " << _item->_fileId;
         } else {
-            if( !fid.isEmpty() && fid != _item._fileId ) {
-                qDebug() << "WARN: FileID seems to have changed: "<< fid << _item._fileId;
+            if( !fid.isEmpty() && fid != _item->_fileId ) {
+                qDebug() << "WARN: FileID seems to have changed: "<< fid << _item->_fileId;
             } else {
-                qDebug() << "FileID is " << _item._fileId;
+                qDebug() << "FileID is " << _item->_fileId;
             }
         }
         return true;
@@ -549,7 +549,7 @@ void PropagateDownloadFileLegacy::notify_status_cb(void* userdata, ne_session_st
 {
     PropagateDownloadFileLegacy* that = reinterpret_cast<PropagateDownloadFileLegacy*>(userdata);
     if (status == ne_status_recving && info->sr.total > 0) {
-        emit that->progress(that->_item, info->sr.progress );
+        emit that->progress(*that->_item, info->sr.progress );
 
         that->limitBandwidth(info->sr.progress,  that->_propagator->_downloadLimit.fetchAndAddAcquire(0));
     }
@@ -563,21 +563,21 @@ void PropagateDownloadFileLegacy::start()
         return;
 
     // do a case clash check.
-    if( _propagator->localFileNameClash(_item._file) ) {
+    if( _propagator->localFileNameClash(_item->_file) ) {
         done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
-              .arg(QDir::toNativeSeparators(_item._file)) );
+              .arg(QDir::toNativeSeparators(_item->_file)) );
         return;
     }
 
-    emit progress(_item, 0);
+    emit progress(*_item, 0);
 
     QString tmpFileName;
-    const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item._file);
+    const SyncJournalDb::DownloadInfo progressInfo = _propagator->_journal->getDownloadInfo(_item->_file);
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
-        if (progressInfo._etag != _item._etag) {
+        if (progressInfo._etag != _item->_etag) {
             QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
-            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+            _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
             _expectedEtagForResume = progressInfo._etag;
@@ -586,7 +586,7 @@ void PropagateDownloadFileLegacy::start()
     }
 
     if (tmpFileName.isEmpty()) {
-        tmpFileName = _item._file;
+        tmpFileName = _item->_file;
         //add a dot at the begining of the filename to hide the file.
         int slashPos = tmpFileName.lastIndexOf('/');
         tmpFileName.insert(slashPos+1, '.');
@@ -605,22 +605,22 @@ void PropagateDownloadFileLegacy::start()
 
     {
         SyncJournalDb::DownloadInfo pi;
-        pi._etag = _item._etag;
+        pi._etag = _item->_etag;
         pi._tmpfile = tmpFileName;
         pi._valid = true;
-        _propagator->_journal->setDownloadInfo(_item._file, pi);
+        _propagator->_journal->setDownloadInfo(_item->_file, pi);
         _propagator->_journal->commit("download file start");
     }
 
-    if (!_item._directDownloadUrl.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "Direct download URL" << _item._directDownloadUrl << "not supported with legacy propagator, will go via ownCloud server";
+    if (!_item->_directDownloadUrl.isEmpty()) {
+        qDebug() << Q_FUNC_INFO << "Direct download URL" << _item->_directDownloadUrl << "not supported with legacy propagator, will go via ownCloud server";
     }
 
     /* actually do the request */
     int retry = 0;
 
     QScopedPointer<char, QScopedPointerPodDeleter> uri(
-        ne_path_escape((_propagator->_remoteDir + _item._file).toUtf8()));
+        ne_path_escape((_propagator->_remoteDir + _item->_file).toUtf8()));
 
     do {
         QScopedPointer<ne_request, ScopedPointerHelpers> req(ne_request_create(_propagator->_session, "GET", uri.data()));
@@ -630,7 +630,7 @@ void PropagateDownloadFileLegacy::start()
 
         if (tmpFile.size() > 0) {
             quint64 done = tmpFile.size();
-            if (done == _item._size) {
+            if (done == _item->_size) {
                 qDebug() << "File is already complete, no need to download";
                 break;
             }
@@ -666,7 +666,7 @@ void PropagateDownloadFileLegacy::start()
             // don't keep the temporary file as the file downloaded so far is invalid
             tmpFile.close();
             tmpFile.remove();
-            _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+            _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
             done(SyncFileItem::SoftError, errorString);
             return;
         }
@@ -678,24 +678,24 @@ void PropagateDownloadFileLegacy::start()
                 // don't keep the temporary file if it is empty.
                 tmpFile.close();
                 tmpFile.remove();
-                _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+                _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
             }
             return;
         }
-        _item._etag = get_etag_from_reply(req.data());
+        _item->_etag = get_etag_from_reply(req.data());
         break;
     } while (1);
 
     tmpFile.close();
     tmpFile.flush();
-    QString fn = _propagator->getFilePath(_item._file);
+    QString fn = _propagator->getFilePath(_item->_file);
 
 
-    bool isConflict = _item._instruction == CSYNC_INSTRUCTION_CONFLICT
+    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && !FileSystem::fileEquals(fn, tmpFile.fileName()); // compare the files to see if there was an actual conflict.
     //In case of conflict, make a backup of the old file
     if (isConflict) {
-        auto conflictDate = FileSystem::fileExists(fn) ? FileSystem::getModTime(fn) : _item._modtime;
+        auto conflictDate = FileSystem::fileExists(fn) ? FileSystem::getModTime(fn) : _item->_modtime;
         QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(conflictDate));
         QString renameError;
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
@@ -719,10 +719,10 @@ void PropagateDownloadFileLegacy::start()
         return;
     }
 
-    FileSystem::setModTime(fn, _item._modtime);
+    FileSystem::setModTime(fn, _item->_modtime);
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(_item, fn));
-    _propagator->_journal->setDownloadInfo(_item._file, SyncJournalDb::DownloadInfo());
+    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn));
+    _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 }

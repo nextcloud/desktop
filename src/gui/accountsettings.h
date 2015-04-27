@@ -60,7 +60,7 @@ public slots:
     void slotOpenOC();
     void slotUpdateFolderState( Folder* );
     void slotDoubleClicked( const QModelIndex& );
-    void slotSetProgress(const QString& folder, const Progress::Info& progress);
+    void slotSetProgress(const QString& folder, const ProgressInfo& progress);
 
     void slotUpdateQuota( qint64,qint64 );
     void slotAccountStateChanged(int state);
