@@ -507,6 +507,7 @@ void OwncloudSetupWizard::applyAccountChanges()
     auto manager = AccountManager::instance();
 
     manager->addAccount(newAccount);
+    manager->save();
 }
 
 
