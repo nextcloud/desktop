@@ -653,7 +653,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Ověření selhalo při připojení %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -694,12 +694,12 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Varování:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Varování:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -859,7 +859,7 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Hledat:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
@@ -899,7 +899,7 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Nelze zapisovat do souboru logu %1</translation>
     </message>
 </context>
 <context>
@@ -1057,13 +1057,14 @@ Zvolené položky budou smazány také v případě, že brání smazání adres
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Je připravena nová aktualizace %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Bude instalována nová aktualizace pro %1. V průběhu aktualizace
+můžete být požádáni o dodatečná oprávnění.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1131,7 +1132,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovat adresář &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1238,12 +1239,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Ověřený požadavek na server byl přesměrován na &apos;%1&apos;. URL je špatně, server není správně nakonfigurován.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Byla obdržena nesprávná odpověď na ověřený webdav požadavek</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
@@ -1258,7 +1259,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Vytvářím místní adresář pro synchronizaci %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
@@ -1451,12 +1452,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Obnovení selhalo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v blacklistingu:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
@@ -1513,7 +1514,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1522,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1544,7 +1545,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1735,12 +1736,12 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Na serveru nejsou momentálně žádné podadresáře.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k chybě v průběhu načítání seznamu podadresářů.</translation>
     </message>
 </context>
 <context>
@@ -1820,17 +1821,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud cesta:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Nastavit &amp;heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit datum &amp;vypršení</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -1840,7 +1841,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat &amp;odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -1865,12 +1866,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Adresář: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Ch&amp;ránit heslem</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="196"/>
@@ -1880,12 +1881,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Tento soubor nelze sdílet, protože byl nasdílen bez možnosti dalšího sdílení.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
         <source>Public sh&amp;aring requires a password:</source>
-        <translation type="unfinished"/>
+        <translation>Veřejné s&amp;dílení vyžaduje heslo:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="469"/>
@@ -1896,7 +1897,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="521"/>
         <location filename="../src/gui/sharedialog.cpp" line="522"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sdílet odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="540"/>
@@ -1911,17 +1912,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="574"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Nelze nalézt adresář pro nahrávání.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Existuje synchronizovaný soubor stejného jména. Tento soubor nelze registrovat pro synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor nelze synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2290,22 +2291,22 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>Selhal přístup pro CSync</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Služba je dočasně nedostupná</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k chybě při otvírání adresáře</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k interní chybě číslo %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
@@ -2872,7 +2873,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="251"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Sestaveno na Git revizi &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s použitím Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2890,7 +2891,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Staženo, konfliktní soubor přejmenován</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>

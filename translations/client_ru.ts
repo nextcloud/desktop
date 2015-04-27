@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Choose What to Sync</source>
-        <translation>Что синхронизировать</translation>
+        <translation>Уточнить объекты</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="101"/>
@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Edit Ignored Files</source>
-        <translation>Изменить игнорируемые файлы</translation>
+        <translation>Игнорируемые файлы</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="159"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="169"/>
         <source>Resume</source>
-        <translation>Продолжить</translation>
+        <translation>Возобновить</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="334"/>
@@ -1712,7 +1712,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
         <source>Choose What to Sync</source>
-        <translation>Что синхронизировать</translation>
+        <translation>Уточнить объекты</translation>
     </message>
 </context>
 <context>
@@ -2615,7 +2615,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="265"/>
         <source>Choose what to sync</source>
-        <translation>Что синхронизировать</translation>
+        <translation>Уточнить объекты</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
