@@ -788,18 +788,6 @@ Folder *FolderMan::folderForPath(const QString &path)
     return 0;
 }
 
-void FolderMan::removeAllFolderDefinitions()
-{
-    foreach( Folder *f, _folderMap.values() ) {
-        if(f) {
-            slotRemoveFolder( f->alias() );
-        }
-    }
-    // clear the queue.
-    _scheduleQueue.clear();
-
-}
-
 void FolderMan::slotRemoveFolder( const QString& alias )
 {
     Folder *f = folder(alias);

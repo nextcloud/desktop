@@ -61,9 +61,6 @@ public:
     /** Creates a folder for a specific configuration, identified by alias. */
     Folder* setupFolderFromConfigFile(const QString & );
 
-    /** Wipes all folder defintions. No way back! */
-    void removeAllFolderDefinitions();
-
     /**
      * Ensures that a given directory does not contain a .csync_journal.
      *

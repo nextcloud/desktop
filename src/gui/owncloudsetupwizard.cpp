@@ -463,10 +463,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // is changed.
         auto account = applyAccountChanges();
 
-        // But if the user went through with the folder config wizard,
-        // we assume they always want to have only that folder configured.
-        folderMan->removeAllFolderDefinitions();
-
         QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
         if( !localFolder.endsWith(QLatin1Char('/'))) {
             localFolder.append(QLatin1Char('/'));
@@ -476,7 +472,13 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
             FolderDefinition folderDefinition;
-            folderDefinition.alias = Theme::instance()->appName();
+            auto alias = Theme::instance()->appName();
+            int count = 0;
+            folderDefinition.alias = alias;
+            while (folderMan->folder(folderDefinition.alias)) {
+                // There is already a folder configured with this name and folder names need to be unique
+                folderDefinition.alias = alias + QString::number(++count);
+            }
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
             folderDefinition.selectiveSyncBlackList = _ocWizard->selectiveSyncBlacklist();
