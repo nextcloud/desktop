@@ -96,21 +96,20 @@ OCC::Folder::Map FolderMan::map()
     return _folderMap;
 }
 
-void FolderMan::unloadFolder( const QString& alias )
+void FolderMan::unloadFolder( Folder *f )
 {
-    Folder* f = folder(alias);
     if( !f ) {
         return;
     }
 
     if( _socketApi ) {
-        _socketApi->slotUnregisterPath(alias);
+        _socketApi->slotUnregisterPath(f->alias());
     }
 
-    if( _folderWatchers.contains(alias)) {
-        _folderWatchers.remove(alias);
+    if( _folderWatchers.contains(f->alias())) {
+        _folderWatchers.remove(f->alias());
     }
-    _folderMap.remove( alias );
+    _folderMap.remove( f->alias() );
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -122,12 +121,12 @@ int FolderMan::unloadAndDeleteAllFolders()
     while (i.hasNext()) {
         i.next();
         Folder* f = i.value();
-        unloadFolder(i.key());
+        unloadFolder(f);
         delete f;
         cnt++;
     }
-    _lastSyncFolder.clear();
-    _currentSyncFolder.clear();
+    _lastSyncFolder = 0;
+    _currentSyncFolder = 0;
     _scheduleQueue.clear();
 
     Q_ASSERT(_folderMap.count() == 0);
@@ -209,8 +208,8 @@ int FolderMan::setupFolders()
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
                 Folder* f = addFolderInternal(account.data(), folderDefinition);
                 if (f) {
-                    slotScheduleSync(f->alias());
-                    emit folderSyncStateChange(f->alias());
+                    slotScheduleSync(f);
+                    emit folderSyncStateChange(f);
                 }
             }
         }
@@ -240,8 +239,8 @@ int FolderMan::setupFoldersMigration()
     foreach ( const QString& alias, list ) {
         Folder *f = setupFolderFromConfigFile( alias );
         if( f ) {
-            slotScheduleSync(alias);
-            emit( folderSyncStateChange( f->alias() ) );
+            slotScheduleSync(f);
+            emit( folderSyncStateChange( f ) );
         }
     }
 
@@ -402,7 +401,7 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     }
 
     /* Use a signal mapper to connect the signals to the alias */
-    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
+    connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
     connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
@@ -413,15 +412,14 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     return folder;
 }
 
-void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
+void FolderMan::slotSetFolderPaused( Folder *f, bool paused )
 {
-    Folder *f = folder(alias);
     if( !f ) {
-        qDebug() << "!! Can not enable alias " << alias << ", can not be found in folderMap.";
+        qWarning() << "!! slotSetFolderPaused called with empty folder";
         return;
     }
 
-    slotScheduleSync(alias);
+    slotScheduleSync(f);
 
     if (!paused) {
         _disabledFolders.remove(f);
@@ -429,7 +427,7 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
         _disabledFolders.insert(f);
     }
     f->setSyncPaused(paused);
-    emit folderSyncStateChange(alias);
+    emit folderSyncStateChange(f);
 }
 
 // this really terminates the current sync process
@@ -437,7 +435,7 @@ void FolderMan::slotSetFolderPaused( const QString& alias, bool paused )
 // csync still remains in a stable state, regardless of that.
 void FolderMan::terminateSyncProcess()
 {
-    Folder *f = folder(_currentSyncFolder);
+    Folder *f = _currentSyncFolder;
     if( f ) {
         // This will, indirectly and eventually, call slotFolderSyncFinished
         // and thereby clear _currentSyncFolder.
@@ -455,17 +453,11 @@ Folder *FolderMan::folder( const QString& alias )
     return 0;
 }
 
-SyncResult FolderMan::syncResult( const QString& alias )
-{
-    Folder *f = folder( alias );
-    return f ? f->syncResult() : SyncResult();
-}
-
 void FolderMan::slotScheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
         if (f && ! f->syncPaused()) {
-            slotScheduleSync( f->alias() );
+            slotScheduleSync( f );
         }
     }
 }
@@ -474,13 +466,13 @@ void FolderMan::slotScheduleAllFolders()
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
   */
-void FolderMan::slotScheduleSync( const QString& alias )
+void FolderMan::slotScheduleSync( Folder *f )
 {
-    Folder* f = folder(alias);
     if( !f ) {
-        qDebug() << "Not scheduling sync for empty or unknown folder" << alias;
+        qWarning() << "slotScheduleSync called with null folder";
         return;
     }
+    auto alias = f->alias();
 
     if( _socketApi ) {
         // We want the SocketAPI to already now update so that it can show the EVAL icon
@@ -491,7 +483,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
 
     qDebug() << "Schedule folder " << alias << " to sync!";
 
-    if( ! _scheduleQueue.contains(alias) ) {
+    if( ! _scheduleQueue.contains(f) ) {
         if( !f->syncPaused() ) {
             f->prepareToSync();
         } else {
@@ -501,7 +493,7 @@ void FolderMan::slotScheduleSync( const QString& alias )
             }
             return;
         }
-        _scheduleQueue.enqueue(alias);
+        _scheduleQueue.enqueue(f);
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
@@ -554,7 +546,7 @@ void FolderMan::setSyncEnabled( bool enabled )
     }
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
-    emit( folderSyncStateChange(QString::null) );
+    emit( folderSyncStateChange(0) );
 }
 
 void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
@@ -565,7 +557,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
     if (_scheduleQueue.empty()) {
         return;
     }
-    if (! _currentSyncFolder.isEmpty()) {
+    if (_currentSyncFolder) {
         return;
     }
 
@@ -573,7 +565,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
     qint64 msSinceLastSync = 0;
 
     // Require a pause based on the duration of the last sync run.
-    if (Folder* lastFolder = folder(_lastSyncFolder)) {
+    if (Folder* lastFolder = _lastSyncFolder) {
         msSinceLastSync = lastFolder->msecSinceLastSync();
 
         //  1s   -> 1.5s pause
@@ -585,7 +577,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
     }
 
     // Punish consecutive follow-up syncs with longer delays.
-    if (Folder* nextFolder = folder(_scheduleQueue.head())) {
+    if (Folder* nextFolder = _scheduleQueue.head()) {
         int followUps = nextFolder->consecutiveFollowUpSyncs();
         if (followUps >= 2) {
             // This is okay due to the 1min maximum delay limit below.
@@ -616,8 +608,8 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
   */
 void FolderMan::slotStartScheduledFolderSync()
 {
-    if( !_currentSyncFolder.isEmpty() ) {
-        qDebug() << "Currently folder " << _currentSyncFolder << " is running, wait for finish!";
+    if( _currentSyncFolder ) {
+        qDebug() << "Currently folder " << _currentSyncFolder->alias() << " is running, wait for finish!";
         return;
     }
 
@@ -632,16 +624,12 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 
     // Try to start the top scheduled sync.
-    const QString alias = _scheduleQueue.dequeue();
-    Folder *f = folder(alias);
-    if( !f ) {
-        qDebug() << "FolderMan: Not syncing queued folder" << alias << ": not in folder map anymore";
-        return;
-    }
+    Folder *f = _scheduleQueue.dequeue();
+    Q_ASSERT(f);
 
     // Start syncing this folder!
     if( !f->syncPaused() ) {
-        _currentSyncFolder = alias;
+        _currentSyncFolder = f;
 
         f->startSync( QStringList() );
 
@@ -660,66 +648,46 @@ void FolderMan::slotEtagPollTimerTimeout()
     ConfigFile cfg;
     int polltime = cfg.remotePollInterval();
 
-    QSet<QString> folderAliases = _folderMap.keys().toSet();
-    QMutableSetIterator<QString> i(folderAliases);
-    while (i.hasNext()) {
-        QString alias = i.next();
-        if (_currentSyncFolder == alias) {
-            i.remove();
+    foreach (Folder *f, _folderMap) {
+        if (_currentSyncFolder == f) {
             continue;
         }
-        if (_scheduleQueue.contains(alias)) {
-            i.remove();
+        if (_scheduleQueue.contains(f)) {
             continue;
         }
-        Folder *f = _folderMap.value(alias);
         if (f && _disabledFolders.contains(f)) {
-            i.remove();
             continue;
         }
         if (f && (f->etagJob() || f->isBusy() || f->syncPaused())) {
-            i.remove();
             continue;
         }
         if (f && f->msecSinceLastSync() < polltime) {
-            i.remove();
             continue;
         }
-    }
-
-    if (folderAliases.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << "No folders need to check for the remote ETag";
-    } else {
-        qDebug() << Q_FUNC_INFO << "The following folders need to check for the remote ETag:" << folderAliases;
-        i = folderAliases; // reset
-         while (i.hasNext()) {
-             QString alias = i.next();
-             QMetaObject::invokeMethod(_folderMap.value(alias), "slotRunEtagJob", Qt::QueuedConnection);
-         }
+        QMetaObject::invokeMethod(f, "slotRunEtagJob", Qt::QueuedConnection);
     }
 }
 
 void FolderMan::slotRemoveFoldersForAccount(AccountState* accountState)
 {
-    QStringList foldersToRemove;
+    QVarLengthArray<Folder *, 16> foldersToRemove;
     Folder::MapIterator i(_folderMap);
     while (i.hasNext()) {
         i.next();
         Folder* folder = i.value();
         if (folder->accountState() == accountState) {
-            foldersToRemove.append(folder->alias());
+            foldersToRemove.append(folder);
         }
     }
 
-    qDebug() << "Account was removed, removing associated folders:" << foldersToRemove;
-    foreach (const QString& alias, foldersToRemove) {
-        slotRemoveFolder(alias);
+    foreach (const auto &f, foldersToRemove) {
+        slotRemoveFolder(f);
     }
 }
 
 void FolderMan::slotFolderSyncStarted( )
 {
-    qDebug() << ">===================================== sync started for " << _currentSyncFolder;
+    qDebug() << ">===================================== sync started for " << _currentSyncFolder->alias();
 }
 
 /*
@@ -730,10 +698,10 @@ void FolderMan::slotFolderSyncStarted( )
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
-    qDebug() << "<===================================== sync finished for " << _currentSyncFolder;
+    qDebug() << "<===================================== sync finished for " << _currentSyncFolder->alias();
 
     _lastSyncFolder = _currentSyncFolder;
-    _currentSyncFolder.clear();
+    _currentSyncFolder = 0;
 
     startScheduledSyncSoon();
 }
@@ -761,7 +729,7 @@ Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDef
     }
 
     /* Use a signal mapper to connect the signals to the alias */
-    connect(folder, SIGNAL(scheduleToSync(const QString&)), SLOT(slotScheduleSync(const QString&)));
+    connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
     connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
@@ -788,17 +756,16 @@ Folder *FolderMan::folderForPath(const QString &path)
     return 0;
 }
 
-void FolderMan::slotRemoveFolder( const QString& alias )
+void FolderMan::slotRemoveFolder( Folder *f )
 {
-    Folder *f = folder(alias);
     if( !f ) {
-        qDebug() << "!! Can not remove " << alias << ", not in folderMap.";
+        qWarning() << "!! Can not remove null folder";
         return;
     }
 
-    qDebug() << "Removing " << alias;
+    qDebug() << "Removing " << f->alias();
 
-    const bool currentlyRunning = (_currentSyncFolder == alias);
+    const bool currentlyRunning = (_currentSyncFolder == f);
     if( currentlyRunning ) {
         // let the folder delete itself when done and
         // abort the sync now
@@ -806,7 +773,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
         terminateSyncProcess();
     }
 
-    _scheduleQueue.removeAll(alias);
+    _scheduleQueue.removeAll(f);
 
     f->wipe();
     f->setSyncPaused(true);
@@ -814,7 +781,7 @@ void FolderMan::slotRemoveFolder( const QString& alias )
     // remove the folder configuration
     f->removeFromSettings();
 
-    unloadFolder( alias );
+    unloadFolder( f);
     if( !currentlyRunning ) {
         delete f;
     }

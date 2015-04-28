@@ -236,7 +236,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             }
 
             FolderMan *folderMan = FolderMan::instance();
-            folderMan->slotRemoveFolder( alias );
+            folderMan->slotRemoveFolder( folderMan->folder(alias) );
             _model->removeRow(row);
 
             // single folder fix to show add-button and hide remove-button
@@ -349,7 +349,7 @@ void AccountSettings::slotEnableCurrentFolder()
             f->slotTerminateSync();
         }
         f->setSyncPaused(!currentlyPaused); // toggle the pause setting
-        folderMan->slotSetFolderPaused( alias, !currentlyPaused );
+        folderMan->slotSetFolderPaused( f, !currentlyPaused );
 
         // keep state for the icon setting.
         if( currentlyPaused ) _wasDisabledBefore = true;
@@ -366,7 +366,7 @@ void AccountSettings::slotSyncCurrentFolderNow()
     QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
 
-    folderMan->slotScheduleSync(alias);
+    folderMan->slotScheduleSync(folderMan->folder(alias));
 }
 
 void AccountSettings::slotUpdateFolderState( Folder *folder )

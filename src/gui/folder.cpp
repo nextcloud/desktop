@@ -292,7 +292,7 @@ void Folder::slotRunEtagJob()
                      << _syncResult.statusString();
         }
         _forceSyncOnPollTimeout = false;
-        emit scheduleToSync(alias());
+        emit scheduleToSync(this);
 
     } else {
         // Do the ordinary etag check for the root folder and only schedule a real
@@ -315,7 +315,7 @@ void Folder::etagRetreived(const QString& etag)
 
     if (_lastEtag != etag) {
         _lastEtag = etag;
-        emit scheduleToSync(alias());
+        emit scheduleToSync(this);
     }
 }
 
@@ -540,7 +540,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
     // When no sync is running or it's in the prepare phase, we can
     // always schedule a new sync.
     if (! _engine || _syncResult.status() == SyncResult::SyncPrepare) {
-        emit scheduleToSync(alias());
+        emit scheduleToSync(this);
         return;
     }
 
@@ -562,7 +562,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
 #endif
 
     if (! ownChange) {
-        emit scheduleToSync(alias());
+        emit scheduleToSync(this);
     }
 }
 

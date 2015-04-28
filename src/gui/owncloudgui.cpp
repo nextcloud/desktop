@@ -84,8 +84,8 @@ ownCloudGui::ownCloudGui(Application *parent) :
              SLOT(slotUpdateProgress(QString,ProgressInfo)) );
 
     FolderMan *folderMan = FolderMan::instance();
-    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
-             this,SLOT(slotSyncStateChange(QString)));
+    connect( folderMan, SIGNAL(folderSyncStateChange(Folder*)),
+             this,SLOT(slotSyncStateChange(Folder*)));
 
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
              SLOT(slotShowTrayMessage(QString,QString)));
@@ -169,18 +169,17 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 #endif
 }
 
-void ownCloudGui::slotSyncStateChange( const QString& alias )
+void ownCloudGui::slotSyncStateChange( Folder* folder )
 {
-    FolderMan *folderMan = FolderMan::instance();
-    const SyncResult& result = folderMan->syncResult( alias );
-
     slotComputeOverallSyncStatus();
 
-    if( alias.isEmpty() ) {
+    if( !folder ) {
         return; // Valid, just a general GUI redraw was needed.
     }
 
-    qDebug() << "Sync state changed for folder " << alias << ": "  << result.statusString();
+    auto result = folder->syncResult();
+
+    qDebug() << "Sync state changed for folder " << folder->alias() << ": "  << result.statusString();
 
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();

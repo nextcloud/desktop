@@ -55,9 +55,6 @@ public:
     /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
 
-    /** Returns the last sync result by alias */
-    SyncResult syncResult( const QString& );
-
     /** Creates a folder for a specific configuration, identified by alias. */
     Folder* setupFolderFromConfigFile(const QString & );
 
@@ -86,18 +83,17 @@ public:
 
 signals:
     /**
-      * signal to indicate a folder named by alias has changed its sync state.
-      * Get the state via the Folder Map or the syncResult and syncState methods.
+      * signal to indicate a folder has changed its sync state.
       *
-      * Attention: The alias string may be zero. Do a general update of the state than.
+      * Attention: The folder may be zero. Do a general update of the state than.
       */
-    void folderSyncStateChange( const QString & );
+    void folderSyncStateChange(Folder*);
 
     void folderListLoaded(const Folder::Map &);
 
 public slots:
-    void slotRemoveFolder( const QString& );
-    void slotSetFolderPaused(const QString&, bool paused);
+    void slotRemoveFolder( Folder* );
+    void slotSetFolderPaused(Folder *, bool paused);
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
@@ -122,7 +118,7 @@ public slots:
     void setDirtyNetworkLimits();
 
     // slot to add a folder to the syncing queue
-    void slotScheduleSync( const QString & );
+    void slotScheduleSync(Folder*);
     // slot to scheule an ETag job
     void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
     void slotEtagJobDestroyed (QObject*);
@@ -142,7 +138,7 @@ private:
     Folder* addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition);
 
     /* unloads a folder object, does not delete it */
-    void unloadFolder( const QString& alias );
+    void unloadFolder( Folder * );
 
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon(qint64 msMinimumDelay = 0);
@@ -158,8 +154,8 @@ private:
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
     QSignalMapper *_folderChangeSignalMapper;
-    QString        _currentSyncFolder;
-    QString        _lastSyncFolder;
+    Folder        *_currentSyncFolder = 0;
+    QPointer<Folder> _lastSyncFolder;
     bool           _syncEnabled;
     QTimer         _etagPollTimer;
     QPointer<RequestEtagJob>        _currentEtagJob; // alias of Folder running the current RequestEtagJob
@@ -168,7 +164,7 @@ private:
     QPointer<SocketApi> _socketApi;
 
     /** The aliases of folders that shall be synced. */
-    QQueue<QString> _scheduleQueue;
+    QQueue<Folder*> _scheduleQueue;
 
     /** When the timer expires one of the scheduled syncs will be started. */
     QTimer          _startScheduledSyncTimer;

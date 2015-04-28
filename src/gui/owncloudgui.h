@@ -27,6 +27,8 @@
 
 namespace OCC {
 
+class Folder;
+
 class SettingsDialog;
 class SettingsDialogMac;
 class Application;
@@ -62,7 +64,7 @@ public slots:
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange( const QString& alias );
+    void slotSyncStateChange(Folder*);
     void slotTrayClicked( QSystemTrayIcon::ActivationReason reason );
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();

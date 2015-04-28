@@ -172,7 +172,7 @@ signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
-    void scheduleToSync( const QString& );
+    void scheduleToSync(Folder*);
 
 public slots:
 

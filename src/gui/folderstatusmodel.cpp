@@ -486,7 +486,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach(const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
-            folderMan->slotScheduleSync(folder->alias());
+            folderMan->slotScheduleSync(folder);
         }
     }
 
