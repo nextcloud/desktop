@@ -19,6 +19,7 @@
 #include "networkjobs.h"
 #include "account.h"
 #include "selectivesyncdialog.h"
+#include "accountstate.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDebug>
@@ -485,6 +486,9 @@ bool FolderWizardRemotePath::isComplete() const
     Folder::Map::const_iterator i = map.constBegin();
     for(i = map.constBegin();i != map.constEnd(); i++ ) {
         Folder *f = static_cast<Folder*>(i.value());
+        if (f->accountState()->account() != _account) {
+            continue;
+        }
         QString curDir = f->remotePath();
         if (!curDir.startsWith(QLatin1Char('/'))) {
             curDir.prepend(QLatin1Char('/'));
