@@ -110,7 +110,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     }
 
     // default to Account
-    toolBar->actions().at(0)->setChecked(true);
+    toolBar->actions().at(0)->trigger();
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
