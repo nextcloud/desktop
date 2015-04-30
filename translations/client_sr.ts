@@ -2429,7 +2429,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="269"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ауторска права ОунКлауд (ownCloud), корпорација&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ауторска права оунКлауд (ownCloud), корпорација&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="270"/>
@@ -2785,7 +2785,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Унесите адресу оунКлауда са којим желите да се повежете (без http или https)</translation>
+        <translation>Унесите адресу оунКлауд сервера са којим желите да се повежете (без http или https)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="83"/>
