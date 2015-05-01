@@ -172,7 +172,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="646"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 %2 (%4 中 %3) 残り時間 %5 利用帯域 %6/s </translation>
+        <translation>%1 %2 (%4 中 %3) 残り時間 %5 使用帯域 %6/s </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
