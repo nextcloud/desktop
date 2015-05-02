@@ -1691,17 +1691,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="360"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>チェックしていないフォルダはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピュータと同期されなくなります。</translation>
+        <translation>チェックしていないフォルダーはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピューターと同期されなくなります。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="373"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>同期対象の選択: 同期したいリモートのサブフォルダを選択してください。</translation>
+        <translation>同期対象の選択: 同期したいリモートのサブフォルダーを選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="374"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>同期対象の選択: 同期したくないリモートのサブフォルダは、同期対象から外せます。</translation>
+        <translation>同期対象の選択: 同期したくないリモートのサブフォルダーは、同期対象から外せます。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
@@ -1906,7 +1906,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="574"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation>アップロード先のフォルダが見つけられません。</translation>
+        <translation>アップロード先のフォルダーが見つかりません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
@@ -2290,7 +2290,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation>サーバは一時的に利用できません。</translation>
+        <translation>サーバーは一時的に利用できません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
