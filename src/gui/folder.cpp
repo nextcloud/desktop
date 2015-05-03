@@ -180,10 +180,20 @@ QString Folder::alias() const
 QString Folder::path() const
 {
     QString p(_path);
-    if( ! p.endsWith(QLatin1Char('/')) ) {
-        p.append(QLatin1Char('/'));
+    if( ! p.endsWith(QDir::separator()) ) {
+        p.append(QDir::separator());
     }
     return p;
+}
+
+QString Folder::cleanPath(QString path)
+{
+    QString cleanedPath = QDir::cleanPath(path);
+
+    if(cleanedPath.length() == 3 && cleanedPath.endsWith(":/"))
+        return cleanedPath.left(2);
+
+    return cleanedPath;
 }
 
 bool Folder::isBusy() const
