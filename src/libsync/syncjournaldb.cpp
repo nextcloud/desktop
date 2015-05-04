@@ -273,6 +273,8 @@ bool SyncJournalDb::checkConnect()
     }
 
     _possibleUpgradeFromMirall_1_5 = false;
+    _possibleUpgradeFromMirall_1_8_0 = false;
+
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
@@ -292,6 +294,9 @@ bool SyncJournalDb::checkConnect()
         int minor = versionQuery.intValue(1);
         int patch = versionQuery.intValue(2);
 
+        if( major == 1 && minor == 8 && patch  == 0 ) {
+            _possibleUpgradeFromMirall_1_8_0 = true;
+        }
         // Not comparing the BUILD id here, correct?
         if( !(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH) ) {
             createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
@@ -751,6 +756,10 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString>& filepathsToKeep,
 
     if (_possibleUpgradeFromMirall_1_5) {
         _possibleUpgradeFromMirall_1_5 = false; // should be handled now
+    }
+
+    if (_possibleUpgradeFromMirall_1_8_0) {
+        _possibleUpgradeFromMirall_1_8_0 = false; // should be handled now
     }
 
     return true;
@@ -1320,6 +1329,13 @@ bool SyncJournalDb::isUpdateFrom_1_5()
     QMutexLocker lock(&_mutex);
     checkConnect();
     return _possibleUpgradeFromMirall_1_5;
+}
+
+bool SyncJournalDb::isUpdateFrom_1_8_0()
+{
+    QMutexLocker lock(&_mutex);
+    checkConnect();
+    return _possibleUpgradeFromMirall_1_8_0;
 }
 
 bool operator==(const SyncJournalDb::DownloadInfo & lhs,
