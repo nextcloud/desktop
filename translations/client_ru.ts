@@ -1675,6 +1675,7 @@ It is not advisable to use it.</source>
         <translation><numerusform>%n файл пропущен из-за предыдущих ошибок.
 </numerusform><numerusform>%n файлов пропущено из-за предыдущих ошибок.
 </numerusform><numerusform>%n файлов пропущено из-за предыдущих ошибок.
+</numerusform><numerusform>%n файлов пропущено из-за предыдущих ошибок.
 </numerusform></translation>
     </message>
     <message numerus="yes">
@@ -1682,6 +1683,7 @@ It is not advisable to use it.</source>
         <source>%n files are partially downloaded.
 </source>
         <translation><numerusform>%n файл частично загружен.
+</numerusform><numerusform>%n файлов частично загружены.
 </numerusform><numerusform>%n файлов частично загружены.
 </numerusform><numerusform>%n файлов частично загружены.
 </numerusform></translation>

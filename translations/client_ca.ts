@@ -2827,22 +2827,22 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="113"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="116"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
@@ -2868,7 +2868,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="251"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construït de la revisió de Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; el %4 de %3 usant Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
