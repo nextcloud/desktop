@@ -472,30 +472,6 @@ void Application::setHelp()
     _helpOnly = true;
 }
 
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5,0,0)
-bool Application::winEventFilter(MSG *pMsg, long *result)
-{
-    if (pMsg->message == WM_POWERBROADCAST) {
-        switch(pMsg->wParam) {
-        case PBT_APMPOWERSTATUSCHANGE:
-            qDebug() << "WM_POWERBROADCAST: Power state changed";
-            break;
-        case PBT_APMSUSPEND:
-            qDebug() << "WM_POWERBROADCAST: Entering low power state";
-            break;
-        case PBT_APMRESUMEAUTOMATIC:
-            qDebug() << "WM_POWERBROADCAST: Resuming from low power state";
-            break;
-        default:
-            break;
-        }
-        return true;
-    }
-
-    return SharedTools::QtSingleApplication::winEventFilter(pMsg, result);
-}
-#endif
-
 QString substLang(const QString &lang)
 {
     // Map the more apropriate script codes
