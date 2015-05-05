@@ -38,17 +38,15 @@ static void setupFavLink_private(const QString &folder)
 {
     // Windows Explorer: Place under "Favorites" (Links)
     
-    SHGetKnownFolderPathFun SHGetKnownFolderPathPtr = NULL;
-    SHGetFolderPathFun SHGetFolderPathPtr = NULL;
+    static SHGetKnownFolderPathFun SHGetKnownFolderPathPtr = NULL;
     QString linkName; 
     QDir folderDir(QDir::fromNativeSeparators(folder));
-    if((!SHGetKnownFolderPathPtr) && (!SHGetFolderPathPtr))
+    if (!SHGetKnownFolderPathPtr)
     {
       QLibrary kernel32Lib("shell32.dll");
       if(kernel32Lib.load())
       {
         SHGetKnownFolderPathPtr = (SHGetKnownFolderPathFun) kernel32Lib.resolve("SHGetKnownFolderPath");
-        SHGetFolderPathPtr = (SHGetFolderPathFun) kernel32Lib.resolve("SHGetFolderPathW");
       }
     }
      
@@ -56,8 +54,8 @@ static void setupFavLink_private(const QString &folder)
         /* Use new WINAPI functions */
         wchar_t *path = NULL;
         if(SHGetKnownFolderPathPtr(FOLDERID_Links, 0, NULL, &path) == S_OK) {
-            QString Links= QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
-            linkName = QDir(Links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
+            QString links = QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
+            linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
         }
     } else {
         /* Use legacy functions */
