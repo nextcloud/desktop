@@ -30,7 +30,7 @@
 namespace OCC {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
-    QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
+    QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false), _possibleUpgradeFromMirall_1_8_0(false)
 {
 
     _dbFile = path;
@@ -286,7 +286,7 @@ bool SyncJournalDb::checkConnect()
         createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
         createQuery.bindValue(2, MIRALL_VERSION_MINOR);
         createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-        createQuery.bindValue(3, MIRALL_VERSION_BUILD);
+        createQuery.bindValue(4, MIRALL_VERSION_BUILD);
         createQuery.exec();
 
     } else {
@@ -295,6 +295,7 @@ bool SyncJournalDb::checkConnect()
         int patch = versionQuery.intValue(2);
 
         if( major == 1 && minor == 8 && patch  == 0 ) {
+            qDebug() << Q_FUNC_INFO << "_possibleUpgradeFromMirall_1_8_0 detected!";
             _possibleUpgradeFromMirall_1_8_0 = true;
         }
         // Not comparing the BUILD id here, correct?
