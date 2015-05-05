@@ -402,7 +402,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSock
         DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
-        const QString file = QDir::cleanPath(argument).mid(Folder::cleanPath(syncFolder->path()).length()+1);
+        const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
         SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
 
         statusString = fileStatus.toSocketAPIString();

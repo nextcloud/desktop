@@ -186,12 +186,12 @@ QString Folder::path() const
     return p;
 }
 
-QString Folder::cleanPath(QString path)
+QString Folder::cleanPath()
 {
-    QString cleanedPath = QDir::cleanPath(path);
+    QString cleanedPath = QDir::cleanPath(_path);
 
     if(cleanedPath.length() == 3 && cleanedPath.endsWith(":/"))
-        return cleanedPath.left(2);
+        cleanedPath.remove(2,1);
 
     return cleanedPath;
 }
