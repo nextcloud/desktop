@@ -321,7 +321,9 @@ QNetworkReply *Account::getRequest(const QString &relPath)
 QNetworkReply *Account::getRequest(const QUrl &url)
 {
     QNetworkRequest request(url);
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
     request.setSslConfiguration(this->createSslConfig());
+#endif
     return _am->get(request);
 }
 
@@ -333,7 +335,9 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPat
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
     req.setSslConfiguration(this->createSslConfig());
+#endif
     return _am->sendCustomRequest(req, verb, data);
 }
 
