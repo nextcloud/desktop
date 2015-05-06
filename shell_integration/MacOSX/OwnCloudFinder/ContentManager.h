@@ -17,6 +17,7 @@
 @interface ContentManager : NSObject
 {
 	NSMutableDictionary* _fileNamesCache;
+	NSMutableDictionary* _oldFileNamesCache;
 	BOOL _fileIconsEnabled;
 	BOOL _hasChangedContent;
 	

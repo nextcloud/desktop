@@ -30,6 +30,7 @@ static ContentManager* sharedInstance = nil;
 	if (self)
 	{
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
+		_oldFileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		_hasChangedContent = TRUE;
 	}
@@ -41,6 +42,7 @@ static ContentManager* sharedInstance = nil;
 {
 	[self removeAllIcons];
 	[_fileNamesCache release];
+	[_oldFileNamesCache release];
 	sharedInstance = nil;
 
 	[super dealloc];
@@ -153,6 +155,12 @@ static ContentManager* sharedInstance = nil;
 		// Set 0 into the cache, meaning "don't have an icon, but already requested it"
 		[_fileNamesCache setObject:result forKey:normalizedPath];
 	}
+	if ([result intValue] == 0) {
+		// Show the old state while we wait for the new one
+		NSNumber* oldResult = [_oldFileNamesCache objectForKey:normalizedPath];
+		if (oldResult)
+			result = oldResult;
+	}
 	// NSLog(@"iconByPath return value %d", [result intValue]);
 
 	return result;
@@ -163,32 +171,27 @@ static ContentManager* sharedInstance = nil;
 {
 	[_fileNamesCache release];
 	_fileNamesCache = [[NSMutableDictionary alloc] init];
+	[_oldFileNamesCache removeAllObjects];
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	 NSLog(@"%@", NSStringFromSelector(_cmd));
+	//NSLog(@"%@", NSStringFromSelector(_cmd));
 
-	for (id p in [_fileNamesCache keyEnumerator]) {
-		if ( path && [p hasPrefix:path] ) {
-			[[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME isDirectory parameter
-			//[_fileNamesCache setObject:askState forKey:p]; We don't do this since we want to keep the old icon meanwhile
-			//NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
-		}
-	}
+	// We won't request the new state if if finds the path in _fileNamesCache
+	// Move all entries to _oldFileNamesCache so that the get re-requested, but
+	// still available while we refill the cache
+	[_oldFileNamesCache addEntriesFromDictionary:_fileNamesCache];
+	[_fileNamesCache removeAllObjects];
 
-	// Ask for directory itself
-	if ([path hasSuffix:@"/"]) {
-		path = [path substringToIndex:path.length - 1];
-	}
-	[[RequestManager sharedInstance] askForIcon:path isDirectory:true];
-	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
+	[self repaintAllWindows];
 }
 
 
 - (void)removeAllIcons
 {
 	[_fileNamesCache removeAllObjects];
+	[_oldFileNamesCache removeAllObjects];
 
 	[self repaintAllWindows];
 }
@@ -324,6 +327,7 @@ static ContentManager* sharedInstance = nil;
 		}
 		else
 		{
+			[_oldFileNamesCache removeObjectForKey:normalizedPath];
 			[_fileNamesCache setObject:iconId forKey:normalizedPath];
 		}
 	}
