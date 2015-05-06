@@ -115,13 +115,16 @@ void RemotePathChecker::workerThreadLoop()
                 auto responseStatus = response.substr(statusBegin+1, statusEnd - statusBegin-1);
                 auto responsePath = response.substr(statusEnd+1);
                 auto state = _StrToFileState(responseStatus);
-                auto erased = asked.erase(responsePath);
+                bool wasAsked = asked.erase(responsePath) > 0;
 
                 bool changed = false;
                 {   std::unique_lock<std::mutex> lock(_mutex);
-                    auto &it = _cache[responsePath];
-                    changed = (it != state);
-                    it = state;
+                    bool wasCached = _cache.find(responsePath) != _cache.end();
+                    if (wasAsked || wasCached) {
+                        auto &it = _cache[responsePath];
+                        changed = (it != state);
+                        it = state;
+                    }
                 }
                 if (changed) {
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
