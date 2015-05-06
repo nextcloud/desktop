@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 1.8.1 (release 2015-04-xx)
+version 1.8.1 (release 2015-05-07)
  * Make "operation canceled" error a soft error
  * Do not throw an error for files that are scheduled to be removed,
    but can not be found on the server. #2919
@@ -43,6 +43,7 @@ version 1.8.1 (release 2015-04-xx)
  * AccountWizard: Fix auth error handling. #3155
  * Documentation fixes
  * Infrastructure/build fixes
+ * Win32/OS X: Apply patch from OpenSSL to handle oudated intermediates gracefully #3087
 
 version 1.8.0 (release 2015-03-17)
  * Mac OS: HIDPI support
