@@ -35,10 +35,9 @@
 - (void)enableFileIcons:(BOOL)enable;
 - (NSNumber*)iconByPath:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)removeAllIcons;
-- (void)removeIcons:(NSArray*)paths;
 - (void)setIcons:(NSDictionary*)iconDictionary filterByFolder:(NSString*)filterFolder;
 - (void)setResultForPath:(NSString*)path result:(NSString*)result;
-- (void)clearFileNameCacheForPath:(NSString*)path;
+- (void)clearFileNameCache;
 - (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)repaintAllWindows;
 

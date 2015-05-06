@@ -148,46 +148,21 @@ static ContentManager* sharedInstance = nil;
 	
 	if( result == nil ) {
 		// start the async call
-		NSNumber *askState = [[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
-		[_fileNamesCache setObject:askState forKey:normalizedPath];
-
+		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 		result = [NSNumber numberWithInt:0];
-	} else if( [result intValue] == -1 ) {
-		// the socket call is underways.
-		result = [NSNumber numberWithInt:0];
-	} else {
-		// there is a proper icon index
+		// Set 0 into the cache, meaning "don't have an icon, but already requested it"
+		[_fileNamesCache setObject:result forKey:normalizedPath];
 	}
-    // NSLog(@"iconByPath return value %d", [result intValue]);
+	// NSLog(@"iconByPath return value %d", [result intValue]);
 
 	return result;
 }
 
-// called as a result of an UPDATE_VIEW message.
-// it clears the entries from the hash to make it call again home to the desktop client.
-- (void)clearFileNameCacheForPath:(NSString*)path
+// Clears the entries from the hash to make it call again home to the desktop client.
+- (void)clearFileNameCache
 {
-	//NSLog(@"%@", NSStringFromSelector(_cmd));
-	NSMutableArray *keysToDelete = [NSMutableArray array];
-	
-	if( path != nil ) {
-		for (id p in [_fileNamesCache keyEnumerator]) {
-			//do stuff with obj
-			if ( [p hasPrefix:path] ) {
-				[keysToDelete addObject:p];
-			}
-		}
-	} else {
-		// clear the entire fileNameCache
-		[_fileNamesCache release];
-		_fileNamesCache = [[NSMutableDictionary alloc] init];
-		return;
-	}
-	
-	if( [keysToDelete count] > 0 ) {
-		NSLog( @"Entries to delete: %lu", (unsigned long)[keysToDelete count]);
-		[_fileNamesCache removeObjectsForKeys:keysToDelete];
-	}
+	[_fileNamesCache release];
+	_fileNamesCache = [[NSMutableDictionary alloc] init];
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
@@ -214,18 +189,6 @@ static ContentManager* sharedInstance = nil;
 - (void)removeAllIcons
 {
 	[_fileNamesCache removeAllObjects];
-
-	[self repaintAllWindows];
-}
-
-- (void)removeIcons:(NSArray*)paths
-{
-	for (NSString* path in paths)
-	{
-		NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-
-		[_fileNamesCache removeObjectForKey:normalizedPath];
-	}
 
 	[self repaintAllWindows];
 }
