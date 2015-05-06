@@ -16,7 +16,7 @@ format. You can overwrite changes using the ownCloud configuration dialog.
 .. note:: Use caution when making changes to the ownCloud Client configuration
    file.  Incorrect settings can produce unintended results.
 
-You can change the following configuration settings (must be under the ``[OwnCloud]`` section)
+You can change the following configuration settings (must be under the ``[ownCloud]`` section)
 
 - ``remotePollInterval`` (default: ``30000``) -- Specifies the poll time for the remote repository in milliseconds.
 
