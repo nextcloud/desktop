@@ -31,6 +31,7 @@ static RequestManager* sharedInstance = nil;
 		_isConnected = NO;
 
 		_registeredPathes = [[NSMutableDictionary alloc] init];
+		_requestedPaths = [[NSMutableSet alloc] init];
 
 		_shareMenuTitle = nil;
 
@@ -106,6 +107,7 @@ static RequestManager* sharedInstance = nil;
 	NSString *verb = @"RETRIEVE_FILE_STATUS";
 
 	if( [self isRegisteredPath:path isDirectory:isDir] ) {
+		[_requestedPaths addObject:path];
 		if( _isConnected ) {
 			if(isDir) {
 				verb = @"RETRIEVE_FOLDER_STATUS";
@@ -141,9 +143,13 @@ static RequestManager* sharedInstance = nil;
 							path, [chunks objectAtIndex:i+1] ];
 				}
 			}
-			[contentman setResultForPath:path result:[chunks objectAtIndex:1]];
+			// The client will broadcast all changes, do not fill the cache for paths that Finder didn't ask for.
+			if ([_requestedPaths containsObject:path]) {
+				[contentman setResultForPath:path result:[chunks objectAtIndex:1]];
+			}
 		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
 			NSString *path = [chunks objectAtIndex:1];
+			[_requestedPaths removeAllObjects];
 			[contentman reFetchFileNameCacheForPath:path];
 		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 			NSNumber *one = [NSNumber numberWithInt:1];
@@ -192,6 +198,7 @@ static RequestManager* sharedInstance = nil;
 		for( NSString *path in _requestQueue ) {
 			[self askOnSocket:path query:@"RETRIEVE_FILE_STATUS"];
 		}
+		[_requestQueue removeAllObjects];
 	}
 
 	ContentManager *contentman = [ContentManager sharedInstance];
@@ -212,6 +219,7 @@ static RequestManager* sharedInstance = nil;
 	// clear the registered pathes.
 	[_registeredPathes release];
 	_registeredPathes = [[NSMutableDictionary alloc] init];
+	[_requestedPaths removeAllObjects];
 
     // clear the caches in conent manager
 	ContentManager *contentman = [ContentManager sharedInstance];

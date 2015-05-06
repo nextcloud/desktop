@@ -22,6 +22,7 @@
 
 	NSMutableArray* _requestQueue;
 	NSMutableDictionary* _registeredPathes;
+	NSMutableSet* _requestedPaths;
 
 	NSString *_shareMenuTitle;
 	
