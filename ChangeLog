@@ -33,7 +33,8 @@ version 1.8.1 (release 2015-05-07)
  * Fix a crash caused by an invalid DiscoveryDirectoryResult::iterator #3051
  * Sync: Fix sync of deletions during 503. #2894
  * Handle redirect of auth request. #3082
- * Discovery: Fix parsing of broken XML replies
+ * Discovery: Fix parsing of broken XML replies, which fixes local file disappearing #3102
+ * Migration: Silently restore files that were deleted locally by bug #3102
  * Sort folder sizes SelectiveSyncTreeView numerically #3112
  * Sync: PropagateDownload: Read the mtime from the file system after writing it #3103
  * Sync: Propagate download: Fix restoring files for which the conflict file exists #3106
