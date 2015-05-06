@@ -26,13 +26,6 @@ typedef HRESULT (WINAPI *SHGetKnownFolderPathFun)(
     HANDLE hToken, 
     PWSTR *ppszPath
 );
-typedef HRESULT (WINAPI *SHGetFolderPathFun)(
-    HWND hwndOwner, 
-    int nFolder, 
-    HANDLE hToken, 
-    DWORD dwFlags, 
-    LPWSTR pszPath
-);
      
 static void setupFavLink_private(const QString &folder)
 {
