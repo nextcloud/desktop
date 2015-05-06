@@ -310,7 +310,7 @@ Toplam kalan süre: %5</translation>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Giriş hatası: Kullanıcı adı veya şifre yanlış.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
@@ -653,7 +653,7 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 erişim için giriş başarısız</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -694,12 +694,12 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Dikkat:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Dikkat:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -859,7 +859,7 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Arama:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
@@ -899,7 +899,7 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Log dosyasına yazılamıyor %1</translation>
     </message>
 </context>
 <context>
@@ -1057,13 +1057,13 @@ Bir dizinin kaldırılmasını engelliyorlarsa işaretli ögeler de silinecektir
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>%1 Güncelleme hazır</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>%1 için yeni bir güncelleme yüklenmek üzere. İşlem sürerken güncelleyici başka yetkiler isteyebilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1131,7 +1131,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; dizini senkronize et</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1238,12 +1238,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuda giriş sırasında istek &apos;%1&apos; adresine yönlendirilmiş. Adres hatalı veya sunucu yanlış ayarlanmış.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Yetkilendirilmiş webdav isteği geçersiz bir cevap verdi</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
@@ -1258,7 +1258,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Yerel eşitleme klasörü oluşturuluyor %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
@@ -1451,12 +1451,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Yeniden yapılandırma başarısız: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>Kara listeye devam et:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
@@ -1482,12 +1482,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="60"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>Silme hatası &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
         <source>Could not remove directory &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>Dizin silinemiyor &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="86"/>
@@ -1513,7 +1513,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan yanlış HTTP kodu dönüyor. 204 bekliyorduk, ama &quot;%1 %2&quot; geldi.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1521,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan yanlış HTTP kodu dönüyor. 201 bekliyorduk, ama &quot;%1 %2&quot; geldi.</translation>
     </message>
 </context>
 <context>
@@ -1544,7 +1544,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan yanlış HTTP kodu dönüyor. 201 bekliyorduk, ama &quot;%1 %2&quot; geldi.</translation>
     </message>
 </context>
 <context>
@@ -1733,12 +1733,12 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucuda şu anda alt dizin bulunmuyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Alt dizin listesi alınırken bir hata oluştu.</translation>
     </message>
 </context>
 <context>
@@ -1818,17 +1818,17 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud Yolu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>&amp;Şifre belirle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Sonlanma tarihi b&amp;elirle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -1838,7 +1838,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Bağ&amp;lantıyı kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -1863,12 +1863,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Dizin: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Şi&amp;fre koruma</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="196"/>
@@ -1878,12 +1878,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya paylaşılamaz, çünkü sizinle paylaşım izni olmaksızın paylaşılmış.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
         <source>Public sh&amp;aring requires a password:</source>
-        <translation type="unfinished"/>
+        <translation>Herkese &amp;açık paylaşım için şifre gerekir:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="469"/>
@@ -1894,7 +1894,7 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="521"/>
         <location filename="../src/gui/sharedialog.cpp" line="522"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı pa&amp;ylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="540"/>
@@ -1909,17 +1909,17 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="574"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Yüklenecek dizin bulunamıyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="596"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlenecek dosya ile aynı isimde bir dosya var. Dosya eşitleme için kaydedilemiyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya eşitlenemedi.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2288,22 +2288,22 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync erişimde başarısız oldu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Heçici olarak hizmet verilemiyor</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>Dizin açılırken bir hata oluştu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Dahili bir hata oluştu %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
@@ -2333,7 +2333,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı çok uzun.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -2346,64 +2346,64 @@ Kullanmanız önerilmez.</translation>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="687"/>
+        <location filename="../src/libsync/syncengine.cpp" line="694"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="948"/>
         <location filename="../src/libsync/syncengine.cpp" line="955"/>
+        <location filename="../src/libsync/syncengine.cpp" line="962"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecekleri seçin&quot; kara listesinde olduğundan yoksayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="973"/>
+        <location filename="../src/libsync/syncengine.cpp" line="980"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Bu dizine alt dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="979"/>
+        <location filename="../src/libsync/syncengine.cpp" line="986"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Üst dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="986"/>
+        <location filename="../src/libsync/syncengine.cpp" line="993"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Bu dizine dosya ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1006"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucuda salt okunur olduğundan, bu dosya yüklenemedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1043"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1050"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Kaldırmaya izin verilmedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1063"/>
         <source>Local files and share folder removed.</source>
         <translation>Yerel dosyalar ve paylaşım klasörü kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1118"/>
         <source>Move not allowed, item restored</source>
         <translation>Taşımaya izin verilmedi, öge geri alındı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1127"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 salt okunur olduğundan taşımaya izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>the destination</source>
         <translation>hedef</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>the source</source>
         <translation>kaynak</translation>
     </message>
@@ -2870,7 +2870,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="251"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt; &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; numaralı Git revizyonunundan oluşturuldu %3, %4 Qt kullanılıyor %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2888,7 +2888,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Çelişkili dosya indirildi ve yeniden adlandırıldı</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>

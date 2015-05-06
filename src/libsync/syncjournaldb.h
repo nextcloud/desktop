@@ -118,6 +118,7 @@ public:
      * are updated.
      */
     bool isUpdateFrom_1_5();
+    bool isUpdateFrom_1_8_0();
 
 private:
     bool updateDatabaseStructure();
@@ -135,6 +136,7 @@ private:
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
     bool _possibleUpgradeFromMirall_1_5;
+    bool _possibleUpgradeFromMirall_1_8_0;
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;

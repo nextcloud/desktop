@@ -30,7 +30,7 @@
 namespace OCC {
 
 SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
-    QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false)
+    QObject(parent), _transaction(0), _possibleUpgradeFromMirall_1_5(false), _possibleUpgradeFromMirall_1_8_0(false)
 {
 
     _dbFile = path;
@@ -273,6 +273,8 @@ bool SyncJournalDb::checkConnect()
     }
 
     _possibleUpgradeFromMirall_1_5 = false;
+    _possibleUpgradeFromMirall_1_8_0 = false;
+
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
@@ -284,7 +286,7 @@ bool SyncJournalDb::checkConnect()
         createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
         createQuery.bindValue(2, MIRALL_VERSION_MINOR);
         createQuery.bindValue(3, MIRALL_VERSION_PATCH);
-        createQuery.bindValue(3, MIRALL_VERSION_BUILD);
+        createQuery.bindValue(4, MIRALL_VERSION_BUILD);
         createQuery.exec();
 
     } else {
@@ -292,6 +294,10 @@ bool SyncJournalDb::checkConnect()
         int minor = versionQuery.intValue(1);
         int patch = versionQuery.intValue(2);
 
+        if( major == 1 && minor == 8 && patch  == 0 ) {
+            qDebug() << Q_FUNC_INFO << "_possibleUpgradeFromMirall_1_8_0 detected!";
+            _possibleUpgradeFromMirall_1_8_0 = true;
+        }
         // Not comparing the BUILD id here, correct?
         if( !(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH) ) {
             createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
@@ -751,6 +757,10 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString>& filepathsToKeep,
 
     if (_possibleUpgradeFromMirall_1_5) {
         _possibleUpgradeFromMirall_1_5 = false; // should be handled now
+    }
+
+    if (_possibleUpgradeFromMirall_1_8_0) {
+        _possibleUpgradeFromMirall_1_8_0 = false; // should be handled now
     }
 
     return true;
@@ -1320,6 +1330,13 @@ bool SyncJournalDb::isUpdateFrom_1_5()
     QMutexLocker lock(&_mutex);
     checkConnect();
     return _possibleUpgradeFromMirall_1_5;
+}
+
+bool SyncJournalDb::isUpdateFrom_1_8_0()
+{
+    QMutexLocker lock(&_mutex);
+    checkConnect();
+    return _possibleUpgradeFromMirall_1_8_0;
 }
 
 bool operator==(const SyncJournalDb::DownloadInfo & lhs,

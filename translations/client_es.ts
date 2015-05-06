@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>Actualizar</translation>
+        <translation>Refrescar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
@@ -653,7 +653,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Falló la autenticación accediendo %1</translation>
+        <translation>Falló la autenticación al acceder a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -899,7 +899,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation>No se pudo escribir al archivo de registro %1</translation>
+        <translation>No se pudo escribir en el archivo de registro %1</translation>
     </message>
 </context>
 <context>
@@ -1063,7 +1063,7 @@ Los elementos marcados también se eliminarán si impiden la eliminación de alg
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Una nueva actualización de %1 sera instalada. Durante esta actualización pueden ser solicitados privilegios adicionales.</translation>
+        <translation>Se instalará una nueva actualización de %1. Durante esta actualización puede que se soliciten privilegios adicionales.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1238,7 +1238,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>La petición autenticada al servidor fue redirigida a &apos;%1&apos;. La dirección URL es anómala, el servidor está mal configurada.</translation>
+        <translation>La petición autenticada al servidor fue redirigida a &apos;%1&apos;. La dirección URL es anómala, el servidor está mal configurado.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
@@ -1451,7 +1451,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation>; Fallo la restauración: %1</translation>
+        <translation>; Falló la restauración: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
@@ -1737,7 +1737,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation>Un error ocurrió cuando se cargaba la lista de subcarpetas.</translation>
+        <translation>Ocurrió un error cuando se cargaba la lista de subcarpetas.</translation>
     </message>
 </context>
 <context>
@@ -1877,7 +1877,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="341"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>El archivo no puede ser compartida, ya que fue compartida sin permisos correspondientes.</translation>
+        <translation>El archivo no puede compartirse; ya que fue compartido sin permisos correspondientes.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="447"/>
@@ -1918,7 +1918,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="641"/>
         <source>The file cannot be synced.</source>
-        <translation>El archivo no puede ser sincronizado.</translation>
+        <translation>El archivo no puede sincronizarse.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2292,7 +2292,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation>El servicio está temporalmente no disponible</translation>
+        <translation>El servicio no está disponible temporalmente </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
@@ -2345,64 +2345,64 @@ No se recomienda usarla.</translation>
         <translation>No se pudo inicializar un registro (journal) de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="687"/>
+        <location filename="../src/libsync/syncengine.cpp" line="694"/>
         <source>Cannot open the sync journal</source>
         <translation>No es posible abrir el diario de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="948"/>
         <location filename="../src/libsync/syncengine.cpp" line="955"/>
+        <location filename="../src/libsync/syncengine.cpp" line="962"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por que se encuentra en la lista negra de &quot;elija qué va a sincronizar&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="973"/>
+        <location filename="../src/libsync/syncengine.cpp" line="980"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>No está permitido porque no tiene permisos para añadir subcarpetas en este directorio.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="979"/>
+        <location filename="../src/libsync/syncengine.cpp" line="986"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>No está permitido porque no tiene permisos para añadir un directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="986"/>
+        <location filename="../src/libsync/syncengine.cpp" line="993"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>No está permitido porque no tiene permisos para crear archivos en este directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1006"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1043"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1050"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No está permitido borrar, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1063"/>
         <source>Local files and share folder removed.</source>
         <translation>Se eliminaron los archivos locales y la carpeta compartida.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1118"/>
         <source>Move not allowed, item restored</source>
         <translation>No está permitido mover, elemento restaurado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1127"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No está permitido mover, porque %1 es de sólo lectura.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>the destination</source>
         <translation>destino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>the source</source>
         <translation>origen</translation>
     </message>
