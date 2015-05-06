@@ -72,6 +72,11 @@ public:
     QString path() const;
 
     /**
+     * wrapper for QDir::cleanPath("Z:\\"), which returns "Z:\\", but we need "Z:" instead
+     */
+    QString cleanPath();
+
+    /**
      * remote folder path
      */
     QString remotePath() const;
