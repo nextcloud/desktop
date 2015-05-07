@@ -573,15 +573,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
     }
 
-    // compare expected and real modification time of the file and size
-    const time_t new_mtime = FileSystem::getModTime(fullFilePath);
-    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fullFilePath));
-    QFileInfo fi(_propagator->getFilePath(_item._file));
-    if (new_mtime != _item._modtime || new_size != _item._size) {
-        qDebug() << "The local file has changed during upload:"
-                 << "mtime: " << _item._modtime << "<->" << new_mtime
-                 << ", size: " << _item._size << "<->" << new_size
-                 << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
+    // Check whether the file changed since discovery.
+    if (! FileSystem::verifyFileUnchanged(fullFilePath, _item._size, _item._modtime)) {
         _propagator->_anotherSyncNeeded = true;
         if( !finished ) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
