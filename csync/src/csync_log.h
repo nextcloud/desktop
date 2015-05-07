@@ -61,7 +61,7 @@ enum csync_log_priority_e {
 };
 
 #define CSYNC_LOG(priority, ...) \
-  csync_log(priority, __FUNCTION__, __VA_ARGS__)
+  csync_log(priority, __func__, __VA_ARGS__)
 
 void csync_log(int verbosity,
                const char *function,
