@@ -51,7 +51,7 @@ public:
     void giveBandwidthQuota(qint64 bwq);
 
 signals:
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+#if QT_VERSION < 0x050402
     void wasReset();
 #endif
 
@@ -107,7 +107,7 @@ signals:
     void uploadProgress(qint64,qint64);
 
 private slots:
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+#if QT_VERSION < 0x050402
     void slotSoftAbort();
 #endif
 };
