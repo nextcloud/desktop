@@ -124,7 +124,7 @@ public:
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 
     /** The ssl configuration during the first connection */
-    QSslConfiguration createSslConfig();
+    QSslConfiguration getOrCreateSslConfig();
     QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
     void setSslConfiguration(const QSslConfiguration &config);
     /** The certificates of the account */

@@ -587,6 +587,11 @@ bool CheckServerJob::finished()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
 
+    if (reply()->request().url().scheme() == QLatin1String("https")
+            && reply()->sslConfiguration().sessionTicket().isEmpty()) {
+        qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
+    }
+
     // The serverInstalls to /owncloud. Let's try that if the file wasn't found
     // at the original location
     if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
