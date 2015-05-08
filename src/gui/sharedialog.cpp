@@ -292,6 +292,7 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
 
         if (data.value("share_type").toInt() == SHARETYPE_PUBLIC) {
             _public_share_id = data.value("id").toULongLong();
+            _ui->pushButton_copy->show();
 
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
@@ -443,9 +444,10 @@ void ShareDialog::slotCreateShareFetched(const QVariantMap &reply)
     if (code == 403) {
         // there needs to be a password
         _ui->checkBox_password->setChecked(true);
-        _ui->checkBox_password->setVisible(false);
-        _ui->checkBox_password->setText(tr("Public sh&aring requires a password:"));
+        _ui->checkBox_password->setEnabled(false);
+        _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
         _ui->lineEdit_password->setFocus();
+        _ui->pushButton_copy->hide();
         _ui->widget_shareLink->show();
 
         slotCheckBoxPasswordClicked();
@@ -456,6 +458,7 @@ void ShareDialog::slotCreateShareFetched(const QVariantMap &reply)
     }
 
     _public_share_id = reply.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
+    _ui->pushButton_copy->show();
     getShares();
 }
 
@@ -464,7 +467,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     if (_ui->checkBox_password->checkState() == Qt::Checked) {
         _ui->lineEdit_password->show();
         _ui->pushButton_setPassword->show();
-        _ui->lineEdit_password->setPlaceholderText(tr("Choose a password for the public link"));
+        _ui->lineEdit_password->setPlaceholderText(tr("Password"));
         _ui->lineEdit_password->setFocus();
     } else {
         ShareDialog::setPassword(QString());
