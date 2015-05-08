@@ -110,6 +110,13 @@ Application::Application(int &argc, char **argv) :
     if (isRunning())
         return;
 
+    // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
+    // is deleted.
+    {
+        QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
+        QLockFile(lockFilePath).removeStaleLockFile();
+    }
+
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter())
         _crashHandler.reset(new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE ));
