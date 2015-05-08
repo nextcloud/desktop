@@ -30,6 +30,22 @@
 
 namespace OCC {
 
+
+QString createDownloadTmpFileName(const QString &previous) {
+    QString tmpFileName = previous;
+    //add a dot at the begining of the filename to hide the file on OS X and Linux
+    int slashPos = tmpFileName.lastIndexOf('/');
+    tmpFileName.insert(slashPos+1, '.');
+    //add the suffix
+    tmpFileName += ".~" + QString::number(uint(qrand()), 16);
+
+    if (tmpFileName.length() > 254) { // https://github.com/owncloud/client/issues/2789
+        tmpFileName = tmpFileName.left(100) + "_" + tmpFileName.right(153);
+    }
+
+    return tmpFileName;
+}
+
 // DOES NOT take owncership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
@@ -307,12 +323,7 @@ void PropagateDownloadFileQNAM::start()
     }
 
     if (tmpFileName.isEmpty()) {
-        tmpFileName = _item._file;
-        //add a dot at the begining of the filename to hide the file.
-        int slashPos = tmpFileName.lastIndexOf('/');
-        tmpFileName.insert(slashPos+1, '.');
-        //add the suffix
-        tmpFileName += ".~" + QString::number(uint(qrand()), 16);
+        tmpFileName = createDownloadTmpFileName(_item._file);
     }
 
     _tmpFile.setFileName(_propagator->getFilePath(tmpFileName));
