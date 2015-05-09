@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο προορισμού έχει μη αναμενόμενο μέγεθος ή χρόνο τροποποίησης</translation>
     </message>
 </context>
 <context>
@@ -714,22 +714,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="123"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="139"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Δεν ελήφθη E-Tag από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="130"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="146"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="173"/>
         <source>Server returned wrong content-range</source>
         <translation>Ο διακομιστής επέστρεψε εσφαλμένο πεδίο τιμών</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="262"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="278"/>
         <source>Connection Timeout</source>
         <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
@@ -1236,129 +1236,129 @@ It is not advisable to use it.</source>
         <translation>Αποτυχία σύνδεσης με το %1 στο %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="196"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="200"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Λήξη χρονικού ορίου κατά τη σύνδεση σε %1 σε %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="207"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="211"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Προσπάθεια σύνδεσης στο %1 για %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Η πιστοποιημένη αίτηση στον διακομιστή ανακατευθύνθηκε σε &apos;%1&apos;. Το URL είναι εσφαλμένο, ο διακομιστής δεν έχει διαμορφωθεί σωστά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Υπήρξε μια άκυρη απόκριση σε μια πιστοποιημένη αίτηση </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Απαγόρευση πρόσβασης από τον διακομιστή. Για να επιβεβαιώσετε ότι έχετε δικαιώματα πρόσβασης, &lt;a href=&quot;%1&quot;&gt;πατήστε εδώ&lt;/a&gt; για να προσπελάσετε την υπηρεσία με το πρόγραμμα πλοήγησής σας.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Ο τοπικός φάκελος συγχρονισμού %1 υπάρχει ήδη, ρύθμιση για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Creating local sync folder %1...</source>
         <translation>Δημιουργία τοπικού φακέλου συγχρονισμού %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>ok</source>
         <translation>οκ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="325"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>failed.</source>
         <translation>απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>Could not create local folder %1</source>
         <translation>Αδυναμία δημιουργίας τοπικού φακέλου %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="352"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>No remote folder specified!</source>
         <translation>Δεν προσδιορίστηκε κανένας απομακρυσμένος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>δημιουργία φακέλου στο ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Θα συνδεθεί για συγχρονισμό. </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Η δημιουργία φακέλου είχε ως αποτέλεσμα τον κωδικό σφάλματος HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλλου απέτυχε επειδή τα διαπιστευτήρια είναι λάθος!&lt;br/&gt;Παρακαλώ επιστρέψετε και ελέγξετε τα διαπιστευτήριά σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η δημιουργία απομακρυσμένου φακέλου απέτυχε, πιθανώς επειδή τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Μια σύνδεση συγχρονισμού από τον απομακρυσμένο κατάλογο %1 σε %2 έχει ρυθμιστεί. </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Successfully connected to %1!</source>
         <translation>Επιτυχής σύνδεση με %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Αδυναμία σύνδεσης στον %1. Παρακαλώ ελέξτε ξανά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
         <source>Folder rename failed</source>
         <translation>Αποτυχία μετονομασίας φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Αδυναμία αφαίρεσης και δημιουργίας αντιγράφου ασφαλείας του φακέλου διότι ο φάκελος ή ένα αρχείο του είναι ανοικτό από άλλο πρόγραμμα. Παρακαλώ κλείστε τον φάκελο ή το αρχείο και πατήστε επανάληψη ή ακυρώστε την ρύθμιση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού φακέλου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1441,24 +1441,24 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="303"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="474"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να αποθηκευτεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="537"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
 </context>
 <context>
@@ -1868,7 +1868,7 @@ It is not advisable to use it.</source>
         <translation>Ορισμός κωδικού πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="631"/>
+        <location filename="../src/gui/sharedialog.cpp" line="634"/>
         <source>%1 path: %2</source>
         <translation>%1 διαδρομή: %2</translation>
     </message>
@@ -1898,68 +1898,68 @@ It is not advisable to use it.</source>
         <translation>Προστατευμένο με κωδικό πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="342"/>
+        <location filename="../src/gui/sharedialog.cpp" line="343"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="447"/>
-        <source>Public sh&amp;aring requires a password:</source>
-        <translation>Ο δημόσιος &amp;διαμοιρασμός απαιτεί κωδικό πρόσβασης:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="467"/>
-        <source>Choose a password for the public link</source>
-        <translation>Επιλέξτε κωδικό για τον δημόσιο σύνδεσμο</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="503"/>
-        <location filename="../src/gui/sharedialog.cpp" line="504"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
+        <location filename="../src/gui/sharedialog.cpp" line="507"/>
         <source>&amp;Share link</source>
         <translation>Δ&amp;ιαμοιρασμός συνδέσμου</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="522"/>
+        <location filename="../src/gui/sharedialog.cpp" line="525"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API κωδικός λάθους: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="544"/>
+        <location filename="../src/gui/sharedialog.cpp" line="547"/>
         <source>There is no sync folder configured.</source>
         <translation>Δεν έχει οριστεί φάκελος συνχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="556"/>
+        <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
         <translation>Αδυναμία εύρεσης φακέλου μεταφόρτωσης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="578"/>
+        <location filename="../src/gui/sharedialog.cpp" line="581"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Ήδη υπάρχει αρχείο συγχρονισμού με το ίδιο όνομα. Το αρχείο δεν μπορεί να καταχωρηθεί προς συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="626"/>
         <source>The file cannot be synced.</source>
         <translation>Το αρχείο δεν μπορεί να συγχρονιστεί.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
+        <location filename="../src/gui/sharedialog.cpp" line="566"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Ο  διαμοιρασμός εξωτερικών καταλόγων δεν λειτουργεί ακόμα.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="590"/>
+        <location filename="../src/gui/sharedialog.cpp" line="448"/>
+        <source>Public sh&amp;aring requires a password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="470"/>
+        <source>Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="593"/>
         <source>Waiting to upload...</source>
         <translation>Αναμονή για μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="592"/>
+        <location filename="../src/gui/sharedialog.cpp" line="595"/>
         <source>Unable to register in sync space.</source>
         <translation>Αδυναμία καταχώρησης στο χώρο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="633"/>
+        <location filename="../src/gui/sharedialog.cpp" line="636"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Ο συγχρονισμός του καταχωρημένου αρχείου δεν πέτυχε ακόμη.</translation>
     </message>

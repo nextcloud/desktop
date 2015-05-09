@@ -713,22 +713,22 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="123"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="139"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Sunucudan E-Tag alınamadı, Vekil Sunucu/Ağ Geçidi&apos;ni denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="130"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="146"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Devam etmek üzere farklı bir E-Etiket aldık. Sonraki işlemde yeniden denenecek.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="173"/>
         <source>Server returned wrong content-range</source>
         <translation>Sunucu yanlış içerik aralığı döndürdü</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="262"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="278"/>
         <source>Connection Timeout</source>
         <translation>Bağlantı Zaman Aşımı</translation>
     </message>
@@ -1234,129 +1234,129 @@ Kullanmanız önerilmez.</translation>
         <translation>%2 üzerinde %1 adresine bağlanılamadı:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="196"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="200"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>%2 üzerinde %1 bağlantısı yapılırken zaman aşımı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="207"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="211"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>%2 üzerinde %1 bağlantısı deneniyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Sunucuda giriş sırasında istek &apos;%1&apos; adresine yönlendirilmiş. Adres hatalı veya sunucu yanlış ayarlanmış.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Yetkilendirilmiş webdav isteği geçersiz bir cevap verdi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Erişim sunucu tarafından yasaklandı. Geçerli erişime sahip olup olmadığınızı doğrulamak için hizmete web tarayıcınızla erişmek üzere &lt;a href=&quot;%1&quot;&gt;buraya tıklayın&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Yerel eşitleme klasörü %1 zaten mevcut, eşitlemek için ayarlanıyor.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Creating local sync folder %1...</source>
         <translation>Yerel eşitleme klasörü oluşturuluyor %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>ok</source>
         <translation>tamam</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="325"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>failed.</source>
         <translation>başarısız.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>Could not create local folder %1</source>
         <translation>%1 yerel klasörü oluşturulamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="352"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>No remote folder specified!</source>
         <translation>Uzak klasör belirtilmemiş!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
         <source>Error: %1</source>
         <translation>Hata: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>ownCloud üzerinde klasör oluşturuluyor: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>%1 uzak klasörü başarıyla oluşturuldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Uzak klasör %1 zaten mevcut. Eşitlemek için bağlanılıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Klasör oluşturma %1 HTTP hata kodu ile sonuçlandı</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Uzak klasör oluşturması, geçersiz kimlik bilgileri nedeniyle başarısız!&lt;br/&gt;Lütfen geri gidin ve bilgileri denetleyin.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Uzak klasör oluşturma muhtemelen hatalı kimlik bilgilerinden dolayı başarısız oldu.&lt;/font&gt;&lt;br/&gt;Lütfen geri gidip kimlik bilgilerini doğrulayın.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Uzak klasör %1 oluşturma işlemi &lt;tt&gt;%2&lt;/tt&gt; hatası ile başarısız oldu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>%1 kaynaklı %2 uzak dizinine bir eşitleme bağlantısı ayarlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Successfully connected to %1!</source>
         <translation>%1 bağlantısı başarılı!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>%1 bağlantısı kurulamadı. Lütfen tekrar denetleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
         <source>Folder rename failed</source>
         <translation>Klasör adlandırma başarısız</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Klasör veya içerisindeki bir dosya farklı bir program içerisinde açık olduğundan, kaldırma ve yedekleme işlemi yapılamıyor. Lütfen klasör veya dosyayı kapatıp yeniden deneyin veya kurulumu iptal edin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Yerel eşitleme klasörü %1 başarıyla oluşturuldu!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1439,22 +1439,22 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="303"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>%1 dosyası, yerel dosya adı çakışması nedeniyle indirilemiyor!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="474"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Dosya tamamıyla indirilemedi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Yerel bir dosya ismi ile çakıştığından, %1 dosyası kaydedilemedi!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="537"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
         <translation type="unfinished"/>
     </message>
@@ -1864,7 +1864,7 @@ Kullanmanız önerilmez.</translation>
         <translation>Parolayı ayarla</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="631"/>
+        <location filename="../src/gui/sharedialog.cpp" line="634"/>
         <source>%1 path: %2</source>
         <translation>%1 yol: %2</translation>
     </message>
@@ -1894,68 +1894,68 @@ Kullanmanız önerilmez.</translation>
         <translation>Parola Korumalı</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="342"/>
+        <location filename="../src/gui/sharedialog.cpp" line="343"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Dosya paylaşılamaz, çünkü sizinle paylaşım izni olmaksızın paylaşılmış.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="447"/>
-        <source>Public sh&amp;aring requires a password:</source>
-        <translation>Herkese &amp;açık paylaşım için şifre gerekir:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="467"/>
-        <source>Choose a password for the public link</source>
-        <translation>Herkese açık bağlantı için bir parola seçin</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="503"/>
-        <location filename="../src/gui/sharedialog.cpp" line="504"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
+        <location filename="../src/gui/sharedialog.cpp" line="507"/>
         <source>&amp;Share link</source>
         <translation>Bağlantıyı pa&amp;ylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="522"/>
+        <location filename="../src/gui/sharedialog.cpp" line="525"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API hata kodu: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="544"/>
+        <location filename="../src/gui/sharedialog.cpp" line="547"/>
         <source>There is no sync folder configured.</source>
         <translation>Yapılandırılmış eşitleme klasörü yok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="556"/>
+        <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
         <translation>Yüklenecek dizin bulunamıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="578"/>
+        <location filename="../src/gui/sharedialog.cpp" line="581"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Eşitlenecek dosya ile aynı isimde bir dosya var. Dosya eşitleme için kaydedilemiyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="626"/>
         <source>The file cannot be synced.</source>
         <translation>Dosya eşitlenemedi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
+        <location filename="../src/gui/sharedialog.cpp" line="566"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Harici dizinlerin paylaşımı henüz çalışmıyor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="590"/>
+        <location filename="../src/gui/sharedialog.cpp" line="448"/>
+        <source>Public sh&amp;aring requires a password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="470"/>
+        <source>Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="593"/>
         <source>Waiting to upload...</source>
         <translation>Yüklemek için bekliyor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="592"/>
+        <location filename="../src/gui/sharedialog.cpp" line="595"/>
         <source>Unable to register in sync space.</source>
         <translation>Eşitleme uzayında kaydetme başarısız.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="633"/>
+        <location filename="../src/gui/sharedialog.cpp" line="636"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Kayıtlı dosyanın eşitlenmesi henüz başarılı değil.</translation>
     </message>
