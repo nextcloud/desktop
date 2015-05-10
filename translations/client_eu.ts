@@ -1938,7 +1938,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Pasahitza</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

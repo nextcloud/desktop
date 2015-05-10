@@ -1938,7 +1938,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Geslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

@@ -1938,7 +1938,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Hasło</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

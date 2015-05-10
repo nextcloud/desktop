@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Die Zieldatei hat eine unerwartete Größe oder ein unerwartetes Änderungsdatum</translation>
     </message>
 </context>
 <context>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Entfernten Zielordner auswählen</translation>
+        <translation>Einen entfernten Zielordner auswählen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="335"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Wollen Sie wirklich die Synchronisation des Ordners &lt;i&gt;%1&lt;/i&gt; beenden?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dies wird keine Dateien von ihrem Rechner löschen.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Soll die Synchronisation des Ordners &lt;i&gt;%1&lt;/i&gt; wirklich beendet werden?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Dies wird keine Dateien von Ihrem Client löschen.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="371"/>
@@ -159,8 +159,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="372"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Wollen Sie wirklich den Ordner &lt;i&gt;%1&lt;/i&gt; zurücksetzen und die Datenbank auf dem Client neu aufbauen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt;
-Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entfernt, jedoch kann diese Aktion erheblichen Datenverkehr verursachen und je nach Umfang des Ordners mehrere Minuten oder Stunden in Anspruch nehmen. Verwenden Sie diese Funktion nur dann, wenn ihr Administrator dies ausdrücklich wünscht.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Soll Ordner &lt;i&gt;%1&lt;/i&gt; wirklich zurückgesetzt und die Datenbank auf dem Client neu aufgebaut werden?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt;
+Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entfernt, jedoch kann diese Aktion erheblichen Datenverkehr verursachen und je nach Größe des Ordnerinhalts mehrere Minuten oder Stunden in Anspruch nehmen. Verwenden Sie diese Funktion nur dann, wenn Ihr Administrator Sie ausdrücklich dazu auffordert.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
@@ -170,7 +170,7 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="483"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
+        <translation>Die Synchronistation läuft gerade.&lt;br/&gt;Wollen Sie sie beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
@@ -1457,7 +1457,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Datei ist seit der Entdeckung geändert worden</translation>
     </message>
 </context>
 <context>
@@ -1939,12 +1939,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Öffentliches Teilen erfordert ein P&amp;asswort</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Passwort</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

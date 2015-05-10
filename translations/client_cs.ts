@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Cílový soubor má neočekávanou velikost nebo čas změny</translation>
     </message>
 </context>
 <context>
@@ -1945,7 +1945,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

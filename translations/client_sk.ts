@@ -1944,7 +1944,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

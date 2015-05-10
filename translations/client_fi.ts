@@ -692,7 +692,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="537"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Päätä mitä synkronoidaan: voit valinnaisesti jättää valitsematta etäkansioita, joita et halua synkronoitavan.</translation>
     </message>
 </context>
 <context>
@@ -903,7 +903,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Lokitiedostoon %1 kirjoittaminen epäonnistui</translation>
     </message>
 </context>
 <context>
@@ -1061,13 +1061,13 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1-päivitys valmiina</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1-päivitys on valmiina asennettavaksi. Päivitysohjelma saattaa pyytää lisäoikeuksia päivityksen aikana.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1135,7 +1135,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoi kansio &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1252,7 +1252,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin esti käyttämisen. Vahvista käyttöoikeutesi palvelimeen &lt;a href=&quot;%1&quot;&gt;napsauttamalla tästä&lt;/a&gt; ja kirjaudu palveluun selaimella.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
@@ -1491,7 +1491,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="60"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>Virhe poistaessa &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
@@ -1522,7 +1522,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP-palvelin palautti väärän koodin. Odotettiin koodia 204, vastaanotettiin &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1530,7 +1530,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP-palvelin palautti väärän koodin. Odotettiin koodia 201, vastaanotettiin &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1553,7 +1553,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>HTTP-palvelin palautti väärän koodin. Odotettiin koodia 201, vastaanotettiin &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1580,7 +1580,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="203"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto poistettu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="217"/>
@@ -1709,12 +1709,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="373"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Päätä mitä synkronoidaan: valitse etäkansiot, jotka haluat synkronoida.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="374"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Päätä mitä synkronoidaan: jätä valitsematta etäkansiot, joita et halua synkronoitavan.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
@@ -1904,7 +1904,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="547"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointikansiota ei ole määritetty.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="559"/>
@@ -1934,7 +1934,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Salasana</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>
@@ -2303,17 +2303,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Palvelu ei ole juuri nyt käytettävissä</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>Virhe kansiota avatessa</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Sisäinen virhe, numero %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
@@ -2343,7 +2343,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston nimi on liian pitkä.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -2369,12 +2369,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="980"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>Ei sallittu, koska sinulla ei ole oikeutta lisätä alikansioita kyseiseen kansioon</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="986"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>Ei sallittu, koska sinulla ei ole oikeutta lisätä ylätason kansiota</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="993"/>
@@ -2524,7 +2524,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Help</source>
-        <translation>Apua</translation>
+        <translation>Ohje</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="426"/>

@@ -1938,7 +1938,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Lösenord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

@@ -1937,12 +1937,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>La condivisione pubblic&amp;a richiede una password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

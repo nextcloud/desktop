@@ -1938,12 +1938,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Openbaar de&amp;len vereist een wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier de destination a une erreur de taille ou de date de modification</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1457,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
 </context>
 <context>
@@ -1940,12 +1940,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Le p&amp;artage public nécessite un mot de passe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Mot de passe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

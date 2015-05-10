@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>El archivo destino tiene un tamaño o fecha/hora de modificación no esperado.</translation>
     </message>
 </context>
 <context>
@@ -1456,7 +1456,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>El archivo ha cambiado desde que fue descubierto</translation>
     </message>
 </context>
 <context>
@@ -1595,7 +1595,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="504"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Forzar el trabajo en una conexión HTTP, causará un Reset si Qt&lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="512"/>
@@ -1936,12 +1936,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Compartir public&amp;amente requiere contraseña</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

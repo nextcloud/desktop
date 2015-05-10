@@ -1937,12 +1937,12 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>A comp&amp;artición pública precisa de contrasinal </translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contrasinal</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

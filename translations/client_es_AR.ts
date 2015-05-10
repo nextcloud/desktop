@@ -1936,7 +1936,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>

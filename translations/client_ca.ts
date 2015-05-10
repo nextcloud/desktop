@@ -1940,7 +1940,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>
