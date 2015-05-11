@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="191"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Одредишни фајл има неочекивану величину или време измене</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1457,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је измењен у међувремену</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1940,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Јавно дељење з&amp;хтева лозинку</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
