@@ -233,6 +233,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
   }
 
   // check the strlen and ignore the file if its name is longer than 254 chars.
+  // whenever changing this also check createDownloadTmpFileName
   if (strlen(bname) > 254) {
       match = CSYNC_FILE_EXCLUDE_LONG_FILENAME;
       SAFE_FREE(bname);

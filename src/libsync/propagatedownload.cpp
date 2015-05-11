@@ -31,19 +31,28 @@
 namespace OCC {
 
 
+// Always coming in with forward slashes.
+// In csync_excluded_no_ctx we ignore all files with longer than 254 chars
+// This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
 QString createDownloadTmpFileName(const QString &previous) {
-    QString tmpFileName = previous;
-    //add a dot at the begining of the filename to hide the file on OS X and Linux
-    int slashPos = tmpFileName.lastIndexOf('/');
-    tmpFileName.insert(slashPos+1, '.');
-    //add the suffix
-    tmpFileName += ".~" + QString::number(uint(qrand()), 16);
-
-    if (tmpFileName.length() > 254) { // https://github.com/owncloud/client/issues/2789
-        tmpFileName = tmpFileName.left(100) + "_" + tmpFileName.right(153);
+    QString tmpFileName;
+    QString tmpPath;
+    int slashPos = previous.lastIndexOf('/');
+    // work with both pathed filenames and only filenames
+    if (slashPos == -1) {
+        tmpFileName = previous;
+        tmpPath = QString();
+    } else {
+        tmpFileName = previous.mid(slashPos+1);
+        tmpPath = previous.left(slashPos);
     }
-
-    return tmpFileName;
+    int overhead =  1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
+    int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
+    if (tmpPath.length() > 0) {
+        return tmpPath + '/' + '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+    } else {
+        return '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+    }
 }
 
 // DOES NOT take owncership of the device.

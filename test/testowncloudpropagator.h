@@ -31,9 +31,35 @@ private slots:
     void testTmpDownloadFileNameGeneration()
     {
         QString fn;
+        // without dir
+        for (int i = 1; i <= 1000; i++) {
+            fn+="F";
+            QString tmpFileName = createDownloadTmpFileName(fn);
+            if (tmpFileName.contains('/')) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            }
+            QVERIFY( tmpFileName.length() > 0);
+            QVERIFY( tmpFileName.length() <= 254);
+        }
+        // with absolute dir
+        fn = "/Users/guruz/ownCloud/rocks/GPL";
         for (int i = 1; i < 1000; i++) {
             fn+="F";
             QString tmpFileName = createDownloadTmpFileName(fn);
+            if (tmpFileName.contains('/')) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            }
+            QVERIFY( tmpFileName.length() > 0);
+            QVERIFY( tmpFileName.length() <= 254);
+        }
+        // with relative dir
+        fn = "rocks/GPL";
+        for (int i = 1; i < 1000; i++) {
+            fn+="F";
+            QString tmpFileName = createDownloadTmpFileName(fn);
+            if (tmpFileName.contains('/')) {
+                tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
+            }
             QVERIFY( tmpFileName.length() > 0);
             QVERIFY( tmpFileName.length() <= 254);
         }
