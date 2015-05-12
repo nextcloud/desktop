@@ -82,8 +82,8 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     addPreferencesPanel(networkIcon, tr("Network"), networkSettings);
 
     FolderMan *folderMan = FolderMan::instance();
-    connect( folderMan, SIGNAL(folderSyncStateChange(QString)),
-             this, SLOT(slotSyncStateChange(QString)));
+    connect( folderMan, SIGNAL(folderSyncStateChange(Folder*)),
+             this, SLOT(slotSyncStateChange(Folder*)));
 
     connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
     connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
@@ -101,11 +101,8 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     cfg.restoreGeometry(this);
 }
 
-void SettingsDialogMac::slotSyncStateChange(const QString& alias)
+void SettingsDialogMac::slotSyncStateChange(Folder *folder)
 {
-    FolderMan *folderMan = FolderMan::instance();
-
-    Folder *folder = folderMan->folder(alias);
     if( folder ) {
         _accountSettings->slotUpdateFolderState(folder);
     }

@@ -49,7 +49,7 @@ public:
     virtual ~SocketApi();
 
 public slots:
-    void slotUpdateFolderView(const QString&);
+    void slotUpdateFolderView(Folder *f);
     void slotUnregisterPath( const QString& alias );
     void slotRegisterPath( const QString& alias );
     void slotReadExcludes();

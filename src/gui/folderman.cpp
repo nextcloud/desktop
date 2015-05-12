@@ -55,10 +55,6 @@ FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _syncEnabled( true )
 {
-    _folderChangeSignalMapper = new QSignalMapper(this);
-    connect(_folderChangeSignalMapper, SIGNAL(mapped(const QString &)),
-            this, SIGNAL(folderSyncStateChange(const QString &)));
-
     Q_ASSERT(!_instance);
     _instance = this;
 
@@ -400,13 +396,10 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         _disabledFolders.insert(folder);
     }
 
-    /* Use a signal mapper to connect the signals to the alias */
     connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChanged()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
-
-    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
 
     registerFolderMonitor(folder);
     return folder;
@@ -478,7 +471,7 @@ void FolderMan::slotScheduleSync( Folder *f )
         // We want the SocketAPI to already now update so that it can show the EVAL icon
         // for files/folders. Only do this when not syncing, else we might get a lot
         // of those notifications.
-        _socketApi->slotUpdateFolderView(alias);
+        _socketApi->slotUpdateFolderView(f);
     }
 
     qDebug() << "Schedule folder " << alias << " to sync!";
@@ -489,7 +482,7 @@ void FolderMan::slotScheduleSync( Folder *f )
         } else {
             qDebug() << "Folder is not enabled, not scheduled!";
             if( _socketApi ) {
-                _socketApi->slotUpdateFolderView(f->alias());
+                _socketApi->slotUpdateFolderView(f);
             }
             return;
         }
@@ -706,6 +699,14 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     startScheduledSyncSoon();
 }
 
+void FolderMan::slotFolderSyncStateChanged()
+{
+    auto f = qobject_cast<Folder *>(sender());
+    Q_ASSERT(f);
+    emit folderSyncStateChange(f);
+}
+
+
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
     if (!ensureJournalGone(folderDefinition.localPath)) {
@@ -730,11 +731,10 @@ Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDef
 
     /* Use a signal mapper to connect the signals to the alias */
     connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-    connect(folder, SIGNAL(syncStateChange()), _folderChangeSignalMapper, SLOT(map()));
+    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChanged()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 
-    _folderChangeSignalMapper->setMapping( folder, folder->alias() );
 
     registerFolderMonitor(folder);
     return folder;

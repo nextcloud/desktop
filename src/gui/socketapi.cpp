@@ -127,7 +127,7 @@ SocketApi::SocketApi(QObject* parent)
     connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(QString)), this, SLOT(slotUpdateFolderView(QString)));
+    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder*)), this, SLOT(slotUpdateFolderView(Folder*)));
     connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString, const SyncFileItem &)),
             SLOT(slotJobCompleted(QString, const SyncFileItem &)));
     connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString, const SyncFileItem &)),
@@ -261,13 +261,12 @@ void SocketApi::slotUnregisterPath( const QString& alias )
     }
 }
 
-void SocketApi::slotUpdateFolderView(const QString& alias)
+void SocketApi::slotUpdateFolderView(Folder *f)
 {
     if (_listeners.isEmpty()) {
         return;
     }
 
-    Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
         if( f->syncResult().status() == SyncResult::SyncPrepare ||
@@ -282,7 +281,7 @@ void SocketApi::slotUpdateFolderView(const QString& alias)
 
             broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
         } else {
-            qDebug() << "Not sending UPDATE_VIEW for" << alias << "because status() is" << f->syncResult().status();
+            qDebug() << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
     }
 }

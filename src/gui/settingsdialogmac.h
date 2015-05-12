@@ -39,7 +39,7 @@ public:
     void setGeneralErrors( const QStringList& errors );
 
 public slots:
-    void slotSyncStateChange(const QString& alias);
+    void slotSyncStateChange(Folder *);
     void showActivityPage();
 
 private:

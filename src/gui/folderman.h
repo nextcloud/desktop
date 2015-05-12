@@ -131,6 +131,7 @@ private slots:
     void slotEtagPollTimerTimeout();
 
     void slotRemoveFoldersForAccount(AccountState* accountState);
+    void slotFolderSyncStateChanged();
 
 private:
     /** Adds a folder for an account, does not add it to the account settings.
@@ -153,7 +154,6 @@ private:
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;
     QString        _folderConfigPath;
-    QSignalMapper *_folderChangeSignalMapper;
     Folder        *_currentSyncFolder = 0;
     QPointer<Folder> _lastSyncFolder;
     bool           _syncEnabled;
