@@ -391,10 +391,12 @@ QSslConfiguration Account::getOrCreateSslConfig()
         qDebug() << "Added SSL client certificate to the query";
     }
 
+#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     // Try hard to re-use session for different requests
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
+#endif
 
     return sslConfig;
 }
