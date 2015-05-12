@@ -67,9 +67,9 @@ public:
         /// The account is successfully talking to the server.
         Connected,
 
-        /// The account is talking to the server, but the server is in
-        /// maintenance mode.
-        ServerMaintenance,
+        /// There's a temporary problem with talking to the server,
+        /// don't bother the user too much and try again.
+        ServiceUnavailable,
 
         /// Could not communicate with the server for some reason.
         /// We assume this may resolve itself over time and will try
@@ -100,7 +100,7 @@ public:
     void setSignedOut(bool signedOut);
 
     bool isConnected() const;
-    bool isConnectedOrMaintenance() const;
+    bool isConnectedOrTemporarilyUnavailable() const;
 
     QuotaInfo *quotaInfo();
 

@@ -189,6 +189,10 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
                             .arg(Theme::instance()->appNameGUI(),
                                  reply->url().toString(),
                                  reply->errorString()), checkDowngradeAdvised(reply));
+
+    // Allow the credentials dialog to pop up again for the same URL.
+    // Maybe the user just clicked 'Cancel' by accident or changed his mind.
+    _ocWizard->account()->resetSslCertErrorState();
 }
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)

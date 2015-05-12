@@ -206,7 +206,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
 
     columns << timeStr;
-    columns << fixupFilename(item._file);
+    columns << fixupFilename(item._originalFile);
     columns << folder;
 
     // If the error string is set, it's prefered because it is a useful user message.

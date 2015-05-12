@@ -714,7 +714,11 @@ void PropagateDownloadFileLegacy::start()
 
     QString error;
     _propagator->addTouchedFile(fn);
-    if (!FileSystem::renameReplace(tmpFile.fileName(), fn, &error)) {
+    const qint64 expectedFileSize = _item.log._other_size;
+    const time_t expectedFileMtime = _item.log._other_modtime;
+    if (!FileSystem::renameReplace(tmpFile.fileName(), fn,
+                                   expectedFileSize, expectedFileMtime,
+                                   &error)) {
         done(SyncFileItem::NormalError, error);
         return;
     }

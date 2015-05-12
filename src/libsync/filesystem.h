@@ -67,12 +67,43 @@ bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
 bool OWNCLOUDSYNC_EXPORT rename(const QString& originFileName,
                                 const QString& destinationFileName,
                                 QString* errorString = NULL);
+
 /**
- * Rename the file \a originFileName to \a destinationFileName, and overwrite the destination if it
- * already exists
+ * Returns true if the file's mtime or size are not what is expected.
+ * Nonexisting files are covered through mtime: they have an mtime of -1.
  */
-bool renameReplace(const QString &originFileName, const QString &destinationFileName,
+bool fileChanged(const QString& fileName,
+                 qint64 previousSize,
+                 time_t previousMtime);
+
+/**
+ * Like !fileChanged() but with verbose logging if the file *did* change.
+ */
+bool verifyFileUnchanged(const QString& fileName,
+                         qint64 previousSize,
+                         time_t previousMtime);
+
+/**
+ * Rename the file \a originFileName to \a destinationFileName, and
+ * overwrite the destination if it already exists - as long as the
+ * destination file has the expected \a destinationSize and
+ * \a destinationMtime.
+ * If the destination file does not exist, the given size and mtime are
+ * ignored.
+ */
+bool renameReplace(const QString &originFileName,
+                   const QString &destinationFileName,
+                   qint64 destinationSize,
+                   time_t destinationMtime,
                    QString *errorString);
+
+/**
+ * Rename the file \a originFileName to \a destinationFileName, and
+ * overwrite the destination if it already exists - without extra checks.
+ */
+bool uncheckedRenameReplace(const QString &originFileName,
+                            const QString &destinationFileName,
+                            QString *errorString);
 
 /**
  * Replacement for QFile::open(ReadOnly) followed by a seek().

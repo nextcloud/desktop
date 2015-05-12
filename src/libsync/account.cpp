@@ -310,6 +310,9 @@ QNetworkReply *Account::headRequest(const QString &relPath)
 QNetworkReply *Account::headRequest(const QUrl &url)
 {
     QNetworkRequest request(url);
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
+    request.setSslConfiguration(this->getOrCreateSslConfig());
+#endif
     return _am->head(request);
 }
 
@@ -321,7 +324,9 @@ QNetworkReply *Account::getRequest(const QString &relPath)
 QNetworkReply *Account::getRequest(const QUrl &url)
 {
     QNetworkRequest request(url);
-    request.setSslConfiguration(this->createSslConfig());
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
+    request.setSslConfiguration(this->getOrCreateSslConfig());
+#endif
     return _am->get(request);
 }
 
@@ -333,7 +338,9 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPat
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
-    req.setSslConfiguration(this->createSslConfig());
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
+    req.setSslConfiguration(this->getOrCreateSslConfig());
+#endif
     return _am->sendCustomRequest(req, verb, data);
 }
 
@@ -348,16 +355,19 @@ void Account::setSslConfiguration(const QSslConfiguration &config)
     _sslConfiguration = config;
 }
 
-QSslConfiguration Account::createSslConfig()
+QSslConfiguration Account::getOrCreateSslConfig()
 {
+    if (!_sslConfiguration.isNull()) {
+        // Will be set by CheckServerJob::finished()
+        // We need to use a central shared config to get SSL session tickets
+        return _sslConfiguration;
+    }
+
     // if setting the client certificate fails, you will probably get an error similar to this:
     //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
-  
-    // maybe this code must not have to be reevaluated every request?
-    QSslConfiguration sslConfig;
+    QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
     QSslCertificate sslClientCertificate;
     
-    // maybe move this code from createSslConfig to the Account constructor
     ConfigFile cfgFile;
     if(!cfgFile.certificatePath().isEmpty() && !cfgFile.certificatePasswd().isEmpty()) {
         resultP12ToPem certif = p12ToPem(cfgFile.certificatePath().toStdString(), cfgFile.certificatePasswd().toStdString());
@@ -375,13 +385,16 @@ QSslConfiguration Account::createSslConfig()
         QSslKey privateKey(_pemPrivateKey.toLocal8Bit(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey , "");
 
         // SSL configuration
-        sslConfig.defaultConfiguration();
         sslConfig.setCaCertificates(QSslSocket::systemCaCertificates());
-        QList<QSslCertificate> caCertifs = sslConfig.caCertificates();
         sslConfig.setLocalCertificate(sslClientCertificate);
         sslConfig.setPrivateKey(privateKey);
         qDebug() << "Added SSL client certificate to the query";
     }
+
+    // Try hard to re-use session for different requests
+    sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
+    sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
+    sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
 
     return sslConfig;
 }
@@ -394,6 +407,11 @@ void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 void Account::addApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts += certs;
+}
+
+void Account::resetSslCertErrorState()
+{
+    _treatSslErrorsAsFailure = false;
 }
 
 void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)

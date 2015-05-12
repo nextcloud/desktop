@@ -1,5 +1,6 @@
 #!/bin/sh
-# osascript $HOME/owncloud.com/client/shell_integration/MacOSX/unload.scpt
+SELFPATH=`dirname $0`
+# osascript $SELFPATH/unload.scpt
 
 sudo rm -rf /Library/ScriptingAdditions/SyncStateFinder.osax
 # Klaas' machine
@@ -12,6 +13,6 @@ OSAXDIR=$HOME/Library/Developer/Xcode/DerivedData/OwnCloud-*/Build/Products/Debu
 
 sudo killall Finder
 sleep 1
-osascript $HOME/owncloud.com/client/shell_integration/MacOSX/load.scpt
-osascript $HOME/owncloud.com/client/shell_integration/MacOSX/check.scpt
+osascript $SELFPATH/load.scpt
+osascript $SELFPATH/check.scpt
 

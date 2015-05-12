@@ -16,6 +16,7 @@
 #include "utility.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QCoreApplication>
 #include <QDebug>
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -155,7 +156,50 @@ bool FileSystem::rename(const QString &originFileName,
     return success;
 }
 
-bool FileSystem::renameReplace(const QString& originFileName, const QString& destinationFileName, QString* errorString)
+bool FileSystem::fileChanged(const QString& fileName,
+                             qint64 previousSize,
+                             time_t previousMtime)
+{
+    return getSize(fileName) != previousSize
+        || getModTime(fileName) != previousMtime;
+}
+
+bool FileSystem::verifyFileUnchanged(const QString& fileName,
+                                     qint64 previousSize,
+                                     time_t previousMtime)
+{
+    const qint64 actualSize = getSize(fileName);
+    const time_t actualMtime = getModTime(fileName);
+    if (actualSize != previousSize || actualMtime != previousMtime) {
+        qDebug() << "File" << fileName << "has changed:"
+                 << "size: " << previousSize << "<->" << actualSize
+                 << ", mtime: " << previousMtime << "<->" << actualMtime;
+        return false;
+    }
+    return true;
+}
+
+bool FileSystem::renameReplace(const QString& originFileName,
+                               const QString& destinationFileName,
+                               qint64 destinationSize,
+                               time_t destinationMtime,
+                               QString* errorString)
+{
+    if (fileExists(destinationFileName)
+            && fileChanged(destinationFileName, destinationSize, destinationMtime)) {
+        if (errorString) {
+            *errorString = qApp->translate("FileSystem",
+                    "The destination file has an unexpected size or modification time");
+        }
+        return false;
+    }
+
+    return uncheckedRenameReplace(originFileName, destinationFileName, errorString);
+}
+
+bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
+                                        const QString& destinationFileName,
+                                        QString* errorString)
 {
 #ifndef Q_OS_WIN
     bool success;

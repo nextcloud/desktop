@@ -111,15 +111,33 @@ SparkleUpdater::~SparkleUpdater()
     delete d;
 }
 
+
+bool autoUpdaterAllowed()
+{
+    // See https://github.com/owncloud/client/issues/2931
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *expectedPath = [NSString stringWithFormat:@"/Applications/%@", [bundlePath lastPathComponent]];
+    if ([expectedPath isEqualTo:bundlePath]) {
+        return true;
+    }
+    qWarning() << "ERROR: We are not in /Applications, won't check for update!";
+    return false;
+}
+
+
 void SparkleUpdater::checkForUpdate()
 {
-    [d->updater checkForUpdates: NSApp];
+    if (autoUpdaterAllowed()) {
+        [d->updater checkForUpdates: NSApp];
+    }
 }
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
     qDebug() << Q_FUNC_INFO << "launching background check";
-    [d->updater checkForUpdatesInBackground];
+    if (autoUpdaterAllowed()) {
+        [d->updater checkForUpdatesInBackground];
+    }
 }
 
 } // namespace OCC
