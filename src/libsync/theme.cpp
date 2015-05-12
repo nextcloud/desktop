@@ -246,7 +246,7 @@ QString Theme::gitSHA1() const
     QString devString;
 #ifdef GIT_SHA1
     const QString githubPrefix(QLatin1String(
-                                   "https://github.com/owncloud/mirall/commit/"));
+                                   "https://github.com/owncloud/client/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("ownCloudTheme::about()",
                    "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
@@ -389,5 +389,5 @@ bool Theme::wizardSelectiveSyncDefaultNothing() const
 }
 
 
-} // end namespace mirall
+} // end namespace client
 
