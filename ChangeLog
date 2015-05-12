@@ -1,5 +1,8 @@
 ChangeLog
 =========
+version 1.8.2 (release 2015-06-xx)
+ * HTTP: Add the branding name to the UserAgent string.
+
 version 1.8.1 (release 2015-05-07)
  * Make "operation canceled" error a soft error
  * Do not throw an error for files that are scheduled to be removed,
