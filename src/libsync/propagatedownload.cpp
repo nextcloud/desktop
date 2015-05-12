@@ -332,7 +332,7 @@ void PropagateDownloadFileQNAM::start()
     }
 
     if (tmpFileName.isEmpty()) {
-        tmpFileName = createDownloadTmpFileName(_item._file);
+        tmpFileName = createDownloadTmpFileName(_item->_file);
     }
 
     _tmpFile.setFileName(_propagator->getFilePath(tmpFileName));
@@ -534,7 +534,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
         }
     }
 
-    FileSystem::setModTime(_tmpFile.fileName(), _item._modtime);
+    FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file system such as FAT have a less than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
@@ -550,8 +550,8 @@ void PropagateDownloadFileQNAM::downloadFinished()
         // phase by comparing size and mtime to the previous values. This
         // is necessary to avoid overwriting user changes that happened between
         // the discovery phase and now.
-        const qint64 expectedSize = _item.log._other_size;
-        const time_t expectedMtime = _item.log._other_modtime;
+        const qint64 expectedSize = _item->log._other_size;
+        const time_t expectedMtime = _item->log._other_modtime;
         if (! FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
             _propagator->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
