@@ -11,6 +11,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "filesystem.h"
 
 #include "utility.h"
@@ -18,6 +19,13 @@
 #include <QFileInfo>
 #include <QCoreApplication>
 #include <QDebug>
+#include <QCryptographicHash>
+#include <QFuture>
+#include <qtconcurrentrun.h>
+
+#ifdef ZLIB_FOUND
+#include <zlib.h>
+#endif
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 #include <qabstractfileengine.h>
@@ -391,6 +399,92 @@ QString FileSystem::fileSystemForPath(const QString & path)
         return QString();
     }
     return QString::fromUtf16(reinterpret_cast<const ushort *>(fileSystemBuffer));
+}
+#endif
+
+QByteArray FileSystem::calcMd5Worker( const QString& filename )
+{
+    QByteArray arr;
+
+    QCryptographicHash crypto( QCryptographicHash::Md5 );
+
+    QFile file(filename);
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray data;
+        while (!file.atEnd()) {
+            data = file.read(1024*1024*10);
+            crypto.addData(data);
+        }
+        arr = crypto.result().toHex();
+    }
+    return arr;
+}
+
+QByteArray FileSystem::calcSha1Worker( const QString& filename )
+{
+    QByteArray arr;
+
+    QCryptographicHash crypto( QCryptographicHash::Sha1 );
+
+    QFile file(filename);
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray data;
+        while (!file.atEnd()) {
+            data = file.read(1024*1024*10);
+            crypto.addData(data);
+        }
+        arr = crypto.result().toHex();
+    }
+    return arr;
+}
+
+#ifdef ZLIB_FOUND
+QByteArray FileSystem::calcAdler32Worker( const QString& filename )
+{
+  unsigned int adler = adler32(0L, Z_NULL, 0);
+
+  QFile file(filename);
+  if (file.open(QIODevice::ReadOnly)) {
+    QByteArray data;
+    while (!file.atEnd()) {
+      data = file.read(1024*1024*10);
+      adler = adler32(adler, (const Bytef*) data.data(), data.size());
+    }
+  }
+
+  return QString::number( adler, 16 ).toUtf8();
+}
+#endif
+
+QByteArray FileSystem::calcMd5( const QString& fileName )
+{
+    QFuture<QByteArray> f1 = QtConcurrent::run(calcMd5Worker, fileName );
+    f1.waitForFinished();
+
+    const QByteArray md5 = f1.result();
+
+    return md5;
+}
+
+QByteArray FileSystem::calcSha1( const QString& fileName )
+{
+    QFuture<QByteArray> f1 = QtConcurrent::run(calcSha1Worker, fileName );
+    f1.waitForFinished();
+
+    const QByteArray sha1 = f1.result();
+
+    return sha1;
+}
+
+#ifdef ZLIB_FOUND
+QByteArray FileSystem::calcAdler32( const QString& fileName )
+{
+    QFuture<QByteArray> f1 = QtConcurrent::run(calcAdler32Worker, fileName );
+    f1.waitForFinished();
+
+    const QByteArray checksum = f1.result();
+
+    return checksum;
 }
 #endif
 

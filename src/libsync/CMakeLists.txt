@@ -141,6 +141,11 @@ if(NEON_FOUND)
     endif()
 endif()
 
+if(ZLIB_FOUND)
+    list(APPEND libsync_LINK_TARGETS ${ZLIB_LIBRARIES})
+    include_directories(${ZLIB_INCLUDE_DIRS})
+endif(ZLIB_FOUND)
+
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	BASE_NAME ${synclib_NAME}
