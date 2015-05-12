@@ -43,7 +43,6 @@ namespace OCC {
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
-    , _duration(0)
     , _timedout(false)
     , _followRedirects(false)
     , _ignoreCredentialFailure(false)

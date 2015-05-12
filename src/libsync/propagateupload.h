@@ -19,6 +19,8 @@
 #include <QBuffer>
 #include <QFile>
 #include <QDebug>
+#include <QFutureWatcher>
+
 
 namespace OCC {
 class BandwidthManager;
@@ -75,6 +77,8 @@ protected slots:
 
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
+
+private:
     QScopedPointer<QIODevice> _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
@@ -146,6 +150,7 @@ signals:
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
 
+private:
     /**
      * That's the start chunk that was stored in the database for resuming.
      * In the non-resuming case it is 0.
@@ -163,6 +168,12 @@ class PropagateUploadFileQNAM : public PropagateItemJob {
     QElapsedTimer _duration;
     QVector<PUTFileJob*> _jobs; /// network jobs that are currently in transit
     bool _finished; // Tells that all the jobs have been finished
+
+    // watcher for the checksum calculation thread
+    QFutureWatcher<QByteArray> _watcher;
+
+    // measure the performance of checksum calc and upload
+    Utility::StopWatch _stopWatch;
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
@@ -175,6 +186,8 @@ private slots:
     void startNextChunk();
     void finalize(const SyncFileItem&);
     void slotJobDestroyed(QObject *job);
+    void startUpload();
+    void slotChecksumCalculated();
 private:
     void startPollJob(const QString& path);
     void abortWithError(SyncFileItem::Status status, const QString &error);

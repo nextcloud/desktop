@@ -21,12 +21,15 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "configfile.h"
+
 #include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
 #include <cmath>
 #include <cstring>
+#include <QtConcurrent>
 
 #ifdef USE_NEON
 #include "propagator_legacy.h"
@@ -39,6 +42,14 @@ const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel
 #endif
 
 namespace OCC {
+
+/**
+ * Tags for checksum headers.
+ */
+static const char checkSumMD5C[] = "MD5";
+static const char checkSumSHA1C[] = "SHA1";
+static const char checkSumAdlerC[] = "Adler32";
+static const char checkSumAdlerUpperC[] = "ADLER32";
 
 /**
  * We do not want to upload files that are currently being modified.
@@ -196,16 +207,87 @@ void PropagateUploadFileQNAM::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
+    ConfigFile cfg; // FIXME: Do not open it for each and every propagation.
 
+    const QString filePath = _propagator->getFilePath(_item._file);
+    _item._modtime = FileSystem::getModTime(filePath);
+
+    // calculate the files checksum
+    const QString transChecksum = cfg.transmissionChecksum();
+    _stopWatch.start();
+
+    if( transChecksum.isEmpty() ) {
+        // no checksumming required, jump to really start the uplaod
+        startUpload();
+    } else {
+        // Calculate the checksum in a different thread first.
+        connect( &_watcher, SIGNAL(finished()),
+                 this, SLOT(slotChecksumCalculated()));
+        bool haveFuture = true;
+        if( transChecksum == checkSumMD5C ) {
+            _item._checksum = checkSumMD5C;
+            _item._checksum += ":";
+            _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker,filePath));
+
+        } else if( transChecksum == checkSumSHA1C ) {
+            _item._checksum = checkSumSHA1C;
+            _item._checksum += ":";
+            _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1Worker, filePath));
+        }
+#ifdef ZLIB_FOUND
+        else if( transChecksum == checkSumAdlerC) {
+            _item._checksum = checkSumAdlerC;
+            _item._checksum += ":";
+            _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, filePath));
+        }
+#endif
+        else {
+            haveFuture = false;
+        }
+        // in case there is a wrong checksum header, let continue without
+        if( !haveFuture ) {
+            startUpload();
+        }
+    }
+
+}
+
+void PropagateUploadFileQNAM::slotChecksumCalculated( )
+{
+    QByteArray checksum = _watcher.future().result();
+
+    if( !checksum.isEmpty() ) {
+        _item._checksum.append(checksum);
+    } else {
+        _item._checksum.clear();
+    }
+
+    startUpload();
+}
+
+void PropagateUploadFileQNAM::startUpload()
+{
     const QString fullFilePath(_propagator->getFilePath(_item._file));
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
+    _stopWatch.addLapTime(QLatin1String("Checksum"));
+
+    // Update the mtime and size, it might have changed since discovery.
+    time_t prevModtime = _item._modtime; // the value was set in PropagateUploadFileQNAM::start()
+    // but a potential checksum calculation could have taken some time during which the file could
+    // have been changed again, so better check again here.
 
     // Update the mtime and size, it might have changed since discovery.
     _item._modtime = FileSystem::getModTime(fullFilePath);
+    if( prevModtime != _item._modtime ) {
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("Local filei changed while calculating the checksum."));
+        return;
+    }
+
     quint64 fileSize = FileSystem::getSize(fullFilePath);
     _item._size = fileSize;
 
@@ -419,6 +501,9 @@ void PropagateUploadFileQNAM::startNextChunk()
             currentChunkSize = (fileSize % chunkSize());
             if( currentChunkSize == 0 ) { // if the last chunk pretents to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
+            }
+            if( !_item._checksum.isEmpty() ) {
+                headers["OC-Checksum"] = _item._checksum;
             }
         }
     }
@@ -640,6 +725,11 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // Well, the mtime was not set
 #endif
     }
+
+    // performance logging
+    _item._requestDuration = _stopWatch.stop();
+    qDebug() << "*==* duration UPLOAD" << _item._size << _stopWatch.durationOfLap(QLatin1String("Checksum")) << _item._requestDuration;
+
     finalize(_item);
 }
 
