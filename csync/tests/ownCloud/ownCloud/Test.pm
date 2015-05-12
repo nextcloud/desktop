@@ -124,7 +124,8 @@ sub initTesting(;$)
     $ENV{PERL_LWP_SSL_VERIFY_HOSTNAME} = 0
   }
 
-  $d = HTTP::DAV->new();
+  my $ua = HTTP::DAV::UserAgent->new(keep_alive => 1 );
+  $d = HTTP::DAV->new(-useragent => $ua);
 
   $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
 		  -user=> $user,

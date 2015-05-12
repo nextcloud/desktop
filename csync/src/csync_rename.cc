@@ -43,6 +43,7 @@ struct csync_rename_s {
     }
 
     std::map<std::string, std::string> folder_renamed_to; // map from->to
+    std::map<std::string, std::string> folder_renamed_from; // map to->from
 
     struct renameop {
         csync_file_stat_t *st;
@@ -63,6 +64,7 @@ void csync_rename_destroy(CSYNC* ctx)
 void csync_rename_record(CSYNC* ctx, const char* from, const char* to)
 {
     csync_rename_s::get(ctx)->folder_renamed_to[from] = to;
+    csync_rename_s::get(ctx)->folder_renamed_from[to] = from;
 }
 
 char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
@@ -77,5 +79,19 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
     }
     return c_strdup(path);
 }
+
+char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
+{
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    for (std::string p = _parentDir(path); !p.empty(); p = _parentDir(p)) {
+        std::map< std::string, std::string >::iterator it = d->folder_renamed_from.find(p);
+        if (it != d->folder_renamed_from.end()) {
+            std::string rep = it->second + (path + p.length());
+            return c_strdup(rep.c_str());
+        }
+    }
+    return c_strdup(path);
+}
+
 
 }
