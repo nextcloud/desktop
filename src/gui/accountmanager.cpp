@@ -213,6 +213,10 @@ void AccountManager::deleteAccount(AccountState* account)
     if (it == _accounts.end()) { return; }
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
+
+    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
+    settings->remove(account->account()->id());
+
     accountRemoved(account);
 }
 

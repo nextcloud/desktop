@@ -658,7 +658,9 @@ void AccountSettings::slotDeleteAccount()
         return;
     }
 
-    AccountManager::instance()->deleteAccount(_accountState);
+    auto manager = AccountManager::instance();
+    manager->deleteAccount(_accountState);
+    manager->save();
 }
 
 
