@@ -608,13 +608,14 @@ void SyncEngine::startSync()
     bool isUpdateFrom_1_8 = _journal->isUpdateFrom_1_8_0();
 
     /*
-     * If 1.8.0 caused missing data in the local tree, this patch gets it
-     * back. For that, the usage of the journal for remote repository is
-     * disabled at the first start.
+     * If we are upgrading from a client version older than 1.5 is found,
+     * we cannot read from the database because we need to fetch the files id and etags.
+     *
+     * If 1.8.0 caused missing data in the local tree, so we also don't read from DB
+     * to get back the files that were gone.
      */
     if (fileRecordCount >= 1 && (isUpdateFrom_1_5 || isUpdateFrom_1_8)) {
-        qDebug() << "detected update from 1.5" << fileRecordCount << isUpdateFrom_1_5;
-        // Disable the read from DB to be sure to re-read all the fileid and etags.
+        qDebug() << "detected update from 1.5 or 1.8" << fileRecordCount << isUpdateFrom_1_5;
         _csync_ctx->read_remote_from_db = false;
     } else {
         _csync_ctx->read_remote_from_db = true;
