@@ -184,7 +184,7 @@ void BandwidthManager::relativeUploadMeasuringTimerExpired()
 //    qDebug() << Q_FUNC_INFO << _relativeUploadLimitProgressAtMeasuringRestart
 //             << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
-    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec*1000.0) / 1024.0;
+//    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec*1000.0) / 1024.0;
 //    qDebug() << Q_FUNC_INFO << relativeLimitProgressDifference/1024 <<"kB =>" << speedkBPerSec << "kB/sec on full speed ("
 //             << _relativeLimitCurrentMeasuredDevice->_readWithProgress << _relativeLimitCurrentMeasuredDevice->_read
 //             << qAbs(_relativeLimitCurrentMeasuredDevice->_readWithProgress
@@ -277,7 +277,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     qDebug() << Q_FUNC_INFO << _relativeDownloadLimitProgressAtMeasuringRestart
              << relativeLimitProgressMeasured << relativeLimitProgressDifference;
 
-    qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec*1000.0) / 1024.0;
+//     qint64 speedkBPerSec = (relativeLimitProgressDifference / relativeLimitMeasuringTimerIntervalMsec*1000.0) / 1024.0;
 //    qDebug() << Q_FUNC_INFO << relativeLimitProgressDifference/1024 <<"kB =>" << speedkBPerSec << "kB/sec on full speed ("
 //             << _relativeLimitCurrentMeasuredJob->currentDownloadPosition() ;
 
