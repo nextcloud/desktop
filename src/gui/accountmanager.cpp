@@ -207,6 +207,16 @@ AccountState *AccountManager::addAccount(const AccountPtr& newAccount)
     return newAccountState.data();
 }
 
+void AccountManager::deleteAccount(AccountState* account)
+{
+    auto it = std::find(_accounts.begin(), _accounts.end(), account);
+    if (it == _accounts.end()) { return; }
+    auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
+    _accounts.erase(it);
+    accountRemoved(account);
+}
+
+
 void AccountManager::shutdown()
 {
     auto accountsCopy = _accounts;

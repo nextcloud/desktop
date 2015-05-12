@@ -25,6 +25,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "quotainfo.h"
+#include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -125,6 +126,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
             this, SLOT(slotUpdateQuota(qint64,qint64)));
     slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
+
+    connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
 
     connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
              this, SLOT(slotSetProgress(QString, ProgressInfo)) );
@@ -642,5 +645,21 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 }
+
+void AccountSettings::slotDeleteAccount()
+{
+    int ret = QMessageBox::question( this, tr("Confirm Account Delete"),
+                                     tr("<p>Do you really want to delete the account <i>%1</i>?</p>"
+                                     "<p><b>Note:</b> This will not remove the files from your client.</p>")
+                                        .arg(_accountState->account()->displayName()),
+                                     QMessageBox::Yes|QMessageBox::No );
+
+    if( ret == QMessageBox::No ) {
+        return;
+    }
+
+    AccountManager::instance()->deleteAccount(_accountState);
+}
+
 
 } // namespace OCC

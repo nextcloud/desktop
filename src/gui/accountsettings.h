@@ -77,6 +77,7 @@ protected slots:
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotHideProgress();
+    void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
 
 private:

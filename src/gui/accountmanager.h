@@ -50,8 +50,15 @@ public:
 
     /**
      * Return a list of all accounts.
+     * (this is a list of QSharedPointer for internal reason, one should normaly not keep a copy of them)
      */
     QList<AccountStatePtr> accounts() { return _accounts; }
+
+    /**
+     * Delete the AccountState
+     */
+    void deleteAccount(AccountState *account);
+
 
 private:
     void save(const AccountPtr& account, QSettings& settings);
