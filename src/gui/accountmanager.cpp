@@ -28,7 +28,6 @@ static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
-static const char foldersC[] = "Folders";
 }
 
 
