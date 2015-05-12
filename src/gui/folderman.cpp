@@ -232,8 +232,10 @@ int FolderMan::setupFoldersMigration()
     dir.setFilter(QDir::Files | QDir::Hidden);
     QStringList list = dir.entryList();
 
+    // Normaly there should be only one account when migrating.
+    AccountState* accountState = AccountManager::instance()->accounts().value(0).data();
     foreach ( const QString& alias, list ) {
-        Folder *f = setupFolderFromConfigFile( alias );
+        Folder *f = setupFolderFromOldConfigFile( alias, accountState );
         if( f ) {
             slotScheduleSync(f);
             emit( folderSyncStateChange( f ) );
@@ -325,7 +327,8 @@ QString FolderMan::unescapeAlias( const QString& alias ) const
 
 // filename is the name of the file only, it does not include
 // the configuration directory path
-Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
+Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState )
+{
     Folder *folder = 0;
 
     qDebug() << "  ` -> setting up:" << file;
@@ -376,8 +379,6 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
         targetPath.remove(0,1);
     }
 
-#warning fixme: which account does this folder use?
-    AccountState* accountState = AccountManager::instance()->accounts().value(0).data();
     if (!accountState) {
         qWarning() << "can't create folder without an account";
         return 0;

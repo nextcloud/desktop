@@ -55,8 +55,11 @@ public:
     /** Returns the folder by alias or NULL if no folder with the alias exists. */
     Folder *folder( const QString& );
 
-    /** Creates a folder for a specific configuration, identified by alias. */
-    Folder* setupFolderFromConfigFile(const QString & );
+    /**
+     * Migrate accounts from owncloud < 2.0
+     * Creates a folder for a specific configuration, identified by alias.
+     */
+    Folder* setupFolderFromOldConfigFile(const QString &, AccountState *account );
 
     /**
      * Ensures that a given directory does not contain a .csync_journal.
