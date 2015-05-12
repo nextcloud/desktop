@@ -386,6 +386,20 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
         SAFE_FREE(renamed_path);
     }
 
+    if (!other_node) {
+        /* Check the source path as well. */
+        int len;
+        uint64_t h = 0;
+        char *renamed_path = csync_rename_adjust_path_source(ctx, cur->path);
+
+        if (!c_streq(renamed_path, cur->path)) {
+            len = strlen( renamed_path );
+            h = c_jhash64((uint8_t *) renamed_path, len, 0);
+            other_node = c_rbtree_find(other_tree, &h);
+        }
+        SAFE_FREE(renamed_path);
+    }
+
     if (obj == NULL || data == NULL) {
       ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;

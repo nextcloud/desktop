@@ -110,9 +110,9 @@ Application::Application(int &argc, char **argv) :
     if (isRunning())
         return;
 
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
     // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
-    // is deleted.
+    // is deleted. (Introduced in Qt 5.4.0 and fixed in Qt 5.4.2)
     {
         QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
         QLockFile(lockFilePath).removeStaleLockFile();

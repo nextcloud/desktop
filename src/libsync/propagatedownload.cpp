@@ -532,6 +532,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
             done(SyncFileItem::SoftError, renameError);
             return;
         }
+        qDebug() << "Created conflict file" << fn << "->" << conflictFileName;
     }
 
     FileSystem::setModTime(_tmpFile.fileName(), _item._modtime);
