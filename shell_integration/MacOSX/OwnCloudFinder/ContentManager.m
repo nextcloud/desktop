@@ -30,6 +30,7 @@ static ContentManager* sharedInstance = nil;
 	if (self)
 	{
 		_fileNamesCache = [[NSMutableDictionary alloc] init];
+		_oldFileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		_hasChangedContent = TRUE;
 	}
@@ -41,6 +42,7 @@ static ContentManager* sharedInstance = nil;
 {
 	[self removeAllIcons];
 	[_fileNamesCache release];
+	[_oldFileNamesCache release];
 	sharedInstance = nil;
 
 	[super dealloc];
@@ -148,84 +150,48 @@ static ContentManager* sharedInstance = nil;
 	
 	if( result == nil ) {
 		// start the async call
-		NSNumber *askState = [[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
-		[_fileNamesCache setObject:askState forKey:normalizedPath];
-
+		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 		result = [NSNumber numberWithInt:0];
-	} else if( [result intValue] == -1 ) {
-		// the socket call is underways.
-		result = [NSNumber numberWithInt:0];
-	} else {
-		// there is a proper icon index
+		// Set 0 into the cache, meaning "don't have an icon, but already requested it"
+		[_fileNamesCache setObject:result forKey:normalizedPath];
 	}
-    // NSLog(@"iconByPath return value %d", [result intValue]);
+	if ([result intValue] == 0) {
+		// Show the old state while we wait for the new one
+		NSNumber* oldResult = [_oldFileNamesCache objectForKey:normalizedPath];
+		if (oldResult)
+			result = oldResult;
+	}
+	// NSLog(@"iconByPath return value %d", [result intValue]);
 
 	return result;
 }
 
-// called as a result of an UPDATE_VIEW message.
-// it clears the entries from the hash to make it call again home to the desktop client.
-- (void)clearFileNameCacheForPath:(NSString*)path
+// Clears the entries from the hash to make it call again home to the desktop client.
+- (void)clearFileNameCache
 {
-	//NSLog(@"%@", NSStringFromSelector(_cmd));
-	NSMutableArray *keysToDelete = [NSMutableArray array];
-	
-	if( path != nil ) {
-		for (id p in [_fileNamesCache keyEnumerator]) {
-			//do stuff with obj
-			if ( [p hasPrefix:path] ) {
-				[keysToDelete addObject:p];
-			}
-		}
-	} else {
-		// clear the entire fileNameCache
-		[_fileNamesCache release];
-		_fileNamesCache = [[NSMutableDictionary alloc] init];
-		return;
-	}
-	
-	if( [keysToDelete count] > 0 ) {
-		NSLog( @"Entries to delete: %lu", (unsigned long)[keysToDelete count]);
-		[_fileNamesCache removeObjectsForKeys:keysToDelete];
-	}
+	[_fileNamesCache release];
+	_fileNamesCache = [[NSMutableDictionary alloc] init];
+	[_oldFileNamesCache removeAllObjects];
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	 NSLog(@"%@", NSStringFromSelector(_cmd));
+	//NSLog(@"%@", NSStringFromSelector(_cmd));
 
-	for (id p in [_fileNamesCache keyEnumerator]) {
-		if ( path && [p hasPrefix:path] ) {
-			[[RequestManager sharedInstance] askForIcon:p isDirectory:false]; // FIXME isDirectory parameter
-			//[_fileNamesCache setObject:askState forKey:p]; We don't do this since we want to keep the old icon meanwhile
-			//NSLog(@"%@ %@", NSStringFromSelector(_cmd), p);
-		}
-	}
+	// We won't request the new state if if finds the path in _fileNamesCache
+	// Move all entries to _oldFileNamesCache so that the get re-requested, but
+	// still available while we refill the cache
+	[_oldFileNamesCache addEntriesFromDictionary:_fileNamesCache];
+	[_fileNamesCache removeAllObjects];
 
-	// Ask for directory itself
-	if ([path hasSuffix:@"/"]) {
-		path = [path substringToIndex:path.length - 1];
-	}
-	[[RequestManager sharedInstance] askForIcon:path isDirectory:true];
-	//NSLog(@"%@ %@", NSStringFromSelector(_cmd), path);
+	[self repaintAllWindows];
 }
 
 
 - (void)removeAllIcons
 {
 	[_fileNamesCache removeAllObjects];
-
-	[self repaintAllWindows];
-}
-
-- (void)removeIcons:(NSArray*)paths
-{
-	for (NSString* path in paths)
-	{
-		NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
-
-		[_fileNamesCache removeObjectForKey:normalizedPath];
-	}
+	[_oldFileNamesCache removeAllObjects];
 
 	[self repaintAllWindows];
 }
@@ -361,6 +327,7 @@ static ContentManager* sharedInstance = nil;
 		}
 		else
 		{
+			[_oldFileNamesCache removeObjectForKey:normalizedPath];
 			[_fileNamesCache setObject:iconId forKey:normalizedPath];
 		}
 	}

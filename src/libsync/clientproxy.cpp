@@ -163,6 +163,7 @@ SystemProxyRunnable::SystemProxyRunnable(const QUrl &url) : QObject(), QRunnable
 void SystemProxyRunnable::run()
 {
     qDebug() << Q_FUNC_INFO << "Starting system proxy lookup";
+    qRegisterMetaType<QNetworkProxy>("QNetworkProxy");
     QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(QNetworkProxyQuery(_url));
 
     if (proxies.isEmpty()) {

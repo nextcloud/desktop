@@ -350,7 +350,7 @@ LsColXMLParser::LsColXMLParser()
 
 }
 
-bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes)
+bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes, const QString& expectedPath)
 {
     // Parse DAV response
     QXmlStreamReader reader(xml);
@@ -371,7 +371,14 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
         // Start elements with DAV:
         if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
             if (name == QLatin1String("href")) {
-                currentHref = QUrl::fromPercentEncoding(reader.readElementText().toUtf8());
+                // We don't use URL encoding in our request URL (which is the expected path) (QNAM will do it for us)
+                // but the result will have URL encoding..
+                QString hrefString = QString::fromUtf8(QByteArray::fromPercentEncoding(reader.readElementText().toUtf8()));
+                if (!hrefString.startsWith(expectedPath)) {
+                    qDebug() << "Invalid href" << hrefString << "expected starting with" << expectedPath;
+                    return false;
+                }
+                currentHref = hrefString;
             } else if (name == QLatin1String("response")) {
             } else if (name == QLatin1String("propstat")) {
                 insidePropstat = true;
@@ -520,7 +527,8 @@ bool LsColJob::finished()
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SIGNAL(finishedWithoutError()) );
 
-        if( !parser.parse( reply()->readAll(), &_sizes ) ) {
+        QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
+        if( !parser.parse( reply()->readAll(), &_sizes, expectedPath ) ) {
             // XML parse error
             emit finishedWithError(reply());
         }
@@ -586,6 +594,11 @@ bool CheckServerJob::installed(const QVariantMap &info)
 bool CheckServerJob::finished()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
+
+    if (reply()->request().url().scheme() == QLatin1String("https")
+            && reply()->sslConfiguration().sessionTicket().isEmpty()) {
+        qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
+    }
 
     // The serverInstalls to /owncloud. Let's try that if the file wasn't found
     // at the original location

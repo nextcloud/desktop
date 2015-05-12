@@ -30,6 +30,31 @@
 
 namespace OCC {
 
+
+// Always coming in with forward slashes.
+// In csync_excluded_no_ctx we ignore all files with longer than 254 chars
+// This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
+QString createDownloadTmpFileName(const QString &previous) {
+    QString tmpFileName;
+    QString tmpPath;
+    int slashPos = previous.lastIndexOf('/');
+    // work with both pathed filenames and only filenames
+    if (slashPos == -1) {
+        tmpFileName = previous;
+        tmpPath = QString();
+    } else {
+        tmpFileName = previous.mid(slashPos+1);
+        tmpPath = previous.left(slashPos);
+    }
+    int overhead =  1 + 1 + 2 + 8; // slash dot dot-tilde ffffffff"
+    int spaceForFileName = qMin(254, tmpFileName.length() + overhead) - overhead;
+    if (tmpPath.length() > 0) {
+        return tmpPath + '/' + '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+    } else {
+        return '.' + tmpFileName.left(spaceForFileName) + ".~" + (QString::number(uint(qrand() % 0xFFFFFFFF), 16));
+    }
+}
+
 // DOES NOT take owncership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
@@ -307,12 +332,7 @@ void PropagateDownloadFileQNAM::start()
     }
 
     if (tmpFileName.isEmpty()) {
-        tmpFileName = _item->_file;
-        //add a dot at the begining of the filename to hide the file.
-        int slashPos = tmpFileName.lastIndexOf('/');
-        tmpFileName.insert(slashPos+1, '.');
-        //add the suffix
-        tmpFileName += ".~" + QString::number(uint(qrand()), 16);
+        tmpFileName = createDownloadTmpFileName(_item->_file);
     }
 
     _tmpFile.setFileName(_propagator->getFilePath(tmpFileName));
@@ -514,21 +534,37 @@ void PropagateDownloadFileQNAM::downloadFinished()
         }
     }
 
-    QFileInfo existingFile(fn);
-    if(FileSystem::fileExists(fn) && existingFile.permissions() != _tmpFile.permissions()) {
-        _tmpFile.setPermissions(existingFile.permissions());
-    }
-
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file system such as FAT have a less than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
 
+    if (FileSystem::fileExists(fn)) {
+        // Preserve the existing file permissions.
+        QFileInfo existingFile(fn);
+        if (existingFile.permissions() != _tmpFile.permissions()) {
+            _tmpFile.setPermissions(existingFile.permissions());
+        }
+
+        // Check whether the existing file has changed since the discovery
+        // phase by comparing size and mtime to the previous values. This
+        // is necessary to avoid overwriting user changes that happened between
+        // the discovery phase and now.
+        const qint64 expectedSize = _item->log._other_size;
+        const time_t expectedMtime = _item->log._other_modtime;
+        if (! FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
+            _propagator->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
+            return;
+        }
+    }
+
     QString error;
     _propagator->addTouchedFile(fn);
-    FileSystem::setFileHidden(_tmpFile.fileName(), false);
-    if (!FileSystem::renameReplace(_tmpFile.fileName(), fn, &error)) {
+    // The fileChanged() check is done above to generate better error messages.
+    if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
         qDebug() << Q_FUNC_INFO << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
+
         // If we moved away the original file due to a conflict but can't
         // put the downloaded file in its place, we are in a bad spot:
         // If we do nothing the next sync run will assume the user deleted
@@ -540,10 +576,12 @@ void PropagateDownloadFileQNAM::downloadFinished()
             _propagator->_journal->deleteFileRecord(fn);
             _propagator->_journal->commit("download finished");
         }
+
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, error);
         return;
     }
+    FileSystem::setFileHidden(fn, false);
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.

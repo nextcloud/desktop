@@ -43,7 +43,6 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     connect(this, SIGNAL(accepted()), SLOT(slotUpdateLocalIgnoreList()));
     ui->removePushButton->setEnabled(false);
     connect(ui->listWidget, SIGNAL(itemSelectionChanged()), SLOT(slotItemSelectionChanged()));
-    connect(ui->listWidget, SIGNAL(itemActivated(QListWidgetItem*)), SLOT(slotItemChanged(QListWidgetItem*)));
     connect(ui->removePushButton, SIGNAL(clicked()), SLOT(slotRemoveCurrentItem()));
     connect(ui->addPushButton, SIGNAL(clicked()), SLOT(slotAddPattern()));
     connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotEditPattern(QListWidgetItem*)));

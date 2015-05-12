@@ -111,6 +111,15 @@ Application::Application(int &argc, char **argv) :
     if (isRunning())
         return;
 
+#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
+    // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
+    // is deleted.
+    {
+        QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
+        QLockFile(lockFilePath).removeStaleLockFile();
+    }
+#endif
+
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter())
         _crashHandler.reset(new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE ));
@@ -266,7 +275,7 @@ void Application::slotAccountStateChanged(int state)
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
-    case AccountState::ServerMaintenance:
+    case AccountState::ServiceUnavailable:
     case AccountState::SignedOut:
     case AccountState::ConfigurationError:
     case AccountState::NetworkError:
@@ -472,30 +481,6 @@ void Application::setHelp()
 {
     _helpOnly = true;
 }
-
-#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(5,0,0)
-bool Application::winEventFilter(MSG *pMsg, long *result)
-{
-    if (pMsg->message == WM_POWERBROADCAST) {
-        switch(pMsg->wParam) {
-        case PBT_APMPOWERSTATUSCHANGE:
-            qDebug() << "WM_POWERBROADCAST: Power state changed";
-            break;
-        case PBT_APMSUSPEND:
-            qDebug() << "WM_POWERBROADCAST: Entering low power state";
-            break;
-        case PBT_APMRESUMEAUTOMATIC:
-            qDebug() << "WM_POWERBROADCAST: Resuming from low power state";
-            break;
-        default:
-            break;
-        }
-        return true;
-    }
-
-    return SharedTools::QtSingleApplication::winEventFilter(pMsg, result);
-}
-#endif
 
 QString substLang(const QString &lang)
 {

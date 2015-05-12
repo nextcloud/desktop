@@ -131,7 +131,7 @@ static void check_logging(void **state)
     rc = csync_set_log_callback(check_log_callback);
     assert_int_equal(rc, 0);
 
-    csync_log(1, __FUNCTION__, "rc = %d", rc);
+    csync_log(1, __func__, "rc = %d", rc);
 
     rc = _tstat(path, &sb);
 

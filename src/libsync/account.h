@@ -102,13 +102,18 @@ public:
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 
     /** The ssl configuration during the first connection */
-    QSslConfiguration createSslConfig();
+    QSslConfiguration getOrCreateSslConfig();
     QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
     void setSslConfiguration(const QSslConfiguration &config);
     /** The certificates of the account */
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
     void addApprovedCerts(const QList<QSslCertificate> certs);
+
+    // Usually when a user explicitly rejects a certificate we don't
+    // ask again. After this call, a dialog will again be shown when
+    // the next unknown certificate is encountered.
+    void resetSslCertErrorState();
 
     // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);

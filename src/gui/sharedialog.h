@@ -29,17 +29,19 @@ public:
     explicit OcsShareJob(const QByteArray& verb, const QUrl& url, AccountPtr account, QObject* parent = 0);
 
     void setPostParams(const QList<QPair<QString, QString> >& postParams);
+    void addPassStatusCode(int code);
 
 public slots:
     void start() Q_DECL_OVERRIDE;
 signals:
-    void jobFinished(QString reply);
+    void jobFinished(QVariantMap reply);
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 private:
     QByteArray _verb;
     QUrl _url;
     QList<QPair<QString, QString> > _postParams;
+    QVector<int> _passStatusCodes;
 };
 
 
@@ -62,11 +64,11 @@ public:
     void getShares();
 
 private slots:
-    void slotSharesFetched(const QString &reply);
-    void slotCreateShareFetched(const QString &reply);
-    void slotDeleteShareFetched(const QString &reply);
-    void slotPasswordSet(const QString &reply);
-    void slotExpireSet(const QString &reply);
+    void slotSharesFetched(const QVariantMap &reply);
+    void slotCreateShareFetched(const QVariantMap &reply);
+    void slotDeleteShareFetched(const QVariantMap &reply);
+    void slotPasswordSet(const QVariantMap &reply);
+    void slotExpireSet(const QVariantMap &reply);
     void slotCalendarClicked(const QDate &date);
     void slotCheckBoxShareLinkClicked();
     void slotCheckBoxPasswordClicked();
@@ -101,7 +103,6 @@ private:
     qulonglong _public_share_id;
     void setPassword(const QString &password);
     void setExpireDate(const QDate &date);
-    int checkJsonReturnCode(const QString &reply, QString &message);
 
     QProgressIndicator *_pi_link;
     QProgressIndicator *_pi_password;

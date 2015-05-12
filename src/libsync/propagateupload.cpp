@@ -32,6 +32,12 @@
 #include "propagator_legacy.h"
 #endif
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+namespace {
+const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel";
+}
+#endif
+
 namespace OCC {
 
 /**
@@ -86,6 +92,16 @@ void PUTFileJob::start() {
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
     connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
 
+    // For Qt versions not including https://codereview.qt-project.org/110150
+    // Also do the runtime check if compiled with an old Qt but running with fixed one.
+#if QT_VERSION < QT_VERSION_CHECK(4, 8, 7)
+    if (QLatin1String(qVersion()) < QLatin1String("4.8.7"))
+        connect(_device.data(), SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
+#elif QT_VERSION > QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+    if (QLatin1String(qVersion()) < QLatin1String("5.4.2"))
+        connect(_device.data(), SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
+#endif
+
     AbstractNetworkJob::start();
 }
 
@@ -93,6 +109,13 @@ void PUTFileJob::slotTimeout() {
     _errorString =  tr("Connection Timeout");
     reply()->abort();
 }
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+void PUTFileJob::slotSoftAbort() {
+    reply()->setProperty(owncloudShouldSoftCancelPropertyName, true);
+    reply()->abort();
+}
+#endif
 
 void PollJob::start()
 {
@@ -471,6 +494,18 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     QNetworkReply::NetworkError err = job->reply()->error();
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+    if (err == QNetworkReply::OperationCanceledError && job->reply()->property(owncloudShouldSoftCancelPropertyName).isValid()) {
+        // Abort the job and try again later.
+        // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
+        qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
+        return;
+    }
+#endif
+
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if(checkForProblemsWithShared(_item->_httpErrorCode,
@@ -538,15 +573,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         }
     }
 
-    // compare expected and real modification time of the file and size
-    const time_t new_mtime = FileSystem::getModTime(fullFilePath);
-    const quint64 new_size = static_cast<quint64>(FileSystem::getSize(fullFilePath));
-    QFileInfo fi(_propagator->getFilePath(_item->_file));
-    if (new_mtime != _item->_modtime || new_size != _item->_size) {
-        qDebug() << "The local file has changed during upload:"
-                 << "mtime: " << _item->_modtime << "<->" << new_mtime
-                 << ", size: " << _item->_size << "<->" << new_size
-                 << ", QFileInfo: " << Utility::qDateTimeToTime_t(fi.lastModified()) << fi.lastModified();
+    // Check whether the file changed since discovery.
+    if (! FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         _propagator->_anotherSyncNeeded = true;
         if( !finished ) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));

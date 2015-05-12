@@ -592,7 +592,7 @@ void AccountSettings::slotAccountStateChanged(int state)
         foreach (Folder *folder, folderMan->map().values()) {
             slotUpdateFolderState(folder);
         }
-        if (state == AccountState::Connected || state == AccountState::ServerMaintenance) {
+        if (state == AccountState::Connected || state == AccountState::ServiceUnavailable) {
             QString user;
             if (AbstractCredentials *cred = account->credentials()) {
                user = cred->user();

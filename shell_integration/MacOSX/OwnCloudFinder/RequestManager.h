@@ -22,6 +22,7 @@
 
 	NSMutableArray* _requestQueue;
 	NSMutableDictionary* _registeredPathes;
+	NSMutableSet* _requestedPaths;
 
 	NSString *_shareMenuTitle;
 	
@@ -34,7 +35,7 @@
 
 - (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)askOnSocket:(NSString*)path query:(NSString*)verb;
-- (NSNumber*)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;
+- (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;
 - (void)start;
 
