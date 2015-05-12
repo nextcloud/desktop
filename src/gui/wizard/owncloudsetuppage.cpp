@@ -61,6 +61,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 
     setupCustomization();
 
+    slotUrlChanged(QLatin1String("")); // don't jitter UI
     connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
     connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
 
@@ -115,7 +116,7 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
         _ui.leUrl->setText(newUrl);
     }
 
-    if (url.startsWith(QLatin1String("http://"))) {
+    if (!url.startsWith(QLatin1String("https://"))) {
         _ui.urlLabel->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png")));
         _ui.urlLabel->setToolTip(tr("This url is NOT secure as it is not encrypted.\n"
                                     "It is not advisable to use it."));

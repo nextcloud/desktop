@@ -129,8 +129,8 @@ QString AccountState::stateString(State state)
         return QLatin1String("Disconnected");
     case Connected:
         return QLatin1String("Connected");
-    case ServerMaintenance:
-        return QLatin1String("ServerMaintenance");
+    case ServiceUnavailable:
+        return QLatin1String("ServiceUnavailable");
     case NetworkError:
         return QLatin1String("NetworkError");
     case ConfigurationError:
@@ -158,9 +158,9 @@ bool AccountState::isConnected() const
     return _state == Connected;
 }
 
-bool AccountState::isConnectedOrMaintenance() const
+bool AccountState::isConnectedOrTemporarilyUnavailable() const
 {
-    return isConnected() || _state == ServerMaintenance;
+    return isConnected() || _state == ServiceUnavailable;
 }
 
 QuotaInfo *AccountState::quotaInfo()
@@ -234,8 +234,8 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::UserCanceledCredentials:
         setState(SignedOut);
         break;
-    case ConnectionValidator::ServerMaintenance:
-        setState(ServerMaintenance);
+    case ConnectionValidator::ServiceUnavailable:
+        setState(ServiceUnavailable);
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);

@@ -42,7 +42,7 @@
 #define DEBUG_HBF(...) { if(transfer->log_cb) { \
         char buf[1024];                         \
         snprintf(buf, 1024, __VA_ARGS__);       \
-        transfer->log_cb(__FUNCTION__, buf, transfer->user_data);    \
+        transfer->log_cb(__func__, buf, transfer->user_data);    \
   }  }
 
 // #endif

@@ -409,6 +409,11 @@ void Account::addApprovedCerts(const QList<QSslCertificate> certs)
     _approvedCerts += certs;
 }
 
+void Account::resetSslCertErrorState()
+{
+    _treatSslErrorsAsFailure = false;
+}
+
 void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 {
     _sslErrorHandler.reset(handler);

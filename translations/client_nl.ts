@@ -1,5 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="nl" version="2.0">
 <context>
+    <name>FileSystem</name>
+    <message>
+        <location filename="../src/libsync/filesystem.cpp" line="191"/>
+        <source>The destination file has an unexpected size or modification time</source>
+        <translation>Het doelbestand heeft een onverwachte omvang of tijdstempel</translation>
+    </message>
+</context>
+<context>
     <name>FolderWizardSourcePage</name>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="14"/>
@@ -705,22 +713,22 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="123"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="148"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Geen E-Tag ontvangen van de server, controleer Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="130"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="155"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>We ontvingen een afwijkende E-Tag om door te gaan. We proberen het later opnieuw.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
         <source>Server returned wrong content-range</source>
         <translation>Server retourneerde verkeerde content-bandbreedte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="262"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
         <source>Connection Timeout</source>
         <translation>Verbindingstime-out</translation>
     </message>
@@ -814,37 +822,37 @@ Checked items will also be deleted if they prevent a directory from being remove
 Aangevinkte onderdelen zullen ook gewist worden als ze anders verhinderen dat een folder verwijderd wordt. Dit is nuttig voor metadata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="96"/>
         <source>Could not open file</source>
         <translation>Kon het bestand niet openen</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="98"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Er kunnen geen wijzigingen worden geschreven naar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="105"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="104"/>
         <source>Add Ignore Pattern</source>
         <translation>Toevoegen negeerpatroon</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="106"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="105"/>
         <source>Add a new ignore pattern:</source>
         <translation>Voeg nieuw negeerpatroon toe:</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="127"/>
         <source>Edit Ignore Pattern</source>
         <translation>Bewerk negeerpatroon</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="129"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
         <source>Edit ignore pattern:</source>
         <translation>Bewerk negeerpatroon:</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>Deze entry is door het systeem geleverd op &apos;%1&apos; en kan niet worden aangepast in deze sessie.</translation>
     </message>
@@ -1192,24 +1200,24 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>Instellen %1 server</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="120"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="121"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Deze url is NIET veilig omdat versleuteling omntbreekt.
 We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="124"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="125"/>
         <source>This url is secure. You can use it.</source>
         <translation>Deze url is veilig te gebruiken.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="163"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="164"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Volgende &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="295"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="296"/>
         <source>Update %1 server</source>
         <translation>Bijwerken %1 server</translation>
     </message>
@@ -1227,129 +1235,129 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Kon geen verbinding maken met %1 op %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="196"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="200"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Time-out bij verbinden met %1 om %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="207"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="211"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Probeer te verbinden met %1 om %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="254"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>De geauthentiseerde aanvraag voor de server werd omgeleid naar &apos;%1&apos;. De URL is onjuist, de server is verkeerd geconfigureerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="275"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Er was een ongeldig antwoord op een geauthenticeerde webdav opvraging</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Toegang door server verboden. Om te verifiëren dat u toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met uw browser toegang tot de service te krijgen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="317"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokale synch map %1 bestaat al, deze wordt ingesteld voor synchronisatie.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Creating local sync folder %1...</source>
         <translation>Creëren lokale sync map %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="325"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
         <source>failed.</source>
         <translation>mislukt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
         <source>Could not create local folder %1</source>
         <translation>Kon lokale map %1 niet aanmaken</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="352"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
         <source>No remote folder specified!</source>
         <translation>Geen externe map opgegeven!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="358"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
         <source>Error: %1</source>
         <translation>Fout: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>aanmaken map op ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="387"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Externe map %1 succesvol gecreërd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>De remote map %1 bestaat al. Verbinden voor synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Het aanmaken van de map resulteerde in HTTP foutcode %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Het aanmaken van de remote map is mislukt, waarschijnlijk omdat uw inloggegevens fout waren.&lt;br/&gt;Ga terug en controleer uw inloggegevens.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Het aanmaken van de remote map is mislukt, waarschijnlijk omdat uw inloggegevens fout waren.&lt;/font&gt;&lt;br/&gt;ga terug en controleer uw inloggevens.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Aanmaken van remote map %1 mislukt met fout &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="420"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Er is een sync verbinding van %1 naar remote directory %2 opgezet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Successfully connected to %1!</source>
         <translation>Succesvol verbonden met %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Verbinding met %1 niet geslaagd. Probeer het nog eens.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
         <source>Folder rename failed</source>
         <translation>Hernoemen map mislukt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="446"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan de map niet verwijderen en backuppen, omdat de map of een bestand daarin, geopend is in een ander programma. Sluit de map of het bestand en drup op Opnieuw of annuleer de installatie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokale synch map %1 is succesvol aangemaakt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1388,7 +1396,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="93"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="109"/>
         <source>Connection Timeout</source>
         <translation>Verbindingstime-out</translation>
     </message>
@@ -1396,7 +1404,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="143"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="166"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Ongeldig JSON antwoord van de peilingen URL</translation>
     </message>
@@ -1432,19 +1440,24 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="312"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden gedownload omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="483"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Het bestand kon niet volledig worden gedownload.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="498"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden opgeslagen wegens een lokaal bestandsnaam conflict!</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="557"/>
+        <source>File has changed since discovery</source>
+        <translation>Het bestand is gewijzigd sinds het is gevonden</translation>
     </message>
 </context>
 <context>
@@ -1570,33 +1583,38 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="180"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="203"/>
         <source>File Removed</source>
         <translation>Bestand verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="194"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="552"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="217"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
         <source>Local file changed during sync.</source>
         <translation>Lokaal bestand gewijzigd bij sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="477"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="504"/>
+        <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
+        <translation>Forceren job-beëindiging op HTTP verbindingsreset met Qt &lt; 5.4.2.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="512"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Het bestand is lokaal bewerkt, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet en uw bewerking staat in het conflicten bestand.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="511"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
         <source>Poll URL missing</source>
         <translation>URL peiling ontbreekt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="534"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="569"/>
         <source>The local file was removed during sync.</source>
         <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="567"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>De server heeft het laatste deel niet bevestigd (er was geen e-tag aanwezig)</translation>
     </message>
@@ -1847,7 +1865,7 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Instellen wachtwoord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="649"/>
+        <location filename="../src/gui/sharedialog.cpp" line="634"/>
         <source>%1 path: %2</source>
         <translation>%1 pad: %2</translation>
     </message>
@@ -1872,73 +1890,73 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>&amp;Wachtwoord beveiligd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="196"/>
+        <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Password Protected</source>
         <translation>Wachtwoord beveiligd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="341"/>
+        <location filename="../src/gui/sharedialog.cpp" line="343"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="447"/>
-        <source>Public sh&amp;aring requires a password:</source>
-        <translation>Openbaar de&amp;len vergt een wachtwoord:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="469"/>
-        <source>Choose a password for the public link</source>
-        <translation>Kies een wachtwoord voor de openbare link</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="521"/>
-        <location filename="../src/gui/sharedialog.cpp" line="522"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
+        <location filename="../src/gui/sharedialog.cpp" line="507"/>
         <source>&amp;Share link</source>
         <translation>$Delen link</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="540"/>
+        <location filename="../src/gui/sharedialog.cpp" line="525"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API foutcode: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="562"/>
+        <location filename="../src/gui/sharedialog.cpp" line="547"/>
         <source>There is no sync folder configured.</source>
         <translation>Er is geen sync map geconfigureerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="574"/>
+        <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
         <translation>Kan geen map vinden om naar te uploaden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="596"/>
+        <location filename="../src/gui/sharedialog.cpp" line="581"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Er bestaat al een sync bestand met dezelfde naam. Het bestand kan niet worden aangemeld voor sync.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="641"/>
+        <location filename="../src/gui/sharedialog.cpp" line="626"/>
         <source>The file cannot be synced.</source>
         <translation>Het bestand kan niet worden gesynchroniseerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="581"/>
+        <location filename="../src/gui/sharedialog.cpp" line="566"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Delen van externe mappen werkt nog niet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="608"/>
+        <location filename="../src/gui/sharedialog.cpp" line="448"/>
+        <source>Public sh&amp;aring requires a password</source>
+        <translation>Openbaar de&amp;len vereist een wachtwoord</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="470"/>
+        <source>Password</source>
+        <translation>Wachtwoord</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="593"/>
         <source>Waiting to upload...</source>
         <translation>Wachten om te uploaden...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="610"/>
+        <location filename="../src/gui/sharedialog.cpp" line="595"/>
         <source>Unable to register in sync space.</source>
         <translation>Kan niet aanmelden in sync ruimte.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="651"/>
+        <location filename="../src/gui/sharedialog.cpp" line="636"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Sync van aangemeld bestand nog niet succesvol.</translation>
     </message>

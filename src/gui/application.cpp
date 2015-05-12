@@ -110,6 +110,15 @@ Application::Application(int &argc, char **argv) :
     if (isRunning())
         return;
 
+#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
+    // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
+    // is deleted.
+    {
+        QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
+        QLockFile(lockFilePath).removeStaleLockFile();
+    }
+#endif
+
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter())
         _crashHandler.reset(new CrashReporter::Handler( QDir::tempPath(), true, CRASHREPORTER_EXECUTABLE ));
@@ -270,7 +279,7 @@ void Application::slotAccountStateChanged(int state)
         folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         break;
-    case AccountState::ServerMaintenance:
+    case AccountState::ServiceUnavailable:
     case AccountState::SignedOut:
     case AccountState::ConfigurationError:
     case AccountState::NetworkError:

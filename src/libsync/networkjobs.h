@@ -137,7 +137,7 @@ class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject {
 public:
     explicit LsColXMLParser();
 
-    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes);
+    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString& expectedPath);
 
 signals:
     void directoryListingSubfolders(const QStringList &items);

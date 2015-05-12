@@ -40,11 +40,21 @@ public:
     bool isSequential() const Q_DECL_OVERRIDE;
     bool seek ( qint64 pos ) Q_DECL_OVERRIDE;
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
+    bool reset() Q_DECL_OVERRIDE { emit wasReset(); return QIODevice::reset(); }
+#endif
+
     void setBandwidthLimited(bool);
     bool isBandwidthLimited() { return _bandwidthLimited; }
     void setChoked(bool);
     bool isChoked() { return _choked; }
     void giveBandwidthQuota(qint64 bwq);
+
+signals:
+#if QT_VERSION < 0x050402
+    void wasReset();
+#endif
+
 private:
 
     // The file data
@@ -95,6 +105,11 @@ public:
 signals:
     void finishedSignal();
     void uploadProgress(qint64,qint64);
+
+private slots:
+#if QT_VERSION < 0x050402
+    void slotSoftAbort();
+#endif
 };
 
 /**
