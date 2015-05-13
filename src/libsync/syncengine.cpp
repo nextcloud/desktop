@@ -595,7 +595,6 @@ void SyncEngine::startSync()
 #endif
 
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
-    bool isUpdateFrom_1_5 = _journal->isUpdateFrom_1_5();
 
     if( fileRecordCount == -1 ) {
         qDebug() << "No way to create a sync journal!";
@@ -605,16 +604,7 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
-    /*
-     * If we are upgrading from a client version older than 1.5 is found,
-     * we cannot read from the database because we need to fetch the files id and etags.
-     */
-    if (fileRecordCount >= 1 && isUpdateFrom_1_5) {
-        qDebug() << "detected update from 1.5" << fileRecordCount << isUpdateFrom_1_5;
-        _csync_ctx->read_remote_from_db = false;
-    } else {
-        _csync_ctx->read_remote_from_db = true;
-    }
+    _csync_ctx->read_remote_from_db = true;
 
     // This tells csync to never read from the DB if it is empty
     // thereby speeding up the initial discovery significantly.

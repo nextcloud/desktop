@@ -113,12 +113,6 @@ public:
      */
     bool isConnected();
 
-    /**
-     * Tell the sync engine if we need to disable the fetch from db to be sure that the fileid
-     * are updated.
-     */
-    bool isUpdateFrom_1_5();
-
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
@@ -134,7 +128,6 @@ private:
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
-    bool _possibleUpgradeFromMirall_1_5;
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
