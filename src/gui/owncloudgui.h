@@ -94,7 +94,6 @@ private:
     QAction *_actionLogin;
     QAction *_actionLogout;
 
-    QAction *_actionOpenoC;
     QAction *_actionSettings;
     QAction *_actionQuota;
     QAction *_actionStatus;

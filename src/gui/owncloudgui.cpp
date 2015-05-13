@@ -44,6 +44,8 @@
 
 namespace OCC {
 
+const char propertyAccountC[] = "oc_account";
+
 ownCloudGui::ownCloudGui(Application *parent) :
     QObject(parent),
     _tray(0),
@@ -274,15 +276,16 @@ void ownCloudGui::setupContextMenu()
 {
     FolderMan *folderMan = FolderMan::instance();
 
-#warning FIXME
-    AccountState *a = AccountManager::instance()->accounts().value(0).data();
+    auto accountList = AccountManager::instance()->accounts();
 
-    bool isConfigured = (a != 0);
-    _actionOpenoC->setEnabled(isConfigured);
+    bool isConfigured = (!accountList.isEmpty());
     bool isConnected = false;
-    if (isConfigured) {
-        isConnected = a->isConnected();
+    foreach (auto a, accountList) {
+        if (a->isConnected()) {
+            isConnected = true;
+        }
     }
+
 
     if ( _contextMenu ) {
         _contextMenu->clear();
@@ -297,7 +300,18 @@ void ownCloudGui::setupContextMenu()
         _tray->setContextMenu(_contextMenu.data());
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
-    _contextMenu->addAction(_actionOpenoC);
+
+
+    if (accountList.count() == 1) {
+        auto actionOpenoC = _contextMenu->addAction(tr("Open %1 in browser").arg(Theme::instance()->appNameGUI()));
+        actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(accountList.first()->account()));
+        QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
+        actionOpenoC->setEnabled(isConfigured);
+    } else foreach(auto account, accountList) {
+        auto actionOpenoC = _contextMenu->addAction(tr("Open %1 in browser").arg(account->account()->displayName()));
+        actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+        QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
+    }
 
     int folderCnt = folderMan->map().size();
     // add open actions for all sync folders to the tray menu
@@ -404,8 +418,6 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
 
 void ownCloudGui::setupActions()
 {
-    _actionOpenoC = new QAction(tr("Open %1 in browser").arg(Theme::instance()->appNameGUI()), this);
-    QObject::connect(_actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
     _actionQuota = new QAction(tr("Calculating quota..."), this);
     _actionQuota->setEnabled( false );
     _actionStatus = new QAction(tr("Unknown status"), this);
@@ -591,8 +603,8 @@ void ownCloudGui::slotToggleLogBrowser()
 
 void ownCloudGui::slotOpenOwnCloud()
 {
-    if (auto account = AccountManager::instance()->accounts().value(0)) {
-        QDesktopServices::openUrl(account->account()->url());
+    if (auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))) {
+        QDesktopServices::openUrl(account->url());
     }
 }
 
