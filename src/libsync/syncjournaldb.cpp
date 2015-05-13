@@ -333,7 +333,7 @@ bool SyncJournalDb::checkConnect()
     if (forceRemoteDiscovery) {
         qDebug() << "Forcing remote re-discovery by deleting folder Etags";
         SqlQuery deleteRemoteFolderEtagsQuery(_db);
-        deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5=NULL WHERE type=2;");
+        deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
         if( !deleteRemoteFolderEtagsQuery.exec() ) {
             qDebug() << "ERROR: Query failed" << deleteRemoteFolderEtagsQuery.error();
         } else {
