@@ -204,7 +204,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
         endforeach( _file )
     endif(NOT WIN32)
 
-    install(FILES ${client_I18N} DESTINATION share/${APPLICATION_EXECUTABLE}/i18n)
+    install(FILES ${client_I18N} DESTINATION ${DATADIR}/${APPLICATION_EXECUTABLE}/i18n)
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
@@ -283,6 +283,6 @@ endif()
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
-    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION share/applications )
+    install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )
 endif()
 
