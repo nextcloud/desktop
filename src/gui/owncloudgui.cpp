@@ -214,12 +214,10 @@ void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fa
 
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
-#warning FIXME: overall status needs to look at all accounts
-    if (AccountState *a = AccountManager::instance()->accounts().value(0).data()) {
-        if (a->isSignedOut()) {
-            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
-            _tray->setToolTip(tr("Please sign in"));
-            return;
+    bool allSignedOut = true;
+    foreach (auto a, AccountManager::instance()->accounts()) {
+        if (!a->isSignedOut()) {
+            allSignedOut = false;
         }
         if (!a->isConnectedOrTemporarilyUnavailable()) {
             _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
@@ -227,6 +225,13 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             return;
         }
     }
+
+    if (allSignedOut) {
+        _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+        _tray->setToolTip(tr("Please sign in"));
+        return;
+    }
+
     // display the info of the least successful sync (eg. not just display the result of the latest sync
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
