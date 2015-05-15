@@ -61,6 +61,7 @@ set(libsync_SRCS
     theme.cpp
     utility.cpp
     ownsql.cpp
+    transmissionchecksumvalidator.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
