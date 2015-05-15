@@ -44,14 +44,6 @@ const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel
 namespace OCC {
 
 /**
- * Tags for checksum headers.
- */
-static const char checkSumMD5C[] = "MD5";
-static const char checkSumSHA1C[] = "SHA1";
-static const char checkSumAdlerC[] = "Adler32";
-static const char checkSumAdlerUpperC[] = "ADLER32";
-
-/**
  * We do not want to upload files that are currently being modified.
  * To avoid that, we don't upload files that have a modification time
  * that is too close to the current time.
@@ -503,7 +495,7 @@ void PropagateUploadFileQNAM::startNextChunk()
                 currentChunkSize = chunkSize();
             }
             if( !_item._checksum.isEmpty() ) {
-                headers["OC-Checksum"] = _item._checksum;
+                headers[checkSumHeaderC] = _item._checksum;
             }
         }
     }
