@@ -18,9 +18,10 @@
 
 #include <QBuffer>
 #include <QFile>
-#include <QFutureWatcher>
 
 namespace OCC {
+
+class TransmissionChecksumValidator;
 
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -102,9 +103,6 @@ private slots:
 
 class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT
-    QPointer<GETFileJob> _job;
-
-    QFile _tmpFile;
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item) {}
@@ -115,12 +113,13 @@ private slots:
     void abort() Q_DECL_OVERRIDE;
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
-    void slotDownloadChecksumCheckFinished();
+    void slotChecksumFail( const QString& errMsg );
 
 private:
-    QByteArray _expectedHash;
-    QFutureWatcher<QByteArray> _watcher;
-    Utility::StopWatch _stopWatch;
+    // Utility::StopWatch _stopWatch;
+    QPointer<GETFileJob> _job;
+    QFile _tmpFile;
+    TransmissionChecksumValidator *_validator;
 
 };
 

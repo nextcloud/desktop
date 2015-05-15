@@ -22,13 +22,14 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "transmissionchecksumvalidator.h"
+
 #include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
 #include <cmath>
-#include <qtconcurrentrun.h>
 
 namespace OCC {
 
@@ -485,68 +486,22 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         return;
     }
 
-    /* Check if a checksum was transmitted */
-    if( job->reply()->hasRawHeader(checkSumHeaderC)) {
-        QByteArray header = job->reply()->rawHeader(checkSumHeaderC);
-
-        bool ok = true;
-
-        int indx = header.indexOf(':');
-        if( indx < 0 ) {
-            qDebug() << "Checksum header malformed:" << header;
-            ok = false;
-        }
-
-        if( ok ) {
-            const QByteArray type = header.left(indx).toUpper();
-            _expectedHash = header.mid(indx+1);
-
-            connect( &_watcher, SIGNAL(finished()), this, SLOT(slotDownloadChecksumCheckFinished()));
-
-            // start the calculation in different thread
-            if( type == checkSumMD5C ) {
-                _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _tmpFile.fileName()));
-            } else if( type == checkSumSHA1C ) {
-                _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1Worker, _tmpFile.fileName()));
-            }
-#ifdef ZLIB_FOUND
-            else if( type == checkSumAdlerUpperC ) {
-                _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _tmpFile.fileName()));
-            }
-#endif
-            else {
-                qDebug() << "Unknown checksum type" << type;
-                ok = false;
-            }
-        }
-
-        if( !ok) {
-            _tmpFile.remove();
-            _propagator->_anotherSyncNeeded = true;
-            done(SyncFileItem::SoftError, tr("The checksum header was malformed."));
-            return;
-        }
-    } else {
-        // No OC-Checksum header, go directly to continue handle the download
-        downloadFinished();
-    }
+    // do whatever is needed to add a checksum to the http upload request.
+    // in any case, the validator will emit signal startUpload to let the flow
+    // continue in slotStartUpload here.
+    _validator = new TransmissionChecksumValidator( _tmpFile.fileName() );
+    connect(_validator, SIGNAL(validated()), this, SLOT(downloadFinished()));
+    connect(_validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
+    _validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
 
 }
 
-void PropagateDownloadFileQNAM::slotDownloadChecksumCheckFinished()
+void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
 {
-    const QByteArray hash = _watcher.future().result();
-
-    if( hash != _expectedHash ) {
-        _tmpFile.remove();
-        _propagator->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("The file downloaded with a broken checksum, will be redownloaded."));
-        return;
-    } else {
-        qDebug() << "Checksum checked and matching: " << _expectedHash;
-    }
-
-    downloadFinished();
+    _validator->deleteLater();
+    _tmpFile.remove();
+    _propagator->_anotherSyncNeeded = true;
+    done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
 QString makeConflictFileName(const QString &fn, const QDateTime &dt)
@@ -572,6 +527,8 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 
 void PropagateDownloadFileQNAM::downloadFinished()
 {
+    _validator->deleteLater();
+
     QString fn = _propagator->getFilePath(_item._file);
 
     // In case of file name clash, report an error

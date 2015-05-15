@@ -22,6 +22,7 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "transmissionchecksumvalidator.h"
 #include "configfile.h"
 
 #include <json.h>
@@ -30,7 +31,6 @@
 #include <QDir>
 #include <cmath>
 #include <cstring>
-#include <QtConcurrent>
 
 #ifdef USE_NEON
 #include "propagator_legacy.h"
@@ -194,72 +194,32 @@ bool PollJob::finished()
     return true;
 }
 
-
 void PropagateUploadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
-    ConfigFile cfg; // FIXME: Do not open it for each and every propagation.
 
     const QString filePath = _propagator->getFilePath(_item._file);
+
+    // remember the modtime before checksumming to be able to detect a file
+    // change during the checksum calculation
     _item._modtime = FileSystem::getModTime(filePath);
 
-    // calculate the files checksum
-    const QString transChecksum = cfg.transmissionChecksum();
     _stopWatch.start();
 
-    if( transChecksum.isEmpty() ) {
-        // no checksumming required, jump to really start the uplaod
-        startUpload();
-    } else {
-        // Calculate the checksum in a different thread first.
-        connect( &_watcher, SIGNAL(finished()),
-                 this, SLOT(slotChecksumCalculated()));
-        bool haveFuture = true;
-        if( transChecksum == checkSumMD5C ) {
-            _item._checksum = checkSumMD5C;
-            _item._checksum += ":";
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker,filePath));
-
-        } else if( transChecksum == checkSumSHA1C ) {
-            _item._checksum = checkSumSHA1C;
-            _item._checksum += ":";
-            _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1Worker, filePath));
-        }
-#ifdef ZLIB_FOUND
-        else if( transChecksum == checkSumAdlerC) {
-            _item._checksum = checkSumAdlerC;
-            _item._checksum += ":";
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, filePath));
-        }
-#endif
-        else {
-            haveFuture = false;
-        }
-        // in case there is a wrong checksum header, let continue without
-        if( !haveFuture ) {
-            startUpload();
-        }
-    }
-
+    // do whatever is needed to add a checksum to the http upload request.
+    // in any case, the validator will emit signal startUpload to let the flow
+    // continue in slotStartUpload here.
+    _validator = new TransmissionChecksumValidator(filePath);
+    connect(_validator, SIGNAL(validated()), this, SLOT(slotStartUpload()));
+    _validator->uploadValidation( &_item );
 }
 
-void PropagateUploadFileQNAM::slotChecksumCalculated( )
+void PropagateUploadFileQNAM::slotStartUpload()
 {
-    QByteArray checksum = _watcher.future().result();
+    _validator->deleteLater();
 
-    if( !checksum.isEmpty() ) {
-        _item._checksum.append(checksum);
-    } else {
-        _item._checksum.clear();
-    }
-
-    startUpload();
-}
-
-void PropagateUploadFileQNAM::startUpload()
-{
     const QString fullFilePath(_propagator->getFilePath(_item._file));
 
     if (!FileSystem::fileExists(fullFilePath)) {
@@ -498,6 +458,11 @@ void PropagateUploadFileQNAM::startNextChunk()
             if( !_item._checksum.isEmpty() ) {
                 headers[checkSumHeaderC] = _item._checksum;
             }
+        }
+    } else {
+        // checksum if its only one chunk
+        if( !_item._checksum.isEmpty() ) {
+            headers[checkSumHeaderC] = _item._checksum;
         }
     }
 

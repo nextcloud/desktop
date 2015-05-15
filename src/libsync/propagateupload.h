@@ -19,11 +19,11 @@
 #include <QBuffer>
 #include <QFile>
 #include <QDebug>
-#include <QFutureWatcher>
 
 
 namespace OCC {
 class BandwidthManager;
+class TransmissionChecksumValidator;
 
 class UploadDevice : public QIODevice {
     Q_OBJECT
@@ -169,11 +169,11 @@ private:
     QVector<PUTFileJob*> _jobs; /// network jobs that are currently in transit
     bool _finished; // Tells that all the jobs have been finished
 
-    // watcher for the checksum calculation thread
-    QFutureWatcher<QByteArray> _watcher;
-
     // measure the performance of checksum calc and upload
     Utility::StopWatch _stopWatch;
+
+    TransmissionChecksumValidator *_validator;
+
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
@@ -186,8 +186,8 @@ private slots:
     void startNextChunk();
     void finalize(const SyncFileItem&);
     void slotJobDestroyed(QObject *job);
-    void startUpload();
-    void slotChecksumCalculated();
+    void slotStartUpload();
+
 private:
     void startPollJob(const QString& path);
     void abortWithError(SyncFileItem::Status status, const QString &error);
