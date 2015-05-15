@@ -57,6 +57,9 @@
        <property name="text">
         <string>Error Label</string>
        </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
