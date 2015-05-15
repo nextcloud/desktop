@@ -192,7 +192,6 @@ sub removeRemoteDir($;$)
     my ($dir, $optionsRef) = @_;
 
     my $url = testDirUrl() . $dir;
-
     if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
 	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
 			 -user=> $optionsRef->{user},
@@ -525,7 +524,9 @@ sub put_to_dir( $$;$ )
 
     my $filename = $file;
     $filename =~ s/^.*\///;
+    $filename =~ s/#/%23/g;  # poor man's URI encoder
     my $puturl = $targetUrl . $dir. $filename;
+
     print "put_to_dir puts to $puturl\n";
     unless ($d->put( -local => $file, -url => $puturl )) {
       print "  ### FAILED to put a single file!\n";
