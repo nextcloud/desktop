@@ -114,9 +114,10 @@ void AccountState::setState(State state)
         } else if (oldState == SignedOut && _state == Disconnected) {
             checkConnectivity();
         }
-
-        emit stateChanged(_state);
     }
+
+    // might not have changed but the underlying _connectionErrors might have
+    emit stateChanged(_state);
 }
 
 QString AccountState::stateString(State state)
@@ -174,7 +175,12 @@ void AccountState::checkConnectivity()
         return;
     }
 
+    if (_connectionValidator) {
+        qDebug() << "ConnectionValidator already running, ignoring";
+        return;
+    }
     ConnectionValidator * conValidator = new ConnectionValidator(account());
+    _connectionValidator = conValidator;
     connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
             SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
     if (isConnected()) {
