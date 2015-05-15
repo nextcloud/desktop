@@ -507,8 +507,8 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
     return conflictFileName;
 }
 
-QStringList parseRecallFile(QString fn) {
-
+static QStringList parseRecallFile(const QString &fn)
+{
     qDebug() << "parsingRecallFile: " << fn;
 
     QStringList result;
@@ -521,19 +521,14 @@ QStringList parseRecallFile(QString fn) {
 
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
-
         line.chop(1); // remove trailing \n
-
         qDebug() << "recall item: " << line;
-
         result.append(line);
     }
-
     return result;
-
 }
 
-QString makeRecallFileName(const QString &fn)
+static QString makeRecallFileName(const QString &fn)
 {
     QString recallFileName(fn);
     // Add _recall-XXXX  before the extention.
@@ -544,13 +539,7 @@ QString makeRecallFileName(const QString &fn)
     }
 
     QString timeString = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
-
-    // Additional marker
-    QByteArray recallFileUserName = qgetenv("CSYNC_RECALL_FILE_USERNAME");
-    if (recallFileUserName.isEmpty())
-        recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
-    else
-        recallFileName.insert(dotLocation, "_.sys.admin#recall#_" + QString::fromUtf8(recallFileUserName)  + "-" + timeString);
+    recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
 
     return recallFileName;
 }
@@ -640,31 +629,24 @@ void PropagateDownloadFileQNAM::downloadFinished()
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
-
-
     // handle the special recall file
-    QFileInfo existingFile(fn);
-    if(existingFile.fileName()==".sys.admin#recall#")
-    {
-        //FileSystem::setFileHidden(existingFile.fileName(), true);
+    if(_item._file == QLatin1String(".sys.admin#recall#")) {
+        FileSystem::setFileHidden(fn, true);
 
+        QFileInfo existingFile(fn);
         QDir thisDir = existingFile.dir();
 
         QStringList recall_files = parseRecallFile(existingFile.filePath());
 
-        for (int i = 0; i < recall_files.size(); ++i)
-        {
+        for (int i = 0; i < recall_files.size(); ++i) {
             QString fpath = thisDir.filePath(recall_files.at(i));
-            QString rpath = thisDir.filePath(makeRecallFileName(recall_files.at(i)));
+            QString rpath = makeRecallFileName(fpath);
 
             // if previously recalled file exists then remove it (copy will not overwrite it)
             QFile(rpath).remove();
-
             qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-
             QFile::copy(fpath,rpath);
         }
-
     }
 }
 

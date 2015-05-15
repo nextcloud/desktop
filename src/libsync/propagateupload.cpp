@@ -393,8 +393,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     headers["Content-Type"] = "application/octet-stream";
     headers["X-OC-Mtime"] = QByteArray::number(qint64(_item._modtime));
 
-    if(_item._file.contains(".sys.admin#recall#"))
-    {
+    if(_item._file.contains(".sys.admin#recall#")) {
         // This is a file recall triggered by the admin.  Note: the
         // recall list file created by the admin and downloaded by the
         // client (.sys.admin#recall#) also falls into this category
