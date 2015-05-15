@@ -72,6 +72,13 @@ csync();
 
 assertLocalAndRemoteDir( '', 0);
 
+printInfo( "Testing with a dir/.sys.admin#recall#" );
+system("echo 'file4.dat' > ". $tmpdir . ".sys.admin\#recall\#");
+glob_put( "$tmpdir/.sys.admin\#recall\#", "dir" );
+
+csync();
+assert( -e glob(localDir().'dir/file4_.sys.admin#recall#-*.dat' ) );
+
 
 cleanup();
 system("rm -r " . $tmpdir);

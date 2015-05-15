@@ -630,7 +630,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
-    if(_item._file == QLatin1String(".sys.admin#recall#")) {
+    if(_item._file == QLatin1String(".sys.admin#recall#") || _item._file.endsWith("/.sys.admin#recall#")) {
         FileSystem::setFileHidden(fn, true);
 
         QFileInfo existingFile(fn);
