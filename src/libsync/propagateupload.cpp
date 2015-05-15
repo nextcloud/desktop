@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
 #include "networkjobs.h"

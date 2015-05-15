@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "owncloudpropagator_p.h"
 #include "propagatedownload.h"
 #include "networkjobs.h"
@@ -27,9 +28,9 @@
 #include <QDir>
 #include <QDebug>
 #include <cmath>
+#include <qtconcurrentrun.h>
 
 namespace OCC {
-
 
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
@@ -482,6 +483,67 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
         return;
+    }
+
+    /* Check if a checksum was transmitted */
+    if( job->reply()->hasRawHeader(checkSumHeaderC)) {
+        QByteArray header = job->reply()->rawHeader(checkSumHeaderC);
+
+        bool ok = true;
+
+        int indx = header.indexOf(':');
+        if( indx < 0 ) {
+            qDebug() << "Checksum header malformed:" << header;
+            ok = false;
+        }
+
+        if( ok ) {
+            const QByteArray type = header.left(indx).toUpper();
+            _expectedHash = header.mid(indx+1);
+
+            connect( &_watcher, SIGNAL(finished()), this, SLOT(slotDownloadChecksumCheckFinished()));
+
+            // start the calculation in different thread
+            if( type == checkSumMD5C ) {
+                _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _tmpFile.fileName()));
+            } else if( type == checkSumSHA1C ) {
+                _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1Worker, _tmpFile.fileName()));
+            }
+#ifdef ZLIB_FOUND
+            else if( type == checkSumAdlerUpperC ) {
+                _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _tmpFile.fileName()));
+            }
+#endif
+            else {
+                qDebug() << "Unknown checksum type" << type;
+                ok = false;
+            }
+        }
+
+        if( !ok) {
+            _tmpFile.remove();
+            _propagator->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("The checksum header was malformed."));
+            return;
+        }
+    } else {
+        // No OC-Checksum header, go directly to continue handle the download
+        downloadFinished();
+    }
+
+}
+
+void PropagateDownloadFileQNAM::slotDownloadChecksumCheckFinished()
+{
+    const QByteArray hash = _watcher.future().result();
+
+    if( hash != _expectedHash ) {
+        _tmpFile.remove();
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("The file downloaded with a broken checksum, will be redownloaded."));
+        return;
+    } else {
+        qDebug() << "Checksum checked and matching: " << _expectedHash;
     }
 
     downloadFinished();
