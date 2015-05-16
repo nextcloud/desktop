@@ -81,53 +81,53 @@
         <translation>以 &lt;user&gt; 的身分連接 &lt;server&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="55"/>
+        <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Add Folder...</source>
         <translation>新增資料夾…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="62"/>
+        <location filename="../src/gui/accountsettings.ui" line="65"/>
         <location filename="../src/gui/accountsettings.cpp" line="167"/>
         <source>Pause</source>
         <translation>暫停</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="69"/>
+        <location filename="../src/gui/accountsettings.ui" line="72"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="76"/>
+        <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Choose What to Sync</source>
         <translation>選擇要同步的項目</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="101"/>
+        <location filename="../src/gui/accountsettings.ui" line="104"/>
         <source>Storage Usage</source>
         <translation>儲存空間使用狀況</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="123"/>
+        <location filename="../src/gui/accountsettings.ui" line="126"/>
         <source>Retrieving usage information...</source>
         <translation>取得使用狀況資訊...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="130"/>
+        <location filename="../src/gui/accountsettings.ui" line="133"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>&lt;b&gt;注意:&lt;/b&gt; 有些資料夾，包括網路掛載或分享資料夾，可能有不同的限制。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="143"/>
+        <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Account Maintenance</source>
         <translation>帳號維護</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="152"/>
+        <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Edit Ignored Files</source>
         <translation>編輯忽略的檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
+        <location filename="../src/gui/accountsettings.ui" line="162"/>
         <source>Modify Account</source>
         <translation>修改帳號</translation>
     </message>
@@ -2712,8 +2712,8 @@ It is not advisable to use it.</source>
         <translation>錯誤標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="109"/>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="122"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="125"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>

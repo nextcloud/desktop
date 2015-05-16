@@ -81,53 +81,53 @@
         <translation>Verbonden met &lt;server&gt; als &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="55"/>
+        <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Add Folder...</source>
         <translation>Map toevoegen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="62"/>
+        <location filename="../src/gui/accountsettings.ui" line="65"/>
         <location filename="../src/gui/accountsettings.cpp" line="167"/>
         <source>Pause</source>
         <translation>Pauze</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="69"/>
+        <location filename="../src/gui/accountsettings.ui" line="72"/>
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="76"/>
+        <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Choose What to Sync</source>
         <translation>Wat synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="101"/>
+        <location filename="../src/gui/accountsettings.ui" line="104"/>
         <source>Storage Usage</source>
         <translation>Gebruik opslagruimte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="123"/>
+        <location filename="../src/gui/accountsettings.ui" line="126"/>
         <source>Retrieving usage information...</source>
         <translation>Gebruiksinformatie wordt opgehaald ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="130"/>
+        <location filename="../src/gui/accountsettings.ui" line="133"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>&lt;b&gt;Opmerking:&lt;/b&gt; Sommige mappen, waaronder netwerkmappen en gedeelde mappen, kunnen andere limieten hebben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="143"/>
+        <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Account Maintenance</source>
         <translation>Accountonderhoud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="152"/>
+        <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Edit Ignored Files</source>
         <translation>Bewerk genegeerde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
+        <location filename="../src/gui/accountsettings.ui" line="162"/>
         <source>Modify Account</source>
         <translation>Aanpassen account</translation>
     </message>
@@ -2725,8 +2725,8 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Foutlabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="109"/>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="122"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="125"/>
         <source>TextLabel</source>
         <translation>Tekstlabel</translation>
     </message>
