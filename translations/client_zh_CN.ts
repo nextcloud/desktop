@@ -1463,12 +1463,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>；恢复失败：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>继续黑名单：</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
