@@ -73,6 +73,8 @@ using namespace OCC;
     void testUploadChecksummingAdler() {
 
         TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile);
+        vali->setChecksumType("Adler32");
+
         connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
 
         _expected = "Adler32:"+FileSystem::calcAdler32( _testfile );
@@ -135,14 +137,14 @@ using namespace OCC;
         _loop.processEvents();
         QVERIFY(_successDown);
 
-        _expectedError = QLatin1String("The file downloaded with a broken checksum, will be redownloaded.");
+        _expectedError = QLatin1String("The downloaded file does not match the checksum, it will be resumed.");
         _errorSeen = false;
         vali->downloadValidation("Adler32:543345");
         usleep(2000);
         _loop.processEvents();
         QVERIFY(_errorSeen);
 
-        _expectedError = QLatin1String("The checksum header was malformed.");
+        _expectedError = QLatin1String("The checksum header is malformed.");
         _errorSeen = false;
         vali->downloadValidation("Klaas32:543345");
         usleep(2000);
