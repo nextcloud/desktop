@@ -103,36 +103,33 @@ void TransmissionChecksumValidator::downloadValidation( const QByteArray& checks
         return;
     }
 
-    bool ok = true;
-
     int indx = checksumHeader.indexOf(':');
     if( indx < 0 ) {
         qDebug() << "Checksum header malformed:" << checksumHeader;
-        emit validated(); // show must go on - even not validated.
+        emit validationFailed(tr("The checksum header is malformed.")); // show must go on - even not validated.
+        return;
     }
 
-    if( ok ) {
-        const QByteArray type = checksumHeader.left(indx).toUpper();
-        _expectedHash = checksumHeader.mid(indx+1);
+    const QByteArray type = checksumHeader.left(indx).toUpper();
+    _expectedHash = checksumHeader.mid(indx+1);
 
-        connect( &_watcher, SIGNAL(finished()), this, SLOT(slotDownloadChecksumCalculated()) );
+    connect( &_watcher, SIGNAL(finished()), this, SLOT(slotDownloadChecksumCalculated()) );
 
-        // start the calculation in different thread
-        if( type == checkSumMD5C ) {
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _filePath));
-        } else if( type == checkSumSHA1C ) {
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1Worker, _filePath));
-        }
+    // start the calculation in different thread
+    if( type == checkSumMD5C ) {
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _filePath));
+    } else if( type == checkSumSHA1C ) {
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1Worker, _filePath));
+    }
 #ifdef ZLIB_FOUND
-        else if( type == checkSumAdlerUpperC ) {
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _filePath));
-        }
+    else if( type == checkSumAdlerUpperC ) {
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _filePath));
+    }
 #endif
-        else {
-            qDebug() << "Unknown checksum type" << type;
-            emit validationFailed(tr("The checksum header was malformed."));
-            return;
-        }
+    else {
+        qDebug() << "Unknown checksum type" << type;
+        emit validationFailed(tr("The checksum header is malformed."));
+        return;
     }
 }
 
@@ -141,7 +138,7 @@ void TransmissionChecksumValidator::slotDownloadChecksumCalculated()
     const QByteArray hash = _watcher.future().result();
 
     if( hash != _expectedHash ) {
-        emit validationFailed(tr("The file downloaded with a broken checksum, will be redownloaded."));
+        emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed."));
     } else {
         qDebug() << "Checksum checked and matching: " << _expectedHash;
         emit validated();
