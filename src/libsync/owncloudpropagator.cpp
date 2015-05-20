@@ -259,6 +259,21 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 {
     Q_ASSERT(std::is_sorted(items.begin(), items.end()));
 
+    /* Check and log the transmission checksum type */
+    ConfigFile cfg;
+    const QString checksumType = cfg.transmissionChecksum().toUpper();
+
+    /* if the checksum type is empty, it is not send. No error */
+    if( !checksumType.isEmpty() ) {
+        if( checksumType == checkSumAdlerUpperC ||
+                checksumType == checkSumMD5C    ||
+                checksumType == checkSumSHA1C ) {
+            qDebug() << "Client sends and expects transmission checksum type" << checksumType;
+        } else {
+            qDebug() << "WARN: Unknown transmission checksum type from config" << checksumType;
+        }
+    }
+
     /* This builds all the job needed for the propagation.
      * Each directories is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
