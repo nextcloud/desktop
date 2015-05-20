@@ -307,8 +307,12 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 
 void MkColJob::start()
 {
-    // assumes ownership
-   QNetworkReply *reply = davRequest("MKCOL", path());
+   // add 'Content-Length: 0' header (see https://github.com/owncloud/client/issues/3256)
+   QNetworkRequest req;
+   req.setRawHeader("Content-Length", "0");
+
+   // assumes ownership
+   QNetworkReply *reply = davRequest("MKCOL", path(), req);
    setReply(reply);
    setupConnections(reply);
    AbstractNetworkJob::start();
