@@ -270,7 +270,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 checksumType == checkSumSHA1C ) {
             qDebug() << "Client sends and expects transmission checksum type" << checksumType;
         } else {
-            qDebug() << "WARN: Unknown transmission checksum type from config" << checksumType;
+            qWarning() << "Unknown transmission checksum type from config" << checksumType;
         }
     }
 

@@ -486,9 +486,9 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         return;
     }
 
-    // do whatever is needed to add a checksum to the http upload request.
-    // in any case, the validator will emit signal startUpload to let the flow
-    // continue in slotStartUpload here.
+    // Do checksum validation for the download. If there is no checksum header, the validator
+    // will also emit the validated() signal to continue the flow in slot downloadFinished()
+    // as this is (still) also correct.
     TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
     connect(validator, SIGNAL(validated()), this, SLOT(downloadFinished()));
     connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));

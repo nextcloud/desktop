@@ -114,7 +114,6 @@ private slots:
     void slotChecksumFail( const QString& errMsg );
 
 private:
-    // Utility::StopWatch _stopWatch;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
 };

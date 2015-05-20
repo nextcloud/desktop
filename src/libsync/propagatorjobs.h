@@ -35,7 +35,7 @@ static const char checkSumAdlerC[] = "Adler32";
 static const char checkSumAdlerUpperC[] = "ADLER32";
 
 /**
- * Declaration of the other propation jobs
+ * Declaration of the other propagation jobs
  */
 class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT

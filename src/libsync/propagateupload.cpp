@@ -23,7 +23,6 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "transmissionchecksumvalidator.h"
-#include "configfile.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -226,16 +225,14 @@ void PropagateUploadFileQNAM::slotStartUpload()
     }
     _stopWatch.addLapTime(QLatin1String("Checksum"));
 
-    // Update the mtime and size, it might have changed since discovery.
-    time_t prevModtime = _item._modtime; // the value was set in PropagateUploadFileQNAM::start()
+    time_t prevModtime = _item._modtime; // the _item value was set in PropagateUploadFileQNAM::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
-    // Update the mtime and size, it might have changed since discovery.
     _item._modtime = FileSystem::getModTime(fullFilePath);
     if( prevModtime != _item._modtime ) {
         _propagator->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("Local file changed while calculating the checksum."));
+        done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
         return;
     }
 
