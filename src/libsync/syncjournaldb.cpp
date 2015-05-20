@@ -261,6 +261,17 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table poll", createQuery);
     }
 
+    // create the selectivesync table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS selectivesync ("
+                        "path VARCHAR(4096),"
+                        "type INTEGER"
+                        ");");
+
+    if (!createQuery.exec()) {
+        return sqlFail("Create table selectivesync", createQuery);
+    }
+
+
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
                                "major INTEGER(8),"
@@ -395,6 +406,9 @@ bool SyncJournalDb::checkConnect()
     _setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
                                 "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration) "
                                 "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7)");
+
+    _getSelectiveSyncListQuery.reset(new SqlQuery(_db));
+    _getSelectiveSyncListQuery->prepare("SELECT path FROM selectivesync WHERE type=?1");
 
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
@@ -1241,6 +1255,55 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
             qDebug() << "SQL error in setPollInfo: "<< query.error();
         } else {
             qDebug() << query.lastQuery()  << info._file << info._url;
+        }
+    }
+}
+
+QStringList SyncJournalDb::selectiveSyncList(SyncJournalDb::SelectiveSyncListType type)
+{
+    QStringList result;
+
+    QMutexLocker locker(&_mutex);
+    if( !checkConnect() ) {
+        return result;
+    }
+
+    _getSelectiveSyncListQuery->reset();
+    _getSelectiveSyncListQuery->bindValue(1, int(type));
+    if (!_getSelectiveSyncListQuery->exec()) {
+        qWarning() << "SQL query failed: "<< _getSelectiveSyncListQuery->error();
+        return result;
+    }
+    while( _getSelectiveSyncListQuery->next() ) {
+        auto entry = _getSelectiveSyncListQuery->stringValue(0);
+        if (!entry.endsWith(QLatin1Char('/'))) {
+            entry.append(QLatin1Char('/'));
+        }
+        result.append(entry);
+    }
+    return result;
+}
+
+void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, const QStringList& list)
+{
+    QMutexLocker locker(&_mutex);
+    if( !checkConnect() ) {
+        return;
+    }
+
+    //first, delete all entries of this type
+    SqlQuery delQuery("DELETE FROM selectivesync WHERE type == ?1", _db);
+    delQuery.bindValue(1, int(type));
+    if( !delQuery.exec() ) {
+        qWarning() << "SQL error when deleting selective sync list" << list << delQuery.error();
+    }
+
+    SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)" , _db);
+    foreach(const auto &path, list) {
+        insQuery.bindValue(1, path);
+        insQuery.bindValue(2, int(type));
+        if (!insQuery.exec()) {
+            qWarning() << "SQL error when inserting into selective sync" << type << path << delQuery.error();
         }
     }
 }

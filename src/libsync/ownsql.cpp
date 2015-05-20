@@ -207,7 +207,7 @@ int SqlQuery::prepare( const QString& sql)
 
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
-            qDebug() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
+            qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
         }
     }
     return _errId;
@@ -260,6 +260,7 @@ bool SqlQuery::next()
 void SqlQuery::bindValue(int pos, const QVariant& value)
 {
     int res = -1;
+    Q_ASSERT(_stmt);
     if( _stmt ) {
         switch (value.type()) {
         case QVariant::Int:

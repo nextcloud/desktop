@@ -91,6 +91,16 @@ public:
     void setPollInfo(const PollInfo &);
     QVector<PollInfo> getPollInfos();
 
+    enum SelectiveSyncListType {
+        SelectiveSyncBlackList = 1,
+        SelectiveSyncWhiteList = 2,
+        SelectiveSyncUndecidedList = 3
+    };
+    /* return the specified list from the database */
+    QStringList selectiveSyncList(SelectiveSyncListType type);
+    /* Write the selective sync list (remove all other entries of that list */
+    void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
+
     /**
      * Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
      * get the info from the server
@@ -140,6 +150,7 @@ private:
     QScopedPointer<SqlQuery> _deleteFileRecordRecursively;
     QScopedPointer<SqlQuery> _getErrorBlacklistQuery;
     QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
+    QScopedPointer<SqlQuery> _getSelectiveSyncListQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing
