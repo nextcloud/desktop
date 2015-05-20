@@ -489,16 +489,15 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // do whatever is needed to add a checksum to the http upload request.
     // in any case, the validator will emit signal startUpload to let the flow
     // continue in slotStartUpload here.
-    _validator = new TransmissionChecksumValidator( _tmpFile.fileName() );
-    connect(_validator, SIGNAL(validated()), this, SLOT(downloadFinished()));
-    connect(_validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
-    _validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
+    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
+    connect(validator, SIGNAL(validated()), this, SLOT(downloadFinished()));
+    connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
+    validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
 
 }
 
 void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
 {
-    _validator->deleteLater();
     _tmpFile.remove();
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
@@ -527,8 +526,6 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 
 void PropagateDownloadFileQNAM::downloadFinished()
 {
-    _validator->deleteLater();
-
     QString fn = _propagator->getFilePath(_item._file);
 
     // In case of file name clash, report an error

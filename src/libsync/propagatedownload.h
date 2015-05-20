@@ -21,8 +21,6 @@
 
 namespace OCC {
 
-class TransmissionChecksumValidator;
-
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
     QFile* _device;
@@ -119,8 +117,6 @@ private:
     // Utility::StopWatch _stopWatch;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
-    TransmissionChecksumValidator *_validator;
-
 };
 
 }

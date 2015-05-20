@@ -23,7 +23,6 @@
 
 namespace OCC {
 class BandwidthManager;
-class TransmissionChecksumValidator;
 
 class UploadDevice : public QIODevice {
     Q_OBJECT
@@ -171,8 +170,6 @@ private:
 
     // measure the performance of checksum calc and upload
     Utility::StopWatch _stopWatch;
-
-    TransmissionChecksumValidator *_validator;
 
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)

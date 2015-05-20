@@ -211,15 +211,13 @@ void PropagateUploadFileQNAM::start()
     // do whatever is needed to add a checksum to the http upload request.
     // in any case, the validator will emit signal startUpload to let the flow
     // continue in slotStartUpload here.
-    _validator = new TransmissionChecksumValidator(filePath);
-    connect(_validator, SIGNAL(validated()), this, SLOT(slotStartUpload()));
-    _validator->uploadValidation( &_item );
+    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
+    connect(validator, SIGNAL(validated()), this, SLOT(slotStartUpload()));
+    validator->uploadValidation( &_item );
 }
 
 void PropagateUploadFileQNAM::slotStartUpload()
 {
-    _validator->deleteLater();
-
     const QString fullFilePath(_propagator->getFilePath(_item._file));
 
     if (!FileSystem::fileExists(fullFilePath)) {
