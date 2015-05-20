@@ -327,11 +327,11 @@ sub assertLocalDirs( $$ )
 
     opendir(my $dh, $dir1 ) || die;
     while(readdir $dh) {
-	assert( -e "$dir2/$_" );
+    assert( -e "$dir2/$_", " $dir2/$_  do not exist" );
         next if( -d "$dir1/$_"); # don't compare directory sizes.
 	my $s1 = -s "$dir1/$_";
 	my $s2 = -s "$dir2/$_";
-	assert( $s1 == $s2, "$dir1/$_ <-> $dir2/$_" );
+	assert( $s1 == $s2, "$dir1/$_ <-> $dir2/$_   size not equal ($s1 != $s2)" );
     }
     closedir $dh;
 }
