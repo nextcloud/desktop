@@ -441,18 +441,18 @@ QByteArray FileSystem::calcSha1( const QString& filename )
 #ifdef ZLIB_FOUND
 QByteArray FileSystem::calcAdler32( const QString& filename )
 {
-  unsigned int adler = adler32(0L, Z_NULL, 0);
+    unsigned int adler = adler32(0L, Z_NULL, 0);
 
-  QFile file(filename);
-  if (file.open(QIODevice::ReadOnly)) {
-    QByteArray data;
-    while (!file.atEnd()) {
-      data = file.read(1024*1024*10);
-      adler = adler32(adler, (const Bytef*) data.data(), data.size());
+    QFile file(filename);
+    if (file.open(QIODevice::ReadOnly)) {
+        QByteArray data;
+        while (!file.atEnd()) {
+            data = file.read(1024*1024*10);
+            adler = adler32(adler, (const Bytef*) data.data(), data.size());
+        }
     }
-  }
 
-  return QString::number( adler, 16 ).toUtf8();
+    return QString::number( adler, 16 ).toUtf8();
 }
 #endif
 
