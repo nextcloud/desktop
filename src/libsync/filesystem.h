@@ -121,10 +121,6 @@ bool openAndSeekFileSharedRead(QFile* file, QString* error, qint64 seek);
 QString fileSystemForPath(const QString & path);
 #endif
 
-/**
- * Calculate the checksum of a file in a worker thread. Each function waits
- * until the calculation is finished.
- */
 QByteArray calcMd5( const QString& fileName );
 QByteArray calcSha1( const QString& fileName );
 QByteArray calcAdler32( const QString& fileName );

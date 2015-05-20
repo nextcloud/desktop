@@ -402,7 +402,7 @@ QString FileSystem::fileSystemForPath(const QString & path)
 }
 #endif
 
-QByteArray FileSystem::calcMd5Worker( const QString& filename )
+QByteArray FileSystem::calcMd5( const QString& filename )
 {
     QByteArray arr;
 
@@ -420,7 +420,7 @@ QByteArray FileSystem::calcMd5Worker( const QString& filename )
     return arr;
 }
 
-QByteArray FileSystem::calcSha1Worker( const QString& filename )
+QByteArray FileSystem::calcSha1( const QString& filename )
 {
     QByteArray arr;
 
@@ -439,7 +439,7 @@ QByteArray FileSystem::calcSha1Worker( const QString& filename )
 }
 
 #ifdef ZLIB_FOUND
-QByteArray FileSystem::calcAdler32Worker( const QString& filename )
+QByteArray FileSystem::calcAdler32( const QString& filename )
 {
   unsigned int adler = adler32(0L, Z_NULL, 0);
 
@@ -453,38 +453,6 @@ QByteArray FileSystem::calcAdler32Worker( const QString& filename )
   }
 
   return QString::number( adler, 16 ).toUtf8();
-}
-#endif
-
-QByteArray FileSystem::calcMd5( const QString& fileName )
-{
-    QFuture<QByteArray> f1 = QtConcurrent::run(calcMd5Worker, fileName );
-    f1.waitForFinished();
-
-    const QByteArray md5 = f1.result();
-
-    return md5;
-}
-
-QByteArray FileSystem::calcSha1( const QString& fileName )
-{
-    QFuture<QByteArray> f1 = QtConcurrent::run(calcSha1Worker, fileName );
-    f1.waitForFinished();
-
-    const QByteArray sha1 = f1.result();
-
-    return sha1;
-}
-
-#ifdef ZLIB_FOUND
-QByteArray FileSystem::calcAdler32( const QString& fileName )
-{
-    QFuture<QByteArray> f1 = QtConcurrent::run(calcAdler32Worker, fileName );
-    f1.waitForFinished();
-
-    const QByteArray checksum = f1.result();
-
-    return checksum;
 }
 #endif
 

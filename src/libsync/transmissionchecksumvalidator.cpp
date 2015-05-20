@@ -59,18 +59,18 @@ void TransmissionChecksumValidator::uploadValidation( SyncFileItem *item )
         if( checksumType == checkSumMD5C ) {
             item->_checksum = checkSumMD5C;
             item->_checksum += ":";
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _filePath));
+            _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5, _filePath));
 
         } else if( checksumType == checkSumSHA1C ) {
             item->_checksum = checkSumSHA1C;
             item->_checksum += ":";
-            _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1Worker, _filePath));
+            _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1, _filePath));
         }
 #ifdef ZLIB_FOUND
         else if( checksumType == checkSumAdlerC) {
             item->_checksum = checkSumAdlerC;
             item->_checksum += ":";
-            _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _filePath));
+            _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32, _filePath));
         }
 #endif
         else {
@@ -117,13 +117,13 @@ void TransmissionChecksumValidator::downloadValidation( const QByteArray& checks
 
     // start the calculation in different thread
     if( type == checkSumMD5C ) {
-        _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5Worker, _filePath));
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5, _filePath));
     } else if( type == checkSumSHA1C ) {
-        _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1Worker, _filePath));
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcSha1, _filePath));
     }
 #ifdef ZLIB_FOUND
     else if( type == checkSumAdlerUpperC ) {
-        _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32Worker, _filePath));
+        _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32, _filePath));
     }
 #endif
     else {
