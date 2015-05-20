@@ -237,7 +237,7 @@ void PropagateUploadFileQNAM::slotStartUpload()
     _item._modtime = FileSystem::getModTime(fullFilePath);
     if( prevModtime != _item._modtime ) {
         _propagator->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("Local filei changed while calculating the checksum."));
+        done(SyncFileItem::SoftError, tr("Local file changed while calculating the checksum."));
         return;
     }
 
