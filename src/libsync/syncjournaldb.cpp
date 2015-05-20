@@ -1164,11 +1164,10 @@ void SyncJournalDb::wipeErrorBlacklistEntry( const QString& file )
 
 void SyncJournalDb::updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item )
 {
+    QMutexLocker locker(&_mutex);
     if( !checkConnect() ) {
         return;
     }
-
-    QMutexLocker locker(&_mutex);
 
     _setErrorBlacklistQuery->bindValue(1, item._file);
     _setErrorBlacklistQuery->bindValue(2, item._lastTryEtag);
