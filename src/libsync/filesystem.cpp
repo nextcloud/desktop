@@ -11,7 +11,6 @@
  * for more details.
  */
 
-#include "config.h"
 #include "filesystem.h"
 
 #include "utility.h"
@@ -20,8 +19,6 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QCryptographicHash>
-#include <QFuture>
-#include <qtconcurrentrun.h>
 
 #ifdef ZLIB_FOUND
 #include <zlib.h>
@@ -402,57 +399,57 @@ QString FileSystem::fileSystemForPath(const QString & path)
 }
 #endif
 
-QByteArray FileSystem::calcMd5( const QString& filename )
-{
-    QByteArray arr;
+#define BUFSIZE 1024*1024*10
 
-    QCryptographicHash crypto( QCryptographicHash::Md5 );
+static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
+{
+    const qint64 bufSize = BUFSIZE;
+    QByteArray buf(bufSize,0);
+    QByteArray arr;
+    QCryptographicHash crypto( algo );
 
     QFile file(filename);
     if (file.open(QIODevice::ReadOnly)) {
-        QByteArray data;
+        qint64 size;
         while (!file.atEnd()) {
-            data = file.read(1024*1024*10);
-            crypto.addData(data);
+            size = file.read( buf.data(), bufSize );
+            if( size > 0 ) {
+                crypto.addData(buf.data(), size);
+            }
         }
         arr = crypto.result().toHex();
     }
     return arr;
 }
 
+QByteArray FileSystem::calcMd5( const QString& filename )
+{
+    return readToCrypto( filename, QCryptographicHash::Md5 );
+}
+
 QByteArray FileSystem::calcSha1( const QString& filename )
 {
-    QByteArray arr;
-
-    QCryptographicHash crypto( QCryptographicHash::Sha1 );
-
-    QFile file(filename);
-    if (file.open(QIODevice::ReadOnly)) {
-        QByteArray data;
-        while (!file.atEnd()) {
-            data = file.read(1024*1024*10);
-            crypto.addData(data);
-        }
-        arr = crypto.result().toHex();
-    }
-    return arr;
+    return readToCrypto( filename, QCryptographicHash::Sha1 );
 }
 
 #ifdef ZLIB_FOUND
 QByteArray FileSystem::calcAdler32( const QString& filename )
 {
     unsigned int adler = adler32(0L, Z_NULL, 0);
+    const qint64 bufSize = BUFSIZE;
+    QByteArray buf(bufSize, 0);
 
     QFile file(filename);
     if (file.open(QIODevice::ReadOnly)) {
-        QByteArray data;
+        qint64 size;
         while (!file.atEnd()) {
-            data = file.read(1024*1024*10);
-            adler = adler32(adler, (const Bytef*) data.data(), data.size());
+            size = file.read(buf.data(), bufSize);
+            if( size > 0 )
+                adler = adler32(adler, (const Bytef*) buf.data(), size);
         }
     }
 
-    return QString::number( adler, 16 ).toUtf8();
+    return QByteArray::number( adler, 16 );
 }
 #endif
 

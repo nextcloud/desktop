@@ -13,8 +13,11 @@
 
 #pragma once
 
+#include "config.h"
+
 #include <QString>
 #include <ctime>
+#include <QCryptographicHash>
 
 #include <owncloudlib.h>
 
@@ -123,12 +126,8 @@ QString fileSystemForPath(const QString & path);
 
 QByteArray calcMd5( const QString& fileName );
 QByteArray calcSha1( const QString& fileName );
-QByteArray calcAdler32( const QString& fileName );
-
 #ifdef ZLIB_FOUND
-QByteArray calcAdler32Worker( const QString& filename );
+QByteArray calcAdler32( const QString& fileName );
 #endif
-QByteArray calcSha1Worker( const QString& filename );
-QByteArray calcMd5Worker( const QString& filename );
 
 }}

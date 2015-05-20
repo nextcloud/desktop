@@ -72,24 +72,24 @@ using namespace OCC;
 
     void testUploadChecksummingAdler() {
 
-        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile);
+        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType("Adler32");
 
         connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
 
-        _expected = "Adler32:"+FileSystem::calcAdler32( _testfile );
+        QString testfile = _testfile;
+        _expected = "Adler32:"+FileSystem::calcAdler32( testfile );
         qDebug() << "XX Expected Checksum: " << _expected;
         vali->uploadValidation(_item);
 
         usleep(5000);
 
         _loop.processEvents();
-        vali->deleteLater();
     }
 
     void testUploadChecksummingMd5() {
 
-        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile);
+        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType( OCC::checkSumMD5C );
         connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
 
@@ -100,12 +100,11 @@ using namespace OCC;
         usleep(2000);
 
         _loop.processEvents();
-        vali->deleteLater();
     }
 
     void testUploadChecksummingSha1() {
 
-        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile);
+        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType( OCC::checkSumSHA1C );
         connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
 
@@ -117,7 +116,6 @@ using namespace OCC;
         usleep(2000);
 
         _loop.processEvents();
-        vali->deleteLater();
     }
 
     void testDownloadChecksummingAdler() {
@@ -127,7 +125,7 @@ using namespace OCC;
         adler.append(FileSystem::calcAdler32( _testfile ));
         _successDown = false;
 
-        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile);
+        TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         connect(vali, SIGNAL(validated()), this, SLOT(slotDownValidated()));
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
         vali->downloadValidation(adler);
@@ -151,7 +149,6 @@ using namespace OCC;
         _loop.processEvents();
         QVERIFY(_errorSeen);
 
-        vali->deleteLater();
     }
 
 
