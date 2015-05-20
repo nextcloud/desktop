@@ -112,7 +112,7 @@ endif( Qt5Core_FOUND )
 if(NOT Qt5Core_FOUND)
     message(STATUS "Could not find Qt5, searching for Qt4 instead...")
 
-    set(NEEDED_QT4_COMPONENTS "QtCore" "QtXml" "QtNetwork" "QtGui" "QtWebkit" "QtConcurrent")
+    set(NEEDED_QT4_COMPONENTS "QtCore" "QtXml" "QtNetwork" "QtGui" "QtWebkit")
     if( BUILD_TESTS )
         list(APPEND NEEDED_QT4_COMPONENTS "QtTest")
     endif()
