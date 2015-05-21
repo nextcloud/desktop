@@ -145,7 +145,7 @@ void TransmissionChecksumValidator::slotDownloadChecksumCalculated()
     if( hash != _expectedHash ) {
         emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed."));
     } else {
-        qDebug() << "Checksum checked and matching: " << _expectedHash;
+        // qDebug() << "Checksum checked and matching: " << _expectedHash;
         emit validated();
     }
 }
