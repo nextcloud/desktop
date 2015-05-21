@@ -64,8 +64,6 @@ public:
 
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
-    void setSelectiveSyncBlackList(const QStringList &list);
-
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
@@ -199,8 +197,6 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
-
-    QStringList _selectiveSyncBlackList;
 
     bool _anotherSyncNeeded;
 };

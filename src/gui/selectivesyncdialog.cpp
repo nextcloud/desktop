@@ -358,7 +358,8 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWi
     :   QDialog(parent, f), _folder(folder)
 {
     init(account, tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
-    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(), _folder->selectiveSyncBlackList());
+    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(),
+                             _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList));
 
     // Make sure we don't get crashes if the folder is destroyed while we are still open
     connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
@@ -396,14 +397,10 @@ void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelTe
 void SelectiveSyncDialog::accept()
 {
     if (_folder) {
-        auto oldBlackListSet = _folder->selectiveSyncBlackList().toSet();
+        auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList).toSet();
         QStringList blackList = _treeView->createBlackList();
-        _folder->setSelectiveSyncBlackList(blackList);
+        _folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-        // FIXME: Use ConfigFile
-        QSettings settings(_folder->configFile(), QSettings::IniFormat);
-        settings.beginGroup(FolderMan::escapeAlias(_folder->alias()));
-        settings.setValue("blackList", blackList);
         FolderMan *folderMan = FolderMan::instance();
         if (_folder->isBusy()) {
             _folder->slotTerminateSync();

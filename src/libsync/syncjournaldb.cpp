@@ -1259,7 +1259,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
     }
 }
 
-QStringList SyncJournalDb::selectiveSyncList(SyncJournalDb::SelectiveSyncListType type)
+QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type)
 {
     QStringList result;
 

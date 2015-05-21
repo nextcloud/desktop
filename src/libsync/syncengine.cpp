@@ -606,7 +606,8 @@ void SyncEngine::startSync()
     // thereby speeding up the initial discovery significantly.
     _csync_ctx->db_is_empty = (fileRecordCount == 0);
 
-    bool usingSelectiveSync = (!_selectiveSyncBlackList.isEmpty());
+    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
+    bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
     if (fileRecordCount >= 0 && fileRecordCount < 50 && !usingSelectiveSync) {
         qDebug() << "===== Activating recursive PROPFIND (currently" << fileRecordCount << "file records)";
@@ -636,7 +637,7 @@ void SyncEngine::startSync()
 
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
-    discoveryJob->_selectiveSyncBlackList = _selectiveSyncBlackList;
+    discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),
@@ -905,6 +906,9 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
  */
 void SyncEngine::checkForPermission()
 {
+    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
+    std::sort(selectiveSyncBlackList.begin(), selectiveSyncBlackList.end());
+
     for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
         if ((*it)->_direction != SyncFileItem::Up) {
             // Currently we only check server-side permissions
@@ -913,7 +917,7 @@ void SyncEngine::checkForPermission()
 
         // Do not propagate anything in the server if it is in the selective sync blacklist
         const QString path = (*it)->destination() + QLatin1Char('/');
-        if (std::binary_search(_selectiveSyncBlackList.constBegin(), _selectiveSyncBlackList.constEnd(),
+        if (std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(),
                                 path)) {
             (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             (*it)->_status = SyncFileItem::FileIgnored;
@@ -1132,11 +1136,6 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
         }
     }
     return _remotePerms.value(file);
-}
-
-void SyncEngine::setSelectiveSyncBlackList(const QStringList& list)
-{
-    _selectiveSyncBlackList = list;
 }
 
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)

@@ -597,7 +597,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // Error if it is in the selective sync blacklistr
-    foreach(const auto &s, folder->selectiveSyncBlackList()) {
+    foreach(const auto &s, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
         if (fileNameSlash.startsWith(s)) {
             return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
         }

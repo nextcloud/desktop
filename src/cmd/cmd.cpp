@@ -251,38 +251,14 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
         return;
     }
 
-    SqlQuery select("SELECT path FROM last_selective_sync", db);
-    QSet<QString> oldBlackListSet;
-    if (select.exec()) {
-        while(select.next()) {
-            oldBlackListSet.insert(select.stringValue(0));
-        }
-    }
-
-
+    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList).toSet();
     auto blackListSet = newList.toSet();
     auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
     foreach(const auto &it, changes) {
         journal->avoidReadFromDbOnNextSync(it);
     }
 
-    SqlQuery drop("DROP TABLE last_selective_sync", db);
-    drop.exec();
-
-    if (!newList.isEmpty()) {
-        SqlQuery createQuery(db);
-        createQuery.prepare("CREATE TABLE IF NOT EXISTS last_selective_sync(path VARCHAR(4096));");
-        createQuery.exec();
-
-        SqlQuery insertQuery(db);
-        insertQuery.prepare("INSERT INTO last_selective_sync VALUES (?1);");
-
-        foreach(const auto &s, newList) {
-            insertQuery.reset();
-            insertQuery.bindValue(1, s);
-            insertQuery.exec();
-        }
-    }
+    journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
 }
 
 
@@ -467,13 +443,12 @@ restart_sync:
 
     Cmd cmd;
     SyncJournalDb db(options.source_dir);
-    selectiveSyncFixup(&db, selectiveSyncList);
+    if (!selectiveSyncList.empty())
+        selectiveSyncFixup(&db, selectiveSyncList);
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
-
-    engine.setSelectiveSyncBlackList(selectiveSyncList);
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.
     QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);

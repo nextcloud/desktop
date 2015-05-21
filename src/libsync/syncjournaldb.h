@@ -97,7 +97,7 @@ public:
         SelectiveSyncUndecidedList = 3
     };
     /* return the specified list from the database */
-    QStringList selectiveSyncList(SelectiveSyncListType type);
+    QStringList getSelectiveSyncList(SelectiveSyncListType type);
     /* Write the selective sync list (remove all other entries of that list */
     void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
 
