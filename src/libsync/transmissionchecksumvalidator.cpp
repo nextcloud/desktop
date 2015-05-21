@@ -34,13 +34,7 @@ void TransmissionChecksumValidator::setChecksumType( const QByteArray& type )
     _checksumType = type;
 }
 
-QString TransmissionChecksumValidator::checksumType()
-{
-    return _checksumType;
-}
-
-
-void TransmissionChecksumValidator::uploadValidation( SyncFileItem *item )
+QString TransmissionChecksumValidator::checksumType() const
 {
     QString checksumType = _checksumType;
     if( checksumType.isEmpty() ) {
@@ -48,26 +42,34 @@ void TransmissionChecksumValidator::uploadValidation( SyncFileItem *item )
         checksumType = cfg.transmissionChecksum();
     }
 
-    if( checksumType.isEmpty() || !item ) {
+    return checksumType;
+}
+
+void TransmissionChecksumValidator::uploadValidation( SyncFileItem *item )
+{
+    const QString csType = checksumType();
+
+    if( csType.isEmpty() || !item ) {
         // if there is no checksum defined, continue to upload
         emit validated();
     } else {
         _item = item;
         // Calculate the checksum in a different thread first.
+
         connect( &_watcher, SIGNAL(finished()),
                  this, SLOT(slotUploadChecksumCalculated()));
-        if( checksumType == checkSumMD5C ) {
+        if( csType == checkSumMD5C ) {
             item->_checksum = checkSumMD5C;
             item->_checksum += ":";
             _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5, _filePath));
 
-        } else if( checksumType == checkSumSHA1C ) {
+        } else if( csType == checkSumSHA1C ) {
             item->_checksum = checkSumSHA1C;
             item->_checksum += ":";
             _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1, _filePath));
         }
 #ifdef ZLIB_FOUND
-        else if( checksumType == checkSumAdlerC) {
+        else if( csType == checkSumAdlerC) {
             item->_checksum = checkSumAdlerC;
             item->_checksum += ":";
             _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32, _filePath));
