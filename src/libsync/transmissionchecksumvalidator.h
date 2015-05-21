@@ -27,11 +27,31 @@ class TransmissionChecksumValidator : public QObject
 public:
     explicit TransmissionChecksumValidator(const QString& filePath, QObject *parent = 0);
 
+    /**
+     * method to prepare a checksum for transmission and save it to the _checksum
+     * member of the SyncFileItem *item.
+     * The kind of requested checksum is taken from config. No need to set from outside.
+     *
+     * In any case of processing (checksum set, no checksum required and also unusual error)
+     * the object will emit the signal validated(). The item->_checksum is than either
+     * set to a proper value or empty.
+     */
     void uploadValidation( SyncFileItem *item );
+
+    /**
+     * method to verify the checksum coming with requests in a checksum header. The required
+     * checksum method is read from config.
+     *
+     * If no checksum is there, or if a correct checksum is there, the signal validated()
+     * will be emitted. In case of any kind of error, the signal validationFailed() will
+     * be emitted.
+     */
     void downloadValidation( const QByteArray& checksumHeader );
 
+    // This is only used in test cases (by now). This class reads the required
+    // test case from the config file.
     void setChecksumType(const QByteArray &type );
-    QString checksumType();
+    QString checksumType() const;
 
 signals:
     void validated();
