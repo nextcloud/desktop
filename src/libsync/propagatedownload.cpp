@@ -507,27 +507,8 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
     return conflictFileName;
 }
 
-static QStringList parseRecallFile(const QString &fn)
-{
-    qDebug() << "parsingRecallFile: " << fn;
 
-    QStringList result;
-
-    QFile file(fn);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << file.errorString();
-        return result;
-    }
-
-    while (!file.atEnd()) {
-        QByteArray line = file.readLine();
-        line.chop(1); // remove trailing \n
-        qDebug() << "recall item: " << line;
-        result.append(line);
-    }
-    return result;
-}
-
+namespace { // Anonymous namespace for the recall feature
 static QString makeRecallFileName(const QString &fn)
 {
     QString recallFileName(fn);
@@ -543,6 +524,34 @@ static QString makeRecallFileName(const QString &fn)
 
     return recallFileName;
 }
+
+static void handleRecallFile(const QString &fn)
+{
+    qDebug() << "handleRecallFile: " << fn;
+
+    FileSystem::setFileHidden(fn, true);
+
+    QFile file(fn);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Could not open recall file" << file.errorString();
+        return;
+    }
+    QFileInfo existingFile(fn);
+    QDir thisDir = existingFile.dir();
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        line.chop(1); // remove trailing \n
+        QString fpath = thisDir.filePath(line);
+        QString rpath = makeRecallFileName(fpath);
+
+        // if previously recalled file exists then remove it (copy will not overwrite it)
+        QFile(rpath).remove();
+        qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
+        QFile::copy(fpath,rpath);
+    }
+}
+} // end namespace
 
 void PropagateDownloadFileQNAM::downloadFinished()
 {
@@ -631,22 +640,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
 
     // handle the special recall file
     if(_item._file == QLatin1String(".sys.admin#recall#") || _item._file.endsWith("/.sys.admin#recall#")) {
-        FileSystem::setFileHidden(fn, true);
-
-        QFileInfo existingFile(fn);
-        QDir thisDir = existingFile.dir();
-
-        QStringList recall_files = parseRecallFile(existingFile.filePath());
-
-        for (int i = 0; i < recall_files.size(); ++i) {
-            QString fpath = thisDir.filePath(recall_files.at(i));
-            QString rpath = makeRecallFileName(fpath);
-
-            // if previously recalled file exists then remove it (copy will not overwrite it)
-            QFile(rpath).remove();
-            qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-            QFile::copy(fpath,rpath);
-        }
+        handleRecallFile(fn);
     }
 }
 
