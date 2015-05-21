@@ -99,9 +99,10 @@ class DiscoveryMainThread : public QObject {
 
     QPointer<DiscoveryJob> _discoveryJob;
     QPointer<DiscoverySingleDirectoryJob> _singleDirJob;
-    QString _pathPrefix;
+    QString _pathPrefix; // remote path
     AccountPtr _account;
     DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
+    qint64 *_currentGetSizeResult;
 
 public:
     DiscoveryMainThread(AccountPtr account) : QObject(), _account(account), _currentDiscoveryDirectoryResult(0) {
@@ -113,11 +114,15 @@ public:
 public slots:
     // From DiscoveryJob:
     void doOpendirSlot(QString url, DiscoveryDirectoryResult* );
+    void doGetSizeSlot(const QString &path ,qint64 *result);
 
     // From Job:
     void singleDirectoryJobResultSlot(const QList<FileStatPointer> &);
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(QString);
+
+    void slotGetSizeFinishedWithError();
+    void slotGetSizeResult(const QVariantMap&);
 signals:
     void etagConcatenation(QString);
 public:
@@ -137,11 +142,13 @@ class DiscoveryJob : public QObject {
     QElapsedTimer       _lastUpdateProgressCallbackCall;
 
     /**
-     * return true if the given path should be synced,
-     * false if the path should be ignored
+     * return true if the given path should be ignored,
+     * false if the path should be synced
      */
     bool isInSelectiveSyncBlackList(const QString &path) const;
-    static int isInSelectiveSyncBlackListCallBack(void *, const char *);
+    static int isInSelectiveSyncBlackListCallback(void *, const char *);
+    bool checkSelectiveSyncNewShare(const QString &path);
+    static int checkSelectiveSyncNewShareCallback(void*, const char*);
 
     // Just for progress
     static void update_job_update_callback (bool local,
@@ -170,6 +177,7 @@ public:
     }
 
     QStringList _selectiveSyncBlackList;
+    QStringList _selectiveSyncWhiteList;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);
@@ -177,6 +185,10 @@ signals:
 
     // After the discovery job has been woken up again (_vioWaitCondition)
     void doOpendirSignal(QString url, DiscoveryDirectoryResult*);
+    void doGetSizeSignal(const QString &path, qint64 *result);
+
+    // A new shared folder was discovered and was not synced because of the confirmation feature
+    void newSharedFolder(const QString &folder);
 };
 
 }

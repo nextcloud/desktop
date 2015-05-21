@@ -638,10 +638,16 @@ void SyncEngine::startSync()
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
+    discoveryJob->_selectiveSyncWhiteList =
+        _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),
             this, SIGNAL(folderDiscovered(bool,QString)));
+
+    connect(discoveryJob, SIGNAL(newSharedFolder(QString)),
+            this, SIGNAL(newSharedFolder(QString)));
+
 
     // This is used for the DiscoveryJob to be able to request the main thread/
     // to read in directory contents.

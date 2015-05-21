@@ -22,6 +22,29 @@
 
 namespace OCC {
 
+
+/* Given a sorted list of paths ending with '/', return weather or not the given path is within one of the paths of the list*/
+static bool findPathInList(const QStringList &list, const QString &path)
+{
+    Q_ASSERT(std::is_sorted(list.begin(), list.end()));
+    QString pathSlash = path + QLatin1Char('/');
+
+    // Since the list is sorted, we can do a binary search.
+    // If the path is a prefix of another item or right after in the lexical order.
+    auto it = std::lower_bound(list.begin(), list.end(), pathSlash);
+
+    if (it != list.end() && *it == pathSlash) {
+        return true;
+    }
+
+    if (it == list.begin()) {
+        return false;
+    }
+    --it;
+    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
+    return pathSlash.startsWith(*it);
+}
+
 bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
@@ -29,35 +52,53 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
         return false;
     }
 
-    // If one of the item in the black list is a prefix of the path, it means this path need not to
-    // be synced.
-    //
-    // We know the list is sorted (for it is done in DiscoveryJob::start)
-    // So we can do a binary search. If the path is a prefix if another item or right after in the lexical order.
+    // Block if it is in the black list
+    return findPathInList(_selectiveSyncBlackList, path);
 
-    QString pathSlash = path + QLatin1Char('/');
-
-    auto it = std::lower_bound(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end(), pathSlash);
-
-    if (it != _selectiveSyncBlackList.end() && *it == pathSlash) {
-        return true;
-    }
-
-	if (it == _selectiveSyncBlackList.begin()) {
-        return false;
-    }
-    --it;
-    Q_ASSERT(it->endsWith(QLatin1Char('/'))); // Folder::setSelectiveSyncBlackList makes sure of that
-    if (pathSlash.startsWith(*it)) {
-        return true;
-    }
-    return false;
 }
 
-int DiscoveryJob::isInSelectiveSyncBlackListCallBack(void *data, const char *path)
+int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *path)
 {
     return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(QString::fromUtf8(path));
 }
+
+bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
+{
+    // If this path or the parent is in the white list, then we do not block this file
+    if (findPathInList(_selectiveSyncWhiteList, path)) {
+        return false;
+    }
+
+    // Go in the main thread to do a PROPFIND to know the size of this directory
+    qint64 result = -1;
+
+    {
+        QMutexLocker locker(&_vioMutex);
+        emit doGetSizeSignal(path, &result);
+        _vioWaitCondition.wait(&_vioMutex);
+    }
+
+    auto limit = 100*1000*1000L; // 100 MB; (FIXME, make it cnfigurable)
+    if (true || result > limit) {
+        // we tell the UI there is a new folder
+        emit newSharedFolder(path);
+        return true;
+    } else {
+        // it is not too big, but it in the white list and do not block
+        auto p = path;
+        if (!p.endsWith(QLatin1Char('/'))) { p += QLatin1Char('/'); }
+        _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
+                                                        _selectiveSyncWhiteList.end(), p), p);
+
+        return false;
+    }
+}
+
+int DiscoveryJob::checkSelectiveSyncNewShareCallback(void *data, const char *path)
+{
+    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewShare(QString::fromUtf8(path));
+}
+
 
 void DiscoveryJob::update_job_update_callback (bool local,
                                     const char *dirUrl,
@@ -318,6 +359,9 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     connect(discoveryJob, SIGNAL(doOpendirSignal(QString,DiscoveryDirectoryResult*)),
             this, SLOT(doOpendirSlot(QString,DiscoveryDirectoryResult*)),
             Qt::QueuedConnection);
+    connect(discoveryJob, SIGNAL(doGetSizeSignal(QString,qint64*)),
+            this, SLOT(doGetSizeSlot(QString,qint64*)),
+            Qt::QueuedConnection);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -397,6 +441,60 @@ void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(QStrin
     }
 }
 
+void DiscoveryMainThread::doGetSizeSlot(const QString& path, qint64* result)
+{
+    QString fullPath = _pathPrefix;
+    if (!_pathPrefix.endsWith('/')) {
+        fullPath += '/';
+    }
+    fullPath += path;
+    // remove trailing slash
+    while (fullPath.endsWith('/')) {
+        fullPath.chop(1);
+    }
+
+    _currentGetSizeResult = result;
+
+    // Schedule the DiscoverySingleDirectoryJob
+    auto propfindJob = new PropfindJob(_account, fullPath, this);
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    QObject::connect(propfindJob, SIGNAL(finishedWithError()),
+                     this, SLOT(slotGetSizeFinishedWithError()));
+    QObject::connect(propfindJob, SIGNAL(result(QVariantMap)),
+                     this, SLOT(slotGetSizeResult(QVariantMap)));
+    propfindJob->start();
+}
+
+void DiscoveryMainThread::slotGetSizeFinishedWithError()
+{
+    if (! _currentGetSizeResult) {
+        return; // possibly aborted
+    }
+
+    qWarning() << "Error getting the size of the directory";
+    // just let let the discovery job continue then
+    _currentGetSizeResult = 0;
+    QMutexLocker locker(&_discoveryJob->_vioMutex);
+    _discoveryJob->_vioWaitCondition.wakeAll();
+
+}
+
+void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
+{
+    if (! _currentGetSizeResult) {
+        return; // possibly aborted
+    }
+
+    *_currentGetSizeResult = map.value(QLatin1String("quota-used-bytes")).toLongLong();
+    qDebug() << "Size of folder:" << *_currentGetSizeResult;
+    _currentGetSizeResult = 0;
+    QMutexLocker locker(&_discoveryJob->_vioMutex);
+    _discoveryJob->_vioWaitCondition.wakeAll();
+}
+
+
+
+
 // called from SyncEngine
 void DiscoveryMainThread::abort() {
     if (_singleDirJob) {
@@ -414,8 +512,11 @@ void DiscoveryMainThread::abort() {
             _discoveryJob->_vioMutex.unlock();
         }
     }
-
-
+    if (_currentGetSizeResult) {
+        _currentGetSizeResult = 0;
+        QMutexLocker locker(&_discoveryJob->_vioMutex);
+        _discoveryJob->_vioWaitCondition.wakeAll();
+    }
 }
 
 csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
@@ -479,11 +580,10 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
-    _csync_ctx->checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallBack;
-    _csync_ctx->checkSelectiveSyncBlackListData = this;
-
-    _csync_ctx->callbacks.update_callback = update_job_update_callback;
     _csync_ctx->callbacks.update_callback_userdata = this;
+    _csync_ctx->callbacks.update_callback = update_job_update_callback;
+    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallback;
+    _csync_ctx->callbacks.checkSelectiveSyncNewShareHook = checkSelectiveSyncNewShareCallback;
 
     _csync_ctx->callbacks.remote_opendir_hook = remote_vio_opendir_hook;
     _csync_ctx->callbacks.remote_readdir_hook = remote_vio_readdir_hook;
@@ -496,9 +596,8 @@ void DiscoveryJob::start() {
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
-    _csync_ctx->checkSelectiveSyncBlackListHook = 0;
-    _csync_ctx->checkSelectiveSyncBlackListData = 0;
-
+    _csync_ctx->callbacks.checkSelectiveSyncNewShareHook = 0;
+    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = 0;
     _csync_ctx->callbacks.update_callback = 0;
     _csync_ctx->callbacks.update_callback_userdata = 0;
 

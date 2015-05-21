@@ -90,6 +90,11 @@ struct csync_s {
       csync_update_callback update_callback;
       void *update_callback_userdata;
 
+      /* hooks for checking the white list (uses the update_callback_userdata) */
+      int (*checkSelectiveSyncBlackListHook)(void*, const char*);
+      int (*checkSelectiveSyncNewShareHook)(void*, const char*);
+
+
       csync_vio_opendir_hook remote_opendir_hook;
       csync_vio_readdir_hook remote_readdir_hook;
       csync_vio_closedir_hook remote_closedir_hook;
@@ -165,9 +170,6 @@ struct csync_s {
 
   struct csync_owncloud_ctx_s *owncloud_context;
 
-  /* hooks for checking the white list */
-  void *checkSelectiveSyncBlackListData;
-  int (*checkSelectiveSyncBlackListHook)(void*, const char*);
 };
 
 

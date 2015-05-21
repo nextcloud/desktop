@@ -188,8 +188,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   }
 
-  if (ctx->current == REMOTE_REPLICA && ctx->checkSelectiveSyncBlackListHook) {
-      if (ctx->checkSelectiveSyncBlackListHook(ctx->checkSelectiveSyncBlackListData, path)) {
+  if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
+      if (ctx->callbacks.checkSelectiveSyncBlackListHook(ctx->callbacks.update_callback_userdata, path)) {
           return 1;
       }
   }
@@ -398,6 +398,15 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             } else {
                 /* file not found in statedb */
                 st->instruction = CSYNC_INSTRUCTION_NEW;
+
+                if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewShareHook) {
+                    if (strchr(fs->remotePerm, 'S') != NULL) { /* check that the directory is shared */
+                        if (ctx->callbacks.checkSelectiveSyncNewShareHook(ctx->callbacks.update_callback_userdata, path)) {
+                            SAFE_FREE(st);
+                            return 1;
+                        }
+                    }
+                }
                 goto out;
             }
         }
