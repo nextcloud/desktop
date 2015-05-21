@@ -183,7 +183,7 @@ private slots:
     void startNextChunk();
     void finalize(const SyncFileItem&);
     void slotJobDestroyed(QObject *job);
-    void slotStartUpload();
+    void slotStartUpload(const QByteArray &checksum);
 
 private:
     void startPollJob(const QString& path);

@@ -45,39 +45,38 @@ QString TransmissionChecksumValidator::checksumType() const
     return checksumType;
 }
 
-void TransmissionChecksumValidator::uploadValidation( SyncFileItem *item )
+void TransmissionChecksumValidator::uploadValidation()
 {
     const QString csType = checksumType();
 
-    if( csType.isEmpty() || !item ) {
+    if( csType.isEmpty() ) {
         // if there is no checksum defined, continue to upload
-        emit validated();
+        emit validated(QByteArray());
     } else {
-        _item = item;
         // Calculate the checksum in a different thread first.
 
         connect( &_watcher, SIGNAL(finished()),
                  this, SLOT(slotUploadChecksumCalculated()));
         if( csType == checkSumMD5C ) {
-            item->_checksum = checkSumMD5C;
-            item->_checksum += ":";
+            _checksumHeader = checkSumMD5C;
+            _checksumHeader += ":";
             _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5, _filePath));
 
         } else if( csType == checkSumSHA1C ) {
-            item->_checksum = checkSumSHA1C;
-            item->_checksum += ":";
+            _checksumHeader = checkSumSHA1C;
+            _checksumHeader += ":";
             _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1, _filePath));
         }
 #ifdef ZLIB_FOUND
         else if( csType == checkSumAdlerC) {
-            item->_checksum = checkSumAdlerC;
-            item->_checksum += ":";
+            _checksumHeader = checkSumAdlerC;
+            _checksumHeader += ":";
             _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32, _filePath));
         }
 #endif
         else {
             // for an unknown checksum, continue to upload
-            emit validated();
+            emit validated(QByteArray());
         }
     }
 }
@@ -87,12 +86,10 @@ void TransmissionChecksumValidator::slotUploadChecksumCalculated( )
     QByteArray checksum = _watcher.future().result();
 
     if( !checksum.isEmpty() ) {
-        _item->_checksum.append(checksum);
-    } else {
-        _item->_checksum.clear();
+        checksum.prepend( _checksumHeader );
     }
 
-    emit validated();
+    emit validated(checksum);
 }
 
 
@@ -104,7 +101,7 @@ void TransmissionChecksumValidator::downloadValidation( const QByteArray& checks
 
     // for empty checksum type, everything is valid.
     if( csType.isEmpty() ) {
-        emit validated();
+        emit validated(QByteArray());
         return;
     }
 
@@ -146,7 +143,7 @@ void TransmissionChecksumValidator::slotDownloadChecksumCalculated()
         emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed."));
     } else {
         // qDebug() << "Checksum checked and matching: " << _expectedHash;
-        emit validated();
+        emit validated(hash);
     }
 }
 

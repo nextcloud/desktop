@@ -211,13 +211,15 @@ void PropagateUploadFileQNAM::start()
     // in any case, the validator will emit signal startUpload to let the flow
     // continue in slotStartUpload here.
     TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
-    connect(validator, SIGNAL(validated()), this, SLOT(slotStartUpload()));
-    validator->uploadValidation( &_item );
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(slotStartUpload(QByteArray)));
+    validator->uploadValidation();
 }
 
-void PropagateUploadFileQNAM::slotStartUpload()
+void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
 {
     const QString fullFilePath(_propagator->getFilePath(_item._file));
+
+    _item._checksum = checksum;
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));

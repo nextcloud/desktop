@@ -490,7 +490,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // will also emit the validated() signal to continue the flow in slot downloadFinished()
     // as this is (still) also correct.
     TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
-    connect(validator, SIGNAL(validated()), this, SLOT(downloadFinished()));
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished()));
     connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
     validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
 

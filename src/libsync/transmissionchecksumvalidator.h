@@ -19,7 +19,6 @@
 #include <QFutureWatcher>
 
 namespace OCC {
-class SyncFileItem;
 
 class TransmissionChecksumValidator : public QObject
 {
@@ -36,7 +35,7 @@ public:
      * the object will emit the signal validated(). The item->_checksum is than either
      * set to a proper value or empty.
      */
-    void uploadValidation( SyncFileItem *item );
+    void uploadValidation();
 
     /**
      * method to verify the checksum coming with requests in a checksum header. The required
@@ -54,7 +53,7 @@ public:
     QString checksumType() const;
 
 signals:
-    void validated();
+    void validated(const QByteArray& checksum);
     void validationFailed( const QString& errMsg );
 
 private slots:
@@ -64,8 +63,9 @@ private slots:
 private:
     QByteArray    _checksumType;
     QByteArray    _expectedHash;
+    QByteArray    _checksumHeader;
+
     QString       _filePath;
-    SyncFileItem *_item;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;

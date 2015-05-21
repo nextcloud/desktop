@@ -13,7 +13,6 @@
 
 #include "transmissionchecksumvalidator.h"
 #include "networkjobs.h"
-#include "syncfileitem.h"
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
@@ -28,7 +27,6 @@ using namespace OCC;
         QString _root;
         QString _testfile;
         QString _expectedError;
-        SyncFileItem *_item;
         QEventLoop     _loop;
         QByteArray     _expected;
         bool           _successDown;
@@ -42,9 +40,9 @@ using namespace OCC;
 
     public slots:
 
-    void slotUpValidated() {
-         qDebug() << "Checksum: " << _item->_checksum;
-         QVERIFY(_expected == _item->_checksum );
+    void slotUpValidated(const QByteArray& checksum) {
+         qDebug() << "Checksum: " << checksum;
+         QVERIFY(_expected == checksum );
     }
 
     void slotDownValidated() {
@@ -67,7 +65,6 @@ using namespace OCC;
         _testfile = _root+"/csFile";
         Utility::writeRandomFile( _testfile);
 
-        _item = new SyncFileItem;
     }
 
     void testUploadChecksummingAdler() {
@@ -75,47 +72,50 @@ using namespace OCC;
         TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType("Adler32");
 
-        connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
+        connect(vali, SIGNAL(validated(QByteArray)), this, SLOT(slotUpValidated(QByteArray)));
 
         QString testfile = _testfile;
         _expected = "Adler32:"+FileSystem::calcAdler32( testfile );
         qDebug() << "XX Expected Checksum: " << _expected;
-        vali->uploadValidation(_item);
+        vali->uploadValidation();
 
         usleep(5000);
 
         _loop.processEvents();
+        delete vali;
     }
 
     void testUploadChecksummingMd5() {
 
         TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType( OCC::checkSumMD5C );
-        connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
+        connect(vali, SIGNAL(validated(QByteArray)), this, SLOT(slotUpValidated(QByteArray)));
 
         _expected = checkSumMD5C;
         _expected.append(":"+FileSystem::calcMd5( _testfile ));
-        vali->uploadValidation(_item);
+        vali->uploadValidation();
 
         usleep(2000);
 
         _loop.processEvents();
+        delete vali;
     }
 
     void testUploadChecksummingSha1() {
 
         TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
         vali->setChecksumType( OCC::checkSumSHA1C );
-        connect(vali, SIGNAL(validated()), this, SLOT(slotUpValidated()));
+        connect(vali, SIGNAL(validated(QByteArray)), this, SLOT(slotUpValidated(QByteArray)));
 
         _expected = checkSumSHA1C;
         _expected.append(":"+FileSystem::calcSha1( _testfile ));
 
-        vali->uploadValidation(_item);
+        vali->uploadValidation();
 
         usleep(2000);
 
         _loop.processEvents();
+        delete vali;
     }
 
     void testDownloadChecksummingAdler() {
@@ -126,7 +126,8 @@ using namespace OCC;
         _successDown = false;
 
         TransmissionChecksumValidator *vali = new TransmissionChecksumValidator(_testfile, this);
-        connect(vali, SIGNAL(validated()), this, SLOT(slotDownValidated()));
+        vali->setChecksumType("Adler32");
+        connect(vali, SIGNAL(validated(QByteArray)), this, SLOT(slotDownValidated()));
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
         vali->downloadValidation(adler);
 
@@ -149,10 +150,10 @@ using namespace OCC;
         _loop.processEvents();
         QVERIFY(_errorSeen);
 
+        delete vali;
     }
 
 
     void cleanupTestCase() {
-        delete _item;
     }
 };
