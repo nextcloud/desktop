@@ -18,7 +18,7 @@
 #include "propagatorjobs.h"
 #include "configfile.h"
 
-#include <QtConcurrent>
+#include <qtconcurrentrun.h>
 
 namespace OCC {
 
