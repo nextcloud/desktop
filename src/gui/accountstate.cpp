@@ -269,6 +269,12 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
         return;
     }
 
+    // When new credentials become available we always want to restart the
+    // connection validation, even if it's currently running.
+    if (_connectionValidator) {
+        delete _connectionValidator;
+    }
+
     checkConnectivity();
 }
 
