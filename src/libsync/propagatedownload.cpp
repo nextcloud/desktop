@@ -34,7 +34,7 @@ namespace OCC {
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
 // This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
-QString createDownloadTmpFileName(const QString &previous) {
+QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous) {
     QString tmpFileName;
     QString tmpPath;
     int slashPos = previous.lastIndexOf('/');
