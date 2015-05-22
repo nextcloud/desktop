@@ -101,19 +101,21 @@ private slots:
 
 class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT
-    QPointer<GETFileJob> _job;
-
-//  QFile *_file;
-    QFile _tmpFile;
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItem& item)
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
+
 private slots:
     void slotGetFinished();
     void abort() Q_DECL_OVERRIDE;
     void downloadFinished();
     void slotDownloadProgress(qint64,qint64);
+    void slotChecksumFail( const QString& errMsg );
+
+private:
+    QPointer<GETFileJob> _job;
+    QFile _tmpFile;
 };
 
 }

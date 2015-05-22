@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
 #include "networkjobs.h"
@@ -21,6 +22,8 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "transmissionchecksumvalidator.h"
+
 #include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -190,22 +193,51 @@ bool PollJob::finished()
     return true;
 }
 
-
 void PropagateUploadFileQNAM::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
+    const QString filePath = _propagator->getFilePath(_item._file);
+
+    // remember the modtime before checksumming to be able to detect a file
+    // change during the checksum calculation
+    _item._modtime = FileSystem::getModTime(filePath);
+
+    _stopWatch.start();
+
+    // do whatever is needed to add a checksum to the http upload request.
+    // in any case, the validator will emit signal startUpload to let the flow
+    // continue in slotStartUpload here.
+    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(slotStartUpload(QByteArray)));
+    validator->uploadValidation();
+}
+
+void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
+{
     const QString fullFilePath(_propagator->getFilePath(_item._file));
+
+    _item._checksum = checksum;
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
+    _stopWatch.addLapTime(QLatin1String("Checksum"));
 
-    // Update the mtime and size, it might have changed since discovery.
+    time_t prevModtime = _item._modtime; // the _item value was set in PropagateUploadFileQNAM::start()
+    // but a potential checksum calculation could have taken some time during which the file could
+    // have been changed again, so better check again here.
+
     _item._modtime = FileSystem::getModTime(fullFilePath);
+    if( prevModtime != _item._modtime ) {
+        _propagator->_anotherSyncNeeded = true;
+        done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
+        return;
+    }
+
     quint64 fileSize = FileSystem::getSize(fullFilePath);
     _item._size = fileSize;
 
@@ -432,6 +464,14 @@ void PropagateUploadFileQNAM::startNextChunk()
             if( currentChunkSize == 0 ) { // if the last chunk pretents to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
             }
+            if( !_item._checksum.isEmpty() ) {
+                headers[checkSumHeaderC] = _item._checksum;
+            }
+        }
+    } else {
+        // checksum if its only one chunk
+        if( !_item._checksum.isEmpty() ) {
+            headers[checkSumHeaderC] = _item._checksum;
         }
     }
 
@@ -652,6 +692,11 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // Well, the mtime was not set
 #endif
     }
+
+    // performance logging
+    _item._requestDuration = _stopWatch.stop();
+    qDebug() << "*==* duration UPLOAD" << _item._size << _stopWatch.durationOfLap(QLatin1String("Checksum")) << _item._requestDuration;
+
     finalize(_item);
 }
 

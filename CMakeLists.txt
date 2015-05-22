@@ -165,13 +165,13 @@ endif()
 find_package(Sphinx)
 find_package(PdfLatex)
 
-
 find_package(SQLite3 3.8.0 REQUIRED)
 # On some OS, we want to use our own, not the system sqlite
 if (USE_OUR_OWN_SQLITE3)
     include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
 endif()
 
+find_package(ZLIB)
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 

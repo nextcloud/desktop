@@ -13,8 +13,11 @@
 
 #pragma once
 
+#include "config.h"
+
 #include <QString>
 #include <ctime>
+#include <QCryptographicHash>
 
 #include <owncloudlib.h>
 
@@ -119,6 +122,12 @@ bool openAndSeekFileSharedRead(QFile* file, QString* error, qint64 seek);
  * Returns the file system used at the given path.
  */
 QString fileSystemForPath(const QString & path);
+#endif
+
+QByteArray calcMd5( const QString& fileName );
+QByteArray calcSha1( const QString& fileName );
+#ifdef ZLIB_FOUND
+QByteArray calcAdler32( const QString& fileName );
 #endif
 
 }}

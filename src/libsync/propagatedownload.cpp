@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "owncloudpropagator_p.h"
 #include "propagatedownload.h"
 #include "networkjobs.h"
@@ -21,6 +22,8 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "transmissionchecksumvalidator.h"
+
 #include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -483,7 +486,21 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         return;
     }
 
-    downloadFinished();
+    // Do checksum validation for the download. If there is no checksum header, the validator
+    // will also emit the validated() signal to continue the flow in slot downloadFinished()
+    // as this is (still) also correct.
+    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished()));
+    connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
+    validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
+
+}
+
+void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
+{
+    _tmpFile.remove();
+    _propagator->_anotherSyncNeeded = true;
+    done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
 QString makeConflictFileName(const QString &fn, const QDateTime &dt)
