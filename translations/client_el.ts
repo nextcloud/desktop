@@ -2,7 +2,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="191"/>
+        <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
         <translation>Το αρχείο προορισμού έχει μη αναμενόμενο μέγεθος ή χρόνο τροποποίησης</translation>
     </message>
@@ -714,22 +714,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="148"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="150"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Δεν ελήφθη E-Tag από το διακομιστή, ελέγξτε το διακομιστή μεσολάβησης/πύλη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Ελήφθη διαφορετικό E-Tag για συνέχιση. Επανάληψη την επόμενη φορά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="184"/>
         <source>Server returned wrong content-range</source>
         <translation>Ο διακομιστής επέστρεψε εσφαλμένο πεδίο τιμών</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="289"/>
         <source>Connection Timeout</source>
         <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
@@ -1397,7 +1397,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="109"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="113"/>
         <source>Connection Timeout</source>
         <translation>Λήξη Χρόνου Αναμονής Σύνδεσης</translation>
     </message>
@@ -1405,7 +1405,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="166"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="170"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Λανθασμένη απάντηση JSON από την ιστοσελίδα poll</translation>
     </message>
@@ -1441,22 +1441,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="312"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="314"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να ληφθεί λόγω διένεξης με το όνομα ενός τοπικού αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="483"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="580"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να αποθηκευτεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="558"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
@@ -1584,38 +1584,43 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="203"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="226"/>
         <source>File Removed</source>
         <translation>Το αρχείο αφαιρέθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="217"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="238"/>
+        <source>Local file changed during syncing. It will be resumed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="250"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
         <source>Local file changed during sync.</source>
         <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τον συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="504"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Εξαναγκασμός ακύρωσης εργασίας στην επαναφορά σύνδεσης HTTP με Qt &lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="512"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="565"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και το επεξεργασμένο βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
         <source>Poll URL missing</source>
         <translation>Η διεύθυνση poll URL λείπει</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="569"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
         <source>The local file was removed during sync.</source>
         <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Ο διακομιστής δεν αναγνώρισε το τελευταίο τμήμα. (Δεν υπήρχε e-tag)</translation>
     </message>
@@ -2441,19 +2446,33 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="265"/>
+        <location filename="../src/libsync/theme.cpp" line="270"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Έκδοση %1. Για περισσότερες πληροφορίες δείτε &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="269"/>
+        <location filename="../src/libsync/theme.cpp" line="274"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;Πνευματικά δικαιώματα ownCloud, Ανώνυμη Εταιρία&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="270"/>
+        <location filename="../src/libsync/theme.cpp" line="275"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Διανέμεται από 1% και υπό την άδεια GNU General Public License (GPL) έκδοση 2.0.&lt;br/&gt;% 2 και το 2% το λογότυπο είναι σήματα κατατεθέντα της 1% στις Ηνωμένες Πολιτείες, άλλες χώρες, ή και τα δύο.&lt;/ p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::TransmissionChecksumValidator</name>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
+        <source>The checksum header is malformed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
+        <source>The downloaded file does not match the checksum, it will be resumed.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2849,27 +2868,27 @@ It is not advisable to use it.</source>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="113"/>
+        <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TiB</source>
         <translation>%L1 TiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="116"/>
+        <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GiB</source>
         <translation>%L1 GiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="119"/>
+        <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MiB</source>
         <translation>%L1 MiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="122"/>
+        <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 KiB</source>
         <translation>%L1 KiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="125"/>
+        <location filename="../src/libsync/utility.cpp" line="126"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
@@ -2890,7 +2909,7 @@ It is not advisable to use it.</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="251"/>
+        <location filename="../src/libsync/theme.cpp" line="256"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Δημιουργήθηκε από την διασκευή Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; στο %3, %4 χρησιμοποιώντας Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

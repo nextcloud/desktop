@@ -2,7 +2,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="191"/>
+        <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
         <translation>Het doelbestand heeft een onverwachte omvang of tijdstempel</translation>
     </message>
@@ -713,22 +713,22 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="148"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="150"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Geen E-Tag ontvangen van de server, controleer Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>We ontvingen een afwijkende E-Tag om door te gaan. We proberen het later opnieuw.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="184"/>
         <source>Server returned wrong content-range</source>
         <translation>Server retourneerde verkeerde content-bandbreedte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="289"/>
         <source>Connection Timeout</source>
         <translation>Verbindingstime-out</translation>
     </message>
@@ -1396,7 +1396,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="109"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="113"/>
         <source>Connection Timeout</source>
         <translation>Verbindingstime-out</translation>
     </message>
@@ -1404,7 +1404,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="166"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="170"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Ongeldig JSON antwoord van de peilingen URL</translation>
     </message>
@@ -1440,22 +1440,22 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="312"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="314"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden gedownload omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="483"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Het bestand kon niet volledig worden gedownload.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="580"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Bestand %1 kan niet worden opgeslagen wegens een lokaal bestandsnaam conflict!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="558"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
         <translation>Het bestand is gewijzigd sinds het is gevonden</translation>
     </message>
@@ -1583,38 +1583,43 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="203"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="226"/>
         <source>File Removed</source>
         <translation>Bestand verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="217"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="238"/>
+        <source>Local file changed during syncing. It will be resumed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="250"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
         <source>Local file changed during sync.</source>
         <translation>Lokaal bestand gewijzigd bij sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="504"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Forceren job-beëindiging op HTTP verbindingsreset met Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="512"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="565"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Het bestand is lokaal bewerkt, maar hoort bij een alleen-lezen share. Het originele bestand is teruggezet en uw bewerking staat in het conflicten bestand.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
         <source>Poll URL missing</source>
         <translation>URL peiling ontbreekt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="569"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
         <source>The local file was removed during sync.</source>
         <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>De server heeft het laatste deel niet bevestigd (er was geen e-tag aanwezig)</translation>
     </message>
@@ -2438,19 +2443,33 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="265"/>
+        <location filename="../src/libsync/theme.cpp" line="270"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versie %1. Voor meer informatie bezoek &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="269"/>
+        <location filename="../src/libsync/theme.cpp" line="274"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="270"/>
+        <location filename="../src/libsync/theme.cpp" line="275"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Gedistribueer door %1 en gelicenseerd onder de GNU General Public License (GPL) Versie 2.0.&lt;br/&gt;%2 en het %2 logo zijn geregistreerde handelsmerken van %1 in de Verenigde Staten, in andere landen of beide.&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::TransmissionChecksumValidator</name>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
+        <source>The checksum header is malformed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
+        <source>The downloaded file does not match the checksum, it will be resumed.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2846,27 +2865,27 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="113"/>
+        <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TiB</source>
         <translation>%L1 TiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="116"/>
+        <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GiB</source>
         <translation>%L1 GiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="119"/>
+        <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MiB</source>
         <translation>%L1 MiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="122"/>
+        <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 KiB</source>
         <translation>%L1 KiB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="125"/>
+        <location filename="../src/libsync/utility.cpp" line="126"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
@@ -2887,7 +2906,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="251"/>
+        <location filename="../src/libsync/theme.cpp" line="256"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Gebouwd van Git revisie &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; op %3, %4 gebruik makend van Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
