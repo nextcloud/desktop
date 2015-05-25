@@ -175,10 +175,10 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       StrCmp $LANGUAGE ${LANG_ITALIAN} Italian 0
       StrCmp $LANGUAGE ${LANG_ESTONIAN} Estonian 0
       StrCmp $LANGUAGE ${LANG_GREEK} Greek 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Basque 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Galician 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Turkish 0
+      StrCmp $LANGUAGE ${LANG_BASQUE} Basque 0
+      StrCmp $LANGUAGE ${LANG_GALICIAN} Galician 0
+      StrCmp $LANGUAGE ${LANG_SLOVAC} Slovak 0
+      StrCmp $LANGUAGE ${LANG_TURKISH} Turkish 0
       StrCmp $LANGUAGE ${LANG_NORWEGIAN} Norwegian 0
       StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
       German:
