@@ -16,6 +16,7 @@ trans.fa = client_fa.ts
 trans.fr = client_fr.ts
 trans.gl = client_gl.ts
 trans.it = client_it.ts
+trans.nb_NO = client_nb_NO.ts
 trans.nl = client_nl.ts
 trans.pl = client_pl.ts
 trans.pt_BR = client_pt_BR.ts
