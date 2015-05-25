@@ -18,6 +18,7 @@ trans.fa = pofiles/fa.po
 trans.fr = pofiles/fr.po
 trans.gl = pofiles/gl.po
 trans.it = pofiles/it.po
+trans.nb_NO = pofiles/nb_NO.po
 trans.nl = pofiles/nl.po
 trans.pl = pofiles/pl.po
 trans.pt_BR = pofiles/pt_BR.po
