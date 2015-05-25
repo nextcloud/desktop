@@ -1591,7 +1591,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τη διάρκεια του συγχρονισμού. Θα συγχρονιστεί πάλι.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
@@ -2467,12 +2467,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Η κεφαλίδα του αθροίσματος ελέγχου δεν είναι σωστά διαμορφωμένη.</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο που μεταφορτώθηκε δεν επαληθεύει το άθροισμα ελέγχου, θα συγχρονιστεί πάλι.</translation>
     </message>
 </context>
 <context>

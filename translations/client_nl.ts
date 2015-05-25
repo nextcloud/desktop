@@ -2926,7 +2926,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation>Gedownloaded, conflicterend bestand hernoemd</translation>
+        <translation>Gedownload, conflicterend bestand hernoemd</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>

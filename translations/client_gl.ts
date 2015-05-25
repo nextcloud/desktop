@@ -2468,7 +2468,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>O ficheiro descargado non coincide coa suma de comprobación, retomase.</translation>
+        <translation>O ficheiro descargado non coincide coa suma de comprobación. Retomase.</translation>
     </message>
 </context>
 <context>
