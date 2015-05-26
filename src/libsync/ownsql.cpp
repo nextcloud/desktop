@@ -345,7 +345,7 @@ QString SqlQuery::lastQuery() const
 
 int SqlQuery::numRowsAffected()
 {
-    return 1;
+    return sqlite3_changes(_db);
 }
 
 void SqlQuery::finish()

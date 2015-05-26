@@ -192,7 +192,6 @@ sub removeRemoteDir($;$)
     my ($dir, $optionsRef) = @_;
 
     my $url = testDirUrl() . $dir;
-
     if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
 	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
 			 -user=> $optionsRef->{user},
@@ -327,11 +326,11 @@ sub assertLocalDirs( $$ )
 
     opendir(my $dh, $dir1 ) || die;
     while(readdir $dh) {
-	assert( -e "$dir2/$_" );
+    assert( -e "$dir2/$_", " $dir2/$_  do not exist" );
         next if( -d "$dir1/$_"); # don't compare directory sizes.
 	my $s1 = -s "$dir1/$_";
 	my $s2 = -s "$dir2/$_";
-	assert( $s1 == $s2, "$dir1/$_ <-> $dir2/$_" );
+	assert( $s1 == $s2, "$dir1/$_ <-> $dir2/$_   size not equal ($s1 != $s2)" );
     }
     closedir $dh;
 }
@@ -525,7 +524,9 @@ sub put_to_dir( $$;$ )
 
     my $filename = $file;
     $filename =~ s/^.*\///;
+    $filename =~ s/#/%23/g;  # poor man's URI encoder
     my $puturl = $targetUrl . $dir. $filename;
+
     print "put_to_dir puts to $puturl\n";
     unless ($d->put( -local => $file, -url => $puturl )) {
       print "  ### FAILED to put a single file!\n";

@@ -175,10 +175,11 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       StrCmp $LANGUAGE ${LANG_ITALIAN} Italian 0
       StrCmp $LANGUAGE ${LANG_ESTONIAN} Estonian 0
       StrCmp $LANGUAGE ${LANG_GREEK} Greek 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Basque 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Galician 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Turkish 0
+      StrCmp $LANGUAGE ${LANG_BASQUE} Basque 0
+      StrCmp $LANGUAGE ${LANG_GALICIAN} Galician 0
+      StrCmp $LANGUAGE ${LANG_SLOVAC} Slovak 0
+      StrCmp $LANGUAGE ${LANG_TURKISH} Turkish 0
+      StrCmp $LANGUAGE ${LANG_NORWEGIAN} Norwegian 0
       StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
       German:
       !include "${source_path}/admin/win/nsi/l10n\German.nsh"
@@ -221,6 +222,9 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       Goto EndLanguageCmp
       Brazilian:
       !include "${source_path}/admin/win/nsi/l10n\PortugueseBR.nsh"
+      Goto EndLanguageCmp
+      Norwegian:
+      !include "${source_path}/admin/win/nsi/l10n\Norwegian.nsh"
       EndLanguageCmp:
 
    FunctionEnd
@@ -777,7 +781,7 @@ Function .onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudInstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Installer") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_INSTALLER_RUNNING
@@ -842,7 +846,7 @@ Function un.onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudUninstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Uninstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_UNINSTALLER_RUNNING

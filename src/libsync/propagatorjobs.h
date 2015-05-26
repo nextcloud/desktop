@@ -21,6 +21,22 @@
 
 namespace OCC {
 
+/**
+ * Tags for checksum headers.
+ * They are here for being shared between Upload- and Download Job
+ */
+
+// the header itself
+static const char checkSumHeaderC[] = "OC-Checksum";
+// ...and it's values
+static const char checkSumMD5C[] = "MD5";
+static const char checkSumSHA1C[] = "SHA1";
+static const char checkSumAdlerC[] = "Adler32";
+static const char checkSumAdlerUpperC[] = "ADLER32";
+
+/**
+ * Declaration of the other propagation jobs
+ */
 class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT
 public:

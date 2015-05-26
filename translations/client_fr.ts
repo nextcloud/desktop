@@ -2,7 +2,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="191"/>
+        <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
         <translation>Le fichier de destination a une erreur de taille ou de date de modification</translation>
     </message>
@@ -81,53 +81,53 @@
         <translation>Connecté à &lt;server&gt; en tant que &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="55"/>
+        <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Add Folder...</source>
         <translation>Ajouter un dossier...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="62"/>
+        <location filename="../src/gui/accountsettings.ui" line="65"/>
         <location filename="../src/gui/accountsettings.cpp" line="167"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="69"/>
+        <location filename="../src/gui/accountsettings.ui" line="72"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="76"/>
+        <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Choose What to Sync</source>
         <translation>Choisir le contenu à synchroniser</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="101"/>
+        <location filename="../src/gui/accountsettings.ui" line="104"/>
         <source>Storage Usage</source>
         <translation>Utilisation du stockage</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="123"/>
+        <location filename="../src/gui/accountsettings.ui" line="126"/>
         <source>Retrieving usage information...</source>
         <translation>Récupération des informations d&apos;utilisation...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="130"/>
+        <location filename="../src/gui/accountsettings.ui" line="133"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>&lt;b&gt;Note :&lt;/b&gt; Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="143"/>
+        <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Account Maintenance</source>
         <translation>Maintenance du compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="152"/>
+        <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Edit Ignored Files</source>
         <translation>Modifier les fichiers ignorés</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="159"/>
+        <location filename="../src/gui/accountsettings.ui" line="162"/>
         <source>Modify Account</source>
         <translation>Modifier le compte</translation>
     </message>
@@ -713,22 +713,22 @@ Voulez-vous réellement effectuer cette opération ?</translation>
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="148"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="150"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Aucun E-Tag reçu du serveur, vérifiez le proxy / la passerelle</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="155"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Nous avons reçu un E-Tag différent pour reprendre le téléchargement. Nouvel essai la prochaine fois.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="184"/>
         <source>Server returned wrong content-range</source>
         <translation>Le serveur a retourné une gamme de contenu erronée</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="287"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="289"/>
         <source>Connection Timeout</source>
         <translation>Délai d&apos;attente de connexion dépassé</translation>
     </message>
@@ -849,7 +849,7 @@ Les motifs cochés seront également supprimés s&apos;ils empêchent la suppres
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
         <source>Edit ignore pattern:</source>
-        <translation>Éditer le motif :</translation>
+        <translation>Modifier le motif :</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
@@ -1145,7 +1145,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez plusieurs dossiers configurés. Si vous continuez avec les nouveaux paramètres, les configuration de dossiers actuelles seront perdues et une synchronisation de la racine de votre compte vers un seul dossier sera mise en place !&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez plusieurs dossiers configurés. Si vous continuez avec les paramètres actuels, les configurations de dossiers seront perdues et une synchronisation de la racine de votre compte vers un seul dossier sera mise en place !&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="149"/>
@@ -1396,7 +1396,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="109"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="113"/>
         <source>Connection Timeout</source>
         <translation>Délai d&apos;attente de connexion dépassé</translation>
     </message>
@@ -1404,7 +1404,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="166"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="170"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>L&apos;URL interrogéé a renvoyé une réponse json non valide</translation>
     </message>
@@ -1440,22 +1440,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="312"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="314"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Le fichier %1 ne peut pas être téléchargé en raison d&apos;un conflit sur le nom de fichier local. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="483"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Le fichier n&apos;a pas pu être téléchargé intégralement.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="518"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="580"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Le fichier %1 n&apos;a pas pu être sauvegardé en raison d&apos;un conflit sur le nom du fichier local !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="557"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
         <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
@@ -1583,38 +1583,43 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="203"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="226"/>
         <source>File Removed</source>
         <translation>Fichier supprimé</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="217"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="238"/>
+        <source>Local file changed during syncing. It will be resumed.</source>
+        <translation>Fichier local modifié pendant la synchronisation. Elle va reprendre. </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="250"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
         <source>Local file changed during sync.</source>
         <translation>Fichier local modifié pendant la synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="504"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="512"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="565"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Le fichier a été modifié localement mais appartient à un partage en lecture seule. Il a été restauré et vos modifications sont présentes dans le fichiers de conflit.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="546"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
         <source>Poll URL missing</source>
         <translation>URL de sondage manquante</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="569"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
         <source>The local file was removed during sync.</source>
         <translation>Fichier local supprimé pendant la synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="595"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Le serveur n&apos;a pas acquitté le dernier morceau (aucun e-tag n&apos;était présent).</translation>
     </message>
@@ -1684,7 +1689,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="256"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes, et aucun téléchargement n&apos;est en cours.</translation>
+        <translation>Actuellement, aucun fichier n&apos;a été ignoré en raison des erreurs précédentes et aucun téléchargement n&apos;est en cours.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="259"/>
@@ -2362,69 +2367,69 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>L&apos;encodage du nom de fichier n&apos;est pas valide</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="602"/>
+        <location filename="../src/libsync/syncengine.cpp" line="601"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossible d&apos;initialiser un journal de synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="694"/>
+        <location filename="../src/libsync/syncengine.cpp" line="680"/>
         <source>Cannot open the sync journal</source>
         <translation>Impossible d&apos;ouvrir le journal de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="955"/>
-        <location filename="../src/libsync/syncengine.cpp" line="962"/>
+        <location filename="../src/libsync/syncengine.cpp" line="941"/>
+        <location filename="../src/libsync/syncengine.cpp" line="948"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoré à cause de la liste noire &quot;Choisir le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="980"/>
+        <location filename="../src/libsync/syncengine.cpp" line="966"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="986"/>
+        <location filename="../src/libsync/syncengine.cpp" line="972"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des dossiers parents</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="993"/>
+        <location filename="../src/libsync/syncengine.cpp" line="979"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
+        <location filename="../src/libsync/syncengine.cpp" line="999"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à envoyer ce fichier car il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1050"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1016"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1063"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1049"/>
         <source>Local files and share folder removed.</source>
         <translation>Fichiers locaux et répertoire de partage supprimés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1118"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
         <source>Move not allowed, item restored</source>
         <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1127"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1113"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Déplacement non autorisé car %1 est en mode lecture seule</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1114"/>
         <source>the destination</source>
         <translation>la destination</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1114"/>
         <source>the source</source>
         <translation>la source</translation>
     </message>
@@ -2440,19 +2445,33 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="265"/>
+        <location filename="../src/libsync/theme.cpp" line="270"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version %1. Pour plus d&apos;information, visitez &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="269"/>
+        <location filename="../src/libsync/theme.cpp" line="274"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="270"/>
+        <location filename="../src/libsync/theme.cpp" line="275"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Distribué par %1 et sous licence GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 et le logo %2  sont des marques enregistrées de %1 aux Etats-Unis, dans d&apos;autres pays, ou les deux.&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::TransmissionChecksumValidator</name>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
+        <source>The checksum header is malformed.</source>
+        <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
+        <source>The downloaded file does not match the checksum, it will be resumed.</source>
+        <translation>Le fichier téléchargé ne correspond pas avec la somme de contrôle, il va être téléchargé à nouveau.</translation>
     </message>
 </context>
 <context>
@@ -2727,8 +2746,8 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Message d&apos;erreur</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="109"/>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="122"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="125"/>
         <source>TextLabel</source>
         <translation>Zone de texte</translation>
     </message>
@@ -2848,27 +2867,27 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="113"/>
+        <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TiB</source>
         <translation>%L1 Tio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="116"/>
+        <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GiB</source>
         <translation>%L1 Gio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="119"/>
+        <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MiB</source>
         <translation>%L1 Mio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="122"/>
+        <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 KiB</source>
         <translation>%L1 Kio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="125"/>
+        <location filename="../src/libsync/utility.cpp" line="126"/>
         <source>%L1 B</source>
         <translation>%L1 octets</translation>
     </message>
@@ -2889,7 +2908,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="251"/>
+        <location filename="../src/libsync/theme.cpp" line="256"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5, %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>

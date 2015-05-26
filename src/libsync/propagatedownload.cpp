@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "owncloudpropagator_p.h"
 #include "propagatedownload.h"
 #include "networkjobs.h"
@@ -21,6 +22,8 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
+#include "transmissionchecksumvalidator.h"
+
 #include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -30,11 +33,10 @@
 
 namespace OCC {
 
-
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
 // This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
-QString createDownloadTmpFileName(const QString &previous) {
+QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous) {
     QString tmpFileName;
     QString tmpPath;
     int slashPos = previous.lastIndexOf('/');
@@ -484,7 +486,21 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         return;
     }
 
-    downloadFinished();
+    // Do checksum validation for the download. If there is no checksum header, the validator
+    // will also emit the validated() signal to continue the flow in slot downloadFinished()
+    // as this is (still) also correct.
+    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished()));
+    connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
+    validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
+
+}
+
+void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
+{
+    _tmpFile.remove();
+    _propagator->_anotherSyncNeeded = true;
+    done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
 QString makeConflictFileName(const QString &fn, const QDateTime &dt)
@@ -507,6 +523,52 @@ QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 
     return conflictFileName;
 }
+
+
+namespace { // Anonymous namespace for the recall feature
+static QString makeRecallFileName(const QString &fn)
+{
+    QString recallFileName(fn);
+    // Add _recall-XXXX  before the extention.
+    int dotLocation = recallFileName.lastIndexOf('.');
+    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
+        dotLocation = recallFileName.size();
+    }
+
+    QString timeString = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
+    recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
+
+    return recallFileName;
+}
+
+static void handleRecallFile(const QString &fn)
+{
+    qDebug() << "handleRecallFile: " << fn;
+
+    FileSystem::setFileHidden(fn, true);
+
+    QFile file(fn);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Could not open recall file" << file.errorString();
+        return;
+    }
+    QFileInfo existingFile(fn);
+    QDir thisDir = existingFile.dir();
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        line.chop(1); // remove trailing \n
+        QString fpath = thisDir.filePath(line);
+        QString rpath = makeRecallFileName(fpath);
+
+        // if previously recalled file exists then remove it (copy will not overwrite it)
+        QFile(rpath).remove();
+        qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
+        QFile::copy(fpath,rpath);
+    }
+}
+} // end namespace
 
 void PropagateDownloadFileQNAM::downloadFinished()
 {
@@ -592,6 +654,11 @@ void PropagateDownloadFileQNAM::downloadFinished()
     _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
+
+    // handle the special recall file
+    if(_item._file == QLatin1String(".sys.admin#recall#") || _item._file.endsWith("/.sys.admin#recall#")) {
+        handleRecallFile(fn);
+    }
 }
 
 void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)

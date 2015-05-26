@@ -67,7 +67,7 @@ localeToName = {
     "mg" : "Malagasy",
     "ms" : "Malay",
     "mn" : "Mongolian",
-    "nb" : "Norwegian",
+    "nb_NO" : "Norwegian",
     "nn" : "NorwegianNynorsk",
     "ps" : "Pashto",
     "pl" : "Polish",

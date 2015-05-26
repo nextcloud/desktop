@@ -33,4 +33,6 @@ owncloud_add_test(SyncFileItem "")
 owncloud_add_test(ConcatUrl "")
 
 owncloud_add_test(XmlParse "")
+owncloud_add_test(FileSystem "")
+owncloud_add_test(TransChecksumValidator "")
 
