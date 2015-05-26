@@ -204,7 +204,7 @@ void PropagateUploadFileQNAM::start()
 
     // remember the modtime before checksumming to be able to detect a file
     // change during the checksum calculation
-    _item._modtime = FileSystem::getModTime(filePath);
+    _item->_modtime = FileSystem::getModTime(filePath);
 
     _stopWatch.start();
 
@@ -218,8 +218,8 @@ void PropagateUploadFileQNAM::start()
 
 void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
 {
-
-    _item._checksum = checksum;
+    const QString fullFilePath = _propagator->getFilePath(_item->_file);
+    _item->_checksum = checksum;
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -227,12 +227,12 @@ void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
     }
     _stopWatch.addLapTime(QLatin1String("Checksum"));
 
-    time_t prevModtime = _item._modtime; // the _item value was set in PropagateUploadFileQNAM::start()
+    time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFileQNAM::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
     _item->_modtime = FileSystem::getModTime(fullFilePath);
-    if( prevModtime != _item._modtime ) {
+    if( prevModtime != _item->_modtime ) {
         _propagator->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
         return;
@@ -464,14 +464,14 @@ void PropagateUploadFileQNAM::startNextChunk()
             if( currentChunkSize == 0 ) { // if the last chunk pretents to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
             }
-            if( !_item._checksum.isEmpty() ) {
-                headers[checkSumHeaderC] = _item._checksum;
+            if( !_item->_checksum.isEmpty() ) {
+                headers[checkSumHeaderC] = _item->_checksum;
             }
         }
     } else {
         // checksum if its only one chunk
-        if( !_item._checksum.isEmpty() ) {
-            headers[checkSumHeaderC] = _item._checksum;
+        if( !_item->_checksum.isEmpty() ) {
+            headers[checkSumHeaderC] = _item->_checksum;
         }
     }
 
@@ -694,8 +694,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
     }
 
     // performance logging
-    _item._requestDuration = _stopWatch.stop();
-    qDebug() << "*==* duration UPLOAD" << _item._size << _stopWatch.durationOfLap(QLatin1String("Checksum")) << _item._requestDuration;
+    _item->_requestDuration = _stopWatch.stop();
+    qDebug() << "*==* duration UPLOAD" << _item->_size << _stopWatch.durationOfLap(QLatin1String("Checksum")) << _item->_requestDuration;
 
     finalize(*_item);
 }
