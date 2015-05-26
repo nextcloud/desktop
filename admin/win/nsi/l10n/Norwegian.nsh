@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Hurtigstart-snarvei for ${APPLICATI
 StrCpy $UNINSTALLER_APPDATA_SUBTITLE "Fjern ${APPLICATION_NAME} sin datamappe fra datamaskinen."
 StrCpy $UNINSTALLER_APPDATA_LABEL_1 "Ønsker du å slette ${APPLICATION_NAME} sin datamappe?"
 StrCpy $UNINSTALLER_APPDATA_LABEL_2 "Ikke kryss av dersom du vil beholde datamappen for senere bruk. Kryss av for å slette mappen."
-StrCpy $UNINSTALLER_APPDATA_CHECKBOX "Ya, slett denne datamappen."
+StrCpy $UNINSTALLER_APPDATA_CHECKBOX "Ja, slett denne datamappen."
 StrCpy $UNINSTALLER_FILE_Detail "Skriver Avinstallasjonsprogram."
 StrCpy $UNINSTALLER_REGISTRY_Detail "Skriver registernøkler for installasjonsprogrammet"
 StrCpy $UNINSTALLER_FINISHED_Detail "Ferdig"
