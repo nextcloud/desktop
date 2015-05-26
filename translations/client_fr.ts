@@ -849,7 +849,7 @@ Les motifs cochés seront également supprimés s&apos;ils empêchent la suppres
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
         <source>Edit ignore pattern:</source>
-        <translation>Éditer le motif :</translation>
+        <translation>Modifier le motif :</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
@@ -1145,7 +1145,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez plusieurs dossiers configurés. Si vous continuez avec les nouveaux paramètres, les configuration de dossiers actuelles seront perdues et une synchronisation de la racine de votre compte vers un seul dossier sera mise en place !&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Attention :&lt;/strong&gt; Vous avez plusieurs dossiers configurés. Si vous continuez avec les paramètres actuels, les configurations de dossiers seront perdues et une synchronisation de la racine de votre compte vers un seul dossier sera mise en place !&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="149"/>
@@ -1590,7 +1590,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Fichier local modifié pendant la synchronisation. Elle va reprendre. </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
@@ -1689,7 +1689,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="256"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Actuellement aucun fichier n&apos;a été ignoré en raison d&apos;erreurs précédentes, et aucun téléchargement n&apos;est en cours.</translation>
+        <translation>Actuellement, aucun fichier n&apos;a été ignoré en raison des erreurs précédentes et aucun téléchargement n&apos;est en cours.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="259"/>
@@ -2466,12 +2466,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier téléchargé ne correspond pas avec la somme de contrôle, il va être téléchargé à nouveau.</translation>
     </message>
 </context>
 <context>
