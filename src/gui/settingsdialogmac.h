@@ -28,6 +28,8 @@ class ProtocolWidget;
 class Application;
 class FolderMan;
 class ownCloudGui;
+class Folder;
+class AccountState;
 
 class SettingsDialogMac : public MacPreferencesWindow
 {
@@ -36,18 +38,19 @@ class SettingsDialogMac : public MacPreferencesWindow
 public:
     explicit SettingsDialogMac(ownCloudGui *gui, QWidget *parent = 0);
 
-    void setGeneralErrors( const QStringList& errors );
-
 public slots:
-    void slotSyncStateChange(Folder *);
     void showActivityPage();
+
+private slots:
+    void accountAdded(AccountState *);
+    void accountRemoved(AccountState *);
 
 private:
     void closeEvent(QCloseEvent *event);
 
-    AccountSettings *_accountSettings;
     QListWidgetItem *_accountItem;
     ProtocolWidget  *_protocolWidget;
+    ownCloudGui     *_gui;
 
     int _protocolIdx;
 };

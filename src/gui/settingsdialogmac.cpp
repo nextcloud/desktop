@@ -24,6 +24,7 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "protocolwidget.h"
+#include "accountmanager.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -37,7 +38,7 @@ namespace OCC {
 // Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
 //
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
-    : MacPreferencesWindow(parent)
+    : MacPreferencesWindow(parent), _gui(gui)
 {
     // do not show minimize button. There is no use, and retoring the
     // dialog from minimize is broken in MacPreferencesWindow
@@ -48,26 +49,30 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     // Emulate dialog behavior: Escape means close
     QAction *closeDialogAction = new QAction(this);
     closeDialogAction->setShortcut(QKeySequence(Qt::Key_Escape));
-    connect(closeDialogAction, SIGNAL(triggered()), SLOT(close()));
+    connect(closeDialogAction, &QAction::triggered, this, &SettingsDialogMac::close);
     addAction(closeDialogAction);
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
     closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
-    connect(closeWindowAction, SIGNAL(triggered()), SLOT(close()));
+    connect(closeWindowAction, &QAction::triggered, this, &SettingsDialogMac::close);
     addAction(closeWindowAction);
     // People perceive this as a Window, so also make Ctrl+H work
     QAction *hideWindowAction = new QAction(this);
     hideWindowAction->setShortcut(QKeySequence("Ctrl+H"));
-    connect(hideWindowAction, SIGNAL(triggered()), SLOT(hide()));
+    connect(hideWindowAction, &QAction::triggered, this, &SettingsDialogMac::hide);
     addAction(hideWindowAction);
 
     setObjectName("SettingsMac"); // required as group for saveGeometry call
 
     setWindowTitle(tr("%1").arg(Theme::instance()->appNameGUI()));
 
-    _accountSettings = new AccountSettings;
-    QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
-    addPreferencesPanel(accountIcon, tr("Account"), _accountSettings);
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+            this, &SettingsDialogMac::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+            this, &SettingsDialogMac::accountRemoved);
+    foreach (auto ai , AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
 
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolWidget = new ProtocolWidget;
@@ -81,36 +86,13 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     NetworkSettings *networkSettings = new NetworkSettings;
     addPreferencesPanel(networkIcon, tr("Network"), networkSettings);
 
-    FolderMan *folderMan = FolderMan::instance();
-    connect( folderMan, SIGNAL(folderSyncStateChange(Folder*)),
-             this, SLOT(slotSyncStateChange(Folder*)));
-
-    connect( _accountSettings, SIGNAL(folderChanged()), gui, SLOT(slotFoldersChanged()));
-    connect( _accountSettings, SIGNAL(openFolderAlias(const QString&)),
-             gui, SLOT(slotFolderOpenAction(QString)));
-
-    connect( ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
-             _accountSettings, SLOT(slotSetProgress(QString, ProgressInfo)) );
-
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotToggleLogBrowser()));
+    connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
 
     ConfigFile cfg;
     cfg.restoreGeometry(this);
-}
-
-void SettingsDialogMac::slotSyncStateChange(Folder *folder)
-{
-    if( folder ) {
-        _accountSettings->slotUpdateFolderState(folder);
-    }
-}
-
-void SettingsDialogMac::setGeneralErrors(const QStringList &errors)
-{
-    _accountSettings->setGeneralErrors(errors);
 }
 
 void SettingsDialogMac::closeEvent(QCloseEvent *event)
@@ -124,5 +106,28 @@ void SettingsDialogMac::showActivityPage()
 {
     setCurrentPanelIndex(_protocolIdx);
 }
+
+void SettingsDialogMac::accountAdded(AccountState *s)
+{
+    QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
+    auto accountSettings = new AccountSettings(s, this);
+    //FIXME: add at the begining: (and don(t foget to adjust for _protocolIdx)
+    addPreferencesPanel(accountIcon, s->account()->displayName(), accountSettings);
+
+    connect( accountSettings, &AccountSettings::folderChanged, _gui,  &ownCloudGui::slotFoldersChanged);
+    connect( accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
+}
+
+void SettingsDialogMac::accountRemoved(AccountState *s)
+{
+    // FIXME: is it the correct way to remove a panel?
+    auto list = findChildren<AccountSettings*>(QString(), Qt::FindDirectChildrenOnly);
+    foreach(auto p, list) {
+        if (p->accountsState() == s) {
+            p->deleteLater();
+        }
+    }
+}
+
 
 }
