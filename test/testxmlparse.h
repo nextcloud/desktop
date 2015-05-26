@@ -431,14 +431,14 @@ private slots:
                  this, SLOT(slotFinishedSuccessfully()) );
 
         QHash <QString, qint64> sizes;
-        QVERIFY(parser.parse( testXml, &sizes, "/ä" ));
+        QVERIFY(parser.parse( testXml, &sizes, QString::fromUtf8("/ä") ));
         QVERIFY(_success);
 
-        QVERIFY(_items.contains("/ä/ä.pdf"));
-        QVERIFY(_items.contains("/ä"));
+        QVERIFY(_items.contains(QString::fromUtf8("/ä/ä.pdf")));
+        QVERIFY(_items.contains(QString::fromUtf8("/ä")));
         QVERIFY(_items.size() == 2 );
 
-        QVERIFY(_subdirs.contains("/ä"));
+        QVERIFY(_subdirs.contains(QString::fromUtf8("/ä")));
         QVERIFY(_subdirs.size() == 1);
     }
 

@@ -27,7 +27,7 @@
 
 namespace OCC {
 
-class ProgressInfo : public QObject
+class OWNCLOUDSYNC_EXPORT ProgressInfo : public QObject
 {
     Q_OBJECT
 public:
@@ -99,7 +99,7 @@ public:
      * Holds the current state of something making progress and maintains an
      * estimate of the current progress per second.
      */
-    struct Progress
+    struct OWNCLOUDSYNC_EXPORT Progress
     {
         Progress()
             : _progressPerSec(0)
@@ -134,7 +134,7 @@ public:
         friend class ProgressInfo;
     };
 
-    struct ProgressItem
+    struct OWNCLOUDSYNC_EXPORT ProgressItem
     {
         SyncFileItem _item;
         Progress _progress;

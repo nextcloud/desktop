@@ -61,6 +61,7 @@ set(libsync_SRCS
     theme.cpp
     utility.cpp
     ownsql.cpp
+    transmissionchecksumvalidator.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialsfactory.cpp
@@ -141,6 +142,11 @@ if(NEON_FOUND)
     endif()
 endif()
 
+if(ZLIB_FOUND)
+    list(APPEND libsync_LINK_TARGETS ${ZLIB_LIBRARIES})
+    include_directories(${ZLIB_INCLUDE_DIRS})
+endif(ZLIB_FOUND)
+
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	BASE_NAME ${synclib_NAME}
@@ -151,9 +157,9 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
 
 
 if(TOKEN_AUTH_ONLY)
-    qt5_use_modules(${synclib_NAME} Network)
+    qt5_use_modules(${synclib_NAME} Network Concurrent)
 else()
-    qt5_use_modules(${synclib_NAME} Widgets Network WebKitWidgets)
+    qt5_use_modules(${synclib_NAME} Widgets Network WebKitWidgets Concurrent)
 endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES

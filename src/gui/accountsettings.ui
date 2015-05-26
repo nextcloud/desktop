@@ -37,6 +37,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+         </property>
+          <property name="openExternalLinks">
+           <bool>true</bool>
         </property>
         <property name="text">
          <string>Connected with &lt;server&gt; as &lt;user&gt;</string>

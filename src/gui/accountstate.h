@@ -16,6 +16,7 @@
 #define ACCOUNTINFO_H
 
 #include <QByteArray>
+#include <QPointer>
 #include "utility.h"
 #include "connectionvalidator.h"
 
@@ -103,6 +104,7 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
+    QPointer<ConnectionValidator> _connectionValidator;
 };
 
 }

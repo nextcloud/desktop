@@ -26,7 +26,10 @@
 extern "C" {
 #endif
 
+/* Return the final destination path of a given patch in case of renames */
 char *csync_rename_adjust_path(CSYNC *ctx, const char *path);
+/* Return the source of a given path in case of renames */
+char *csync_rename_adjust_path_source(CSYNC *ctx, const char *path);
 void csync_rename_destroy(CSYNC *ctx);
 void csync_rename_record(CSYNC *ctx, const char *from, const char *to);
 

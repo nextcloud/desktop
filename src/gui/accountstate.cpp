@@ -83,9 +83,10 @@ void AccountState::setState(State state)
         } else if (oldState == SignedOut && _state == Disconnected) {
             checkConnectivity();
         }
-
-        emit stateChanged(_state);
     }
+
+    // might not have changed but the underlying _connectionErrors might have
+    emit stateChanged(_state);
 }
 
 QString AccountState::stateString(State state)
@@ -143,7 +144,12 @@ void AccountState::checkConnectivity()
         return;
     }
 
+    if (_connectionValidator) {
+        qDebug() << "ConnectionValidator already running, ignoring";
+        return;
+    }
     ConnectionValidator * conValidator = new ConnectionValidator(account());
+    _connectionValidator = conValidator;
     connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
             SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
     if (isConnected()) {
@@ -230,6 +236,12 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
         // User canceled the connection or did not give a password
         setState(SignedOut);
         return;
+    }
+
+    // When new credentials become available we always want to restart the
+    // connection validation, even if it's currently running.
+    if (_connectionValidator) {
+        delete _connectionValidator;
     }
 
     checkConnectivity();

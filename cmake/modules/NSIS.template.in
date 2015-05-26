@@ -97,7 +97,6 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include WordFunc.nsh  ;Used by VersionCompare macro function.
 !include FileFunc.nsh  ;Used to read out parameters
 !include UAC.nsh ;Used by the UAC elevation to install as user or admin.
-!include nsProcess.nsh ;Used to kill the running process
 !include Library.nsh ;Used by the COM registration for shell extensions
 !include x64.nsh ;Used to determine the right arch for the shell extensions
 
@@ -176,10 +175,11 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       StrCmp $LANGUAGE ${LANG_ITALIAN} Italian 0
       StrCmp $LANGUAGE ${LANG_ESTONIAN} Estonian 0
       StrCmp $LANGUAGE ${LANG_GREEK} Greek 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Basque 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Galician 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Slovak 0
-      StrCmp $LANGUAGE ${LANG_GREEK} Turkish 0
+      StrCmp $LANGUAGE ${LANG_BASQUE} Basque 0
+      StrCmp $LANGUAGE ${LANG_GALICIAN} Galician 0
+      StrCmp $LANGUAGE ${LANG_SLOVAC} Slovak 0
+      StrCmp $LANGUAGE ${LANG_TURKISH} Turkish 0
+      StrCmp $LANGUAGE ${LANG_NORWEGIAN} Norwegian 0
       StrCmp $LANGUAGE ${LANG_PORTUGUESEBR} Brazilian EndLanguageCmp
       German:
       !include "${source_path}/admin/win/nsi/l10n\German.nsh"
@@ -222,6 +222,9 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       Goto EndLanguageCmp
       Brazilian:
       !include "${source_path}/admin/win/nsi/l10n\PortugueseBR.nsh"
+      Goto EndLanguageCmp
+      Norwegian:
+      !include "${source_path}/admin/win/nsi/l10n\Norwegian.nsh"
       EndLanguageCmp:
 
    FunctionEnd
@@ -258,7 +261,7 @@ FunctionEnd
 ##############################################################################
 
 !macro CheckForProcess processName gotoWhenFound gotoWhenNotFound
-   ${nsProcess::FindProcess} ${processName} $R0
+   Processes::FindProcess ${processName}
    StrCmp $R0 "0" ${gotoWhenNotFound} ${gotoWhenFound}
 !macroend
 
@@ -268,7 +271,7 @@ FunctionEnd
      /SD IDYES IDYES process_${processName}_kill IDNO process_${processName}_ended
    process_${processName}_kill:
       DetailPrint $ConfirmEndProcess_KILLING_PROCESSES_TEXT
-      ${nsProcess::KillProcess} ${processName} $R0
+      Processes::KillProcess ${processName}
       Sleep 1500
       StrCmp $R0 "1" process_${processName}_ended
       DetailPrint $ConfirmEndProcess_KILL_NOT_FOUND_TEXT
@@ -778,7 +781,7 @@ Function .onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudInstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Installer") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_INSTALLER_RUNNING
@@ -843,7 +846,7 @@ Function un.onInit
       goto UAC_Elevate
 
    ;Prevent multiple instances.
-   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "owncloudUninstaller") i .r1 ?e'
+   System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Uninstaller") i .r1 ?e'
    Pop $R0
    StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION $INIT_UNINSTALLER_RUNNING

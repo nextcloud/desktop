@@ -43,7 +43,6 @@ namespace OCC {
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
-    , _duration(0)
     , _timedout(false)
     , _followRedirects(false)
     , _ignoreCredentialFailure(false)
@@ -307,8 +306,12 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 
 void MkColJob::start()
 {
-    // assumes ownership
-   QNetworkReply *reply = davRequest("MKCOL", path());
+   // add 'Content-Length: 0' header (see https://github.com/owncloud/client/issues/3256)
+   QNetworkRequest req;
+   req.setRawHeader("Content-Length", "0");
+
+   // assumes ownership
+   QNetworkReply *reply = davRequest("MKCOL", path(), req);
    setReply(reply);
    setupConnections(reply);
    AbstractNetworkJob::start();
@@ -595,10 +598,12 @@ bool CheckServerJob::finished()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
 
+#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (reply()->request().url().scheme() == QLatin1String("https")
             && reply()->sslConfiguration().sessionTicket().isEmpty()) {
         qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
+#endif
 
     // The serverInstalls to /owncloud. Let's try that if the file wasn't found
     // at the original location
