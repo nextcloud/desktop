@@ -92,8 +92,16 @@ public:
     QVector<PollInfo> getPollInfos();
 
     enum SelectiveSyncListType {
+        /** The black list is the list of folders that are unselected in the selective sync dialog.
+         * For the sync engine, those folders are considered as if they were not there, so the local
+         * folders will be deleted */
         SelectiveSyncBlackList = 1,
+        /** When a shared flder has a size bigger than a configured size, it is by default not sync'ed
+         * Unless it is in the white list, in which case the folder is sync'ed and all its children.
+         * If a folder is both on the black and the white list, the black list wins */
         SelectiveSyncWhiteList = 2,
+        /** List of big sync folder that have not been confirmed by the user yet and that the UI
+         * should notify about */
         SelectiveSyncUndecidedList = 3
     };
     /* return the specified list from the database */
