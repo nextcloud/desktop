@@ -69,6 +69,11 @@ bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
         return false;
     }
 
+    if (_newSharedFolderSizeLimit < 0) {
+        // no limit, everything is allowed;
+        return false;
+    }
+
     // Go in the main thread to do a PROPFIND to know the size of this directory
     qint64 result = -1;
 
@@ -78,7 +83,7 @@ bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
         _vioWaitCondition.wait(&_vioMutex);
     }
 
-    auto limit = 100*1000*1000L; // 100 MB; (FIXME, make it cnfigurable)
+    auto limit = _newSharedFolderSizeLimit;
     if (true || result > limit) {
         // we tell the UI there is a new folder
         emit newSharedFolder(path);

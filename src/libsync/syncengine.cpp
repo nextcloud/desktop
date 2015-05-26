@@ -640,6 +640,7 @@ void SyncEngine::startSync()
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
+    discoveryJob->_newSharedFolderSizeLimit = _newSharedFolderSizeLimit;
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),

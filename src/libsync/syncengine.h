@@ -62,6 +62,11 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
+    /* Set the maximum size a shared folder can have without asking for confirmation
+     * -1 means infinite
+     */
+    void setNewSharedFolderSizeLimit(qint64 limit) { _newSharedFolderSizeLimit = limit; }
+
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
     /* Return true if we detected that another sync is needed to complete the sync */
@@ -197,6 +202,8 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
+    /* maximum size a shared folder can have without asking for confirmation: -1 means infinite */
+    qint64 _newSharedFolderSizeLimit = -1;
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;

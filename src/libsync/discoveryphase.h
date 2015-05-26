@@ -178,6 +178,7 @@ public:
 
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
+    qint64 _newSharedFolderSizeLimit = 0;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);
