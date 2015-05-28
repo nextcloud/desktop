@@ -25,9 +25,9 @@ The process of synchronization keeps files in two separate repositories the
 same. When synchronized:
 
 - If a file is added to one repository it is copied to the other synchronized repository.
-- When a file is changed in one repository, the change is propagated to any
-  synchronized other repositories- If a file is deleted in one repository, it
-  is deleted in any other.
+- When a file is changed in one repository, the change is propagated to any other
+  synchronized repository.
+- If a file is deleted in one repository, it is deleted in any other.
 
 It is important to note that the ownCloud synchronization process does not use
 a typical client/server system where the server is always master.  This is a
