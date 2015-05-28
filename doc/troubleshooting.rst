@@ -83,6 +83,10 @@ Other issues can affect synchronization of your ownCloud files:
 - If you are using a different file backend on the server, you can try to exclude a bug in the
   backend by reverting to the built-in backend.
 
+- If you are experiencing slow upload/download speed or similar performance issues
+  be aware that those could be caused by on-access virus scanning solutions, either
+  on the server (like the files_antivirus app) or the client.
+
 Log Files
 ---------
 
