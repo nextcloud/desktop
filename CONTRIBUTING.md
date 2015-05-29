@@ -7,6 +7,7 @@ We are also available on [IRC][irc].
 ### Bug Reporting Guidelines
 * __Important__: Report the issue using our [template][template], it includes all the
   informations we need to track down the issue.  
+* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other compontents should be reported in their own repositores: 
   - [ownCloud server](https://github.com/owncloud/core/issues)
