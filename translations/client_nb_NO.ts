@@ -819,7 +819,7 @@ Er du sikker på at du vil utføre denne operasjonen?</translation>
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Filer eller mapper som passer med et mønster vil ikke bli synkronisert.
 
-Valgte innslag vil også bli slettet dersom de forhindrer fjerning av en mappe. Dette er hendig for metadata.</translation>
+Valgte oppføringer vil også bli slettet dersom de hindrer fjerning av en mappe. Dette er hendig for metadata.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="96"/>
@@ -854,7 +854,7 @@ Valgte innslag vil også bli slettet dersom de forhindrer fjerning av en mappe. 
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Dette innslaget er gitt av systemet på &apos;%1&apos; og kan ikke endres i denne visningen.</translation>
+        <translation>Denne oppføringen er gitt av systemet på &apos;%1&apos; og kan ikke endres i denne visningen.</translation>
     </message>
 </context>
 <context>
