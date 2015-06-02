@@ -204,14 +204,7 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    QUrl url = _accountState->account()->davUrl();
-    QString path = url.path();
-    if (!path.endsWith('/')) {
-        path.append('/');
-    }
-    path.append(remotePath());
-    url.setPath(path);
-    return url;
+    return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
 QString Folder::nativePath() const

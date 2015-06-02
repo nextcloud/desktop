@@ -357,7 +357,14 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
         return;
 
     info->_fetching = true;
-    LsColJob *job = new LsColJob(_account, info->_folder->remotePath() + "/" + info->_path, this);
+    QString path = info->_folder->remotePath();
+    if (info->_path != QLatin1String("/")) {
+        if (!path.endsWith(QLatin1Char('/'))) {
+            path += QLatin1Char('/');
+        }
+        path += info->_path;
+    }
+    LsColJob *job = new LsColJob(_account, path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
     job->setTimeout(5 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
