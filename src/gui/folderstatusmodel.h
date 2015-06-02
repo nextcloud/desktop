@@ -26,6 +26,7 @@
 namespace OCC {
 
 class Folder;
+class ProgressInfo;
 
 class FolderStatusModel : public QAbstractItemModel
 {
@@ -57,6 +58,16 @@ public:
         QVector<SubFolderInfo> _subs;
         Qt::CheckState _checked = Qt::Checked;
         Folder *_folder;
+
+        struct Progress {
+            bool isNull() const
+            { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
+            QString _progressString;
+            QString _overallSyncString;
+            int _warningCount = 0;
+            int _overallPercent = 0;
+        };
+        Progress _progress;
     };
 
     QVector<SubFolderInfo> _folders;
@@ -68,23 +79,16 @@ public:
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 
-    struct ProgressInfo {
-        bool isNull() const
-        { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
-        QString _progressString;
-        QString _overallSyncString;
-        int _warningCount = 0;
-        int _overallPercent = 0;
-    };
-    QVector<ProgressInfo> _progresses;
-
-
 public slots:
+    void slotUpdateFolderState(Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
+    void slotSetProgress(const ProgressInfo &progress);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
+    void slotHideProgress();
+    void slotFolderSyncStateChange();
 
 private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,

@@ -58,10 +58,7 @@ signals:
 public slots:
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
-    void slotUpdateFolderState( Folder* );
     void slotDoubleClicked( const QModelIndex& );
-    void slotSetProgress(const QString& folder, const ProgressInfo& progress);
-
     void slotUpdateQuota( qint64,qint64 );
     void slotAccountStateChanged(int state);
 
@@ -76,12 +73,10 @@ protected slots:
     void slotResetCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
-    void slotHideProgress();
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
 
 private:
-    QString shortenFilename( const QString& folder, const QString& file ) const;
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
 
     Ui::AccountSettings *ui;
@@ -93,7 +88,6 @@ private:
     AccountState *_accountState;
     QLabel *_quotaLabel;
 private slots:
-    void slotFolderSyncStateChange();
     void slotCustomContextMenuRequested(const QPoint&);
 };
 

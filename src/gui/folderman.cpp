@@ -398,7 +398,6 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     }
 
     connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChanged()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 
@@ -700,14 +699,6 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
     startScheduledSyncSoon();
 }
 
-void FolderMan::slotFolderSyncStateChanged()
-{
-    auto f = qobject_cast<Folder *>(sender());
-    Q_ASSERT(f);
-    emit folderSyncStateChange(f);
-}
-
-
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
     if (!ensureJournalGone(folderDefinition.localPath)) {
@@ -732,7 +723,6 @@ Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDef
 
     /* Use a signal mapper to connect the signals to the alias */
     connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-    connect(folder, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChanged()));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 

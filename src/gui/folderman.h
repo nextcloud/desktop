@@ -134,7 +134,6 @@ private slots:
     void slotEtagPollTimerTimeout();
 
     void slotRemoveFoldersForAccount(AccountState* accountState);
-    void slotFolderSyncStateChanged();
 
 private:
     /** Adds a folder for an account, does not add it to the account settings.

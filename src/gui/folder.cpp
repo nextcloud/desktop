@@ -976,6 +976,7 @@ void Folder::slotFolderDiscovered(bool, QString folderName)
 {
     ProgressInfo pi;
     pi._currentDiscoveredFolder = folderName;
+    emit progressInfo(pi);
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 
@@ -988,6 +989,7 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
         // this is the beginning of a sync, set the warning level to 0
         _syncResult.setWarnCount(0);
     }
+    emit progressInfo(pi);
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 

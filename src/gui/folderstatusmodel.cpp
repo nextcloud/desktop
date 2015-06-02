@@ -57,6 +57,9 @@ void FolderStatusModel::setAccount(const AccountPtr& account)
         info._path = "/";
         info._folder = f;
         _folders << info;
+
+        connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
+        connect(f, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
     }
 
     endResetModel();
@@ -145,15 +148,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return Theme::instance()->folderOfflineIcon();
         }
     case FolderStatusDelegate::AddProgressSpace:
-        return !_progresses.value(index.row()).isNull();
+        return !_folders.value(index.row())._progress.isNull();
     case FolderStatusDelegate::SyncProgressItemString:
-        return _progresses.value(index.row())._progressString;
+        return _folders.value(index.row())._progress._progressString;
     case FolderStatusDelegate::WarningCount:
-        return _progresses.value(index.row())._warningCount;
+        return _folders.value(index.row())._progress._warningCount;
     case FolderStatusDelegate::SyncProgressOverallPercent:
-        return _progresses.value(index.row())._overallPercent;
+        return _folders.value(index.row())._progress._overallPercent;
     case FolderStatusDelegate::SyncProgressOverallString:
-        return _progresses.value(index.row())._overallSyncString;
+        return _folders.value(index.row())._progress._overallSyncString;
     }
     return QVariant();
 }
@@ -460,6 +463,17 @@ QStringList FolderStatusModel::createBlackList(FolderStatusModel::SubFolderInfo 
     return result;
 }
 
+void FolderStatusModel::slotUpdateFolderState(Folder *folder)
+{
+    if( ! folder ) return;
+    for (int i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == folder) {
+            emit dataChanged(index(i), index(i),
+                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
+        }
+    }
+}
+
 void FolderStatusModel::slotApplySelectiveSync()
 {
     if (!_dirty)
@@ -491,6 +505,172 @@ void FolderStatusModel::slotApplySelectiveSync()
     }
 
     resetFolders();
+}
+
+static QString shortenFilename( Folder *f, const QString& file )
+{
+    // strip off the server prefix from the file name
+    QString shortFile(file);
+    if( shortFile.isEmpty() ) {
+        return QString::null;
+    }
+
+    if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
+            shortFile.startsWith(QLatin1String("owncloud://")) ) {
+        // rip off the whole ownCloud URL.
+        if( f ) {
+            QString remotePathUrl = f->remoteUrl().toString();
+            shortFile.remove(Utility::toCSyncScheme(remotePathUrl));
+        }
+    }
+    return shortFile;
+}
+
+void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
+{
+    auto par = qobject_cast<QWidget*>(QObject::parent());
+    if (!par->isVisible()) {
+        return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
+    }
+
+    Folder *f = qobject_cast<Folder*>(sender());
+    if( !f ) { return; }
+
+    int folderIndex = -1;
+    for (int i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == f) {
+            folderIndex = i;
+            break;
+        }
+    }
+    if (folderIndex < 0) { return; }
+
+    auto *pi = &_folders[folderIndex]._progress;
+
+    QVector<int> roles;
+    roles << FolderStatusDelegate::AddProgressSpace << FolderStatusDelegate::SyncProgressItemString
+        << FolderStatusDelegate::WarningCount;
+
+    if (!progress._currentDiscoveredFolder.isEmpty()) {
+        pi->_progressString = tr("Discovering '%1'").arg(progress._currentDiscoveredFolder);
+        emit dataChanged(index(folderIndex), index(folderIndex), roles);
+        return;
+    }
+
+    if(!progress._lastCompletedItem.isEmpty()
+            && Progress::isWarningKind(progress._lastCompletedItem._status)) {
+        pi->_warningCount++;
+    }
+
+    // find the single item to display:  This is going to be the bigger item, or the last completed
+    // item if no items are in progress.
+    SyncFileItem curItem = progress._lastCompletedItem;
+    qint64 curItemProgress = -1; // -1 means finished
+    quint64 biggerItemSize = -1;
+    foreach(const ProgressInfo::ProgressItem &citm, progress._currentItems) {
+        if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
+                                      && biggerItemSize < citm._item._size)) {
+            curItemProgress = citm._progress.completed();
+            curItem = citm._item;
+            biggerItemSize = citm._item._size;
+        }
+    }
+    if (curItemProgress == -1) {
+        curItemProgress = curItem._size;
+    }
+
+    QString itemFileName = shortenFilename(f, curItem._file);
+    QString kindString = Progress::asActionString(curItem);
+
+    QString fileProgressString;
+    if (ProgressInfo::isSizeDependent(curItem)) {
+        QString s1 = Utility::octetsToString( curItemProgress );
+        QString s2 = Utility::octetsToString( curItem._size );
+        quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
+        if (estimatedBw) {
+            //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
+            fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
+                .arg(kindString, itemFileName, s1, s2,
+                    Utility::timeToDescriptiveString(progress.fileProgress(curItem).estimatedEta, 3, " ", true),
+                    Utility::octetsToString(estimatedBw) );
+        } else {
+            //: Example text: "uploading foobar.png (2MB of 2MB)"
+            fileProgressString = tr("%1 %2 (%3 of %4)") .arg(kindString, itemFileName, s1, s2);
+        }
+    } else if (!kindString.isEmpty()) {
+        //: Example text: "uploading foobar.png"
+        fileProgressString = tr("%1 %2").arg(kindString, itemFileName);
+    }
+    pi->_progressString = fileProgressString;
+
+    // overall progress
+    quint64 completedSize = progress.completedSize();
+    quint64 completedFile = progress.completedFiles();
+    quint64 currentFile = progress.currentFile();
+    if (currentFile == ULLONG_MAX)
+        currentFile = 0;
+    quint64 totalSize = qMax(completedSize, progress.totalSize());
+    quint64 totalFileCount = qMax(currentFile, progress.totalFiles());
+    QString overallSyncString;
+    if (totalSize > 0) {
+        QString s1 = Utility::octetsToString( completedSize );
+        QString s2 = Utility::octetsToString( totalSize );
+        overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
+            .arg(s1, s2)
+            .arg(currentFile).arg(totalFileCount)
+            .arg( Utility::timeToDescriptiveString(progress.totalProgress().estimatedEta, 3, " ", true) );
+    } else if (totalFileCount > 0) {
+        // Don't attemt to estimate the time left if there is no kb to transfer.
+        overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
+    }
+
+    pi->_overallSyncString =  overallSyncString;
+
+    int overallPercent = 0;
+    if( totalFileCount > 0 ) {
+        // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
+        overallPercent = qRound(double(completedSize + completedFile)/double(totalSize + totalFileCount) * 100.0);
+    }
+    pi->_overallPercent = qBound(0, overallPercent, 100);
+    emit dataChanged(index(folderIndex), index(folderIndex), roles);
+}
+
+void FolderStatusModel::slotHideProgress()
+{
+    auto folderIndex = sender()->property("owncloud_folderIndex").toInt();
+    if (folderIndex < 0 || _folders.size() <= folderIndex) { return; }
+
+    _folders[folderIndex]._progress = SubFolderInfo::Progress();
+    emit dataChanged(index(folderIndex), index(folderIndex),
+                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
+}
+
+void FolderStatusModel::slotFolderSyncStateChange()
+{
+    Folder *f = qobject_cast<Folder*>(sender());
+    if( !f ) { return; }
+    int folderIndex = -1;
+    for (int i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == f) {
+            folderIndex = i;
+            break;
+        }
+    }
+    if (folderIndex < 0) { return; }
+
+    SyncResult::Status state = f->syncResult().status();
+    if (state == SyncResult::SyncPrepare)  {
+        _folders[folderIndex]._progress = SubFolderInfo::Progress();
+    } else if (state == SyncResult::Success || state == SyncResult::Problem) {
+        // start a timer to stop the progress display
+        QTimer *timer;
+        timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
+        connect(timer, SIGNAL(timeout()), timer, SLOT(deleteLater()));
+        timer->setSingleShot(true);
+        timer->setProperty("owncloud_folderIndex", folderIndex);
+        timer->start(5000);
+    }
 }
 
 

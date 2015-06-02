@@ -178,6 +178,7 @@ signals:
     void syncStarted();
     void syncFinished(const SyncResult &result);
     void scheduleToSync(Folder*);
+    void progressInfo(const ProgressInfo& progress);
 
 public slots:
 
