@@ -408,6 +408,11 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
         reply->ignoreSslErrors(errors);
     } else {
         _treatSslErrorsAsFailure = true;
+        // if during normal operation, a new certificate was MITM'ed, and the user does not
+        // ACK it, the running request must be aborted and the QNAM must be reset, to not
+        // treat the new cert as granted. See bug #3283
+        reply->abort();
+        resetNetworkAccessManager();
         return;
     }
 }
