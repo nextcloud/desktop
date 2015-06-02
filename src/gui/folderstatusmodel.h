@@ -19,6 +19,7 @@
 #include <QStandardItemModel>
 #include <accountfwd.h>
 
+class QNetworkReply;
 namespace OCC {
 
 class Folder;
@@ -85,6 +86,7 @@ private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotHideProgress();
     void slotFolderSyncStateChange();
+    void slotLscolFinishedWithError(QNetworkReply *r);
 
 private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,

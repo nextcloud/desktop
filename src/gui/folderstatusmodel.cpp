@@ -352,14 +352,18 @@ bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
 void FolderStatusModel::fetchMore(const QModelIndex& parent)
 {
     auto info = infoForIndex(parent);
+
     if (!info || info->_fetched || info->_fetching)
         return;
 
     info->_fetching = true;
     LsColJob *job = new LsColJob(_account, info->_folder->remotePath() + "/" + info->_path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    job->setTimeout(5 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
+            this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
     job->start();
     job->setProperty(propertyParentIndexC , QVariant::fromValue<QPersistentModelIndex>(parent));
 }
@@ -421,15 +425,30 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     endInsertRows();
 }
 
-/*void SelectiveSyncTreeView::slotLscolFinishedWithError(QNetworkReply *r)
+void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
 {
+/*
     if (r->error() == QNetworkReply::ContentNotFoundError) {
         _loading->setText(tr("No subfolders currently on the server."));
     } else {
         _loading->setText(tr("An error occured while loading the list of sub folders."));
     }
     _loading->resize(_loading->sizeHint()); // because it's not in a layout
-}*/
+*/
+    auto job = qobject_cast<LsColJob *>(sender());
+    Q_ASSERT(job);
+    QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
+    if (!idx.isValid()) {
+        return;
+    }
+    auto parentInfo = infoForIndex(idx);
+    if (parentInfo) {
+        parentInfo->_fetching = false;
+        if (r->error() == QNetworkReply::ContentNotFoundError) {
+            parentInfo->_fetched = true;
+        }
+    }
+}
 
 QStringList FolderStatusModel::createBlackList(FolderStatusModel::SubFolderInfo *root,
                                                const QStringList &oldBlackList) const
