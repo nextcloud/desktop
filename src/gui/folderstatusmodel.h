@@ -19,10 +19,6 @@
 #include <QStandardItemModel>
 #include <accountfwd.h>
 
-#ifndef Q_DECL_OVERRIDE
-#define Q_DECL_OVERRIDE
-#endif
-
 namespace OCC {
 
 class Folder;
@@ -95,6 +91,12 @@ private:
                                 const QStringList& oldBlackList) const;
     AccountPtr _account;
     bool _dirty = false;  // If the selective sync checkboxes were changed
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    //the roles argument was added in Qt5
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>())
+    { emit QAbstractItemModel::dataChanged(topLeft,bottomRight); }
+#endif
 
 signals:
     void dirtyChanged();

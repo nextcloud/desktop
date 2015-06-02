@@ -222,7 +222,7 @@ bool FolderStatusModel::setData(const QModelIndex& index, const QVariant& value,
         }
         _dirty = true;
         emit dirtyChanged();
-        dataChanged(index, index, QVector<int>() << role);
+        emit dataChanged(index, index, QVector<int>() << role);
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);

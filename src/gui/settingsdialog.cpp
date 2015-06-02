@@ -166,7 +166,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     _ui->stack->insertWidget(0 , accountSettings);
     _actions.insert(accountAction, accountSettings);
 
-    auto group = findChild<QActionGroup*>(QString(), Qt::FindDirectChildrenOnly);
+    auto group = findChild<QActionGroup*>(
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+                    QString() , Qt::FindDirectChildrenOnly
+#endif
+        );
     Q_ASSERT(group);
     group->addAction(accountAction);
 
