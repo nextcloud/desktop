@@ -65,8 +65,16 @@ bool OCUpdater::performUpdate()
 
 void OCUpdater::backgroundCheckForUpdate()
 {
-    // FIXME
-    checkForUpdate();
+    int dlState = downloadState();
+
+     if( dlState == Unknown ||
+             dlState == UpToDate         ||
+             dlState == DownloadComplete ||
+             dlState == DownloadFailed   ||
+             dlState == DownloadTimedOut ) {
+         // how about  UpdateOnlyAvailableThroughSystem?
+         checkForUpdate();
+     }
 }
 
 QString OCUpdater::statusString() const

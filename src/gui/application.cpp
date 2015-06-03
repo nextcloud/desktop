@@ -175,11 +175,10 @@ Application::Application(int &argc, char **argv) :
     // Also check immediatly
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
-    if( cfg.skipUpdateCheck() ) {
-        qDebug() << Q_FUNC_INFO << "Skipping update check";
-    } else {
-        QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
-    }
+    // Update checks
+    _updaterTimer.setInterval(1000*120*60); // check every two hours
+    connect(&_updaterTimer, SIGNAL(timeout()), this, SLOT(slotStartUpdateDetector()));
+    QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
 
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
@@ -249,8 +248,14 @@ void Application::slotCleanup()
 
 void Application::slotStartUpdateDetector()
 {
-    Updater *updater = Updater::instance();
-    updater->backgroundCheckForUpdate();
+    ConfigFile cfg;
+
+    if( cfg.skipUpdateCheck() ) {
+        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
+    } else {
+        Updater *updater = Updater::instance();
+        updater->backgroundCheckForUpdate();
+    }
 }
 
 void Application::slotCheckConnection()

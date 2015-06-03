@@ -107,6 +107,7 @@ private:
     ClientProxy _proxy;
 
     QTimer _checkConnectionTimer;
+    QTimer _updaterTimer;
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
