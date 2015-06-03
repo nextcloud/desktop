@@ -23,7 +23,7 @@
 namespace OCC {
 
 
-/* Given a sorted list of paths ending with '/', return weather or not the given path is within one of the paths of the list*/
+/* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
 static bool findPathInList(const QStringList &list, const QString &path)
 {
     Q_ASSERT(std::is_sorted(list.begin(), list.end()));
@@ -84,12 +84,13 @@ bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
     }
 
     auto limit = _newSharedFolderSizeLimit;
-    if (true || result > limit) {
+    if (result > limit) {
         // we tell the UI there is a new folder
         emit newSharedFolder(path);
         return true;
     } else {
-        // it is not too big, but it in the white list and do not block
+        // it is not too big, put it in the white list (so we will not do more query for the children)
+        // and and do not block.
         auto p = path;
         if (!p.endsWith(QLatin1Char('/'))) { p += QLatin1Char('/'); }
         _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),

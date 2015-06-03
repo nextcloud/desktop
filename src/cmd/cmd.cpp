@@ -443,8 +443,9 @@ restart_sync:
 
     Cmd cmd;
     SyncJournalDb db(options.source_dir);
-    if (!selectiveSyncList.empty())
+    if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(&db, selectiveSyncList);
+    }
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
     QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
