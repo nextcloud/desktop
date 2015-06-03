@@ -1769,7 +1769,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="81"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>กิจกรรม</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="87"/>
@@ -1797,7 +1797,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="74"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>กิจกรรม</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="78"/>
