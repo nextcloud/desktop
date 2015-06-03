@@ -14,13 +14,15 @@
 
 #pragma once
 
+#include "owncloudlib.h"
+
 #include <QObject>
 #include <QByteArray>
 #include <QFutureWatcher>
 
 namespace OCC {
 
-class TransmissionChecksumValidator : public QObject
+class OWNCLOUDSYNC_EXPORT TransmissionChecksumValidator : public QObject
 {
     Q_OBJECT
 public:
