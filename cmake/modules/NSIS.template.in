@@ -97,6 +97,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include WordFunc.nsh  ;Used by VersionCompare macro function.
 !include FileFunc.nsh  ;Used to read out parameters
 !include UAC.nsh ;Used by the UAC elevation to install as user or admin.
+!include nsProcess.nsh ;Used to kill the running process
 !include Library.nsh ;Used by the COM registration for shell extensions
 !include x64.nsh ;Used to determine the right arch for the shell extensions
 
@@ -247,11 +248,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 ##############################################################################
 
 Function LaunchApplication
-   ${UAC.CallFunctionAsUser} LaunchApplicationAsUser
-FunctionEnd
-
-Function LaunchApplicationAsUser
-   Exec "$INSTDIR\${APPLICATION_EXECUTABLE}"
+   !insertmacro UAC_AsUser_ExecShell "" "$INSTDIR\${APPLICATION_EXECUTABLE}" "" "" ""
 FunctionEnd
 
 ##############################################################################
@@ -261,7 +258,7 @@ FunctionEnd
 ##############################################################################
 
 !macro CheckForProcess processName gotoWhenFound gotoWhenNotFound
-   Processes::FindProcess ${processName}
+   ${nsProcess::FindProcess} ${processName} $R0
    StrCmp $R0 "0" ${gotoWhenNotFound} ${gotoWhenFound}
 !macroend
 
@@ -271,7 +268,7 @@ FunctionEnd
      /SD IDYES IDYES process_${processName}_kill IDNO process_${processName}_ended
    process_${processName}_kill:
       DetailPrint $ConfirmEndProcess_KILLING_PROCESSES_TEXT
-      Processes::KillProcess ${processName}
+      ${nsProcess::KillProcess} ${processName} $R0
       Sleep 1500
       StrCmp $R0 "1" process_${processName}_ended
       DetailPrint $ConfirmEndProcess_KILL_NOT_FOUND_TEXT
@@ -366,7 +363,6 @@ Function PageLeaveReinstall
       RMDir $INSTDIR
    no_remove_uninstaller:
       StrCmp $R0 "2" 0 +3
-      UAC::Unload
       Quit
       BringToFront
    reinst_done:
@@ -761,7 +757,7 @@ Function .onInit
    ${MementoSectionRestore}
 
    UAC_Elevate:
-      UAC::RunElevated
+      !insertmacro UAC_RunElevated
       StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
       StrCmp 0 $0 0 UAC_Err ; Error?
       StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
@@ -809,11 +805,9 @@ Function .onInstSuccess
    ${AndIf} $InstallRunIfSilent == "yes"
      Call LaunchApplication
    ${EndIf}
-   UAC::Unload ;Must call unload!
 FunctionEnd
 
 Function .onInstFailed
-   UAC::Unload ;Must call unload!
 FunctionEnd
 
 ##############################################################################
@@ -826,7 +820,7 @@ Function un.onInit
    Call un.SetLang
 
    UAC_Elevate:
-      UAC::RunElevated
+      !insertmacro UAC_RunElevated
       StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
       StrCmp 0 $0 0 UAC_Err ; Error?
       StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
@@ -857,9 +851,7 @@ Function un.onInit
 FunctionEnd
 
 Function un.onUnInstSuccess
-   UAC::Unload ;Must call unload!
 FunctionEnd
 
 Function un.onUnInstFailed
-   UAC::Unload ;Must call unload!
 FunctionEnd
