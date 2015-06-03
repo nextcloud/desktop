@@ -85,8 +85,7 @@ void GeneralSettings::loadMiscSettings()
 
 void GeneralSettings::slotUpdateInfo()
 {
-    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance()))
-    {
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
         connect(updater, SIGNAL(downloadStateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), qApp, SLOT(quit()), Qt::UniqueConnection);

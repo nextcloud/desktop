@@ -84,6 +84,7 @@ protected slots:
     void slotAccountStateRemoved(AccountState *accountState);
     void slotAccountStateChanged(int state);
     void slotCrash();
+    void slotNotifyAboutAvailableUpdate();
 
 private:
     void setHelp();

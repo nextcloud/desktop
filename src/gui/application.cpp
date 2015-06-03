@@ -34,6 +34,8 @@
 #include "sharedialog.h"
 
 #include "updater/updater.h"
+#include "updater/ocupdater.h"
+
 #include "creds/abstractcredentials.h"
 
 #include "config.h"
@@ -253,8 +255,24 @@ void Application::slotStartUpdateDetector()
     if( cfg.skipUpdateCheck() ) {
         qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
     } else {
-        Updater *updater = Updater::instance();
-        updater->backgroundCheckForUpdate();
+        if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+            connect(updater, SIGNAL(downloadStateChanged()), this,
+                    SLOT(slotNotifyAboutAvailableUpdate()), Qt::UniqueConnection);
+
+            updater->backgroundCheckForUpdate();
+        }
+    }
+}
+
+void Application::slotNotifyAboutAvailableUpdate()
+{
+    if( _gui ) {
+        if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+            // Show a tray message if an Update is ready...
+            if( updater->downloadState() == OCUpdater::DownloadComplete ) {
+                _gui->slotShowTrayMessage( tr("Update Check"), updater->statusString() );
+            }
+        }
     }
 }
 

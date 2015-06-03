@@ -69,7 +69,7 @@ void OCUpdater::backgroundCheckForUpdate()
 
      if( dlState == Unknown ||
              dlState == UpToDate         ||
-             dlState == DownloadComplete ||
+             /* dlState == DownloadComplete ||  <- are we checking if a previous download was successful already? */
              dlState == DownloadFailed   ||
              dlState == DownloadTimedOut ) {
          // how about  UpdateOnlyAvailableThroughSystem?
