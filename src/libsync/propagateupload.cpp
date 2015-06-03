@@ -570,9 +570,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
         QByteArray replyContent = job->reply()->readAll();
         qDebug() << replyContent; // display the XML error in the debug
-        QRegExp rx("<s:message>(.*)</s:message>"); // Issue #1366: display server exception
-        if (rx.indexIn(QString::fromUtf8(replyContent)) != -1) {
-            errorString += QLatin1String(" (") + rx.cap(1) + QLatin1Char(')');
+        QString extraMsg = extractErrorMessage(replyContent);
+        if (!extraMsg.isEmpty()) {
+            errorString += QLatin1String(" (") + extraMsg + QLatin1Char(')');
         }
 
         if (job->reply()->hasRawHeader("OC-ErrorString")) {

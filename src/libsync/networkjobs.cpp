@@ -851,7 +851,21 @@ bool JsonApiJob::finished()
     return true;
 }
 
+QString extractErrorMessage(const QByteArray& errorResponse)
+{
+    QXmlStreamReader reader(errorResponse);
+    reader.readNextStartElement();
+    if (reader.name() != "error") {
+        return QString::null;
+    }
 
-
+    while (!reader.atEnd() && reader.error() == QXmlStreamReader::NoError) {
+        reader.readNextStartElement();
+        if (reader.name() == QLatin1String("message")) {
+            return reader.readElementText();
+        }
+    }
+    return QString::null;
+}
 
 } // namespace OCC
