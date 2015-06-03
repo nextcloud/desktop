@@ -511,14 +511,13 @@ void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
         addApprovedCerts(approvedCerts);
         // all ssl certs are known and accepted. We can ignore the problems right away.
 //         qDebug() << out << "Certs are known and trusted! This is not an actual error.";
-        reply->ignoreSslErrors();
+
+        // Warning: Do *not* use ignoreSslErrors() (without args) here:
+        // it permanently ignores all SSL errors for this host, even
+        // certificate changes.
+        reply->ignoreSslErrors(errors);
     } else {
         _treatSslErrorsAsFailure = true;
-        // if during normal operation, a new certificate was MITM'ed, and the user does not
-        // ACK it, the running request must be aborted and the QNAM must be reset, to not
-        // treat the new cert as granted. See bug #3283
-        reply->abort();
-        resetNetworkAccessManager();
         return;
     }
 }
