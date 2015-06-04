@@ -257,7 +257,7 @@ FunctionEnd
 
 !macro CheckForProcess processName gotoWhenFound gotoWhenNotFound
    ${nsProcess::FindProcess} ${processName} $R0
-   StrCmp $R0 "0" ${gotoWhenNotFound} ${gotoWhenFound}
+   StrCmp $R0 0 ${gotoWhenFound} ${gotoWhenNotFound}
 !macroend
 
 !macro ConfirmEndProcess processName
