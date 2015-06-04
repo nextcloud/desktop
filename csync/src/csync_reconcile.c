@@ -181,6 +181,12 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
                 if(!other) {
                     cur->instruction = CSYNC_INSTRUCTION_NEW;
+                    if (cur->type == CSYNC_FTW_TYPE_DIR) {
+                        // For new directories we always want to update the etag once
+                        // the directory has been propagated. Otherwise the directory
+                        // could appear locally without being added to the database.
+                        cur->should_update_etag = true;
+                    }
                 } else if (other->instruction == CSYNC_INSTRUCTION_NONE
                            || cur->type == CSYNC_FTW_TYPE_DIR) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
