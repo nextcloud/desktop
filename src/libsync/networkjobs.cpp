@@ -868,4 +868,14 @@ QString extractErrorMessage(const QByteArray& errorResponse)
     return QString::null;
 }
 
+QString errorMessage(const QString& baseError, const QByteArray& body)
+{
+    QString msg = baseError;
+    QString extra = extractErrorMessage(body);
+    if (!extra.isEmpty()) {
+        msg += QString::fromLatin1(" (%1)").arg(extra);
+    }
+    return msg;
+}
+
 } // namespace OCC

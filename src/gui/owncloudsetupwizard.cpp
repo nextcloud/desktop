@@ -272,12 +272,7 @@ void OwncloudSetupWizard::slotAuthError()
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
                        .arg(_ocWizard->account()->url().toString());
         } else {
-            errorMsg = reply->errorString();
-
-            QString extraMsg = extractErrorMessage(reply->readAll());
-            if (!extraMsg.isEmpty()) {
-                errorMsg.append(QString(" (%1)").arg(extraMsg));
-            }
+            errorMsg = errorMessage(reply->errorString(), reply->readAll());
         }
 
     // Something else went wrong, maybe the response was 200 but with invalid data.

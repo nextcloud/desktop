@@ -187,7 +187,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         stat = CredentialsWrong;
 
     } else if( reply->error() != QNetworkReply::NoError ) {
-        _errors << reply->errorString();
+        _errors << errorMessage(reply->errorString(), reply->readAll());
 
         const int httpStatus =
                 reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

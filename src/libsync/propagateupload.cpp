@@ -566,14 +566,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
                "It is restored and your edit is in the conflict file."))) {
             return;
         }
-        QString errorString = job->errorString();
-
         QByteArray replyContent = job->reply()->readAll();
         qDebug() << replyContent; // display the XML error in the debug
-        QString extraMsg = extractErrorMessage(replyContent);
-        if (!extraMsg.isEmpty()) {
-            errorString += QLatin1String(" (") + extraMsg + QLatin1Char(')');
-        }
+        QString errorString = errorMessage(job->errorString(), replyContent);
 
         if (job->reply()->hasRawHeader("OC-ErrorString")) {
             errorString = job->reply()->rawHeader("OC-ErrorString");
