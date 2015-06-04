@@ -119,6 +119,7 @@ void PropagateLocalMkdir::start()
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
     }
+    _propagator->addTouchedFile(newDirStr);
     QDir localDir(_propagator->_localDir);
     if (!localDir.mkpath(_item->_file)) {
         done( SyncFileItem::NormalError, tr("could not create directory %1").arg(newDirStr) );
