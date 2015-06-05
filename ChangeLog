@@ -1,6 +1,12 @@
 ChangeLog
 =========
 version 1.8.2 (release 2015-05-xx)
+ * Improve reporting of server error messages. (#3220)
+ * Discovery: Ignore folders with any 503. (#3113)
+ * Wizard: Show server error message if possible. (#3220)
+ * QNAM: Fix handling of mitm cert changes (#3283)
+ * Some more NSIS fixes, translations added
+ * Win32: Make Setup/Update Mutex theme-unique (#3272)
  * HTTP: Add the branding name to the UserAgent string.
  * ConnectonValidator: Always run with new credentials. (#3266)
  * Recall Feature: Admins can trigger an upload of a file from
