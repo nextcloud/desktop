@@ -248,7 +248,11 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
 ##############################################################################
 
 Function LaunchApplication
-   !insertmacro UAC_AsUser_ExecShell "" "$INSTDIR\${APPLICATION_EXECUTABLE}" "" "" ""
+   ${UAC.CallFunctionAsUser} LaunchApplicationAsUser
+FunctionEnd
+
+Function LaunchApplicationAsUser
+   Exec "$INSTDIR\${APPLICATION_EXECUTABLE}"
 FunctionEnd
 
 ##############################################################################
@@ -363,6 +367,7 @@ Function PageLeaveReinstall
       RMDir $INSTDIR
    no_remove_uninstaller:
       StrCmp $R0 "2" 0 +3
+      UAC::Unload
       Quit
       BringToFront
    reinst_done:
@@ -757,7 +762,7 @@ Function .onInit
    ${MementoSectionRestore}
 
    UAC_Elevate:
-      !insertmacro UAC_RunElevated
+      UAC::RunElevated
       StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
       StrCmp 0 $0 0 UAC_Err ; Error?
       StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
@@ -805,9 +810,11 @@ Function .onInstSuccess
    ${AndIf} $InstallRunIfSilent == "yes"
      Call LaunchApplication
    ${EndIf}
+   UAC::Unload ;Must call unload!
 FunctionEnd
 
 Function .onInstFailed
+   UAC::Unload ;Must call unload!
 FunctionEnd
 
 ##############################################################################
@@ -820,7 +827,7 @@ Function un.onInit
    Call un.SetLang
 
    UAC_Elevate:
-      !insertmacro UAC_RunElevated
+      UAC::RunElevated
       StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
       StrCmp 0 $0 0 UAC_Err ; Error?
       StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
@@ -851,7 +858,9 @@ Function un.onInit
 FunctionEnd
 
 Function un.onUnInstSuccess
+   UAC::Unload ;Must call unload!
 FunctionEnd
 
 Function un.onUnInstFailed
+   UAC::Unload ;Must call unload!
 FunctionEnd
