@@ -719,25 +719,26 @@ Function .onInit
 
    ${MementoSectionRestore}
 
-   UAC_Elevate:
-      !insertmacro UAC_RunElevated
-      StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
-      StrCmp 0 $0 0 UAC_Err ; Error?
-      StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
-      Quit
-
-   UAC_Err:
-      MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
-      Abort
-
-   UAC_ElevationAborted:
-      Abort
-
-   UAC_Success:
-      StrCmp 1 $3 +4 ;Admin?
-      StrCmp 3 $1 0 UAC_ElevationAborted ;Try again?
-      MessageBox MB_ICONSTOP $UAC_INSTALLER_REQUIRE_ADMIN
-      goto UAC_Elevate
+   UAC_TryAgain:
+      ${Switch} $0
+      ${Case} 0
+          ${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
+          ${IfThen} $3 <> 0 ${|} ${Break} ${|} ;we are admin, let the show go on
+          ${If} $1 = 3 ;RunAs completed successfully, but with a non-admin user
+             MessageBox mb_YesNo|mb_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND $UAC_INSTALLER_REQUIRE_ADMIN /SD IDNO IDYES UAC_TryAgain IDNO 0
+          ${EndIf}
+          ;fall-through and die
+      ${Case} 1223
+         MessageBox MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND $UAC_INSTALLER_REQUIRE_ADMIN
+         Quit
+      ${Case} 1062
+         MessageBox MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND $UAC_ERROR_LOGON_SERVICE
+         Quit
+      ${Default}
+         MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
+         Abort
+         Quit
+      ${EndSwitch}
 
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Installer") i .r1 ?e'
@@ -782,25 +783,26 @@ FunctionEnd
 Function un.onInit
    Call un.SetLang
 
-   UAC_Elevate:
-      !insertmacro UAC_RunElevated
-      StrCmp 1223 $0 UAC_ElevationAborted ; UAC dialog aborted by user?
-      StrCmp 0 $0 0 UAC_Err ; Error?
-      StrCmp 1 $1 0 UAC_Success ;Are we the real deal or just the wrapper?
-      Quit
-
-   UAC_Err:
-      MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
-      Abort
-
-   UAC_ElevationAborted:
-      Abort
-
-   UAC_Success:
-      StrCmp 1 $3 +4 ;Admin?
-      StrCmp 3 $1 0 UAC_ElevationAborted ;Try again?
-      MessageBox MB_ICONSTOP $UAC_UNINSTALLER_REQUIRE_ADMIN
-      goto UAC_Elevate
+   UAC_TryAgain:
+      ${Switch} $0
+      ${Case} 0
+          ${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
+          ${IfThen} $3 <> 0 ${|} ${Break} ${|} ;we are admin, let the show go on
+          ${If} $1 = 3 ;RunAs completed successfully, but with a non-admin user
+             MessageBox mb_YesNo|mb_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND $UAC_UNINSTALLER_REQUIRE_ADMIN /SD IDNO IDYES UAC_TryAgain IDNO 0
+          ${EndIf}
+          ;fall-through and die
+      ${Case} 1223
+         MessageBox MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND $UAC_UNINSTALLER_REQUIRE_ADMIN
+         Quit
+      ${Case} 1062
+         MessageBox MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND $UAC_ERROR_LOGON_SERVICE
+         Quit
+      ${Default}
+         MessageBox MB_ICONSTOP "$UAC_ERROR_ELEVATE $0"
+         Abort
+         Quit
+      ${EndSwitch}
 
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Uninstaller") i .r1 ?e'
