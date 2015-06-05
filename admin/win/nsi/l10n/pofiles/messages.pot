@@ -198,6 +198,10 @@ msgstr "The installer is already running."
 msgid "This uninstaller requires admin access, try again"
 msgstr "This uninstaller requires admin access, try again"
 
+#. UAC_ERROR_LOGON_SERVICE
+msgid "Logon service is not running, aborting!"
+msgstr "Logon service is not running, aborting!"
+
 #. INIT_UNINSTALLER_RUNNING
 msgid "The uninstaller is already running."
 msgstr "The uninstaller is already running."
