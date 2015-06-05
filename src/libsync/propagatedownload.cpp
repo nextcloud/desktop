@@ -410,15 +410,21 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
         // If we sent a 'Range' header and get 416 back, we want to retry
         // without the header.
-        bool badRangeHeader = job->resumeStart() > 0 && _item->_httpErrorCode == 416;
+        const bool badRangeHeader = job->resumeStart() > 0 && _item->_httpErrorCode == 416;
         if (badRangeHeader) {
             qDebug() << Q_FUNC_INFO << "server replied 416 to our range request, trying again without";
             _propagator->_anotherSyncNeeded = true;
         }
 
+        // Getting a 404 probably means that the file was deleted on the server.
+        const bool fileNotFound = _item->_httpErrorCode == 404;
+        if (fileNotFound) {
+            qDebug() << Q_FUNC_INFO << "server replied 404, assuming file was deleted";
+        }
+
         // Don't keep the temporary file if it is empty or we
-        // used a bad range header.
-        if (_tmpFile.size() == 0 || badRangeHeader) {
+        // used a bad range header or the file's not on the server anymore.
+        if (_tmpFile.size() == 0 || badRangeHeader || fileNotFound) {
             _tmpFile.close();
             _tmpFile.remove();
             _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
@@ -439,19 +445,20 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         if (err == QNetworkReply::OperationCanceledError && reply->property(owncloudCustomSoftErrorStringC).isValid()) {
             job->setErrorString(reply->property(owncloudCustomSoftErrorStringC).toString());
             job->setErrorStatus(SyncFileItem::SoftError);
+        } else if (badRangeHeader) {
+            // Can't do this in classifyError() because 416 without a
+            // Range header should result in NormalError.
+            job->setErrorStatus(SyncFileItem::SoftError);
+        } else if (fileNotFound) {
+            job->setErrorString(tr("File was deleted from server"));
+            job->setErrorStatus(SyncFileItem::SoftError);
         }
 
         SyncFileItem::Status status = job->errorStatus();
-
-
         if (status == SyncFileItem::NoStatus) {
             status = classifyError(err, _item->_httpErrorCode);
         }
-        if (badRangeHeader) {
-            // Can't do this in classifyError() because 416 without a
-            // Range header should result in NormalError.
-            status = SyncFileItem::SoftError;
-        }
+
         done(status, job->errorString());
         return;
     }
