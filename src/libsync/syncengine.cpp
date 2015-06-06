@@ -75,7 +75,7 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<Progress::Info>("Progress::Info");
 
-    _thread.setObjectName("CSync_Neon_Thread");
+    _thread.setObjectName("SyncEngine_Thread");
     _thread.start();
 }
 
