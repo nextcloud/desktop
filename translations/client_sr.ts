@@ -1486,7 +1486,7 @@ It is not advisable to use it.</source>
         <translation>Пажња! Могуће сударање због величине слова са %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>не могу да направим директоријум %1</translation>
     </message>
@@ -1512,7 +1512,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Фајл %1 се не може преименовати у %2 због сударања са називом локалног фајла</translation>
     </message>

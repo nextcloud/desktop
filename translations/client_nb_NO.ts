@@ -1486,7 +1486,7 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Merk! mulig sammenfall med %1 pga. sensitivitet for store/små bokstaver</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>klarte ikke å opprette mappe %1</translation>
     </message>
@@ -1512,7 +1512,7 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Fil %1 kan ikke omdøpes til %2 på grunn av lokalt sammenfall av filnavn</translation>
     </message>

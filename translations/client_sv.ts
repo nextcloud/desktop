@@ -1485,7 +1485,7 @@ Det är inte lämpligt använda den.</translation>
         <translation>Observera, eventuell skiftlägeskänslig konflikt med %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>kunde ej skapa katalogen %1</translation>
     </message>
@@ -1511,7 +1511,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Filen %1 kan inte döpas om till %2 på grund av ett lokalt filnamn</translation>
     </message>

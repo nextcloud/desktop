@@ -1484,7 +1484,7 @@ It is not advisable to use it.</source>
         <translation>小心！%1 的文件名可能有大小写冲突</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>不能创建文件夹 %1</translation>
     </message>
@@ -1510,7 +1510,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>由于本地文件名冲突，文件 %1 无法更名为 %2</translation>
     </message>

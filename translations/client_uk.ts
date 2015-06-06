@@ -1485,7 +1485,7 @@ It is not advisable to use it.</source>
         <translation>Увага, можливий конфлікт чутливості до реєстру з %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>Не вдалося створити теку %1</translation>
     </message>
@@ -1511,7 +1511,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>%1 не можна перейменувати на %2 через локальний конфлікт імен</translation>
     </message>

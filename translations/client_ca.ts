@@ -1487,7 +1487,7 @@ No és aconsellada usar-la.</translation>
         <translation>Atenció, possible xoc entre majúscules i minúscules amb %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>No s&apos;ha pogut crear el directori %1</translation>
     </message>
@@ -1513,7 +1513,7 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>El fitxer %1 no es pot reanomenar a %2 perquè hi ha un xoc amb el nom d&apos;un fitxer local</translation>
     </message>

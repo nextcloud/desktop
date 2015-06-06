@@ -1485,7 +1485,7 @@ Nie je vhodné ju používať.</translation>
         <translation>Pozor, možná kolízia z dôvodu veľkosti písmen s %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>nepodarilo sa vytvoriť priečinok %1</translation>
     </message>
@@ -1511,7 +1511,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
