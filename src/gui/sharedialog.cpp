@@ -556,7 +556,7 @@ bool ShareDialog::uploadExternalFile()
     FolderMan::instance()->folder(folderName);
     if( ! folder ) {
         qDebug() << "Folder not defined: " << folderName;
-        displayInfo(tr("Cannot find an folder to upload to."));
+        displayInfo(tr("Cannot find a folder to upload to."));
         return false;
     }
 
