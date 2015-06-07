@@ -10,6 +10,7 @@
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "Norwegian"
 !insertmacro MUI_LANGUAGE "Russian"
+!insertmacro MUI_LANGUAGE "Thai"
 !insertmacro MUI_LANGUAGE "Finnish"
 !insertmacro MUI_LANGUAGE "Basque"
 !insertmacro MUI_LANGUAGE "Greek"
