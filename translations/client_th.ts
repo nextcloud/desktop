@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>Sync Running</source>
-        <translation>การซิงค์ข้อมูลกำลังทำงาน</translation>
+        <translation>กำลังผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="483"/>
@@ -499,7 +499,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1022"/>
         <source>Waits to start syncing.</source>
-        <translation>รอการเริ่มต้นซิงค์ข้อมูล</translation>
+        <translation>รอเริ่มต้นการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1025"/>
@@ -509,12 +509,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1028"/>
         <source>Sync is running.</source>
-        <translation>การซิงค์ข้อมูลกำลังทำงาน</translation>
+        <translation>การผสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1031"/>
         <source>Last Sync was successful.</source>
-        <translation>การซิงค์ข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
+        <translation>ผสานข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1036"/>
@@ -534,7 +534,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1045"/>
         <source>Sync is paused.</source>
-        <translation>การซิงค์ข้อมูลถูกหยุดไว้ชั่วคราว</translation>
+        <translation>การผสานข้อมูลถูกหยุดไว้ชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1051"/>
@@ -2988,17 +2988,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="59"/>
         <source>Waiting to start sync</source>
-        <translation>กำลังรอการเริ่มต้นเชื่อมข้อมูล</translation>
+        <translation>กำลังรอการเริ่มต้นผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Sync is running</source>
-        <translation>การเชื่อมข้อมูลกำลังทำงาน</translation>
+        <translation>การผสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Sync Success</source>
-        <translation>การเชื่อมข้อมูลเสร็จสิ้น</translation>
+        <translation>การผสานข้อมูลเสร็จสิ้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
