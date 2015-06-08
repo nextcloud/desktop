@@ -282,6 +282,8 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
   if (getenv("CSYNC_CONFLICT_FILE_USERNAME")) {
       rc = asprintf(&conflict, "*_conflict_%s-*", getenv("CSYNC_CONFLICT_FILE_USERNAME"));
       if (rc < 0) {
+          SAFE_FREE(bname);
+          SAFE_FREE(dname);
           goto out;
       }
       rc = csync_fnmatch(conflict, path, 0);

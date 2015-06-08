@@ -222,6 +222,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       tmp = csync_statedb_get_stat_by_hash(ctx, h);
       if(_last_db_return_error(ctx)) {
           SAFE_FREE(st);
+          SAFE_FREE(tmp);
           ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
           return -1;
       }
@@ -404,6 +405,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   } else  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
+      SAFE_FREE(st);
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
@@ -743,6 +745,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
         if(_last_db_return_error(ctx)) {
             ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+            SAFE_FREE(etag);
             goto error;
         }
 
