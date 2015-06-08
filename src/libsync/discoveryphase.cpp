@@ -217,17 +217,18 @@ static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
             file_stat->directDownloadCookies = strdup(value.toUtf8());
             file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES;
         } else if (property == "permissions") {
+            auto v = value.toUtf8();
             if (value.isEmpty()) {
                 // special meaning for our code: server returned permissions but are empty
                 // meaning only reading is allowed for this resource
                 file_stat->remotePerm[0] = ' ';
                 // see _csync_detect_update()
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
-            } else if (value.length() < int(sizeof(file_stat->remotePerm))) {
-                strncpy(file_stat->remotePerm, value.toUtf8(), sizeof(file_stat->remotePerm));
+            } else if (v.length() < int(sizeof(file_stat->remotePerm))) {
+                strncpy(file_stat->remotePerm, v.constData(), sizeof(file_stat->remotePerm));
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
             } else {
-                // old server, keep file_stat->remotePerm empty
+                qWarning() << "permissions too large" << v;
             }
         }
     }
