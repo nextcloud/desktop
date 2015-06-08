@@ -1,36 +1,37 @@
 ChangeLog
 =========
-version 1.8.2 (release 2015-05-xx)
- * Improve reporting of server error messages. (#3220)
- * Discovery: Ignore folders with any 503. (#3113)
- * Wizard: Show server error message if possible. (#3220)
+version 1.8.2 (release 2015-06-08)
+ * Improve reporting of server error messages (#3220)
+ * Discovery: Ignore folders with any 503 (#3113)
+ * Wizard: Show server error message if possible (#3220)
  * QNAM: Fix handling of mitm cert changes (#3283)
- * Some more NSIS fixes, translations added
+ * Win32: Installer translations added (#3277)
+ * Win32: Allow concurrent OEM (un-)installers (#3272)
  * Win32: Make Setup/Update Mutex theme-unique (#3272)
- * HTTP: Add the branding name to the UserAgent string.
- * ConnectonValidator: Always run with new credentials. (#3266)
+ * HTTP: Add the branding name to the UserAgent string
+ * ConnectonValidator: Always run with new credentials (#3266)
  * Recall Feature: Admins can trigger an upload of a file from
-   client to server again
- * Propagator: Add 'Content-Length: 0' header to MKCOL request
+   client to server again (#3246)
+ * Propagator: Add 'Content-Length: 0' header to MKCOL request (#3256)
  * Switch on checksum verification through branding or config
  * Add ability for checksum verification of up and download
  * Fix opening external links for some labels (#3135)
  * AccountState: Run only a single validator, allow error message
-   overriding (#3236 #3153)
+   overriding (#3236, #3153)
  * SyncJournalDB: Minor fixes and simplificatons
  * SyncEngine: Force re-read of folder Etags for upgrades from
    1.8.0 and 1.8.1
- * Propagator: Limit length of temporary file name #2789
- * ShareDialog: Password ui fixes. #3189
- * Fix startup hang by removing QSettings lock file. (#3175)
- * Wizard: Allow SSL cert dialog to show twice. (#3168)
- * ProtocolWidget: Fix rename message. (#3210)
+ * Propagator: Limit length of temporary file name (#2789)
+ * ShareDialog: Password ui fixes (#3189)
+ * Fix startup hang by removing QSettings lock file (#3175)
+ * Wizard: Allow SSL cert dialog to show twice (#3168)
+ * ProtocolWidget: Fix rename message (#3210)
  * Discovery: Test better, treat invalid hrefs as error (#3176)
- * Propagator: Overwrite local data only if unchanged. (#3156)
+ * Propagator: Overwrite local data only if unchanged (#3156)
  * ShareDialog: Improve error reporting for share API fails
- * OSX Updater: Only allow if in /Applications (#2931)
+ * OSX Updater: Only allow updates only if in /Applications (#2931)
  * Wizard: Fix lock icon (#1447)
- * Fix compile with gcc 5
+ * Fix compilation with GCC 5
  * Treat any 503 error as temporary (#3113)
  * Work around for the Qt PUT corruption bug (#2425)
  * OSX Shell integration: Optimizations
