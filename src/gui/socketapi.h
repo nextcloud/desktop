@@ -85,8 +85,8 @@ private:
     QList<QLocalSocket*> _listeners;
     QLocalServer _localServer;
     c_strlist_t *_excludes;
-    QHash<Folder*, SqlQuery*> _dbQueries;
-    QHash<Folder*, SqlDatabase*> _openDbs;
+    QHash<Folder*, QSharedPointer<SqlQuery>> _dbQueries;
+    QHash<Folder*, QSharedPointer<SqlDatabase>> _openDbs;
 };
 
 }
