@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="104"/>
         <source>Storage Usage</source>
-        <translation>Использование хранилища</translation>
+        <translation>Использование доступного пространства</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
@@ -1112,7 +1112,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="94"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Обновлений нет. Установлена последняя версия.</translation>
+        <translation>Обновлений в настоящий момент нет. У вас установлена самая последняя версия программы.</translation>
     </message>
 </context>
 <context>
@@ -1779,7 +1779,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="76"/>
         <source>Account</source>
-        <translation>Учётная запись</translation>
+        <translation>Уч.запись</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="81"/>
@@ -2015,7 +2015,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Детали сертификата&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Данные сертификата:&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
@@ -2055,7 +2055,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Издатель&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Выдан:&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
@@ -2117,7 +2117,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="217"/>
         <source>Certificate information:</source>
-        <translation>Информация сертификата:</translation>
+        <translation>Информация о TLS-сертификатах:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="195"/>
@@ -2454,7 +2454,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="274"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Права принадлежат ownCloud, Incorporated&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Все права принадлежат ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="275"/>
