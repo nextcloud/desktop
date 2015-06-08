@@ -34,4 +34,4 @@ install:
 - curl --form token=$token --form email=lukas@statuscode.ch --form file=@$PWD/client.tgz --form version="$checkout" --form description="$checkout" https://scan.coverity.com/builds?project=owncloud%2Fmirall
 
 # Hack to stop processing
-script: time
+script: true
