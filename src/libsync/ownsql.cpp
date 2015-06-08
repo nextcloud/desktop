@@ -167,7 +167,7 @@ sqlite3* SqlDatabase::sqliteDb()
 
 SqlQuery::SqlQuery( SqlDatabase& db )
     :_db(db.sqliteDb()),
-      _stmt(0)
+      _stmt(0), _errId(0)
 {
 
 }
@@ -181,7 +181,7 @@ SqlQuery::~SqlQuery()
 
 SqlQuery::SqlQuery(const QString& sql, SqlDatabase& db)
     :_db(db.sqliteDb()),
-      _stmt(0)
+      _stmt(0), _errId(0)
 {
     prepare(sql);
 }

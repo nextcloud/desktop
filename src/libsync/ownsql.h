@@ -52,7 +52,6 @@ class OWNCLOUDSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)
 public:
-    explicit SqlQuery();
     explicit SqlQuery(SqlDatabase& db);
     explicit SqlQuery(const QString& sql, SqlDatabase& db);
 
