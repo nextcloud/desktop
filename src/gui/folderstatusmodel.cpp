@@ -54,6 +54,7 @@ void FolderStatusModel::setAccount(const AccountPtr& account)
         info._name = f->alias();
         info._path = "/";
         info._folder = f;
+        info._checked = Qt::PartiallyChecked;
         _folders << info;
 
         connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
