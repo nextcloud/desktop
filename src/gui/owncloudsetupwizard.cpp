@@ -486,8 +486,11 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             }
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
-            folderDefinition.selectiveSyncBlackList = _ocWizard->selectiveSyncBlacklist();
-            folderMan->addFolder(account, folderDefinition);
+            auto f = folderMan->addFolder(account, folderDefinition);
+            if (f) {
+                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                     _ocWizard->selectiveSyncBlacklist());
+            }
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
     }

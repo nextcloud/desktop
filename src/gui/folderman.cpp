@@ -387,7 +387,6 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.alias = alias;
     folderDefinition.localPath = path;
     folderDefinition.targetPath = targetPath;
-    folderDefinition.selectiveSyncBlackList = blackList;
     folder = new Folder( accountState, folderDefinition, this );
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;

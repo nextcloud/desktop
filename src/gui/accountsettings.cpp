@@ -188,11 +188,12 @@ void AccountSettings::slotFolderWizardAccepted()
     definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
     definition.localPath    = folderWizard->field(QLatin1String("sourceFolder")).toString();
     definition.targetPath   = folderWizard->property("targetPath").toString();
-    definition.selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
+    auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     Folder *f = folderMan->addFolder(_accountState, definition);
-    folderMan->setSyncEnabled(true);
     if( f ) {
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+        folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }

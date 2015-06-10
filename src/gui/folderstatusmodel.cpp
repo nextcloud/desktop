@@ -417,7 +417,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
             newInfo._checked = Qt::Unchecked;
         } else {
             auto *f = _folders.at(parentInfo->_pathIdx.first())._folder;
-            foreach(const QString &str , f->selectiveSyncBlackList()) {
+            foreach(const QString &str , f->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
                 if (str == path || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
                     break;
@@ -507,9 +507,9 @@ void FolderStatusModel::slotApplySelectiveSync()
         if (!_folders[i]._fetched) continue;
         auto folder = _folders.at(i)._folder;
 
-        auto oldBlackList = folder->selectiveSyncBlackList();
+        auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
-        folder->setSelectiveSyncBlackList(blackList);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
         FolderMan *folderMan = FolderMan::instance();
         auto blackListSet = blackList.toSet();

@@ -1026,7 +1026,6 @@ void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
     settings.beginGroup(folder.alias);
     settings.setValue(QLatin1String("localPath"), folder.localPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
-    settings.setValue(QLatin1String("blackList"), folder.selectiveSyncBlackList);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.endGroup();
 }
@@ -1038,7 +1037,6 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     folder->alias = alias;
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
-    folder->selectiveSyncBlackList = settings.value(QLatin1String("blackList")).toStringList();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     settings.endGroup();
     return true;

@@ -57,8 +57,6 @@ public:
     QString localPath;
     /// path on remote
     QString targetPath;
-    /// Which folders not to sync
-    QStringList selectiveSyncBlackList;
     /// whether the folder is paused
     bool paused;
 
