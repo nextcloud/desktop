@@ -91,6 +91,24 @@ public:
     void setPollInfo(const PollInfo &);
     QVector<PollInfo> getPollInfos();
 
+    enum SelectiveSyncListType {
+        /** The black list is the list of folders that are unselected in the selective sync dialog.
+         * For the sync engine, those folders are considered as if they were not there, so the local
+         * folders will be deleted */
+        SelectiveSyncBlackList = 1,
+        /** When a shared flder has a size bigger than a configured size, it is by default not sync'ed
+         * Unless it is in the white list, in which case the folder is sync'ed and all its children.
+         * If a folder is both on the black and the white list, the black list wins */
+        SelectiveSyncWhiteList = 2,
+        /** List of big sync folder that have not been confirmed by the user yet and that the UI
+         * should notify about */
+        SelectiveSyncUndecidedList = 3
+    };
+    /* return the specified list from the database */
+    QStringList getSelectiveSyncList(SelectiveSyncListType type);
+    /* Write the selective sync list (remove all other entries of that list */
+    void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
+
     /**
      * Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
      * get the info from the server
@@ -140,6 +158,7 @@ private:
     QScopedPointer<SqlQuery> _deleteFileRecordRecursively;
     QScopedPointer<SqlQuery> _getErrorBlacklistQuery;
     QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
+    QScopedPointer<SqlQuery> _getSelectiveSyncListQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

@@ -131,9 +131,6 @@ public:
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
 
-     QStringList selectiveSyncBlackList() { return _selectiveSyncBlackList; }
-     void setSelectiveSyncBlackList(const QStringList &blackList);
-
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
      RequestEtagJob *etagJob() { return _requestEtagJob; }
@@ -222,7 +219,6 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QStringList  _errors;
-    QStringList _selectiveSyncBlackList;
     bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;

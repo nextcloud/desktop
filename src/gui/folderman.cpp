@@ -339,7 +339,6 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath")).toString();
     bool paused = settings.value( QLatin1String("paused"), false).toBool();
-    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
@@ -361,7 +360,6 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
 
     folder = new Folder( accountState, alias, path, targetPath, this );
     folder->setConfigFile(cfgFile.absoluteFilePath());
-    folder->setSelectiveSyncBlackList(blackList);
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[alias] = folder;
     if (paused) {
@@ -378,6 +376,12 @@ Folder* FolderMan::setupFolderFromConfigFile(const QString &file) {
     _folderChangeSignalMapper->setMapping( folder, folder->alias() );
 
     registerFolderMonitor(folder);
+    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
+    if (!blackList.empty()) {
+        //migrate settings
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+        settings.remove(QLatin1String("blackList"));
+    }
     return folder;
 }
 

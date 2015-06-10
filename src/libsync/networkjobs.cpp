@@ -711,7 +711,7 @@ bool PropfindJob::finished()
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
                 if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
-                    items.insert(reader.name().toString(), reader.readElementText());
+                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
                 } else {
                     curElement.push(reader.name().toString());
                 }
