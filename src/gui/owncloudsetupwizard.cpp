@@ -263,11 +263,12 @@ void OwncloudSetupWizard::slotAuthError()
 
     // Provide messages for other errors, such as invalid credentials.
     } else if (reply->error() != QNetworkReply::NoError) {
-        errorMsg = reply->errorString();
         if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
                        .arg(_ocWizard->account()->url().toString());
+        } else {
+            errorMsg = errorMessage(reply->errorString(), reply->readAll());
         }
 
     // Something else went wrong, maybe the response was 200 but with invalid data.

@@ -711,7 +711,7 @@ bool PropfindJob::finished()
             QXmlStreamReader::TokenType type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
                 if (!curElement.isEmpty() && curElement.top() == QLatin1String("prop")) {
-                    items.insert(reader.name().toString(), reader.readElementText());
+                    items.insert(reader.name().toString(), reader.readElementText(QXmlStreamReader::SkipChildElements));
                 } else {
                     curElement.push(reader.name().toString());
                 }
@@ -858,7 +858,31 @@ bool JsonApiJob::finished()
     return true;
 }
 
+QString extractErrorMessage(const QByteArray& errorResponse)
+{
+    QXmlStreamReader reader(errorResponse);
+    reader.readNextStartElement();
+    if (reader.name() != "error") {
+        return QString::null;
+    }
 
+    while (!reader.atEnd() && reader.error() == QXmlStreamReader::NoError) {
+        reader.readNextStartElement();
+        if (reader.name() == QLatin1String("message")) {
+            return reader.readElementText();
+        }
+    }
+    return QString::null;
+}
 
+QString errorMessage(const QString& baseError, const QByteArray& body)
+{
+    QString msg = baseError;
+    QString extra = extractErrorMessage(body);
+    if (!extra.isEmpty()) {
+        msg += QString::fromLatin1(" (%1)").arg(extra);
+    }
+    return msg;
+}
 
 } // namespace OCC

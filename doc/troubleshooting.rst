@@ -61,12 +61,12 @@ Other issues can affect synchronization of your ownCloud files:
   ensure that the folder to which you are synchronizing is not shared with
   other synchronization applications.
 
-- Synchronizing the same directory with ownCloud and other
-     synchronization software such as Unison, rsync, Microsoft Windows Offline
-     Folders, or other cloud services such as DropBox or Microsoft SkyDrive is not
-     supported and should not be attempted. In the worst case, it is possible that
-     synchronizing folders or files using ownCloud and other synchronization
-     software or services can result in data loss.
+- Synchronizing the same directory with ownCloud and other synchronization
+  software such as Unison, rsync, Microsoft Windows Offline Folders, or other
+  cloud services such as DropBox or Microsoft SkyDrive is not supported and
+  should not be attempted. In the worst case, it is possible that synchronizing
+  folders or files using ownCloud and other synchronization software or
+  services can result in data loss.
 
 - If you find that only specific files are not synrchronized, the
   synchronization protocol might be having an effect. Some files are
@@ -80,7 +80,7 @@ Other issues can affect synchronization of your ownCloud files:
 
   .. note:: The data directory on the server is exclusive to ownCloud and must not be modified manually.
 
-  If you are using a different file backend on the server, you can try to exclude a bug in the
+- If you are using a different file backend on the server, you can try to exclude a bug in the
   backend by reverting to the built-in backend.
 
 - If you are experiencing slow upload/download speed or similar performance issues
@@ -129,9 +129,9 @@ mentioned above to save the log to a file.
   .. note:: You can also open a log window for an already running session, by
      restarting the client using the following command:
 
-  * Windows: ``C:\Program Files (x86)\ownCloud\owncloud.exe --logwindow``
-  * Mac OS X: ``/Applications/owncloud.app/Contents/MacOS/owncloud --logwindow``
-  * Linux: ``owncloud --logwindow``
+     * Windows: ``C:\Program Files (x86)\ownCloud\owncloud.exe --logwindow``
+     * Mac OS X: ``/Applications/owncloud.app/Contents/MacOS/owncloud --logwindow``
+     * Linux: ``owncloud --logwindow``
 
 Saving Files Directly
 ~~~~~~~~~~~~~~~~~~~~~

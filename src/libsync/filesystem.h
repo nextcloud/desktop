@@ -124,10 +124,10 @@ bool openAndSeekFileSharedRead(QFile* file, QString* error, qint64 seek);
 QString fileSystemForPath(const QString & path);
 #endif
 
-QByteArray calcMd5( const QString& fileName );
-QByteArray calcSha1( const QString& fileName );
+QByteArray OWNCLOUDSYNC_EXPORT calcMd5( const QString& fileName );
+QByteArray OWNCLOUDSYNC_EXPORT calcSha1( const QString& fileName );
 #ifdef ZLIB_FOUND
-QByteArray calcAdler32( const QString& fileName );
+QByteArray OWNCLOUDSYNC_EXPORT calcAdler32( const QString& fileName );
 #endif
 
 }}

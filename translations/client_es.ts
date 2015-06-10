@@ -1249,114 +1249,114 @@ No se recomienda usarla.</translation>
         <translation>La petición autenticada al servidor fue redirigida a &apos;%1&apos;. La dirección URL es anómala, el servidor está mal configurado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Hubo una respuesta no válida a una solicitud autenticada de webdav</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Acceso denegado por el servidor. Para verificar que usted tiene acceso, &lt;a href=&quot;%1&quot;&gt;haga clic aquí&lt;/a&gt; para acceder al servicio con su navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>La carpeta de sincronización local %1 ya existe, configurándola para la sincronización.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Creating local sync folder %1...</source>
         <translation>Creando carpeta de sincronización local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
         <source>ok</source>
         <translation>bien</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="330"/>
         <source>failed.</source>
         <translation>falló.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Could not create local folder %1</source>
         <translation>No se pudo crear carpeta local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>No remote folder specified!</source>
         <translation>¡No se ha especificado ninguna carpeta remota!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
         <source>Error: %1</source>
         <translation>Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>creando carpeta en ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Carpeta remota %1 creado correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="394"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>La carpeta remota %1 ya existe. Conectándola para sincronizacion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>La creación de la carpeta causó un error HTTP de código %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>¡La creación de la carpeta remota ha fallado debido a que las credenciales proporcionadas son incorrectas!&lt;br/&gt;Por favor, vuelva atrás y compruebe sus credenciales&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;La creación de la carpeta remota ha fallado, probablemente porque las credenciales proporcionadas son incorrectas.&lt;/font&gt;&lt;br/&gt;Por favor, vuelva atrás y compruebe sus credenciales.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Creación %1 de carpeta remota ha fallado con el error &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Se ha configarado una conexión de sincronización desde %1 al directorio remoto %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
         <source>Successfully connected to %1!</source>
         <translation>¡Conectado con éxito a %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Conexión a %1 no se pudo establecer. Por favor compruebelo de nuevo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Folder rename failed</source>
         <translation>Error al renombrar la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>No se puede eliminar y respaldar la carpeta porque la misma o un fichero en ella está abierto por otro programa. Por favor, cierre la carpeta o el fichero y reintente, o cancele la instalación.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Carpeta de sincronización local %1 creada con éxito&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1485,7 +1485,7 @@ No se recomienda usarla.</translation>
         <translation>Atención, posible error de mayúsculas/minúsculas en %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>No se pudo crear el directorio %1</translation>
     </message>
@@ -1511,7 +1511,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>El archivo %1 no se puede renombrar a %2 por causa de un conflicto con el nombre de un archivo local</translation>
     </message>
@@ -1593,7 +1593,7 @@ No se recomienda usarla.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="628"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
@@ -1608,17 +1608,17 @@ No se recomienda usarla.</translation>
         <translation>El archivo fue modificado localmente; pero es parte de una carpeta compartida en modo de sólo lectura. Ha sido recuperado y su modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Poll URL missing</source>
         <translation>URL de encuesta faltante</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="617"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local fue eliminado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="643"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>El servidor no reconoció la última parte. (No había una e-tag presente.)</translation>
     </message>

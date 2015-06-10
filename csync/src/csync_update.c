@@ -188,8 +188,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   }
 
-  if (ctx->current == REMOTE_REPLICA && ctx->checkSelectiveSyncBlackListHook) {
-      if (ctx->checkSelectiveSyncBlackListHook(ctx->checkSelectiveSyncBlackListData, path)) {
+  if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
+      if (ctx->callbacks.checkSelectiveSyncBlackListHook(ctx->callbacks.update_callback_userdata, path)) {
           return 1;
       }
   }
@@ -222,6 +222,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       tmp = csync_statedb_get_stat_by_hash(ctx, h);
       if(_last_db_return_error(ctx)) {
           SAFE_FREE(st);
+          SAFE_FREE(tmp);
           ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
           return -1;
       }
@@ -398,12 +399,22 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             } else {
                 /* file not found in statedb */
                 st->instruction = CSYNC_INSTRUCTION_NEW;
+
+                if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewShareHook) {
+                    if (strchr(fs->remotePerm, 'S') != NULL) { /* check that the directory is shared */
+                        if (ctx->callbacks.checkSelectiveSyncNewShareHook(ctx->callbacks.update_callback_userdata, path)) {
+                            SAFE_FREE(st);
+                            return 1;
+                        }
+                    }
+                }
                 goto out;
             }
         }
     }
   } else  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
+      SAFE_FREE(st);
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
@@ -621,7 +632,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           if (asp < 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
-      } else if(errno == ERRNO_STORAGE_UNAVAILABLE) {
+      }
+      // The server usually replies with the custom "503 Storage not available"
+      // if some path is temporarily unavailable. But in some cases a standard 503
+      // is returned too. Thus we can't distinguish the two and will treat any
+      // 503 as request to ignore the folder. See #3113 #2884.
+      else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
           if (ctx->current_fs) {
               ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -743,6 +759,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
         if(_last_db_return_error(ctx)) {
             ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+            SAFE_FREE(etag);
             goto error;
         }
 

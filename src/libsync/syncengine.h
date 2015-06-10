@@ -62,9 +62,12 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
-    Utility::StopWatch &stopWatch() { return _stopWatch; }
+    /* Set the maximum size a shared folder can have without asking for confirmation
+     * -1 means infinite
+     */
+    void setNewSharedFolderSizeLimit(qint64 limit) { _newSharedFolderSizeLimit = limit; }
 
-    void setSelectiveSyncBlackList(const QStringList &list);
+    Utility::StopWatch &stopWatch() { return _stopWatch; }
 
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
@@ -108,6 +111,9 @@ signals:
     void started();
 
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
+
+    // A new shared folder was discovered and was not synced because of the confirmation feature
+    void newSharedFolder(const QString &folder);
 
 private slots:
     void slotRootEtagReceived(QString);
@@ -196,11 +202,11 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
+    /* maximum size a shared folder can have without asking for confirmation: -1 means infinite */
+    qint64 _newSharedFolderSizeLimit = -1;
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
-
-    QStringList _selectiveSyncBlackList;
 
     bool _anotherSyncNeeded;
 };

@@ -167,7 +167,7 @@ sqlite3* SqlDatabase::sqliteDb()
 
 SqlQuery::SqlQuery( SqlDatabase& db )
     :_db(db.sqliteDb()),
-      _stmt(0)
+      _stmt(0), _errId(0)
 {
 
 }
@@ -181,7 +181,7 @@ SqlQuery::~SqlQuery()
 
 SqlQuery::SqlQuery(const QString& sql, SqlDatabase& db)
     :_db(db.sqliteDb()),
-      _stmt(0)
+      _stmt(0), _errId(0)
 {
     prepare(sql);
 }
@@ -207,7 +207,7 @@ int SqlQuery::prepare( const QString& sql)
 
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
-            qDebug() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
+            qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
         }
     }
     return _errId;
@@ -260,6 +260,7 @@ bool SqlQuery::next()
 void SqlQuery::bindValue(int pos, const QVariant& value)
 {
     int res = -1;
+    Q_ASSERT(_stmt);
     if( _stmt ) {
         switch (value.type()) {
         case QVariant::Int:

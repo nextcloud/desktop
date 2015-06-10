@@ -819,7 +819,7 @@ Er du sikker på at du vil utføre denne operasjonen?</translation>
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Filer eller mapper som passer med et mønster vil ikke bli synkronisert.
 
-Valgte innslag vil også bli slettet dersom de forhindrer fjerning av en mappe. Dette er hendig for metadata.</translation>
+Valgte oppføringer vil også bli slettet dersom de hindrer fjerning av en mappe. Dette er hendig for metadata.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="96"/>
@@ -854,7 +854,7 @@ Valgte innslag vil også bli slettet dersom de forhindrer fjerning av en mappe. 
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Dette innslaget er gitt av systemet på &apos;%1&apos; og kan ikke endres i denne visningen.</translation>
+        <translation>Denne oppføringen er gitt av systemet på &apos;%1&apos; og kan ikke endres i denne visningen.</translation>
     </message>
 </context>
 <context>
@@ -1250,114 +1250,114 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Autentisert forespørsel til serveren ble omdirigert til &apos;%1&apos;. URL-en er ugyldig, serveren er feilkonfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Det kom et uventet svar fra en autentisert webdav-forespørsel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Tilgang forbudt av serveren. For å sjekke om du har gyldig tilgang, &lt;a href=&quot;%1&quot;&gt;klikk her&lt;/a&gt; for å aksessere tjenesten med nettleseren din.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokal synkroniseringsmappe %1 finnes allerede. Setter den opp for synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Creating local sync folder %1...</source>
         <translation>Oppretter lokal synkroniseringsmappe %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="330"/>
         <source>failed.</source>
         <translation>feilet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Could not create local folder %1</source>
         <translation>Klarte ikke å opprette lokal mappe %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>No remote folder specified!</source>
         <translation>Ingen ekstern mappe spesifisert!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
         <source>Error: %1</source>
         <translation>Feil: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>oppretter mappe på ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ekstern mappe %1 ble opprettet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="394"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ekstern mappe %1 finnes allerede. Kobler den til for synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Oppretting av mappe resulterte i HTTP-feilkode %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Oppretting av ekstern mappe feilet fordi påloggingsinformasjonen er feil!&lt;br/&gt;Gå tilbake og sjekk brukernavnet og passordet ditt.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Oppretting av ekstern mappe feilet, sannsynligvis fordi oppgitt påloggingsinformasjon er feil.&lt;/font&gt;&lt;br/&gt;Vennligst gå tilbake og sjekk ditt brukernavn og passord.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Oppretting av ekstern mappe %1 feilet med feil &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>En synkroniseringsforbindelse fra %1 til ekstern mappe %2 ble satt opp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
         <source>Successfully connected to %1!</source>
         <translation>Forbindelse til %1 opprettet!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Klarte ikke å etablere forbindelse til %1. Sjekk igjen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Folder rename failed</source>
         <translation>Omdøping av mappe feilet</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan ikke fjerne og sikkerhetskopiere mappen fordi mappen eller en fil i mappen er åpen i et annet program. Lukk mappen eller filen og prøv igjen, eller avbryt oppsettet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Oppretting av lokal synkroniseringsmappe %1 vellykket!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1486,7 +1486,7 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Merk! mulig sammenfall med %1 pga. sensitivitet for store/små bokstaver</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>klarte ikke å opprette mappe %1</translation>
     </message>
@@ -1512,7 +1512,7 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>Fil %1 kan ikke omdøpes til %2 på grunn av lokalt sammenfall av filnavn</translation>
     </message>
@@ -1594,7 +1594,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="628"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
@@ -1609,17 +1609,17 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Filen ble redigert lokalt men er en del av en deling med lesetilgang. Den er blitt gjenopprettet og din endring er i konfliktfilen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Poll URL missing</source>
         <translation>Forespørsels-URL mangler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="617"/>
         <source>The local file was removed during sync.</source>
         <translation>Den lokale filen ble fjernet under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="643"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Serveren godtok ikke den siste deloverføringen. (Ingen e-tag var tilstede)</translation>
     </message>

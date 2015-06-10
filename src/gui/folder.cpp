@@ -816,7 +816,6 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
 
     setDirtyNetworkLimits();
-    _engine->setSelectiveSyncBlackList(selectiveSyncBlackList());
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
@@ -844,17 +843,6 @@ void Folder::setDirtyNetworkLimits()
 
         _engine->setNetworkLimits(uploadLimit, downloadLimit);
     }
-}
-
-void Folder::setSelectiveSyncBlackList(const QStringList& blackList)
-{
-    _definition.selectiveSyncBlackList = blackList;
-    for (int i = 0; i < blackList.count(); ++i) {
-        if (!blackList.at(i).endsWith(QLatin1Char('/'))) {
-            _definition.selectiveSyncBlackList[i].append(QLatin1Char('/'));
-        }
-    }
-    saveToSettings();
 }
 
 

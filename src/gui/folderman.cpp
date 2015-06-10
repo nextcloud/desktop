@@ -365,7 +365,6 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     QString backend = settings.value(QLatin1String("backend")).toString();
     QString targetPath = settings.value( QLatin1String("targetPath")).toString();
     bool paused = settings.value( QLatin1String("paused"), false).toBool();
-    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
     // QString connection = settings.value( QLatin1String("connection") ).toString();
     QString alias = unescapeAlias( escapedAlias );
 
@@ -402,6 +401,12 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
 
     registerFolderMonitor(folder);
+    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
+    if (!blackList.empty()) {
+        //migrate settings
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+        settings.remove(QLatin1String("blackList"));
+    }
     return folder;
 }
 

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Файл призначення має неочікуваний розмір або час редагування</translation>
     </message>
 </context>
 <context>
@@ -661,7 +661,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Помилка аутентифікації при доступі до %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
@@ -907,7 +907,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося записати в файл журналу %1</translation>
     </message>
 </context>
 <context>
@@ -1065,13 +1065,13 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Доступне оновлення %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Буде встановлено оновлення для %1. Програма оновлення може запитати додаткові привілеї.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1139,7 +1139,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізувати каталог &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1246,117 +1246,117 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Запит аутентифікації до серверу було переадресовано до &apos;%1&apos;. Поганий URL, сервер сконфігуровано неправильно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="279"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Неправильна відповідь на автентифікований запит webdav</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="272"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Доступ заборонений сервером. Щоб довести, що у Вас є права доступу, &lt;a href=&quot;%1&quot;&gt;клікніть тут&lt;/a&gt; для входу через Ваш браузер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="321"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локальна тека синхронізації %1 вже існує, налаштування її для синхронізації.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="324"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Створення локальної теки для синхронізації %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="328"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="329"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="330"/>
         <source>failed.</source>
         <translation>не вдалося.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="331"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Could not create local folder %1</source>
         <translation>Не вдалося створити локальну теку $1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>No remote folder specified!</source>
         <translation>Не вказано віддалену теку!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="362"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
         <source>Error: %1</source>
         <translation>Помилка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>створення теки на ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Віддалена тека %1 успішно створена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="394"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Віддалена тека %1 вже існує. Під&apos;єднання для синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Створення теки завершилось HTTP помилкою %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Створити віддалену теку не вдалося через невірно вказані облікові дані.&lt;br/&gt;Поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="402"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Створити віддалену теку не вдалося, можливо, через невірно вказані облікові дані.&lt;/font&gt;&lt;br/&gt;Будь ласка, поверніться назад та перевірте облікові дані.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="409"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Не вдалося створити віддалену теку %1 через помилку &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="424"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>З&apos;єднання для синхронізації %1 з віддаленою текою %2 було встановлено.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
         <source>Successfully connected to %1!</source>
         <translation>Успішно під&apos;єднано до %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="437"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Підключення до %1 встановити не вдалося. Будь ласка, перевірте ще раз.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="449"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Folder rename failed</source>
         <translation>Не вдалося перейменувати теку</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Неможливо видалити теку та створити її резервну копію, оскільки тека або файли, що в ній розташовані,  використовуються. Будь ласка, закрийте всі програми, що можуть використовувати цю теку та спробуйте ще раз, або скасуйте встановлення.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальна тека синхронізації %1 успішно створена!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -1456,7 +1456,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Файл змінився з моменту знаходження</translation>
     </message>
 </context>
 <context>
@@ -1464,12 +1464,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Відновлення не вдалося: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>Продовжити занесення до чорного списку:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
@@ -1485,7 +1485,7 @@ It is not advisable to use it.</source>
         <translation>Увага, можливий конфлікт чутливості до реєстру з %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="124"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
         <translation>Не вдалося створити теку %1</translation>
     </message>
@@ -1500,7 +1500,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
         <source>Could not remove directory &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо видалити теку &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="86"/>
@@ -1511,7 +1511,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="152"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>%1 не можна перейменувати на %2 через локальний конфлікт імен</translation>
     </message>
@@ -1526,7 +1526,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 204, але отримано &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1534,7 +1534,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 201, але отримано &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1557,7 +1557,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер відповів неправильним HTTP кодом. Очікувався 201, але отримано &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1589,18 +1589,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальний файл змінився під час синхронізації. Його буде відновлено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="633"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="628"/>
         <source>Local file changed during sync.</source>
         <translation>Локальний файл змінився під час синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Примусове припинення завдання при скиданні HTTP з’єднання з Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="565"/>
@@ -1608,17 +1608,17 @@ It is not advisable to use it.</source>
         <translation>Файл було змінено локально, але він розташований в теці з правами лише на перегляд. Файл відновлено, а ваші зміни розташовані в теці конфліктів.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="599"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Poll URL missing</source>
         <translation>Не вистачає сформованого URL</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="617"/>
         <source>The local file was removed during sync.</source>
         <translation>Локальний файл було видалено під час синхронізації.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="648"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="643"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
         <translation>Сервер не зміг підтвердити останній відрізок даних. (Були відсутні e-tag)</translation>
     </message>
@@ -1848,12 +1848,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Встановити &amp;пароль</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Встановити т&amp;ермін дії</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -1863,7 +1863,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Копіювати п&amp;осилання</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -1888,12 +1888,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Тека: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Захистити паролем</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="203"/>
@@ -1909,7 +1909,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <location filename="../src/gui/sharedialog.cpp" line="507"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>По&amp;ділитись посиланням</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="525"/>
@@ -1944,7 +1944,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Публічне по&amp;ширення вимагає пароль</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
@@ -2328,7 +2328,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Виникла внутрішня помилка за номером %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
@@ -2465,12 +2465,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок контрольної суми пошкоджено.</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Завантажений файл не відповідає контрольній сумі, його буде відновлено.</translation>
     </message>
 </context>
 <context>
@@ -2909,7 +2909,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="256"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Зібрано з Git ревізії &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4, використовуючи Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

@@ -158,9 +158,6 @@ public:
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
 
-     QStringList selectiveSyncBlackList() { return _definition.selectiveSyncBlackList; }
-     void setSelectiveSyncBlackList(const QStringList &blackList);
-
      bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
 
      RequestEtagJob *etagJob() { return _requestEtagJob; }

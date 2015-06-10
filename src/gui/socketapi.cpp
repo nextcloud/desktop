@@ -245,14 +245,14 @@ void SocketApi::slotUnregisterPath( const QString& alias )
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
 
         if( _dbQueries.contains(f)) {
-            SqlQuery *h = _dbQueries[f];
+            auto h = _dbQueries[f];
             if( h ) {
                 h->finish();
             }
             _dbQueries.remove(f);
         }
         if( _openDbs.contains(f) ) {
-            SqlDatabase *db = _openDbs[f];
+            auto db = _openDbs[f];
             if( db ) {
                 db->close();
             }
@@ -475,7 +475,7 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
     }
 
     if( _dbQueries.contains(folder) ) {
-        return _dbQueries[folder];
+        return _dbQueries[folder].data();
     }
 
     /* No valid sql query object yet for this folder */
@@ -486,21 +486,20 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
 
     QFileInfo fi(dbFileName);
     if( fi.exists() ) {
-        SqlDatabase *db = new SqlDatabase;
+        auto db = QSharedPointer<SqlDatabase>::create();
 
         if( db && db->openReadOnly(dbFileName) ) {
             _openDbs.insert(folder, db);
 
-            SqlQuery *query = new SqlQuery(*db);
+            auto query = QSharedPointer<SqlQuery>::create(*db);
             rc = query->prepare(sql);
 
             if( rc != SQLITE_OK ) {
-                delete query;
                 qDebug() << "Unable to prepare the query statement:" << rc;
                 return 0; // do not insert into hash
             }
             _dbQueries.insert( folder, query);
-            return query;
+            return query.data();
         } else {
             qDebug() << "Unable to open db" << dbFileName;
         }
@@ -596,7 +595,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // Error if it is in the selective sync blacklistr
-    foreach(const auto &s, folder->selectiveSyncBlackList()) {
+    foreach(const auto &s, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
         if (fileNameSlash.startsWith(s)) {
             return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
         }

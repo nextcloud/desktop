@@ -177,6 +177,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         return;
     }
 
+    auto oldStatus = _connectionStatus;
     if (_connectionStatus != status) {
         qDebug() << "AccountState connection status change: "
                  << connectionStatusString(_connectionStatus) << "->"
@@ -188,7 +189,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     switch (status)
     {
     case ConnectionValidator::Connected:
-        setState(Connected);
+        if (oldStatus != ConnectionValidator::Connected) {
+            setState(Connected);
+        }
         break;
     case ConnectionValidator::Undefined:
     case ConnectionValidator::NotConfigured:
