@@ -214,6 +214,8 @@ To build the most up to date version of the client:
 1. Clone the latest versions of the client from Git_ as follows:
 
   ``git clone git://github.com/owncloud/client.git``
+  ``git submodule init``
+  ``git submodule update``
 
 2. Create the build directory:
 
