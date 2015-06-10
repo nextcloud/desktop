@@ -623,7 +623,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           if (asp < 0) {
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
-      } else if(errno == ERRNO_STORAGE_UNAVAILABLE) {
+      }
+      // The server usually replies with the custom "503 Storage not available"
+      // if some path is temporarily unavailable. But in some cases a standard 503
+      // is returned too. Thus we can't distinguish the two and will treat any
+      // 503 as request to ignore the folder. See #3113 #2884.
+      else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
           if (ctx->current_fs) {
               ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;

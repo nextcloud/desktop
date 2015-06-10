@@ -565,14 +565,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
                "It is restored and your edit is in the conflict file."))) {
             return;
         }
-        QString errorString = job->errorString();
-
         QByteArray replyContent = job->reply()->readAll();
         qDebug() << replyContent; // display the XML error in the debug
-        QRegExp rx("<s:message>(.*)</s:message>"); // Issue #1366: display server exception
-        if (rx.indexIn(QString::fromUtf8(replyContent)) != -1) {
-            errorString += QLatin1String(" (") + rx.cap(1) + QLatin1Char(')');
-        }
+        QString errorString = errorMessage(job->errorString(), replyContent);
 
         if (job->reply()->hasRawHeader("OC-ErrorString")) {
             errorString = job->reply()->rawHeader("OC-ErrorString");

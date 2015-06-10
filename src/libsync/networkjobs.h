@@ -314,6 +314,17 @@ signals:
     void jsonRecieved(const QVariantMap &json);
 };
 
+/** Gets the SabreDAV-style error message from an error response.
+ *
+ * This assumes the response is XML with a 'error' tag that has a
+ * 'message' tag that contains the data to extract.
+ *
+ * Returns a null string if no message was found.
+ */
+QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray& errorResponse);
+
+/** Builds a error message based on the error and the reply body. */
+QString OWNCLOUDSYNC_EXPORT errorMessage(const QString& baseError, const QByteArray& body);
 
 } // namespace OCC
 
