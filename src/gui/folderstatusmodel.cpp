@@ -97,7 +97,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::ToolTipRole:
         case Qt::DisplayRole:
-            return x._name;
+            return tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
