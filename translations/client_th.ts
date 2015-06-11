@@ -1764,7 +1764,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="76"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>บัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="81"/>
@@ -1792,7 +1792,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="70"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>บัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="74"/>

@@ -702,12 +702,12 @@ Oled kindel, et soovid seda operatsiooni teostada?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Hoiatus:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Hoiatus:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1862,7 +1862,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Määra parool</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="634"/>
@@ -1892,7 +1892,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Parooliga kaitstud</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="343"/>
