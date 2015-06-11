@@ -174,6 +174,7 @@ signals:
     void syncFinished(const SyncResult &result);
     void scheduleToSync(Folder*);
     void progressInfo(const ProgressInfo& progress);
+    void newSharedBigFolderDiscovered(); // A new folder bigger than the threshold was discovered
 
 public slots:
 
@@ -228,6 +229,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void watcherSlot(QString);
+    void slotNewSharedBigFolderDiscovered(const QString &);
 
 private:
     bool init();

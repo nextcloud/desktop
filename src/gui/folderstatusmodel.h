@@ -46,15 +46,16 @@ public:
 
 
     struct SubFolderInfo {
+        Folder *_folder = nullptr;
         QString _name;
         QString _path;
         QVector<int> _pathIdx;
+        QVector<SubFolderInfo> _subs;
         int _size = 0;
         bool _fetched = false; // If we did the LSCOL for this folder already
         bool _fetching = false;
-        QVector<SubFolderInfo> _subs;
+        bool _isUndecided = false; // undecided folder are the big folder that the user has not accepted yet
         Qt::CheckState _checked = Qt::Checked;
-        Folder *_folder;
 
         struct Progress {
             bool isNull() const

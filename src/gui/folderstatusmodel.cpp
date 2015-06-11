@@ -102,6 +102,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return x._checked;
         case Qt::DecorationRole:
             return QFileIconProvider().icon(QFileIconProvider::Folder);
+        case Qt::ForegroundRole:
+            if (x._isUndecided) {
+                return QColor(Qt::red);
+            }
+            break;
         }
     }
         return QVariant();
@@ -399,6 +404,12 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     parentInfo->_fetched = true;
     parentInfo->_fetching = false;
 
+    QStringList selectiveSyncBlackList;
+    if (parentInfo->_checked == Qt::PartiallyChecked) {
+        selectiveSyncBlackList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
+    }
+    auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
+
     int i = 0;
     foreach (QString path, list) {
         SubFolderInfo newInfo;
@@ -416,9 +427,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
 
         if (parentInfo->_checked == Qt::Unchecked) {
             newInfo._checked = Qt::Unchecked;
+        } else if (parentInfo->_checked == Qt::Checked) {
+            newInfo._checked = Qt::Checked;
         } else {
-            auto *f = _folders.at(parentInfo->_pathIdx.first())._folder;
-            foreach(const QString &str , f->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
+            foreach(const QString &str , selectiveSyncBlackList) {
                 if (str == path || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
                     break;
@@ -427,6 +439,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
                 }
             }
         }
+        newInfo._isUndecided = selectiveSyncUndecidedList.contains(path);
         parentInfo->_subs.append(newInfo);
     }
 
@@ -512,7 +525,22 @@ void FolderStatusModel::slotApplySelectiveSync()
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-        FolderMan *folderMan = FolderMan::instance();
+        // The folders that were undecided should be part of the white list if they are not in the blacklist
+        QStringList toAddToWhiteList;
+        foreach (const auto &undec, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList)) {
+            if (!blackList.contains(undec)) {
+                toAddToWhiteList.append(undec);
+            }
+        }
+        if (!toAddToWhiteList.isEmpty()) {
+            auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
+            whiteList += toAddToWhiteList;
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whiteList);
+        }
+        // clear the undecided list
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+
+        // do the sync if there was changes
         auto blackListSet = blackList.toSet();
         auto oldBlackListSet = oldBlackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
@@ -525,7 +553,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach(const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
-            folderMan->slotScheduleSync(folder);
+            FolderMan::instance()->slotScheduleSync(folder);
         }
     }
 

@@ -587,6 +587,7 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
 
 void DiscoveryJob::start() {
     _selectiveSyncBlackList.sort();
+    _selectiveSyncWhiteList.sort();
     _csync_ctx->callbacks.update_callback_userdata = this;
     _csync_ctx->callbacks.update_callback = update_job_update_callback;
     _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallback;

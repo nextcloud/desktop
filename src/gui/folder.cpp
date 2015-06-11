@@ -814,6 +814,7 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
+    connect(_engine.data(), SIGNAL(newSharedFolder(QString)), this, SLOT(slotNewSharedBigFolderDiscovered(QString)));
 
     setDirtyNetworkLimits();
 
@@ -914,6 +915,11 @@ void Folder::slotSyncFinished()
         qDebug() << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
+    if (_syncResult.status() == SyncResult::Success) {
+        // Clear the white list as all the folder that should be on that list are sync-ed
+        journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
+    }
+
     emit syncStateChange();
 
     // The syncFinished result that is to be triggered here makes the folderman
@@ -992,6 +998,32 @@ void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
 {
     emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
+
+void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
+{
+    auto newFolder = newF;
+    if (!newFolder.endsWith(QLatin1Char('/'))) {
+        newFolder += QLatin1Char('/');
+    }
+    auto journal = journalDb();
+
+    // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
+    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
+    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
+    if (!blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
+        blacklist.append(newFolder);
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+    }
+
+    // And add the entry to the undecided list and signal the UI
+    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
+    if (!undecidedList.contains(newFolder)) {
+        undecidedList.append(newFolder);
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
+        emit newSharedBigFolderDiscovered();
+    }
+}
+
 
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
