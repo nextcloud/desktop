@@ -105,9 +105,9 @@ class DiscoveryMainThread : public QObject {
     qint64 *_currentGetSizeResult;
 
 public:
-    DiscoveryMainThread(AccountPtr account) : QObject(), _account(account), _currentDiscoveryDirectoryResult(0) {
-
-    }
+    DiscoveryMainThread(AccountPtr account) : QObject(), _account(account),
+        _currentDiscoveryDirectoryResult(0), _currentGetSizeResult(0)
+    { }
     void abort();
 
 
