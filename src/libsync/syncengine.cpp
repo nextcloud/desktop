@@ -70,6 +70,7 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
   , _hasRemoveFile(false)
   , _uploadLimit(0)
   , _downloadLimit(0)
+  , _newSharedFolderSizeLimit(-1)
   , _anotherSyncNeeded(false)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");

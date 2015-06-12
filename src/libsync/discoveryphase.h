@@ -168,7 +168,7 @@ class DiscoveryJob : public QObject {
 
 public:
     explicit DiscoveryJob(CSYNC *ctx, QObject* parent = 0)
-            : QObject(parent), _csync_ctx(ctx) {
+            : QObject(parent), _csync_ctx(ctx), _newSharedFolderSizeLimit(-1) {
         // We need to forward the log property as csync uses thread local
         // and updates run in another thread
         _log_callback = csync_get_log_callback();
@@ -178,7 +178,7 @@ public:
 
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    qint64 _newSharedFolderSizeLimit = 0;
+    qint64 _newSharedFolderSizeLimit;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);

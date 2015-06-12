@@ -203,7 +203,7 @@ private:
     int _uploadLimit;
     int _downloadLimit;
     /* maximum size a shared folder can have without asking for confirmation: -1 means infinite */
-    qint64 _newSharedFolderSizeLimit = -1;
+    qint64 _newSharedFolderSizeLimit;
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
