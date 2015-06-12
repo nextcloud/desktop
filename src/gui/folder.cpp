@@ -1022,7 +1022,7 @@ void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
     if (!undecidedList.contains(newFolder)) {
         undecidedList.append(newFolder);
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-        emit newSharedBigFolderDiscovered();
+        emit newSharedBigFolderDiscovered(newFolder);
     }
 }
 

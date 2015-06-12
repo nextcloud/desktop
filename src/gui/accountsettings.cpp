@@ -85,7 +85,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(ui->_folderList, SIGNAL(expanded(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
     connect(ui->_folderList, SIGNAL(collapsed(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
     connect(_model, SIGNAL(dirtyChanged()), this, SLOT(refreshSelectiveSyncStatus()));
-    ui->selectiveSyncStatus->hide();
+    refreshSelectiveSyncStatus();
 
     QAction *resetFolderAction = new QAction(this);
     resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
@@ -443,13 +443,31 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    ui->selectiveSyncApply->setEnabled(_model->isDirty());
-    ui->selectiveSyncCancel->setEnabled(_model->isDirty());
     bool shouldBeVisible = _model->isDirty();
+    QStringList undecidedFolder;
     for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
         if (ui->_folderList->isExpanded(_model->index(i)))
             shouldBeVisible = true;
     }
+
+    foreach (Folder *folder, FolderMan::instance()->map().values()) {
+        if (folder->accountState() != _accountState) { continue; }
+        auto undecidedList =  folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
+        foreach(const auto &it, undecidedList) {
+            undecidedFolder += ( folder->alias() + QLatin1String("/") + it);
+        }
+    }
+    if (undecidedFolder.isEmpty()) {
+        ui->selectiveSyncNotification->setText(QString());
+    } else {
+        ui->selectiveSyncNotification->setText(
+            tr("There are new shared folders that were not synchronized because they are too big: %1")
+                .arg(undecidedFolder.join(tr(", "))));
+        shouldBeVisible = true;
+    }
+
+    ui->selectiveSyncApply->setEnabled(_model->isDirty() || !undecidedFolder.isEmpty());
+    ui->selectiveSyncCancel->setEnabled(_model->isDirty());
     bool wasVisible = ui->selectiveSyncApply->isVisible();
     if (wasVisible != shouldBeVisible) {
         QSize hint = ui->selectiveSyncStatus->sizeHint();

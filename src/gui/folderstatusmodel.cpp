@@ -59,9 +59,11 @@ void FolderStatusModel::setAccount(const AccountPtr& account)
 
         connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
         connect(f, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
+        connect(f, SIGNAL(newSharedBigFolderDiscovered(QString)), this, SIGNAL(dirtyChanged()), Qt::UniqueConnection);
     }
 
     endResetModel();
+    emit dirtyChanged();
 }
 
 
@@ -514,11 +516,11 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
 
 void FolderStatusModel::slotApplySelectiveSync()
 {
-    if (!_dirty)
-        return;
-
     for (int i = 0; i < _folders.count(); ++i) {
-        if (!_folders[i]._fetched) continue;
+        if (!_folders[i]._fetched) {
+            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            continue;
+        }
         auto folder = _folders.at(i)._folder;
 
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
