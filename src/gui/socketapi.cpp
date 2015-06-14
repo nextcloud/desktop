@@ -491,7 +491,7 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
         if( db && db->openReadOnly(dbFileName) ) {
             _openDbs.insert(folder, db);
 
-            auto query = QSharedPointer<SqlQuery>::create(*db);
+            QSharedPointer<SqlQuery> query(new SqlQuery(*db));
             rc = query->prepare(sql);
 
             if( rc != SQLITE_OK ) {
