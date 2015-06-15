@@ -1589,7 +1589,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
         <location filename="../src/libsync/propagateupload.cpp" line="628"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ต้อนมีการเปลี่ยนแปลงขณะผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="557"/>
@@ -1609,7 +1609,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="617"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ถูกลบออกในระหว่างการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="643"/>
@@ -1707,7 +1707,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="360"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ที่ไม่ถูกตรวจสอบจะถูก &lt;b&gt;ลบ&lt;/b&gt; จากระบบแฟ้มต้นทางของคุณและจะไม่ผสานข้อมูลกับคอมพิวเตอร์เครื่องนี้อีกต่อไป</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="373"/>
@@ -2199,7 +2199,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="99"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync directory.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ไม่สามารถโหลดหรือสร้างไฟล์เจอร์นัล ให้แน่ใจว่าคุณได้อ่านและเขียนสิทธิ์ในไดเรกทอรีผสานข้อมูลต้นทางแล้ว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="103"/>
@@ -2396,7 +2396,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1049"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1104"/>
@@ -2642,27 +2642,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
         <source>&amp;Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>และโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>และเริ่มต้นล้างการผสานข้อมูล (ลบโฟลเดอร์ต้นทาง!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="209"/>
         <source>pbSelectLocalFolder</source>
-        <translation type="unfinished"/>
+        <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>และเก็บข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ถ้าติ๊กเลือกกล่องนี้ เนื้อหาที่มีอยู่ในไดเรกทอรีต้นทางจะถูกลบเพื่อเริ่มต้นล้างการผสานข้อมูลจากเซิร์ฟเวอร์&lt;/p&gt;&lt;p&gt;หากไม่ได้ติ๊กเลือกเนื้อหาต้นทางจะถูกอัพโหลดไปยังไดเรกทอรีของเซิร์ฟเวอร์&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
@@ -2792,12 +2792,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="117"/>
         <source>Do not allow the local storage of the password.</source>
-        <translation>ไม่อนุญาตให้จัดเก็บข้อมูลรหัสผ่านเอาไว้ในพื้นที่ภายในเครื่อง</translation>
+        <translation>ไม่อนุญาตให้จัดเก็บข้อมูลรหัสผ่านเอาไว้ในพื้นที่จัดเก็บต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="120"/>
         <source>&amp;Do not store password on local machine</source>
-        <translation>&amp;โปรดอย่าจัดเก็บรหัสผ่านเอาไว้ในเครื่องคอมพิวเตอร์ของคุณ</translation>
+        <translation>และโปรดอย่าจัดเก็บรหัสผ่านเอาไว้ในเครื่องคอมพิวเตอร์ของคุณ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="140"/>
@@ -2840,7 +2840,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>ทั้งบัญชีของคุณจะถูกผสานข้อมูลกับโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
