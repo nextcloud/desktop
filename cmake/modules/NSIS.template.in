@@ -479,6 +479,7 @@ SectionEnd
       CreateDirectory "$INSTDIR\shellext"
       !define LIBRARY_COM
       !define LIBRARY_SHELL_EXTENSION
+      !define LIBRARY_IGNORE_VERSION
       ${If} ${RunningX64}
          !define LIBRARY_X64
          !insertmacro InstallLib DLL NOTSHARED REBOOT_PROTECTED "${SOURCE_PATH}\binary\shell_integration\windows\Release\x64\OCUtil_x64.dll" "$INSTDIR\shellext\OCUtil_x64.dll" "$INSTDIR\shellext"
@@ -492,6 +493,7 @@ SectionEnd
       ${Endif}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION
+      !undef LIBRARY_IGNORE_VERSION
    ${MementoSectionEnd}
 !endif
 
@@ -650,6 +652,7 @@ Section Uninstall
    !ifdef OPTION_SECTION_SC_SHELL_EXT
       !define LIBRARY_COM
       !define LIBRARY_SHELL_EXTENSION
+      !define LIBRARY_IGNORE_VERSION
       ${If} ${HasSection} SEC_SHELL_EXT
         DetailPrint "Uninstalling x64 overlay DLLs"
         !define LIBRARY_X64
@@ -665,6 +668,7 @@ Section Uninstall
       ${EndIf}
       !undef LIBRARY_COM
       !undef LIBRARY_SHELL_EXTENSION
+      !undef LIBRARY_IGNORE_VERSION
   !endif
 
    ;Start menu shortcut
