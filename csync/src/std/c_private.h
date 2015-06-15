@@ -41,10 +41,18 @@
 #ifdef _WIN32
 #define EDQUOT 0
 #define ENODATA 0
+#ifndef S_IRGRP
 #define S_IRGRP 0
+#endif
+#ifndef S_IROTH
 #define S_IROTH 0
+#endif
+#ifndef S_IXGRP
 #define S_IXGRP 0
+#endif
+#ifndef S_IXOTH
 #define S_IXOTH 0
+#endif
 
 #define S_IFSOCK 10000 /* dummy val on Win32 */
 #define S_IFLNK 10001  /* dummy val on Win32 */
