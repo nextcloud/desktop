@@ -16,7 +16,6 @@
 #include <QNetworkProxyFactory>
 
 #include "connectionvalidator.h"
-#include "theme.h"
 #include "account.h"
 #include "networkjobs.h"
 #include "clientproxy.h"

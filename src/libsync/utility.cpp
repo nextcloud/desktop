@@ -15,7 +15,7 @@
 #include "utility.h"
 
 #include "version.h"
-#include "theme.h"
+#include "config.h"
 
 // Note:  This file must compile without QtGui
 #include <QCoreApplication>
@@ -130,7 +130,7 @@ QString Utility::octetsToString( qint64 octets )
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c
-QString Utility::platform()
+static QLatin1String platform()
 {
 #if defined(Q_OS_WIN)
     return QLatin1String("Windows");
@@ -156,10 +156,10 @@ QString Utility::platform()
 QByteArray Utility::userAgentString()
 {
     QString re = QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
-            .arg(Utility::platform())
+            .arg(platform())
             .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION)));
 
-    const QString appName = Theme::instance()->appName();
+    QLatin1String appName(APPLICATION_SHORTNAME);
 
     // this constant "ownCloud" is defined in the default OEM theming
     // that is used for the standard client. If it is changed there,

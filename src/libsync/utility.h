@@ -32,7 +32,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT void setupFavLink( const QString &folder );
     OWNCLOUDSYNC_EXPORT bool writeRandomFile( const QString& fname, int size = -1);
     OWNCLOUDSYNC_EXPORT QString octetsToString( qint64 octets );
-    OWNCLOUDSYNC_EXPORT QString platform();
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);

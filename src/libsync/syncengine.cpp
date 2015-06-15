@@ -15,7 +15,6 @@
 
 #include "syncengine.h"
 #include "account.h"
-#include "theme.h"
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
@@ -33,6 +32,7 @@
 #include <climits>
 #include <assert.h>
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QSslSocket>
 #include <QDir>
@@ -104,7 +104,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
         break;
     case CSYNC_STATUS_NO_MODULE:
-        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(Theme::instance()->appNameGUI());
+        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_TREE_ERROR:
         errStr = tr("CSync got an error while processing internal trees.");
@@ -128,7 +128,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to lookup proxy or server.");
         break;
     case CSYNC_STATUS_SERVER_AUTH_ERROR:
-        errStr = tr("CSync failed to authenticate at the %1 server.").arg(Theme::instance()->appNameGUI());
+        errStr = tr("CSync failed to authenticate at the %1 server.").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_CONNECT_ERROR:
         errStr = tr("CSync failed to connect to the network.");
@@ -149,7 +149,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync tried to create a directory that already exists.");
         break;
     case CSYNC_STATUS_OUT_OF_SPACE:
-        errStr = tr("CSync: No space on %1 server available.").arg(Theme::instance()->appNameGUI());
+        errStr = tr("CSync: No space on %1 server available.").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
