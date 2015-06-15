@@ -26,16 +26,19 @@ static RequestManager* sharedInstance = nil;
 {
 	if ((self = [super init]))
 	{
-		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-
-		_isConnected = NO;
+		// For the sake of allowing both the legacy and the FinderSync extensions to work with the same
+		// client build, use the same server name including the Team ID even though we won't be signing the bundle.
+		NSString *serverName = @"9B5WD74GWJ.com.owncloud.desktopclient.socketApi";
+		_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 
 		_registeredPathes = [[NSMutableDictionary alloc] init];
 		_requestedPaths = [[NSMutableSet alloc] init];
 
 		_shareMenuTitle = nil;
 
-		[NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(start) userInfo:nil repeats:YES];
+		// The NSConnection will block until the distant object came back and this creates a loop hanging Finder.
+		// Start from a timer to have time to unwind the stack first.
+		[NSTimer scheduledTimerWithTimeInterval:0 target:_syncClientProxy selector:@selector(start) userInfo:nil repeats:NO];
 	}
 
 	return self;
@@ -43,9 +46,7 @@ static RequestManager* sharedInstance = nil;
 
 - (void)dealloc
 {
-	[_socket setDelegate:nil delegateQueue:NULL];
-	[_socket disconnect];
-	[_socket release];
+	[_syncClientProxy release];
 
 	sharedInstance = nil;
 
@@ -64,20 +65,6 @@ static RequestManager* sharedInstance = nil;
 
 	return sharedInstance;
 }
-
-
-- (void)askOnSocket:(NSString*)path query:(NSString*)verb
-{
-	NSString *query = [NSString stringWithFormat:@"%@:%@\n", verb,path];
-	// NSLog(@"Query: %@", query);
-	
-	NSData* data = [query dataUsingEncoding:NSUTF8StringEncoding];
-	[_socket writeData:data withTimeout:5 tag:4711];
-	
-	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
-	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
-}
-
 
 - (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir
 {
@@ -104,117 +91,52 @@ static RequestManager* sharedInstance = nil;
 
 - (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDir
 {
-	NSString *verb = @"RETRIEVE_FILE_STATUS";
-
 	if( [self isRegisteredPath:path isDirectory:isDir] ) {
 		[_requestedPaths addObject:path];
-		if( _isConnected ) {
-			if(isDir) {
-				verb = @"RETRIEVE_FOLDER_STATUS";
-			}
-
-			[self askOnSocket:path query:verb];
-		} else {
-			[_requestQueue addObject:path];
-			[self start]; // try again to connect
-		}
+		[_syncClientProxy askForIcon:path isDirectory:isDir];
 	}
 }
 
-
-- (void)socket:(GCDAsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag
+- (void)setResultForPath:(NSString*)path result:(NSString*)result
 {
-	NSString *answer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSArray *chunks = nil;
-	if (answer != nil && [answer length] > 0) {
-		// cut a trailing newline
-		answer = [answer substringToIndex:[answer length] - 1];
-		chunks = [answer componentsSeparatedByString: @":"];
+	// The client will broadcast all changes, do not fill the cache for paths that Finder didn't ask for.
+	if ([_requestedPaths containsObject:path]) {
+		[[ContentManager sharedInstance] setResultForPath:path result:result];
 	}
-	ContentManager *contentman = [ContentManager sharedInstance];
-
-	if( chunks && [chunks count] > 0 && tag == READ_TAG ) {
-		// NSLog(@"READ from socket (%ld): <%@>", tag, answer);
-		if( [[chunks objectAtIndex:0] isEqualToString:@"STATUS"] ) {
-			NSString *path = [chunks objectAtIndex:2];
-			if( [chunks count] > 3 ) {
-				for( int i = 2; i < [chunks count]-1; i++ ) {
-					path = [NSString stringWithFormat:@"%@:%@",
-							path, [chunks objectAtIndex:i+1] ];
-				}
-			}
-			// The client will broadcast all changes, do not fill the cache for paths that Finder didn't ask for.
-			if ([_requestedPaths containsObject:path]) {
-				[contentman setResultForPath:path result:[chunks objectAtIndex:1]];
-			}
-		} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
-			NSString *path = [chunks objectAtIndex:1];
-			[_requestedPaths removeAllObjects];
-			[contentman reFetchFileNameCacheForPath:path];
-		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
-			NSNumber *one = [NSNumber numberWithInt:1];
-			NSString *path = [chunks objectAtIndex:1];
-			// NSLog(@"Registering path: %@", path);
-			[_registeredPathes setObject:one forKey:path];
-			
-			[contentman repaintAllWindows];
-		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
-			NSString *path = [chunks objectAtIndex:1];
-			[_registeredPathes removeObjectForKey:path];
-
-			[contentman repaintAllWindows];
-		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"ICON_PATH"] ) {
-			NSString *path = [chunks objectAtIndex:1];
-			[[ContentManager sharedInstance] loadIconResourcePath:path];
-		} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"SHARE_MENU_TITLE"] ) {
-			_shareMenuTitle = [[chunks objectAtIndex:1] copy];
-				// NSLog(@"Received shar menu title: %@", _shareMenuTitle);
-		} else {
-			NSLog(@"SyncState: Unknown command %@", [chunks objectAtIndex:0]);
-		}
-	} else if (tag != READ_TAG) {
-		NSLog(@"SyncState: Received unknown tag %ld <%@>", tag, answer);
-	}
-	// Read on and on
-	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
-	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
-
 }
 
-- (NSTimeInterval)socket:(GCDAsyncSocket*)socket shouldTimeoutReadWithTag:(long)tag elapsed:(NSTimeInterval)elapsed bytesDone:(NSUInteger)length
+- (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	// Called if a read operation has reached its timeout without completing.
-	return 0.0;
+	[_requestedPaths removeAllObjects];
+	[[ContentManager sharedInstance] reFetchFileNameCacheForPath:path];
 }
 
--(void)socket:(GCDAsyncSocket*)socket didConnectToUrl:(NSURL *)url {
-	// NSLog( @"Connected to sync client successfully on %@", url);
-	_isConnected = YES;
-
-	[self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
-
-	if( [_requestQueue count] > 0 ) {
-		// NSLog( @"We have to empty the queue");
-		for( NSString *path in _requestQueue ) {
-			[self askOnSocket:path query:@"RETRIEVE_FILE_STATUS"];
-		}
-		[_requestQueue removeAllObjects];
-	}
-
-	ContentManager *contentman = [ContentManager sharedInstance];
-	[contentman clearFileNameCache];
-	[contentman repaintAllWindows];
-
-	// Read for the UPDATE_VIEW requests
-	NSData* stop = [@"\n" dataUsingEncoding:NSUTF8StringEncoding];
-	[_socket readDataToData:stop withTimeout:-1 tag:READ_TAG];
+- (void)registerPath:(NSString*)path
+{
+	NSNumber *one = [NSNumber numberWithInt:1];
+	[_registeredPathes setObject:one forKey:path];
+	[[ContentManager sharedInstance] repaintAllWindows];
 }
 
-- (void)socketDidDisconnect:(GCDAsyncSocket*)socket withError:(NSError*)err
+- (void)unregisterPath:(NSString*)path
+{
+	[_registeredPathes removeObjectForKey:path];
+	[[ContentManager sharedInstance] repaintAllWindows];
+}
+
+- (void)setShareMenuTitle:(NSString*)title
+{
+	_shareMenuTitle = title;
+}
+
+- (void)loadIconResourcePath:(NSString*)path
+{
+	[[ContentManager sharedInstance] loadIconResourcePath:path];
+}
+
+- (void)connectionDidDie
 {
 	// NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
-
-	_isConnected = NO;
 
 	// clear the registered pathes.
 	[_registeredPathes release];
@@ -227,92 +149,18 @@ static RequestManager* sharedInstance = nil;
 	[contentman repaintAllWindows];
 }
 
-- (NSDate*)fileDate:(NSString*)fn
-{
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSError *error = 0;
-	NSDictionary *oneAttributes = [fileManager attributesOfItemAtPath:fn error:&error];
-	if (!error) {
-		return [oneAttributes valueForKey:NSFileModificationDate];
-	}
-	return nil;
-}
-
-- (NSString*) getNewerFileOne:(NSString*)one two:(NSString*)two
-{
-	if (!one) {
-		return two;
-	}
-	NSDate *oneDate = [self fileDate:one];
-	NSDate *twoDate = [self fileDate:two];
-	if (oneDate && twoDate) {
-		if ([oneDate compare:twoDate] == NSOrderedDescending) {
-			return one;
-		} else if ([oneDate compare:twoDate] == NSOrderedAscending) {
-			return two;
-		} else {
-			return two;
-		}
-	}
-	return one;
-}
-
-
-- (void)start
-{
-	if (!_isConnected && ![_socket isConnected])
-	{
-		NSError *err = nil;
-		NSURL *url = nil;
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-		if ([paths count])
-		{
-			// e.g file:///Users/guruz/Library/Caches/SyncStateHelper/ownCloud.socket
-			NSString *syncStateHelperDir = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"SyncStateHelper"];
-			NSError *pnsError = NULL;
-			NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:syncStateHelperDir error:&pnsError];
-			if (!pnsError && paths && [paths count] > 0) {
-				NSString *currentLatestPath = nil;
-				if (paths.count > 1) {
-					// NSLog(@"Possible paths: %@", paths);
-				}
-				for (int i = 0; i < paths.count; i++) {
-					NSString *currentPath = [syncStateHelperDir stringByAppendingPathComponent:[paths objectAtIndex:i]];
-					if (![currentPath hasSuffix:@".socket"]) {
-						continue;
-					}
-					currentLatestPath = [self getNewerFileOne:currentLatestPath two:currentPath];
-				}
-				// FIXME Instead of connecting to the newest socket we could go multi-socket to support multiple instances
-				if (currentLatestPath) {
-					url = [NSURL fileURLWithPath:currentLatestPath];
-				}
-			}
-		}
-		if (url) {
-			// NSLog(@"Connect Socket to %@", url);
-			[_socket connectToUrl:url withTimeout:1 error:&err];
-		}
-	}
-}
-
 - (void)menuItemClicked:(NSDictionary*)actionDictionary
 {
 	// NSLog(@"RequestManager menuItemClicked %@", actionDictionary);
 	NSArray *filePaths = [actionDictionary valueForKey:@"files"];
 	for (int i = 0; i < filePaths.count; i++) {
-		[self askOnSocket:[filePaths objectAtIndex:i] query:@"SHARE"];
+		[_syncClientProxy askOnSocket:[filePaths objectAtIndex:i] query:@"SHARE"];
 	}
 }
 
 - (NSString*) shareItemTitle
 {
-	if (_socket && _socket.isConnected && _shareMenuTitle) {
-		return _shareMenuTitle;
-	}
-	return nil;
+	return _shareMenuTitle;
 }
-
-
 
 @end

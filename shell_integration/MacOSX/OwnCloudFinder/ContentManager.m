@@ -149,11 +149,11 @@ static ContentManager* sharedInstance = nil;
 	// NSLog(@"XXXXXXX Asking for icon for path %@ = %d",normalizedPath, [result intValue]);
 	
 	if( result == nil ) {
-		// start the async call
-		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 		result = [NSNumber numberWithInt:0];
 		// Set 0 into the cache, meaning "don't have an icon, but already requested it"
 		[_fileNamesCache setObject:result forKey:normalizedPath];
+		// start the async call
+		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 	}
 	if ([result intValue] == 0) {
 		// Show the old state while we wait for the new one

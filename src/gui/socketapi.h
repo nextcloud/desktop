@@ -20,16 +20,16 @@ extern "C" {
 #include <std/c_string.h>
 }
 
-#include <sqlite3.h>
-
-#include <QWeakPointer>
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <QLocalServer>
-
 #include "syncfileitem.h"
 #include "syncjournalfilerecord.h"
 #include "ownsql.h"
+
+#if defined(Q_OS_MAC)
+#include "socketapisocket_mac.h"
+#else
+#include <QLocalServer>
+typedef QLocalServer SocketApiServer;
+#endif
 
 class QUrl;
 class QLocalSocket;
@@ -70,20 +70,20 @@ private:
     SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
     SqlQuery *getSqlQuery( Folder *folder );
 
-    void sendMessage(QLocalSocket* socket, const QString& message, bool doWait = false);
+    void sendMessage(QIODevice* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket);
-    Q_INVOKABLE void command_SHARE(const QString& localFile, QLocalSocket* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevice* socket);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket);
+    Q_INVOKABLE void command_SHARE(const QString& localFile, QIODevice* socket);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_VERSION(const QString& argument, QIODevice* socket);
 
-    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QLocalSocket* socket);
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QIODevice* socket);
     QString buildRegisterPathMessage(const QString& path);
 
-    QList<QLocalSocket*> _listeners;
-    QLocalServer _localServer;
+    QList<QIODevice*> _listeners;
+    SocketApiServer _localServer;
     c_strlist_t *_excludes;
     QHash<Folder*, QSharedPointer<SqlQuery>> _dbQueries;
     QHash<Folder*, QSharedPointer<SqlDatabase>> _openDbs;

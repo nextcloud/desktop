@@ -84,13 +84,11 @@ SocketApi::SocketApi(QObject* parent)
         // See issue #2388
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        // Always using Qt5 on OS X
-        QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
-        socketPath = runtimeDir + "/SyncStateHelper/" + Theme::instance()->appName() + ".socket";
-        // We use the generic SyncStateHelper name on OS X since the different branded clients
-        // should unfortunately not mention that they are ownCloud :-)
-#endif
+        // This much match the code signing Team setting of the extension
+        // FIXME: Hardcoded for now, but if we want to allow builds to be
+        // signed by third party Apple Developer accounts, we'll have to
+        // allow changing this through the build system.
+        socketPath = "9B5WD74GWJ." APPLICATION_REV_DOMAIN ".socketApi";
     } else if( Utility::isLinux() || Utility::isBSD() ) {
         QString runtimeDir;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -108,7 +106,7 @@ SocketApi::SocketApi(QObject* parent)
 	DEBUG << "An unexpected system detected";
     }
 
-    QLocalServer::removeServer(socketPath);
+    SocketApiServer::removeServer(socketPath);
     QFileInfo info(socketPath);
     if (!info.dir().exists()) {
         bool result = info.dir().mkpath(".");
@@ -167,7 +165,7 @@ void SocketApi::slotReadExcludes()
 
 void SocketApi::slotNewConnection()
 {
-    QLocalSocket* socket = _localServer.nextPendingConnection();
+    QIODevice* socket = _localServer.nextPendingConnection();
 
     if( ! socket ) {
         return;
@@ -199,7 +197,7 @@ void SocketApi::onLostConnection()
 {
     DEBUG << "Lost connection " << sender();
 
-    QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
+    QIODevice* socket = qobject_cast<QIODevice*>(sender());
     _listeners.removeAll(socket);
     socket->deleteLater();
 }
@@ -207,7 +205,7 @@ void SocketApi::onLostConnection()
 
 void SocketApi::slotReadSocket()
 {
-    QLocalSocket* socket = qobject_cast<QLocalSocket*>(sender());
+    QIODevice* socket = qobject_cast<QIODevice*>(sender());
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
@@ -215,12 +213,12 @@ void SocketApi::slotReadSocket()
         QString command = line.split(":").first();
         QString function = QString(QLatin1String("command_")).append(command);
 
-        QString functionWithArguments = function + QLatin1String("(QString,QLocalSocket*)");
+        QString functionWithArguments = function + QLatin1String("(QString,QIODevice*)");
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
         QString argument = line.remove(0, command.length()+1).trimmed();
         if(indexOfMethod != -1) {
-            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QLocalSocket*, socket));
+            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QIODevice*, socket));
         } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
@@ -232,7 +230,7 @@ void SocketApi::slotRegisterPath( const QString& alias )
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         QString message = buildRegisterPathMessage(f->path());
-        foreach(QLocalSocket *socket, _listeners) {
+        foreach(QIODevice *socket, _listeners) {
             sendMessage(socket, message);
         }
     }
@@ -336,7 +334,7 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
 
 
 
-void SocketApi::sendMessage(QLocalSocket *socket, const QString& message, bool doWait)
+void SocketApi::sendMessage(QIODevice *socket, const QString& message, bool doWait)
 {
     DEBUG << "Sending message: " << message;
     QString localMessage = message;
@@ -369,14 +367,12 @@ void SocketApi::broadcastMessage( const QString& verb, const QString& path, cons
         msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     }
 
-    // sendMessage already has a debug output
-    //DEBUG << "Broadcasting to" << _listeners.count() << "listeners: " << msg;
-    foreach(QLocalSocket *socket, _listeners) {
+    foreach(QIODevice *socket, _listeners) {
         sendMessage(socket, msg, doWait);
     }
 }
 
-void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSocket* socket)
+void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevice* socket)
 {
     // This command is the same as RETRIEVE_FILE_STATUS
 
@@ -384,7 +380,7 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QLocalSo
     command_RETRIEVE_FILE_STATUS(argument, socket);
 }
 
-void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSocket* socket)
+void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket)
 {
     if( !socket ) {
         qDebug() << "No valid socket object.";
@@ -412,7 +408,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QLocalSock
     sendMessage(socket, message);
 }
 
-void SocketApi::command_SHARE(const QString& localFile, QLocalSocket* socket)
+void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
 {
     if (!socket) {
         qDebug() << Q_FUNC_INFO << "No valid socket object.";
@@ -450,12 +446,12 @@ void SocketApi::command_SHARE(const QString& localFile, QLocalSocket* socket)
     }
 }
 
-void SocketApi::command_VERSION(const QString&, QLocalSocket* socket)
+void SocketApi::command_VERSION(const QString&, QIODevice* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_MENU_TITLE(const QString &, QLocalSocket* socket)
+void SocketApi::command_SHARE_MENU_TITLE(const QString &, QIODevice* socket)
 {
     sendMessage(socket, QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }

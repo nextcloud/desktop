@@ -13,20 +13,18 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "GCDAsyncSocket.h"
 #import "RequestManager.h"
+#import "SyncClientProxy.h"
 
-@interface RequestManager : NSObject
+@interface RequestManager : NSObject <SyncClientProxyDelegate>
 {
-	GCDAsyncSocket* _socket;
+	SyncClientProxy *_syncClientProxy;
 
 	NSMutableArray* _requestQueue;
 	NSMutableDictionary* _registeredPathes;
 	NSMutableSet* _requestedPaths;
 
 	NSString *_shareMenuTitle;
-	
-	BOOL _isConnected;
 }
 
 @property (nonatomic, retain) NSString* filterFolder;
@@ -34,10 +32,8 @@
 + (RequestManager*)sharedInstance;
 
 - (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir;
-- (void)askOnSocket:(NSString*)path query:(NSString*)verb;
 - (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)menuItemClicked:(NSDictionary*)actionDictionary;
-- (void)start;
 
 - (NSString*) shareItemTitle;
 
