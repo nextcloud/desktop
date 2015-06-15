@@ -53,6 +53,7 @@ static qint64 msBetweenRequestAndSync = 2000;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
+    _currentSyncFolder(0)
     _syncEnabled( true )
 {
     Q_ASSERT(!_instance);
