@@ -19,6 +19,7 @@
 #include "folderman.h"
 #include "folderwizard.h"
 #include "folderstatusmodel.h"
+#include "folderstatusdelegate.h"
 #include "utility.h"
 #include "application.h"
 #include "configfile.h"

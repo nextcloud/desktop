@@ -15,9 +15,8 @@
 #ifndef FOLDERSTATUSMODEL_H
 #define FOLDERSTATUSMODEL_H
 
-#include <QStyledItemDelegate>
-#include <QStandardItemModel>
 #include <accountfwd.h>
+#include <QAbstractItemModel>
 
 class QNetworkReply;
 namespace OCC {
@@ -103,38 +102,6 @@ private:
 
 signals:
     void dirtyChanged();
-};
-
-class FolderStatusDelegate : public QStyledItemDelegate
-{
-    Q_OBJECT
-    public:
-    FolderStatusDelegate();
-    virtual ~FolderStatusDelegate();
-
-    enum datarole { FolderAliasRole = Qt::UserRole + 100,
-                    FolderPathRole,
-                    FolderSecondPathRole,
-                    FolderRemotePath,
-                    FolderStatus,
-                    FolderErrorMsg,
-                    FolderSyncPaused,
-                    FolderStatusIconRole,
-                    FolderAccountConnected,
-
-                    SyncProgressOverallPercent,
-                    SyncProgressOverallString,
-                    SyncProgressItemString,
-                    AddProgressSpace,
-                    WarningCount,
-                    SyncRunning,
-
-                    AddButton
-                  };
-    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
-                      const QModelIndex& index ) Q_DECL_OVERRIDE;
 };
 
 } // namespace OCC
