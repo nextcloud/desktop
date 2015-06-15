@@ -20,7 +20,7 @@ namespace OCC {
 
 typedef QSharedPointer<AccountState> AccountStatePtr;
 
-class OWNCLOUDSYNC_EXPORT AccountManager : public QObject {
+class AccountManager : public QObject {
     Q_OBJECT
 public:
     static AccountManager *instance();
