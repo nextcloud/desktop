@@ -13,11 +13,9 @@
 
 #include "account.h"
 #include "cookiejar.h"
-#include "theme.h"
 #include "networkjobs.h"
 #include "configfile.h"
 #include "accessmanager.h"
-#include "owncloudtheme.h"
 #include "creds/abstractcredentials.h"
 #include "../3rdparty/certificates/p12topem.h"
 
@@ -36,7 +34,6 @@ namespace OCC {
 
 Account::Account(QObject *parent)
     : QObject(parent)
-    , _url(Theme::instance()->overrideServerUrl())
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
