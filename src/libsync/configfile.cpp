@@ -47,6 +47,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
+static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char transmissionChecksumC[] = "transmissionChecksum";
@@ -377,6 +378,24 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     if( interval < pollInterval) {
         qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
         interval = pollInterval;
+    }
+    return interval;
+}
+
+bool ConfigFile::updateCheckInterval( const QString& connection ) const
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup( con );
+
+    quint64 defaultInterval = 1000*120*60;
+    quint64 interval = settings.value( QLatin1String(updateCheckIntervalC), defaultInterval ).toULongLong();
+
+    quint64 minInterval = 1000*60*5;
+    if( interval < minInterval) {
+        qDebug() << "Update check interval less than fife minutes, setting " << minInterval;
+        interval = minInterval;
     }
     return interval;
 }
