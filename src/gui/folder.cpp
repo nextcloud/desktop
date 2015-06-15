@@ -634,14 +634,14 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 
 void Folder::saveToSettings() const
 {
-    QScopedPointer<QSettings> settings(_accountState->account()->settings());
+    auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
 }
 
 void Folder::removeFromSettings() const
 {
-    QScopedPointer<QSettings> settings(_accountState->account()->settings());
+    auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     settings->remove(_definition.alias);
 }

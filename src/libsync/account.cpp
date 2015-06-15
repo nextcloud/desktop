@@ -326,23 +326,16 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath,
 
 QString Account::_configFileName;
 
-QSettings *Account::settingsWithGroup(const QString& group, QObject *parent)
+std::unique_ptr<QSettings> Account::settingsWithGroup(const QString& group, QObject *parent)
 {
     if (_configFileName.isEmpty()) {
         // cache file name
         ConfigFile cfg;
         _configFileName = cfg.configFile();
     }
-    QSettings *settings = new QSettings(_configFileName, QSettings::IniFormat, parent);
+    std::unique_ptr<QSettings> settings(new QSettings(_configFileName, QSettings::IniFormat, parent));
     settings->beginGroup(group);
     return settings;
-}
-
-QSettings* Account::settings()
-{
-    auto s = settingsWithGroup(QLatin1String("Accounts"));
-    s->beginGroup(id());
-    return s;
 }
 
 QVariant Account::credentialSetting(const QString &key) const

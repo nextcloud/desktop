@@ -25,6 +25,7 @@
 #include <QSslError>
 #include <QSharedPointer>
 #include "utility.h"
+#include <memory>
 
 class QSettings;
 class QNetworkReply;
@@ -124,10 +125,7 @@ public:
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parents is specified, the caller must destroy the settings */
-    static QSettings* settingsWithGroup(const QString &group, QObject *parent = 0);
-
-    /** Returns a new settings object for this account, already in the right groups. */
-    QSettings* settings();
+    static std::unique_ptr<QSettings> settingsWithGroup(const QString& group, QObject* parent = 0);
 
     // to be called by credentials only
     QVariant credentialSetting(const QString& key) const;

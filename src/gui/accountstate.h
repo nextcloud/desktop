@@ -19,7 +19,9 @@
 #include <QPointer>
 #include "utility.h"
 #include "connectionvalidator.h"
+#include <memory>
 
+class QSettings;
 
 namespace OCC {
 
@@ -85,6 +87,11 @@ public:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
     void checkConnectivity();
+
+    /** Returns a new settings object for this account, already in the right groups. */
+    std::unique_ptr<QSettings> settings();
+
+
 
 private:
     void setState(State state);

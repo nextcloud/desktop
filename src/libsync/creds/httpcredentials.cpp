@@ -211,7 +211,7 @@ void HttpCredentials::fetch()
     _certificatePath = _account->credentialSetting(QLatin1String(certifPathC)).toString();
     _certificatePasswd = _account->credentialSetting(QLatin1String(certifPasswdC)).toString();
 
-    QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
     const QString kck = keychainKey(_account->url().toString(), _user );
 
     QString key = QString::fromLatin1( "%1/data" ).arg( kck );
@@ -225,12 +225,11 @@ void HttpCredentials::fetch()
     }
 
     if (_ready) {
-        settings->deleteLater();
         Q_EMIT fetched();
     } else {
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
         settings->setParent(job); // make the job parent to make setting deleted properly
-        job->setSettings(settings);
+        job->setSettings(settings.release());
 
         job->setInsecureFallback(false);
         job->setKey(kck);
@@ -319,9 +318,9 @@ void HttpCredentials::invalidateToken()
     }
 
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
-    job->setSettings(settings);
+    job->setSettings(settings.release());
     job->setInsecureFallback(true);
     job->setKey(kck);
     job->start();
@@ -347,9 +346,9 @@ void HttpCredentials::persist()
     _account->setCredentialSetting(QLatin1String(certifPathC), _certificatePath);
     _account->setCredentialSetting(QLatin1String(certifPasswdC), _certificatePasswd);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    QSettings *settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
-    job->setSettings(settings);
+    job->setSettings(settings.release());
 
     job->setInsecureFallback(false);
     connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));

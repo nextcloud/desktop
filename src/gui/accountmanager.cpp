@@ -41,7 +41,7 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
+    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()) {
@@ -63,7 +63,7 @@ bool AccountManager::restore()
 bool AccountManager::restoreFromLegacySettings()
 {
     // try to open the correctly themed settings
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup(Theme::instance()->appName()));
+    auto settings = Account::settingsWithGroup(Theme::instance()->appName());
 
     bool migratedCreds = false;
 
@@ -120,7 +120,7 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save()
 {
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
+    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
         save(acc->account(), *settings);
@@ -213,7 +213,7 @@ void AccountManager::deleteAccount(AccountState* account)
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
-    QScopedPointer<QSettings> settings(Account::settingsWithGroup(QLatin1String(accountsC)));
+    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
     accountRemoved(account);
