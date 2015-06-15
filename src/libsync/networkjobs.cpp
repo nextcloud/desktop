@@ -33,7 +33,6 @@
 #include "account.h"
 #include "owncloudpropagator.h"
 
-#include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
 
 Q_DECLARE_METATYPE(QTimer*)

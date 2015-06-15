@@ -64,27 +64,11 @@ set(libsync_SRCS
     transmissionchecksumvalidator.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
-    creds/credentialsfactory.cpp
     creds/credentialscommon.cpp
+    creds/httpcredentials.cpp
     ../3rdparty/qjson/json.cpp
     ../3rdparty/certificates/p12topem.cpp
 )
-if(TOKEN_AUTH_ONLY)
-	set (libsync_SRCS
-		${libsync_SRCS}
-		creds/tokencredentials.cpp
-	)
-else()
-    set (libsync_SRCS
-        ${libsync_SRCS}
-        creds/httpcredentials.cpp
-        creds/shibbolethcredentials.cpp
-        creds/shibboleth/shibbolethwebview.cpp
-        creds/shibboleth/shibbolethrefresher.cpp
-        creds/shibboleth/shibbolethuserjob.cpp
-        authenticationdialog.cpp
-    )
-endif()
 
 if(USE_NEON)
     list(APPEND libsync_SRCS
@@ -154,7 +138,6 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
         EXPORT_FILE_NAME owncloudlib.h
 	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
-
 
 if(TOKEN_AUTH_ONLY)
     qt5_use_modules(${synclib_NAME} Network Concurrent)

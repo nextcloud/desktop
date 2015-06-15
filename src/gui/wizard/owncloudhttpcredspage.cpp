@@ -15,7 +15,7 @@
 
 #include "QProgressIndicator.h"
 
-#include "creds/httpcredentials.h"
+#include "creds/httpcredentialsgui.h"
 #include "theme.h"
 #include "account.h"
 #include "configfile.h"

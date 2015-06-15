@@ -77,14 +77,6 @@ private:
     bool _readPwdFromDeprecatedPlace;
 };
 
-class OWNCLOUDSYNC_EXPORT HttpCredentialsGui : public HttpCredentials {
-    Q_OBJECT
-public:
-    explicit HttpCredentialsGui() : HttpCredentials() {}
-    HttpCredentialsGui(const QString& user, const QString& password, const QString& certificatePath, const QString& certificatePasswd) : HttpCredentials(user, password, certificatePath, certificatePasswd) {}
-    QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
-};
-
 } // namespace OCC
 
 #endif

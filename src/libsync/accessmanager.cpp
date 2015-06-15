@@ -19,10 +19,6 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 
-#ifndef TOKEN_AUTH_ONLY
-#include "authenticationdialog.h"
-#endif
-
 #include "cookiejar.h"
 #include "accessmanager.h"
 #include "utility.h"
@@ -42,8 +38,6 @@ AccessManager::AccessManager(QObject* parent)
     setCookieJar(new CookieJar);
     connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
             this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
-    connect(this, SIGNAL(authenticationRequired(QNetworkReply*,QAuthenticator*)),
-            this, SLOT(slotAuthenticationRequired(QNetworkReply*,QAuthenticator*)));
 
 }
 
@@ -88,32 +82,6 @@ void AccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, 
         authenticator->setPassword(proxy.password());
     }
 }
-void AccessManager::slotAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
-{
-#ifndef TOKEN_AUTH_ONLY
-    // do not handle 401 created by the networkjobs. We may want
-    // to eventually exempt some, but for now we need
-    // it only for other things, e.g. the browser. Would we handle
-    // network jobs, this would break the wizard logic
-    if (reply->property("doNotHandleAuth").toBool()) {
-        return;
-    }
-    QUrl url = reply->url();
-    // show only scheme, host and port
-    QUrl reducedUrl;
-    reducedUrl.setScheme(url.scheme());
-    reducedUrl.setHost(url.host());
-    reducedUrl.setPort(url.port());
 
-    AuthenticationDialog dialog(authenticator->realm(), reducedUrl.toString());
-    if (dialog.exec() == QDialog::Accepted) {
-        authenticator->setUser(dialog.user());
-        authenticator->setPassword(dialog.password());
-    }
-#else
-    Q_UNUSED(reply) Q_UNUSED(authenticator)
-    Q_ASSERT(!"OCC::AccessManager::slotAuthenticationRequired called");
-#endif
-}
 
 } // namespace OCC

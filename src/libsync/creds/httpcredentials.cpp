@@ -386,17 +386,4 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     reply->setProperty(authenticationFailedC, true);
 }
 
-QString HttpCredentialsGui::queryPassword(bool *ok)
-{
-    if (ok) {
-        QString str = QInputDialog::getText(0, tr("Enter Password"),
-                                     tr("Please enter %1 password for user '%2':")
-                                     .arg(Theme::instance()->appNameGUI(), _user),
-                                     QLineEdit::Password, _previousPassword, ok);
-        return str;
-    } else {
-        return QString();
-    }
-}
-
 } // namespace OCC

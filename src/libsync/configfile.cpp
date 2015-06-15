@@ -19,7 +19,6 @@
 #include "utility.h"
 
 #include "creds/abstractcredentials.h"
-#include "creds/credentialsfactory.h"
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>

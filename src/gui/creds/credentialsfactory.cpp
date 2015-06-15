@@ -14,13 +14,9 @@
 #include <QString>
 
 #include "creds/credentialsfactory.h"
-#ifdef TOKEN_AUTH_ONLY
-#include "creds/tokencredentials.h"
-#else
-#include "creds/httpcredentials.h"
+#include "creds/httpcredentialsgui.h"
 #include "creds/dummycredentials.h"
 #include "creds/shibbolethcredentials.h"
-#endif
 
 namespace OCC
 {
@@ -30,11 +26,6 @@ namespace CredentialsFactory
 
 AbstractCredentials* create(const QString& type)
 {
-#ifdef TOKEN_AUTH_ONLY
-    Q_UNUSED(type);
-	return new TokenCredentials;
-#else
-
     // empty string might happen for old version of configuration
     if (type == "http" || type == "") {
         return new HttpCredentialsGui;
@@ -46,7 +37,6 @@ AbstractCredentials* create(const QString& type)
         qWarning("Unknown credentials type: %s", qPrintable(type));
         return new DummyCredentials;
     }
-#endif
 }
 
 } // ns CredentialsFactory

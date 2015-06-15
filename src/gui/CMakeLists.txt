@@ -65,6 +65,13 @@ set(client_SRCS
     quotainfo.cpp
     accountstate.cpp
     addcertificatedialog.cpp
+    authenticationdialog.cpp
+    creds/credentialsfactory.cpp
+    creds/httpcredentialsgui.cpp
+    creds/shibbolethcredentials.cpp
+    creds/shibboleth/shibbolethwebview.cpp
+    creds/shibboleth/shibbolethrefresher.cpp
+    creds/shibboleth/shibbolethuserjob.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
@@ -174,6 +181,11 @@ set( final_src
     ${3rdparty_SRC}
     ${3rdparty_MOC}
 )
+
+if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
+    list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
+    include_directories(${QTKEYCHAIN_INCLUDE_DIR})
+endif()
 
 # add executable icon on windows and osx
 include( AddAppIconMacro )

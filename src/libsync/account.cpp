@@ -19,7 +19,6 @@
 #include "accessmanager.h"
 #include "owncloudtheme.h"
 #include "creds/abstractcredentials.h"
-#include "creds/credentialsfactory.h"
 #include "../3rdparty/certificates/p12topem.h"
 
 #include <QSettings>

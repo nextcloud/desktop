@@ -18,6 +18,10 @@
 #include <QObject>
 #include "syncresult.h"
 
+#ifndef TOKEN_AUTH_ONLY
+#include <QIcon>
+#endif
+
 
 class QIcon;
 class QString;
