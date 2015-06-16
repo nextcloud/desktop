@@ -45,24 +45,28 @@ public:
 
 
     struct SubFolderInfo {
-        Folder *_folder = nullptr;
+        SubFolderInfo()
+            : _folder(0), _size(0), _fetched(false), _fetching(false), _isUndecided(false),
+            _checked(Qt::Checked) {}
+        Folder *_folder;
         QString _name;
         QString _path;
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
-        int _size = 0;
-        bool _fetched = false; // If we did the LSCOL for this folder already
-        bool _fetching = false;
-        bool _isUndecided = false; // undecided folder are the big folder that the user has not accepted yet
-        Qt::CheckState _checked = Qt::Checked;
+        int _size;
+        bool _fetched; // If we did the LSCOL for this folder already
+        bool _fetching;
+        bool _isUndecided; // undecided folder are the big folder that the user has not accepted yet
+        Qt::CheckState _checked;
 
         struct Progress {
+            Progress() : _warningCount(0), _overallPercent(0) {}
             bool isNull() const
             { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
             QString _progressString;
             QString _overallSyncString;
-            int _warningCount = 0;
-            int _overallPercent = 0;
+            int _warningCount;
+            int _overallPercent;
         };
         Progress _progress;
     };
@@ -92,7 +96,7 @@ private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
                                 const QStringList& oldBlackList) const;
     AccountPtr _account;
-    bool _dirty = false;  // If the selective sync checkboxes were changed
+    bool _dirty;  // If the selective sync checkboxes were changed
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     //the roles argument was added in Qt5
