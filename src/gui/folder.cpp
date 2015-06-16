@@ -553,6 +553,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
     // the sync is doing to filter out our own changes.
     bool ownChange = false;
 #ifdef Q_OS_MAC
+    Q_UNUSED(path)
     // On OSX the folder watcher does not report changes done by our
     // own process. Therefore nothing needs to be done here!
 #else

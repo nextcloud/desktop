@@ -183,6 +183,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 {
 #if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD)
+    Q_UNUSED(ok)
     struct statvfs stat;
     statvfs(path.toUtf8().data(), &stat);
     return (qint64) stat.f_bavail * stat.f_frsize;

@@ -69,6 +69,7 @@ bool hasLaunchOnStartup_private(const QString &)
 
 void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
 {
+    Q_UNUSED(appName)
     Q_UNUSED(guiName)
     QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
     CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
