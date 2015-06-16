@@ -107,29 +107,33 @@ ownCloudGui::ownCloudGui(Application *parent) :
 void ownCloudGui::setupOverlayIcons()
 {
 #ifdef Q_OS_MAC
-    const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
-    if(QFile::exists(finderExtension) ) {
-        QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
-                                            "  try\n"
-                                            "    «event OWNCload»\n"
-                                            "  end try\n"
-                                            "end tell\n");
+    // Make sure that we only send the load event to the legacy plugin when
+    // using OS X <= 10.9 since 10.10 starts using the new FinderSync one.
+    if (QSysInfo::MacintoshVersion < QSysInfo::MV_10_10) {
+        const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
+        if (QFile::exists(finderExtension)) {
+            QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
+                                                "  try\n"
+                                                "    «event OWNCload»\n"
+                                                "  end try\n"
+                                                "end tell\n");
 
-          QString osascript = "/usr/bin/osascript";
-          QStringList processArguments;
-          // processArguments << "-l" << "AppleScript";
+              QString osascript = "/usr/bin/osascript";
+              QStringList processArguments;
+              // processArguments << "-l" << "AppleScript";
 
-          QProcess p;
-          p.start(osascript, processArguments);
-          p.write(aScript.toUtf8());
-          p.closeWriteChannel();
-          p.waitForReadyRead(-1);
-          QByteArray result = p.readAll();
-          QString resultAsString(result); // if appropriate
-          qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
-                   << (p.exitCode() != 0 ? p.errorString() : QString::null);
-    } else  {
-        qDebug() << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
+              QProcess p;
+              p.start(osascript, processArguments);
+              p.write(aScript.toUtf8());
+              p.closeWriteChannel();
+              p.waitForReadyRead(-1);
+              QByteArray result = p.readAll();
+              QString resultAsString(result); // if appropriate
+              qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
+                       << (p.exitCode() != 0 ? p.errorString() : QString::null);
+        } else  {
+            qDebug() << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
+        }
     }
 #endif
 }
