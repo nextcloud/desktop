@@ -17,6 +17,8 @@
 
 #include <accountfwd.h>
 #include <QAbstractItemModel>
+#include <QVector>
+
 
 class QNetworkReply;
 namespace OCC {
