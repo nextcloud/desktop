@@ -15,6 +15,8 @@
 #ifndef VERSION_H
 #define VERSION_H
 
+#cmakedefine GIT_SHA1 "@GIT_SHA1@"
+
 #define MIRALL_STRINGIFY(s) MIRALL_TOSTRING(s)
 #define MIRALL_TOSTRING(s) #s
 
