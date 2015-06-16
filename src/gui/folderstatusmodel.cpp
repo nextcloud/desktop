@@ -387,10 +387,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     auto job = qobject_cast<LsColJob *>(sender());
     Q_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
-    if (!idx.isValid()) {
+    auto parentInfo = infoForIndex(idx);
+    if (!parentInfo) {
         return;
     }
-    auto parentInfo = infoForIndex(idx);
 
     auto list = list_;
     list.removeFirst(); // remove the parent item
