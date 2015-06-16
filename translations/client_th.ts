@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>แฟ้มปลายทางมีขนาดที่ระบุไม่ได้หรือการปรับเปลี่ยนเวลา</translation>
     </message>
 </context>
 <context>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;เลือก...</translation>
+        <translation>และเลือก...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="55"/>
         <source>&amp;Directory alias name:</source>
-        <translation>&amp;ชื่อนามแฝงของไดเร็กทอรี่:</translation>
+        <translation>และชื่อนามแฝงของไดเร็กทอรี่:</translation>
     </message>
 </context>
 <context>
@@ -40,12 +40,12 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>เลือกโฟลเดอร์ปลายทางระยะไกล</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create Folder</source>
-        <translation type="unfinished"/>
+        <translation>สร้างโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -73,17 +73,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="20"/>
         <source>Account to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>บัญชีที่ต้องการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="41"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อกับ &lt;server&gt; ด้วยผู้ใช้ &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>Add Folder...</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มโฟลเดอร์...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="65"/>
@@ -99,42 +99,42 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่ต้องการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="104"/>
         <source>Storage Usage</source>
-        <translation type="unfinished"/>
+        <translation>พื้นที่จัดเก็บข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="126"/>
         <source>Retrieving usage information...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังดึงข้อมูลการใช้งาน...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="133"/>
         <source>&lt;b&gt;Note:&lt;/b&gt; Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;หมายเหตุ:&lt;/b&gt; บางโฟลเดอร์รวมทั้งเครือข่ายที่ติดอยู่หรือโฟลเดอร์ที่แชร์อาจจะมีข้อ จำกัด ที่แตกต่างกัน</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Account Maintenance</source>
-        <translation type="unfinished"/>
+        <translation>การบำรุงรักษาบัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="155"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>แก้ไขไฟล์ที่ถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="162"/>
         <source>Modify Account</source>
-        <translation type="unfinished"/>
+        <translation>แก้ไขบัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="111"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีการกำหนดค่าบัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="169"/>
@@ -149,17 +149,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="335"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;คุณต้องการที่จะหยุดการผสานข้อมูลโฟลเดอร์ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะไม่ลบไฟล์จากไคลเอนต์ของคุณ&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="371"/>
         <source>Confirm Folder Reset</source>
-        <translation type="unfinished"/>
+        <translation>ยืนยันการรีเซ็ตโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="372"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;คุณต้องการที่จะตั้งค่าโฟลเดอร์ &lt;i&gt;%1&lt;/i&gt; และสร้างฐานข้อมูลไคลเอนต์ของคุณหรือไม่?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt;ฟังก์ชั่นนี้ถูกออกแบบมาเพื่อวัตถุประสงค์ในการซ่อมบำรุงเท่านั้น จะไม่มีไฟล์ที่ถูกลบออก แต่นี้อาจทำให้เกิดการจราจรข้อมูลที่สำคัญและใช้เวลาหลายนาทีหรือชั่วโมงขึ้นอยู่กับขนาดของโฟลเดอร์ ใช้ตัวเลือกนี้หากได้รับคำแนะนำจากผู้ดูแลระบบของคุณ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
@@ -174,66 +174,66 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังค้นหา &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="646"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 ของ %4) %5 ที่เหลือในอัตราของ %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 of %2, ไฟล์ %3 ของ %4 เวลาที่เหลือทั้งหมด %5</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="677"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ %1 ของ %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) ของ %2 พื้นที่เซิร์ฟเวอร์ที่ใช้งานอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="770"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อไปยัง &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อไปยัง &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; ในขณะที่ &lt;i&gt;%3&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเชื่อมต่อไปยัง %1 ที่ &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>No %1 connection configured.</source>
-        <translation>ยังไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
+        <translation>ไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
     </message>
 </context>
 <context>
@@ -241,37 +241,37 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSL การตรวจสอบรับรองไคลเอนต์</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์นี้อาจจะต้องมีใบรับรองไคลเอ็นต์ SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation type="unfinished"/>
+        <translation>ใบรับรอง:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation type="unfinished"/>
+        <translation>เรียกดู...</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านรับรอง :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="37"/>
         <source>Select a certificate</source>
-        <translation type="unfinished"/>
+        <translation>เลือกใบรับรอง</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="37"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ใบรับรอง (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -279,22 +279,22 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="29"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>ต้องใช้การตรวจสอบสิทธิ์</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>ป้อนชื่อผู้ใช้และรหัสผ่านสำหรับ &apos;%1&apos; ที่ %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="35"/>
         <source>&amp;User:</source>
-        <translation type="unfinished"/>
+        <translation>และผู้ใช้งาน:</translation>
     </message>
     <message>
         <location filename="../src/libsync/authenticationdialog.cpp" line="36"/>
         <source>&amp;Password:</source>
-        <translation>&amp;รหัสผ่าน:</translation>
+        <translation>และรหัสผ่าน:</translation>
     </message>
 </context>
 <context>
@@ -302,38 +302,38 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="62"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีการกำหนดค่าบัญชี ownCloud </translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="118"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>การกำหนดค่าเซิร์ฟเวอร์สำหรับไคลเอ็นต์นี้เก่าเกินไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="119"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>กรุณาอัพเดทเซิร์ฟเวอร์ใหม่ใหม่ที่สุดและรีสตาร์ทไคลเอนต์</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาดในการตรวจสอบ: ทั้งชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>Unable to connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="155"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลา</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="186"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>ระบุข้อมูลประจำตัวไม่ถูกต้อง</translation>
     </message>
 </context>
 <context>
@@ -341,7 +341,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="42"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
 </context>
 <context>
@@ -349,7 +349,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="410"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>ยกเลิกโดยผู้ใช้</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="108"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้าง csync-context</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="163"/>
@@ -377,106 +377,107 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="359"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="459"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกลบออก</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="461"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกลบออก</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="466"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกดาวน์โหลด</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกดาวน์โหลด</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation type="unfinished"/>
+        <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกอัพเดทเรียบร้อยแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกอัพเดทเรียบร้อยแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="480"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกเปลี่ยนชื่อเป็น %2 และ %3 ไฟล์อื่นๆ ได้ถูกเปลี่ยนชื่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="482"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกเปลี่ยนชื่อเป็น %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกย้ายไปยัง %2 และ %3 ไฟล์อื่นๆ ได้ถูกย้าย</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 has been moved to %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ได้ถูกย้ายไปยัง %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 และ %2 ไฟล์อื่นๆ ไม่สามารถผสานข้อมูลเนื่องจากมีข้อผิดพลาด ดูบันทึกสำหรับรายละเอียด</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ไม่สามารถผสานข้อมูลเนื่องจากมีข้อผิดพลาด ดูบันทึกสำหรับรายละเอียด</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="504"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>ความเคลื่อนไหวของการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="783"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>นี้จะลบไฟล์ทั้งหมดที่ผสานข้อมุลในโฟลเดอร์ &apos;%1&apos;
+นี้อาจจะเป็นเพราะโฟลเดอร์หรือไฟล์ทั้งหมดที่ถูกลบออกด้วยตนเอง คุณแน่ใจว่าคุณต้องการที่จะดำเนินการนี้?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1007"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1010"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>เก็บไฟล์เอาไว้</translation>
     </message>
 </context>
 <context>
@@ -484,12 +485,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="233"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถรีเซ็ตสถานะโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="234"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation type="unfinished"/>
+        <translation>บนบันทึกการผสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอพฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1019"/>
@@ -519,7 +520,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1036"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>การผสานข้อมูลสำเร็จ แต่มีคำเตือนในแต่ละไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1039"/>
@@ -529,7 +530,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1042"/>
         <source>User Abort.</source>
-        <translation type="unfinished"/>
+        <translation>ยกเลิกผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1045"/>
@@ -539,7 +540,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1051"/>
         <source>%1 (Sync is paused)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (การผสานข้อมูลจะหยุด)</translation>
     </message>
 </context>
 <context>
@@ -548,12 +549,12 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="95"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="264"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="218"/>
         <source>Syncing all files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>กำลังผสานข้อมูลไฟล์ทั้งหมดในบัญชีของคุณกับ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="221"/>
@@ -585,7 +586,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="72"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
-        <translation type="unfinished"/>
+        <translation>นามแฝงไดเรกทอรีเป็นชื่อที่อธิบายสำหรับเชื่อมต่อการผสานข้อมูลนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="101"/>
@@ -595,7 +596,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="106"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>คุณมีสิทธิ์ที่จะเขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="130"/>
@@ -643,7 +644,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="268"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>สร้างโฟลเดอร์ระยะไกล</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="269"/>
@@ -691,7 +692,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="537"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่จะผสานข้อมูล: คุณสามารถยกเลิกการเลือกโฟลเดอร์ย่อยระยะไกลของหากคุณไม่ต้องการผสานข้อมูล</translation>
     </message>
 </context>
 <context>
@@ -923,7 +924,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="48"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
 </context>
 <context>
@@ -1311,7 +1312,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>สร้างโฟลเดอร์ระยะไกลล้มเหลวเนื่องจากมีข้อมูลผิดพลาด!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="403"/>
@@ -1627,7 +1628,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="20"/>
         <source>Sync Activity</source>
-        <translation type="unfinished"/>
+        <translation>ความเคลื่อนไหวของการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="50"/>
@@ -1637,7 +1638,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="51"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="52"/>
@@ -1712,17 +1713,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="373"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่ต้องการผสานข้อมูล: เลือกโฟลเดอร์ย่อยระยะไกลที่คุณต้องการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="374"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่ต้องการผสานข้อมูล: ยกเลิกการเลือกโฟลเดอร์ย่อยระยะไกลที่คุณต้องการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่ต้องการผสานข้อมูล</translation>
     </message>
 </context>
 <context>
@@ -2289,7 +2290,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="157"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>ยกเลิกโดยผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
@@ -2424,7 +2425,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="55"/>
         <source>%1: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1: %2</translation>
     </message>
 </context>
 <context>
@@ -2580,7 +2581,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="477"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังค้นหา &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="482"/>
