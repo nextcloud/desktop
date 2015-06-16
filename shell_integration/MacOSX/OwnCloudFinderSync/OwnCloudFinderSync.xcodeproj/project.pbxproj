@@ -12,13 +12,10 @@
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
 		C2B573E21B1CD9CE00303B36 /* FinderSyncExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C2B573E91B1DA1FB00303B36 /* SyncClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573E81B1DA1FB00303B36 /* SyncClientProxy.m */; };
-		C2B573F21B1DAD6400303B36 /* error_swm.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573EA1B1DAD6400303B36 /* error_swm.iconset */; };
 		C2B573F31B1DAD6400303B36 /* error.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573EB1B1DAD6400303B36 /* error.iconset */; };
 		C2B573F41B1DAD6400303B36 /* ok_swm.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573EC1B1DAD6400303B36 /* ok_swm.iconset */; };
 		C2B573F51B1DAD6400303B36 /* ok.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573ED1B1DAD6400303B36 /* ok.iconset */; };
-		C2B573F61B1DAD6400303B36 /* sync_swm.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573EE1B1DAD6400303B36 /* sync_swm.iconset */; };
 		C2B573F71B1DAD6400303B36 /* sync.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573EF1B1DAD6400303B36 /* sync.iconset */; };
-		C2B573F81B1DAD6400303B36 /* warning_swm.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573F01B1DAD6400303B36 /* warning_swm.iconset */; };
 		C2B573F91B1DAD6400303B36 /* warning.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C2B573F11B1DAD6400303B36 /* warning.iconset */; };
 /* End PBXBuildFile section */
 
@@ -57,13 +54,10 @@
 		C2B573DD1B1CD9CE00303B36 /* FinderSync.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSync.m; sourceTree = "<group>"; };
 		C2B573E71B1DA1FB00303B36 /* SyncClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncClientProxy.h; sourceTree = "<group>"; };
 		C2B573E81B1DA1FB00303B36 /* SyncClientProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncClientProxy.m; sourceTree = "<group>"; };
-		C2B573EA1B1DAD6400303B36 /* error_swm.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = error_swm.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/error_swm.iconset; sourceTree = "<absolute>"; };
 		C2B573EB1B1DAD6400303B36 /* error.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = error.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/error.iconset; sourceTree = "<absolute>"; };
 		C2B573EC1B1DAD6400303B36 /* ok_swm.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = ok_swm.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/ok_swm.iconset; sourceTree = "<absolute>"; };
 		C2B573ED1B1DAD6400303B36 /* ok.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = ok.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/ok.iconset; sourceTree = "<absolute>"; };
-		C2B573EE1B1DAD6400303B36 /* sync_swm.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = sync_swm.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/sync_swm.iconset; sourceTree = "<absolute>"; };
 		C2B573EF1B1DAD6400303B36 /* sync.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = sync.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/sync.iconset; sourceTree = "<absolute>"; };
-		C2B573F01B1DAD6400303B36 /* warning_swm.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = warning_swm.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/warning_swm.iconset; sourceTree = "<absolute>"; };
 		C2B573F11B1DAD6400303B36 /* warning.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = warning.iconset; path = /Users/joce/dev/client/shell_integration/MacOSX/OwnCloudFinder/FinderSyncExt/../../../icons/nopadding/warning.iconset; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -134,13 +128,10 @@
 		C2B573D91B1CD9CE00303B36 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C2B573EA1B1DAD6400303B36 /* error_swm.iconset */,
 				C2B573EB1B1DAD6400303B36 /* error.iconset */,
 				C2B573EC1B1DAD6400303B36 /* ok_swm.iconset */,
 				C2B573ED1B1DAD6400303B36 /* ok.iconset */,
-				C2B573EE1B1DAD6400303B36 /* sync_swm.iconset */,
 				C2B573EF1B1DAD6400303B36 /* sync.iconset */,
-				C2B573F01B1DAD6400303B36 /* warning_swm.iconset */,
 				C2B573F11B1DAD6400303B36 /* warning.iconset */,
 				C2B573DA1B1CD9CE00303B36 /* Info.plist */,
 				C2B573DB1B1CD9CE00303B36 /* FinderSyncExt.entitlements */,
@@ -254,12 +245,9 @@
 			files = (
 				C2B573F91B1DAD6400303B36 /* warning.iconset in Resources */,
 				C2B573F31B1DAD6400303B36 /* error.iconset in Resources */,
-				C2B573F81B1DAD6400303B36 /* warning_swm.iconset in Resources */,
-				C2B573F21B1DAD6400303B36 /* error_swm.iconset in Resources */,
 				C2B573F71B1DAD6400303B36 /* sync.iconset in Resources */,
 				C2B573F41B1DAD6400303B36 /* ok_swm.iconset in Resources */,
 				C2B573F51B1DAD6400303B36 /* ok.iconset in Resources */,
-				C2B573F61B1DAD6400303B36 /* sync_swm.iconset in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

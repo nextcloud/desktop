@@ -27,16 +27,22 @@
 	// This was added to the bundle's Info.plist to get it from the build system
 	NSString *teamIdentifierPrefix = [extBundle objectForInfoDictionaryKey:@"TeamIdentifierPrefix"];
 
-	[syncController setBadgeImage:[extBundle imageForResource:@"ok.icns"] label:nil forBadgeIdentifier:@"OK"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"sync.icns"] label:nil forBadgeIdentifier:@"SYNC"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"sync.icns"] label:nil forBadgeIdentifier:@"NEW"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"warning.icns"] label:nil forBadgeIdentifier:@"IGNORE"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"error.icns"] label:nil forBadgeIdentifier:@"ERROR"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"ok_swm.icns"] label:nil forBadgeIdentifier:@"OK+SWM"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"sync_swm.icns"] label:nil forBadgeIdentifier:@"SYNC+SWM"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"sync_swm.icns"] label:nil forBadgeIdentifier:@"NEW+SWM"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"warning_swm.icns"] label:nil forBadgeIdentifier:@"IGNORE+SWM"];
-	[syncController setBadgeImage:[extBundle imageForResource:@"error_swm.icns"] label:nil forBadgeIdentifier:@"ERROR+SWM"];
+	NSImage *ok = [extBundle imageForResource:@"ok.icns"];
+	NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
+	NSImage *sync = [extBundle imageForResource:@"sync.icns"];
+	NSImage *warning = [extBundle imageForResource:@"warning.icns"];
+	NSImage *error = [extBundle imageForResource:@"error.icns"];
+
+	[syncController setBadgeImage:ok label:nil forBadgeIdentifier:@"OK"];
+	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"SYNC"];
+	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"NEW"];
+	[syncController setBadgeImage:warning label:nil forBadgeIdentifier:@"IGNORE"];
+	[syncController setBadgeImage:error label:nil forBadgeIdentifier:@"ERROR"];
+	[syncController setBadgeImage:ok_swm label:nil forBadgeIdentifier:@"OK+SWM"];
+	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"SYNC+SWM"];
+	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"NEW+SWM"];
+	[syncController setBadgeImage:warning label:nil forBadgeIdentifier:@"IGNORE+SWM"];
+	[syncController setBadgeImage:error label:nil forBadgeIdentifier:@"ERROR+SWM"];
 	
 	// The Mach post name needs to be prefixed with the code signing Team ID
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
