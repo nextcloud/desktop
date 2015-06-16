@@ -33,16 +33,16 @@
 	NSImage *warning = [extBundle imageForResource:@"warning.icns"];
 	NSImage *error = [extBundle imageForResource:@"error.icns"];
 
-	[syncController setBadgeImage:ok label:nil forBadgeIdentifier:@"OK"];
-	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"SYNC"];
-	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"NEW"];
-	[syncController setBadgeImage:warning label:nil forBadgeIdentifier:@"IGNORE"];
-	[syncController setBadgeImage:error label:nil forBadgeIdentifier:@"ERROR"];
-	[syncController setBadgeImage:ok_swm label:nil forBadgeIdentifier:@"OK+SWM"];
-	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"SYNC+SWM"];
-	[syncController setBadgeImage:sync label:nil forBadgeIdentifier:@"NEW+SWM"];
-	[syncController setBadgeImage:warning label:nil forBadgeIdentifier:@"IGNORE+SWM"];
-	[syncController setBadgeImage:error label:nil forBadgeIdentifier:@"ERROR+SWM"];
+	[syncController setBadgeImage:ok label:@"Up to date" forBadgeIdentifier:@"OK"];
+	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC"];
+	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW"];
+	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE"];
+	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR"];
+	[syncController setBadgeImage:ok_swm label:@"Shared" forBadgeIdentifier:@"OK+SWM"];
+	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC+SWM"];
+	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW+SWM"];
+	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
+	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 	
 	// The Mach post name needs to be prefixed with the code signing Team ID
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
