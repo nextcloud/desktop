@@ -2,7 +2,7 @@
 if(APPLE)
 add_custom_target( legacy_mac_overlayplugin ALL
                    xcodebuild -workspace ${CMAKE_SOURCE_DIR}/shell_integration/MacOSX/OwnCloud.xcworkspace
-                            -scheme SyncStateFinder.osax SYMROOT=${CMAKE_CURRENT_BINARY_DIR} archive
+                            -scheme SyncStateFinder.osax -configuration Release SYMROOT=${CMAKE_CURRENT_BINARY_DIR}
                    COMMENT building Legacy Mac Overlay icons)
 
 # The bundle identifier and application group need to have compatible values with the client
