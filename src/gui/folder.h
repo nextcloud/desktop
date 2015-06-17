@@ -73,8 +73,7 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(AccountState* accountState, const FolderDefinition& definition,
-           QObject* parent = 0L);
+    Folder(const FolderDefinition& definition, QObject* parent = 0L);
 
     ~Folder();
 
@@ -84,6 +83,7 @@ public:
     /**
      * The account the folder is configured on.
      */
+    void setAccountState( AccountState *account );
     AccountState* accountState() const;
 
     /**

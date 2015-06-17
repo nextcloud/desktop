@@ -203,8 +203,9 @@ int FolderMan::setupFolders()
         foreach (const auto& folderAlias, settings->childGroups()) {
             FolderDefinition folderDefinition;
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(account.data(), folderDefinition);
+                Folder* f = addFolderInternal(folderDefinition);
                 if (f) {
+                    f->setAccountState( account.data() );
                     slotScheduleSync(f);
                     emit folderSyncStateChange(f);
                 }
@@ -388,24 +389,30 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.alias = alias;
     folderDefinition.localPath = path;
     folderDefinition.targetPath = targetPath;
-    folder = new Folder( accountState, folderDefinition, this );
-    qDebug() << "Adding folder to Folder Map " << folder;
-    _folderMap[alias] = folder;
-    if (paused) {
-        folder->setSyncPaused(paused);
-        _disabledFolders.insert(folder);
-    }
+    folder = new Folder(folderDefinition, this );
+    if( folder ) {
+        folder->setAccountState(accountState);
 
-    connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+        qDebug() << "Adding folder to Folder Map " << folder;
+        _folderMap[alias] = folder;
+        if (paused) {
+            folder->setSyncPaused(paused);
+            _disabledFolders.insert(folder);
+        }
 
-    registerFolderMonitor(folder);
-    QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
-    if (!blackList.empty()) {
-        //migrate settings
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-        settings.remove(QLatin1String("blackList"));
+        connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
+        connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
+        connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
+
+        registerFolderMonitor(folder);
+        QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
+        if (!blackList.empty()) {
+            //migrate settings
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+            settings.remove(QLatin1String("blackList"));
+        }
+
+        folder->saveToSettings();
     }
     return folder;
 }
@@ -710,14 +717,16 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
         return 0;
     }
 
-    auto folder = addFolderInternal(accountState, folderDefinition);
-    folder->saveToSettings();
+    auto folder = addFolderInternal(folderDefinition);
+    if(folder) {
+        folder->setAccountState(accountState);
+    }
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition)
+Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
 {
-    auto folder = new Folder( accountState, folderDefinition, this );
+    auto folder = new Folder(folderDefinition, this );
 
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[folder->alias()] = folder;

@@ -138,7 +138,7 @@ private slots:
 private:
     /** Adds a folder for an account, does not add it to the account settings.
       */
-    Folder* addFolderInternal(AccountState* accountState, const FolderDefinition& folderDefinition);
+    Folder* addFolderInternal(const FolderDefinition& folderDefinition);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder( Folder * );

@@ -54,11 +54,10 @@ static void csyncLogCatcher(int /*verbosity*/,
 }
 
 
-Folder::Folder(AccountState* accountState,
-               const FolderDefinition& definition,
+Folder::Folder(const FolderDefinition& definition,
                QObject* parent)
     : QObject(parent)
-      , _accountState(accountState)
+      , _accountState(0)
       , _definition(definition)
       , _csyncError(false)
       , _csyncUnavail(false)
@@ -107,6 +106,7 @@ bool Folder::init()
         csync_set_log_callback( csyncLogCatcher );
         csync_set_log_level( 11 );
 
+        Q_ASSERT( _accountState );
         _accountState->account()->credentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
@@ -133,6 +133,11 @@ Folder::~Folder()
     }
     // Destroy csync here.
     csync_destroy(_csync_ctx);
+}
+
+void Folder::setAccountState( AccountState *account )
+{
+    _accountState = account;
 }
 
 AccountState* Folder::accountState() const
@@ -204,6 +209,7 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
+    Q_ASSERT(_accountState);
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
@@ -254,6 +260,7 @@ void Folder::slotRunEtagJob()
 {
     qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
+    Q_ASSERT(_accountState );
 
     AccountPtr account = _accountState->account();
 
@@ -634,6 +641,7 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 
 void Folder::saveToSettings() const
 {
+    Q_ASSERT(_accountState);
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
@@ -641,6 +649,8 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
+    Q_ASSERT(_accountState);
+
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     settings->remove(_definition.alias);
@@ -750,6 +760,8 @@ bool Folder::proxyDirty()
 
 void Folder::startSync(const QStringList &pathList)
 {
+    Q_ASSERT(_accountState);
+
     Q_UNUSED(pathList)
     if (!_csync_ctx) {
         // no _csync_ctx yet,  initialize it.
