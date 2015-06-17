@@ -43,6 +43,7 @@ set(libsync_SRCS
     logger.cpp
     accessmanager.cpp
     configfile.cpp
+    abstractnetworkjob.cpp
     networkjobs.cpp
     owncloudpropagator.cpp
     owncloudtheme.cpp
