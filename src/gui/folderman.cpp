@@ -720,6 +720,7 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     auto folder = addFolderInternal(folderDefinition);
     if(folder) {
         folder->setAccountState(accountState);
+        folder->saveToSettings();
     }
     return folder;
 }
