@@ -33,6 +33,7 @@ static ContentManager* sharedInstance = nil;
 		_oldFileNamesCache = [[NSMutableDictionary alloc] init];
 		_fileIconsEnabled = TRUE;
 		_hasChangedContent = TRUE;
+		[self loadIconResources];
 	}
 
 	return self;
@@ -61,20 +62,20 @@ static ContentManager* sharedInstance = nil;
 	return sharedInstance;
 }
 
-- (void)loadIconResourcePath:(NSString*)path
+- (void)loadIconResources
 {
-	NSString *base = path;
+	NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
 
-	_icnOk   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"ok.icns"]];
-	_icnSync = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"sync.icns"]];
-	_icnWarn = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"warning.icns"]];
-	_icnErr  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"error.icns"]];
-	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"ok_swm.icns"]];
-	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"sync_swm.icns"]];
-	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"warning_swm.icns"]];
-	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[base stringByAppendingPathComponent:@"error_swm.icns"]];
+	_icnOk   = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"ok.icns"]];
+	_icnSync = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"sync.icns"]];
+	_icnWarn = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"warning.icns"]];
+	_icnErr  = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"error.icns"]];
+	_icnOkSwm   = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"ok_swm.icns"]];
+	_icnSyncSwm = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"sync_swm.icns"]];
+	_icnWarnSwm = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"warning_swm.icns"]];
+	_icnErrSwm  = [[IconCache sharedInstance] registerIcon:[extBundle imageForResource:@"error_swm.icns"]];
 
-	// NSLog(@"Icon ok identifier: %d from %@", [_icnOk intValue], [base stringByAppendingString:@"ok.icns"]);
+	// NSLog(@"Icon ok: %@ identifier: %d from bundle %@", [extBundle imageForResource:@"ok.icns"], [_icnOk intValue], extBundle);
 }
 
 - (void)enableFileIcons:(BOOL)enable

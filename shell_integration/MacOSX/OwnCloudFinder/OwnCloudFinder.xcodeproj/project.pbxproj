@@ -20,6 +20,14 @@
 		8C99F6941622D145002D2135 /* IconCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C99F6931622D145002D2135 /* IconCache.m */; };
 		8D576314048677EA00EA77CD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
+		C220057B1B31B04C00A4FB37 /* error_swm.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005731B31B04C00A4FB37 /* error_swm.icns */; };
+		C220057C1B31B04C00A4FB37 /* error.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005741B31B04C00A4FB37 /* error.icns */; };
+		C220057D1B31B04C00A4FB37 /* ok_swm.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005751B31B04C00A4FB37 /* ok_swm.icns */; };
+		C220057E1B31B04C00A4FB37 /* ok.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005761B31B04C00A4FB37 /* ok.icns */; };
+		C220057F1B31B04C00A4FB37 /* sync_swm.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005771B31B04C00A4FB37 /* sync_swm.icns */; };
+		C22005801B31B04C00A4FB37 /* sync.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005781B31B04C00A4FB37 /* sync.icns */; };
+		C22005811B31B04C00A4FB37 /* warning_swm.icns in Resources */ = {isa = PBXBuildFile; fileRef = C22005791B31B04C00A4FB37 /* warning_swm.icns */; };
+		C22005821B31B04C00A4FB37 /* warning.icns in Resources */ = {isa = PBXBuildFile; fileRef = C220057A1B31B04C00A4FB37 /* warning.icns */; };
 		C2B573831B1CD5AE00303B36 /* SyncClientProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573821B1CD5AE00303B36 /* SyncClientProxy.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
 
@@ -48,6 +56,14 @@
 		8C99F6931622D145002D2135 /* IconCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconCache.m; sourceTree = "<group>"; };
 		8D576316048677EA00EA77CD /* SyncStateFinder.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncStateFinder.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C22005731B31B04C00A4FB37 /* error_swm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = error_swm.icns; path = ../../icons/icns/error_swm.icns; sourceTree = "<group>"; };
+		C22005741B31B04C00A4FB37 /* error.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = error.icns; path = ../../icons/icns/error.icns; sourceTree = "<group>"; };
+		C22005751B31B04C00A4FB37 /* ok_swm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ok_swm.icns; path = ../../icons/icns/ok_swm.icns; sourceTree = "<group>"; };
+		C22005761B31B04C00A4FB37 /* ok.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ok.icns; path = ../../icons/icns/ok.icns; sourceTree = "<group>"; };
+		C22005771B31B04C00A4FB37 /* sync_swm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = sync_swm.icns; path = ../../icons/icns/sync_swm.icns; sourceTree = "<group>"; };
+		C22005781B31B04C00A4FB37 /* sync.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = sync.icns; path = ../../icons/icns/sync.icns; sourceTree = "<group>"; };
+		C22005791B31B04C00A4FB37 /* warning_swm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = warning_swm.icns; path = ../../icons/icns/warning_swm.icns; sourceTree = "<group>"; };
+		C220057A1B31B04C00A4FB37 /* warning.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = warning.icns; path = ../../icons/icns/warning.icns; sourceTree = "<group>"; };
 		C2B573811B1CD5AE00303B36 /* SyncClientProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncClientProxy.h; sourceTree = "<group>"; };
 		C2B573821B1CD5AE00303B36 /* SyncClientProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncClientProxy.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +110,14 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C22005731B31B04C00A4FB37 /* error_swm.icns */,
+				C22005741B31B04C00A4FB37 /* error.icns */,
+				C22005751B31B04C00A4FB37 /* ok_swm.icns */,
+				C22005761B31B04C00A4FB37 /* ok.icns */,
+				C22005771B31B04C00A4FB37 /* sync_swm.icns */,
+				C22005781B31B04C00A4FB37 /* sync.icns */,
+				C22005791B31B04C00A4FB37 /* warning_swm.icns */,
+				C220057A1B31B04C00A4FB37 /* warning.icns */,
 				8D576317048677EA00EA77CD /* Info.plist */,
 				8D5B49A704867FD3000E48DA /* InfoPlist.strings */,
 			);
@@ -179,7 +203,7 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 			};
-			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "SyncStateFinder" */;
+			buildConfigurationList = 1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "OwnCloudFinder" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -189,7 +213,7 @@
 				French,
 				German,
 			);
-			mainGroup = 089C166AFE841209C02AAC07 /* SyncStateFinder` */;
+			mainGroup = 089C166AFE841209C02AAC07 /* SyncStateFinder */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -203,7 +227,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C220057E1B31B04C00A4FB37 /* ok.icns in Resources */,
+				C22005821B31B04C00A4FB37 /* warning.icns in Resources */,
+				C220057F1B31B04C00A4FB37 /* sync_swm.icns in Resources */,
+				C220057C1B31B04C00A4FB37 /* error.icns in Resources */,
 				8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */,
+				C22005801B31B04C00A4FB37 /* sync.icns in Resources */,
+				C220057D1B31B04C00A4FB37 /* ok_swm.icns in Resources */,
+				C220057B1B31B04C00A4FB37 /* error_swm.icns in Resources */,
+				C22005811B31B04C00A4FB37 /* warning_swm.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,7 +350,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "SyncStateFinder" */ = {
+		1DEB911E08733D790010E9CD /* Build configuration list for PBXProject "OwnCloudFinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB911F08733D790010E9CD /* Debug */,

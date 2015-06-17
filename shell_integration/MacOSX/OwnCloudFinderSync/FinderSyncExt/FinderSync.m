@@ -44,7 +44,7 @@
 	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
 	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 	
-	// The Mach post name needs to be prefixed with the code signing Team ID
+	// The Mach port name needs to be prefixed with the code signing Team ID
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
 	NSString *serverName = [[teamIdentifierPrefix stringByAppendingString:[extBundle bundleIdentifier]]
 		stringByReplacingOccurrencesOfString:@".FinderSyncExt" withString:@".socketApi"];
@@ -146,11 +146,6 @@
 - (void)setShareMenuTitle:(NSString*)title
 {
 	_shareMenuTitle = title;
-}
-
-- (void)loadIconResourcePath:(NSString*)path
-{
-#pragma unused(path)
 }
 
 - (void)connectionDidDie

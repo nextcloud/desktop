@@ -119,10 +119,6 @@
 	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
 		NSString *path = [chunks objectAtIndex:1];
 		[_delegate unregisterPath:path];
-	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"ICON_PATH"] ) {
-		// FIXME: Should also go away once we move icons into the bundle
-		NSString *path = [chunks objectAtIndex:1];
-		[_delegate loadIconResourcePath:path];
 	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"SHARE_MENU_TITLE"] ) {
 		[_delegate setShareMenuTitle:[chunks objectAtIndex:1]];
 	} else {

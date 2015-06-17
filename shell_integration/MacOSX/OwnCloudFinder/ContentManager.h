@@ -42,6 +42,6 @@
 - (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)repaintAllWindows;
 
-- (void)loadIconResourcePath:(NSString*)path;
+- (void)loadIconResources;
 
 @end

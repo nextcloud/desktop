@@ -129,11 +129,6 @@ static RequestManager* sharedInstance = nil;
 	_shareMenuTitle = title;
 }
 
-- (void)loadIconResourcePath:(NSString*)path
-{
-	[[ContentManager sharedInstance] loadIconResourcePath:path];
-}
-
 - (void)connectionDidDie
 {
 	// NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
