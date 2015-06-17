@@ -125,6 +125,17 @@ void PropagateLocalMkdir::start()
         done( SyncFileItem::NormalError, tr("could not create directory %1").arg(newDirStr) );
         return;
     }
+
+    // Insert the directory into the database. The correct etag will be set later,
+    // once all contents have been propagated, because should_update_etag is true.
+    // Adding an entry with a dummy etag to the database still makes sense here
+    // so the database is aware that this folder exists even if the sync is aborted
+    // before the correct etag is stored.
+    SyncJournalFileRecord record(*_item, newDirStr);
+    record._etag = "_invalid_";
+    _propagator->_journal->setFileRecord(record);
+    _propagator->_journal->commit("localMkdir");
+
     done(SyncFileItem::Success);
 }
 
