@@ -180,7 +180,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="646"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 %2 (%3 ของ %4) %5 ที่เหลือในอัตราของ %6/s</translation>
+        <translation>%1 %2 (%3 จาก %4) %5 ที่เหลือจาก %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
@@ -198,17 +198,17 @@
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation>%1 of %2, ไฟล์ %3 ของ %4 เวลาที่เหลือทั้งหมด %5</translation>
+        <translation>%1 จาก %2, ไฟล์ %3 จาก %4 เวลาที่เหลือทั้งหมด %5</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="677"/>
         <source>file %1 of %2</source>
-        <translation>ไฟล์ %1 ของ %2</translation>
+        <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="766"/>
         <source>%1 (%3%) of %2 server space in use.</source>
-        <translation>%1 (%3%) ของ %2 พื้นที่เซิร์ฟเวอร์ที่ใช้งานอยู่</translation>
+        <translation>%1 (%3%) จาก %2 พื้นที่เซิร์ฟเวอร์ที่ใช้งานอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="770"/>
@@ -540,7 +540,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1051"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (การผสานข้อมูลจะหยุด)</translation>
+        <translation>%1 (การผสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
 </context>
 <context>
@@ -611,17 +611,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="142"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ที่ถูกเลือกคือลิงค์สัญลักษณ์ ที่กำหนดค่าแล้วอยู่ในโฟลเดอร์ที่ลิงค์จะชี้ไปที่</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="149"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ที่กำหนดค่าแล้วประกอบด้วยโฟลเดอร์ที่มีอยู่ในขณะนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="155"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ที่ถูกเลือกคือลิงค์สัญลักษณ์ ที่กำหนดค่าแล้วเป็นโฟลเดอร์หลักที่เลือกในปัจจุบัน โฟลเดอร์ประกอบด้วยลิงค์ที่ชี้ไปที่</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="168"/>
@@ -631,7 +631,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="179"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
-        <translation type="unfinished"/>
+        <translation>นามแฝง &lt;i&gt;%1&lt;/i&gt; ถูกใช้ไปแล้ว กรุณาใช้นามแฝงอื่น</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
@@ -649,7 +649,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="269"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>ใส่ชื่อของโฟลเดอร์ใหม่ที่จะถูกสร้างขึ้นดังต่อไปนี้ &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="298"/>
@@ -659,27 +659,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="309"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>รับรองความถูกต้องล้มเหลวขณะกำลังเข้าถึง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างโฟลเดอร์บน %1 กรุณาตรวจสอบด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="392"/>
         <source>Choose this to sync the entire account</source>
-        <translation type="unfinished"/>
+        <translation>เลือกตัวเลือกนี้เพื่อผสานข้อมูลบัญชีทั้งหมด</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="493"/>
         <source>This folder is already being synced.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์นี้ถูกผสานข้อมูลอยู่แล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="495"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>คุณผสานข้อมูล &lt;i&gt;%1&lt;/i&gt; อยู่แล้ว ซึ่งมีโฟลเดอร์หลักเป็น &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="499"/>
@@ -932,7 +932,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="257"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>รุ่นใหม่ที่ใช้งานได้</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="263"/>
@@ -942,17 +942,17 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>ข้ามรุ่นนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="277"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>ข้ามเวลานี้</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="278"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>ได้รับการอัพเดท</translation>
     </message>
 </context>
 <context>
@@ -990,45 +990,45 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="134"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>ต้องตรวจสอบพร็อกซีเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>ดาวน์โหลดแบนด์วิดธ์</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="278"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>จำกัดถึง</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="218"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>กิโลไบต์/วินาที</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="227"/>
         <location filename="../src/gui/networksettings.ui" line="295"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>ไม่จำกัด</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="272"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>อัพโหลดแบนด์วิดธ์</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>จำกัดโดยอัตโนมัติ</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
@@ -2376,7 +2376,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="972"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตให้เพราะคุณไม่ได้รับอนุญาตให้เพิ่มไดเรกทอรีหลัก</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="979"/>
@@ -2571,7 +2571,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="453"/>
         <source>%1% of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1% จาก %2 ใช้งานอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="465"/>
@@ -2586,22 +2586,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="482"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>กำลังผสานข้อมูล %1 จาก %2 (เหลือ %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="487"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>กำลังผสานข้อมูล %1 (เหลือ %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="536"/>
         <source>Up to date</source>
-        <translation type="unfinished"/>
+        <translation>ถึงวันที่</translation>
     </message>
 </context>
 <context>
@@ -2638,7 +2638,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="265"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>เลือกสิ่งที่ต้องการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
@@ -2673,7 +2673,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>ข้อความสถานะ</translation>
     </message>
 </context>
 <context>
@@ -2681,7 +2681,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
@@ -2719,17 +2719,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="38"/>
         <source>&amp;Username</source>
-        <translation type="unfinished"/>
+        <translation>และชื่อผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="48"/>
         <source>&amp;Password</source>
-        <translation type="unfinished"/>
+        <translation>และหรัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>ป้ายกำกับผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
@@ -2813,17 +2813,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Server &amp;Address</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์และที่อยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="99"/>
         <source>https://...</source>
-        <translation type="unfinished"/>
+        <translation>https://...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>ป้ายกำกับผิดพลาด</translation>
     </message>
 </context>
 <context>
@@ -2847,7 +2847,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
-        <translation type="unfinished"/>
+        <translation>ปุ่มกด</translation>
     </message>
 </context>
 <context>
@@ -2855,27 +2855,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 KiB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KiB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="126"/>
         <source>%L1 B</source>
-        <translation type="unfinished"/>
+        <translation>%L1 B</translation>
     </message>
 </context>
 <context>
@@ -2883,7 +2883,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="38"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>ถาดระบบไม่สามารถใช้ได้</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
@@ -2896,7 +2896,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="256"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;ที่สร้างขึ้นจากการแก้ไข Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; บน %3, %4 กำลังใช้ Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2904,17 +2904,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
         <source>Downloaded</source>
-        <translation type="unfinished"/>
+        <translation>ถูกดาวน์โหลด</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Uploaded</source>
-        <translation type="unfinished"/>
+        <translation>ถูกอัพโหลด</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>ถูกดาวน์โหลด เปลี่ยนชื่อไฟล์ที่ขัดแย้งกัน</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
@@ -2924,17 +2924,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>ถูกย้ายไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>ถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาดในการเข้าถึงระบบไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -2950,27 +2950,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
         <source>downloading</source>
-        <translation type="unfinished"/>
+        <translation>กำลังดาวน์โหลด</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="65"/>
         <source>uploading</source>
-        <translation type="unfinished"/>
+        <translation>กำลังอัพโหลด</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="67"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>กำลังลบ</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
         <source>moving</source>
-        <translation type="unfinished"/>
+        <translation>กำลังย้าย</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>กำลังละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
@@ -3004,12 +3004,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>ผสานข้อมูลสำเร็จ บางไฟล์ถูกละเลย</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>ผสานข้อมูลผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="74"/>
@@ -3019,17 +3019,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>เตรียมความพร้อมในการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Aborting...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังยกเลิก...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>การผสานข้อมูลถูกหยุดชั่วคราว</translation>
     </message>
 </context>
 </TS>
