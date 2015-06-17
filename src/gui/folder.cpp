@@ -74,7 +74,11 @@ Folder::Folder(const FolderDefinition& definition,
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
 
-    _syncResult.setStatus( SyncResult::NotYetStarted );
+    SyncResult::Status status = SyncResult::NotYetStarted;
+    if (definition.paused) {
+        status = SyncResult::Paused;
+    }
+    _syncResult.setStatus(status);
 
     // check if the local path exists
     checkLocalPath();

@@ -107,6 +107,15 @@ void FolderMan::unloadFolder( Folder *f )
         _folderWatchers.remove(f->alias());
     }
     _folderMap.remove( f->alias() );
+
+    disconnect(f, SIGNAL(scheduleToSync(Folder*)),
+               this, SLOT(slotScheduleSync(Folder*)));
+    disconnect(f, SIGNAL(syncStarted()),
+               this, SLOT(slotFolderSyncStarted()));
+    disconnect(f, SIGNAL(syncFinished(SyncResult)),
+               this, SLOT(slotFolderSyncFinished(SyncResult)));
+    disconnect(f, SIGNAL(syncStateChange()),
+               this, SLOT(slotForwardFolderSyncStateChange()));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -389,22 +398,12 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.alias = alias;
     folderDefinition.localPath = path;
     folderDefinition.targetPath = targetPath;
-    folder = new Folder(folderDefinition, this );
-    if( folder ) {
+    folderDefinition.paused = paused;
+
+    folder = addFolderInternal(folderDefinition);
+    if (folder) {
         folder->setAccountState(accountState);
 
-        qDebug() << "Adding folder to Folder Map " << folder;
-        _folderMap[alias] = folder;
-        if (paused) {
-            folder->setSyncPaused(paused);
-            _disabledFolders.insert(folder);
-        }
-
-        connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
-        connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-        connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
-
-        registerFolderMonitor(folder);
         QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
             //migrate settings
@@ -690,6 +689,13 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState* accountState)
     }
 }
 
+void FolderMan::slotForwardFolderSyncStateChange()
+{
+    if (Folder* f = qobject_cast<Folder*>(sender())) {
+        emit folderSyncStateChange(f);
+    }
+}
+
 void FolderMan::slotFolderSyncStarted( )
 {
     qDebug() << ">===================================== sync started for " << _currentSyncFolder->alias();
@@ -731,16 +737,15 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
 
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[folder->alias()] = folder;
-    if (folderDefinition.paused) {
-        folder->setSyncPaused(true);
+    if (folder->syncPaused()) {
         _disabledFolders.insert(folder);
     }
 
-    /* Use a signal mapper to connect the signals to the alias */
+    // See matching disconnects in unloadFolder().
     connect(folder, SIGNAL(scheduleToSync(Folder*)), SLOT(slotScheduleSync(Folder*)));
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
-
+    connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
 
     registerFolderMonitor(folder);
     return folder;

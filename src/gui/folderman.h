@@ -135,8 +135,13 @@ private slots:
 
     void slotRemoveFoldersForAccount(AccountState* accountState);
 
+    // Wraps the Folder::syncStateChange() signal into the
+    // FolderMan::folderSyncStateChange(Folder*) signal.
+    void slotForwardFolderSyncStateChange();
+
 private:
-    /** Adds a folder for an account, does not add it to the account settings.
+    /** Adds a new folder, does not add it to the account settings and
+     *  does not set an account on the new folder.
       */
     Folder* addFolderInternal(const FolderDefinition& folderDefinition);
 
