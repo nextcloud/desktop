@@ -19,7 +19,7 @@
 namespace OCC
 {
 
-class OWNCLOUDSYNC_EXPORT HttpCredentialsGui : public HttpCredentials {
+class HttpCredentialsGui : public HttpCredentials {
     Q_OBJECT
 public:
     explicit HttpCredentialsGui() : HttpCredentials() {}

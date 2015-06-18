@@ -33,7 +33,7 @@ namespace OCC
 
 class ShibbolethWebView;
 
-class OWNCLOUDSYNC_EXPORT ShibbolethCredentials : public AbstractCredentials
+class ShibbolethCredentials : public AbstractCredentials
 {
 Q_OBJECT
 

@@ -25,7 +25,7 @@ class AbstractCredentials;
 namespace CredentialsFactory
 {
 
-OWNCLOUDSYNC_EXPORT AbstractCredentials* create(const QString& type);
+AbstractCredentials* create(const QString& type);
 
 } // ns CredentialsFactory
 

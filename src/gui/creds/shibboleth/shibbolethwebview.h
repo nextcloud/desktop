@@ -28,7 +28,7 @@ namespace OCC
 
 class ShibbolethCookieJar;
 
-class OWNCLOUDSYNC_EXPORT ShibbolethWebView : public QWebView
+class ShibbolethWebView : public QWebView
 {
   Q_OBJECT
 
