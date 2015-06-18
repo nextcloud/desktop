@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="196"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Конечный файл имеет некорректный размер или время изменения</translation>
     </message>
 </context>
 <context>
@@ -1457,7 +1457,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>После обнаружения файл был изменен</translation>
     </message>
 </context>
 <context>
@@ -1590,7 +1590,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Локальный файл изменился в процессе синхронизации. Операция будет возобновлена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
@@ -1601,7 +1601,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Принудительная остановка задачи при сбросе HTTP подключения для Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="565"/>
@@ -1947,7 +1947,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Публичные ссылки требуют пароля</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
@@ -2468,12 +2468,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Некорректная контрольная сумма заголовка</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Загруженный файл не соответствует контрольной сумме, операция будет возобновлена.</translation>
     </message>
 </context>
 <context>

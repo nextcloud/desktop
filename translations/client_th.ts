@@ -700,12 +700,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="46"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;คําเตือน:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="48"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;คําเตือน:&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -723,12 +723,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="184"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์ส่งคืนช่วงของเนื้อหาที่ผิด</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="289"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
 </context>
 <context>
@@ -746,22 +746,22 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>เปิดบนการเริ่มต้นระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>แสดงการแจ้งเตือนเดสก์ทอป</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>Use Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ไอคอนขาวดำ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="47"/>
         <source>Show crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>แสดงรายงานความผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="57"/>
@@ -777,7 +777,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="98"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>และเริ่มต้นใหม่ &amp;&amp; อัพเดท</translation>
     </message>
 </context>
 <context>
@@ -785,12 +785,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="398"/>
         <source>Enter Password</source>
-        <translation type="unfinished"/>
+        <translation>ป้อนรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="399"/>
         <source>Please enter %1 password for user &apos;%2&apos;:</source>
-        <translation type="unfinished"/>
+        <translation>กรุณาป้อน %1 รหัสผ่านสำหรับผู้ใช้ &apos;%2&apos;:</translation>
     </message>
 </context>
 <context>
@@ -798,7 +798,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation type="unfinished"/>
+        <translation>ละเว้นการแก้ไขไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="53"/>
@@ -820,32 +820,32 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="96"/>
         <source>Could not open file</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเปิดไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="97"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเขียนเปลี่ยนเป็น &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="104"/>
         <source>Add Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มการละเว้นรูปแบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="105"/>
         <source>Add a new ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>เพิ่มการละเว้นรูปแบบใหม่:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="127"/>
         <source>Edit Ignore Pattern</source>
-        <translation type="unfinished"/>
+        <translation>แก้ไขการละเว้นการรูปแบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="128"/>
         <source>Edit ignore pattern:</source>
-        <translation type="unfinished"/>
+        <translation>แก้ไขการละเว้นการรูปแบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
@@ -863,7 +863,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
         <source>&amp;Search:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ค้นหา:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="79"/>
@@ -903,7 +903,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเขียนไฟล์บันทึก %1</translation>
     </message>
 </context>
 <context>
@@ -980,7 +980,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>ระบุพร็อกซีด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1048,12 +1048,12 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>พร็อกซี HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>พร็อกซี SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -1061,7 +1061,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="56"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>มี %1 พร้อมอัพเดทใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
@@ -1072,7 +1072,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังดาวน์โหลดรุ่น %1 กรุณารอสักครู่...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="80"/>
@@ -1087,7 +1087,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="84"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถตรวจสอบการอัพเดทใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="86"/>
@@ -1097,7 +1097,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="88"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจสอบการอัพเดทเซิร์ฟเวอร์...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="90"/>
@@ -1115,7 +1115,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
@@ -1125,7 +1125,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อ...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="135"/>
@@ -1135,7 +1135,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="138"/>
         <source>Sync the directory &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>ผสานข้อมูลไดเรกทอรี &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1155,13 +1155,13 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Update advanced setup</source>
-        <translation type="unfinished"/>
+        <translation>อัพเดทการตั้งค่าขั้นสูง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="298"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="319"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1169,17 +1169,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="46"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="47"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>ป้อนข้อมูลประจำตัวของผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="163"/>
         <source>Update user credentials</source>
-        <translation type="unfinished"/>
+        <translation>อัพเดทข้อมูลประจำตัวผู้ใช้</translation>
     </message>
 </context>
 <context>
@@ -1187,33 +1187,34 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="50"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>ติดตั้งเซิร์ฟเวอร์ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="121"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>URL นี้ไม่มีความปลอดภัยเพราะมันไม่ถูกเข้ารหัส
+ไม่แนะนำให้ใช้</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="125"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>URL นี้มีความปลอดภัย คุณสามารถใช้มัน</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="164"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>และถัดไป &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="296"/>
         <source>Update %1 server</source>
-        <translation type="unfinished"/>
+        <translation>อัพเดทเซิร์ฟเวอร์ %1</translation>
     </message>
 </context>
 <context>
@@ -1231,7 +1232,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="200"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาขณะที่พยายามเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="211"/>
@@ -1281,7 +1282,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีโฟลเดอร์ระยะไกลที่ระบุ!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="363"/>
@@ -1343,7 +1344,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>เปลี่ยนชื่อโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
@@ -1366,7 +1367,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="83"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>ข้ามการกำหนดค่าโฟลเดอร์</translation>
     </message>
 </context>
 <context>
@@ -1374,7 +1375,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่าทุกอย่าง!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="42"/>
@@ -1384,7 +1385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>เปิด %1 ในเบราว์เซอร์</translation>
     </message>
 </context>
 <context>
@@ -1392,7 +1393,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="113"/>
         <source>Connection Timeout</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
 </context>
 <context>
@@ -1400,7 +1401,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="170"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>ตอบกลับ JSON ไม่ถูกต้องจาก URL แบบสำรวจความคิดเห็น</translation>
     </message>
 </context>
 <context>
@@ -1408,7 +1409,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="435"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>การผสานข้อมูลถูกยกเลิกโดยผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="488"/>
@@ -1423,7 +1424,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="516"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์ส่งคืนช่วงของเนื้อหาที่ผิด</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="567"/>
@@ -1441,7 +1442,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="485"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ไม่สามารถดาวน์โหลดได้อย่างสมบูรณ์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="580"/>
@@ -1464,7 +1465,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>ดำเนินการขึ้นบัญชีดำ:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
@@ -1482,7 +1483,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
         <source>could not create directory %1</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างไดเรกทอรี %1</translation>
     </message>
 </context>
 <context>
@@ -1490,7 +1491,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="60"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาดขณะกำลังลบ &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
@@ -1566,7 +1567,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="246"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>การผสานข้อมูลถูกยกเลิกโดยผู้ใช้</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="252"/>
@@ -1579,7 +1580,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="226"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ถูกลบไปแล้ว</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
@@ -1605,7 +1606,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="594"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>URL แบบสำรวจความคิดเห็นหายไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="617"/>
@@ -1648,7 +1649,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="53"/>
         <source>Action</source>
-        <translation type="unfinished"/>
+        <translation>การกระทำ</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="54"/>
@@ -1658,7 +1659,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="68"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>ลองผสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="72"/>
@@ -1695,12 +1696,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/protocolwidget.cpp" line="260"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ไฟล์จะถูกดาวน์โหลดบางส่วน</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="261"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>พยายามที่จะผสานข้อมูลเหล่านี้อีกครั้ง</translation>
     </message>
 </context>
 <context>
@@ -1731,7 +1732,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="59"/>
         <source>Loading ...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังโหลด ...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="70"/>
@@ -1780,7 +1781,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="93"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>เครือข่าย</translation>
     </message>
 </context>
 <context>
@@ -1788,7 +1789,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="66"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="70"/>
@@ -1808,7 +1809,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="82"/>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>เครือข่าย</translation>
     </message>
 </context>
 <context>
@@ -1816,7 +1817,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>แชร์ NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="22"/>
@@ -1827,22 +1828,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="41"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>แชร์ป้ายกำกับ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>พาธ ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>ตั้ง &amp;รหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>ตั้ง &amp;วันหมดอายุ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -1852,42 +1853,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>คัดลอก &amp;ลิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="634"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>พาธ %1 : %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>กำลังแชร์ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="92"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="110"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์: %2 </translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านป้องกัน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="203"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านถูกป้องกันแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="343"/>
@@ -1898,7 +1899,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <location filename="../src/gui/sharedialog.cpp" line="507"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;แชร์ลิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="525"/>
@@ -1943,7 +1944,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="593"/>
         <source>Waiting to upload...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังรอที่จะอัพโหลด</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="595"/>
@@ -1961,7 +1962,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibbolethcredentials.cpp" line="291"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>เข้าสู่ระบบผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibbolethcredentials.cpp" line="291"/>
@@ -1993,7 +1994,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="461"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>แชร์กับ %1</translation>
     </message>
 </context>
 <context>
@@ -2091,7 +2092,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="157"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
@@ -2465,17 +2466,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="221"/>
         <source>Please sign in</source>
-        <translation type="unfinished"/>
+        <translation>กรุณาเข้าสู่ระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>Disconnected from server</source>
-        <translation type="unfinished"/>
+        <translation>ตัดการเชื่อมต่อจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="259"/>
         <source>Folder %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์ %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="264"/>
@@ -2490,12 +2491,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>None.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มี</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="299"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>การเปลี่ยนแปลงล่าสุด</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="316"/>
@@ -2510,32 +2511,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>เปิดโฟลเดอร์ &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="412"/>
         <source>Open %1 in browser</source>
-        <translation type="unfinished"/>
+        <translation>เปิด %1 ในเบราว์เซอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Calculating quota...</source>
-        <translation type="unfinished"/>
+        <translation>คำนวณโควต้า...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>สถานะที่ไม่รู้จัก</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Settings...</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งค่า...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Details...</source>
-        <translation type="unfinished"/>
+        <translation>รายละเอียด...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
@@ -2545,28 +2546,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>ออก %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Sign in...</source>
-        <translation type="unfinished"/>
+        <translation>เข้าสู่ระบบ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="431"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>ออกจากระบบ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="435"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation type="unfinished"/>
+        <translation>ความผิดพลาดในขณะนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>Quota n/a</source>
-        <translation type="unfinished"/>
+        <translation>โควต้า n/a</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="453"/>
@@ -2668,7 +2669,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>ผสานข้อมูลทุกอย่างจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2691,22 +2692,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>เลือก URL ที่แตกต่างกัน</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>ลองใหม่อีกครั้ง ไม่ได้เข้ารหัสบน HTTP (ไม่ปลอดภัย)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดค่าใบรับรอง TLS ฝั่งไคลเอ็นต์</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="35"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ไม่สามารถเชื่อมต่อไปยังที่อยู่เซิร์ฟเวอร์ที่ปลอดภัย&lt;em&gt;%1&lt;/em&gt; คุณต้องการที่จะดำเนินการต่อไป?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
