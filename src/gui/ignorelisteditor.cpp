@@ -25,6 +25,9 @@
 
 namespace OCC {
 
+static int patternCol = 0;
+static int deletableCol = 1;
+
 IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::IgnoreListEditor)
@@ -33,25 +36,26 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     ui->setupUi(this);
 
     ui->descriptionLabel->setText(tr("Files or directories matching a pattern will not be synchronized.\n\n"
-                                     "Checked items will also be deleted if they prevent a directory from "
-                                     "being removed. This is useful for meta data."));
+                                     "Items where deletion is allowed will be deleted if they prevent a "
+                                     "directory from being removed. "
+                                     "This is useful for meta data."));
 
     ConfigFile cfgFile;
+    readOnlyTooltip = tr("This entry is provided by the system at '%1' "
+                         "and cannot be modified in this view.")
+            .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
+
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, SIGNAL(accepted()), SLOT(slotUpdateLocalIgnoreList()));
     ui->removePushButton->setEnabled(false);
-    connect(ui->listWidget, SIGNAL(itemSelectionChanged()), SLOT(slotItemSelectionChanged()));
+    connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotItemSelectionChanged()));
     connect(ui->removePushButton, SIGNAL(clicked()), SLOT(slotRemoveCurrentItem()));
     connect(ui->addPushButton, SIGNAL(clicked()), SLOT(slotAddPattern()));
-    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(slotEditPattern(QListWidgetItem*)));
-}
 
-static void setupItemFlags(QListWidgetItem* item)
-{
-    item->setFlags(Qt::ItemIsEnabled|Qt::ItemIsSelectable|Qt::ItemIsUserCheckable);
-    item->setCheckState(Qt::Unchecked);
+    ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);
+    ui->tableWidget->verticalHeader()->setVisible(false);
 }
 
 IgnoreListEditor::~IgnoreListEditor()
@@ -61,7 +65,7 @@ IgnoreListEditor::~IgnoreListEditor()
 
 void IgnoreListEditor::slotItemSelectionChanged()
 {
-    QListWidgetItem *item = ui->listWidget->currentItem();
+    QTableWidgetItem *item = ui->tableWidget->currentItem();
     if (!item) {
         ui->removePushButton->setEnabled(false);
         return;
@@ -73,7 +77,7 @@ void IgnoreListEditor::slotItemSelectionChanged()
 
 void IgnoreListEditor::slotRemoveCurrentItem()
 {
-    delete ui->listWidget->currentItem();
+    ui->tableWidget->removeRow(ui->tableWidget->currentRow());
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
@@ -82,14 +86,15 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
     QFile ignores(ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
-        for(int i = 0; i < ui->listWidget->count(); ++i) {
-            QListWidgetItem *item = ui->listWidget->item(i);
-            if (item->flags() & Qt::ItemIsEnabled) {
+        for(int row = 0; row < ui->tableWidget->rowCount(); ++row) {
+            QTableWidgetItem *patternItem = ui->tableWidget->item(row, patternCol);
+            QTableWidgetItem *deletableItem = ui->tableWidget->item(row, deletableCol);
+            if (patternItem->flags() & Qt::ItemIsEnabled) {
                 QByteArray prepend;
-                if (item->checkState() == Qt::Checked) {
+                if (deletableItem->checkState() == Qt::Checked) {
                     prepend = "]";
                 }
-                ignores.write(prepend+item->text().toUtf8()+'\n');
+                ignores.write(prepend+patternItem->text().toUtf8()+'\n');
             }
         }
     } else {
@@ -108,59 +113,50 @@ void IgnoreListEditor::slotAddPattern()
     if (!okClicked || pattern.isEmpty())
         return;
 
-    QListWidgetItem *item = new QListWidgetItem;
-    setupItemFlags(item);
-    if (pattern.startsWith("]")) {
-        pattern = pattern.mid(1);
-        item->setCheckState(Qt::Checked);
-    }
-    item->setText(pattern);
-    ui->listWidget->addItem(item);
-    ui->listWidget->scrollToItem(item);
-}
-
-void IgnoreListEditor::slotEditPattern(QListWidgetItem *item)
-{
-    if (!(item->flags() & Qt::ItemIsEnabled))
-        return;
-
-    QString pattern = QInputDialog::getText(this, tr("Edit Ignore Pattern"),
-                                            tr("Edit ignore pattern:"),
-                                            QLineEdit::Normal, item->text());
-    if (!pattern.isEmpty()) {
-        item->setText(pattern);
-    }
+    addPattern(pattern, false, false);
+    ui->tableWidget->scrollToBottom();
 }
 
 void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
 {
-
-    ConfigFile cfgFile;
-    const QString disabledTip(tr("This entry is provided by the system at '%1' "
-                                 "and cannot be modified in this view.")
-            .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope))));
-
     QFile ignores(file);
     if (ignores.open(QIODevice::ReadOnly)) {
         while (!ignores.atEnd()) {
             QString line = QString::fromUtf8(ignores.readLine());
             line.chop(1);
             if (!line.isEmpty() && !line.startsWith("#")) {
-                QListWidgetItem *item = new QListWidgetItem;
-                setupItemFlags(item);
-                if (line.startsWith("]")) {
+                bool deletable = false;
+                if (line.startsWith(']')) {
+                    deletable = true;
                     line = line.mid(1);
-                    item->setCheckState(Qt::Checked);
                 }
-                item->setText(line);
-                if (readOnly) {
-                    item->setFlags(item->flags() ^ Qt::ItemIsEnabled);
-                    item->setToolTip(disabledTip);
-                }
-                ui->listWidget->addItem(item);
+                addPattern(line, deletable, readOnly);
             }
         }
     }
+}
+
+int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool readOnly)
+{
+    int newRow = ui->tableWidget->rowCount();
+    ui->tableWidget->setRowCount(newRow + 1);
+
+    QTableWidgetItem *patternItem = new QTableWidgetItem;
+    patternItem->setText(pattern);
+    ui->tableWidget->setItem(newRow, patternCol, patternItem);
+
+    QTableWidgetItem *deletableItem = new QTableWidgetItem;
+    deletableItem->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+    deletableItem->setCheckState(deletable ? Qt::Checked : Qt::Unchecked);
+    ui->tableWidget->setItem(newRow, deletableCol, deletableItem);
+
+    if (readOnly) {
+        patternItem->setFlags(patternItem->flags() ^ Qt::ItemIsEnabled);
+        patternItem->setToolTip(readOnlyTooltip);
+        deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
+    }
+
+    return newRow;
 }
 
 } // namespace OCC

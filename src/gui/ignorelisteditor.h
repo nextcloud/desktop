@@ -37,10 +37,11 @@ private slots:
     void slotRemoveCurrentItem();
     void slotUpdateLocalIgnoreList();
     void slotAddPattern();
-    void slotEditPattern(QListWidgetItem*);
 
 private:
     void readIgnoreFile(const QString& file, bool readOnly);
+    int addPattern(const QString& pattern, bool deletable, bool readOnly);
+    QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
 };
 
