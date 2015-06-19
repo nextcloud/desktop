@@ -30,7 +30,7 @@ const char *csync_instruction_str(enum csync_instructions_e instr);
 
 void csync_memstat_check(void);
 
-void csync_win32_set_file_hidden( const char *file, bool hidden );
+// void csync_win32_set_file_hidden( const char *file, bool hidden );
 
 bool csync_file_locked_or_open( const char *dir, const char *fname);
 #endif /* _CSYNC_UTIL_H */

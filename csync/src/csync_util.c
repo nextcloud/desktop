@@ -103,7 +103,7 @@ void csync_memstat_check(void) {
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Memory: %dK total size, %dK resident, %dK shared",
                  m.size * 4, m.resident * 4, m.shared * 4);
 }
-
+#if 0
 void csync_win32_set_file_hidden( const char *file, bool h ) {
 #ifdef _WIN32
   const mbchar_t *fileName;
@@ -127,6 +127,7 @@ void csync_win32_set_file_hidden( const char *file, bool h ) {
     (void) file;
 #endif
 }
+#endif
 
 bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
 void set_csync_file_locked_or_open_ext(bool (*f) (const char*));
