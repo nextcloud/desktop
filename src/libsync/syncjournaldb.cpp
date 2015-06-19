@@ -331,14 +331,7 @@ bool SyncJournalDb::checkConnect()
      *  In 1.8.1 we had a fix to re-get the data, but this one here is better
      */
     if (forceRemoteDiscovery) {
-        qDebug() << "Forcing remote re-discovery by deleting folder Etags";
-        SqlQuery deleteRemoteFolderEtagsQuery(_db);
-        deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
-        if( !deleteRemoteFolderEtagsQuery.exec() ) {
-            qDebug() << "ERROR: Query failed" << deleteRemoteFolderEtagsQuery.error();
-        } else {
-            qDebug() << "Cleared" << deleteRemoteFolderEtagsQuery.numRowsAffected() << "folder ETags";
-        }
+        forceRemoteDiscoveryNextSyncLocked();
     }
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
@@ -1294,6 +1287,30 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
     // Prevent future overwrite of the etag for this sync
     _avoidReadFromDbOnNextSyncFilter.append(fileName);
 }
+
+void SyncJournalDb::forceRemoteDiscoveryNextSync()
+{
+    QMutexLocker locker(&_mutex);
+
+    if( !checkConnect() ) {
+        return;
+    }
+
+    forceRemoteDiscoveryNextSyncLocked();
+}
+
+void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
+{
+    qDebug() << "Forcing remote re-discovery by deleting folder Etags";
+    SqlQuery deleteRemoteFolderEtagsQuery(_db);
+    deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
+    if( !deleteRemoteFolderEtagsQuery.exec() ) {
+        qDebug() << "ERROR: Query failed" << deleteRemoteFolderEtagsQuery.error();
+    } else {
+        qDebug() << "Cleared" << deleteRemoteFolderEtagsQuery.numRowsAffected() << "folder ETags";
+    }
+}
+
 
 void SyncJournalDb::commit(const QString& context, bool startTrans)
 {

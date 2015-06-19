@@ -83,6 +83,7 @@ protected slots:
     void slotOpenAccountWizard();
     void slotHideProgress();
     void slotSelectiveSync();
+    void slotForceRemoteDiscoveryOnFolders();
 
 private:
     QString shortenFilename( const QString& folder, const QString& file ) const;

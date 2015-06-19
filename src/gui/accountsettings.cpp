@@ -398,6 +398,18 @@ void AccountSettings::slotSelectiveSync()
     }
 }
 
+void AccountSettings::slotForceRemoteDiscoveryOnFolders()
+{
+    FolderMan* folders = FolderMan::instance();
+    foreach (Folder* folder, folders->map()) {
+        if (folder->accountState() != _accountState) {
+            continue;
+        }
+
+        folder->journalDb()->forceRemoteDiscoveryNextSync();
+    }
+}
+
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
 {
     if( ! indx.isValid() ) return;
@@ -777,6 +789,7 @@ void AccountSettings::slotIgnoreFilesEditor()
         _ignoreEditor = new IgnoreListEditor(this);
         _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
         _ignoreEditor->open();
+        connect(_ignoreEditor, SIGNAL(accepted()), SLOT(slotForceRemoteDiscoveryOnFolders()));
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);
     }

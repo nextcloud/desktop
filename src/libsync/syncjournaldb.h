@@ -97,6 +97,13 @@ public:
      */
     void avoidReadFromDbOnNextSync(const QString& fileName);
 
+    /**
+     * Ensures full remote discovery happens on the next sync.
+     *
+     * Equivalent to calling avoidReadFromDbOnNextSync() for all files.
+     */
+    void forceRemoteDiscoveryNextSync();
+
     bool postSyncCleanup(const QSet<QString>& filepathsToKeep,
                          const QSet<QString>& prefixesToKeep);
 
@@ -123,6 +130,9 @@ private:
     void commitTransaction();
     QStringList tableColumns( const QString& table );
     bool checkConnect();
+
+    // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
+    void forceRemoteDiscoveryNextSyncLocked();
 
     SqlDatabase _db;
     QString _dbFile;
