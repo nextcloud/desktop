@@ -18,12 +18,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "torture.h"
-
+#include <stdio.h>
 #include "c_string.h"
 
 #ifdef _WIN32
 #include <string.h>
 #endif
+
 
 static void setup(void **state)
 {
@@ -142,13 +143,27 @@ static void check_to_multibyte(void **state)
     c_free_locale_string(mb_null);
 }
 
+static void check_long_win_path(void **state)
+{
+    const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3";
+    const char *new = makeLongWinPath(path);
+
+    assert_string_equal(new, "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3");
+    printf( "XXXXXXXXXXXX %s\n", new);
+    assert_int_equal( strlen(new), 37);
+
+}
+
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
+        unit_test_setup_teardown(check_long_win_path,                    setup, teardown),
+
         unit_test_setup_teardown(check_to_multibyte,                    setup, teardown),
         unit_test_setup_teardown(check_iconv_ascii,                     setup, teardown),
         unit_test_setup_teardown(check_iconv_to_native_normalization,   setup, teardown),
         unit_test_setup_teardown(check_iconv_from_native_normalization, setup, teardown),
+
     };
 
     return run_tests(tests);
