@@ -282,7 +282,7 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
 
     len = strlen(str);
     // prepend \\?\ and convert '/' => '\' to support long names
-    if( len > 2 ) {
+    if( len > 2 ) {  // FIXME set this to 250 or so
         int i = 4;
         // reserve mem for a new string with the prefix
         mem_reserved = len + 5;
