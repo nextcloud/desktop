@@ -44,7 +44,13 @@
  */
 
 typedef struct dhandle_s {
-  _TDIR *dh;
+#if defined _WIN32
+  WIN32_FIND_DATA ffd;
+  HANDLE hFind;
+  int firstFind;
+#else
+  DIR *dh;
+#endif
   char *path;
 } dhandle_t;
 

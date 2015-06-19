@@ -110,7 +110,6 @@ typedef struct stat csync_stat_t;
 typedef  wchar_t         mbchar_t;
 #define _topen           _wopen
 #define _tdirent         _wdirent
-#define _TDIR            _WDIR
 #define _topendir        _wopendir
 #define _tclosedir       _wclosedir
 #define _treaddir        _wreaddir
@@ -130,7 +129,6 @@ typedef  wchar_t         mbchar_t;
 typedef char           mbchar_t;
 #define _tdirent       dirent
 #define _topen         open
-#define _TDIR          DIR
 #define _topendir      opendir
 #define _tclosedir     closedir
 #define _treaddir      readdir
