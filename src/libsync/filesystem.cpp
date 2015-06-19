@@ -32,6 +32,7 @@
 #include <windef.h>
 #include <winbase.h>
 #include <fcntl.h>
+
 #endif
 
 // We use some internals of csync:
@@ -44,6 +45,16 @@ extern "C" {
 }
 
 namespace OCC {
+
+QString FileSystem::longWinPath( const QString& inpath )
+{
+    QString path(inpath);
+
+    path.replace('/', '\\');
+    path.prepend(QLatin1String("\\\\?\\"));
+
+    return path;
+}
 
 bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
 {
@@ -80,7 +91,20 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
 
 void FileSystem::setFileHidden(const QString& filename, bool hidden)
 {
-    return csync_win32_set_file_hidden(filename.toUtf8().constData(), hidden);
+#ifdef _WIN32
+    QString fName = longWinPath(filename);
+    DWORD dwAttrs;
+
+    dwAttrs = GetFileAttributesW( (wchar_t*)fName.utf16() );
+
+    if (dwAttrs != INVALID_FILE_ATTRIBUTES) {
+        if (hidden && !(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+            SetFileAttributesW((wchar_t*)fName.utf16(), dwAttrs | FILE_ATTRIBUTE_HIDDEN );
+        } else if (!hidden && (dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
+            SetFileAttributesW((wchar_t*)fName.utf16(), dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
+        }
+    }
+#endif
 }
 
 time_t FileSystem::getModTime(const QString &filename)
@@ -127,9 +151,12 @@ bool FileSystem::rename(const QString &originFileName,
     bool success = false;
     QString error;
 #ifdef Q_OS_WIN
+    QString orig = longWinPath(originFileName);
+    QString dest = longWinPath(destinationFileName);
+
     if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t*)originFileName.utf16(),
-                             (wchar_t*)destinationFileName.utf16(),
+        success = MoveFileEx((wchar_t*)orig.utf16(),
+                             (wchar_t*)dest.utf16(),
                              MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
             wchar_t *string = 0;
@@ -235,8 +262,12 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
 
 #else //Q_OS_WIN
     BOOL ok;
-    ok = MoveFileEx((wchar_t*)originFileName.utf16(),
-                    (wchar_t*)destinationFileName.utf16(),
+    QString orig = longWinPath(originFileName);
+    QString dest = longWinPath(destinationFileName);
+
+    qDebug() << "** MOVE: " << orig;
+    ok = MoveFileEx((wchar_t*)orig.utf16(),
+                    (wchar_t*)dest.utf16(),
                     MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         wchar_t *string = 0;
@@ -274,8 +305,10 @@ bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qi
 
     // Create the file handle.
     SECURITY_ATTRIBUTES securityAtts = { sizeof(SECURITY_ATTRIBUTES), NULL, FALSE };
+    QString fName = longWinPath(file->fileName());
+
     HANDLE fileHandle = CreateFileW(
-            (const wchar_t*)file->fileName().utf16(),
+            (const wchar_t*)fName.utf16(),
             accessRights,
             shareMode,
             &securityAtts,
@@ -356,7 +389,9 @@ static bool fileExistsWin(const QString& filename)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
-    hFind = FindFirstFileW( (wchar_t*)filename.utf16(), &FindFileData);
+    QString fName = FileSystem::longWinPath(filename);
+
+    hFind = FindFirstFileW( (wchar_t*)fName.utf16(), &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE) {
         return false;
     }

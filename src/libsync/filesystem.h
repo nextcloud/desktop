@@ -46,6 +46,8 @@ bool fileEquals(const QString &fn1, const QString &fn2);
  */
 void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
 
+/** convert a "normal" windows path into a path that can be 32k chars long. */
+QString longWinPath( const QString& inpath );
 
 /**
  * @brief Get the mtime for a filepath
