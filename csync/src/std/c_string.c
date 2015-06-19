@@ -274,13 +274,46 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
   return dst;
 }
 
+ const char *makeLongWinPath(const char *str)
+{
+    int len = 0;
+    char *longStr = NULL;
+    int mem_reserved = 0;
+
+    len = strlen(str);
+    // prepend \\?\ and convert '/' => '\' to support long names
+    if( len > 2 ) {
+        int i = 4;
+        // reserve mem for a new string with the prefix
+        mem_reserved = len + 5;
+        longStr = c_malloc(mem_reserved);
+        *longStr = '\0';
+
+        strcpy( longStr, "\\\\?\\"); // prepend string by this four magic chars.
+        strcat( longStr, str );
+
+        while(longStr[i] != '\0') {
+            if(longStr[i] == '/') {
+                longStr[i] = '\\';
+            }
+            i++;
+        }
+        return longStr;
+    } else {
+        return str;
+    }
+}
+
+
 /* Convert a an UTF8 string to multibyte */
 mbchar_t* c_utf8_to_locale(const char *str)
 {
   mbchar_t *dst = NULL;
 #ifdef _WIN32
-  size_t len;
-  int size_needed;
+  size_t len = 0;
+  int size_needed = 0;
+  char *longStr = NULL;
+  int mem_reserved = 0;
 #endif
 
   if (str == NULL ) {
@@ -288,13 +321,21 @@ mbchar_t* c_utf8_to_locale(const char *str)
   }
 
 #ifdef _WIN32
-  len = strlen(str);
-  size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
-  if (size_needed > 0) {
-    int size_char = (size_needed + 1) * sizeof(mbchar_t);
-    dst = c_malloc(size_char);
-    memset((void*)dst, 0, size_char);
-    MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);
+  longStr = makeLongWinPath(str);
+  if( longStr ) {
+      len = strlen(longStr);
+
+      size_needed = MultiByteToWideChar(CP_UTF8, 0, longStr, len, NULL, 0);
+      if (size_needed > 0) {
+          int size_char = (size_needed + 1) * sizeof(mbchar_t);
+          dst = c_malloc(size_char);
+          memset((void*)dst, 0, size_char);
+          MultiByteToWideChar(CP_UTF8, 0, longStr, -1, dst, size_needed);
+      }
+
+      if( mem_reserved > 0 ) { // FIXME!! free mem.
+          SAFE_FREE(longStr);
+      }
   }
 #else
 #ifdef WITH_ICONV
