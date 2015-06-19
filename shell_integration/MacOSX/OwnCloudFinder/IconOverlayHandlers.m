@@ -33,7 +33,7 @@
 		isDir = NO;
 	}
 
-	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
+	NSNumber* imageIndex = [[OwnCloudFinderContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 
 	//NSLog(@"1 The icon index is %d", [imageIndex intValue]);
 	if ([imageIndex intValue] > 0)
@@ -76,7 +76,7 @@
 		isDir = NO;
 	}
 
-	NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
+	NSNumber* imageIndex = [[OwnCloudFinderContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 	//NSLog(@"2 The icon index is %d %@ %@", [imageIndex intValue], [url path], isDir ? @"isDir" : @"");
 
 	if ([imageIndex intValue] > 0)
@@ -157,7 +157,7 @@
 			isDir = NO;
 		}
 		
-		NSNumber* imageIndex = [[ContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
+		NSNumber* imageIndex = [[OwnCloudFinderContentManager sharedInstance] iconByPath:[url path] isDirectory:isDir];
 		//NSLog(@"3 The icon index is %d", [imageIndex intValue]);
 
 		if ([imageIndex intValue] > 0)

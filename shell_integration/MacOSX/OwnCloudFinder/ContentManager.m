@@ -20,9 +20,9 @@
 #import "RequestManager.h"
 #import "IconCache.h"
 
-static ContentManager* sharedInstance = nil;
+static OwnCloudFinderContentManager* sharedInstance = nil;
 
-@implementation ContentManager
+@implementation OwnCloudFinderContentManager
 - init
 {
 	self = [super init];
@@ -49,7 +49,7 @@ static ContentManager* sharedInstance = nil;
 	[super dealloc];
 }
 
-+ (ContentManager*)sharedInstance
++ (OwnCloudFinderContentManager*)sharedInstance
 {
 	@synchronized(self)
 	{

@@ -101,27 +101,27 @@ static RequestManager* sharedInstance = nil;
 {
 	// The client will broadcast all changes, do not fill the cache for paths that Finder didn't ask for.
 	if ([_requestedPaths containsObject:path]) {
-		[[ContentManager sharedInstance] setResultForPath:path result:result];
+		[[OwnCloudFinderContentManager sharedInstance] setResultForPath:path result:result];
 	}
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
 	[_requestedPaths removeAllObjects];
-	[[ContentManager sharedInstance] reFetchFileNameCacheForPath:path];
+	[[OwnCloudFinderContentManager sharedInstance] reFetchFileNameCacheForPath:path];
 }
 
 - (void)registerPath:(NSString*)path
 {
 	NSNumber *one = [NSNumber numberWithInt:1];
 	[_registeredPathes setObject:one forKey:path];
-	[[ContentManager sharedInstance] repaintAllWindows];
+	[[OwnCloudFinderContentManager sharedInstance] repaintAllWindows];
 }
 
 - (void)unregisterPath:(NSString*)path
 {
 	[_registeredPathes removeObjectForKey:path];
-	[[ContentManager sharedInstance] repaintAllWindows];
+	[[OwnCloudFinderContentManager sharedInstance] repaintAllWindows];
 }
 
 - (void)setShareMenuTitle:(NSString*)title
@@ -139,7 +139,7 @@ static RequestManager* sharedInstance = nil;
 	[_requestedPaths removeAllObjects];
 
     // clear the caches in conent manager
-	ContentManager *contentman = [ContentManager sharedInstance];
+	OwnCloudFinderContentManager *contentman = [OwnCloudFinderContentManager sharedInstance];
 	[contentman clearFileNameCache];
 	[contentman repaintAllWindows];
 }

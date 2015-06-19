@@ -95,7 +95,7 @@ static BOOL installed = NO;
 
 	// NSLog(@"SyncStateFinder: uninstalling");
 
-	[[ContentManager sharedInstance] dealloc];
+	[[OwnCloudFinderContentManager sharedInstance] dealloc];
 
 	[[IconCache sharedInstance] dealloc];
 
