@@ -162,77 +162,77 @@
         <translation>&lt;p&gt;您真希望重置文件夹 &lt;i&gt;%1&lt;/i&gt; 并重新构建您的客户端数据库吗？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt;此功能设计仅用作维护操作。没有文件将被移除，但这将导致大量的数据传输。根据文件夹的大小，这一过程将持续几分钟到几小时。请仅在管理员指导的情况下使用此功能。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="482"/>
+        <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <source>Sync Running</source>
         <translation>同步正在运行</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="483"/>
+        <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>正在执行同步。&lt;br /&gt;您确定要关闭它吗？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>正在发现 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="646"/>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)，%5 后完成 (%6/s)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="652"/>
+        <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="656"/>
+        <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="671"/>
+        <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 / %2 （第 %3 个文件，共 %4 个）
 %5 后全部完成</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="677"/>
+        <location filename="../src/gui/accountsettings.cpp" line="689"/>
         <source>file %1 of %2</source>
         <translation>第 %1 个文件，共 %2 个</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>%1 (%3%) of %2 server space in use.</source>
         <translation>已使用 %3% 的服务器空间 (%1 / %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="770"/>
+        <location filename="../src/gui/accountsettings.cpp" line="782"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>目前没有储存使用量信息可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="803"/>
+        <location filename="../src/gui/accountsettings.cpp" line="816"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;.</source>
         <translation>已连接到&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="806"/>
+        <location filename="../src/gui/accountsettings.cpp" line="819"/>
         <source>Connected to &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; as &lt;i&gt;%3&lt;/i&gt;.</source>
         <translation>已作为 &lt;i&gt;%3&lt;/i&gt; 连接到 &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="823"/>
         <source>No connection to %1 at &lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;.</source>
         <translation>无法连接 %1 （&lt;a href=&quot;%2&quot;&gt;%3&lt;/a&gt;）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>No %1 connection configured.</source>
         <translation>没有 %1 连接配置。</translation>
     </message>
@@ -1978,17 +1978,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="62"/>
+        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="63"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - 认证</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="68"/>
+        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="69"/>
         <source>Reauthentication required</source>
         <translation>需要重新认证</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="68"/>
+        <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="69"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>您的会话已经过期。请重新登录。</translation>
     </message>
