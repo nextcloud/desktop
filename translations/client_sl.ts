@@ -407,7 +407,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="473"/>
         <source>%1 and %2 other files have been updated.</source>
-        <translation>%1 in %2 drugih datotek je posodobljenih.</translation>
+        <translation>Datoteka %1 in še %2 drugih datotek je posodobljenih.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="475"/>
@@ -418,7 +418,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="480"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation>Datoteka %1 je preimenovana v %2. Preimenovanih je bilo še %3 datotek.</translation>
+        <translation>Datoteka %1 je preimenovana v %2. Preimenovanih je bilo še nekaj datotek (%3).</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="482"/>
@@ -429,7 +429,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="487"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation>Datoteka %1 je premaknjena v %2. Premaknjenih je bilo še %3 datotek.</translation>
+        <translation>Datoteka %1 je premaknjena v %2. Premaknjenih je bilo še nekaj datotek (%3).</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="489"/>
@@ -440,12 +440,12 @@ Skupaj še %5</translation>
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 in %2 drugih datotek ni mogoče uskladiti zaradi napake. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
+        <translation>Datoteka %1 in še %2 drugih datotek ni mogoče uskladiti zaradi napake. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 ni mogoče uskladiti zaradi napake. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
+        <translation>Datoteke %1 zaradi napake ni mogoče uskladiti. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="504"/>
@@ -463,7 +463,7 @@ Skupaj še %5</translation>
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation>Z usklajevanjem bodo odstranjene vse datoteke v usklajevani mapi &apos;%1&apos;.
-Mapa je bila morda odstranjena ali pa so bile nastavitve spremenjene.
+Mapa je bila morda odstranjena ali pa so bile spremenjene nastavitve.
 Ali sta prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
@@ -492,7 +492,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="234"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, da datoteka ni v uporabi.</translation>
+        <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, ali je datoteka v uporabi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1019"/>
@@ -666,7 +666,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="311"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Ustvarjanje mape na %1 je spodletelo. Poskusite jo ustvariti ročno.</translation>
+        <translation>Ustvarjanje mape na %1 je spodletelo. Morda jo je mogoče ustvariti ročno.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="392"/>
@@ -694,7 +694,7 @@ Ali sta prepričani, da želite izvesti to opravilo?</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="537"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Izbira usklajevanja: Opcijsko lahko določite oddaljene poddirektorije za katere ne želite da se uskladijo.</translation>
+        <translation>Izbira usklajevanja: izbirno je mogoče določiti oddaljene podrejene mape, ki naj se ne usklajujejo.</translation>
     </message>
 </context>
 <context>
@@ -1247,12 +1247,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Zahteva za overitev s strežnikom je bila preusmerjena na &apos;%1&apos;. Naslov URL ni veljaven ali pa strežnik ni ustrezno nastavljen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Prejet je neveljaven odziv na zahtevo overitve webdav</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
@@ -1527,7 +1527,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 204, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1535,7 +1535,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 201, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1558,7 +1558,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 201, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1729,7 +1729,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="380"/>
         <source>Choose What to Sync</source>
-        <translation>Izberi datoteke za usklajevanje</translation>
+        <translation>Izbor map za usklajevanje</translation>
     </message>
 </context>
 <context>
@@ -1753,12 +1753,12 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Na strežniku trenutno ni podrejenih map.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Prišlo je do napake med nalaganjem seznama podrejenih map.</translation>
     </message>
 </context>
 <context>
@@ -1868,7 +1868,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="634"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>Pot %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
@@ -1919,7 +1919,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče najti mape za pošiljanje v oblak.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
@@ -2135,7 +2135,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>SSL Connection</source>
-        <translation>SSL povezava</translation>
+        <translation>Povezava SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
