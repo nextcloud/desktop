@@ -684,7 +684,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="499"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation type="unfinished"/>
+        <translation>คุณกำลังผสานข้อมูลไฟลืทั้งหมดอยู่แล้ว การผสานข้อมูลโฟลเดอร์อื่นๆ&lt;b&gt;ไม่&lt;/b&gt;ได้รับการสนับสนุน หากคุณต้องการผสานข้อมูลหลายโฟลเดอร์ กรุณาลบการกำหนดค่าผสานข้อมูลโฟลเดอร์รากในปัจจุบัน</translation>
     </message>
 </context>
 <context>
@@ -713,12 +713,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="150"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบ พร็อกซี่หรือเกตเวย์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="157"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงาน กรุณาลองอีกครั้งในเวลาถัดไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="184"/>
@@ -815,7 +815,7 @@ Are you sure you want to perform this operation?</source>
         <source>Files or directories matching a pattern will not be synchronized.
 
 Checked items will also be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์หรือไดเรกทอรีที่ตรงกับรูปแบบจะไม่ถูกผสานข้อมูล รายการที่ตรวจสอบจะถูกลบถ้าพวกเขาป้องกันไม่ให้ลบไดเรกทอรีออก นี้จะเป็นประโยชน์สำหรับข้อมูล meta</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="96"/>
@@ -850,7 +850,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation type="unfinished"/>
+        <translation>รายการนี้ถูกระบุโดยระบบที่ &apos;%1&apos; และไม่สามารถแก้ไขได้ในมุมมองนี้</translation>
     </message>
 </context>
 <context>
@@ -937,7 +937,7 @@ Checked items will also be deleted if they prevent a directory from being remove
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="263"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;มีรุ่นใหม่ %1 ของไคลเอ็นต์แล้ว&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; สามารถดาวน์โหลดได้ รุ่นที่ติดตั้งคือ %3</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="276"/>
@@ -1067,7 +1067,7 @@ Checked items will also be deleted if they prevent a directory from being remove
         <location filename="../src/gui/updater/ocupdater.cpp" line="57"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>มีการอัพเดทใหม่สำหรับ %1 มันเกี่ยวกับการติดตั้ง การอัพเดทอาจจะถามสิทธิประโยชน์เพิ่มเติมในระหว่างกระบวนการ</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="78"/>
@@ -1077,12 +1077,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="80"/>
         <source>Version %1 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>มีรุ่น %1 แล้ว เริ่มต้นแอพลิเคชันใหม่เพื่อเริ่มการอัพเดท</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="82"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถดาวน์โหลดการอัพเดท กรุณาคลิก&lt;a href=&apos;%1&apos;&gt;ที่นี่&lt;/a&gt; เพื่อดาวน์โหลดการอัพเดทด้วยตนเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="84"/>
@@ -1092,7 +1092,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="86"/>
         <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>มีรุ่น %1 ใหม่ กรุณาใช้เครื่องมือการอัพเดทระบบเพื่อติดตั้งมัน</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="88"/>
@@ -1102,12 +1102,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="90"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>สถานะการอัพเดทที่ไม่รู้จัก: จะไม่มีการตรวจสอบการอัพเดทใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="94"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีการอัพเดท การติดตั้งที่เป็นเวอร์ชั่นล่าสุด</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1140,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; You currently have multiple folders configured. If you continue with the current settings, the folder configurations will be discarded and a single root folder sync will be created!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;คำเตือน:&lt;/strong&gt; ขณะนี้คุณได้กำหนดค่าหลายโฟลเดอร์ หากคุณยังคงมีการตั้งค่าปัจจุบัน การกำหนดค่าโฟลเดอร์จะถูกยกเลิกและโฟลเดอร์รากเดี่ยวจะถูกสร้างขึ้น!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="149"/>
@@ -1227,7 +1227,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="188"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>ล้มเหลวในการเชื่อมต่อไปยัง %1 ที่ %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="200"/>
@@ -1242,17 +1242,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>คำขอการรับรองความถูกต้องไปยังเซิร์ฟเวอร์ที่ถูกเปลี่ยนเส้นทางไปยัง</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>มีการตอบสนองที่ไม่ถูกต้องที่จะร้องขอการรับรองความถูกต้องของ WebDAV</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>การเข้าถึงถูกระงับโดยเซิร์ฟเวอร์ เพื่อตรวจสอบว่าคุณมีการเข้าถึงที่เหมาะสม &lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อรเข้าถึงบริการกับเบราว์เซอร์ของคุณ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
@@ -1349,7 +1349,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถลบและสำรองข้อมูลโฟลเดอร์เพราะโฟลเดอร์หรือไฟล์ในนั้นจะเปิดในโปรแกรมอื่นอยู่ กรุณาปิดโฟลเดอร์หรือไฟล์และกดลองใหม่อีกครั้งหรือยกเลิกการติดตั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
@@ -1414,12 +1414,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="488"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบ พร็อกซี่หรือเกตเวย์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="494"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation type="unfinished"/>
+        <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงาน กรุณาลองอีกครั้งในเวลาถัดไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="516"/>
@@ -1452,7 +1452,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="620"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
 </context>
 <context>
@@ -1460,7 +1460,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; ฟื้นฟูล้มเหลว: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
@@ -1470,7 +1470,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>แฟ้มหรือไดเรกทอรีถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว แต่การฟื้นฟูล้มเหลว: %1</translation>
     </message>
 </context>
 <context>
@@ -1478,7 +1478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="119"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>คำเตือน เคสที่เป็นไปไม่ได้มีผลกับ %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="125"/>
@@ -1496,7 +1496,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
         <source>Could not remove directory &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถลบไดเรกทอรี &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="86"/>
@@ -1517,12 +1517,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="94"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว  ได้รับการเรียกคืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>รหัส HTTP ผิดพลาด โดยเซิร์ฟเวอร์คาดว่าจะได้รับรหัส 204 แต่กลับได้รับ &quot;%1 %2&quot;</translation>
     </message>
 </context>
 <context>
@@ -1530,7 +1530,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>รหัส HTTP ผิดพลาด โดยเซิร์ฟเวอร์คาดว่าจะได้รับรหัส 201 แต่กลับได้รับ &quot;%1 %2&quot;</translation>
     </message>
 </context>
 <context>
@@ -1538,22 +1538,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="87"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์นี้จะต้องไม่ถูกเปลี่ยนชื่อ มันจะถูกเปลี่ยนกลับไปใช้ชื่อเดิม</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="89"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>โฟลเดอร์นี้จะต้องไม่ถูกเปลี่ยนชื่อ กรุณาตั้งชื่อมันให้เหมือนตอนที่แชร์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ที่ถูกเปลี่ยนชื่อ แต่เป็นส่วนหนึ่งของการแชร์เพื่ออ่านเพียงอย่างเดียว ไฟล์ต้นฉบับจะถูกเรียกคืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>รหัส HTTP ผิดพลาด โดยเซิร์ฟเวอร์คาดว่าจะได้รับรหัส 201 แต่กลับได้รับ &quot;%1 %2&quot;</translation>
     </message>
 </context>
 <context>
@@ -1596,7 +1596,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>บังคับให้ยกเลิกงานในการตั้งค่าการเชื่อมต่อ HTTP กับ Qt &lt; 5.4.2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="565"/>
@@ -1616,7 +1616,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="643"/>
         <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์ไม่ยอมรับอันสุดท้าย (ไม่มี e-tag อยู่ในปัจจุบัน)</translation>
     </message>
 </context>
 <context>
@@ -1669,7 +1669,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="73"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="112"/>
@@ -1679,18 +1679,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="112"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>สถานะการผสานข้อมูลถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="256"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation type="unfinished"/>
+        <translation>ปัจจุบันยังไม่มีไฟล์ที่ถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้และไม่มีความคืบหน้าในการดาวน์โหลด</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="259"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ไฟล์จะถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="260"/>
@@ -1748,12 +1748,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีโฟลเดอร์ย่อยอยู่บนเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะโหลดรายชื่อของโฟลเดอร์ย่อย</translation>
     </message>
 </context>
 <context>
@@ -1893,7 +1893,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="343"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="506"/>
@@ -1904,37 +1904,37 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="525"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>รหัสข้อผิดพลาด OCS API: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="547"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีการกำหนดค่าการผสานข้อมูลโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่พบโฟลเดอร์ที่อัพโหลดไปยัง</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>มีการผสานไฟล์ข้อมูลที่มีชื่อเดียวกันอยู่แล้ว ไฟล์จะไม่สามารถลงทะเบียนเพื่อผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="626"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถผสานข้อมูลไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="566"/>
         <source>Sharing of external directories is not yet working.</source>
-        <translation type="unfinished"/>
+        <translation>การแชร์ไดเรกทอรีภายนอกยังไม่สามารถทำงานได้</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
@@ -1949,12 +1949,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="595"/>
         <source>Unable to register in sync space.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถลงทะเบียนในพื้นที่ผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="636"/>
         <source>Sync of registered file was not successful yet.</source>
-        <translation type="unfinished"/>
+        <translation>การผสานข้อมูลของไฟล์ที่ลงทะเบียนไม่ประสบความสำเร็จเลย</translation>
     </message>
 </context>
 <context>
@@ -1967,7 +1967,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibbolethcredentials.cpp" line="291"/>
         <source>You must sign in as user %1</source>
-        <translation type="unfinished"/>
+        <translation>คุณต้องเข้าสู่ระบบเป็นผู้ใช้ %1</translation>
     </message>
 </context>
 <context>
@@ -1975,17 +1975,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="63"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - รับรองความถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="69"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>จำเป้นต้องรับรองความถูกต้องอีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/shibboleth/shibbolethwebview.cpp" line="69"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>เซสชั่นของคุณหมดอายุแล้ว คุณจำเป็นต้องเข้าสู่ระบบใหม่</translation>
     </message>
 </context>
 <context>
@@ -2002,32 +2002,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;รายละเอียดใบรับรองความถูกต้อง&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อทั่วไป (Common Name):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
         <source>Subject Alternative Names:</source>
-        <translation type="unfinished"/>
+        <translation>เรื่องชื่อทางเลือก:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>องค์กร (Organization):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="109"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>หน่วยองค์กร (Organizational Unit):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>รัฐ/จังหวัด:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -2037,57 +2037,57 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>Serial:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;แจ้งปัญหา&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>ผู้แจ้งปัญหา:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="119"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>ออกเมื่อวันที่:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="120"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>หมดอายุในวันที่:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="123"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;ลายนิ้วมือ&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="127"/>
         <source>MD 5:</source>
-        <translation type="unfinished"/>
+        <translation>MD 5:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="129"/>
         <source>SHA-256:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-256:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="131"/>
         <source>SHA-1:</source>
-        <translation type="unfinished"/>
+        <translation>SHA-1:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="135"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; ใบรับรองนี้ได้รับการอนุมัติด้วยตนเอง&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="155"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (ลงนามด้วยตนเอง)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="157"/>
@@ -2098,18 +2098,18 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมต่อนี้ถูกเข้ารหัสโดยใช้ %1 บิต %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="217"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>ข้อมูลการรับรอง:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="195"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>การเชื่อมต่อนี้ไม่มีความปลอดภัยเพราะมันไม่ได้เข้ารหัส</translation>
     </message>
 </context>
 <context>
@@ -2183,7 +2183,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>หมดอายุวันที่: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
@@ -2206,7 +2206,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="103"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ไม่สามารถโหลดไฟล์เจอร์นัล ไฟล์เจอร์นัลได้รับความเสียหาย</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="106"/>
@@ -2241,7 +2241,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="124"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ไม่สามารถรับรองความถูกต้องที่พร็อกซี่</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -2261,7 +2261,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>หมดเวลาการเชื่อมต่อเครือข่าย</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
@@ -2296,83 +2296,83 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
         <source>The mounted directory is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>ไดเรกทอรีที่ติดตั้งชั่วคราวไม่สามารถใช้ได้บนเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>ล้มเหลวในการเข้าถึง CSync</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถใช้บริการได้ชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดในขณะที่เปิดไดเรกทอรี</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="169"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>จำนวนข้อผิดพลาดภายในที่เกิดขึ้น %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="224"/>
         <source>The item is not synced because of previous errors: %1</source>
-        <translation type="unfinished"/>
+        <translation>รายการจะไม่ถูกผสานข้อมูลเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="364"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>ลิงค์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="367"/>
         <source>Hard links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>เชื่อมโยงอย่างหนักที่ไม่ได้รับการสนับสนุนในการผสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="370"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์อยู่ในรายการที่ละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="373"/>
         <source>File contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์มีอักขระที่ไม่ถูกต้องจึงไม่สามารถผสานข้อมูลข้ามแพลตฟอร์ม</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="376"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อไฟล์ยาวเกินไป</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="601"/>
         <source>Unable to initialize a sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเตรียมการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="680"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="941"/>
         <location filename="../src/libsync/syncengine.cpp" line="948"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>ถูกละเว้นเพราะ &quot;สิ่งที่เลือกผสานข้อมูล&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="966"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตเพราะคุณไม่ได้รับอนุญาตให้เพิ่มไดเรกทอรีย่อยในไดเรกทอรีนี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="972"/>
@@ -2382,18 +2382,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="979"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตให้เพราะคุณไม่ได้รับอนุญาตให้เพิ่มไฟล์ในไดเรกทอรีนี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="999"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1016"/>
         <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1049"/>
@@ -2403,22 +2403,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1104"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1113"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1114"/>
         <source>the destination</source>
-        <translation type="unfinished"/>
+        <translation>ปลายทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1114"/>
         <source>the source</source>
-        <translation type="unfinished"/>
+        <translation>แหล่งที่มา</translation>
     </message>
 </context>
 <context>
@@ -2434,17 +2434,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="270"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;รุ่น %1 สำหรับข้อมูลเพิ่มเติมกรุณาเยี่ยมชม &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="274"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;จดทะเบียนภายใต้ลิขสิทธิ์ของ ownCloud&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="275"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;เผยแพร่โดย %1 และมีใบอนุญาตภายใต้ GNU General Public License (GPL) รุ่น 2.0 &lt;br/&gt;%2 และการลงทะเบียนโลโก้ %2 เครื่องหมายการค้าของ %1 ในประเทศสหรัฐอเมริกา ประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2453,12 +2453,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>การตรวจสอบส่วนหัวผิดรูปแบบ</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ที่ดาวน์โหลดมาไม่ตรงกับการตรวจสอบที่จะกลับมา</translation>
     </message>
 </context>
 <context>
@@ -2486,7 +2486,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีการกำหนดค่าการผสานข้อมูลโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
@@ -2577,7 +2577,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="465"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีรายการที่ถูกผสานข้อมูลเมื่อเร็วๆ นี้</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="477"/>
@@ -2610,7 +2610,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;รุ่น %2 สำหรับข้อมูลเพิ่มเติมดูได้ที่&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt; โดย Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz และอีกหลายคนที่ไม่ได้เอ่ยนาม &lt;/small&gt;&lt;/p&gt;&lt;p&gt; สงวนลิขสิทธิ์ ownCloud, Inc.&lt;/p&gt;&lt;p&gt;ได้รับใบอนุญาตภายใต้ GNU General Public License (GPL) รุ่น 2.0&lt;br/&gt; ownCloud และโลโก้ ownCloud เป็นเครื่องหมายจดทะเบียนการค้าของ ownCloud ในประเทศสหรัฐอเมริกา ประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2687,7 +2687,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ไม่สามารถเชื่อมต่อไปยังที่อยู่เซิร์ฟเวอร์ที่ปลอดภัย คุณต้องการที่จะดำเนินการต่อไป?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -2889,7 +2889,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 จำเป็นต้องทำงานบนถาดระบบ ถ้าคุณใช้ XFCE โปรดปฏิบัติตาม &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;คำแนะนำเหล่านี้&lt;/a&gt; อย่างไรก็ตาม กรุณาติดตั้งแอพฯถาดระบบเช่น &apos;trayer&apos; และลองอีกครั้ง</translation>
     </message>
 </context>
 <context>
