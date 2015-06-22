@@ -16,19 +16,22 @@
 #import "IconCache.h"
 #import "RequestManager.h"
 
-#define READ_TAG 2422
+static OwnCloudFinderRequestManager* sharedInstance = nil;
 
-static RequestManager* sharedInstance = nil;
-
-@implementation RequestManager
+@implementation OwnCloudFinderRequestManager
 
 - (id)init
 {
 	if ((self = [super init]))
 	{
 		// For the sake of allowing both the legacy and the FinderSync extensions to work with the same
-		// client build, use the same server name including the Team ID even though we won't be signing the bundle.
-		NSString *serverName = @"9B5WD74GWJ.com.owncloud.desktopclient.socketApi";
+		// client build, use the same server name including the Team ID even though we won't be sandboxed.
+		NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
+		// This was added to the bundle's Info.plist to get it from the build system
+		NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
+		NSString *serverName = [socketApiPrefix stringByAppendingString:@".socketApi"];
+		// NSLog(@"OwnCloudFinderRequestManager serverName %@", serverName);
+
 		_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 
 		_registeredPathes = [[NSMutableDictionary alloc] init];
@@ -53,7 +56,7 @@ static RequestManager* sharedInstance = nil;
 	[super dealloc];
 }
 
-+ (RequestManager*)sharedInstance
++ (OwnCloudFinderRequestManager*)sharedInstance
 {
 	@synchronized(self)
 	{

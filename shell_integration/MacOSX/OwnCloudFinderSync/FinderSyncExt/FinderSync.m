@@ -25,7 +25,7 @@
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
 	NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
 	// This was added to the bundle's Info.plist to get it from the build system
-	NSString *teamIdentifierPrefix = [extBundle objectForInfoDictionaryKey:@"TeamIdentifierPrefix"];
+	NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
 
 	NSImage *ok = [extBundle imageForResource:@"ok.icns"];
 	NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
@@ -44,10 +44,18 @@
 	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
 	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
 	
-	// The Mach port name needs to be prefixed with the code signing Team ID
+	// The Mach port name needs to:
+	// - Be prefixed with the code signing Team ID
+	// - Then infixed with the sandbox App Group
+	// - The App Group itself must be a prefix of (or equal to) the application bundle identifier
+	// We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socketApi
+	// With ad-hoc signing (the '-' signing identity) we must drop the Team ID.
+	// When the code isn't sandboxed (e.g. the OC client or the legacy overlay icon extension)
+	// the OS doesn't seem to put any restriction on the port name, so we just follow what
+	// the sandboxed App Extension needs.
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
-	NSString *serverName = [[teamIdentifierPrefix stringByAppendingString:[extBundle bundleIdentifier]]
-		stringByReplacingOccurrencesOfString:@".FinderSyncExt" withString:@".socketApi"];
+	NSString *serverName = [socketApiPrefix stringByAppendingString:@".socketApi"];
+	// NSLog(@"FinderSync serverName %@", serverName);
 
 	_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 	_registeredDirectories = [[NSMutableSet alloc] init];

@@ -118,6 +118,10 @@ if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
 endif()
 
+if(APPLE)
+  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesigh key's TeamIdentifier/Organizational Unit" )
+endif()
+
 #### find libs
 #find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
 #if( UNIX AND NOT APPLE ) # Fdo notifications

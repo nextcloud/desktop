@@ -73,7 +73,7 @@ static MenuManager* sharedInstance = nil;
 
 - (void)addItemsToMenu:(TContextMenu*)menu forFiles:(NSArray*)files
 {
-	RequestManager *requestManager = [RequestManager sharedInstance];
+	OwnCloudFinderRequestManager *requestManager = [OwnCloudFinderRequestManager sharedInstance];
 	NSString *shareItemTitle = [requestManager shareItemTitle];
 	if (!shareItemTitle || shareItemTitle.length == 0) {
 		return;
@@ -157,7 +157,7 @@ static MenuManager* sharedInstance = nil;
 
 - (void)menuItemClicked:(id)param
 {
-	[[RequestManager sharedInstance] menuItemClicked:[param representedObject]];
+	[[OwnCloudFinderRequestManager sharedInstance] menuItemClicked:[param representedObject]];
 }
 
 - (NSArray*)pathsForNodes:(const struct TFENodeVector*)nodes

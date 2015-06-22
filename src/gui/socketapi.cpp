@@ -16,6 +16,7 @@
 
 #include "socketapi.h"
 
+#include "config.h"
 #include "configfile.h"
 #include "folderman.h"
 #include "folder.h"
@@ -84,11 +85,10 @@ SocketApi::SocketApi(QObject* parent)
         // See issue #2388
         // + Theme::instance()->appName();
     } else if (Utility::isMac()) {
-        // This much match the code signing Team setting of the extension
-        // FIXME: Hardcoded for now, but if we want to allow builds to be
-        // signed by third party Apple Developer accounts, we'll have to
-        // allow changing this through the build system.
-        socketPath = "9B5WD74GWJ." APPLICATION_REV_DOMAIN ".socketApi";
+        // This must match the code signing Team setting of the extension
+        // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
+        // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
+        socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
     } else if( Utility::isLinux() || Utility::isBSD() ) {
         QString runtimeDir;
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)

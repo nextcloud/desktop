@@ -16,7 +16,7 @@
 #import "RequestManager.h"
 #import "SyncClientProxy.h"
 
-@interface RequestManager : NSObject <SyncClientProxyDelegate>
+@interface OwnCloudFinderRequestManager : NSObject <SyncClientProxyDelegate>
 {
 	SyncClientProxy *_syncClientProxy;
 
@@ -29,7 +29,7 @@
 
 @property (nonatomic, retain) NSString* filterFolder;
 
-+ (RequestManager*)sharedInstance;
++ (OwnCloudFinderRequestManager*)sharedInstance;
 
 - (BOOL)isRegisteredPath:(NSString*)path isDirectory:(BOOL)isDir;
 - (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDir;

@@ -51,7 +51,7 @@ static BOOL installed = NO;
 
 	// NSLog(@"SyncStateFinder: installing SyncState Shell extension");
 
-	[RequestManager sharedInstance];
+	[OwnCloudFinderRequestManager sharedInstance];
 
 	// Icons
 	[self hookMethod:@selector(drawImage:) inClass:@"IKImageBrowserCell" toCallToTheNewMethod:@selector(OCIconOverlayHandlers_IKImageBrowserCell_drawImage:)]; // 10.7 & 10.8 & 10.9 (Icon View arrange by name)
@@ -99,7 +99,7 @@ static BOOL installed = NO;
 
 	[[IconCache sharedInstance] dealloc];
 
-	[[RequestManager sharedInstance] dealloc];
+	[[OwnCloudFinderRequestManager sharedInstance] dealloc];
 
 	// Icons
 	[self hookMethod:@selector(OCIconOverlayHandlers_drawImage:) inClass:@"TIconViewCell" toCallToTheNewMethod:@selector(drawImage:)]; // 10.7 & 10.8 & 10.9

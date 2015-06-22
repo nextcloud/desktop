@@ -285,6 +285,8 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
+				OC_TEAM_IDENTIFIER_PREFIX = "";
 				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -302,6 +304,8 @@
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
+				OC_TEAM_IDENTIFIER_PREFIX = "";
 				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};

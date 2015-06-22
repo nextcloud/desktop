@@ -142,7 +142,7 @@ static OwnCloudFinderContentManager* sharedInstance = nil;
 	}
 	NSString* normalizedPath = [path decomposedStringWithCanonicalMapping];
 
-	if (![[RequestManager sharedInstance] isRegisteredPath:normalizedPath isDirectory:isDir]) {
+	if (![[OwnCloudFinderRequestManager sharedInstance] isRegisteredPath:normalizedPath isDirectory:isDir]) {
 		return [NSNumber numberWithInt:0];
 	}
 	
@@ -154,7 +154,7 @@ static OwnCloudFinderContentManager* sharedInstance = nil;
 		// Set 0 into the cache, meaning "don't have an icon, but already requested it"
 		[_fileNamesCache setObject:result forKey:normalizedPath];
 		// start the async call
-		[[RequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
+		[[OwnCloudFinderRequestManager sharedInstance] askForIcon:normalizedPath isDirectory:isDir];
 	}
 	if ([result intValue] == 0) {
 		// Show the old state while we wait for the new one
@@ -223,7 +223,7 @@ static OwnCloudFinderContentManager* sharedInstance = nil;
 		}
 
 		MenuManager* menuManager = [MenuManager sharedInstance];
-		RequestManager* requestManager = [RequestManager sharedInstance];
+		OwnCloudFinderRequestManager* requestManager = [OwnCloudFinderRequestManager sharedInstance];
 
 		if ([[window className] isEqualToString:@"TBrowserWindow"])
 		{
