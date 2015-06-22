@@ -19,7 +19,7 @@
 namespace OCC
 {
 
-class DummyCredentials : public AbstractCredentials
+class OWNCLOUDSYNC_EXPORT DummyCredentials : public AbstractCredentials
 {
     Q_OBJECT
 

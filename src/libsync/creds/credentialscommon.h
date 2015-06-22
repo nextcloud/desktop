@@ -16,10 +16,12 @@
 #ifndef MIRALL_CREDS_COMMON_H
 #define MIRALL_CREDS_COMMON_H
 
+#include "owncloudlib.h"
+
 namespace OCC
 {
 
-int handleNeonSSLProblems(const char* prompt,
+OWNCLOUDSYNC_EXPORT int handleNeonSSLProblems(const char* prompt,
                           char* buf,
                           size_t len,
                           int echo,
