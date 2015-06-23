@@ -130,7 +130,6 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
 }
 
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
-  struct _tdirent *dirent = NULL;
 
   dhandle_t *handle = NULL;
   csync_vio_file_stat_t *file_stat = NULL;
@@ -171,6 +170,8 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
       file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
   }
 #else
+  struct _tdirent *dirent = NULL;
+
   dirent = _treaddir(handle->dh);
   if (dirent == NULL) {
     if (errno) {

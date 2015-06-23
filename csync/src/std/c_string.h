@@ -155,7 +155,7 @@ void c_strlist_destroy(c_strlist_t *strlist);
  char*   c_utf8_from_locale(const mbchar_t *str);
 
 
- const char *makeLongWinPath(const char *str);
+ const char *makeLongWinPath(const char *str, int *mem_reserved);
 
 /**
  * @brief Convert a utf8 encoded string to platform specific locale.

@@ -274,24 +274,32 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
   return dst;
 }
 
- const char *makeLongWinPath(const char *str)
+/*
+  */
+ const char *makeLongWinPath(const char *str, int *mem_reserved)
 {
     int len = 0;
     char *longStr = NULL;
-    int mem_reserved = 0;
+
+    if( mem_reserved ) {
+        *mem_reserved = 0;
+    }
 
     len = strlen(str);
     // prepend \\?\ and convert '/' => '\' to support long names
-    if( len > 2 ) {  // FIXME set this to 250 or so
+    if( len > 250 ) {  // Only do realloc for long pathes. Shorter pathes are fine.
         int i = 4;
         // reserve mem for a new string with the prefix
-        mem_reserved = len + 5;
-        longStr = c_malloc(mem_reserved);
+        if( mem_reserved ) {
+            *mem_reserved = len + 5;
+        }
+        longStr = c_malloc(len+5);
         *longStr = '\0';
 
         strcpy( longStr, "\\\\?\\"); // prepend string by this four magic chars.
         strcat( longStr, str );
 
+        /* replace all occurences of / with the windows native \ */
         while(longStr[i] != '\0') {
             if(longStr[i] == '/') {
                 longStr[i] = '\\';
@@ -312,7 +320,7 @@ mbchar_t* c_utf8_to_locale(const char *str)
 #ifdef _WIN32
   size_t len = 0;
   int size_needed = 0;
-  char *longStr = NULL;
+  const char *longStr = NULL;
   int mem_reserved = 0;
 #endif
 
@@ -321,7 +329,7 @@ mbchar_t* c_utf8_to_locale(const char *str)
   }
 
 #ifdef _WIN32
-  longStr = makeLongWinPath(str);
+  longStr = makeLongWinPath(str, &mem_reserved);
   if( longStr ) {
       len = strlen(longStr);
 
@@ -333,7 +341,7 @@ mbchar_t* c_utf8_to_locale(const char *str)
           MultiByteToWideChar(CP_UTF8, 0, longStr, -1, dst, size_needed);
       }
 
-      if( mem_reserved > 0 ) { // FIXME!! free mem.
+      if( mem_reserved > 0 ) { // Free mem reserved in hte makeLongWinPath function
           SAFE_FREE(longStr);
       }
   }
