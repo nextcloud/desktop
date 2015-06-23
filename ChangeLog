@@ -5,6 +5,8 @@ version 1.8.3 (release 2015-06-23)
   * Reduce 'Connection closed' errors (#3318, #3313, #3298)
   * Ignores: Force a remote discovery after ignore list change (#3172)
   * Shibboleth: Avoid crash by letting the webview use its own QNAM (#3359)
+  * System Ignores: Removed *.tmp from system ignore again. If a user
+    wants to ignore *.tmp, it needs to be added to the user ignore list.
 
 ChangeLog
 =========
