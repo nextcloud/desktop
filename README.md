@@ -1,5 +1,11 @@
 # ownCloud Desktop Client
 
+| Job                               | State                                                                                                                                                             |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| client-build-matrix               | [![Build Status](https://ci.owncloud.org/job/client-build-matrix-linux/badge/icon)](https://ci.owncloud.org/job/client-build-matrix-linux/)                       |
+| client-test-matrix-linux-no-build | [![Build Status](https://ci.owncloud.org/buildStatus/icon?job=client-test-matrix-linux-no-build)](https://ci.owncloud.org/job/client-test-matrix-linux-no-build/) |
+    
+
 ## Introduction
 
 The ownCloud Desktop Client is a tool to synchronize files from ownCloud Server
