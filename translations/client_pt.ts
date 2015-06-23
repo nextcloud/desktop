@@ -402,7 +402,7 @@ Tempo total restante %5</translation>
         <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 foi transferido.</translation>
+        <translation>%1 foi descarregado.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="473"/>
