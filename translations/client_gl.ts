@@ -2819,7 +2819,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Introduza o URL de ownCloud se quere conectarse a (sen o http ou https).</translation>
+        <translation>Introduza o URL de ownCloud se quere conectarse a (sen http ou https).</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="83"/>
