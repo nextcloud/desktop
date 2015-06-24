@@ -47,6 +47,8 @@ Theme* Theme::instance() {
     return _instance;
 }
 
+Theme::~Theme() {}
+
 QString Theme::statusHeaderText( SyncResult::Status status ) const
 {
     QString resultStr;

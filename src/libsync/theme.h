@@ -18,11 +18,6 @@
 #include <QObject>
 #include "syncresult.h"
 
-#ifndef TOKEN_AUTH_ONLY
-#include <QIcon>
-#endif
-
-
 class QIcon;
 class QString;
 class QObject;
@@ -47,6 +42,8 @@ public:
 
     /* returns a singleton instance. */
     static Theme* instance();
+
+    ~Theme();
 
     /**
      * @brief appNameGUI - Human readable application name.
