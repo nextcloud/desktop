@@ -27,16 +27,9 @@ using namespace OCC;
         QString _root;
         QString _testfile;
         QString _expectedError;
-        QEventLoop     _loop;
         QByteArray     _expected;
         bool           _successDown;
         bool           _errorSeen;
-
-    void processAndWait() {
-            _loop.processEvents();
-            Utility::usleep(200000);
-            _loop.processEvents();
-    }
 
     public slots:
 
@@ -79,9 +72,10 @@ using namespace OCC;
         qDebug() << "XX Expected Checksum: " << _expected;
         vali->uploadValidation();
 
-        usleep(5000);
+        QEventLoop loop;
+        connect(vali, SIGNAL(validated(QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        loop.exec();
 
-        _loop.processEvents();
         delete vali;
     }
 
@@ -95,9 +89,10 @@ using namespace OCC;
         _expected.append(":"+FileSystem::calcMd5( _testfile ));
         vali->uploadValidation();
 
-        usleep(2000);
+        QEventLoop loop;
+        connect(vali, SIGNAL(validated(QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        loop.exec();
 
-        _loop.processEvents();
         delete vali;
     }
 
@@ -112,9 +107,10 @@ using namespace OCC;
 
         vali->uploadValidation();
 
-        usleep(2000);
+        QEventLoop loop;
+        connect(vali, SIGNAL(validated(QByteArray)), &loop, SLOT(quit()), Qt::QueuedConnection);
+        loop.exec();
 
-        _loop.processEvents();
         delete vali;
     }
 
@@ -131,24 +127,17 @@ using namespace OCC;
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
         vali->downloadValidation(adler);
 
-        usleep(2000);
-
-        _loop.processEvents();
-        QVERIFY(_successDown);
+        QTRY_VERIFY(_successDown);
 
         _expectedError = QLatin1String("The downloaded file does not match the checksum, it will be resumed.");
         _errorSeen = false;
         vali->downloadValidation("Adler32:543345");
-        usleep(2000);
-        _loop.processEvents();
-        QVERIFY(_errorSeen);
+        QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header is malformed.");
         _errorSeen = false;
         vali->downloadValidation("Klaas32:543345");
-        usleep(2000);
-        _loop.processEvents();
-        QVERIFY(_errorSeen);
+        QTRY_VERIFY(_errorSeen);
 
         delete vali;
     }
