@@ -39,6 +39,7 @@
 #include "csync_statedb.h"
 #include "csync_util.h"
 #include "csync_misc.h"
+#include "csync_exclude.h"
 
 #include "c_string.h"
 #include "c_jhash.h"
@@ -481,6 +482,21 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
         rc = _csync_file_stat_from_metadata_table( &st, stmt);
         if( st ) {
+            /* Check for exclusion from the tree.
+             * Note that this is only a safety net in case the ignore list changes
+             * without a full remote discovery being triggered. */
+            CSYNC_EXCLUDE_TYPE excluded = csync_excluded(ctx, st->path, st->type);
+            if (excluded != CSYNC_NOT_EXCLUDED) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded (%d)", st->path, excluded);
+
+                if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
+                        || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+                    continue;
+                }
+
+                st->instruction = CSYNC_INSTRUCTION_IGNORE;
+            }
+
             /* store into result list. */
             if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
                 SAFE_FREE(st);

@@ -75,6 +75,7 @@ protected slots:
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
+    void slotForceRemoteDiscoveryOnFolders();
 
 private:
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );

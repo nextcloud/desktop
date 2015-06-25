@@ -129,6 +129,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
 {
     if (_ignoreEditor.isNull()) {
         _ignoreEditor = new IgnoreListEditor(this);
+        connect(_ignoreEditor, SIGNAL(accepted()), SLOT(slotForceRemoteDiscoveryOnFolders()));
         _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
         _ignoreEditor->open();
     } else {

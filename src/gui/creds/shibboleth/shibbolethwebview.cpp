@@ -47,13 +47,14 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     setAttribute(Qt::WA_DeleteOnClose);
 
     QWebPage* page = new QWebPage(this);
-    page->setNetworkAccessManager(account->networkAccessManager());
     connect(page, SIGNAL(loadStarted()),
             this, SLOT(slotLoadStarted()));
     connect(page, SIGNAL(loadFinished(bool)),
             this, SLOT(slotLoadFinished(bool)));
 
 
+    // The Account keeps ownership of the cookie jar, it must outlive this webview.
+    account->lendCookieJarTo(page->networkAccessManager());
     connect(page->networkAccessManager()->cookieJar(),
             SIGNAL(newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
             this, SLOT(onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));

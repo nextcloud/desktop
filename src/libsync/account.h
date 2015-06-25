@@ -139,6 +139,7 @@ public:
     QString serverVersion();
 
     void clearCookieJar();
+    void lendCookieJarTo(QNetworkAccessManager *guest);
 
     void resetNetworkAccessManager();
     QNetworkAccessManager* networkAccessManager();

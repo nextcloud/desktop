@@ -150,7 +150,19 @@ QList<QNetworkCookie> Account::lastAuthCookies() const
 
 void Account::clearCookieJar()
 {
-    _am->setCookieJar(new CookieJar);
+    Q_ASSERT(qobject_cast<CookieJar*>(_am->cookieJar()));
+    static_cast<CookieJar*>(_am->cookieJar())->clearSessionCookies();
+}
+
+/*! This shares our official cookie jar (containing all the tasty
+    authentication cookies) with another QNAM while making sure
+    of not loosing its ownership. */
+void Account::lendCookieJarTo(QNetworkAccessManager *guest)
+{
+    auto jar = _am->cookieJar();
+    auto oldParent = jar->parent();
+    guest->setCookieJar(jar); // takes ownership of our precious cookie jar
+    jar->setParent(oldParent); // takes it back
 }
 
 void Account::resetNetworkAccessManager()
