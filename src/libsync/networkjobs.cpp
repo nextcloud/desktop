@@ -549,60 +549,6 @@ bool EntityExistsJob::finished()
 
 /*********************************************************************************************/
 
-CheckQuotaJob::CheckQuotaJob(AccountPtr account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
-{
-}
-
-void CheckQuotaJob::start()
-{
-    QNetworkRequest req;
-    req.setRawHeader("Depth", "0");
-    QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\">\n"
-                   "  <d:prop>\n"
-                   "    <d:quota-available-bytes/>\n"
-                   "    <d:quota-used-bytes/>\n"
-                   "  </d:prop>\n"
-                   "</d:propfind>\n");
-    QBuffer *buf = new QBuffer(this);
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    // assumes ownership
-    setReply(davRequest("PROPFIND", path(), req, buf));
-    buf->setParent(reply());
-    setupConnections(reply());
-    AbstractNetworkJob::start();
-}
-
-bool CheckQuotaJob::finished()
-{
-    if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
-        // Parse DAV response
-        QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
-        qint64 quotaAvailableBytes = 0;
-        qint64 quotaUsedBytes = 0;
-        while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement &&
-                    reader.namespaceUri() == QLatin1String("DAV:")) {
-                QString name = reader.name().toString();
-                if (name == QLatin1String("quota-available-bytes")) {
-                    // I have seen the server returning frational bytes:
-                    //   <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>
-                    quotaAvailableBytes = reader.readElementText().toDouble();
-                } else if (name == QLatin1String("quota-used-bytes")) {
-                    quotaUsedBytes = reader.readElementText().toDouble();
-                }
-            }
-        }
-        qint64 total = quotaUsedBytes + quotaAvailableBytes;
-        emit quotaRetrieved(total, quotaUsedBytes);
-    }
-    return true;
-}
-
 JsonApiJob::JsonApiJob(const AccountPtr &account, const QString& path, QObject* parent): AbstractNetworkJob(account, path, parent)
 { }
 

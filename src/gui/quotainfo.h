@@ -16,6 +16,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QVariant>
 
 class QTimer;
 
@@ -32,10 +33,10 @@ public:
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
 
 public Q_SLOTS:
-    void slotUpdateLastQuota(qint64 total, qint64 used);
     void slotCheckQuota();
 
 private Q_SLOTS:
+    void slotUpdateLastQuota(const QVariantMap &);
     void slotAccountStateChanged(int state);
     void slotRequestFailed();
 

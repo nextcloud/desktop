@@ -183,23 +183,6 @@ private slots:
 };
 
 /**
- * @brief The CheckQuota class
- */
-class OWNCLOUDSYNC_EXPORT CheckQuotaJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    explicit CheckQuotaJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
-
-signals:
-    void quotaRetrieved(qint64 totalBytes, qint64 availableBytes);
-
-private slots:
-    /** Return true if you want the job to be deleted after this slot has finished running. */
-    virtual bool finished() Q_DECL_OVERRIDE;
-};
-
-/**
  * @brief Job to check an API that return JSON
  *
  * Note! you need to be in the connected state before calling this because of a server bug:

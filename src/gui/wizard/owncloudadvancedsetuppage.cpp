@@ -108,8 +108,10 @@ void OwncloudAdvancedSetupPage::initializePage()
     QTimer::singleShot(0, wizard()->button(QWizard::NextButton), SLOT(setFocus()));
 
     auto acc = static_cast<OwncloudWizard *>(wizard())->account();
-    auto quotaJob = new CheckQuotaJob(acc, _remoteFolder, this);
-    connect(quotaJob, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotQuotaRetrieved(qint64,qint64)));
+    auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
+    quotaJob->setProperties(QList<QByteArray>() << "quota-used-bytes");
+
+    connect(quotaJob, SIGNAL(result(QVariantMap)), SLOT(slotQuotaRetrieved(QVariantMap)));
     quotaJob->start();
 
 
@@ -299,9 +301,9 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
     _selectiveSyncBlacklist.clear();
 }
 
-void OwncloudAdvancedSetupPage::slotQuotaRetrieved(qint64, qint64 usedQuota)
+void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
-    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(usedQuota)));
+    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["quota-used-bytes"].toDouble())));
 
 }
 

@@ -78,17 +78,21 @@ void QuotaInfo::slotCheckQuota()
     }
 
     AccountPtr account = _accountState->account();
-    CheckQuotaJob *job = new CheckQuotaJob(account, "/", this);
-    connect(job, SIGNAL(quotaRetrieved(qint64,qint64)), SLOT(slotUpdateLastQuota(qint64,qint64)));
+    PropfindJob *job = new PropfindJob(account, "/", this);
+    job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
+    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
     job->start();
 }
 
-void QuotaInfo::slotUpdateLastQuota(qint64 total, qint64 used)
+void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
 {
-    _lastQuotaTotalBytes = total;
-    _lastQuotaUsedBytes = used;
-    emit quotaUpdated(total, used);
+    // The server can return frational bytes (#1374)
+    // <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>
+    quint64 avail = result["quota-available-bytes"].toDouble();
+    _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();
+    _lastQuotaTotalBytes = _lastQuotaUsedBytes + avail;
+    emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
     _jobRestartTimer->start(defaultIntervalT);
 }
 
