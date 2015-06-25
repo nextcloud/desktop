@@ -318,7 +318,7 @@ Celkom zostáva %5</translation>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba overenia: Používateľské meno alebo heslo nie je správne.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="146"/>
@@ -1247,12 +1247,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Overená požiadavka na server bola presmerovaná na &apos;%1&apos;. URL je zlá, server nie je správne nakonfigurovaný.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná odpoveď na overenú webdav požiadavku</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
@@ -1527,7 +1527,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="114"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očakávaný bol 204, ale vrátený bol &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1535,7 +1535,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="71"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očakávaný bol 201, ale vrátený bol &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1558,7 +1558,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Server vrátil neplatný HTTP kód. Očakávaný bol 201, ale vrátený bol &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1590,7 +1590,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol zmenený počas synchronizácie. Bude obnovený.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
@@ -1601,7 +1601,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="557"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Vynútené ukončenie procesu pri resete HTTP pripojení s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="565"/>
@@ -1759,12 +1759,12 @@ Nie je vhodné ju používať.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="167"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Na serveri teraz nie sú žiadne podpriečinky.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Nastala chyba počas načítavania zoznamu podpriečinkov.</translation>
     </message>
 </context>
 <context>
@@ -1844,7 +1844,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud cesta:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
@@ -1925,17 +1925,17 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="559"/>
         <source>Cannot find an folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno nájsť priečinok na nahrávanie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="581"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor s rovnakým názvom už existuje. Nemožno ho preto registrovať na synchronizáciu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="626"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor nemožno synchronizovať.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="566"/>
@@ -1945,7 +1945,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="448"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Verejné z&amp;dieľanie vyžaduje heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="470"/>
