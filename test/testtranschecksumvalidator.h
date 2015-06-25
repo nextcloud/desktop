@@ -17,6 +17,11 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+// poor man QTRY_VERIFY when Qt5 is not available.
+#define QTRY_VERIFY(Cond) QTest::qWait(1000); QVERIFY(Cond)
+#endif
+
 using namespace OCC;
 
     class TestTransChecksumValidator : public QObject
