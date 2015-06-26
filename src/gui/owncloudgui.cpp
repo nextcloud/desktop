@@ -356,8 +356,6 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->addSeparator();
 
     if (isConfigured && isConnected) {
-        _contextMenu->addAction(_actionQuota);
-        _contextMenu->addSeparator();
         _contextMenu->addAction(_actionStatus);
         _contextMenu->addMenu(_recentActionsMenu);
         _contextMenu->addSeparator();
@@ -423,8 +421,6 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
 
 void ownCloudGui::setupActions()
 {
-    _actionQuota = new QAction(tr("Calculating quota..."), this);
-    _actionQuota->setEnabled( false );
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
@@ -450,19 +446,6 @@ void ownCloudGui::setupActions()
         _actionCrash = 0;
     }
 
-}
-
-void ownCloudGui::slotRefreshQuotaDisplay( qint64 total, qint64 used )
-{
-    if (total == 0) {
-        _actionQuota->setText(tr("Quota n/a"));
-        return;
-    }
-
-    double percent = used/(double)total*100;
-    QString percentFormatted = Utility::compactFormatDouble(percent, 1);
-    QString totalFormatted = Utility::octetsToString(total);
-    _actionQuota->setText(tr("%1% of %2 in use").arg(percentFormatted).arg(totalFormatted));
 }
 
 void ownCloudGui::slotRebuildRecentMenus()

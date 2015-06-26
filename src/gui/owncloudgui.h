@@ -17,7 +17,6 @@
 #include "systray.h"
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
-#include "quotainfo.h"
 
 #include <QObject>
 #include <QPointer>
@@ -56,7 +55,6 @@ public slots:
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction( const QString& alias );
-    void slotRefreshQuotaDisplay( qint64 total, qint64 used );
     void slotRebuildRecentMenus();
     void slotUpdateProgress(const QString &folder, const ProgressInfo& progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
@@ -95,7 +93,6 @@ private:
     QAction *_actionLogout;
 
     QAction *_actionSettings;
-    QAction *_actionQuota;
     QAction *_actionStatus;
     QAction *_actionEstimate;
     QAction *_actionRecent;
