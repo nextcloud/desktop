@@ -50,11 +50,11 @@ void QuotaInfo::setActive(bool active)
 void QuotaInfo::slotAccountStateChanged()
 {
     if (canGetQuota()) {
-        if (_lastQuotaRecieved.isNull()
-                || _lastQuotaRecieved.msecsTo(QDateTime::currentDateTime()) > defaultIntervalT) {
+        auto elapsed = _lastQuotaRecieved.msecsTo(QDateTime::currentDateTime());
+        if (_lastQuotaRecieved.isNull() || elapsed >= defaultIntervalT) {
             slotCheckQuota();
         } else {
-            _jobRestartTimer.start(defaultIntervalT);
+            _jobRestartTimer.start(defaultIntervalT - elapsed);
         }
     } else {
         _jobRestartTimer.stop();
