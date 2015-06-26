@@ -22,6 +22,7 @@
 
 namespace OCC {
 class AccountState;
+class PropfindJob;
 
 /**
  * This class handle the getting the quota to display in the UI
@@ -71,6 +72,7 @@ private:
     QTimer _jobRestartTimer;
     QDateTime _lastQuotaRecieved; // the time at which de quota was recieved last
     bool _active; // if we should check at regular interval (when the UI is visible)
+    QPointer<PropfindJob> _job; // the currently running job
 };
 
 

@@ -85,12 +85,17 @@ void QuotaInfo::slotCheckQuota()
         return;
     }
 
+    if (_job) {
+        // The previous job was not finished?  Then we cancel it!
+        _job->deleteLater();
+    }
+
     AccountPtr account = _accountState->account();
-    PropfindJob *job = new PropfindJob(account, "/", this);
-    job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
-    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
-    job->start();
+    _job = new PropfindJob(account, "/", this);
+    _job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
+    connect(_job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
+    connect(_job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
+    _job->start();
 }
 
 void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
