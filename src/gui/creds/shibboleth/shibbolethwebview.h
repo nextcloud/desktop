@@ -28,6 +28,10 @@ namespace OCC
 
 class ShibbolethCookieJar;
 
+/*!
+ * \brief The ShibbolethWebView class
+ * \ingroup gui
+ */
 class ShibbolethWebView : public QWebView
 {
   Q_OBJECT

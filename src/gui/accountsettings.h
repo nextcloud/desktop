@@ -40,6 +40,10 @@ class Account;
 class AccountState;
 class FolderStatusModel;
 
+/*!
+ * \brief The AccountSettings class
+ * \ingroup gui
+ */
 class AccountSettings : public QWidget
 {
     Q_OBJECT

@@ -29,8 +29,13 @@
  #define BITFIELD(size) :size
 #endif
 
+
 namespace OCC {
 
+/*!
+ * \brief The SyncFileItem class
+ * \ingroup libsync
+ */
 class SyncFileItem {
 public:
     enum Direction {

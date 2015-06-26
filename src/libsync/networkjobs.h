@@ -22,8 +22,9 @@ class QUrl;
 
 namespace OCC {
 
-/**
- * @brief The EntityExistsJob class
+/*!
+ * \brief The EntityExistsJob class
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -38,8 +39,9 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
-/**
- * @brief The LsColJob class
+/*!
+ * \brief The LsColJob class
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject {
     Q_OBJECT
@@ -87,13 +89,15 @@ private:
     QList<QByteArray> _properties;
 };
 
-/**
- * @brief The PropfindJob class
+/*!
+ * \brief The PropfindJob class
  *
  * Setting the desired properties with setProperties() is mandatory.
  *
  * Note that this job is only for querying one item.
  * There is also the LsColJob which can be used to list collections
+ *
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -124,7 +128,8 @@ private:
 };
 
 /**
- * @brief The MkColJob class
+ * \brief The MkColJob class
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -139,8 +144,9 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
-/**
- * @brief The CheckServerJob class
+/*!
+ * \brief The CheckServerJob class
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -166,8 +172,8 @@ private:
 };
 
 
-/**
- * @brief The RequestEtagJob class
+/*!
+ * \brief The RequestEtagJob class
  */
 class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -188,11 +194,14 @@ private slots:
  * Note! you need to be in the connected state before calling this because of a server bug:
  * https://github.com/owncloud/core/issues/12930
  *
- * To be used like this
+ * To be used like this:
+ * \code
  * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
  * connect(job, SIGNAL(jsonRecieved(QVariantMap)), ...)
  * The recieved QVariantMap is empty in case of error  or otherwise is a map as parsed by QtJson
+ * \encode
  *
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob {
     Q_OBJECT

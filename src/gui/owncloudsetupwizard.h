@@ -33,6 +33,10 @@ class AccountState;
 
 class OwncloudWizard;
 
+/*!
+ * \brief The DetermineAuthTypeJob class
+ * \ingroup gui
+ */
 class DetermineAuthTypeJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
@@ -46,7 +50,10 @@ private:
     int _redirects;
 };
 
-
+/*!
+ * \brief The OwncloudSetupWizard class
+ * \ingroup gui
+ */
 class OwncloudSetupWizard : public QObject
 {
     Q_OBJECT

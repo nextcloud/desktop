@@ -33,6 +33,10 @@ namespace OCC
 
 class ShibbolethWebView;
 
+/*!
+ * \brief The ShibbolethCredentials class
+ * \ingroup gui
+ */
 class ShibbolethCredentials : public AbstractCredentials
 {
 Q_OBJECT

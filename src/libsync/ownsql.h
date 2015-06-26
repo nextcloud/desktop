@@ -23,6 +23,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The SqlDatabase class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SqlDatabase
 {
     Q_DISABLE_COPY(SqlDatabase)
@@ -48,6 +52,10 @@ private:
 
 };
 
+/*!
+ * \brief The SqlQuery class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)

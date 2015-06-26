@@ -24,6 +24,10 @@ namespace Ui {
 class GeneralSettings;
 }
 
+/*!
+ * \brief The GeneralSettings class
+ * \ingroup gui
+ */
 class GeneralSettings : public QWidget
 {
     Q_OBJECT

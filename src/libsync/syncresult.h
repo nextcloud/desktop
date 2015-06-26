@@ -25,6 +25,10 @@
 namespace OCC
 {
 
+/*!
+ * \brief The SyncResult class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SyncResult
 {
 public:

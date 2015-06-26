@@ -27,6 +27,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The ProgressInfo class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT ProgressInfo : public QObject
 {
     Q_OBJECT

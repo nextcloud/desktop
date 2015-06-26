@@ -22,6 +22,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The OwncloudWizardResultPage class
+ * \ingroup gui
+ */
 class OwncloudWizardResultPage : public QWizardPage
 {
   Q_OBJECT

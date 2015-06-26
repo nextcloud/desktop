@@ -18,7 +18,10 @@
 
 #include <QObject>
 
-
+/*!
+ * \brief Helper class for command line client
+ * \ingroup cmd
+ */
 class Cmd : public QObject {
     Q_OBJECT
 public:

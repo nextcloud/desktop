@@ -19,6 +19,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The ownCloudTheme class
+ * \ingroup libsync
+ */
 class ownCloudTheme : public Theme
 {
     Q_OBJECT

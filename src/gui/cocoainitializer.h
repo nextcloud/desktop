@@ -14,7 +14,10 @@
 namespace OCC {
 namespace Mac {
 
-/** CocoaInitializer provides an AutoRelease Pool via RIIA for use in main() */
+/*!
+ * \brief CocoaInitializer provides an AutoRelease Pool via RIIA for use in main()
+ * \ingroup gui
+ */
 class CocoaInitializer {
 public:
     CocoaInitializer();

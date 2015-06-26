@@ -23,6 +23,10 @@ namespace Ui {
 class NetworkSettings;
 }
 
+/*!
+ * \brief The NetworkSettings class
+ * \ingroup gui
+ */
 class NetworkSettings : public QWidget
 {
     Q_OBJECT

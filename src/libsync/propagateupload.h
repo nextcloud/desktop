@@ -24,6 +24,10 @@
 namespace OCC {
 class BandwidthManager;
 
+/*!
+ * \brief The UploadDevice class
+ * \ingroup libsync
+ */
 class UploadDevice : public QIODevice {
     Q_OBJECT
 public:
@@ -74,6 +78,10 @@ protected slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 
+/*!
+ * \brief The PUTFileJob class
+ * \ingroup libsync
+ */
 class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
 
@@ -115,11 +123,12 @@ private slots:
 #endif
 };
 
-/**
- * This job implements the assynchronous PUT
+/*!
+ * \brief This job implements the assynchronous PUT
+ *
  * If the server replies to a PUT with a OC-Finish-Poll url, we will query this url until the server
- * replies with an etag
- * https://github.com/owncloud/core/issues/12097
+ * replies with an etag. https://github.com/owncloud/core/issues/12097
+ * \ingroup libsync
  */
 class PollJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -145,7 +154,10 @@ signals:
     void finishedSignal();
 };
 
-
+/*!
+ * \brief The PropagateUploadFileQNAM class
+ * \ingroup libsync
+ */
 class PropagateUploadFileQNAM : public PropagateItemJob {
     Q_OBJECT
 

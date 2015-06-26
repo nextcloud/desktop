@@ -23,7 +23,7 @@
 
 namespace OCC {
 
-/**
+/*!
  * This is a job-like class to check that the server is up and that we are connected.
  * There is two entry point: checkServerAndAuth and checkAuthentication
  * checkAutentication is the quick version that only do the propfind
@@ -34,7 +34,7 @@ namespace OCC {
  *
  * Here follows the state machine
 
-
+\code{.unparsed}
 *---> checkServerAndAuth  (check status.php)
         Will asynchronously check for system proxy (if using system proxy)
         And then invoke slotCheckServerAndAuth
@@ -62,6 +62,7 @@ namespace OCC {
         JsonApiJob
         |
         +-> slotCapabilitiesRecieved --> X
+    \endcode
  */
 class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {

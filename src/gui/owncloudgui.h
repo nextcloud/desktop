@@ -33,6 +33,10 @@ class SettingsDialogMac;
 class Application;
 class LogBrowser;
 
+/*!
+ * \brief The ownCloudGui class
+ * \ingroup gui
+ */
 class ownCloudGui : public QObject
 {
     Q_OBJECT

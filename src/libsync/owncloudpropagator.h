@@ -40,16 +40,14 @@ namespace OCC {
 class SyncJournalDb;
 class OwncloudPropagator;
 
-/**
- * @class PropagatorJob
- * @brief the base class of propagator jobs
+/*!
+ * \brief the base class of propagator jobs
  *
  * This can either be a job, or a container for jobs.
  * If it is a composite jobs, it then inherits from PropagateDirectory
  *
- *
+ * \ingroup libsync
  */
-
 class PropagatorJob : public QObject {
     Q_OBJECT
 protected:
@@ -158,8 +156,9 @@ public slots:
 };
 
 
-/*
- * Propagate a directory, and all its sub entries.
+/*!
+ * \brief Propagate a directory, and all its sub entries.
+ * \ingroup libsync
  */
 class PropagateDirectory : public PropagatorJob {
     Q_OBJECT
@@ -220,7 +219,10 @@ private slots:
 };
 
 
-// Dummy job that just mark it as completed and ignored.
+/*!
+ * \brief Dummy job that just mark it as completed and ignored
+ * \ingroup libsync
+ */
 class PropagateIgnoreJob : public PropagateItemJob {
     Q_OBJECT
 public:
@@ -349,7 +351,11 @@ private:
     mutable QMutex _touchedFilesMutex;
 };
 
-// Job that wait for all the poll jobs to be completed
+
+/*!
+ * \brief Job that wait for all the poll jobs to be completed
+ * \ingroup libsync
+ */
 class CleanupPollsJob : public QObject {
     Q_OBJECT
     QVector< SyncJournalDb::PollInfo > _pollInfos;

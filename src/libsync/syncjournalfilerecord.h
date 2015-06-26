@@ -23,6 +23,10 @@ namespace OCC {
 
 class SyncFileItem;
 
+/*!
+ * \brief The SyncJournalFileRecord class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SyncJournalFileRecord
 {
 public:

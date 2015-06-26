@@ -16,6 +16,8 @@
 #include "utility.h"
 #include <QUrl>
 
+namespace OCC {
+
 OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::OwncloudConnectionMethodDialog)
@@ -59,4 +61,6 @@ void OwncloudConnectionMethodDialog::returnBack()
 OwncloudConnectionMethodDialog::~OwncloudConnectionMethodDialog()
 {
     delete ui;
+}
+
 }

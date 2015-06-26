@@ -18,6 +18,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The PropagateRemoteMkdir class
+ * \ingroup libsync
+ */
 class PropagateRemoteMkdir : public PropagateItemJob {
     Q_OBJECT
     QPointer<AbstractNetworkJob> _job;

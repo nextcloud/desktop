@@ -24,6 +24,10 @@ namespace Ui {
 class AddCertificateDialog;
 }
 
+/*!
+ * \brief The AddCertificateDialog class
+ * \ingroup gui
+ */
 class AddCertificateDialog : public QDialog
 {
     Q_OBJECT

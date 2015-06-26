@@ -26,6 +26,10 @@ namespace OCC
 class Account;
 class ShibbolethCredentials;
 
+/*!
+ * \brief The ShibbolethRefresher class
+ * \ingroup gui
+ */
 class ShibbolethRefresher : public QObject
 {
     Q_OBJECT

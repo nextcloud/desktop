@@ -22,6 +22,11 @@ namespace OCC
 {
 class AbstractCredentials;
 
+
+/*!
+ * \brief The HttpCredentialsGui namespace
+ * \ingroup gui
+ */
 namespace CredentialsFactory
 {
 

@@ -26,10 +26,11 @@ namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalErrorBlacklistRecord;
 
-/**
- * Class that handle the sync database
+/*!
+ * \brief Class that handle the sync database
  *
  * This class is thread safe. All public function are locking the mutex.
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
 {

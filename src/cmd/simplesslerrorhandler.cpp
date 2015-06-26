@@ -15,6 +15,8 @@
 #include "account.h"
 #include "simplesslerrorhandler.h"
 
+namespace OCC {
+
 bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr account)
 {
     (void) account;
@@ -29,4 +31,6 @@ bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         certs->append( error.certificate() );
     }
     return true;
+}
+
 }

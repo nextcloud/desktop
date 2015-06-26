@@ -28,7 +28,10 @@ class QTimer;
 
 namespace OCC {
 
-/** @short Class that uses an ownCloud propritary XML format to fetch update information */
+/*!
+ * \brief Class that uses an ownCloud propritary XML format to fetch update information
+ * \ingroup gui
+ */
 class OCUpdater : public QObject, public Updater
 {
     Q_OBJECT
@@ -72,7 +75,10 @@ private:
     UpdateInfo _updateInfo;
 };
 
-/** Windows Updater Using NSIS */
+/*!
+ * \brief Windows Updater Using NSIS
+ * \ingroup gui
+ */
 class NSISUpdater : public OCUpdater {
     Q_OBJECT
 public:
@@ -93,8 +99,13 @@ private:
 
 };
 
-/** Passive updater: Only implements notification for use in settings.
-    Does not do popups */
+/*!
+ *  @brief Updater that only implements notification for use in settings
+ *
+ *  The implementation does how show popups
+ *
+ *  \ingroup gui
+ */
 class PassiveUpdateNotifier : public OCUpdater {
     Q_OBJECT
 public:

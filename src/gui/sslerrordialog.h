@@ -31,11 +31,19 @@ namespace Ui {
 class SslErrorDialog;
 }
 
+/*!
+ * \brief The SslDialogErrorHandler class
+ * \ingroup gui
+ */
 class SslDialogErrorHandler : public AbstractSslErrorHandler {
 public:
     bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) Q_DECL_OVERRIDE;
 };
 
+/*!
+ * \brief The SslErrorDialog class
+ * \ingroup gui
+ */
 class SslErrorDialog : public QDialog
 {
     Q_OBJECT

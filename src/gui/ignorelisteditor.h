@@ -24,6 +24,10 @@ namespace Ui {
 class IgnoreListEditor;
 }
 
+/*!
+ * \brief The IgnoreListEditor class
+ * \ingroup gui
+ */
 class IgnoreListEditor : public QDialog
 {
     Q_OBJECT

@@ -46,6 +46,10 @@ class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
 
+/*!
+ * \brief The SyncEngine class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT

@@ -41,15 +41,20 @@ class QuotaInfo;
 class AccessManager;
 
 
-/* Reimplement this to handle SSL errors */
+/*!
+ * \brief Reimplement this to handle SSL errors from libsync
+ * \ingroup libsync
+ */
 class AbstractSslErrorHandler {
 public:
     virtual ~AbstractSslErrorHandler() {}
     virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate>*, AccountPtr) = 0;
 };
 
-/**
- * @brief This class represents an account on an ownCloud Server
+
+/*!
+ * \brief The Account class represents an account on an ownCloud Server
+ * \ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT

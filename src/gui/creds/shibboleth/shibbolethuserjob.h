@@ -19,9 +19,10 @@
 namespace OCC
 {
 
-/**
-  * @brief Fetch the user name of the shibboleth connection
-  */
+/*!
+ * \brief Fetch the user name of the shibboleth connection
+ * \ingroup gui
+ */
 class ShibbolethUserJob : public JsonApiJob {
     Q_OBJECT
 public:

@@ -19,10 +19,16 @@
 
 #include "ui_owncloudconnectionmethoddialog.h"
 
+namespace OCC {
+
 namespace Ui {
 class OwncloudConnectionMethodDialog;
 }
 
+/*!
+ * \brief The OwncloudConnectionMethodDialog class
+ * \ingroup gui
+ */
 class OwncloudConnectionMethodDialog : public QDialog
 {
     Q_OBJECT
@@ -47,5 +53,7 @@ public slots:
 private:
     Ui::OwncloudConnectionMethodDialog *ui;
 };
+
+}
 
 #endif // OWNCLOUDCONNECTIONMETHODDIALOG_H

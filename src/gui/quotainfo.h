@@ -24,6 +24,10 @@ namespace OCC {
 
 class AccountState;
 
+/*!
+ * \brief The QuotaInfo class
+ * \ingroup gui
+ */
 class QuotaInfo : public QObject {
     Q_OBJECT
 public:

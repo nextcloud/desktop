@@ -24,6 +24,9 @@
 
 namespace OCC {
 
+/** \addtogroup libsync
+ *  @{
+ */
 namespace Utility
 {
     OWNCLOUDSYNC_EXPORT void sleep(int sec);
@@ -113,7 +116,9 @@ namespace Utility
         QDateTime timeOfLap( const QString& lapName ) const;
         quint64 durationOfLap( const QString& lapName ) const;
     };
+
 }
+/** @} */ // \addtogroup
 
 }
 #endif // UTILITY_H

@@ -31,6 +31,10 @@ class ownCloudGui;
 class Folder;
 class AccountState;
 
+/*!
+ * \brief The SettingsDialogMac class
+ * \ingroup gui
+ */
 class SettingsDialogMac : public MacPreferencesWindow
 {
     Q_OBJECT

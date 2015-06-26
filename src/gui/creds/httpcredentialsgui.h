@@ -19,6 +19,10 @@
 namespace OCC
 {
 
+/*!
+ * \brief The HttpCredentialsGui class
+ * \ingroup gui
+ */
 class HttpCredentialsGui : public HttpCredentials {
     Q_OBJECT
 public:

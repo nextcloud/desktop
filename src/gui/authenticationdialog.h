@@ -20,7 +20,10 @@ class QLineEdit;
 
 namespace OCC {
 
-/** @brief Authenticate a user for a specific credential given his credentials */
+/*!
+ * \brief Authenticate a user for a specific credential given his credentials
+ * \ingroup gui
+ */
 class AuthenticationDialog : public QDialog {
     Q_OBJECT
 public:

@@ -31,7 +31,9 @@ namespace OCC {
 
 class FolderWatcherPrivate;
 
-/*
+/*!
+ * \brief Montiors a directory recursively for changes
+ *
  * Folder Watcher monitors a directory and its sub directories
  * for changes in the local file system. Changes are signalled
  * through the pathChanged() signal.
@@ -40,6 +42,8 @@ class FolderWatcherPrivate;
  * does not automatically adds them to the list of monitored
  * dirs. That is the responsibility of the user of this class to
  * call addPath() with the new dir.
+ *
+ * \ingroup gui
  */
 
 class FolderWatcher : public QObject

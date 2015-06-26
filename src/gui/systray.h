@@ -26,6 +26,10 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 #endif
 
+/*!
+ * \brief The Systray class
+ * \ingroup gui
+ */
 class Systray : public QSystemTrayIcon
 {
     Q_OBJECT

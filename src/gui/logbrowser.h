@@ -28,6 +28,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The LogWidget class
+ * \ingroup gui
+ */
 class LogWidget : public QPlainTextEdit 
 {
     Q_OBJECT
@@ -38,6 +42,10 @@ signals:
 
 };
 
+/*!
+ * \brief The LogBrowser class
+ * \ingroup gui
+ */
 class LogBrowser : public QDialog
 {
   Q_OBJECT

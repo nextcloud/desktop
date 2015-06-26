@@ -20,6 +20,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief Parser for netrc files
+ * \ingroup cmd
+ */
 class NetrcParser
 {
 public:

@@ -34,6 +34,10 @@ class Application;
 class FolderMan;
 class ownCloudGui;
 
+/*!
+ * \brief The SettingsDialog class
+ * \ingroup gui
+ */
 class SettingsDialog : public QDialog
 {
     Q_OBJECT

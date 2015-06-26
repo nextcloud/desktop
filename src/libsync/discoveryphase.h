@@ -34,6 +34,10 @@ class Account;
  * if the files are new, or changed.
  */
 
+/*!
+ * \brief The FileStatPointer class
+ * \ingroup libsync
+ */
 class FileStatPointer {
 public:
     FileStatPointer(csync_vio_file_stat_t *stat)
@@ -66,7 +70,13 @@ struct DiscoveryDirectoryResult {
     DiscoveryDirectoryResult() : code(EIO), listIndex(0) { }
 };
 
-// Run in the main thread, reporting to the DiscoveryJobMainThread object
+/*!
+ * \brief The DiscoverySingleDirectoryJob class
+ *
+ * Run in the main thread, reporting to the DiscoveryJobMainThread object
+ *
+ * \ingroup libsync
+ */
 class DiscoverySingleDirectoryJob : public QObject {
     Q_OBJECT
 public:
@@ -129,9 +139,13 @@ public:
     void setupHooks(DiscoveryJob* discoveryJob, const QString &pathPrefix);
 };
 
-
-// Lives in the other thread
-// Deletes itself in start()
+/*!
+ * \brief The DiscoveryJob class
+ *
+ * Lives in the other thread, deletes itself in !start()
+ *
+ * \ingroup libsync
+ */
 class DiscoveryJob : public QObject {
     Q_OBJECT
     friend class DiscoveryMainThread;

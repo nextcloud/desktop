@@ -20,6 +20,10 @@
 
 namespace OCC {
 
+/*!
+ * \brief The SyncFileStatus class
+ * \ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SyncFileStatus
 {
 public:
