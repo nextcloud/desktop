@@ -520,7 +520,7 @@ bool PropfindJob::finished()
         }
         emit result(items);
     } else {
-        qDebug() << "Quota request *not* successful, http result code is" << http_result_code
+        qDebug() << "PROPFIND request *not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
         emit finishedWithError();
     }
