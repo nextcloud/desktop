@@ -25,31 +25,39 @@ namespace OCC {
 namespace {
 static const int defaultIntervalT = 30*1000;
 static const int failIntervalT = 5*1000;
-static const int initialTimeT = 1*1000;
 }
 
-QuotaInfo::QuotaInfo(AccountState *accountState)
-    : QObject(accountState)
+QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
+    : QObject(parent)
     , _accountState(accountState)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
-    , _jobRestartTimer(new QTimer(this))
+    , _active(false)
 {
     connect(accountState, SIGNAL(stateChanged(int)),
-            SLOT(slotAccountStateChanged(int)));
-    connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
-    _jobRestartTimer->setSingleShot(true);
-    if (canGetQuota()) {
-        _jobRestartTimer->start(initialTimeT);
-    }
+            SLOT(slotAccountStateChanged()));
+    connect(&_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
+    _jobRestartTimer.setSingleShot(true);
 }
 
-void QuotaInfo::slotAccountStateChanged(int /*state*/)
+void QuotaInfo::setActive(bool active)
+{
+    _active = active;
+    slotAccountStateChanged();
+}
+
+
+void QuotaInfo::slotAccountStateChanged()
 {
     if (canGetQuota()) {
-        _jobRestartTimer->start(initialTimeT);
+        if (_lastQuotaRecieved.isNull()
+                || _lastQuotaRecieved.msecsTo(QDateTime::currentDateTime()) > defaultIntervalT) {
+            slotCheckQuota();
+        } else {
+            _jobRestartTimer.start(defaultIntervalT);
+        }
     } else {
-        _jobRestartTimer->stop();
+        _jobRestartTimer.stop();
     }
 }
 
@@ -57,12 +65,12 @@ void QuotaInfo::slotRequestFailed()
 {
     _lastQuotaTotalBytes = 0;
     _lastQuotaUsedBytes = 0;
-    _jobRestartTimer->start(failIntervalT);
+    _jobRestartTimer.start(failIntervalT);
 }
 
 bool QuotaInfo::canGetQuota() const
 {
-    if (! _accountState) {
+    if (! _accountState || !_active) {
         return false;
     }
     AccountPtr account = _accountState->account();
@@ -93,7 +101,8 @@ void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
     _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();
     _lastQuotaTotalBytes = _lastQuotaUsedBytes + avail;
     emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
-    _jobRestartTimer->start(defaultIntervalT);
+    _jobRestartTimer.start(defaultIntervalT);
+    _lastQuotaRecieved = QDateTime::currentDateTime();
 }
 
 }
