@@ -23,9 +23,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The SqlDatabase class
- * \ingroup libsync
+/**
+ * @brief The SqlDatabase class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT SqlDatabase
 {
@@ -52,9 +52,9 @@ private:
 
 };
 
-/*!
- * \brief The SqlQuery class
- * \ingroup libsync
+/**
+ * @brief The SqlQuery class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT SqlQuery
 {

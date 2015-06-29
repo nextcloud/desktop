@@ -22,9 +22,9 @@ namespace OCC {
 
 class FolderWatcher;
 
-/*!
- * \brief Qt API implementation of FolderWatcher
- * \ingroup gui
+/**
+ * @brief Qt API implementation of FolderWatcher
+ * @ingroup gui
  */
 class FolderWatcherPrivate : public QObject {
     Q_OBJECT

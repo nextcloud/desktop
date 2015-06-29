@@ -18,9 +18,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The PropagateRemoteMkdir class
- * \ingroup libsync
+/**
+ * @brief The PropagateRemoteMkdir class
+ * @ingroup libsync
  */
 class PropagateRemoteMkdir : public PropagateItemJob {
     Q_OBJECT

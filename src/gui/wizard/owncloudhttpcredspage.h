@@ -25,8 +25,8 @@ class QProgressIndicator;
 
 namespace OCC {
 
-/*!
- * \brief The OwncloudHttpCredsPage class
+/**
+ * @brief The OwncloudHttpCredsPage class
  */
 class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {

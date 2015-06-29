@@ -23,9 +23,9 @@ class QUrl;
 namespace OCC
 {
 
-/*!
- * \brief The AccessManager class
- * \ingroup libsync
+/**
+ * @brief The AccessManager class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT AccessManager : public QNetworkAccessManager
 {

@@ -26,9 +26,9 @@ namespace OCC {
 
 class AccountState;
 
-/*!
- * \brief The SslButton class
- * \ingroup gui
+/**
+ * @brief The SslButton class
+ * @ingroup gui
  */
 class SslButton : public QToolButton
 {

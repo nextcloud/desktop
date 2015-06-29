@@ -23,9 +23,9 @@
 namespace OCC
 {
 
-/*!
- * \brief Mac OS X API implementation of FolderWatcher
- * \ingroup gui
+/**
+ * @brief Mac OS X API implementation of FolderWatcher
+ * @ingroup gui
  */
 class FolderWatcherPrivate
 {

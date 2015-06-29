@@ -23,7 +23,7 @@
 
 namespace OCC {
 
-/*!
+/**
  * This is a job-like class to check that the server is up and that we are connected.
  * There is two entry point: checkServerAndAuth and checkAuthentication
  * checkAutentication is the quick version that only do the propfind

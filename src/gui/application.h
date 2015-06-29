@@ -43,9 +43,9 @@ class Theme;
 class Folder;
 class SslErrorDialog;
 
-/*!
- * \brief The Application class
- * \ingroup gui
+/**
+ * @brief The Application class
+ * @ingroup gui
  */
 class Application : public SharedTools::QtSingleApplication
 {

@@ -41,9 +41,9 @@ class QuotaInfo;
 class AccessManager;
 
 
-/*!
- * \brief Reimplement this to handle SSL errors from libsync
- * \ingroup libsync
+/**
+ * @brief Reimplement this to handle SSL errors from libsync
+ * @ingroup libsync
  */
 class AbstractSslErrorHandler {
 public:
@@ -52,9 +52,9 @@ public:
 };
 
 
-/*!
- * \brief The Account class represents an account on an ownCloud Server
- * \ingroup libsync
+/**
+ * @brief The Account class represents an account on an ownCloud Server
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
@@ -75,7 +75,7 @@ public:
     QString id() const;
 
     /**
-     * @brief Checks the Account instance is different from \param other
+     * @brief Checks the Account instance is different from @param other
      *
      * @returns true, if credentials or url have changed, false otherwise
      */

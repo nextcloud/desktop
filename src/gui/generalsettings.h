@@ -24,9 +24,9 @@ namespace Ui {
 class GeneralSettings;
 }
 
-/*!
- * \brief The GeneralSettings class
- * \ingroup gui
+/**
+ * @brief The GeneralSettings class
+ * @ingroup gui
  */
 class GeneralSettings : public QWidget
 {

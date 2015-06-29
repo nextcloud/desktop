@@ -22,9 +22,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The TransmissionChecksumValidator class
- * \ingroup libsync
+/**
+ * @brief The TransmissionChecksumValidator class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT TransmissionChecksumValidator : public QObject
 {

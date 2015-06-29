@@ -25,9 +25,9 @@
 namespace OCC
 {
 
-/*!
- * \brief Linux (inotify) API implementation of FolderWatcher
- * \ingroup gui
+/**
+ * @brief Linux (inotify) API implementation of FolderWatcher
+ * @ingroup gui
  */
 class FolderWatcherPrivate : public QObject
 {

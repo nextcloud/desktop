@@ -26,9 +26,9 @@ namespace OCC {
 class Folder;
 class ProgressInfo;
 
-/*!
- * \brief The FolderStatusModel class
- * \ingroup gui
+/**
+ * @brief The FolderStatusModel class
+ * @ingroup gui
  */
 class FolderStatusModel : public QAbstractItemModel
 {

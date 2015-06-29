@@ -32,8 +32,8 @@ namespace OCC {
 class AbstractSslErrorHandler;
 
 /**
- * \brief The AbstractNetworkJob class
- * \ingroup libsync
+ * @brief The AbstractNetworkJob class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject {
     Q_OBJECT

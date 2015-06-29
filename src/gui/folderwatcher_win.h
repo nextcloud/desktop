@@ -21,9 +21,9 @@ namespace OCC {
 
 class FolderWatcher;
 
-/*!
- * \brief The WatcherThread class
- * \ingroup gui
+/**
+ * @brief The WatcherThread class
+ * @ingroup gui
  */
 class WatcherThread : public QThread {
     Q_OBJECT
@@ -46,9 +46,9 @@ private:
     HANDLE _handle;
 };
 
-/*!
- * \brief Windows implementation of FolderWatcher
- * \ingroup gui
+/**
+ * @brief Windows implementation of FolderWatcher
+ * @ingroup gui
  */
 class FolderWatcherPrivate : public QObject {
     Q_OBJECT

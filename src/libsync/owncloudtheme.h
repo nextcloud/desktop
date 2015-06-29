@@ -19,9 +19,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The ownCloudTheme class
- * \ingroup libsync
+/**
+ * @brief The ownCloudTheme class
+ * @ingroup libsync
  */
 class ownCloudTheme : public Theme
 {

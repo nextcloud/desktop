@@ -22,9 +22,9 @@ class QUrl;
 
 namespace OCC {
 
-/*!
- * \brief The EntityExistsJob class
- * \ingroup libsync
+/**
+ * @brief The EntityExistsJob class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -39,9 +39,9 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
-/*!
- * \brief The LsColJob class
- * \ingroup libsync
+/**
+ * @brief The LsColJob class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject {
     Q_OBJECT
@@ -89,15 +89,15 @@ private:
     QList<QByteArray> _properties;
 };
 
-/*!
- * \brief The PropfindJob class
+/**
+ * @brief The PropfindJob class
  *
  * Setting the desired properties with setProperties() is mandatory.
  *
  * Note that this job is only for querying one item.
  * There is also the LsColJob which can be used to list collections
  *
- * \ingroup libsync
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -128,8 +128,8 @@ private:
 };
 
 /**
- * \brief The MkColJob class
- * \ingroup libsync
+ * @brief The MkColJob class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -144,9 +144,9 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
-/*!
- * \brief The CheckServerJob class
- * \ingroup libsync
+/**
+ * @brief The CheckServerJob class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -172,8 +172,8 @@ private:
 };
 
 
-/*!
- * \brief The RequestEtagJob class
+/**
+ * @brief The RequestEtagJob class
  */
 class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -201,7 +201,7 @@ private slots:
  * The recieved QVariantMap is empty in case of error  or otherwise is a map as parsed by QtJson
  * \encode
  *
- * \ingroup libsync
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob {
     Q_OBJECT

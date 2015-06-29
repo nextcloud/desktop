@@ -39,9 +39,9 @@ struct ScopedPointerHelpers {
 
 
 
-/*!
- * \brief Abstract class for neon job. Lives in the neon thread
- * \ingroup libsync
+/**
+ * @brief Abstract class for neon job. Lives in the neon thread
+ * @ingroup libsync
  */
 class PropagateNeonJob : public PropagateItemJob {
     Q_OBJECT
@@ -78,9 +78,9 @@ public:
     JobParallelism parallelism() Q_DECL_OVERRIDE { return WaitForFinished; }
 };
 
-/*!
- * \brief The UpdateMTimeAndETagJob class
- * \ingroup libsync
+/**
+ * @brief The UpdateMTimeAndETagJob class
+ * @ingroup libsync
  */
 class UpdateMTimeAndETagJob : public PropagateNeonJob {
     Q_OBJECT
@@ -89,9 +89,9 @@ public:
     void start() Q_DECL_OVERRIDE;
 };
 
-/*!
- * \brief The PropagateUploadFileLegacy class
- * \ingroup libsync
+/**
+ * @brief The PropagateUploadFileLegacy class
+ * @ingroup libsync
  */
 class PropagateUploadFileLegacy: public PropagateNeonJob {
     Q_OBJECT

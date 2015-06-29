@@ -24,9 +24,9 @@
 namespace OCC {
 class SyncFileItem;
 
-/*!
- * \brief The SyncRunFileLog class
- * \ingroup gui
+/**
+ * @brief The SyncRunFileLog class
+ * @ingroup gui
  */
 class SyncRunFileLog
 {

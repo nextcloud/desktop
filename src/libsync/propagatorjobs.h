@@ -34,9 +34,9 @@ static const char checkSumSHA1C[] = "SHA1";
 static const char checkSumAdlerC[] = "Adler32";
 static const char checkSumAdlerUpperC[] = "ADLER32";
 
-/*!
- * \brief Declaration of the other propagation jobs
- * \ingroup libsync
+/**
+ * @brief Declaration of the other propagation jobs
+ * @ingroup libsync
  */
 class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT
@@ -45,9 +45,9 @@ public:
     void start() Q_DECL_OVERRIDE;
 };
 
-/*!
- * \brief The PropagateLocalMkdir class
- * \ingroup libsync
+/**
+ * @brief The PropagateLocalMkdir class
+ * @ingroup libsync
  */
 class PropagateLocalMkdir : public PropagateItemJob {
     Q_OBJECT
@@ -57,9 +57,9 @@ public:
 
 };
 
-/*!
- * \brief The PropagateLocalRename class
- * \ingroup libsync
+/**
+ * @brief The PropagateLocalRename class
+ * @ingroup libsync
  */
 class PropagateLocalRename : public PropagateItemJob {
     Q_OBJECT

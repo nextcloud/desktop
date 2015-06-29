@@ -28,9 +28,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The LogWidget class
- * \ingroup gui
+/**
+ * @brief The LogWidget class
+ * @ingroup gui
  */
 class LogWidget : public QPlainTextEdit 
 {
@@ -42,9 +42,9 @@ signals:
 
 };
 
-/*!
- * \brief The LogBrowser class
- * \ingroup gui
+/**
+ * @brief The LogBrowser class
+ * @ingroup gui
  */
 class LogBrowser : public QDialog
 {

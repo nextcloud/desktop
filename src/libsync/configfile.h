@@ -27,9 +27,9 @@ namespace OCC {
 
 class AbstractCredentials;
 
-/*!
- * \brief The ConfigFile class
- * \ingroup libsync
+/**
+ * @brief The ConfigFile class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT ConfigFile
 {

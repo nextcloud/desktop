@@ -21,9 +21,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The GETFileJob class
- * \ingroup libsync
+/**
+ * @brief The GETFileJob class
+ * @ingroup libsync
  */
 class GETFileJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -102,9 +102,9 @@ private slots:
     void slotMetaDataChanged();
 };
 
-/*!
- * \brief The PropagateDownloadFileQNAM class
- * \ingroup libsync
+/**
+ * @brief The PropagateDownloadFileQNAM class
+ * @ingroup libsync
  */
 class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT

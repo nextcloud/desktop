@@ -24,9 +24,9 @@ namespace Ui {
 class AddCertificateDialog;
 }
 
-/*!
- * \brief The AddCertificateDialog class
- * \ingroup gui
+/**
+ * @brief The AddCertificateDialog class
+ * @ingroup gui
  */
 class AddCertificateDialog : public QDialog
 {

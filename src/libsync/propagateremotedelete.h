@@ -18,9 +18,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The DeleteJob class
- * \ingroup libsync
+/**
+ * @brief The DeleteJob class
+ * @ingroup libsync
  */
 class DeleteJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -37,9 +37,9 @@ signals:
     void finishedSignal();
 };
 
-/*!
- * \brief The PropagateRemoteDelete class
- * \ingroup libsync
+/**
+ * @brief The PropagateRemoteDelete class
+ * @ingroup libsync
  */
 class PropagateRemoteDelete : public PropagateItemJob {
     Q_OBJECT

@@ -32,9 +32,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The SyncFileItem class
- * \ingroup libsync
+/**
+ * @brief The SyncFileItem class
+ * @ingroup libsync
  */
 class SyncFileItem {
 public:

@@ -20,9 +20,9 @@ class QSslCertificate;
 
 namespace OCC {
 
-/*!
- * \brief The SimpleSslErrorHandler class
- * \ingroup cmd
+/**
+ * @brief The SimpleSslErrorHandler class
+ * @ingroup cmd
  */
 class SimpleSslErrorHandler : public OCC::AbstractSslErrorHandler {
 public:

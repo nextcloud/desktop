@@ -29,9 +29,9 @@ class AccountState;
 class Account;
 class AbstractCredentials;
 
-/*!
- * \brief Extra info about an ownCloud server account.
- * \ingroup gui
+/**
+ * @brief Extra info about an ownCloud server account.
+ * @ingroup gui
  */
 class AccountState : public QObject {
     Q_OBJECT

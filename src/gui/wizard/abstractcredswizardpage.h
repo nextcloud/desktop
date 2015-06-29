@@ -21,9 +21,9 @@ namespace OCC
 
 class AbstractCredentials;
 
-/*!
- * \brief The AbstractCredentialsWizardPage class
- * \ingroup gui
+/**
+ * @brief The AbstractCredentialsWizardPage class
+ * @ingroup gui
  */
 class AbstractCredentialsWizardPage : public QWizardPage
 {

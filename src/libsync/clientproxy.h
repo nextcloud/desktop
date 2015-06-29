@@ -26,9 +26,9 @@ namespace OCC {
 
 class ConfigFile;
 
-/*!
- * \brief The ClientProxy class
- * \ingroup libsync
+/**
+ * @brief The ClientProxy class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT ClientProxy : public QObject
 {

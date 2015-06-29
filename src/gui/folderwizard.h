@@ -31,9 +31,9 @@ class SelectiveSyncTreeView;
 
 class ownCloudInfo;
 
-/*!
- * \brief The FormatWarningsWizardPage class
- * \ingroup gui
+/**
+ * @brief The FormatWarningsWizardPage class
+ * @ingroup gui
  */
 class FormatWarningsWizardPage : public QWizardPage {
     Q_OBJECT
@@ -41,9 +41,9 @@ protected:
     QString formatWarnings(const QStringList &warnings) const;
 };
 
-/*!
- * \brief Page to ask for the local source folder
- * \ingroup gui
+/**
+ * @brief Page to ask for the local source folder
+ * @ingroup gui
  */
 class FolderWizardLocalPath : public FormatWarningsWizardPage
 {
@@ -66,9 +66,9 @@ private:
 };
 
 
-/*!
- * \brief page to ask for the target folder
- * \ingroup gui
+/**
+ * @brief page to ask for the target folder
+ * @ingroup gui
  */
 
 class FolderWizardRemotePath : public FormatWarningsWizardPage
@@ -106,9 +106,9 @@ private:
     QTimer _lscolTimer;
 };
 
-/*!
- * \brief The FolderWizardSelectiveSync class
- * \ingroup gui
+/**
+ * @brief The FolderWizardSelectiveSync class
+ * @ingroup gui
  */
 class FolderWizardSelectiveSync : public QWizardPage
 {
@@ -127,9 +127,9 @@ private:
 
 };
 
-/*!
- * \brief The FolderWizard class
- * \ingroup gui
+/**
+ * @brief The FolderWizard class
+ * @ingroup gui
  */
 class FolderWizard : public QWizard
 {

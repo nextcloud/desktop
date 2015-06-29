@@ -25,9 +25,9 @@ namespace OCC {
 
 class Folder;
 
-/*!
- * \brief The SelectiveSyncTreeView class
- * \ingroup gui
+/**
+ * @brief The SelectiveSyncTreeView class
+ * @ingroup gui
  */
 class SelectiveSyncTreeView : public QTreeWidget {
     Q_OBJECT
@@ -61,9 +61,9 @@ private:
     QLabel *_loading;
 };
 
-/*!
- * \brief The SelectiveSyncDialog class
- * \ingroup gui
+/**
+ * @brief The SelectiveSyncDialog class
+ * @ingroup gui
  */
 class SelectiveSyncDialog : public QDialog {
     Q_OBJECT

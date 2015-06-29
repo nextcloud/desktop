@@ -24,8 +24,8 @@ namespace OCC {
 class AccountState;
 class PropfindJob;
 
-/*!
- * \brief handles getting the quota to display in the UI 
+/**
+ * @brief handles getting the quota to display in the UI
  *
  * It is typically owned by the AccountSetting page.
  *
@@ -40,7 +40,7 @@ class PropfindJob;
  *
  * If the quota job is not finished within 30 seconds, it is cancelled and another one is started
  *
- * \ingroup gui
+ * @ingroup gui
  */
 class QuotaInfo : public QObject {
     Q_OBJECT

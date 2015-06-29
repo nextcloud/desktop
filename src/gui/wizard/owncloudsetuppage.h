@@ -32,9 +32,9 @@ class QProgressIndicator;
 
 namespace OCC {
 
-/*!
- * \brief The OwncloudSetupPage class
- * \ingroup gui
+/**
+ * @brief The OwncloudSetupPage class
+ * @ingroup gui
  */
 class OwncloudSetupPage: public QWizardPage
 {

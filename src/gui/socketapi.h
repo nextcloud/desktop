@@ -40,9 +40,9 @@ namespace OCC {
 class SyncFileStatus;
 class Folder;
 
-/*!
- * \brief The SocketApi class
- * \ingroup gui
+/**
+ * @brief The SocketApi class
+ * @ingroup gui
  */
 class SocketApi : public QObject
 {

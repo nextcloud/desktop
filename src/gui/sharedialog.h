@@ -23,9 +23,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The OcsShareJob class
- * \ingroup gui
+/**
+ * @brief The OcsShareJob class
+ * @ingroup gui
  */
 class OcsShareJob : public AbstractNetworkJob {
     Q_OBJECT
@@ -57,9 +57,9 @@ class AbstractCredentials;
 class QuotaInfo;
 class SyncResult;
 
-/*!
- * \brief The ShareDialog class
- * \ingroup gui
+/**
+ * @brief The ShareDialog class
+ * @ingroup gui
  */
 class ShareDialog : public QDialog
 {

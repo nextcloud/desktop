@@ -32,9 +32,9 @@ namespace Ui {
 }
 class Application;
 
-/*!
- * \brief The ProtocolWidget class
- * \ingroup gui
+/**
+ * @brief The ProtocolWidget class
+ * @ingroup gui
  */
 class ProtocolWidget : public QWidget
 {

@@ -15,9 +15,9 @@
 #include <QString>
 
 namespace OCC {
-/*!
- * \brief Open the file manager with the specified file pre-selected
- * \ingroup gui
+/**
+ * @brief Open the file manager with the specified file pre-selected
+ * @ingroup gui
  */
 void showInFileManager(const QString &localPath);
 }

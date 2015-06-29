@@ -20,9 +20,9 @@ namespace OCC {
 
 typedef QSharedPointer<AccountState> AccountStatePtr;
 
-/*!
-   \brief The AccountManager class
-   \ingroup gui
+/**
+   @brief The AccountManager class
+   @ingroup gui
 */
 class AccountManager : public QObject {
     Q_OBJECT

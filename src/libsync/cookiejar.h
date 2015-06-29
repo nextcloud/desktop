@@ -20,9 +20,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The CookieJar class
- * \ingroup libsync
+/**
+ * @brief The CookieJar class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT CookieJar : public QNetworkCookieJar
 {

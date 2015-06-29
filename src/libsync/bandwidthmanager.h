@@ -26,9 +26,9 @@ class UploadDevice;
 class GETFileJob;
 class OwncloudPropagator;
 
-/*!
- * \brief The BandwidthManager class
- * \ingroup libsync
+/**
+ * @brief The BandwidthManager class
+ * @ingroup libsync
  */
 class BandwidthManager : public QObject {
     Q_OBJECT

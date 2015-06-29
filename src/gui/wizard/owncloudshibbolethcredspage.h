@@ -27,9 +27,9 @@ namespace OCC {
 
 class ShibbolethWebView;
 
-/*!
- * \brief The OwncloudShibbolethCredsPage class
- * \ingroup gui
+/**
+ * @brief The OwncloudShibbolethCredsPage class
+ * @ingroup gui
  */
 class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
 {

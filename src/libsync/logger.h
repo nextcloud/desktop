@@ -37,9 +37,9 @@ struct Log{
   QString message;
 };
 
-/*!
- * \brief The Logger class
- * \ingroup libsync
+/**
+ * @brief The Logger class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT Logger : public QObject
 {

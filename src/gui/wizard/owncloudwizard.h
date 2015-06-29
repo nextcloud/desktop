@@ -31,9 +31,9 @@ class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
 
-/*!
- * \brief The OwncloudWizard class
- * \ingroup gui
+/**
+ * @brief The OwncloudWizard class
+ * @ingroup gui
  */
 class OwncloudWizard : public QWizard
 {

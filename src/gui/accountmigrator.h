@@ -18,9 +18,9 @@
 
 namespace OCC {
 
-/*!
- * \brief The AccountSettings class
- * \ingroup gui
+/**
+ * @brief The AccountSettings class
+ * @ingroup gui
  */
 class AccountMigrator {
 

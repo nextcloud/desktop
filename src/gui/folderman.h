@@ -33,9 +33,9 @@ class Application;
 class SyncResult;
 class SocketApi;
 
-/*!
- * \brief The FolderMan class
- * \ingroup gui
+/**
+ * @brief The FolderMan class
+ * @ingroup gui
  */
 class FolderMan : public QObject
 {

@@ -29,9 +29,9 @@ namespace OCC {
 
 class SyncResult;
 
-/*!
- * \brief The Theme class
- * \ingroup libsync
+/**
+ * @brief The Theme class
+ * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT Theme : public QObject
 {

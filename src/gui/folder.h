@@ -44,9 +44,9 @@ namespace OCC {
 class SyncEngine;
 class AccountState;
 
-/*!
- * \brief The FolderDefinition class
- * \ingroup gui
+/**
+ * @brief The FolderDefinition class
+ * @ingroup gui
  */
 class FolderDefinition
 {
@@ -72,9 +72,9 @@ public:
                      FolderDefinition* folder);
 };
 
-/*!
- * \brief The Folder class
- * \ingroup gui
+/**
+ * @brief The Folder class
+ * @ingroup gui
  */
 class Folder : public QObject
 {
