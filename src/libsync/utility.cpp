@@ -304,45 +304,43 @@ static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32>
                                                     QPair<QString,quint32>("%1h",3600) <<
                                                     QPair<QString,quint32>("%1m",60) <<
                                                     QPair<QString,quint32>("%1s",1);
-                                                    
-                                                    
-QString Utility::timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific) 
-{     
-    return timeToDescriptiveString( timeMapping , msecs, precision, separator, specific);
-}
 
+QString Utility::durationToDescriptiveString(quint64 msecs)
+{
+    struct Period { const char *name; quint64 msec; };
+    Q_DECL_CONSTEXPR const Period periods[] = {
+        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000L },
+        { 0, 0 }
+    };
 
-QString Utility::timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific)
-{       
-    quint64 secs = msecs / 1000;
-    QString retStr = QString(timeMapping.last().first).arg(0); // default value in case theres no actual time in msecs.
-    QList<QPair<QString,quint32> > values;
-    bool timeStartFound = false;
-   
-    for(QList<QPair<QString,quint32> >::Iterator itr = timeMapping.begin(); itr != timeMapping.end() && precision > 0; itr++) {
-        quint64 result = secs / itr->second;        
-        if(!timeStartFound) {
-            if(result == 0 ) {
-                continue;
-            }
-            retStr = "";
-            timeStartFound= true;        
-        }        
-        secs -= result * itr->second;
-        values.append(QPair<QString,quint32>(itr->first,result));
-        precision--;
+    int p = 0;
+    while (periods[p].name && msecs < periods[p].msec) {
+        p++;
     }
-    
-    for(QList<QPair<QString,quint32> >::Iterator itr = values.begin(); itr < values.end(); itr++) {
-        retStr = retStr.append((specific || itr == values.end()-1) ? itr->first : "%1").arg(itr->second, (itr == values.begin() ? 1 :2 ), 10, QChar('0'));        
-        if(itr < values.end()-1) {
-            retStr.append(separator);
-        }
-        
-            
+
+    if (!periods[p].name) {
+        return QCoreApplication::translate("Utility", "0 seconds");
     }
-    
-    return retStr;
+
+    auto firstPart = QCoreApplication::translate("Utility", periods[p].name, 0, int(msecs / periods[p].msec));
+
+    if (!periods[p+1].name) {
+        return firstPart;
+    }
+
+    quint64 secondPartNum = qRound( double(msecs % periods[p].msec) / periods[p+1].msec);
+
+    if (secondPartNum == 0) {
+        return firstPart;
+    }
+
+    return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart,
+            QCoreApplication::translate("Utility", periods[p+1].name, 0, secondPartNum));
 }
 
 bool Utility::hasDarkSystray()
