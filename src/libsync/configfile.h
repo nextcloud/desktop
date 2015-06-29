@@ -91,9 +91,9 @@ public:
     
     /** 0: no limit, 1: manual, >0: automatic */
     int useUploadLimit() const;
-    bool useDownloadLimit() const;
+    int useDownloadLimit() const;
     void setUseUploadLimit(int);
-    void setUseDownloadLimit(bool);
+    void setUseDownloadLimit(int);
     /** in kbyte/s */
     int uploadLimit() const;
     int downloadLimit() const;

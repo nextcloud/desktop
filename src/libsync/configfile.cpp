@@ -514,9 +514,9 @@ int ConfigFile::useUploadLimit() const
     return getValue(useUploadLimitC, QString::null, 0).toInt();
 }
 
-bool ConfigFile::useDownloadLimit() const
+int ConfigFile::useDownloadLimit() const
 {
-    return getValue(useDownloadLimitC, QString::null, false).toBool();
+    return getValue(useDownloadLimitC, QString::null, 0).toInt();
 }
 
 void ConfigFile::setUseUploadLimit(int val)
@@ -524,9 +524,9 @@ void ConfigFile::setUseUploadLimit(int val)
     setValue(useUploadLimitC, val);
 }
 
-void ConfigFile::setUseDownloadLimit(bool enable)
+void ConfigFile::setUseDownloadLimit(int val)
 {
-    setValue(useDownloadLimitC, enable);
+    setValue(useDownloadLimitC, val);
 }
 
 int ConfigFile::uploadLimit() const

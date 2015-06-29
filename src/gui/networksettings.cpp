@@ -63,6 +63,7 @@ NetworkSettings::NetworkSettings(QWidget *parent) :
     connect(_ui->autoUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
     connect(_ui->downloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
     connect(_ui->noDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
+    connect(_ui->autoDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
     connect(_ui->downloadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
     connect(_ui->uploadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
 }
@@ -109,16 +110,25 @@ void NetworkSettings::loadProxySettings()
 void NetworkSettings::loadBWLimitSettings()
 {
     ConfigFile cfgFile;
-    _ui->downloadLimitRadioButton->setChecked(cfgFile.useDownloadLimit());
-    int uploadLimit = cfgFile.useUploadLimit();
-    if ( uploadLimit >= 1 ) {
+
+    int useDownloadLimit = cfgFile.useDownloadLimit();
+    if ( useDownloadLimit >= 1 ) {
+        _ui->downloadLimitRadioButton->setChecked(true);
+    } else if (useDownloadLimit == 0){
+        _ui->noDownloadLimitRadioButton->setChecked(true);
+    } else {
+        _ui->autoDownloadLimitRadioButton->setChecked(true);
+    }
+    _ui->downloadSpinBox->setValue(cfgFile.downloadLimit());
+
+    int useUploadLimit = cfgFile.useUploadLimit();
+    if ( useUploadLimit >= 1 ) {
         _ui->uploadLimitRadioButton->setChecked(true);
-    } else if (uploadLimit == 0){
+    } else if (useUploadLimit == 0){
         _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoUploadLimitRadioButton->setChecked(true);
     }
-    _ui->downloadSpinBox->setValue(cfgFile.downloadLimit());
     _ui->uploadSpinBox->setValue(cfgFile.uploadLimit());
 }
 
@@ -151,7 +161,14 @@ void NetworkSettings::saveProxySettings()
 void NetworkSettings::saveBWLimitSettings()
 {
     ConfigFile cfgFile;
-    cfgFile.setUseDownloadLimit(_ui->downloadLimitRadioButton->isChecked());
+    if (_ui->downloadLimitRadioButton->isChecked()) {
+        cfgFile.setUseDownloadLimit(1);
+    } else if (_ui->noDownloadLimitRadioButton->isChecked()) {
+        cfgFile.setUseDownloadLimit(0);
+    } else if (_ui->autoDownloadLimitRadioButton->isChecked()) {
+        cfgFile.setUseDownloadLimit(-1);
+    }
+    cfgFile.setDownloadLimit(_ui->downloadSpinBox->value());
 
     if (_ui->uploadLimitRadioButton->isChecked()) {
         cfgFile.setUseUploadLimit(1);
@@ -160,8 +177,6 @@ void NetworkSettings::saveBWLimitSettings()
     } else if (_ui->autoUploadLimitRadioButton->isChecked()) {
         cfgFile.setUseUploadLimit(-1);
     }
-
-    cfgFile.setDownloadLimit(_ui->downloadSpinBox->value());
     cfgFile.setUploadLimit(_ui->uploadSpinBox->value());
 
     FolderMan::instance()->setDirtyNetworkLimits();

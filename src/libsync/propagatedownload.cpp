@@ -242,7 +242,7 @@ void GETFileJob::slotReadyRead()
         if (_bandwidthLimited) {
             toRead = qMin(qint64(bufferSize), _bandwidthQuota);
             if (toRead == 0) {
-                qDebug() << Q_FUNC_INFO << "Out of quota";
+                //qDebug() << Q_FUNC_INFO << "Out of quota";
                 break;
             }
             _bandwidthQuota -= toRead;

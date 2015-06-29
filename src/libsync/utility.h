@@ -64,13 +64,11 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT qint64 qDateTimeToTime_t(const QDateTime &t);
 
     /**
-     * @brief Convert milliseconds to HMS string.
+     * @brief Convert milliseconds duration to human readable string.
      * @param quint64 msecs the milliseconds to convert to string.
-     * @param uint precision the amount of sub dviving scale to include in the result.
      * @return an HMS representation of the milliseconds value.
      */
-    OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(QList<QPair<QString,quint32> > &timeMapping, quint64 msecs, quint8 precision, QString separator, bool specific);
-    OWNCLOUDSYNC_EXPORT QString timeToDescriptiveString(quint64 msecs, quint8 precision, QString separator, bool specific);
+    OWNCLOUDSYNC_EXPORT QString durationToDescriptiveString(quint64 msecs);
 
     /**
      * @brief hasDarkSystray - determines whether the systray is dark or light.

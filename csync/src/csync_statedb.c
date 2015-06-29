@@ -491,6 +491,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
                 if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                         || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+                    SAFE_FREE(st);
                     continue;
                 }
 

@@ -12,7 +12,6 @@
  */
 
 #include "accountstate.h"
-#include "quotainfo.h"
 #include "accountmanager.h"
 #include "account.h"
 #include "creds/abstractcredentials.h"
@@ -25,14 +24,11 @@ namespace OCC {
 AccountState::AccountState(AccountPtr account)
     : QObject()
     , _account(account)
-    , _quotaInfo(0)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
 {
     qRegisterMetaType<AccountState*>("AccountState*");
-
-    _quotaInfo = new QuotaInfo(this); // Need to be initialized when 'this' is fully initialized
 
     connect(account.data(), SIGNAL(invalidCredentials()),
             SLOT(slotInvalidCredentials()));
@@ -132,11 +128,6 @@ bool AccountState::isConnected() const
 bool AccountState::isConnectedOrTemporarilyUnavailable() const
 {
     return isConnected() || _state == ServiceUnavailable;
-}
-
-QuotaInfo *AccountState::quotaInfo()
-{
-    return _quotaInfo;
 }
 
 void AccountState::checkConnectivity()

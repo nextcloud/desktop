@@ -645,7 +645,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
                 .arg(kindString, itemFileName, s1, s2,
-                    Utility::timeToDescriptiveString(progress.fileProgress(curItem).estimatedEta, 3, " ", true),
+                    Utility::durationToDescriptiveString(progress.fileProgress(curItem).estimatedEta),
                     Utility::octetsToString(estimatedBw) );
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"
@@ -672,7 +672,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
             .arg(s1, s2)
             .arg(currentFile).arg(totalFileCount)
-            .arg( Utility::timeToDescriptiveString(progress.totalProgress().estimatedEta, 3, " ", true) );
+            .arg( Utility::durationToDescriptiveString(progress.totalProgress().estimatedEta) );
     } else if (totalFileCount > 0) {
         // Don't attemt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);

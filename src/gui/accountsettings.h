@@ -21,6 +21,7 @@
 #include <QTimer>
 
 #include "folder.h"
+#include "quotainfo.h"
 #include "progressdispatcher.h"
 
 class QModelIndex;
@@ -80,9 +81,11 @@ protected slots:
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
     void slotForceRemoteDiscoveryOnFolders();
+    void slotCustomContextMenuRequested(const QPoint&);
 
 private:
     void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
+    bool event(QEvent*) Q_DECL_OVERRIDE;
 
     Ui::AccountSettings *ui;
 
@@ -92,8 +95,7 @@ private:
     bool _wasDisabledBefore;
     AccountState *_accountState;
     QLabel *_quotaLabel;
-private slots:
-    void slotCustomContextMenuRequested(const QPoint&);
+    QuotaInfo _quotaInfo;
 };
 
 } // namespace OCC

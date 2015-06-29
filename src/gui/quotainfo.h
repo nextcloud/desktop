@@ -17,31 +17,52 @@
 #include <QObject>
 #include <QPointer>
 #include <QVariant>
-
-class QTimer;
+#include <QTimer>
+#include <QDateTime>
 
 namespace OCC {
-
 class AccountState;
+class PropfindJob;
 
 /*!
- * \brief The QuotaInfo class
+ * \brief handles getting the quota to display in the UI 
+ *
+ * It is typically owned by the AccountSetting page.
+ *
+ * The quota is requested if those 3 conditions are met:
+ *  - This object is active via setActive() (typically if the settings page is visible.)
+ *  - The account is connected.
+ *  - Every 30 seconds (defaultIntervalT) or 5 seconds in case of failure (failIntervalT)
+ *
+ * We only request the quota when the UI is visible otherwise this might slow down the server with
+ * too many requests. But we still need to do it every 30 seconds otherwise user complains that the
+ * quota is not updated fast enough when changed on the server.
+ *
+ * If the quota job is not finished within 30 seconds, it is cancelled and another one is started
+ *
  * \ingroup gui
  */
 class QuotaInfo : public QObject {
     Q_OBJECT
 public:
-    QuotaInfo(AccountState *account);
+    explicit QuotaInfo(OCC::AccountState* accountState, QObject* parent = 0);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+
+    /**
+     * When the quotainfo is active, it requests the quota at regular interval.
+     * When setting it to active it will request the quota imediatly if the last time
+     * the quota was requested was more than the interval
+     */
+    void setActive(bool active);
 
 public Q_SLOTS:
     void slotCheckQuota();
 
 private Q_SLOTS:
     void slotUpdateLastQuota(const QVariantMap &);
-    void slotAccountStateChanged(int state);
+    void slotAccountStateChanged();
     void slotRequestFailed();
 
 Q_SIGNALS:
@@ -53,7 +74,10 @@ private:
     QPointer<AccountState> _accountState;
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
-    QTimer *_jobRestartTimer;
+    QTimer _jobRestartTimer;
+    QDateTime _lastQuotaRecieved; // the time at which de quota was recieved last
+    bool _active; // if we should check at regular interval (when the UI is visible)
+    QPointer<PropfindJob> _job; // the currently running job
 };
 
 
