@@ -1,4 +1,10 @@
 #!/bin/sh
+
+echo "Not used anymore, please do (from build dir) (this is <= 10.9 only)"
+echo sudo cp -r ./shell_integration/MacOSX/Release/SyncStateFinder.osax /Library/ScriptingAdditions/
+echo killall Finder
+exit 1
+
 SELFPATH=`dirname $0`
 # osascript $SELFPATH/unload.scpt
 
