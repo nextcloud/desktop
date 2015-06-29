@@ -31,6 +31,7 @@ class AbstractCredentials;
 
 /**
  * @brief Extra info about an ownCloud server account.
+ * @ingroup gui
  */
 class AccountState : public QObject {
     Q_OBJECT
@@ -87,8 +88,6 @@ public:
 
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
-
-
 
 private:
     void setState(State state);

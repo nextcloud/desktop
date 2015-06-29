@@ -32,6 +32,7 @@
 
 namespace OCC {
 
+
 Account::Account(QObject *parent)
     : QObject(parent)
     , _am(0)

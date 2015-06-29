@@ -194,7 +194,7 @@ add_subdirectory(src)
 if(NOT BUILD_LIBRARIES_ONLY)
 add_subdirectory(shell_integration)
 add_subdirectory(doc)
-add_subdirectory(dev-doc)
+add_subdirectory(doc/dev)
 add_subdirectory(admin)
 endif(NOT BUILD_LIBRARIES_ONLY)
 

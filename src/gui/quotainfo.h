@@ -25,7 +25,8 @@ class AccountState;
 class PropfindJob;
 
 /**
- * This class handle the getting the quota to display in the UI
+ * @brief handles getting the quota to display in the UI
+ *
  * It is typically owned by the AccountSetting page.
  *
  * The quota is requested if those 3 conditions are met:
@@ -38,6 +39,8 @@ class PropfindJob;
  * quota is not updated fast enough when changed on the server.
  *
  * If the quota job is not finished within 30 seconds, it is cancelled and another one is started
+ *
+ * @ingroup gui
  */
 class QuotaInfo : public QObject {
     Q_OBJECT

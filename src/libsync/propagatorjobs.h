@@ -35,7 +35,8 @@ static const char checkSumAdlerC[] = "Adler32";
 static const char checkSumAdlerUpperC[] = "ADLER32";
 
 /**
- * Declaration of the other propagation jobs
+ * @brief Declaration of the other propagation jobs
+ * @ingroup libsync
  */
 class PropagateLocalRemove : public PropagateItemJob {
     Q_OBJECT
@@ -43,6 +44,11 @@ public:
     PropagateLocalRemove (OwncloudPropagator* propagator,const SyncFileItemPtr& item)  : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
 };
+
+/**
+ * @brief The PropagateLocalMkdir class
+ * @ingroup libsync
+ */
 class PropagateLocalMkdir : public PropagateItemJob {
     Q_OBJECT
 public:
@@ -50,6 +56,11 @@ public:
     void start() Q_DECL_OVERRIDE;
 
 };
+
+/**
+ * @brief The PropagateLocalRename class
+ * @ingroup libsync
+ */
 class PropagateLocalRename : public PropagateItemJob {
     Q_OBJECT
 public:
