@@ -25,31 +25,39 @@ namespace OCC {
 namespace {
 static const int defaultIntervalT = 30*1000;
 static const int failIntervalT = 5*1000;
-static const int initialTimeT = 1*1000;
 }
 
-QuotaInfo::QuotaInfo(AccountState *accountState)
-    : QObject(accountState)
+QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
+    : QObject(parent)
     , _accountState(accountState)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
-    , _jobRestartTimer(new QTimer(this))
+    , _active(false)
 {
     connect(accountState, SIGNAL(stateChanged(int)),
-            SLOT(slotAccountStateChanged(int)));
-    connect(_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
-    _jobRestartTimer->setSingleShot(true);
-    if (canGetQuota()) {
-        _jobRestartTimer->start(initialTimeT);
-    }
+            SLOT(slotAccountStateChanged()));
+    connect(&_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
+    _jobRestartTimer.setSingleShot(true);
 }
 
-void QuotaInfo::slotAccountStateChanged(int /*state*/)
+void QuotaInfo::setActive(bool active)
+{
+    _active = active;
+    slotAccountStateChanged();
+}
+
+
+void QuotaInfo::slotAccountStateChanged()
 {
     if (canGetQuota()) {
-        _jobRestartTimer->start(initialTimeT);
+        auto elapsed = _lastQuotaRecieved.msecsTo(QDateTime::currentDateTime());
+        if (_lastQuotaRecieved.isNull() || elapsed >= defaultIntervalT) {
+            slotCheckQuota();
+        } else {
+            _jobRestartTimer.start(defaultIntervalT - elapsed);
+        }
     } else {
-        _jobRestartTimer->stop();
+        _jobRestartTimer.stop();
     }
 }
 
@@ -57,12 +65,12 @@ void QuotaInfo::slotRequestFailed()
 {
     _lastQuotaTotalBytes = 0;
     _lastQuotaUsedBytes = 0;
-    _jobRestartTimer->start(failIntervalT);
+    _jobRestartTimer.start(failIntervalT);
 }
 
 bool QuotaInfo::canGetQuota() const
 {
-    if (! _accountState) {
+    if (! _accountState || !_active) {
         return false;
     }
     AccountPtr account = _accountState->account();
@@ -77,12 +85,17 @@ void QuotaInfo::slotCheckQuota()
         return;
     }
 
+    if (_job) {
+        // The previous job was not finished?  Then we cancel it!
+        _job->deleteLater();
+    }
+
     AccountPtr account = _accountState->account();
-    PropfindJob *job = new PropfindJob(account, "/", this);
-    job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
-    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
-    job->start();
+    _job = new PropfindJob(account, "/", this);
+    _job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
+    connect(_job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
+    connect(_job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
+    _job->start();
 }
 
 void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
@@ -93,7 +106,8 @@ void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
     _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();
     _lastQuotaTotalBytes = _lastQuotaUsedBytes + avail;
     emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
-    _jobRestartTimer->start(defaultIntervalT);
+    _jobRestartTimer.start(defaultIntervalT);
+    _lastQuotaRecieved = QDateTime::currentDateTime();
 }
 
 }

@@ -62,7 +62,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AccountSettings),
     _wasDisabledBefore(false),
-    _accountState(accountState)
+    _accountState(accountState),
+    _quotaInfo(accountState)
 {
     ui->setupUi(this);
 
@@ -123,10 +124,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
     slotAccountStateChanged(_accountState->state());
 
-    QuotaInfo *quotaInfo = _accountState->quotaInfo();
-    connect( quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
+    connect( &_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
             this, SLOT(slotUpdateQuota(qint64,qint64)));
-    slotUpdateQuota(quotaInfo->lastQuotaTotalBytes(), quotaInfo->lastQuotaUsedBytes());
 
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
 
@@ -514,5 +513,12 @@ void AccountSettings::slotDeleteAccount()
     manager->save();
 }
 
+bool AccountSettings::event(QEvent* e)
+{
+    if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
+        _quotaInfo.setActive(isVisible());
+    }
+    return QWidget::event(e);
+}
 
 } // namespace OCC

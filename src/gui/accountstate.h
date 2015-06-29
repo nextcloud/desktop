@@ -25,7 +25,6 @@ class QSettings;
 
 namespace OCC {
 
-class QuotaInfo;
 class AccountState;
 class Account;
 class AbstractCredentials;
@@ -82,8 +81,6 @@ public:
     bool isConnected() const;
     bool isConnectedOrTemporarilyUnavailable() const;
 
-    QuotaInfo *quotaInfo();
-
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
     void checkConnectivity();
@@ -106,7 +103,6 @@ protected Q_SLOTS:
 
 private:
     AccountPtr _account;
-    QuotaInfo *_quotaInfo;
     State _state;
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
