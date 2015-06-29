@@ -36,6 +36,8 @@ class PropfindJob;
  * We only request the quota when the UI is visible otherwise this might slow down the server with
  * too many requests. But we still need to do it every 30 seconds otherwise user complains that the
  * quota is not updated fast enough when changed on the server.
+ *
+ * If the quota job is not finished within 30 seconds, it is cancelled and another one is started
  */
 class QuotaInfo : public QObject {
     Q_OBJECT
