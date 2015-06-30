@@ -125,6 +125,8 @@ typedef  wchar_t         mbchar_t;
 #define _tchmod          _wchmod
 #define _trewinddir      _wrewinddir
 #define _tchown(X, Y, Z)  0 /* no chown on Win32 */
+#define _tchdir          _wchdir
+#define _tgetcwd         _wgetcwd
 #else
 typedef char           mbchar_t;
 #define _tdirent       dirent
@@ -144,6 +146,8 @@ typedef char           mbchar_t;
 #define _tchmod        chmod
 #define _trewinddir    rewinddir
 #define _tchown(X,Y,Z) chown(X,Y,Z)
+#define _tchdir        chdir
+#define _tgetcwd       getcwd
 #endif
 
 #ifdef WITH_ICONV
