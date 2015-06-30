@@ -327,7 +327,7 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
         return QCoreApplication::translate("Utility", "0 seconds");
     }
 
-    auto firstPart = QCoreApplication::translate("Utility", periods[p].name, 0, int(msecs / periods[p].msec));
+    auto firstPart = QCoreApplication::translate("Utility", periods[p].name, 0, QCoreApplication::UnicodeUTF8, int(msecs / periods[p].msec));
 
     if (!periods[p+1].name) {
         return firstPart;
@@ -340,7 +340,7 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
     }
 
     return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart,
-            QCoreApplication::translate("Utility", periods[p+1].name, 0, secondPartNum));
+            QCoreApplication::translate("Utility", periods[p+1].name, 0, QCoreApplication::UnicodeUTF8, secondPartNum));
 }
 
 bool Utility::hasDarkSystray()
