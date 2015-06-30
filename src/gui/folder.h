@@ -85,8 +85,8 @@ public:
 
     ~Folder();
 
-    typedef QHash<QString, Folder*> Map;
-    typedef QHashIterator<QString, Folder*> MapIterator;
+    typedef QMap<QString, Folder*> Map;
+    typedef QMapIterator<QString, Folder*> MapIterator;
 
     /**
      * The account the folder is configured on.
