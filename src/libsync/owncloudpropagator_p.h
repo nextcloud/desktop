@@ -52,8 +52,14 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror, int httpCode) {
     Q_ASSERT (nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
-    if (nerror > QNetworkReply::NoError &&  nerror <= QNetworkReply::UnknownProxyError) {
+    if (nerror > QNetworkReply::NoError && nerror <= QNetworkReply::UnknownProxyError) {
         // network error or proxy error -> fatal
+        return SyncFileItem::FatalError;
+    }
+
+    if (httpCode == 503) {
+        // "Service unavailable"
+        // Happens for maintenance mode and other temporary outages
         return SyncFileItem::FatalError;
     }
 
