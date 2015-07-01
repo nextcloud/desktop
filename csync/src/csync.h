@@ -100,7 +100,6 @@ enum csync_status_codes_e {
   CSYNC_STATUS_ABORTED,
     /* Codes for file individual status: */
     CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
-    CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK,
     CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
     CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
@@ -174,7 +173,7 @@ enum csync_vio_file_stat_fields_e {
   CSYNC_VIO_FILE_STAT_FIELDS_FLAGS = 1 << 2,
   CSYNC_VIO_FILE_STAT_FIELDS_DEVICE = 1 << 3,
   CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
-  CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
+//  CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
   CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
 //  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
 //  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
@@ -213,7 +212,6 @@ struct csync_vio_file_stat_s {
 
   dev_t device;
   uint64_t inode;
-  nlink_t nlink;
 
   int fields; // actually enum csync_vio_file_stat_fields_e fields;
   enum csync_vio_file_type_e type;

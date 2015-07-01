@@ -29,7 +29,16 @@ use ownCloud::Test;
 
 use strict;
 
-print "Hello, this is t4, a tester for A) files that cannot be stated and B) excluded files\n";
+sub getInode($)
+{
+    my ($filename) = @_;
+    my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,
+        $atime,$mtime,$ctime,$blksize,$blocks) = stat($filename);
+
+        return $ino;
+}
+
+print "Hello, this is t4, a tester for A) files that cannot be stated and B) excluded files C) hard links\n";
 # stat error occours on windsows when the file is busy for example
 
 initTesting();
@@ -166,6 +175,48 @@ csync();
 assertLocalAndRemoteDir( '', 0 );
 assert(! -e localDir(). 'anotherdir' );
 
+
+printInfo("Test hardlinks\n");
+#make a hard link
+mkdir( localDir() . 'subdir' );
+createLocalFile( localDir() .'subdir/original.data', 1568 );
+system( "ln " . localDir() . 'subdir/original.data ' . localDir() . 'file.link');
+csync();
+assertLocalAndRemoteDir( '', 0 );
+my $inode = getInode(localDir() . 'subdir/original.data');
+my $inode2 = getInode(localDir() . 'file.link');
+assert( $inode == $inode2, "Inode is not the same!");
+
+
+printInfo("Modify hard link\n");
+system( "echo 'another line' >> " . localDir() . 'file.link');
+csync();
+assertLocalAndRemoteDir( '', 0 );
+my $inode1 = getInode(localDir() .'subdir/original.data');
+$inode2 = getInode( localDir() .'file.link');
+assert( $inode == $inode1, "Inode is not the same!");
+assert( $inode == $inode2, "Inode is not the same!");
+
+
+printInfo("Rename a hard link\n");
+move( localDir() . 'subdir/original.data', localDir() . 'subdir/kernelcrash.txt' );
+csync();
+assertLocalAndRemoteDir( '', 0 );
+$inode1 = getInode(localDir() .'subdir/kernelcrash.txt');
+$inode2 = getInode(localDir() .'file.link');
+assert( $inode == $inode1, "Inode is not the same!");
+assert( $inode == $inode2, "Inode is not the same!");
+
+printInfo("Modify a hard link on the server\n");
+put_to_dir( '/tmp/kernelcrash.txt', 'subdir' );
+csync();
+assertLocalAndRemoteDir( '', 0 );
+$inode1 = getInode(localDir() .'subdir/kernelcrash.txt');
+$inode2 = getInode( localDir() .'file.link');
+# only the first inode must change
+print(" $inode $inode1 $inode2" );
+assert( $inode != $inode1, "Inode did not change");
+assert( $inode == $inode2, "Inode is not the same!");
 
 cleanup();
 

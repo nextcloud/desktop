@@ -338,9 +338,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   buf->ctime = sb.st_ctime;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
 
-  buf->nlink = sb.st_nlink;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
-
   buf->size = sb.st_size;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
