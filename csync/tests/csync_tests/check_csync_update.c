@@ -167,7 +167,6 @@ static void teardown_rm(void **state) {
 /* create a file stat, caller must free memory */
 static csync_vio_file_stat_t* create_fstat(const char *name,
                                            ino_t inode,
-                                           nlink_t nlink,
                                            time_t mtime)
 {
     csync_vio_file_stat_t *fs = NULL;
@@ -207,12 +206,6 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
     fs->size = 157459;
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
 
-    if (nlink == 0) {
-        fs->nlink = 1;
-    } else {
-        fs->nlink = nlink;
-    }
-    fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT;
 
 
     if (mtime == 0) {
@@ -383,31 +376,6 @@ static void check_csync_detect_update_db_new(void **state)
     csync_vio_file_stat_destroy(fs);
 }
 
-static void check_csync_detect_update_nlink(void **state)
-{
-    CSYNC *csync = *state;
-    csync_file_stat_t *st;
-    csync_vio_file_stat_t *fs;
-    int rc;
-
-    /* create vio file stat with nlink greater than 1 */
-    fs = create_fstat("file.txt", 0, 7, 0);
-    assert_non_null(fs);
-
-    /* add it to local tree */
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              fs,
-                              CSYNC_FTW_TYPE_FILE);
-    assert_int_equal(rc, 0);
-
-    /* the instruction should be set to ignore */
-    st = c_rbtree_node_data(csync->local.tree->root);
-    assert_int_equal(st->instruction, CSYNC_INSTRUCTION_IGNORE);
-
-    csync_vio_file_stat_destroy(fs);
-}
-
 static void check_csync_detect_update_null(void **state)
 {
     CSYNC *csync = *state;
@@ -467,7 +435,6 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
         unit_test_setup_teardown(check_csync_detect_update_db_new, setup, teardown_rm),
-        unit_test_setup_teardown(check_csync_detect_update_nlink, setup, teardown_rm),
         unit_test_setup_teardown(check_csync_detect_update_null, setup, teardown_rm),
 
         unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),

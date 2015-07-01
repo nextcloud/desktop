@@ -183,7 +183,6 @@ struct csync_file_stat_s {
   size_t pathlen;   /* u64 */
   uint64_t inode;   /* u64 */
   mode_t mode;      /* u32 */
-  int nlink;        /* u32 */
   int type;         /* u32 */
   int child_modified;/*bool*/
   int should_update_etag; /*bool */

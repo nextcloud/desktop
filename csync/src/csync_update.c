@@ -210,11 +210,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   /* check hardlink count */
   if (type == CSYNC_FTW_TYPE_FILE ) {
-    if( fs->nlink > 1) {
-      st->instruction = CSYNC_INSTRUCTION_IGNORE;
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_HARDLINK;
-      goto out;
-    }
 
     if (fs->mtime == 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
@@ -442,7 +437,6 @@ out:
   st->mode  = fs->mode;
   st->size  = fs->size;
   st->modtime = fs->mtime;
-  st->nlink = fs->nlink;
   st->type  = type;
   st->etag   = NULL;
   if( fs->etag ) {
