@@ -91,19 +91,19 @@ QString AccountState::stateString(State state)
     switch (state)
     {
     case SignedOut:
-        return QLatin1String("SignedOut");
+        return tr("Signed out");
     case Disconnected:
-        return QLatin1String("Disconnected");
+        return tr("Disconnected");
     case Connected:
-        return QLatin1String("Connected");
+        return tr("Connected");
     case ServiceUnavailable:
-        return QLatin1String("ServiceUnavailable");
+        return tr("Service unavailable");
     case NetworkError:
-        return QLatin1String("NetworkError");
+        return tr("Network error");
     case ConfigurationError:
-        return QLatin1String("ConfigurationError");
+        return tr("Configuration error");
     }
-    return QLatin1String("Unknown");
+    return tr("Unknown account state");
 }
 
 bool AccountState::isSignedOut() const

@@ -74,7 +74,7 @@ public:
     static QString connectionStatusString(ConnectionStatus status);
 
     State state() const;
-    static QString stateString(State status);
+    static QString stateString(State state);
 
     bool isSignedOut() const;
     void setSignedOut(bool signedOut);

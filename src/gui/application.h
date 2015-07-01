@@ -78,7 +78,6 @@ signals:
 protected slots:
     void slotParseMessage(const QString&, QObject*);
     void slotCheckConnection();
-    void slotUpdateConnectionErrors(int accountState);
     void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
     void slotLogin();
@@ -86,7 +85,6 @@ protected slots:
     void slotCleanup();
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);
-    void slotAccountStateChanged(int state);
     void slotCrash();
 
 private:
@@ -97,7 +95,6 @@ private:
     Theme *_theme;
 
     bool _helpOnly;
-    bool _startupNetworkError;
 
     // options from command line:
     bool _showLogWindow;
@@ -116,8 +113,6 @@ private:
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif
     QScopedPointer<FolderMan> _folderManager;
-
-    friend class ownCloudGui; // for _startupNetworkError
 };
 
 } // namespace OCC

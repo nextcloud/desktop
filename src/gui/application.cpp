@@ -89,7 +89,6 @@ Application::Application(int &argc, char **argv) :
     _gui(0),
     _theme(Theme::instance()),
     _helpOnly(false),
-    _startupNetworkError(false),
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false),
@@ -218,8 +217,6 @@ void Application::slotLogout()
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    disconnect(accountState, SIGNAL(stateChanged(int)),
-               this, SLOT(slotAccountStateChanged(int)));
     if (_gui) {
         disconnect(accountState, SIGNAL(stateChanged(int)),
                    _gui, SLOT(slotAccountStateChanged()));
@@ -232,8 +229,6 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
-    connect(accountState, SIGNAL(stateChanged(int)),
-            this, SLOT(slotAccountStateChanged(int)));
     connect(accountState, SIGNAL(stateChanged(int)),
             _gui, SLOT(slotAccountStateChanged()));
     connect(accountState, SIGNAL(stateChanged(int)),
@@ -259,7 +254,14 @@ void Application::slotCheckConnection()
 {
     auto list = AccountManager::instance()->accounts();
     foreach (const auto &accountState , list) {
-        accountState->checkConnectivity();
+        AccountState::State state = accountState->state();
+
+        // Don't check if we're manually signed out or
+        // when the error is permanent.
+        if (state != AccountState::SignedOut
+                && state != AccountState::ConfigurationError) {
+            accountState->checkConnectivity();
+        }
     }
 
     if (list.isEmpty()) {
@@ -270,41 +272,9 @@ void Application::slotCheckConnection()
     }
 }
 
-void Application::slotAccountStateChanged(int state)
-{
-    // THE FOLLOWING STILL NEEDS FIXING!
-
-    // Stop checking the connection if we're manually signed out or
-    // when the error is permanent.
-    if (state == AccountState::SignedOut
-            || state == AccountState::ConfigurationError) {
-        _checkConnectionTimer.stop();
-    } else if (! _checkConnectionTimer.isActive()) {
-        _checkConnectionTimer.start();
-    }
-
-    slotUpdateConnectionErrors(state);
-}
-
 void Application::slotCrash()
 {
     Utility::crash();
-}
-
-void Application::slotUpdateConnectionErrors(int accountState)
-{
-    bool isConnected = accountState == AccountState::Connected;
-    if( !isConnected ) {
-        _startupNetworkError = accountState == AccountState::NetworkError;
-    }
-
-#warning FIXME: connection errors should be shown per account
-#if 0
-    AccountState *as = AccountStateManager::instance()->accountState();
-    if (as) {
-        _gui->setConnectionErrors( isConnected, as->connectionErrors() );
-    }
-#endif
 }
 
 void Application::slotownCloudWizardDone( int res )

@@ -44,7 +44,6 @@ public:
     explicit ownCloudGui(Application *parent = 0);
 
     void setupContextMenu();
-    void setConnectionErrors(bool connected , const QStringList &fails);
 
     bool checkAccountExists(bool openSettings);
 
@@ -110,8 +109,6 @@ private:
     QSignalMapper *_recentItemsMapper;
 
     Application *_app;
-
-    QStringList _startupFails;
 };
 
 } // namespace OCC

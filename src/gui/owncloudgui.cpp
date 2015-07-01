@@ -205,25 +205,34 @@ void ownCloudGui::slotAccountStateChanged()
     slotComputeOverallSyncStatus();
 }
 
-void ownCloudGui::setConnectionErrors( bool /*connected*/, const QStringList& fails )
-{
-    _startupFails = fails; // store that for the settings dialog once it appears.
-
-    slotComputeOverallSyncStatus();
-}
-
 void ownCloudGui::slotComputeOverallSyncStatus()
 {
     bool allSignedOut = true;
+    QVector<AccountStatePtr> problemAccounts;
     foreach (auto a, AccountManager::instance()->accounts()) {
         if (!a->isSignedOut()) {
             allSignedOut = false;
         }
-        if (!a->isConnectedOrTemporarilyUnavailable()) {
-            _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
-            _tray->setToolTip(tr("Disconnected from server"));
-            return;
+        if (!a->isConnected()) {
+            problemAccounts.append(a);
         }
+    }
+
+    if (!problemAccounts.empty()) {
+        _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+        QStringList messages;
+        messages.append(tr("Disconnected from accounts:"));
+        foreach (AccountStatePtr a, problemAccounts) {
+            QString message = tr("Account %1: %2").arg(
+                    a->account()->displayName(), a->stateString(a->state()));
+            if (! a->connectionErrors().empty()) {
+                message += QLatin1String("\n");
+                message += a->connectionErrors().join(QLatin1String("\n"));
+            }
+            messages.append(message);
+        }
+        _tray->setToolTip(messages.join(QLatin1String("\n\n")));
+        return;
     }
 
     if (allSignedOut) {
@@ -238,42 +247,29 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     Folder::Map map = folderMan->map();
     SyncResult overallResult = FolderMan::accountStatus(map.values());
 
-    if( !_startupFails.isEmpty() ) {
-        trayMessage = _startupFails.join(QLatin1String("\n"));
-        QIcon statusIcon;
-        if (_app->_startupNetworkError) {
-            statusIcon = Theme::instance()->syncStateIcon( SyncResult::NotYetStarted, true );
+    // create the tray blob message, check if we have an defined state
+    if( overallResult.status() != SyncResult::Undefined ) {
+        QStringList allStatusStrings;
+        if( map.count() > 0 ) {
+            foreach(Folder* folder, map.values()) {
+                qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
+                QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
+                allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
+            }
+
+            trayMessage = allStatusStrings.join(QLatin1String("\n"));
         } else {
-            statusIcon = Theme::instance()->syncStateIcon( SyncResult::Error, true );
+            trayMessage = tr("No sync folders configured.");
         }
 
+        QIcon statusIcon = Theme::instance()->syncStateIcon( overallResult.status(), true);
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
     } else {
-        // create the tray blob message, check if we have an defined state
-        if( overallResult.status() != SyncResult::Undefined ) {
-            QStringList allStatusStrings;
-            if( map.count() > 0 ) {
-                foreach(Folder* folder, map.values()) {
-                    qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
-                    QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
-                    allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
-                }
-
-                trayMessage = allStatusStrings.join(QLatin1String("\n"));
-            } else {
-                trayMessage = tr("No sync folders configured.");
-            }
-
-            QIcon statusIcon = Theme::instance()->syncStateIcon( overallResult.status(), true);
-            _tray->setIcon( statusIcon );
-            _tray->setToolTip(trayMessage);
-        } else {
-            // undefined because there are no folders.
-            QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true);
-            _tray->setIcon( icon );
-            _tray->setToolTip(tr("There are no sync folders configured."));
-        }
+        // undefined because there are no folders.
+        QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true);
+        _tray->setIcon( icon );
+        _tray->setToolTip(tr("There are no sync folders configured."));
     }
 }
 

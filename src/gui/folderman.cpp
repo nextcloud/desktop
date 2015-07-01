@@ -1010,9 +1010,9 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
                 switch( syncStatus ) {
                 case SyncResult::Undefined:
                 case SyncResult::NotYetStarted:
-                case SyncResult::SyncPrepare:
                     various++;
                     break;
+                case SyncResult::SyncPrepare:
                 case SyncResult::SyncRunning:
                     runSeen++;
                     break;
