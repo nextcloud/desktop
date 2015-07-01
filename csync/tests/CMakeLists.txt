@@ -57,4 +57,7 @@ add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.c ${TEST_
 set(TEST_HTTPBF_LIBRARIES ${TEST_TARGET_LIBRARIES} ${NEON_LIBRARIES})
 add_cmocka_test(check_httpbf httpbf_tests/hbf_send_test.c ${TEST_HTTPBF_LIBRARIES} )
 
+if(UNIT_TESTING)
+    INSTALL( FILES "${CMOCKA_LIBRARIES}" DESTINATION ${CMAKE_INSTALL_LIBDIR})
+endif(UNIT_TESTING)
 
