@@ -275,7 +275,21 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
 }
 
 /*
-  */
+ * This function takes a path and converts it to a UNC representation of the
+ * string. That means that it prepends a \\?\ and convertes all slashes to
+ * backslashes.
+ *
+ * Note the following:
+ *  - The string must be absolute.
+ *  - it needs to contain a drive character to be a valid UNC
+ *  - A conversion is only done if the path len is larger than 245. Otherwise
+ *    the windows API functions work with the normal "unixoid" representation too.
+ *
+ * Since the function reallocs memory that it can not free itself, the number of
+ * newly allocated bytes are returned in parameter mem_reserved. The calling
+ * function will call free on the result pointer if mem_reserved is > 0.
+ *
+ */
  const char *makeLongWinPath(const char *str, int *mem_reserved)
 {
     int len = 0;
@@ -287,7 +301,7 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
 
     len = strlen(str);
     // prepend \\?\ and convert '/' => '\' to support long names
-    if( len > 250 ) {  // Only do realloc for long pathes. Shorter pathes are fine.
+    if( len > 245 ) {  // Only do realloc for long pathes. Shorter pathes are fine.
         int i = 4;
         // reserve mem for a new string with the prefix
         if( mem_reserved ) {
@@ -296,7 +310,12 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
         longStr = c_malloc(len+5);
         *longStr = '\0';
 
-        strcpy( longStr, "\\\\?\\"); // prepend string by this four magic chars.
+        if( str[0] == '/' ) {
+            strcpy( longStr, "\\\\?");
+            i=3;
+        } else {
+            strcpy( longStr, "\\\\?\\"); // prepend string by this four magic chars.
+        }
         strcat( longStr, str );
 
         /* replace all occurences of / with the windows native \ */
@@ -311,7 +330,6 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
         return str;
     }
 }
-
 
 /* Convert a an UTF8 string to multibyte */
 mbchar_t* c_utf8_to_locale(const char *str)
