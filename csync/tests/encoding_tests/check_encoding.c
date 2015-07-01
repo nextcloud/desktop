@@ -178,7 +178,6 @@ int torture_run_tests(void)
 {
     const UnitTest tests[] = {
         unit_test_setup_teardown(check_long_win_path,                    setup, teardown),
-
         unit_test_setup_teardown(check_to_multibyte,                    setup, teardown),
         unit_test_setup_teardown(check_iconv_ascii,                     setup, teardown),
         unit_test_setup_teardown(check_iconv_to_native_normalization,   setup, teardown),
