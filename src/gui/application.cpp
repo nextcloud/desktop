@@ -134,7 +134,7 @@ Application::Application(int &argc, char **argv) :
 
     AccountManager::instance()->restore();
 
-    FolderMan::instance()->setSyncEnabled(false);
+    FolderMan::instance()->setSyncEnabled(true);
 
     setQuitOnLastWindowClosed(false);
 
@@ -206,7 +206,6 @@ void Application::slotLogout()
         a->credentials()->invalidateToken();
         // terminate all syncs and unload folders
         FolderMan *folderMan = FolderMan::instance();
-        folderMan->setSyncEnabled(false);
         folderMan->terminateSyncProcess();
         ai->setSignedOut(true);
         // show result
@@ -219,16 +218,26 @@ void Application::slotLogout()
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    disconnect(accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    disconnect(accountState, SIGNAL(stateChanged(int)),
+               this, SLOT(slotAccountStateChanged(int)));
     if (_gui) {
-        disconnect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
+        disconnect(accountState, SIGNAL(stateChanged(int)),
+                   _gui, SLOT(slotAccountStateChanged()));
+    }
+    if (_folderManager) {
+        disconnect(accountState, SIGNAL(stateChanged(int)),
+                   _folderManager.data(), SLOT(slotAccountStateChanged()));
     }
 }
 
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
-    connect(accountState, SIGNAL(stateChanged(int)), _gui, SLOT(slotAccountStateChanged()));
-    connect(accountState, SIGNAL(stateChanged(int)), this, SLOT(slotAccountStateChanged(int)));
+    connect(accountState, SIGNAL(stateChanged(int)),
+            this, SLOT(slotAccountStateChanged(int)));
+    connect(accountState, SIGNAL(stateChanged(int)),
+            _gui, SLOT(slotAccountStateChanged()));
+    connect(accountState, SIGNAL(stateChanged(int)),
+            _folderManager.data(), SLOT(slotAccountStateChanged()));
 }
 
 void Application::slotCleanup()
@@ -263,24 +272,7 @@ void Application::slotCheckConnection()
 
 void Application::slotAccountStateChanged(int state)
 {
-    FolderMan* folderMan = FolderMan::instance();
-    switch (state) {
-    case AccountState::Connected:
-        qDebug() << "Enabling sync scheduler, scheduling all folders";
-#warning FIXME: this should schedule a sync for the folders of the account that connected
-        folderMan->setSyncEnabled(true);
-        folderMan->slotScheduleAllFolders();
-        break;
-    case AccountState::ServiceUnavailable:
-    case AccountState::SignedOut:
-    case AccountState::ConfigurationError:
-    case AccountState::NetworkError:
-    case AccountState::Disconnected:
-        qDebug() << "Disabling sync scheduler, terminating sync";
-        folderMan->setSyncEnabled(false);
-        folderMan->terminateSyncProcess();
-        break;
-    }
+    // THE FOLLOWING STILL NEEDS FIXING!
 
     // Stop checking the connection if we're manually signed out or
     // when the error is permanent.

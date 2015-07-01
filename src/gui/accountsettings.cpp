@@ -190,10 +190,11 @@ void AccountSettings::slotFolderWizardAccepted()
     definition.targetPath   = folderWizard->property("targetPath").toString();
     auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
+    folderMan->setSyncEnabled(true);
+
     Folder *f = folderMan->addFolder(_accountState, definition);
     if( f ) {
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
-        folderMan->setSyncEnabled(true);
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }
@@ -204,7 +205,6 @@ void AccountSettings::slotFolderWizardRejected()
     qDebug() << "* Folder wizard cancelled";
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(true);
-    folderMan->slotScheduleAllFolders();
 }
 
 void AccountSettings::setGeneralErrors( const QStringList& errors )

@@ -227,6 +227,11 @@ bool Folder::syncPaused() const
   return _definition.paused;
 }
 
+bool Folder::canSync() const
+{
+    return !syncPaused() && accountState()->isConnected();
+}
+
 void Folder::setSyncPaused( bool paused )
 {
     if (paused != _definition.paused) {

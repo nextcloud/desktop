@@ -460,7 +460,7 @@ Folder *FolderMan::folder( const QString& alias )
 void FolderMan::slotScheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
-        if (f && ! f->syncPaused()) {
+        if (f && f->canSync()) {
             slotScheduleSync( f );
         }
     }
@@ -488,10 +488,10 @@ void FolderMan::slotScheduleSync( Folder *f )
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(f) ) {
-        if( !f->syncPaused() ) {
+        if(f->canSync()) {
             f->prepareToSync();
         } else {
-            qDebug() << "Folder is not enabled, not scheduled!";
+            qDebug() << "Folder is not ready to sync, not scheduled!";
             if( _socketApi ) {
                 _socketApi->slotUpdateFolderView(f);
             }
@@ -536,6 +536,43 @@ void FolderMan::slotRunOneEtagJob()
         } else {
             qDebug() << "Scheduling" << alias << "to check remote ETag";
             _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
+        }
+    }
+}
+
+void FolderMan::slotAccountStateChanged()
+{
+    AccountState * accountState = qobject_cast<AccountState*>(sender());
+    if (! accountState) {
+        return;
+    }
+    QString accountName = accountState->account()->displayName();
+
+    if (accountState->isConnected()) {
+        qDebug() << "Account" << accountName << "connected, scheduling its folders";
+
+        foreach (Folder *f, _folderMap.values()) {
+            if (f
+                    && f->canSync()
+                    && f->accountState() == accountState) {
+                slotScheduleSync(f);
+            }
+        }
+    } else {
+        qDebug() << "Account" << accountName << "disconnected, "
+                    "terminating or descheduling sync folders";
+
+        if (_currentSyncFolder
+                && _currentSyncFolder->accountState() == accountState) {
+            _currentSyncFolder->slotTerminateSync();
+        }
+
+        QMutableListIterator<Folder*> it(_scheduleQueue);
+        while (it.hasNext()) {
+            Folder* f = it.next();
+            if (f->accountState() == accountState) {
+                it.remove();
+            }
         }
     }
 }
@@ -632,7 +669,7 @@ void FolderMan::slotStartScheduledFolderSync()
     Q_ASSERT(f);
 
     // Start syncing this folder!
-    if( !f->syncPaused() ) {
+    if(f->canSync()) {
         _currentSyncFolder = f;
 
         f->startSync( QStringList() );
@@ -653,19 +690,22 @@ void FolderMan::slotEtagPollTimerTimeout()
     int polltime = cfg.remotePollInterval();
 
     foreach (Folder *f, _folderMap) {
+        if (!f) {
+            continue;
+        }
         if (_currentSyncFolder == f) {
             continue;
         }
         if (_scheduleQueue.contains(f)) {
             continue;
         }
-        if (f && _disabledFolders.contains(f)) {
+        if (_disabledFolders.contains(f)) {
             continue;
         }
-        if (f && (f->etagJob() || f->isBusy() || f->syncPaused())) {
+        if (f->etagJob() || f->isBusy() || !f->canSync()) {
             continue;
         }
-        if (f && f->msecSinceLastSync() < polltime) {
+        if (f->msecSinceLastSync() < polltime) {
             continue;
         }
         QMetaObject::invokeMethod(f, "slotRunEtagJob", Qt::QueuedConnection);
@@ -956,13 +996,13 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     } else {
         int errorsSeen = 0;
         int goodSeen = 0;
-        int abortSeen = 0;
+        int abortOrPausedSeen = 0;
         int runSeen = 0;
         int various = 0;
 
         foreach ( Folder *folder, folders ) {
             if( folder->syncPaused() ) {
-                abortSeen++;
+                abortOrPausedSeen++;
             } else {
                 SyncResult folderResult = folder->syncResult();
                 SyncResult::Status syncStatus = folderResult.status();
@@ -986,7 +1026,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
                     break;
                 case SyncResult::SyncAbortRequested:
                 case SyncResult::Paused:
-                    abortSeen++;
+                    abortOrPausedSeen++;
                     // no default case on purpose, check compiler warnings
                 }
             }
@@ -996,7 +1036,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
             overallResult.setStatus(SyncResult::Error);
             set = true;
         }
-        if( !set && abortSeen > 0 && abortSeen == cnt ) {
+        if( !set && abortOrPausedSeen > 0 && abortOrPausedSeen == cnt ) {
             // only if all folders are paused
             overallResult.setStatus(SyncResult::Paused);
             set = true;

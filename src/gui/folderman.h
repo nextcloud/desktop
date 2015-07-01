@@ -131,6 +131,12 @@ public slots:
     void slotEtagJobDestroyed (QObject*);
     void slotRunOneEtagJob();
 
+    /**
+     * Schedules folders of newly connected accounts, terminates and
+     * de-schedules folders of disconnected accounts.
+     */
+    void slotAccountStateChanged();
+
 private slots:
 
     // slot to take the next folder from queue and start syncing.

@@ -129,11 +129,18 @@ public:
      * If the sync is switched off, the startSync method is not going to
      * be called.
      */
-     void setSyncPaused( bool );
+    void setSyncPaused( bool );
 
-     bool syncPaused() const;
+    bool syncPaused() const;
 
-     void prepareToSync();
+    /**
+     * Returns true when the folder may sync.
+     *
+     * !syncPaused() && accountState->isConnected().
+     */
+    bool canSync() const;
+
+    void prepareToSync();
 
     /**
      * True if the folder is busy and can't initiate
