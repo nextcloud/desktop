@@ -119,6 +119,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     _quotaLabel = new QLabel(ui->quotaProgressBar);
     (new QVBoxLayout(ui->quotaProgressBar))->addWidget(_quotaLabel);
 
+    // This ensures the progress bar is big enough for the label.
+    ui->quotaProgressBar->setMinimumHeight(_quotaLabel->height());
+
     ui->connectLabel->setText(tr("No account configured."));
 
     connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
