@@ -13,7 +13,6 @@
  */
 
 #include "theme.h"
-#include "version.h"
 #include "configfile.h"
 #include "utility.h"
 #include "accessmanager.h"

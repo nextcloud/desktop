@@ -10,29 +10,29 @@
 	<string>OwnCloud</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>09EE94AA-F410-4594-AB26-5A0220DEAEC7</key>
+		<key>D67321A19EF879CA55BF889202BA8C23AC9AA2B5</key>
 		<string>ssh://github.com/owncloud/client.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>shell_integration/MacOSX/OwnCloud.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>09EE94AA-F410-4594-AB26-5A0220DEAEC7</key>
+		<key>D67321A19EF879CA55BF889202BA8C23AC9AA2B5</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/owncloud/client.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>09EE94AA-F410-4594-AB26-5A0220DEAEC7</string>
+	<string>D67321A19EF879CA55BF889202BA8C23AC9AA2B5</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>09EE94AA-F410-4594-AB26-5A0220DEAEC7</string>
+			<string>D67321A19EF879CA55BF889202BA8C23AC9AA2B5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>client</string>
 		</dict>

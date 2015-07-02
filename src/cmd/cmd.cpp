@@ -34,7 +34,6 @@
 #include "theme.h"
 #include "netrcparser.h"
 
-#include "version.h"
 #include "config.h"
 
 #ifdef Q_OS_WIN32

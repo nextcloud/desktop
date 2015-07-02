@@ -14,7 +14,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ContentManager : NSObject
+@interface OwnCloudFinderContentManager : NSObject
 {
 	NSMutableDictionary* _fileNamesCache;
 	NSMutableDictionary* _oldFileNamesCache;
@@ -31,7 +31,7 @@
 	NSNumber *_icnErrSwm;
 }
 
-+ (ContentManager*)sharedInstance;
++ (OwnCloudFinderContentManager*)sharedInstance;
 
 - (void)enableFileIcons:(BOOL)enable;
 - (NSNumber*)iconByPath:(NSString*)path isDirectory:(BOOL)isDir;
@@ -42,6 +42,6 @@
 - (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)repaintAllWindows;
 
-- (void)loadIconResourcePath:(NSString*)path;
+- (void)loadIconResources;
 
 @end

@@ -25,7 +25,6 @@ static IconCache* sharedInstance = nil;
 	if (self)
 	{
 		_iconIdDictionary = [[NSMutableDictionary alloc] init];
-		_iconPathDictionary = [[NSMutableDictionary alloc] init];
 		_currentIconId = 0;
 	}
 
@@ -35,7 +34,6 @@ static IconCache* sharedInstance = nil;
 - (void)dealloc
 {
 	[_iconIdDictionary release];
-	[_iconPathDictionary release];
 	sharedInstance = nil;
 
 	[super dealloc];
@@ -60,57 +58,15 @@ static IconCache* sharedInstance = nil;
 	return image;
 }
 
-- (NSNumber*)registerIcon:(NSString*)path
+- (NSNumber*)registerIcon:(NSImage*)image
 {
-	if (path == nil)
-	{
-		return [NSNumber numberWithInt:-1];
-	}
+	_currentIconId++;
 
-	NSImage* image = [[NSImage alloc]initWithContentsOfFile:path];
-
-	if (image == nil)
-	{
-		NSLog(@"%@ Could not load %@", NSStringFromSelector(_cmd), path);
-		return [NSNumber numberWithInt:-1];
-	}
-
-	NSNumber* iconId = [_iconPathDictionary objectForKey:path];
-
-	if (iconId == nil)
-	{
-		_currentIconId++;
-
-		iconId = [NSNumber numberWithInt:_currentIconId];
-
-		[_iconPathDictionary setObject:iconId forKey:path];
-	}
+	NSNumber* iconId = [NSNumber numberWithInt:_currentIconId];
 
 	[_iconIdDictionary setObject:image forKey:iconId];
-	[image release];
 
 	return iconId;
-}
-
-- (void)unregisterIcon:(NSNumber*)iconId
-{
-	NSString* path = @"";
-
-	for (NSString* key in _iconPathDictionary)
-	{
-		NSNumber* value = [_iconPathDictionary objectForKey:key];
-
-		if ([value isEqualToNumber:iconId])
-		{
-			path = key;
-
-			break;
-		}
-	}
-
-	[_iconPathDictionary removeObjectForKey:path];
-
-	[_iconIdDictionary removeObjectForKey:iconId];
 }
 
 @end

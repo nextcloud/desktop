@@ -47,11 +47,15 @@ static void callback(
         const FSEventStreamEventFlags eventFlags[],
         const FSEventStreamEventId eventIds[])
 {
+    Q_UNUSED(streamRef)
+    Q_UNUSED(eventFlags)
+    Q_UNUSED(eventIds)
+
     qDebug() << "FolderWatcherPrivate::callback by OS X";
 
     QStringList paths;
     CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
-    for (int i = 0; i < numEvents; ++i) {
+    for (int i = 0; i < static_cast<int>(numEvents); ++i) {
         CFStringRef path = reinterpret_cast<CFStringRef>(CFArrayGetValueAtIndex(eventPaths, i));
 
         QString qstring;
