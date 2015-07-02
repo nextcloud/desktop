@@ -45,6 +45,7 @@ private:
     QMenu* buildCertMenu(QMenu *parent, const QSslCertificate& cert,
                          const QList<QSslCertificate>& userApproved, int pos);
     QPointer<AccountState> _accountState;
+    QMenu* _menu;
 };
 
 } // namespace OCC

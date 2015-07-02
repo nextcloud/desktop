@@ -32,8 +32,8 @@ SslButton::SslButton(QWidget *parent) :
     setPopupMode(QToolButton::InstantPopup);
     setAutoRaise(true);
 
-    setMenu(new QMenu(this));
-    QObject::connect(menu(), SIGNAL(aboutToShow()),
+    _menu = new QMenu(this);
+    QObject::connect(_menu, SIGNAL(aboutToShow()),
                      this, SLOT(slotUpdateMenu()));
 }
 
@@ -190,14 +190,16 @@ void SslButton::updateAccountState(AccountState *accountState)
         setIcon(QIcon(pm));
         QSslCipher cipher = account->sslConfiguration().sessionCipher();
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
+        setMenu(_menu);
     } else {
         setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
+        setMenu(nullptr);
     }
 }
 
 void SslButton::slotUpdateMenu() {
-    menu()->clear();
+    _menu->clear();
 
     if (!_accountState) {
         return;
@@ -214,7 +216,7 @@ void SslButton::slotUpdateMenu() {
             return;
         }
 
-        menu()->addAction(tr("Certificate information:"))->setEnabled(false);
+        _menu->addAction(tr("Certificate information:"))->setEnabled(false);
 
         QList<QSslCertificate> tmpChain;
         foreach(QSslCertificate cert, chain) {
@@ -237,7 +239,7 @@ void SslButton::slotUpdateMenu() {
         it.toBack();
         int i = 0;
         while (it.hasPrevious()) {
-            menu()->addMenu(buildCertMenu(menu(), it.previous(), account->approvedCerts(), i));
+            _menu->addMenu(buildCertMenu(_menu, it.previous(), account->approvedCerts(), i));
             i++;
         }
     }
