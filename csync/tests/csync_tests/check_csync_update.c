@@ -241,7 +241,7 @@ static void check_csync_detect_update(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 1, 1217597845);
+    fs = create_fstat("file.txt", 0, 1217597845);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
@@ -270,7 +270,7 @@ static void check_csync_detect_update_db_none(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 1, 1217597845);
+    fs = create_fstat("file.txt", 0, 1217597845);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
@@ -297,7 +297,7 @@ static void check_csync_detect_update_db_eval(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 1, 42);
+    fs = create_fstat("file.txt", 0, 42);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
@@ -325,7 +325,7 @@ static void check_csync_detect_update_db_rename(void **state)
     csync_vio_file_stat_t *fs;
     int rc = 0;
 
-    fs = create_fstat("wurst.txt", 0, 1, 42);
+    fs = create_fstat("wurst.txt", 0, 42);
     assert_non_null(fs);
     csync_set_statedb_exists(csync, 1);
 
@@ -356,7 +356,7 @@ static void check_csync_detect_update_db_new(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 42000, 1, 0);
+    fs = create_fstat("file.txt", 42000, 0);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
@@ -382,7 +382,7 @@ static void check_csync_detect_update_null(void **state)
     csync_vio_file_stat_t *fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 1, 0);
+    fs = create_fstat("file.txt", 0, 0);
     assert_non_null(fs);
 
     rc = _csync_detect_update(csync,
