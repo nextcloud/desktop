@@ -158,6 +158,10 @@ void AccountState::checkConnectivity()
         // As an attempted workaround, reset the QNAM regularly if the account is
         // disconnected.
         account()->resetNetworkAccessManager();
+
+        // If we don't reset the ssl config a second CheckServerJob can produce a
+        // ssl config that does not have a sensible certificate chain.
+        account()->setSslConfiguration(QSslConfiguration());
 #endif
         conValidator->checkServerAndAuth();
     }
