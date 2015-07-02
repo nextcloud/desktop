@@ -87,7 +87,7 @@ public:
     void checkConnectivity();
 
     /** Returns a new settings object for this account, already in the right groups. */
-    std::unique_ptr<QSettings> settings();
+    UniquePointer<QSettings> settings();
 
 private:
     void setState(State state);
