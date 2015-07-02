@@ -246,7 +246,7 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
     checkConnectivity();
 }
 
-UniquePointer<QSettings> AccountState::settings()
+std::unique_ptr<QSettings> AccountState::settings()
 {
     auto s = _account->settingsWithGroup(QLatin1String("Accounts"));
     s->beginGroup(_account->id());

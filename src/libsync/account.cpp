@@ -335,14 +335,14 @@ QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath,
 
 QString Account::_configFileName;
 
-UniquePointer<QSettings> Account::settingsWithGroup(const QString& group, QObject *parent)
+std::unique_ptr<QSettings> Account::settingsWithGroup(const QString& group, QObject *parent)
 {
     if (_configFileName.isEmpty()) {
         // cache file name
         ConfigFile cfg;
         _configFileName = cfg.configFile();
     }
-    UniquePointer<QSettings> settings(new QSettings(_configFileName, QSettings::IniFormat, parent));
+    std::unique_ptr<QSettings> settings(new QSettings(_configFileName, QSettings::IniFormat, parent));
     settings->beginGroup(group);
     return settings;
 }
