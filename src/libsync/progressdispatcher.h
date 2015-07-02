@@ -78,7 +78,7 @@ public:
     /** Number of a file that is currently in progress. */
     quint64 currentFile() const;
 
-    /** Return true is the size need to be taken in account in the total amount of time */
+    /** Return true if the size needs to be taken in account in the total amount of time */
     static inline bool isSizeDependent(const SyncFileItem & item)
     {
         return ! item._isDirectory && (
@@ -95,7 +95,7 @@ public:
         /// Estimated completion amount per second. (of bytes or files)
         quint64 estimatedBandwidth;
 
-        /// Estimated eta in milliseconds.
+        /// Estimated time remaining in milliseconds.
         quint64 estimatedEta;
     };
 
@@ -107,10 +107,10 @@ public:
     {
         Progress()
             : _progressPerSec(0)
-            , _completed(0)
             , _prevCompleted(0)
-            , _total(0)
             , _initialSmoothing(1.0)
+            , _completed(0)
+            , _total(0)
         {
         }
 
@@ -126,14 +126,17 @@ public:
          */
         void update();
 
+        // Updated by update()
         double _progressPerSec;
-        quint64 _completed;
         quint64 _prevCompleted;
-        quint64 _total;
 
         // Used to get to a good value faster when
         // progress measurement stats. See update().
         double _initialSmoothing;
+
+        // Set and updated by ProgressInfo
+        quint64 _completed;
+        quint64 _total;
 
         friend class ProgressInfo;
     };
