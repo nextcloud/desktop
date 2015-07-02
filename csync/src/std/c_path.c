@@ -389,3 +389,48 @@ int c_parse_uri(const char *uri,
   return -1;
 }
 
+
+/*
+ * This function takes a path and converts it to a UNC representation of the
+ * string. That means that it prepends a \\?\ and convertes all slashes to
+ * backslashes.
+ *
+ * Note the following:
+ *  - The string must be absolute.
+ *  - it needs to contain a drive character to be a valid UNC
+ *  - A conversion is only done if the path len is larger than 245. Otherwise
+ *    the windows API functions work with the normal "unixoid" representation too.
+ *
+ * Since the function reallocs memory that it can not free itself, the number of
+ * newly allocated bytes are returned in parameter mem_reserved. The calling
+ * function will call free on the result pointer if mem_reserved is > 0.
+ *
+ */
+ const char *c_path_to_UNC(const char *str)
+ {
+     int len = 0;
+     char *longStr = NULL;
+     int i = 4; // index where to start changing "/"=>"\"
+
+     len = strlen(str);
+     longStr = c_malloc(len+5);
+     *longStr = '\0';
+
+     // prepend \\?\ and convert '/' => '\' to support long names
+     if( str[0] == '/' ) {
+         strncpy( longStr, "\\\\?", 4);
+         i=3;
+     } else {
+         strncpy( longStr, "\\\\?\\", 5); // prepend string by this four magic chars.
+     }
+     strncat( longStr, str, len );
+
+     /* replace all occurences of / with the windows native \ */
+     while(longStr[i] != '\0') {
+         if(longStr[i] == '/') {
+             longStr[i] = '\\';
+         }
+         i++;
+     }
+     return longStr;
+ }

@@ -107,6 +107,19 @@ typedef struct
     char * extension;
 } C_PATHINFO;
 
+/**
+ * @brief c_path_to_UNC converts a unixoid path to UNC format.
+ *
+ * It converts the '/' to '\' and prepends \\?\ to the path.
+ *
+ * A proper windows path has to have a drive letter, otherwise it is not
+ * valid UNC.
+ *
+ * @param str The path to convert
+ *
+ * @return a pointer to the converted string. Caller has to free it.
+ */
+const char *c_path_to_UNC(const char *str);
 
 /**
  * }@

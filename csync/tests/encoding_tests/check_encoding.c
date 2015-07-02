@@ -20,6 +20,7 @@
 #include "torture.h"
 #include <stdio.h>
 #include "c_string.h"
+#include "c_path.h"
 
 #ifdef _WIN32
 #include <string.h>
@@ -145,14 +146,13 @@ static void check_to_multibyte(void **state)
 
 static void check_long_win_path(void **state)
 {
-    int mem_reserved = 0;
     const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3"; // check a short path
-    const char *new_short = makeLongWinPath(path, &mem_reserved);
+    const char *exp_path = "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3";
+    const char *new_short = c_path_to_UNC(path);
 
     (void) state; /* unused */
 
-    assert_string_equal(new_short, path);
-    assert_int_equal(mem_reserved, 0);
+    assert_string_equal(new_short, exp_path);
 
     const char *longPath = "D://alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
             "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
@@ -163,11 +163,10 @@ static void check_long_win_path(void **state)
             "jlonglonglonglong\\klonglonglonglong\\llonglonglonglong\\mlonglonglonglong\\nlonglonglonglong\\"
             "olonglonglonglong\\file.txt";
 
-    const char *new_long = makeLongWinPath(longPath, &mem_reserved);
+    const char *new_long = c_path_to_UNC(longPath);
     // printf( "XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
 
     assert_string_equal(new_long, longPathConv);
-    assert_int_equal(mem_reserved, 287);
 
     // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
     assert_int_equal( strlen(new_long), 286);
