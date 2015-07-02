@@ -689,20 +689,11 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     emit dataChanged(index(folderIndex), index(folderIndex), roles);
 }
 
-void FolderStatusModel::slotHideProgress()
-{
-    auto folderIndex = sender()->property("owncloud_folderIndex").toInt();
-    if (folderIndex < 0 || _folders.size() <= folderIndex) { return; }
-
-    _folders[folderIndex]._progress = SubFolderInfo::Progress();
-    emit dataChanged(index(folderIndex), index(folderIndex),
-                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
-}
-
 void FolderStatusModel::slotFolderSyncStateChange()
 {
     Folder *f = qobject_cast<Folder*>(sender());
     if( !f ) { return; }
+
     int folderIndex = -1;
     for (int i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == f) {
@@ -715,16 +706,12 @@ void FolderStatusModel::slotFolderSyncStateChange()
     SyncResult::Status state = f->syncResult().status();
     if (state == SyncResult::SyncPrepare)  {
         _folders[folderIndex]._progress = SubFolderInfo::Progress();
-    } else if (state == SyncResult::Success || state == SyncResult::Problem) {
-        // start a timer to stop the progress display
-        QTimer *timer;
-        timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(slotHideProgress()));
-        connect(timer, SIGNAL(timeout()), timer, SLOT(deleteLater()));
-        timer->setSingleShot(true);
-        timer->setProperty("owncloud_folderIndex", folderIndex);
-        timer->start(5000);
+    } else if (state == SyncResult::Error) {
+        _folders[folderIndex]._progress._progressString = f->syncResult().errorString();
     }
+
+    // update the icon etc. now
+    slotUpdateFolderState(f);
 }
 
 void FolderStatusModel::resetFolders()

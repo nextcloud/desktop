@@ -94,7 +94,6 @@ public slots:
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
-    void slotHideProgress();
     void slotFolderSyncStateChange();
     void slotLscolFinishedWithError(QNetworkReply *r);
 
