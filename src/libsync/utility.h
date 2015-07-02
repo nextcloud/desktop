@@ -118,40 +118,5 @@ namespace Utility
 }
 /** @} */ // \addtogroup
 
-
-/**
- * @brief a replacement for std::unique_ptr which is not available on all the platform we support
- *
- * Only implement the most basic features
- */
-template<class T>
-class UniquePointer {
-    T *d;
-    Q_DISABLE_COPY(UniquePointer)
-public:
-    explicit UniquePointer(T * p = 0) : d(p) {};
-    UniquePointer( UniquePointer && u ) : d(u.d) { u.d = 0; }
-    ~UniquePointer() { delete d; }
-
-    UniquePointer& operator=( UniquePointer&& r ) {
-        delete d;
-        d = r.d;
-        r.d = 0;
-        return *this;
-    }
-
-    T *release() {
-        T *r = d;
-        d = 0;
-        return r;
-    }
-
-    void reset(T *u) { delete d; d = u; }
-    T *operator->() const { return d; }
-    T *data() const { return d; }
-    T &operator*() const { return *d; }
-    operator bool() const { return d; }
-};
-
 }
 #endif // UTILITY_H
