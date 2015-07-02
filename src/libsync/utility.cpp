@@ -308,7 +308,7 @@ static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32>
 QString Utility::durationToDescriptiveString(quint64 msecs)
 {
     struct Period { const char *name; quint64 msec; };
-    Q_DECL_CONSTEXPR const Period periods[] = {
+    Q_DECL_CONSTEXPR Period periods[] = {
         { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000L },
         { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000L },
         { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000L },
