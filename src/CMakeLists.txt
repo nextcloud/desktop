@@ -5,6 +5,10 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+endif()
+
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
     add_subdirectory(gui)
