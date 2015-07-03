@@ -14,6 +14,7 @@
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
 #include "utility.h"
+#include "filesystem.h"
 
 #include <qfileinfo.h>
 #include <qdebug.h>
@@ -46,7 +47,8 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
     /* Query the inode:
        based on code from csync_vio_local.c (csync_vio_local_stat)
        Get the Windows file id as an inode replacement. */
-    HANDLE h = CreateFileW( (wchar_t*)localFileName.utf16(), 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+
+    HANDLE h = CreateFileW( (wchar_t*) FileSystem::longWinPath(localFileName).utf16(), 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
 
     if( h == INVALID_HANDLE_VALUE ) {
