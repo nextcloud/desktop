@@ -64,8 +64,8 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 
     (void) __flags;
 
-    name = c_utf8_path_to_locale(__name);
-    pat = c_utf8_string_to_locale(__pattern);
+    name = c_utf8_string_to_locale(__name);
+    pat  = c_utf8_string_to_locale(__pattern);
 
     match = PathMatchSpecW(name, pat);
 
