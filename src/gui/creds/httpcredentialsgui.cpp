@@ -16,6 +16,7 @@
 #include <QInputDialog>
 #include "creds/httpcredentialsgui.h"
 #include "theme.h"
+#include "account.h"
 
 using namespace QKeychain;
 
@@ -26,8 +27,8 @@ namespace OCC
 {
     if (ok) {
         QString str = QInputDialog::getText(0, tr("Enter Password"),
-                                     tr("Please enter %1 password for user '%2':")
-                                     .arg(Theme::instance()->appNameGUI(), _user),
+                                     tr("Please enter %1 password:\n\nUser: %2\nAccount: %3\n")
+                                     .arg(Theme::instance()->appNameGUI(), _user, _account->displayName()),
                                      QLineEdit::Password, _previousPassword, ok);
         return str;
     } else {
