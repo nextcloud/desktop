@@ -31,6 +31,8 @@
 #include "vio/csync_vio.h"
 
 #ifdef _WIN32
+#include <windows.h>
+
 #define CSYNC_TEST_DIR "C:/tmp/csync_test"
 #else
 #define CSYNC_TEST_DIR "/tmp/csync_test"
@@ -102,12 +104,24 @@ static void setup_testenv(void **state) {
     *state = mystate;
 }
 
+static void output( const char *text )
+{
+    mbchar_t *wtext = c_utf8_string_to_locale(text);
+
+    #ifdef _WIN32
+    wprintf(L"OOOO %ls (%ld)\n", wtext, strlen(text));
+    #else
+    printf("%s\n", wtext);
+    #endif
+    c_free_locale_string(wtext);
+}
+
 static void teardown(void **state) {
     statevar *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     int rc;
 
-    printf("================== Tearing down!\n");
+    output("================== Tearing down!\n");
 
     rc = csync_destroy(csync);
     assert_int_equal(rc, 0);
@@ -199,7 +213,7 @@ static void traverse_dir(void **state, const char *dir)
         assert_int_not_equal( asprintf( &subdir, "%s/%s", dir, dirent->name ), -1 );
 
         assert_int_not_equal( asprintf( &subdir_out, format_str,
-                                        is_dir ? "<DIR>":"    ",
+                                        is_dir ? "<DIR>":"     ",
                                         subdir), -1 );
 
         if( !sv->result ) {
@@ -213,8 +227,10 @@ static void traverse_dir(void **state, const char *dir)
 
             strcat( sv->result, subdir_out );
         }
-        printf("%s\n", subdir_out);
-        traverse_dir( state, subdir);
+        output(subdir_out);
+        if( is_dir ) {
+          traverse_dir( state, subdir);
+        }
 
         SAFE_FREE(subdir);
         SAFE_FREE(subdir_out);
@@ -223,6 +239,53 @@ static void traverse_dir(void **state, const char *dir)
     csync_vio_file_stat_destroy(dirent);
     rc = csync_vio_closedir(csync, dh);
     assert_int_equal(rc, 0);
+
+}
+
+static void create_file( const char *path, const char *name, const char *content)
+{
+#ifdef _WIN32
+
+  char *filepath = c_malloc( 2+strlen(CSYNC_TEST_DIR)+strlen(path) + strlen(name) );
+  *filepath = '\0';
+  strcpy(filepath, CSYNC_TEST_DIR);
+  strcat(filepath, "/");
+  strcat(filepath, path);
+  strcat(filepath, name);
+
+  DWORD dwWritten; // number of bytes written to file
+  HANDLE hFile;
+
+  mbchar_t *w_fname = c_utf8_path_to_locale(filepath);
+
+  hFile=CreateFile(w_fname, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, 0,
+                            CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+  assert_int_equal( 0, hFile==INVALID_HANDLE_VALUE );
+
+  int len = strlen(content);
+  mbchar_t *dst = NULL;
+
+  dst = c_utf8_string_to_locale(content);
+  WriteFile(hFile, dst, len * sizeof(mbchar_t), &dwWritten, 0);
+
+  CloseHandle(hFile);
+  SAFE_FREE(dst);
+  c_free_locale_string(w_fname);
+#else
+   char *filepath = c_malloc( 1+strlen(path) + strlen(name) );
+   *filepath = '\0';
+
+   strcpy(filepath, path);
+   strcat(filepath, name);
+
+   FILE *sink;
+   sink = fopen(filepath,"w");
+
+   fprintf (sink, "we got: %s",content);
+   fclose(sink);
+   SAFE_FREE(filepath);
+#endif
 
 }
 
@@ -241,6 +304,28 @@ static void check_readdir_shorttree(void **state)
                          "<DIR> C:/tmp/csync_test/alibaba/und/die"
                          "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig"
                          "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig/räuber" );
+}
+
+static void check_readdir_with_content(void **state)
+{
+    statevar *sv = (statevar*) *state;
+
+    const char *t1 = "warum/nur/40/Räuber/";
+    create_dirs( t1 );
+
+    create_file( t1, "Räuber Max.txt", "Der Max ist ein schlimmer finger");
+    create_file( t1, "пя́тница.txt", "Am Freitag tanzt der Ürk");
+
+
+    traverse_dir(state, CSYNC_TEST_DIR);
+
+    assert_string_equal( sv->result,
+                         "<DIR> C:/tmp/csync_test/warum"
+                         "<DIR> C:/tmp/csync_test/warum/nur"
+                         "<DIR> C:/tmp/csync_test/warum/nur/40"
+                         "<DIR> C:/tmp/csync_test/warum/nur/40/Räuber"
+                         "      C:/tmp/csync_test/warum/nur/40/Räuber/Räuber Max.txt"
+                         "      C:/tmp/csync_test/warum/nur/40/Räuber/пя́тница.txt");
 }
 
 static void check_readdir_longtree(void **state)
@@ -305,7 +390,6 @@ static void check_readdir_longtree(void **state)
 
     /* assemble the result string ... */
     int overall_len = 1+strlen(r1)+strlen(r2)+strlen(r3);
-    printf("OO Overall expected result len %d\n", overall_len);
 
     char *result = c_malloc(overall_len);
     *result = '\0';
@@ -316,9 +400,6 @@ static void check_readdir_longtree(void **state)
 
     traverse_dir(state, CSYNC_TEST_DIR);
 
-    int result_len = strlen(sv->result);
-    printf("OO Overall real result string len %d\n", result_len);
-
     /* and compare. */
     assert_string_equal( sv->result, result);
 }
@@ -327,6 +408,7 @@ int torture_run_tests(void)
 {
     const UnitTest tests[] = {
         unit_test_setup_teardown(check_readdir_shorttree, setup_testenv, teardown),
+        unit_test_setup_teardown(check_readdir_with_content, setup_testenv, teardown),
         unit_test_setup_teardown(check_readdir_longtree, setup_testenv, teardown),
 
     };
