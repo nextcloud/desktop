@@ -80,8 +80,6 @@ protected slots:
     void slotCheckConnection();
     void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
-    void slotLogin();
-    void slotLogout();
     void slotCleanup();
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);

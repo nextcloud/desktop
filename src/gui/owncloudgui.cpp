@@ -282,17 +282,70 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 }
 
+void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu)
+{
+    // Only show the name in the action if it's not part of an
+    // account sub menu.
+    QString browserOpen = tr("Open in browser");
+    if (!separateMenu) {
+        browserOpen = tr("Open %1 in browser").arg(Theme::instance()->appNameGUI());
+    }
+    auto actionOpenoC = menu->addAction(browserOpen);
+    actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(accountState->account()));
+    QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
+
+    if (separateMenu) {
+        if (accountState->isConnected()) {
+            QAction* signout = menu->addAction(tr("Sign out"));
+            signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
+            connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
+        } else {
+            QAction* signin = menu->addAction(tr("Sign in..."));
+            signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
+            connect(signin, SIGNAL(triggered()), this, SLOT(slotLogin()));
+        }
+    }
+
+    FolderMan *folderMan = FolderMan::instance();
+    bool firstFolder = true;
+    bool singleSyncFolder = folderMan->map().size() == 1 && Theme::instance()->singleSyncFolder();
+    foreach (Folder* folder, folderMan->map()) {
+        if (folder->accountState() != accountState) {
+            continue;
+        }
+
+        if (firstFolder && !singleSyncFolder) {
+            firstFolder = false;
+            menu->addSeparator();
+            menu->addAction(tr("Managed Folders:"))->setDisabled(true);
+        }
+
+        // If there can only be a single sync folder, showing the alias is
+        // unnecessary.
+        QString folderName = folder->alias();
+        if (singleSyncFolder) {
+            folderName = Theme::instance()->appNameGUI();
+        }
+
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
+        connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
+        _folderOpenActionMapper->setMapping( action, folder->alias() );
+        menu->addAction(action);
+    }
+}
+
 void ownCloudGui::setupContextMenu()
 {
-    FolderMan *folderMan = FolderMan::instance();
-
     auto accountList = AccountManager::instance()->accounts();
 
     bool isConfigured = (!accountList.isEmpty());
-    bool isConnected = false;
+    bool atLeastOneConnected = false;
+    bool atLeastOneDisconnected = false;
     foreach (auto a, accountList) {
         if (a->isConnected()) {
-            isConnected = true;
+            atLeastOneConnected = true;
+        } else {
+            atLeastOneDisconnected = true;
         }
     }
 
@@ -311,51 +364,23 @@ void ownCloudGui::setupContextMenu()
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
 
+    qDeleteAll(_accountMenus);
+    _accountMenus.clear();
+    if (accountList.count() > 1) {
+        foreach (AccountStatePtr account, accountList) {
+            QMenu* accountMenu = new QMenu(account->account()->displayName(), _contextMenu.data());
+            _accountMenus.append(accountMenu);
+            _contextMenu->addMenu(accountMenu);
 
-    if (accountList.count() == 1) {
-        auto actionOpenoC = _contextMenu->addAction(tr("Open %1 in browser").arg(Theme::instance()->appNameGUI()));
-        actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(accountList.first()->account()));
-        QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
-        actionOpenoC->setEnabled(isConfigured);
-    } else foreach(auto account, accountList) {
-        auto actionOpenoC = _contextMenu->addAction(tr("Open %1 in browser").arg(account->account()->displayName()));
-        actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
-        QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
+            addAccountContextMenu(account, accountMenu, true);
+        }
+    } else if (accountList.count() == 1) {
+        addAccountContextMenu(accountList.first(), _contextMenu.data(), false);
     }
 
-    int folderCnt = folderMan->map().size();
-    // add open actions for all sync folders to the tray menu
-    if( Theme::instance()->singleSyncFolder() ) {
-        // there should be exactly one folder. No sync-folder add action will be shown.
-        QStringList li = folderMan->map().keys();
-        if( li.size() == 1 ) {
-            Folder *folder = folderMan->map().value(li.first());
-            if( folder ) {
-                // if there is singleFolder mode, a generic open action is displayed.
-                QAction *action = new QAction( tr("Open %1 folder").arg(Theme::instance()->appNameGUI()), this);
-                connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
-                _folderOpenActionMapper->setMapping( action, folder->alias() );
-
-                _contextMenu->addAction(action);
-            }
-        }
-    } else {
-        // show a grouping with more than one folder.
-        if ( folderCnt > 1) {
-            _contextMenu->addAction(tr("Managed Folders:"))->setDisabled(true);
-        }
-
-        foreach (auto folder, folderMan->map()) {
-            QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
-            connect( action, SIGNAL(triggered()),_folderOpenActionMapper,SLOT(map()));
-            _folderOpenActionMapper->setMapping( action, folder->alias() );
-
-            _contextMenu->addAction(action);
-        }
-    }
     _contextMenu->addSeparator();
 
-    if (isConfigured && isConnected) {
+    if (isConfigured && atLeastOneConnected) {
         _contextMenu->addAction(_actionStatus);
         _contextMenu->addMenu(_recentActionsMenu);
         _contextMenu->addSeparator();
@@ -370,9 +395,20 @@ void ownCloudGui::setupContextMenu()
     }
 
     _contextMenu->addSeparator();
-    if (isConfigured && isConnected) {
+    if (atLeastOneConnected) {
+        if (accountList.count() > 1) {
+            _actionLogout->setText(tr("Sign out everywhere"));
+        } else {
+            _actionLogout->setText(tr("Sign out"));
+        }
         _contextMenu->addAction(_actionLogout);
-    } else {
+    }
+    if (atLeastOneDisconnected) {
+        if (accountList.count() > 1) {
+            _actionLogin->setText(tr("Sign in everywhere..."));
+        } else {
+            _actionLogin->setText(tr("Sign in..."));
+        }
         _contextMenu->addAction(_actionLogin);
     }
     _contextMenu->addAction(_actionQuit);
@@ -435,9 +471,9 @@ void ownCloudGui::setupActions()
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
     _actionLogin = new QAction(tr("Sign in..."), this);
-    connect(_actionLogin, SIGNAL(triggered()), _app, SLOT(slotLogin()));
+    connect(_actionLogin, SIGNAL(triggered()), this, SLOT(slotLogin()));
     _actionLogout = new QAction(tr("Sign out"), this);
-    connect(_actionLogout, SIGNAL(triggered()), _app, SLOT(slotLogout()));
+    connect(_actionLogout, SIGNAL(triggered()), this, SLOT(slotLogout()));
 
     if(_app->debugMode()) {
         _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
@@ -528,6 +564,46 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
 void ownCloudGui::slotDisplayIdle()
 {
     _actionStatus->setText(tr("Up to date"));
+}
+
+void ownCloudGui::slotLogin()
+{
+    auto list = AccountManager::instance()->accounts();
+    if (!list.isEmpty()) {
+        FolderMan::instance()->setupFolders();
+    }
+
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+        account->setSignedOut(false);
+    } else {
+        foreach (const auto &a, list) {
+            a->setSignedOut(false);
+        }
+    }
+}
+
+void ownCloudGui::slotLogout()
+{
+    auto list = AccountManager::instance()->accounts();
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+        list.clear();
+        list.append(account);
+    }
+
+    foreach (const auto &ai, list) {
+        AccountPtr a = ai->account();
+        // invalidate & forget token/password
+        a->credentials()->invalidateToken();
+        // terminate all syncs and unload folders
+        FolderMan *folderMan = FolderMan::instance();
+        folderMan->terminateSyncProcess();
+        ai->setSignedOut(true);
+        // show result
+        slotComputeOverallSyncStatus();
+    }
+    if (!list.isEmpty()) {
+        FolderMan::instance()->setupFolders();
+    }
 }
 
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)

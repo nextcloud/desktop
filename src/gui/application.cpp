@@ -183,38 +183,6 @@ Application::~Application()
     AccountManager::instance()->shutdown();
 }
 
-void Application::slotLogin()
-{
-    auto list = AccountManager::instance()->accounts();
-    if (!list.isEmpty()) {
-        FolderMan::instance()->setupFolders();
-    }
-
-    foreach (const auto &a, list) {
-        a->setSignedOut(false);
-    }
-}
-
-void Application::slotLogout()
-{
-    auto list = AccountManager::instance()->accounts();
-
-    foreach (const auto &ai, list) {
-        AccountPtr a = ai->account();
-        // invalidate & forget token/password
-        a->credentials()->invalidateToken();
-        // terminate all syncs and unload folders
-        FolderMan *folderMan = FolderMan::instance();
-        folderMan->terminateSyncProcess();
-        ai->setSignedOut(true);
-        // show result
-        _gui->slotComputeOverallSyncStatus();
-    }
-    if (!list.isEmpty()) {
-        FolderMan::instance()->setupFolders();
-    }
-}
-
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
     if (_gui) {
