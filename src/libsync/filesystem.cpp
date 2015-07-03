@@ -42,6 +42,7 @@ extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
 extern "C" {
 #include "csync.h"
 #include "vio/csync_vio_local.h"
+#include "std/c_path.h"
 }
 
 namespace OCC {
@@ -50,9 +51,9 @@ QString FileSystem::longWinPath( const QString& inpath )
 {
     QString path(inpath);
 
-    path.replace('/', '\\');
-    path.prepend(QLatin1String("\\\\?\\"));
-
+#ifdef Q_OS_WIN
+    path = QString::fromWCharArray( static_cast<wchar_t*>( c_utf8_path_to_locale(inpath.toUtf8() ) ) );
+#endif
     return path;
 }
 
