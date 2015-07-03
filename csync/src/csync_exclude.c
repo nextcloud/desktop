@@ -81,7 +81,7 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
   _fmode = _O_BINARY;
 #endif
 
-  w_fname = c_utf8_to_locale(fname);
+  w_fname = c_utf8_path_to_locale(fname);
   if (w_fname == NULL) {
       return -1;
   }

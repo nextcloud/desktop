@@ -57,7 +57,7 @@ static int wipe_testdir()
     */
    WIN32_FIND_DATA FindFileData;
 
-   mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
+   mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
    HANDLE handle = FindFirstFile(dir, &FindFileData);
    c_free_locale_string(dir);
    int found = handle != INVALID_HANDLE_VALUE;
@@ -78,7 +78,7 @@ static void setup_testenv(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
 
     rc = _tmkdir(dir, MKDIR_MASK);
     assert_int_equal(rc, 0);
@@ -142,7 +142,7 @@ static void create_dirs( const char *path )
     if( *(p+i) == '/' ) {
       p[i] = '\0';
 
-      mbchar_t *mb_dir = c_utf8_to_locale(mypath);
+      mbchar_t *mb_dir = c_utf8_path_to_locale(mypath);
       /* wprintf(L"OOOO %ls (%ld)\n", mb_dir, strlen(mypath)); */
       rc = _tmkdir(mb_dir, MKDIR_MASK);
       c_free_locale_string(mb_dir);

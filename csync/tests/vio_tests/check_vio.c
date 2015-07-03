@@ -59,7 +59,7 @@ static void setup(void **state)
 
 static void setup_dir(void **state) {
     int rc;
-    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
 
     setup(state);
 
@@ -121,7 +121,7 @@ static void check_csync_vio_opendir_perm(void **state)
     CSYNC *csync = *state;
     csync_vio_handle_t *dh;
     int rc;
-    mbchar_t *dir = c_utf8_to_locale(CSYNC_TEST_DIR);
+    mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
 
     assert_non_null(dir);
 

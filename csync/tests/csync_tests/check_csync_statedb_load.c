@@ -80,7 +80,7 @@ static void check_csync_statedb_close(void **state)
     CSYNC *csync = *state;
     csync_stat_t sb;
     time_t modtime;
-    mbchar_t *testdb = c_utf8_to_locale(TESTDB);
+    mbchar_t *testdb = c_utf8_path_to_locale(TESTDB);
     int rc;
 
     /* statedb not written */

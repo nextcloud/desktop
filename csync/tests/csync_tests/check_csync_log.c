@@ -119,7 +119,7 @@ static void check_logging(void **state)
     int rc;
     csync_stat_t sb;
     mbchar_t *path;
-    path = c_utf8_to_locale("/tmp/check_csync1/cb_called");
+    path = c_utf8_path_to_locale("/tmp/check_csync1/cb_called");
 
     (void) state; /* unused */
 

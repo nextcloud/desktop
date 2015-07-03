@@ -22,7 +22,7 @@
 #include "c_private.h"
 #include "c_string.h"
 
-#include "c_string.h"
+#include "c_path.h"
 #include "c_time.h"
 
 struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {
@@ -69,7 +69,7 @@ double c_secdiff(struct timespec clock1, struct timespec clock0) {
 
 #ifdef HAVE_UTIMES
 int c_utimes(const char *uri, const struct timeval *times) {
-    mbchar_t *wuri = c_utf8_to_locale(uri);
+    mbchar_t *wuri = c_utf8_path_to_locale(uri);
     int ret = utimes(wuri, times);
     c_free_locale_string(wuri);
     return ret;
@@ -97,7 +97,7 @@ int c_utimes(const char *uri, const struct timeval *times) {
     FILETIME LastModificationTime;
     HANDLE hFile;
 
-    mbchar_t *wuri = c_utf8_to_locale( uri );
+    mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
     if(times) {
         UnixTimevalToFileTime(times[0], &LastAccessTime);

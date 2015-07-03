@@ -32,6 +32,7 @@
 #include "c_private.h"
 #include "c_alloc.h"
 #include "c_path.h"
+#include "c_string.h"
 
 /*
  * dirname - parse directory component.
@@ -433,4 +434,20 @@ int c_parse_uri(const char *uri,
          i++;
      }
      return longStr;
+ }
+
+ mbchar_t* c_utf8_path_to_locale(const char *str)
+ {
+     if( str == NULL ) {
+         return NULL;
+     } else {
+ #ifdef _WIN32
+         const char *unc_str = c_path_to_UNC(str);
+         mbchar_t *dst = c_utf8_string_to_locale(unc_str);
+         SAFE_FREE(unc_str);
+         return dst;
+ #else
+         return c_utf8_string_to_locale(str);
+ #endif
+     }
  }

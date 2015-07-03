@@ -71,7 +71,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
       strcpy( h, name);
       strcat(h, "/*");
 
-      dirname = c_utf8_to_locale(h);
+      dirname = c_utf8_path_to_locale(h);
       SAFE_FREE(h);
   }
 
@@ -89,7 +89,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   handle->firstFind = 1; // Set a flag that there first fileinfo is available.
   // }
 #else
-  dirname = c_utf8_to_locale(name);
+  dirname = c_utf8_path_to_locale(name);
 
   handle->dh = _topendir( dirname );
   if (handle->dh == NULL) {
@@ -243,7 +243,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     BY_HANDLE_FILE_INFORMATION fileInfo;
     WIN32_FIND_DATAW FindFileData;
     ULARGE_INTEGER FileIndex;
-    mbchar_t *wuri = c_utf8_to_locale( uri );
+    mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
     h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
@@ -336,7 +336,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   csync_stat_t sb;
 
-  mbchar_t *wuri = c_utf8_to_locale( uri );
+  mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
   if( _tstat(wuri, &sb) < 0) {
     c_free_locale_string(wuri);

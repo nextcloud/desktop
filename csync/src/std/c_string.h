@@ -154,9 +154,6 @@ void c_strlist_destroy(c_strlist_t *strlist);
  */
  char*   c_utf8_from_locale(const mbchar_t *str);
 
-
- const char *makeLongWinPath(const char *str, int *mem_reserved);
-
 /**
  * @brief Convert a utf8 encoded string to platform specific locale.
  *
@@ -166,11 +163,13 @@ void c_strlist_destroy(c_strlist_t *strlist);
  * Instead of using the standard file operations the multi platform aliases
  * defined in c_private.h have to be used instead.
  *
- * To convert path names as input for the cross platform functions from the
+ * To convert strings as input for the cross platform functions from the
  * internally used utf8 format, this function has to be used.
  * The returned string has to be freed by c_free_locale_string(). On some
  * platforms this method allocates memory and on others not but it has never
  * sto be cared about.
+ *
+ * If the string to convert is a path, consider using c_utf8_path_to_locale().
  *
  * @param  str     The utf8 string to convert.
  *
@@ -180,7 +179,7 @@ void c_strlist_destroy(c_strlist_t *strlist);
  * @see c_utf8_from_locale()
  *
  */
-mbchar_t* c_utf8_to_locale(const char *wstr);
+mbchar_t* c_utf8_string_to_locale(const char *wstr);
 
 #if defined(_WIN32) || defined(WITH_ICONV)
 

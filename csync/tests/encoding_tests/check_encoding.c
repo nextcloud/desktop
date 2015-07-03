@@ -65,7 +65,7 @@ static void check_iconv_to_native_normalization(void **state)
     const char *exp_out = "\x48\xc3\xa4"; // UTF8
 #endif
 
-    out = c_utf8_to_locale(in);
+    out = c_utf8_path_to_locale(in);
     assert_string_equal(out, exp_out);
 
     c_free_locale_string(out);
@@ -127,8 +127,8 @@ static void check_to_multibyte(void **state)
 {
     int rc = -1;
 
-    mbchar_t *mb_string = c_utf8_to_locale( TESTSTRING );
-    mbchar_t *mb_null   = c_utf8_to_locale( NULL );
+    mbchar_t *mb_string = c_utf8_path_to_locale( TESTSTRING );
+    mbchar_t *mb_null   = c_utf8_path_to_locale( NULL );
 
     (void) state;
 
