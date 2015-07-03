@@ -704,7 +704,10 @@ void FolderStatusModel::slotFolderSyncStateChange()
     if (folderIndex < 0) { return; }
 
     SyncResult::Status state = f->syncResult().status();
-    if (state == SyncResult::SyncPrepare)  {
+    if (state == SyncResult::SyncPrepare
+            || state == SyncResult::Problem
+            || state == SyncResult::Success)  {
+        // Reset the progress info before and after a sync.
         _folders[folderIndex]._progress = SubFolderInfo::Progress();
     } else if (state == SyncResult::Error) {
         _folders[folderIndex]._progress._progressString = f->syncResult().errorString();
