@@ -216,7 +216,7 @@ void AccountManager::deleteAccount(AccountState* account)
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
-    accountRemoved(account);
+    emit accountRemoved(account);
 }
 
 

@@ -89,6 +89,11 @@ ownCloudGui::ownCloudGui(Application *parent) :
     connect( folderMan, SIGNAL(folderSyncStateChange(Folder*)),
              this,SLOT(slotSyncStateChange(Folder*)));
 
+    connect( AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
+             SLOT(setupContextMenu()));
+    connect( AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
+             SLOT(setupContextMenu()));
+
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
              SLOT(slotShowTrayMessage(QString,QString)));
     connect( Logger::instance(), SIGNAL(optionalGuiLog(QString,QString)),

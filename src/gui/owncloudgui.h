@@ -43,8 +43,6 @@ class ownCloudGui : public QObject
 public:
     explicit ownCloudGui(Application *parent = 0);
 
-    void setupContextMenu();
-
     bool checkAccountExists(bool openSettings);
 
     static void raiseDialog(QWidget *raiseWidget);
@@ -54,6 +52,7 @@ signals:
     void setupProxy();
 
 public slots:
+    void setupContextMenu();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
