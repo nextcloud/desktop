@@ -69,8 +69,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     addAction(closeWindowAction);
 
     setObjectName("Settings"); // required as group for saveGeometry call
-
     setWindowTitle(Theme::instance()->appNameGUI());
+
+    // Add a spacer so config buttonns are right aligned and account buttons will be left aligned
+    auto spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    toolBar->addWidget(spacer);
 
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolAction = toolBar->addAction(protocolIcon, tr("Activity"));
