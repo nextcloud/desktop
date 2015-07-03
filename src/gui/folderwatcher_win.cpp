@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDir>
 
+#include "filesystem.h"
 #include "folderwatcher.h"
 #include "folderwatcher_win.h"
 
@@ -28,9 +29,10 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                                  bool* increaseBufferSize)
 {
     *increaseBufferSize = false;
+    QString longPath = FileSystem::longWinPath(_path);
 
     _handle = CreateFileW(
-        (wchar_t*)_path.utf16(),
+        (wchar_t*) longPath.utf16(),
         FILE_LIST_DIRECTORY,
         FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
         NULL,
