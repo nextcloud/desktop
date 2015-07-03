@@ -20,6 +20,8 @@ namespace OCC {
 
 class Account;
 typedef QSharedPointer<Account> AccountPtr;
+class AccountState;
+typedef QSharedPointer<AccountState> AccountStatePtr;
 
 } // namespace OCC
 

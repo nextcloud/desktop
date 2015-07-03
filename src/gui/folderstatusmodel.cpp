@@ -37,16 +37,16 @@ FolderStatusModel::~FolderStatusModel()
 { }
 
 
-void FolderStatusModel::setAccount(const AccountPtr& account)
+void FolderStatusModel::setAccountState(const AccountState* accountState)
 {
     beginResetModel();
     _dirty = false;
     _folders.clear();
-    _account = account;
+    _accountState = accountState;
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
-        if (f->accountState()->account() != account)
+        if (f->accountState() != accountState)
             continue;
         SubFolderInfo info;
         info._pathIdx << _folders.size();
@@ -121,7 +121,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const SubFolderInfo::Progress & progress = folderInfo._progress;
-    bool accountConnected = true; // FIXME
+    const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
     case FolderStatusDelegate::FolderPathRole         : return  f->nativePath();
@@ -373,7 +373,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
         }
         path += info->_path;
     }
-    LsColJob *job = new LsColJob(_account, path, this);
+    LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
     job->setTimeout(5 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
@@ -721,7 +721,7 @@ void FolderStatusModel::slotFolderSyncStateChange()
 
 void FolderStatusModel::resetFolders()
 {
-    setAccount(_account);
+    setAccountState(_accountState);
 }
 
 } // namespace OCC
