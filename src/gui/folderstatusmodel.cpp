@@ -115,10 +115,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         break;
     }
 
-    auto f = _folders.at(index.row())._folder;
+    const SubFolderInfo & folderInfo = _folders.at(index.row());
+    auto f = folderInfo._folder;
     if (!f)
         return QVariant();
 
+    const SubFolderInfo::Progress & progress = folderInfo._progress;
     bool accountConnected = true; // FIXME
 
     switch (role) {
@@ -153,15 +155,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return Theme::instance()->folderOfflineIcon();
         }
     case FolderStatusDelegate::AddProgressSpace:
-        return !_folders.value(index.row())._progress.isNull();
+        return !progress.isNull();
     case FolderStatusDelegate::SyncProgressItemString:
-        return _folders.value(index.row())._progress._progressString;
+        return progress._progressString;
     case FolderStatusDelegate::WarningCount:
-        return _folders.value(index.row())._progress._warningCount;
+        return progress._warningCount;
     case FolderStatusDelegate::SyncProgressOverallPercent:
-        return _folders.value(index.row())._progress._overallPercent;
+        return progress._overallPercent;
     case FolderStatusDelegate::SyncProgressOverallString:
-        return _folders.value(index.row())._progress._overallSyncString;
+        return progress._overallSyncString;
     }
     return QVariant();
 }
