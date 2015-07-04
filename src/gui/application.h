@@ -56,6 +56,7 @@ public:
 
     bool giveHelp();
     void showHelp();
+    void showHint(std::string errorHint);
     bool debugMode();
 
     void showSettingsDialog();

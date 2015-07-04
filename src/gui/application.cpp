@@ -319,19 +319,19 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                _logFile = it.next();
             } else {
-                setHelp();
+                showHint("Log file not specified");
             }
         } else if (option == QLatin1String("--logdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                _logDir = it.next();
             } else {
-                setHelp();
+                showHint("Log dir not specified");
             }
         } else if (option == QLatin1String("--logexpire")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 _logExpire = it.next().toInt();
             } else {
-                setHelp();
+                showHint("Log expiration not specified");
             }
         } else if (option == QLatin1String("--logflush")) {
             _logFlush = true;
@@ -339,17 +339,15 @@ void Application::parseOptions(const QStringList &options)
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();
                 if (!ConfigFile::setConfDir( confDir )) {
-                    std::cerr << "Invalid path passed to --confdir" << std::endl;
-                    std::exit(1);
+                    showHint("Invalid path passed to --confdir");
                 }
             } else {
-                showHelp();
+                showHint("Path for confdir not specified");
             }
         } else if (option == QLatin1String("--debug")) {
             _debugMode = true;
         } else {
-            setHelp();
-            break;
+            showHint("Unrecognized option '" + option.toStdString() + "'");
         }
     }
 }
@@ -396,6 +394,14 @@ void Application::showHelp()
         stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
 
     displayHelpText(helpText);
+}
+
+void Application::showHint(std::string errorHint)
+{
+    static QString binName = QFileInfo(QCoreApplication::applicationFilePath()).fileName();
+    std::cerr << errorHint << std::endl;
+    std::cerr << "Try '" << binName.toStdString() << " --help' for more information" << std::endl;
+    std::exit(1);
 }
 
 bool Application::debugMode()
