@@ -112,5 +112,6 @@ private:
 }
 
 Q_DECLARE_METATYPE(OCC::AccountState*)
+Q_DECLARE_METATYPE(QSharedPointer<OCC::AccountState>)
 
 #endif //ACCOUNTINFO_H
