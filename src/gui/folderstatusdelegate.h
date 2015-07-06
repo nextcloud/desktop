@@ -26,8 +26,6 @@ class FolderStatusDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
     public:
-    FolderStatusDelegate();
-    virtual ~FolderStatusDelegate();
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
                     FolderPathRole,
