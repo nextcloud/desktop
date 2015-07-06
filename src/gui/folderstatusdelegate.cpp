@@ -28,11 +28,27 @@
 
 namespace OCC {
 
+QString FolderStatusDelegate::addFolderText()
+{
+    return tr("Add Folder to Synchronize");
+}
+
 //alocate each item size in listview.
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
-    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
+    if (classif == FolderStatusModel::AddButton) {
+        QFontMetrics fm(option.font);
+        QStyleOptionButton opt;
+        static_cast<QStyleOption&>(opt) = option;
+        opt.text = addFolderText();
+        return QApplication::style()->sizeFromContents(
+                QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).
+            expandedTo(QApplication::globalStrut());
+    }
+
+    if (classif != FolderStatusModel::RootFolder) {
         return QStyledItemDelegate::sizeHint(option, index);
     }
 
@@ -75,13 +91,19 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
                                  const QModelIndex &index) const
 {
+    QStyledItemDelegate::paint(painter,option,index);
+
     if (qvariant_cast<bool>(index.data(AddButton))) {
-        painter->drawText(option.rect, "[+ Add Folder]");
+        QSize hint = sizeHint(option, index);
+        QStyleOptionButton opt;
+        static_cast<QStyleOption&>(opt) = option;
+        // only keep the flags interesting for the button:
+        opt.state = QStyle::State_Enabled;
+        opt.text = addFolderText();
+        opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
         return;
     }
-
-
-    QStyledItemDelegate::paint(painter,option,index);
 
     if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
         return;

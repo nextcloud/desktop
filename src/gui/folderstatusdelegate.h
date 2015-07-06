@@ -25,7 +25,7 @@ namespace OCC {
 class FolderStatusDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
-    public:
+public:
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
                     FolderPathRole,
@@ -50,6 +50,8 @@ class FolderStatusDelegate : public QStyledItemDelegate
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                       const QModelIndex& index ) Q_DECL_OVERRIDE;
+private:
+    static QString addFolderText();
 };
 
 } // namespace OCC
