@@ -210,6 +210,7 @@ endif(UNIT_TESTING)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
+    configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
 else()
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
