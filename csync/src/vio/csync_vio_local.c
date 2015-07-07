@@ -68,8 +68,8 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
 
       // alloc an enough large buffer to take the name + '/*' + the closing zero.
       h = c_malloc(len_name+3);
-      strncpy( h, name, len_name);
-      strncat(h, "/*",2);
+      strncpy( h, name, 1+len_name);
+      strncat(h, "/*",3);
 
       dirname = c_utf8_path_to_locale(h);
       SAFE_FREE(h);
