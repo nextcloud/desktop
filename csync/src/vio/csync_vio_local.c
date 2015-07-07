@@ -150,12 +150,9 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
           // might be error, check!
           int dwError = GetLastError();
           if (dwError != ERROR_NO_MORE_FILES) {
-              errno = EACCES; // FIXME: Is this a good errno?
-              goto err;
-          } else {
-              // Normal case that no more is in the dir.
-              return NULL;
+              errno = EACCES; // no more files is fine. Otherwise EACCESS
           }
+          goto err;
       }
   }
   file_stat->name = c_utf8_from_locale(handle->ffd.cFileName);
@@ -171,11 +168,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dirent = _treaddir(handle->dh);
   if (dirent == NULL) {
-    if (errno) {
       goto err;
-    } else {
-      return NULL;
-    }
   }
   file_stat->name = c_utf8_from_locale(dirent->d_name);
 
