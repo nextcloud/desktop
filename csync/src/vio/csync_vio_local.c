@@ -83,11 +83,8 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
       SAFE_FREE(handle);
       return NULL;
   }
-  // FIXME: Handle the case of no files in a dir.
-  // dwError = GetLastError();
-  // if (dwError != ERROR_NO_MORE_FILES) {
+
   handle->firstFind = 1; // Set a flag that there first fileinfo is available.
-  // }
 #else
   dirname = c_utf8_path_to_locale(name);
 
