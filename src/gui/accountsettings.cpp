@@ -274,18 +274,6 @@ void AccountSettings::slotResetCurrentFolder()
     }
 }
 
-void AccountSettings::slotForceRemoteDiscoveryOnFolders()
-{
-    FolderMan* folders = FolderMan::instance();
-    foreach (Folder* folder, folders->map()) {
-        if (folder->accountState() != _accountState) {
-            continue;
-        }
-
-        folder->journalDb()->forceRemoteDiscoveryNextSync();
-    }
-}
-
 void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
 {
     if( ! indx.isValid() ) return;
