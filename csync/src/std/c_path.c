@@ -402,10 +402,7 @@ int c_parse_uri(const char *uri,
  *  - A conversion is only done if the path len is larger than 245. Otherwise
  *    the windows API functions work with the normal "unixoid" representation too.
  *
- * Since the function reallocs memory that it can not free itself, the number of
- * newly allocated bytes are returned in parameter mem_reserved. The calling
- * function will call free on the result pointer if mem_reserved is > 0.
- *
+ *  This function allocates memory that must be freed by the caller.
  */
  const char *c_path_to_UNC(const char *str)
  {

@@ -266,7 +266,6 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
 
-    qDebug() << "** MOVE: " << orig;
     ok = MoveFileEx((wchar_t*)orig.utf16(),
                     (wchar_t*)dest.utf16(),
                     MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
