@@ -62,6 +62,9 @@ static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
 static const char uploadLimitC[]      = "BWLimit/uploadLimit";
 static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
+static const char newSharedFolderSizeLimitC[] = "newSharedFolderSizeLimit";
+static const char useNewSharedFolderSizeLimitC[] = "useNewSharedFolderSizeLimit";
+
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
@@ -547,6 +550,19 @@ void ConfigFile::setUploadLimit(int kbytes)
 void ConfigFile::setDownloadLimit(int kbytes)
 {
     setValue(downloadLimitC, kbytes);
+}
+
+QPair<bool, quint64> ConfigFile::newSharedFolderSizeLimit() const
+{
+    qint64 value = getValue(newSharedFolderSizeLimitC, QString(), 100).toLongLong();
+    bool use = value >= 0 && getValue(useNewSharedFolderSizeLimitC, QString(), true).toBool();
+    return qMakePair(use, quint64(qMax<qint64>(0, value)));
+}
+
+void ConfigFile::setNewSharedFolderSizeLimit(bool isChecked, quint64 mbytes)
+{
+    setValue(newSharedFolderSizeLimitC, mbytes);
+    setValue(useNewSharedFolderSizeLimitC, isChecked);
 }
 
 bool ConfigFile::monoIcons() const

@@ -61,6 +61,8 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+    connect(_ui->newFolderLimitCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+    connect(_ui->newFolderLimitSpinBox, SIGNAL(valueChanged(int)), SLOT(saveMiscSettings()));
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -87,6 +89,9 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
+    auto newFolderLimit = cfgFile.newSharedFolderSizeLimit();
+    _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
+    _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -111,6 +116,9 @@ void GeneralSettings::saveMiscSettings()
     cfgFile.setMonoIcons(isChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
+
+    cfgFile.setNewSharedFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
+                                        _ui->newFolderLimitSpinBox->value());
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

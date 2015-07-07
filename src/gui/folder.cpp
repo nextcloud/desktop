@@ -840,7 +840,10 @@ void Folder::startSync(const QStringList &pathList)
 
     setDirtyNetworkLimits();
 
-    _engine->setNewSharedFolderSizeLimit(100 * 1000 * 1000); // 100MB limit by default FIXME! do not hardcode
+    ConfigFile cfgFile;
+    auto newFolderLimit = cfgFile.newSharedFolderSizeLimit();
+    quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
+    _engine->setNewSharedFolderSizeLimit(limit);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
