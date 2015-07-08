@@ -59,7 +59,7 @@ public:
         QString _path;
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
-        int _size;
+        qint64 _size;
         bool _fetched; // If we did the LSCOL for this folder already
         bool _fetching;
         bool _isUndecided; // undecided folder are the big folder that the user has not accepted yet
