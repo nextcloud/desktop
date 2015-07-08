@@ -376,6 +376,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME:
         item->_errorString = tr("Filename is too long.");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN:
+        item->_errorString = tr("File is ignored because it's hidden.");
+        break;
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;

@@ -163,29 +163,29 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   len = strlen(path);
 
-  /* This code should probably be in csync_exclude, but it does not have the fs parameter.
-     Keep it here for now and TODO also find out if we want this for Windows
-     https://github.com/owncloud/mirall/issues/2086 */
-  if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
-      return 0;
-  }
-
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
 
   if (excluded != CSYNC_NOT_EXCLUDED) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
-    if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        return 1;
-    }
-    if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-        return 1;
-    }
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
+      if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
+          return 1;
+      }
+      if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+          return 1;
+      }
 
-    if (ctx->current_fs) {
-        ctx->current_fs->has_ignored_files = true;
-    }
+      if (ctx->current_fs) {
+          ctx->current_fs->has_ignored_files = true;
+      }
+  } else {
+
+      /* This code should probably be in csync_exclude, but it does not have the fs parameter.
+         Keep it here for now */
+      if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
+          excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
+      }
   }
 
   if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
@@ -208,9 +208,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->child_modified = 0;
   st->has_ignored_files = 0;
 
-  /* check hardlink count */
+  /* FIXME: Under which conditions are the following two ifs true and the code
+   * is executed? */
   if (type == CSYNC_FTW_TYPE_FILE ) {
-
     if (fs->mtime == 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
 
@@ -424,6 +424,8 @@ out:
       st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
     } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
       st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
+    } else if (excluded == CSYNC_FILE_EXCLUDE_HIDDEN ) {
+      st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
     }
   }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
