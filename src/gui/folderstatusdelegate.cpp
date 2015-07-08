@@ -101,7 +101,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         opt.state = QStyle::State_Enabled;
         opt.text = addFolderText();
         opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+                , option.widget
+#endif
+            );
         return;
     }
 
