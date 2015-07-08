@@ -185,8 +185,8 @@ QString Folder::alias() const
 QString Folder::path() const
 {
     QString p(_definition.localPath);
-    if( ! p.endsWith(QDir::separator()) ) {
-        p.append(QDir::separator());
+    if( ! p.endsWith('/') ) {
+        p.append('/');
     }
     return p;
 }
