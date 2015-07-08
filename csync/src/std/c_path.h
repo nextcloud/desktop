@@ -131,7 +131,8 @@ const char *c_path_to_UNC(const char *str);
  *
  * @param str The path to convert
  *
- * @return a pointer to the converted string. Caller has to free it.
+ * @return a pointer to the converted string. Caller has to free it using the
+ *         function c_free_locale_string.
  */
 mbchar_t* c_utf8_path_to_locale(const char *str);
 
