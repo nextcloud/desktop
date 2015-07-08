@@ -297,15 +297,6 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
     return t.toMSecsSinceEpoch() / 1000;
 }
 
-//TODO change to initializers list  when possible.
-static QList<QPair<QString,quint32> > timeMapping = QList<QPair<QString,quint32> >() <<
-                                                    QPair<QString,quint32>("%1 years",86400*365) <<
-                                                    QPair<QString,quint32>("%1 months",86400*30) <<
-                                                    QPair<QString,quint32>("%1 days",86400) <<
-                                                    QPair<QString,quint32>("%1h",3600) <<
-                                                    QPair<QString,quint32>("%1m",60) <<
-                                                    QPair<QString,quint32>("%1s",1);
-
 QString Utility::durationToDescriptiveString(quint64 msecs)
 {
     struct Period { const char *name; quint64 msec; };
