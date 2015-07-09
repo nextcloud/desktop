@@ -363,8 +363,8 @@ void ownCloudGui::setupContextMenu()
         _tray->setContextMenu(_contextMenu.data());
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
-
-    qDeleteAll(_accountMenus);
+    // We must call deleteLater because we might be called from the press in one of the action.
+    foreach (auto menu, _accountMenus) { menu->deleteLater(); }
     _accountMenus.clear();
     if (accountList.count() > 1) {
         foreach (AccountStatePtr account, accountList) {
