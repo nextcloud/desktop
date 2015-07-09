@@ -314,7 +314,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         if (metadata_differ) {
             /* file id or permissions has changed. Which means we need to update them in the DB. */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
-            st->should_update_etag = true;
+            st->should_update_metadata = true;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
@@ -802,7 +802,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
         ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
         if (ctx->current == REMOTE_REPLICA) {
-          ctx->current_fs->should_update_etag = true;
+          ctx->current_fs->should_update_metadata = true;
         }
       }
 
@@ -820,7 +820,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
         && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
             ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
-        ctx->current_fs->should_update_etag = true;
+        ctx->current_fs->should_update_metadata = true;
     }
 
     ctx->current_fs = previous_fs;

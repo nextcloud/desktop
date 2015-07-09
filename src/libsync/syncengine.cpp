@@ -348,7 +348,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if (file->remotePerm && file->remotePerm[0]) {
         item->_remotePerm = QByteArray(file->remotePerm);
     }
-    item->_should_update_etag = item->_should_update_etag || file->should_update_etag;
+    item->_should_update_metadata = item->_should_update_metadata || file->should_update_metadata;
 
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
@@ -428,7 +428,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE:
-        if (remote && item->_should_update_etag && !item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
+        if (remote && item->_should_update_metadata && !item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
             // Update the database now already:  New fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
             // They should have been a conflict because they both were new, or both
@@ -441,9 +441,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             item->_modtime = file->other.modtime;
 
             _journal->setFileRecord(SyncJournalFileRecord(*item, _localPath + item->_file));
-            item->_should_update_etag = false;
+            item->_should_update_metadata = false;
         }
-        if (item->_isDirectory && (remote || file->should_update_etag)) {
+        if (item->_isDirectory && (remote || file->should_update_metadata)) {
             // Because we want still to update etags of directories
             dir = SyncFileItem::None;
         } else {
@@ -975,7 +975,7 @@ void SyncEngine::checkForPermission()
                     break;
                 } if (!(*it)->_isDirectory && !perms.contains("W")) {
                     qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                    (*it)->_should_update_etag = true;
+                    (*it)->_should_update_metadata = true;
                     (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_isRestoration = true;
@@ -997,7 +997,7 @@ void SyncEngine::checkForPermission()
                 }
                 if (!perms.contains("D")) {
                     qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                    (*it)->_should_update_etag = true;
+                    (*it)->_should_update_metadata = true;
                     (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_isRestoration = true;
@@ -1016,7 +1016,7 @@ void SyncEngine::checkForPermission()
                             }
 
                             qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                            (*it)->_should_update_etag = true;
+                            (*it)->_should_update_metadata = true;
 
                             (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
                             (*it)->_direction = SyncFileItem::Down;

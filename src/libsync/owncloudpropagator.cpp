@@ -332,7 +332,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
                 for (int i = 0; i < directories.size(); ++i) {
-                    directories[i].second->_item->_should_update_etag = false;
+                    directories[i].second->_item->_should_update_metadata = false;
                 }
             } else {
                 PropagateDirectory* currentDirJob = directories.top().second;
@@ -636,7 +636,7 @@ void PropagateDirectory::finalize()
             _item->_file = _item->_renameTarget;
         }
 
-        if (_item->_should_update_etag && _item->_instruction != CSYNC_INSTRUCTION_REMOVE) {
+        if (_item->_should_update_metadata && _item->_instruction != CSYNC_INSTRUCTION_REMOVE) {
             if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
                 // special case from MKDIR, get the fileId from the job there
                 if (_item->_fileId.isEmpty() && !mkdir->_item->_fileId.isEmpty()) {

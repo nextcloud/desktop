@@ -65,7 +65,7 @@ public:
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
         _hasBlacklistEntry(false), _status(NoStatus),
-        _isRestoration(false), _should_update_etag(false),
+        _isRestoration(false), _should_update_metadata(false),
         _httpErrorCode(0), _requestDuration(0), _affectedItems(1),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
     {
@@ -139,7 +139,7 @@ public:
     // Variables usefull to report to the user
     Status               _status BITFIELD(4);
     bool                 _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
-    bool                 _should_update_etag BITFIELD(1);
+    bool                 _should_update_metadata BITFIELD(1);
     quint16              _httpErrorCode;
     QString              _errorString; // Contains a string only in case of error
     QByteArray           _responseTimeStamp;

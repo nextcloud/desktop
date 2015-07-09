@@ -127,7 +127,7 @@ void PropagateLocalMkdir::start()
     }
 
     // Insert the directory into the database. The correct etag will be set later,
-    // once all contents have been propagated, because should_update_etag is true.
+    // once all contents have been propagated, because should_update_metadata is true.
     // Adding an entry with a dummy etag to the database still makes sense here
     // so the database is aware that this folder exists even if the sync is aborted
     // before the correct etag is stored.

@@ -247,7 +247,7 @@ struct csync_tree_walk_file_s {
     enum csync_instructions_e instruction;
 
     /* For directories: If the etag has been updated and need to be writen on the db */
-    int         should_update_etag;
+    int         should_update_metadata;
 
     const char *rename_path;
     const char *etag;
