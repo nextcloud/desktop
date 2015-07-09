@@ -174,12 +174,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
           return 1;
       }
-
-      if (ctx->current_fs) {
-          ctx->current_fs->has_ignored_files = true;
-      }
   } else {
-
       /* This code should probably be in csync_exclude, but it does not have the fs parameter.
          Keep it here for now */
       if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
@@ -242,12 +237,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     st->instruction = CSYNC_INSTRUCTION_NONE;
     goto out;
   }
+
   if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
-      if( type == CSYNC_FTW_TYPE_SLINK ) {
-          st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
-      }
       st->instruction = CSYNC_INSTRUCTION_IGNORE;
-    goto out;
+      if (ctx->current_fs) {
+          ctx->current_fs->has_ignored_files = true;
+      }
+
+      goto out;
   }
 
   /* Update detection: Check if a database entry exists.
@@ -418,15 +415,19 @@ out:
 
   /* Set the ignored error string. */
   if (st->instruction == CSYNC_INSTRUCTION_IGNORE) {
-    if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
-    } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
-    } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
-    } else if (excluded == CSYNC_FILE_EXCLUDE_HIDDEN ) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
-    }
+      if( type == CSYNC_FTW_TYPE_SLINK ) {
+          st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
+      } else {
+          if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_HIDDEN ) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
+          }
+      }
   }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
       && type != CSYNC_FTW_TYPE_DIR) {
