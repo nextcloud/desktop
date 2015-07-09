@@ -569,10 +569,6 @@ void ownCloudGui::slotDisplayIdle()
 void ownCloudGui::slotLogin()
 {
     auto list = AccountManager::instance()->accounts();
-    if (!list.isEmpty()) {
-        FolderMan::instance()->setupFolders();
-    }
-
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
         account->setSignedOut(false);
     } else {
@@ -600,9 +596,6 @@ void ownCloudGui::slotLogout()
         ai->setSignedOut(true);
         // show result
         slotComputeOverallSyncStatus();
-    }
-    if (!list.isEmpty()) {
-        FolderMan::instance()->setupFolders();
     }
 }
 

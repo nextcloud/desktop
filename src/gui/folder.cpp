@@ -803,7 +803,7 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setSyncFileItemVector(SyncFileItemVector());
     emit syncStateChange();
 
-    qDebug() << "*** Start syncing - client version"
+    qDebug() << "*** Start syncing " << alias() << " - client version"
              << qPrintable(Theme::instance()->version());
 
     if (! setIgnoredFiles())
