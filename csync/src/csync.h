@@ -250,6 +250,9 @@ struct csync_tree_walk_file_s {
     /* For directories: If the etag has been updated and need to be writen on the db */
     int         should_update_metadata;
 
+    /* For directories: Does it have children that were ignored (hidden or ignore pattern) */
+    int         has_ignored_files;
+
     const char *rename_path;
     const char *etag;
     const char *file_id;

@@ -37,15 +37,16 @@ public:
         return !_path.isEmpty();
     }
 
-    QString   _path;
-    quint64   _inode;
-    QDateTime _modtime;
-    int       _type;
+    QString    _path;
+    quint64    _inode;
+    QDateTime  _modtime;
+    int        _type;
     QByteArray _etag;
     QByteArray _fileId;
     qint64     _fileSize;
     QByteArray _remotePerm;
-    int       _mode;
+    int        _mode;
+    bool       _hasIgnoredFiles;
 };
 
 bool OWNCLOUDSYNC_EXPORT

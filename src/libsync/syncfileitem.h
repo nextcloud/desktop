@@ -64,7 +64,7 @@ public:
     };
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
-        _hasBlacklistEntry(false), _status(NoStatus),
+        _hasIgnoredFiles(false), _hasBlacklistEntry(false), _status(NoStatus),
         _isRestoration(false), _should_update_metadata(false),
         _httpErrorCode(0), _requestDuration(0), _affectedItems(1),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
@@ -130,6 +130,7 @@ public:
     Type _type BITFIELD(3);
     Direction _direction BITFIELD(2);
     bool _isDirectory BITFIELD(1);
+    bool _hasIgnoredFiles BITFIELD(1);
 
     /// Whether there's an entry in the blacklist table.
     /// Note: that entry may have retries left, so this can be true

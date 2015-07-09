@@ -350,6 +350,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     item->_should_update_metadata = item->_should_update_metadata || file->should_update_metadata;
 
+    item->_hasIgnoredFiles    = file->has_ignored_files > 0 ? true : false;
+    qDebug() << "HAS IGNORED FILES for " << item->_file << item->_hasIgnoredFiles << key;
+
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
     if (!renameTarget.isEmpty()) {
@@ -426,7 +429,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_type = SyncFileItem::UnknownType;
     }
 
-    SyncFileItem::Direction dir;
+    SyncFileItem::Direction dir = SyncFileItem::None;
 
     int re = 0;
     switch(file->instruction) {

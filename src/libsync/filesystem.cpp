@@ -105,6 +105,9 @@ void FileSystem::setFileHidden(const QString& filename, bool hidden)
             SetFileAttributesW((wchar_t*)fName.utf16(), dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
         }
     }
+#else
+    Q_UNUSED(filename);
+    Q_UNUSED(hidden);
 #endif
 }
 
