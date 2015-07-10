@@ -28,6 +28,7 @@
 #include <QBuffer>
 #include <QFileIconProvider>
 #include <QClipboard>
+#include <QInputDialog>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
@@ -422,6 +423,28 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         QList<QPair<QString, QString> > postParams;
         postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
+
+        /*
+         * Check the capabilities if the server requires a password for a share
+         * Ask for it directly
+         */
+        if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool()) {
+            bool ok;
+            const QString pass = QInputDialog::getText(this,
+                                                       tr("Password for share by link"),
+                                                       tr("Sharing by link requires a password:"),
+                                                       QLineEdit::Password,
+                                                       QString(),
+                                                       &ok);
+
+            if (!ok) {
+                _pi_link->stopAnimation();
+                _ui->checkBox_shareLink->setChecked(false);
+                return;
+            }
+            postParams.append(qMakePair(QString::fromLatin1("password"), pass));
+        }
+
         OcsShareJob *job = new OcsShareJob("POST", url, _account, this);
         job->setPostParams(postParams);
         job->addPassStatusCode(403); // "password required" is not an error
