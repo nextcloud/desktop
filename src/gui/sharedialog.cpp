@@ -138,6 +138,22 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->errorLabel->setFrameShape(QFrame::Box);
     _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
     _ui->errorLabel->hide();
+
+
+    // Parse capabilities
+
+    // If password is enforced make don't allow users to disable it
+    if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool()) {
+        _ui->checkBox_password->setEnabled(false);
+    }
+
+    // If expiredate is enforced do not allow disable and set max days
+    if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enforced"].toBool()) {
+        _ui->checkBox_expire->setEnabled(false);
+        _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
+            _account->capabilities()["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt()
+            ));
+    }
 }
 
 void ShareDialog::done( int r ) {
