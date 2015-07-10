@@ -265,10 +265,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                             ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s",
+                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
                   fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm );
+                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
         if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
@@ -312,6 +312,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             /* file id or permissions has changed. Which means we need to update them in the DB. */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
             st->should_update_metadata = true;
+        }
+        /* If it was remembered in the db that the remote dir has ignored files, store
+         * that so that the reconciler can make advantage of.
+         */
+        if( ctx->current == REMOTE_REPLICA ) {
+            st->has_ignored_files = tmp->has_ignored_files;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
