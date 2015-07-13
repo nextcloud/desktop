@@ -94,11 +94,6 @@ AccountPtr OwncloudWizard::account() const
     return _account;
 }
 
-void OwncloudWizard::setMultipleFoldersExist(bool exist)
-{
-    _advancedSetupPage->setMultipleFoldersExist(exist);
-}
-
 QString OwncloudWizard::localFolder() const
 {
     return(_advancedSetupPage->localFolder());

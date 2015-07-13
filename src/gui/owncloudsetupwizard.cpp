@@ -79,7 +79,6 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 void OwncloudSetupWizard::startWizard()
 {
     FolderMan *folderMan = FolderMan::instance();
-    bool multiFolderSetup = folderMan->map().count() > 1;
     // ###
     AccountPtr account = Account::create();
     _ocWizard->setConfigExists(false);
@@ -98,14 +97,6 @@ void OwncloudSetupWizard::startWizard()
         localFolder = QDir::homePath() + QDir::separator() + localFolder;
     }
 
-    if (!multiFolderSetup) {
-        QList<Folder*> folders = folderMan->map().values();
-        if (!folders.isEmpty()) {
-            Folder* folder = folders.first();
-            localFolder = QDir(folder->path()).absolutePath();
-        }
-    }
-
     _ocWizard->setProperty("oldLocalFolder", localFolder);
     _ocWizard->setProperty("localFolder", localFolder);
 
@@ -122,9 +113,6 @@ void OwncloudSetupWizard::startWizard()
     _ocWizard->setStartId(WizardCommon::Page_ServerSetup);
 
     _ocWizard->restart();
-
-    // settings re-initialized in initPage must be set here after restart
-    _ocWizard->setMultipleFoldersExist( multiFolderSetup );
 
     _ocWizard->open();
     _ocWizard->raise();

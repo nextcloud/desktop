@@ -39,7 +39,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _checking(false),
     _created(false),
     _configExists(false),
-    _multipleFoldersExist(false),
     _progressIndi(new QProgressIndicator (this)),
     _oldLocalFolder(),
     _remoteFolder()
@@ -96,7 +95,6 @@ void OwncloudAdvancedSetupPage::initializePage()
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
     _checking  = false;
-    _multipleFoldersExist = false;
     _oldLocalFolder = wizard()->property("oldLocalFolder").toString();
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());
@@ -138,12 +136,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
                 .arg(Theme::instance()->appName()).arg(_remoteFolder)
                 .arg(QDir::toNativeSeparators(locFolder));
               _ui.rSyncEverything->setText(tr("Sync the directory '%1'").arg(_remoteFolder));
-        }
-
-        if ( _multipleFoldersExist ) {
-            t += tr("<p><small><strong>Warning:</strong> You currently have multiple folders "
-                    "configured. If you continue with the current settings, the folder configurations "
-                    "will be discarded and a single root folder sync will be created!</small></p>");
         }
 
         const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
@@ -241,11 +233,6 @@ void OwncloudAdvancedSetupPage::setRemoteFolder( const QString& remoteFolder )
     if( !remoteFolder.isEmpty() ) {
         _remoteFolder = remoteFolder;
     }
-}
-
-void OwncloudAdvancedSetupPage::setMultipleFoldersExist(bool exist)
-{
-    _multipleFoldersExist = exist;
 }
 
 void OwncloudAdvancedSetupPage::slotSelectFolder()

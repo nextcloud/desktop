@@ -69,7 +69,6 @@ private:
   bool _checking;
   bool _created;
   bool _configExists;
-  bool _multipleFoldersExist;
   QProgressIndicator* _progressIndi;
   QString _oldLocalFolder;
   QString _remoteFolder;
