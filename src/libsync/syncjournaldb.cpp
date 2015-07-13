@@ -640,7 +640,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         _setFileRecordQuery->bindValue(11, fileId );
         _setFileRecordQuery->bindValue(12, remotePerm );
         _setFileRecordQuery->bindValue(13, record._fileSize );
-        _setFileRecordQuery->bindValue(14, record._hasIgnoredFiles ? 1:0);
+        _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1:0);
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -651,7 +651,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
                  << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
-                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._hasIgnoredFiles ? 1:0);
+                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0);
 
         _setFileRecordQuery->reset();
         return true;
@@ -730,7 +730,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._fileId  = _getFileRecordQuery->baValue(8);
             rec._remotePerm = _getFileRecordQuery->baValue(9);
             rec._fileSize   = _getFileRecordQuery->int64Value(10);
-            rec._hasIgnoredFiles = _getFileRecordQuery->intValue(11) > 0 ? true : false;
+            rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
         } else {
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename;

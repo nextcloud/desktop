@@ -46,7 +46,7 @@ public:
     qint64     _fileSize;
     QByteArray _remotePerm;
     int        _mode;
-    bool       _hasIgnoredFiles;
+    bool       _serverHasIgnoredFiles;
 };
 
 bool OWNCLOUDSYNC_EXPORT
