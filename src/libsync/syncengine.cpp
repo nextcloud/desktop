@@ -366,8 +366,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_serverHasIgnoredFiles    = (file->has_ignored_files > 0);
     }
 
-    qDebug() << "HAS IGNORED FILES for " << item->_file << item->_serverHasIgnoredFiles << key;
-
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
     if (!renameTarget.isEmpty()) {
