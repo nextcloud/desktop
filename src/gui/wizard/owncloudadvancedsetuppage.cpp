@@ -38,7 +38,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui(),
     _checking(false),
     _created(false),
-    _configExists(false),
     _progressIndi(new QProgressIndicator (this)),
     _oldLocalFolder(),
     _remoteFolder()
@@ -242,15 +241,6 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
         _ui.pbSelectLocalFolder->setText(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();
-    }
-}
-
-void OwncloudAdvancedSetupPage::setConfigExists(bool config)
-{
-    _configExists = config;
-
-    if (config == true) {
-        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update advanced setup")));
     }
 }
 

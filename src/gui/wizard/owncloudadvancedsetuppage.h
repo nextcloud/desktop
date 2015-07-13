@@ -44,7 +44,6 @@ public:
   void setRemoteFolder( const QString& remoteFolder);
   void setMultipleFoldersExist( bool exist );
   void directoriesCreated();
-  void setConfigExists(bool config);
 
 signals:
   void createLocalAndRemoteFolders(const QString&, const QString&);
@@ -68,7 +67,6 @@ private:
   Ui_OwncloudAdvancedSetupPage _ui;
   bool _checking;
   bool _created;
-  bool _configExists;
   QProgressIndicator* _progressIndi;
   QString _oldLocalFolder;
   QString _remoteFolder;

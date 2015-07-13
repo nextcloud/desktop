@@ -290,15 +290,6 @@ void OwncloudSetupPage::stopSpinner()
     _progressIndi->stopAnimation();
 }
 
-void OwncloudSetupPage::setConfigExists(  bool config )
-{
-    if (config == true) {
-        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update %1 server")
-                                                         .arg(Theme::instance()->appNameGUI())));
-    }
-}
-
-
 void OwncloudSetupPage::slotAskSSLClientCertificate()
 {
     addCertDial->show();

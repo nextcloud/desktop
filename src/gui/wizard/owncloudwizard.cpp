@@ -45,8 +45,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _credentialsPage(0),
       _configFile(),
       _oCUser(),
-      _setupLog(),
-      _configExists(false)
+      _setupLog()
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
@@ -209,19 +208,6 @@ void OwncloudWizard::appendToConfigurationLog( const QString& msg, LogType /*typ
 void OwncloudWizard::setOCUrl( const QString& url )
 {
   _setupPage->setServerUrl( url );
-}
-
-void OwncloudWizard::setConfigExists( bool config )
-{
-    _configExists = config;
-    _setupPage->setConfigExists( config );
-    _httpCredsPage->setConfigExists(config);
-    _advancedSetupPage->setConfigExists(config);
-}
-
-bool OwncloudWizard::configExists()
-{
-    return _configExists;
 }
 
 AbstractCredentials* OwncloudWizard::getCredentials() const

@@ -57,7 +57,6 @@ public:
 
 public slots:
   void setErrorString( const QString&, bool retryHTTPonly );
-  void setConfigExists(  bool );
   void startSpinner();
   void stopSpinner();
   void slotAskSSLClientCertificate();
@@ -81,7 +80,6 @@ private:
   QString _ocUser;
   bool    _authTypeKnown;
   bool    _checking;
-  bool    _configExists;
   bool    _multipleFoldersExist;
   WizardCommon::AuthType _authType;
 

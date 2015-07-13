@@ -59,8 +59,6 @@ public:
     void enableFinishOnResultWidget(bool enable);
 
     void displayError( const QString&, bool retryHTTPonly);
-    void setConfigExists( bool );
-    bool configExists();
     AbstractCredentials* getCredentials() const;
 
     void raiseCertificatePopup();
@@ -98,7 +96,6 @@ private:
     QString _configFile;
     QString _oCUser;
     QStringList _setupLog;
-    bool _configExists;
 };
 
 } // namespace OCC

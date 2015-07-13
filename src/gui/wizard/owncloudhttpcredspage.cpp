@@ -31,7 +31,6 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget* parent)
     _ui(),
     _connected(false),
     _checking(false),
-    _configExists(false),
     _progressIndi(new QProgressIndicator (this))
 {
     _ui.setupUi(this);
@@ -155,13 +154,5 @@ AbstractCredentials* OwncloudHttpCredsPage::getCredentials() const
     return new HttpCredentialsGui(_ui.leUsername->text(), _ui.lePassword->text(), _ocWizard->ownCloudCertificatePath, _ocWizard->ownCloudCertificatePasswd);
 }
 
-void OwncloudHttpCredsPage::setConfigExists(bool config)
-{
-    _configExists = config;
-
-    if (config == true) {
-        setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Update user credentials")));
-    }
-}
 
 } // namespace OCC
