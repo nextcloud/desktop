@@ -92,76 +92,14 @@ void FolderWizardLocalPath::cleanupPage()
 
 bool FolderWizardLocalPath::isComplete() const
 {
-  QFileInfo selFile( QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()) );
-  QString   userInput = selFile.canonicalFilePath();
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
+        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
 
-  QStringList warnStrings;
-
-  bool isOk = selFile.isDir();
-  if( !isOk ) {
-    warnStrings.append(tr("No valid local folder selected!"));
-  }
-
-  if (isOk && !selFile.isWritable()) {
-      isOk = false;
-      warnStrings.append(tr("You have no permission to write to the selected folder!"));
-  }
-
-  // check if the local directory isn't used yet in another ownCloud sync
-  Folder::Map map = FolderMan::instance()->map();
-
-  if( isOk ) {
-    Folder::Map::const_iterator i = map.constBegin();
-    while( isOk && i != map.constEnd() ) {
-      Folder *f = static_cast<Folder*>(i.value());
-      QString folderDir = QDir( f->path() ).canonicalPath();
-      if( folderDir.isEmpty() )
-      {
-        isOk = true;
-        qDebug() << "Absolute path for folder: " << f->path() << " doesn't exist. Skipping.";
-        i++;
-        continue;
-      }
-      if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
-
-      qDebug() << "Checking local path: " << folderDir << " <-> " << userInput;
-      if( QDir::cleanPath(f->path())  == QDir::cleanPath(userInput)  &&
-              QDir::cleanPath(QDir(f->path()).canonicalPath()) == QDir(userInput).canonicalPath() ) {
-        isOk = false;
-        warnStrings.append( tr("The local path %1 is already an upload folder. Please pick another one!")
-                           .arg(QDir::toNativeSeparators(userInput)) );
-      }
-      if( isOk && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/') ) {
-        qDebug() << "A already configured folder is child of the current selected";
-        warnStrings.append( tr("An already configured folder is contained in the current entry."));
-        isOk = false;
-      }
-
-      QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
-      if( isOk && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
-          qDebug() << "A already configured folder is child of the current selected";
-          warnStrings.append( tr("The selected folder is a symbolic link. An already configured "
-                                "folder is contained in the folder this link is pointing to."));
-          isOk = false;
-      }
-
-      if( isOk && QDir::cleanPath(QString(userInput)).startsWith( QDir::cleanPath(folderDir)+'/') ) {
-        qDebug() << "An already configured folder is parent of the current selected";
-        warnStrings.append( tr("An already configured folder contains the currently entered folder."));
-        isOk = false;
-      }
-      if( isOk && absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)+'/') ) {
-          qDebug() << "The selected folder is a symbolic link. An already configured folder is\n"
-                      "the parent of the current selected contains the folder this link is pointing to.";
-          warnStrings.append( tr("The selected folder is a symbolic link. An already configured folder "
-                                "is the parent of the current selected contains the folder this link is "
-                                "pointing to."));
-          isOk = false;
-      }
-
-      i++;
+    bool isOk = errorStr.isEmpty();
+    QStringList warnStrings;
+    if (!isOk) {
+        warnStrings << errorStr;
     }
-  }
 
   // check if the alias is unique.
   QString alias = _ui.aliasLineEdit->text();
@@ -170,6 +108,7 @@ bool FolderWizardLocalPath::isComplete() const
     isOk = false;
   }
 
+  auto map = FolderMan::instance()->map();
   Folder::Map::const_iterator i = map.constBegin();
   bool goon = true;
   while( goon && i != map.constEnd() ) {

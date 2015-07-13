@@ -36,3 +36,13 @@ owncloud_add_test(XmlParse "")
 owncloud_add_test(FileSystem "")
 owncloud_add_test(TransChecksumValidator "")
 
+
+SET(FolderMan_SRC ../src/gui/folderman.cpp)
+list(APPEND FolderMan_SRC ../src/gui/folder.cpp )
+list(APPEND FolderMan_SRC ../src/gui/socketapi.cpp )
+list(APPEND FolderMan_SRC ../src/gui/accountstate.cpp )
+list(APPEND FolderMan_SRC ../src/gui/syncrunfilelog.cpp )
+list(APPEND FolderMan_SRC ${FolderWatcher_SRC})
+list(APPEND FolderMan_SRC stub.cpp )
+owncloud_add_test(FolderMan "${FolderMan_SRC}")
+

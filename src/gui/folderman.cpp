@@ -764,7 +764,7 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     }
 
     auto folder = addFolderInternal(folderDefinition);
-    if(folder) {
+    if(folder && accountState) {
         folder->setAccountState(accountState);
         folder->saveToSettings();
     }
@@ -1095,5 +1095,61 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
     }
     return folderMessage;
 }
+
+QString FolderMan::checkPathValidityForNewFolder(const QString& path)
+{
+    QFileInfo selFile( path );
+    QString userInput = selFile.canonicalFilePath();
+
+    QStringList warnStrings;
+
+    if( !selFile.isDir() ) {
+        return tr("No valid local folder selected!");
+    }
+
+    if ( !selFile.isWritable() ) {
+        return tr("You have no permission to write to the selected folder!");
+    }
+
+    // check if the local directory isn't used yet in another ownCloud sync
+
+    for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i ) {
+        Folder *f = static_cast<Folder*>(i.value());
+        QString folderDir = QDir( f->path() ).canonicalPath();
+        if( folderDir.isEmpty() ) {
+            continue;
+        }
+        if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
+
+        if (QDir::cleanPath(f->path()) == QDir::cleanPath(userInput)
+                && QDir::cleanPath(QDir(f->path()).canonicalPath()) == QDir(userInput).canonicalPath()) {
+            return tr("The local path %1 is already an upload folder. Please pick another one!")
+                .arg(QDir::toNativeSeparators(userInput));
+        }
+        if (QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
+            return tr("An already configured folder is contained in the current entry.");
+        }
+
+        QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
+        if (QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
+            return tr("The selected folder is a symbolic link. An already configured "
+                      "folder is contained in the folder this link is pointing to.");
+        }
+
+        if (QDir::cleanPath(QString(userInput)).startsWith( QDir::cleanPath(folderDir)+'/')) {
+            return tr("An already configured folder contains the currently entered folder.");
+        }
+
+        if (absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)+'/')) {
+            return tr("The selected folder is a symbolic link. An already configured folder "
+                      "is the parent of the current selected contains the folder this link is "
+                      "pointing to.");
+        }
+    }
+
+    return QString();
+
+}
+
 
 } // namespace OCC

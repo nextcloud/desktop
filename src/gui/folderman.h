@@ -26,6 +26,7 @@
 #include "syncfileitem.h"
 
 class QSignalMapper;
+class TestFolderMan;
 
 namespace OCC {
 
@@ -88,6 +89,14 @@ public:
 
     SocketApi *socketApi();
 
+    /**
+     * Check if @a path is a valid path for a new folder considering the already sync'ed items.
+     * Make sure that this folder, or any subfolder is not sync'ed alrady.
+     *
+     * @returns an empty string if it is allowed, or an error if it is not allowed
+     */
+    QString checkPathValidityForNewFolder(const QString &path);
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
@@ -138,7 +147,6 @@ public slots:
     void slotAccountStateChanged();
 
 private slots:
-
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
@@ -189,6 +197,7 @@ private:
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
     friend class OCC::Application;
+    friend class ::TestFolderMan;
 };
 
 } // namespace OCC
