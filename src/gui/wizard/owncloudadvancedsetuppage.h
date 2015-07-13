@@ -67,6 +67,7 @@ private:
   Ui_OwncloudAdvancedSetupPage _ui;
   bool _checking;
   bool _created;
+  bool _localFolderValid;
   QProgressIndicator* _progressIndi;
   QString _oldLocalFolder;
   QString _remoteFolder;

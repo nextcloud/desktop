@@ -27,6 +27,7 @@
 #include "theme.h"
 #include "configfile.h"
 #include "selectivesyncdialog.h"
+#include <folderman.h>
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 
@@ -38,6 +39,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui(),
     _checking(false),
     _created(false),
+    _localFolderValid(false),
     _progressIndi(new QProgressIndicator (this)),
     _oldLocalFolder(),
     _remoteFolder()
@@ -86,7 +88,7 @@ void OwncloudAdvancedSetupPage::setupCustomization()
 
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
-    return !_checking;
+    return !_checking && _localFolderValid;
 }
 
 void OwncloudAdvancedSetupPage::initializePage()
@@ -124,6 +126,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
 {
     const QString locFolder = localFolder();
     // check if the local folder exists. If so, and if its not empty, show a warning.
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder);
+    _localFolderValid = errorStr.isEmpty();
+
     QString t;
 
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
@@ -150,6 +155,8 @@ void OwncloudAdvancedSetupPage::updateStatus()
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
     wizard()->resize(wizard()->sizeHint());
+    setErrorString(errorStr);
+    emit completeChanged();
 }
 
 /* obsolete */
