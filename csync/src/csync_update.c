@@ -177,7 +177,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   } else {
       /* This code should probably be in csync_exclude, but it does not have the fs parameter.
          Keep it here for now */
-      if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
+      if (ctx->ignore_hidden_files && (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN)) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }

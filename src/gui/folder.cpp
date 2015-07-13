@@ -813,6 +813,9 @@ void Folder::startSync(const QStringList &pathList)
         return;
     }
 
+    // pass the setting if hidden files are to be ignored, will be read in csync_update
+    _csync_ctx->ignore_hidden_files = _definition.ignoreHiddenFiles;
+
     _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), remotePath(), &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -1086,6 +1089,7 @@ void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
     settings.setValue(QLatin1String("localPath"), folder.localPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
+    settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.endGroup();
 }
 
@@ -1097,6 +1101,7 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
+    folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     settings.endGroup();
     return true;
 }
