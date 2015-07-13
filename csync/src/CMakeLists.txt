@@ -58,8 +58,18 @@ set(csync_SRCS
 
   vio/csync_vio.c
   vio/csync_vio_file_stat.c
-  vio/csync_vio_local.c
 )
+
+if (WIN32)
+    list(APPEND csync_SRCS
+        vio/csync_vio_local_win.c
+    )
+else()
+    list(APPEND csync_SRCS
+        vio/csync_vio_local_unix.c
+    )
+endif()
+
 
 if(USE_NEON)
     list(APPEND csync_SRCS
