@@ -244,6 +244,11 @@ int FolderStatusModel::columnCount(const QModelIndex&) const
 int FolderStatusModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
+        if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
+            // special case when syncing the entire owncloud: hide the add folder button (#3438)
+            return 1;
+        }
+
         return _folders.count() + 1;
     }
 
