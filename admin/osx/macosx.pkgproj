@@ -472,7 +472,12 @@
 			<key>PACKAGE_SCRIPTS</key>
 			<dict>
                  <key>POSTINSTALL_PATH</key>
-                 <dict/>
+                 <dict>
+                         <key>PATH</key>
+                         <string>@CMAKE_CURRENT_BINARY_DIR@/post_install.sh</string>
+                         <key>PATH_TYPE</key>
+                         <integer>0</integer>
+                 </dict>
                  <key>PREINSTALL_PATH</key>
                  <dict>
                          <key>PATH</key>
