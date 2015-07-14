@@ -151,6 +151,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         ConfigFile cfg;
         fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::SystemScope) );
         fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::UserScope) );
+        fw->setIgnoreHidden( folder->ignoreHiddenFiles() );
 
         // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
