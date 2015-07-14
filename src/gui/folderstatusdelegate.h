@@ -44,7 +44,7 @@ public:
                     WarningCount,
                     SyncRunning,
 
-                    AddButton
+                    AddButton // 1 = enabled; 2 = disabled
                   };
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;

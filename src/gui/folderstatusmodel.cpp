@@ -69,8 +69,15 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 {
     switch (classify(index)) {
-        case AddButton:
-            return Qt::ItemIsEnabled;
+        case AddButton: {
+            if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
+                // special case when syncing the entire owncloud: disable the add folder button (#3438)
+                return Qt::ItemNeverHasChildren;
+            } else if (!_accountState->isConnected()) {
+                return Qt::ItemNeverHasChildren;
+            }
+            return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
+        }
         case RootFolder:
             return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
         case SubFolder:
@@ -88,10 +95,23 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch(classify(index)) {
-    case AddButton:
-        if (role == FolderStatusDelegate::AddButton)
+    case AddButton: {
+        if (role == FolderStatusDelegate::AddButton) {
             return QVariant(true);
+        } else if (role == Qt::ToolTipRole) {
+            if (!_accountState->isConnected()) {
+                return tr("You need to be connected to add a folder");
+            } else if (_folders.count() == 1
+                        && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
+                // Syncing the entire owncloud: disable the add folder button (#3438)
+                return tr("Adding folder is disabled because your are already syncing all your files. "
+                          "If you want to sync multiple folders, please remove the currently "
+                          "configured root folder.");
+            }
+            return tr("Click this button to add a folder to synchronize.");
+        }
         return QVariant();
+    }
     case SubFolder:
     {
         const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs[index.row()];
@@ -244,11 +264,6 @@ int FolderStatusModel::columnCount(const QModelIndex&) const
 int FolderStatusModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
-            // special case when syncing the entire owncloud: hide the add folder button (#3438)
-            return 1;
-        }
-
         return _folders.count() + 1;
     }
 

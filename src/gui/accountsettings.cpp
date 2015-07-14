@@ -161,7 +161,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
-    if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
+    if (indx.data(FolderStatusDelegate::AddButton).toBool()
+            && indx.flags() & Qt::ItemIsEnabled) {
         slotAddFolder();
         return;
     }

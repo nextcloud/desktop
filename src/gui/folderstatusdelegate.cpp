@@ -93,12 +93,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 {
     QStyledItemDelegate::paint(painter,option,index);
 
-    if (qvariant_cast<bool>(index.data(AddButton))) {
+    if (index.data(AddButton).toBool()) {
         QSize hint = sizeHint(option, index);
         QStyleOptionButton opt;
         static_cast<QStyleOption&>(opt) = option;
-        // only keep the flags interesting for the button:
-        opt.state = QStyle::State_Enabled;
+        opt.state &= ~QStyle::State_Selected;
+        opt.state |= QStyle::State_Raised;
         opt.text = addFolderText();
         opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter
@@ -330,7 +330,6 @@ bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mo
                                          const QStyleOptionViewItem & option, const QModelIndex & index )
 {
     return QStyledItemDelegate::editorEvent(event, model, option, index);
-    return false;
 }
 
 } // namespace OCC
