@@ -65,6 +65,8 @@ SelectiveSyncTreeView::SelectiveSyncTreeView(AccountPtr account, QWidget* parent
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     header()->setSectionResizeMode(0, QHeaderView::QHeaderView::ResizeToContents);
     header()->setSectionResizeMode(1, QHeaderView::QHeaderView::ResizeToContents);
+#else
+    header()->resizeSection(0, sizeHint().width()/2);
 #endif
     header()->setStretchLastSection(true);
     headerItem()->setText(0, tr("Name"));
