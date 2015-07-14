@@ -170,6 +170,13 @@ public:
 
      void setDirtyNetworkLimits();
 
+     /**
+      * Ignore syncing of hidden files or not. This is defined in the
+      * folder definition
+      */
+     bool ignoreHiddenFiles();
+     void setIgnoreHiddenFiles(bool ignore);
+
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
 

@@ -191,6 +191,17 @@ QString Folder::path() const
     return p;
 }
 
+bool Folder::ignoreHiddenFiles()
+{
+    bool re(_definition.ignoreHiddenFiles);
+    return re;
+}
+
+void Folder::setIgnoreHiddenFiles(bool ignore)
+{
+    _definition.ignoreHiddenFiles = ignore;
+}
+
 QString Folder::cleanPath()
 {
     QString cleanedPath = QDir::cleanPath(_definition.localPath);
