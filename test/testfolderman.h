@@ -7,7 +7,10 @@
 
 #pragma once
 
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 #include <QTemporaryDir>
+#endif
 #include <QtTest>
 
 #include "utility.h"
@@ -35,6 +38,7 @@ class TestFolderMan: public QObject
 private slots:
     void testCheckPathValidityForNewFolder()
     {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
@@ -81,6 +85,9 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link3").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link4").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link3/folder").isNull());
+#else
+        QSKIP("Test not supported with Qt4", SkipSingle);
+#endif
     }
 };
 
