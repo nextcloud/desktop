@@ -70,13 +70,17 @@ Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 {
     switch (classify(index)) {
         case AddButton: {
+            Qt::ItemFlags ret;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+            ret = Qt::ItemNeverHasChildren;
+#endif
             if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
                 // special case when syncing the entire owncloud: disable the add folder button (#3438)
-                return Qt::ItemNeverHasChildren;
+                return ret;
             } else if (!_accountState->isConnected()) {
-                return Qt::ItemNeverHasChildren;
+                return ret;
             }
-            return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
+            return Qt::ItemIsEnabled | ret;
         }
         case RootFolder:
             return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
