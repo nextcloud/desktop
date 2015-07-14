@@ -29,7 +29,7 @@ namespace OCC {
 static const char propertyParentIndexC[] = "oc_parentIndex";
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
-    :QAbstractItemModel(parent), _dirty(false)
+    :QAbstractItemModel(parent), _accountState(0), _dirty(false)
 {
 }
 
