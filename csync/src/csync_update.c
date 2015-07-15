@@ -166,20 +166,23 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
 
-  if (excluded != CSYNC_NOT_EXCLUDED) {
+  if( excluded == CSYNC_NOT_EXCLUDED ) {
+      /* Even if it is not excluded by a pattern, maybe it is to be ignored
+       * because it's a hidden file that should not be synced.
+       * This code should probably be in csync_exclude, but it does not have the fs parameter.
+       * Keep it here for now */
+      if (ctx->ignore_hidden_files && (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN)) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
+          excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
+      }
+  } else {
+      /* File is ignored because it's matched by a user- or system exclude pattern. */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
       if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
           return 1;
       }
       if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
           return 1;
-      }
-  } else {
-      /* This code should probably be in csync_exclude, but it does not have the fs parameter.
-         Keep it here for now */
-      if (ctx->ignore_hidden_files && (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN)) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
-          excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }
   }
 
