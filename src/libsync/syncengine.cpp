@@ -371,7 +371,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_errorString = tr("File is listed on the ignore list.");
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
-        item->_errorString = tr("File contains invalid characters that can not be synced cross platform.");
+        item->_errorString = tr("Filename contains invalid characters that can not be synced cross platform.");
         break;
     case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME:
         item->_errorString = tr("Filename is too long.");
