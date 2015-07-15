@@ -416,7 +416,7 @@ void AccountSettings::slotAccountStateChanged(int state)
            serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
         }
 
-        if (state == AccountState::Connected || state == AccountState::ServiceUnavailable) {
+        if (state == AccountState::Connected) {
             showConnectionLabel( tr("Connected to %1.").arg(serverWithUser) );
         } else if (state == AccountState::ServiceUnavailable) {
             showConnectionLabel( tr("Server %1 is temporarily unavailable.").arg(server) );
