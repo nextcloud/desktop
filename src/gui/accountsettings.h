@@ -67,8 +67,7 @@ public slots:
     void slotUpdateQuota( qint64,qint64 );
     void slotAccountStateChanged(int state);
 
-    void setGeneralErrors( const QStringList& errors );
-    AccountState* accountsState() { return _accountState; };
+    AccountState* accountsState() { return _accountState; }
 
 protected slots:
     void slotAddFolder();
@@ -83,14 +82,14 @@ protected slots:
     void slotCustomContextMenuRequested(const QPoint&);
 
 private:
-    void showConnectionLabel( const QString& message, const QString& tooltip = QString() );
+    void showConnectionLabel(const QString& message,
+                             QStringList errors = QStringList());
     bool event(QEvent*) Q_DECL_OVERRIDE;
 
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
     QUrl   _OCUrl;
-    QStringList _generalErrors;
     bool _wasDisabledBefore;
     AccountState *_accountState;
     QLabel *_quotaLabel;

@@ -211,15 +211,6 @@ void AccountSettings::slotFolderWizardRejected()
     folderMan->setSyncEnabled(true);
 }
 
-void AccountSettings::setGeneralErrors( const QStringList& errors )
-{
-    _generalErrors = errors;
-    if (_accountState) {
-        // this will update the message
-        slotAccountStateChanged(_accountState->state());
-    }
-}
-
 void AccountSettings::slotRemoveCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
@@ -284,17 +275,19 @@ void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
     emit openFolderAlias( alias );
 }
 
-void AccountSettings::showConnectionLabel( const QString& message, const QString& tooltip )
+void AccountSettings::showConnectionLabel( const QString& message, QStringList errors )
 {
     const QString errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
                                            "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
                                            "border-radius:5px;");
-    if( _generalErrors.isEmpty() ) {
+    if( errors.isEmpty() ) {
         ui->connectLabel->setText( message );
-        ui->connectLabel->setToolTip(tooltip);
+        ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(QString());
     } else {
-        const QString msg = _generalErrors.join(QLatin1String("\n"));
+        errors.prepend(message);
+        const QString msg = errors.join(QLatin1String("\n"));
+        qDebug() << msg;
         ui->connectLabel->setText( msg );
         ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(errStyle);
@@ -416,23 +409,23 @@ void AccountSettings::slotAccountStateChanged(int state)
         foreach (Folder *folder, folderMan->map().values()) {
             _model->slotUpdateFolderState(folder);
         }
+
+        QString server = QString::fromLatin1("<a href=\"%1\">%2</a>").arg(account->url().toString(), safeUrl.toString());
+        QString serverWithUser = server;
+        if (AbstractCredentials *cred = account->credentials()) {
+           serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
+        }
+
         if (state == AccountState::Connected || state == AccountState::ServiceUnavailable) {
-            QString user;
-            if (AbstractCredentials *cred = account->credentials()) {
-               user = cred->user();
-            }
-            if (user.isEmpty()) {
-                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a>.").arg(account->url().toString(), safeUrl.toString())
-                                 /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
-            } else {
-                showConnectionLabel( tr("Connected to <a href=\"%1\">%2</a> as <i>%3</i>.").arg(account->url().toString(), safeUrl.toString(), user)
-                                 /*, tr("Version: %1 (%2)").arg(versionStr).arg(version) */ );
-            }
+            showConnectionLabel( tr("Connected to %1.").arg(serverWithUser) );
+        } else if (state == AccountState::ServiceUnavailable) {
+            showConnectionLabel( tr("Server %1 is temporarily unavailable.").arg(server) );
+        } else if (state == AccountState::SignedOut) {
+            showConnectionLabel( tr("Signed out from %1.").arg(serverWithUser) );
         } else {
-            showConnectionLabel( tr("No connection to %1 at <a href=\"%2\">%3</a>.")
+            showConnectionLabel( tr("No connection to %1 at %2.")
                                  .arg(Theme::instance()->appNameGUI(),
-                                      account->url().toString(),
-                                      safeUrl.toString()) );
+                                      server), _accountState->connectionErrors() );
         }
     } else {
         // ownCloud is not yet configured.
