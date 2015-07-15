@@ -295,14 +295,14 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
 
     if (separateMenu) {
-        if (accountState->isConnected()) {
-            QAction* signout = menu->addAction(tr("Sign out"));
-            signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
-            connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
-        } else {
+        if (accountState->isSignedOut()) {
             QAction* signin = menu->addAction(tr("Sign in..."));
             signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signin, SIGNAL(triggered()), this, SLOT(slotLogin()));
+        } else {
+            QAction* signout = menu->addAction(tr("Sign out"));
+            signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
+            connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
         }
     }
 
@@ -340,12 +340,16 @@ void ownCloudGui::setupContextMenu()
 
     bool isConfigured = (!accountList.isEmpty());
     bool atLeastOneConnected = false;
-    bool atLeastOneDisconnected = false;
+    bool atLeastOneSignedOut = false;
+    bool atLeastOneSignedIn = false;
     foreach (auto a, accountList) {
         if (a->isConnected()) {
             atLeastOneConnected = true;
+        }
+        if (a->isSignedOut()){
+            atLeastOneSignedOut = true;
         } else {
-            atLeastOneDisconnected = true;
+            atLeastOneSignedIn = true;
         }
     }
 
@@ -395,7 +399,7 @@ void ownCloudGui::setupContextMenu()
     }
 
     _contextMenu->addSeparator();
-    if (atLeastOneConnected) {
+    if (atLeastOneSignedIn) {
         if (accountList.count() > 1) {
             _actionLogout->setText(tr("Sign out everywhere"));
         } else {
@@ -403,7 +407,7 @@ void ownCloudGui::setupContextMenu()
         }
         _contextMenu->addAction(_actionLogout);
     }
-    if (atLeastOneDisconnected) {
+    if (atLeastOneSignedOut) {
         if (accountList.count() > 1) {
             _actionLogin->setText(tr("Sign in everywhere..."));
         } else {
