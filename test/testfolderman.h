@@ -8,7 +8,7 @@
 #pragma once
 
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+#if QT_VERSION >= 0x050100
 #include <QTemporaryDir>
 #endif
 #include <QtTest>
@@ -38,7 +38,7 @@ class TestFolderMan: public QObject
 private slots:
     void testCheckPathValidityForNewFolder()
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+#if QT_VERSION >= 0x050100
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
