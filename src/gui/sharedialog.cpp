@@ -75,6 +75,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotCalendarClicked(QDate)));
 
+    //Disable checkbox
+    _ui->checkBox_shareLink->setEnabled(false);
+    _pi_link->startAnimation();
+
     _ui->pushButton_setPassword->setEnabled(false);
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
@@ -287,6 +291,10 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
 
     ShareDialog::_shares = reply.value("ocs").toMap().value("data").toList();
     const QString versionString = _account->serverVersion();
+
+    //Show link checkbox now
+    _ui->checkBox_shareLink->setEnabled(true);
+    _pi_link->stopAnimation();
 
     Q_FOREACH(auto share, ShareDialog::_shares) {
         QVariantMap data = share.toMap();
