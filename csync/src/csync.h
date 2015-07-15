@@ -49,41 +49,37 @@ struct csync_client_certs_s {
   char *certificatePasswd;
 };  
   
-/**
-  * Instruction enum. In the file traversal structure, it describes
-  * the csync state of a file.
-  */
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
                                      */
-  CSYNC_STATUS_UNSUCCESSFUL,
-  CSYNC_STATUS_NO_LOCK, /* OBSOLETE  does not happen anymore */
-  CSYNC_STATUS_STATEDB_LOAD_ERROR,
-  CSYNC_STATUS_STATEDB_CORRUPTED,
-  CSYNC_STATUS_NO_MODULE,
-  CSYNC_STATUS_TIMESKEW, /* OBSOLETE */
+  CSYNC_STATUS_UNSUCCESSFUL,       /* Unspecific problem happend */
+  CSYNC_STATUS_NO_LOCK,            /* OBSOLETE  does not happen anymore */
+  CSYNC_STATUS_STATEDB_LOAD_ERROR, /* Statedb can not be loaded. */
+  CSYNC_STATUS_STATEDB_CORRUPTED,  /* Statedb is corrupted */
+  CSYNC_STATUS_NO_MODULE,          /* URL passed to csync does not start with owncloud:// or ownclouds:// */
+  CSYNC_STATUS_TIMESKEW,           /* OBSOLETE */
   CSYNC_STATUS_FILESYSTEM_UNKNOWN, /* UNUSED */
-  CSYNC_STATUS_TREE_ERROR,
-  CSYNC_STATUS_MEMORY_ERROR,
-  CSYNC_STATUS_PARAM_ERROR,
-  CSYNC_STATUS_UPDATE_ERROR,
-  CSYNC_STATUS_RECONCILE_ERROR,
-  CSYNC_STATUS_PROPAGATE_ERROR, /* OBSOLETE */
+  CSYNC_STATUS_TREE_ERROR,         /* csync trees could not be created */
+  CSYNC_STATUS_MEMORY_ERROR,       /* not enough memory problem */
+  CSYNC_STATUS_PARAM_ERROR,        /* parameter is zero where not expected */
+  CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
+  CSYNC_STATUS_RECONCILE_ERROR,    /* general reconcile error */
+  CSYNC_STATUS_PROPAGATE_ERROR,    /* OBSOLETE */
   CSYNC_STATUS_REMOTE_ACCESS_ERROR, /* UNUSED */
   CSYNC_STATUS_REMOTE_CREATE_ERROR, /* UNUSED */
-  CSYNC_STATUS_REMOTE_STAT_ERROR, /* UNUSED */
+  CSYNC_STATUS_REMOTE_STAT_ERROR,  /* UNUSED */
   CSYNC_STATUS_LOCAL_CREATE_ERROR, /* UNUSED */
-  CSYNC_STATUS_LOCAL_STAT_ERROR, /* UNUSED */
-  CSYNC_STATUS_PROXY_ERROR, /* UNUSED */
-  CSYNC_STATUS_LOOKUP_ERROR,
-  CSYNC_STATUS_SERVER_AUTH_ERROR,
-  CSYNC_STATUS_PROXY_AUTH_ERROR,
-  CSYNC_STATUS_CONNECT_ERROR,
-  CSYNC_STATUS_TIMEOUT,
-  CSYNC_STATUS_HTTP_ERROR,
-  CSYNC_STATUS_PERMISSION_DENIED,
+  CSYNC_STATUS_LOCAL_STAT_ERROR,   /* UNUSED */
+  CSYNC_STATUS_PROXY_ERROR,        /* UNUSED */
+  CSYNC_STATUS_LOOKUP_ERROR,       /* Neon fails to find proxy. Almost OBSOLETE */
+  CSYNC_STATUS_SERVER_AUTH_ERROR,  /* UNUSED */
+  CSYNC_STATUS_PROXY_AUTH_ERROR,   /* UNUSED */
+  CSYNC_STATUS_CONNECT_ERROR,      /* neon driven connection failed */
+  CSYNC_STATUS_TIMEOUT,            /* UNUSED */
+  CSYNC_STATUS_HTTP_ERROR,         /* UNUSED */
+  CSYNC_STATUS_PERMISSION_DENIED,  /*  */
   CSYNC_STATUS_NOT_FOUND,
   CSYNC_STATUS_FILE_EXISTS,
   CSYNC_STATUS_OUT_OF_SPACE,
@@ -120,7 +116,10 @@ typedef enum csync_status_codes_e CSYNC_STATUS;
 #define CSYNC_STATUS_IS_ERR(x) (unlikely((x) >= CSYNC_STATUS_ERROR))
 #define CSYNC_STATUS_IS_EQUAL(x, y) ((x) == (y))
 
-
+/**
+  * Instruction enum. In the file traversal structure, it describes
+  * the csync state of a file.
+  */
 enum csync_instructions_e {
   CSYNC_INSTRUCTION_NONE       = 0x00000000,  /* Nothing to do (UPDATE|RECONCILE) */
   CSYNC_INSTRUCTION_EVAL       = 0x00000001,  /* There was changed compared to the DB (UPDATE) */
