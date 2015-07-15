@@ -124,6 +124,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->abort = false;
 
+  ctx->ignore_hidden_files = true;
+
   *csync = ctx;
   return 0;
 }
