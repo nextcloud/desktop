@@ -50,7 +50,8 @@ bool OCUpdater::performUpdate()
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     QString updateFile = settings.value(updateAvailableC).toString();
-    if (!updateFile.isEmpty() && QFile(updateFile).exists()) {
+    if (!updateFile.isEmpty() && QFile(updateFile).exists()
+            && !updateSucceeded() /* Someone might have run the updater manually between restarts */ ) {
         const QString name = Theme::instance()->appNameGUI();
         if (QMessageBox::information(0, tr("New %1 Update Ready").arg(name),
                                      tr("A new update for %1 is about to be installed. The updater may ask\n"
