@@ -89,7 +89,6 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 ; Include some required header files.
 ;-----------------------------------------------------------------------------
 !include LogicLib.nsh ;Used by APPDATA uninstaller.
-!include nsDialogs.nsh ;Used by APPDATA uninstaller.
 !include MUI2.nsh ;Used by APPDATA uninstaller.
 !include InstallOptions.nsh ;Required by MUI2 to support old MUI_INSTALLOPTIONS.
 !include Memento.nsh ;Remember user selections.
@@ -145,7 +144,6 @@ Page custom PageReinstall PageLeaveReinstall
    !insertmacro MUI_PAGE_FINISH
 !endif
 !insertmacro MUI_UNPAGE_CONFIRM
-UninstPage custom un.UnPageUserAppData un.UnPageUserAppDataLeave
 !insertmacro MUI_UNPAGE_INSTFILES
 
 ;-----------------------------------------------------------------------------
@@ -594,40 +592,6 @@ SectionEnd
 #                                                                            #
 ##############################################################################
 
-Var UnPageUserAppDataDialog
-Var UnPageUserAppDataCheckbox
-Var UnPageUserAppDataCheckbox_State
-Var UnPageUserAppDataEditBox
-
-Function un.UnPageUserAppData
-   !insertmacro MUI_HEADER_TEXT $UNINSTALLER_APPDATA_TITLE $UNINSTALLER_APPDATA_SUBTITLE
-   nsDialogs::Create /NOUNLOAD 1018
-   Pop $UnPageUserAppDataDialog
-
-   ${If} $UnPageUserAppDataDialog == error
-      Abort
-   ${EndIf}
-
-   ${NSD_CreateLabel} 0 0 100% 12u $UNINSTALLER_APPDATA_LABEL_1
-   Pop $0
-
-   ${NSD_CreateText} 0 13u 100% 12u "$LOCALAPPDATA\${APPLICATION_NAME}"
-   Pop $UnPageUserAppDataEditBox
-   SendMessage $UnPageUserAppDataEditBox ${EM_SETREADONLY} 1 0
-
-   ${NSD_CreateLabel} 0 46u 100% 24u $UNINSTALLER_APPDATA_LABEL_2
-   Pop $0
-
-   ${NSD_CreateCheckbox} 0 71u 100% 8u $UNINSTALLER_APPDATA_CHECKBOX
-   Pop $UnPageUserAppDataCheckbox
-
-   nsDialogs::Show
-FunctionEnd
-
-Function un.UnPageUserAppDataLeave
-   ${NSD_GetState} $UnPageUserAppDataCheckbox $UnPageUserAppDataCheckbox_State
-FunctionEnd
-
 Function un.EnsureOwncloudShutdown
    !insertmacro CheckAndConfirmEndProcess "${APPLICATION_EXECUTABLE}"
 FunctionEnd
@@ -704,11 +668,6 @@ Section Uninstall
 
    ;Remove all the Program Files.
    RMDir /r $INSTDIR
-
-   ;Uninstall User Data if option is checked, otherwise skip.
-   ${If} $UnPageUserAppDataCheckbox_State == ${BST_CHECKED}
-      RMDir /r "$LOCALAPPDATA\${APPLICATION_NAME}"
-   ${EndIf}
 
    DeleteRegKey ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}"
 
