@@ -103,6 +103,17 @@ private slots:
 
 
     }
+
+    void testVersionOfInstalledBinary()
+    {
+	if( isLinux() ) {
+                QString ver = versionOfInstalledBinary("/home/kf/owncloud.com/buildmirall/bin/owncloud");
+		qDebug() << "Version of installed ownCloud Binary: " << ver;
+		QVERIFY( !ver.isEmpty()); 
+	} else {
+		QVERIFY( versionOfInstalledBinary().isEmpty());
+	}
+    }
 };
 
 #endif
