@@ -28,7 +28,6 @@
 #include <QBuffer>
 #include <QFileIconProvider>
 #include <QClipboard>
-#include <QInputDialog>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
@@ -260,6 +259,11 @@ void ShareDialog::setPassword(const QString &password)
     OcsShareJob *job = new OcsShareJob(verb, url, _account, this);
     job->setPostParams(requestParams);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
+
+    if (_public_share_id == 0) {
+        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
+    }
+
     job->start();
     _passwordJobRunning = true;
 }
@@ -445,20 +449,15 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
          * Ask for it directly
          */
         if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool()) {
-            bool ok;
-            const QString pass = QInputDialog::getText(this,
-                                                       tr("Password for share by link"),
-                                                       tr("Sharing by link requires a password:"),
-                                                       QLineEdit::Password,
-                                                       QString(),
-                                                       &ok);
+            _ui->checkBox_password->setChecked(true);
+            _ui->checkBox_password->setEnabled(false);
+            _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+            _ui->lineEdit_password->setFocus();
+            _ui->pushButton_copy->hide();
+            _ui->widget_shareLink->show();
 
-            if (!ok) {
-                _pi_link->stopAnimation();
-                _ui->checkBox_shareLink->setChecked(false);
-                return;
-            }
-            postParams.append(qMakePair(QString::fromLatin1("password"), pass));
+            slotCheckBoxPasswordClicked();
+            return;
         }
 
         OcsShareJob *job = new OcsShareJob("POST", url, _account, this);
