@@ -58,6 +58,8 @@ public:
     void showHelp();
     void showHint(std::string errorHint);
     bool debugMode();
+    bool versionOnly(); // only display the version?
+    void showVersion();
 
     void showSettingsDialog();
 
@@ -94,6 +96,7 @@ private:
     Theme *_theme;
 
     bool _helpOnly;
+    bool _versionOnly;
 
     // options from command line:
     bool _showLogWindow;

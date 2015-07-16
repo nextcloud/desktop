@@ -89,6 +89,7 @@ Application::Application(int &argc, char **argv) :
     _gui(0),
     _theme(Theme::instance()),
     _helpOnly(false),
+    _versionOnly(false),
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false),
@@ -105,7 +106,7 @@ Application::Application(int &argc, char **argv) :
 #endif
     parseOptions(arguments());
     //no need to waste time;
-    if ( _helpOnly ) return;
+    if ( _helpOnly || _versionOnly ) return;
 
     if (isRunning())
         return;
@@ -346,6 +347,8 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--debug")) {
             _debugMode = true;
+        } else if (option == QLatin1String("--version")) {
+            _versionOnly = true;
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -392,6 +395,17 @@ void Application::showHelp()
 
     if (_theme->appName() == QLatin1String("ownCloud"))
         stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
+
+    displayHelpText(helpText);
+}
+
+void Application::showVersion()
+{
+    QString helpText;
+    QTextStream stream(&helpText);
+    stream << _theme->appName().toLatin1().constData()
+           << QLatin1String(" version ")
+           << _theme->version().toLatin1().constData() << endl;
 
     displayHelpText(helpText);
 }
@@ -490,6 +504,11 @@ void Application::setupTranslations()
 bool Application::giveHelp()
 {
     return _helpOnly;
+}
+
+bool Application::versionOnly()
+{
+    return _versionOnly;
 }
 
 void Application::showSettingsDialog()
