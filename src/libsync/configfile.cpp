@@ -389,7 +389,7 @@ bool ConfigFile::updateCheckInterval( const QString& connection ) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup( con );
 
-    quint64 defaultInterval = 1000*120*60;
+    quint64 defaultInterval = 1000*60*60*10; // ten hours
     quint64 interval = settings.value( QLatin1String(updateCheckIntervalC), defaultInterval ).toULongLong();
 
     quint64 minInterval = 1000*60*5;

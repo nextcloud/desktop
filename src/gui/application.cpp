@@ -178,7 +178,7 @@ Application::Application(int &argc, char **argv) :
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     // Update checks
-    _updaterTimer.setInterval(cfg.updateCheckInterval()); // check every two hours
+    _updaterTimer.setInterval(cfg.updateCheckInterval()); // check every couple of hours as defined in config
 
     connect(&_updaterTimer, SIGNAL(timeout()), this, SLOT(slotStartUpdateDetector()));
     QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
