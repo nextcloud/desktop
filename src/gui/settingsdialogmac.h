@@ -52,8 +52,7 @@ private slots:
 private:
     void closeEvent(QCloseEvent *event);
 
-    QListWidgetItem *_accountItem;
-    ProtocolWidget  *_protocolWidget;
+    ProtocolWidget  *_protocolWidget; // this is actually the activityPage
     ownCloudGui     *_gui;
 
     int _protocolIdx;

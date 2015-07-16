@@ -76,7 +76,7 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
     _protocolWidget = new ProtocolWidget;
-    _protocolIdx = addPreferencesPanel(protocolIcon, tr("Activity"), _protocolWidget);
+    addPreferencesPanel(protocolIcon, tr("Activity"), _protocolWidget);
 
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -104,15 +104,16 @@ void SettingsDialogMac::closeEvent(QCloseEvent *event)
 
 void SettingsDialogMac::showActivityPage()
 {
-    setCurrentPanelIndex(_protocolIdx);
+    // Count backwards (0-based) from the last panel (multiple accounts can be on the left)
+    setCurrentPanelIndex(preferencePanelCount() - 1 - 2);
 }
 
 void SettingsDialogMac::accountAdded(AccountState *s)
 {
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
-    //FIXME: add at the begining: (and don(t foget to adjust for _protocolIdx)
-    addPreferencesPanel(accountIcon, s->account()->displayName(), accountSettings);
+
+    insertPreferencesPanel(0, accountIcon, s->account()->displayName(), accountSettings);
 
     connect( accountSettings, &AccountSettings::folderChanged, _gui,  &ownCloudGui::slotFoldersChanged);
     connect( accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
@@ -120,11 +121,10 @@ void SettingsDialogMac::accountAdded(AccountState *s)
 
 void SettingsDialogMac::accountRemoved(AccountState *s)
 {
-    // FIXME: is it the correct way to remove a panel?
-    auto list = findChildren<AccountSettings*>(QString(), Qt::FindDirectChildrenOnly);
+    auto list = findChildren<AccountSettings*>(QString());
     foreach(auto p, list) {
         if (p->accountsState() == s) {
-            p->deleteLater();
+            removePreferencesPanel(p);
         }
     }
 }
