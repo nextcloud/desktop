@@ -64,6 +64,12 @@ public:
     void deleteAccount(AccountState *account);
 
 
+    /**
+     * Creates an account and sets up some basic handlers.
+     * Does *not* add the account to the account manager just yet.
+     */
+    static AccountPtr createAccount();
+
 private:
     void save(const AccountPtr& account, QSettings& settings);
     AccountPtr load(QSettings& settings);

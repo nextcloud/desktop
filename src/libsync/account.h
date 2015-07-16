@@ -51,7 +51,6 @@ public:
     virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate>*, AccountPtr) = 0;
 };
 
-
 /**
  * @brief The Account class represents an account on an ownCloud Server
  * @ingroup libsync
@@ -157,8 +156,11 @@ signals:
     void invalidCredentials();
     void credentialsFetched(AbstractCredentials* credentials);
 
+    /// Forwards from QNetworkAccessManager::proxyAuthenticationRequired().
+    void proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
+
 protected Q_SLOTS:
-    void slotHandleErrors(QNetworkReply*,QList<QSslError>);
+    void slotHandleSslErrors(QNetworkReply*,QList<QSslError>);
     void slotCredentialsFetched();
 
 private:

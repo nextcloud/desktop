@@ -26,6 +26,7 @@ set(client_UI
     sslerrordialog.ui
     owncloudsetuppage.ui
     addcertificatedialog.ui
+    proxyauthdialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -66,6 +67,8 @@ set(client_SRCS
     accountstate.cpp
     addcertificatedialog.cpp
     authenticationdialog.cpp
+    proxyauthhandler.cpp
+    proxyauthdialog.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp

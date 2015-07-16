@@ -134,7 +134,9 @@ void Account::setCredentials(AbstractCredentials *cred)
         _am->setCookieJar(jar);
     }
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
-            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+            SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
+    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+            SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
     connect(_credentials, SIGNAL(fetched()),
             SLOT(slotCredentialsFetched()));
 }
@@ -178,7 +180,9 @@ void Account::resetNetworkAccessManager()
     _am = _credentials->getQNAM();
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
-            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+            SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
+    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+            SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 QNetworkAccessManager *Account::networkAccessManager()
@@ -368,7 +372,7 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
     }
 }
 
-void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
+void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
     QString out;
