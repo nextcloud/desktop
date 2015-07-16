@@ -131,7 +131,8 @@ void ownCloudGui::setupOverlayIcons()
               p.start(osascript, processArguments);
               p.write(aScript.toUtf8());
               p.closeWriteChannel();
-              p.waitForReadyRead(-1);
+              //p.waitForReadyRead(-1);
+              p.waitForFinished();
               QByteArray result = p.readAll();
               QString resultAsString(result); // if appropriate
               qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
