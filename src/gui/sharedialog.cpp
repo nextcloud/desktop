@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "syncresult.h"
 #include "configfile.h"
+#include "capabilities.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -142,15 +143,15 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     // Parse capabilities
 
     // If password is enforced make don't allow users to disable it
-    if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool()) {
+    if (_account->capabilities()->publicLinkEnforcePassword()) {
         _ui->checkBox_password->setEnabled(false);
     }
 
     // If expiredate is enforced do not allow disable and set max days
-    if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enforced"].toBool()) {
+    if (_account->capabilities()->publicLinkEnforceExpireDate()) {
         _ui->checkBox_expire->setEnabled(false);
         _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
-            _account->capabilities()["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt()
+            _account->capabilities()->publicLinkExpireDateDays()
             ));
     }
 }
@@ -448,7 +449,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
          * Check the capabilities if the server requires a password for a share
          * Ask for it directly
          */
-        if (_account->capabilities()["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool()) {
+        if (_account->capabilities()->publicLinkEnforcePassword()) {
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));

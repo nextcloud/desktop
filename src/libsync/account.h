@@ -26,6 +26,7 @@
 #include <QSharedPointer>
 #include "utility.h"
 #include <memory>
+#include "capabilities.h"
 
 class QSettings;
 class QNetworkReply;
@@ -139,7 +140,7 @@ public:
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
 
     void setCapabilities(const QVariantMap &caps);
-    QVariantMap capabilities();
+    const Capabilities * capabilities() const;
     void setServerVersion(const QString &version);
     QString serverVersion();
 
@@ -170,7 +171,7 @@ private:
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
-    QVariantMap _capabilities;
+    Capabilities _capabilities;
     QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
