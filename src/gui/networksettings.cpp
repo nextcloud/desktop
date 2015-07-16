@@ -40,12 +40,18 @@ NetworkSettings::NetworkSettings(QWidget *parent) :
 
     _ui->authRequiredcheckBox->setEnabled(true);
 
+    // Explicitly set up the enabled status of the proxy auth widgets to ensure
+    // toggling the parent enables/disables the children
+    _ui->userLineEdit->setEnabled(true);
+    _ui->passwordLineEdit->setEnabled(true);
+    _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
+    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)),
+            _ui->authWidgets, SLOT(setEnabled(bool)));
+
     connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
             _ui->manualSettings, SLOT(setEnabled(bool)));
     connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
             _ui->typeComboBox, SLOT(setEnabled(bool)));
-    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)),
-            _ui->authWidgets, SLOT(setEnabled(bool)));
 
     loadProxySettings();
     loadBWLimitSettings();
