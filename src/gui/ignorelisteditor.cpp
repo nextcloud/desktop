@@ -61,7 +61,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     /* value for syncing hidden files */
     bool ignoreHidden = true;
     if( FolderMan::instance()->map().count() > 0 ) {
-        ignoreHidden = FolderMan::instance()->map().first()->ignoreHiddenFiles();
+        ignoreHidden = FolderMan::instance()->map().begin().value()->ignoreHiddenFiles();
     }
     ui->ignoreHiddenFilesCheckBox->setChecked( !ignoreHidden );
 }

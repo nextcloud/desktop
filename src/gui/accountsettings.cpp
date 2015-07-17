@@ -199,7 +199,7 @@ void AccountSettings::slotFolderWizardAccepted()
      * The default is to not sync hidden files
      */
     if( folderMan->map().count() > 0) {
-        ignoreHidden = folderMan->map().first()->ignoreHiddenFiles();
+        ignoreHidden = folderMan->map().begin().value()->ignoreHiddenFiles();
     }
     definition.ignoreHiddenFiles = ignoreHidden;
 
