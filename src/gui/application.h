@@ -106,6 +106,7 @@ private:
     bool    _logFlush;
     bool    _userTriggeredConnect;
     bool    _debugMode;
+    QByteArray _runningAppVersion;
 
     ClientProxy _proxy;
 

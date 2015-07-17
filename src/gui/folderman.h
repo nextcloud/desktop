@@ -146,6 +146,11 @@ public slots:
      */
     void slotAccountStateChanged();
 
+    /**
+     * restart the client as soon as it is possible, ie. no folders syncing.
+     */
+    void slotScheduleAppRestart();
+
 private slots:
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
@@ -174,6 +179,9 @@ private:
     QString getBackupName( QString fullPathName ) const;
     void registerFolderMonitor( Folder *folder );
 
+    // restarts the application (Linux only)
+    void restartApplication();
+
     QString unescapeAlias( const QString& ) const;
 
     QSet<Folder*>  _disabledFolders;
@@ -193,6 +201,8 @@ private:
 
     /** When the timer expires one of the scheduled syncs will be started. */
     QTimer          _startScheduledSyncTimer;
+
+    bool            _appRestartRequired;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);
