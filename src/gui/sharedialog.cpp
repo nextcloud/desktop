@@ -279,6 +279,12 @@ void ShareDialog::getShares()
     job->addPassStatusCode(404); // don't report error if share doesn't exist yet
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotSharesFetched(QVariantMap)));
     job->start();
+
+    if (QFileInfo(_localPath).isFile()) {
+        ThumbnailJob *job2 = new ThumbnailJob(_sharePath, _account, this);
+        connect(job2, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
+        job2->start();
+    }
 }
 
 void ShareDialog::slotSharesFetched(const QVariantMap &reply)
@@ -728,6 +734,27 @@ bool OcsShareJob::finished()
     }
 
     emit jobFinished(json);
+    return true;
+}
+
+ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject* parent)
+: AbstractNetworkJob(account, "", parent)
+{
+    _url = Account::concatUrlPath(account->url(), QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path);
+    setIgnoreCredentialFailure(true);
+}
+
+void ThumbnailJob::start()
+{
+    qDebug() << Q_FUNC_INFO;
+    setReply(getRequest(_url));
+    setupConnections(reply());
+    AbstractNetworkJob::start();
+}
+
+bool ThumbnailJob::finished()
+{
+    emit jobFinished(reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(), reply()->readAll());
     return true;
 }
 
