@@ -36,7 +36,8 @@
 namespace OCC {
 
 FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      _ignoreHidden(true)
 {
     _d.reset(new FolderWatcherPrivate(this, root));
 
@@ -45,6 +46,16 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 
 FolderWatcher::~FolderWatcher()
 { }
+
+void FolderWatcher::setIgnoreHidden(bool ignore)
+{
+    _ignoreHidden = ignore;
+}
+
+bool FolderWatcher::ignoreHidden()
+{
+    return _ignoreHidden;
+}
 
 void FolderWatcher::addIgnoreListFile( const QString& file )
 {
@@ -71,10 +82,14 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 {
     if( path.isEmpty() ) return true;
 
-    QFileInfo fInfo(path);
-    if( fInfo.isHidden() ) {
-        qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
-        return true;
+    // if events caused by changes to hidden files should be ignored, a QFileInfo
+    // object will tell us if the file is hidden
+    if( _ignoreHidden ) {
+        QFileInfo fInfo(path);
+        if( fInfo.isHidden() ) {
+            qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
+            return true;
+        }
     }
 
     // TODO: Best use csync_excluded_no_ctx() here somehow!

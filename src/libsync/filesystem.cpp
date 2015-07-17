@@ -106,7 +106,8 @@ void FileSystem::setFileHidden(const QString& filename, bool hidden)
         }
     }
 #else
-    Q_UNUSED(filename) Q_UNUSED(hidden)
+    Q_UNUSED(filename);
+    Q_UNUSED(hidden);
 #endif
 }
 

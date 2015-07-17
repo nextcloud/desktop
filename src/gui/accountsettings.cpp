@@ -192,6 +192,17 @@ void AccountSettings::slotFolderWizardAccepted()
     definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
     definition.localPath    = folderWizard->field(QLatin1String("sourceFolder")).toString();
     definition.targetPath   = folderWizard->property("targetPath").toString();
+
+    bool ignoreHidden = true;
+    /* take the value from the definition of already existing folders. All folders have
+     * the same setting so far, that's why it's ok to check the first one.
+     * The default is to not sync hidden files
+     */
+    if( folderMan->map().count() > 0) {
+        ignoreHidden = folderMan->map().first()->ignoreHiddenFiles();
+    }
+    definition.ignoreHiddenFiles = ignoreHidden;
+
     auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     folderMan->setSyncEnabled(true);

@@ -168,6 +168,8 @@ struct csync_s {
    */
   bool db_is_empty;
 
+  bool ignore_hidden_files;
+
   struct csync_owncloud_ctx_s *owncloud_context;
 
 };
