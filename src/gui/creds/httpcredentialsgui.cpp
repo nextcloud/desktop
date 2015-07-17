@@ -23,17 +23,24 @@ using namespace QKeychain;
 namespace OCC
 {
 
-    QString HttpCredentialsGui::queryPassword(bool *ok)
+    QString HttpCredentialsGui::queryPassword(bool *ok, const QString& hint)
 {
-    if (ok) {
-        QString str = QInputDialog::getText(0, tr("Enter Password"),
-                                     tr("Please enter %1 password:\n\nUser: %2\nAccount: %3\n")
-                                     .arg(Theme::instance()->appNameGUI(), _user, _account->displayName()),
-                                     QLineEdit::Password, _previousPassword, ok);
-        return str;
-    } else {
+    if (!ok) {
         return QString();
     }
+
+    QString msg = tr("Please enter %1 password:\n"
+                     "\n"
+                     "User: %2\n"
+                     "Account: %3\n")
+                  .arg(Theme::instance()->appNameGUI(), _user, _account->displayName());
+    if (!hint.isEmpty()) {
+        msg += QLatin1String("\n") + hint + QLatin1String("\n");
+    }
+
+    return QInputDialog::getText(0, tr("Enter Password"), msg,
+                                 QLineEdit::Password, _previousPassword,
+                                 ok);
 }
 
 } // namespace OCC
