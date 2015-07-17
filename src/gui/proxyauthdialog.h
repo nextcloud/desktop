@@ -40,7 +40,7 @@ public:
     QString username() const;
     QString password() const;
 
-    /// Resets the username and password.
+    /// Resets the dialog for new credential entry.
     void reset();
 
 private:

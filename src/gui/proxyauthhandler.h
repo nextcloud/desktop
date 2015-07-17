@@ -21,6 +21,7 @@
 #include <QPointer>
 #include <QScopedPointer>
 #include <QSettings>
+#include <QSet>
 
 namespace QKeychain {
 class Job;
@@ -56,6 +57,7 @@ public slots:
 
 private slots:
     void slotKeychainJobDone();
+    void slotSenderDestroyed(QObject*);
 
 private:
     ProxyAuthHandler();
@@ -100,6 +102,11 @@ private:
 
     /// For checking the proxy config settings.
     QScopedPointer<ConfigFile> _configFile;
+
+    /// To distinguish between a new QNAM asking for credentials and credentials
+    /// failing for an existing QNAM, we keep track of the senders of the
+    /// proxyAuthRequired signal here.
+    QSet<QObject*> _gaveCredentialsTo;
 };
 
 } // namespace OCC

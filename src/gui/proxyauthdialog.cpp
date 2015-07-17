@@ -45,6 +45,7 @@ QString ProxyAuthDialog::password() const
 
 void ProxyAuthDialog::reset()
 {
+    ui->usernameEdit->setFocus();
     ui->usernameEdit->clear();
     ui->passwordEdit->clear();
 }

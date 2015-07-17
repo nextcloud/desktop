@@ -16,6 +16,7 @@
 #include "proxyauthdialog.h"
 #include "theme.h"
 #include "configfile.h"
+#include "account.h"
 
 #include <QApplication>
 
@@ -65,6 +66,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         _username.clear();
         _password.clear();
         _blocked = false;
+        _gaveCredentialsTo.clear();
 
         // If the user explicitly configured the proxy in the
         // network settings, don't ask about it.
@@ -78,16 +80,31 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         return;
     }
 
-    qDebug() << Q_FUNC_INFO << key << proxy.type() << authenticator->user();
+    // Find the responsible QNAM if possible.
+    QNetworkAccessManager* sending_qnam = qobject_cast<QNetworkAccessManager*>(sender());
+    if (Account* account = qobject_cast<Account*>(sender())) {
+        sending_qnam = account->networkAccessManager();
+    }
+    if (!sending_qnam) {
+        qDebug() << "Could not get the sending QNAM for" << sender();
+    }
+
+
+    qDebug() << Q_FUNC_INFO << key << proxy.type();
 
     // If we already had a username but auth still failed,
-    // invalidate the old credentials!
+    // invalidate the old credentials! Unfortunately, authenticator->user()
+    // isn't reliable, so we also invalidate credentials if we previously
+    // gave presumably valid credentials to the same QNAM.
     bool invalidated = false;
-    if (!authenticator->user().isEmpty() && !_waitingForDialog && !_waitingForKeychain) {
+    if (!_waitingForDialog && !_waitingForKeychain &&
+            (!authenticator->user().isEmpty()
+             || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
         qDebug() << "invalidating old creds" << key;
         _username.clear();
         _password.clear();
         invalidated = true;
+        _gaveCredentialsTo.clear();
     }
 
     if (_username.isEmpty() || _waitingForKeychain) {
@@ -105,11 +122,21 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     qDebug() << "got creds for" << _proxy;
     authenticator->setUser(_username);
     authenticator->setPassword(_password);
+    if (sending_qnam) {
+        _gaveCredentialsTo.insert(sending_qnam);
+        connect(sending_qnam, SIGNAL(destroyed(QObject*)),
+                SLOT(slotSenderDestroyed(QObject*)));
+    }
 }
 
 void ProxyAuthHandler::slotKeychainJobDone()
 {
     _keychainJobRunning = false;
+}
+
+void ProxyAuthHandler::slotSenderDestroyed(QObject* obj)
+{
+    _gaveCredentialsTo.remove(obj);
 }
 
 bool ProxyAuthHandler::getCredsFromDialog()
