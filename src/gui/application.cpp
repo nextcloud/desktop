@@ -179,8 +179,6 @@ Application::Application(int &argc, char **argv) :
 
     // Update checks
     if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
-        connect(updater,  SIGNAL(downloadStateChanged()),
-                this,     SLOT(slotNotifyAboutAvailableUpdate()), Qt::UniqueConnection);
         connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
                 _gui,     SLOT(slotShowTrayMessage(QString,QString)) );
     }
