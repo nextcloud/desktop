@@ -355,7 +355,7 @@ void ConfigFile::setRemotePollInterval(int interval, const QString &connection )
     if( connection.isEmpty() ) con = defaultConnection();
 
     if( interval < 5000 ) {
-        qDebug() << "Remote Poll interval of " << interval << " is below fife seconds.";
+        qDebug() << "Remote Poll interval of " << interval << " is below five seconds.";
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -394,7 +394,7 @@ bool ConfigFile::updateCheckInterval( const QString& connection ) const
 
     quint64 minInterval = 1000*60*5;
     if( interval < minInterval) {
-        qDebug() << "Update check interval less than fife minutes, setting " << minInterval;
+        qDebug() << "Update check interval less than five minutes, setting " << minInterval;
         interval = minInterval;
     }
     return interval;
