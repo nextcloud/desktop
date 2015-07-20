@@ -117,7 +117,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     ui->quotaInfoLabel->setFont(smallFont);
 
     _quotaLabel = new QLabel(ui->quotaProgressBar);
-    (new QVBoxLayout(ui->quotaProgressBar))->addWidget(_quotaLabel);
+    QVBoxLayout *quotaProgressLayout = new QVBoxLayout(ui->quotaProgressBar);
+    quotaProgressLayout->setContentsMargins(-1,0,-1,0);
+    quotaProgressLayout->setSpacing(0);
+    quotaProgressLayout->addWidget(_quotaLabel);
 
     // This ensures the progress bar is big enough for the label.
     ui->quotaProgressBar->setMinimumHeight(_quotaLabel->height());
