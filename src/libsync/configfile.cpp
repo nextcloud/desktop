@@ -382,7 +382,7 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     return interval;
 }
 
-bool ConfigFile::updateCheckInterval( const QString& connection ) const
+quint64 ConfigFile::updateCheckInterval( const QString& connection ) const
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
