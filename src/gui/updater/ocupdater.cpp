@@ -399,10 +399,11 @@ PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
 
 void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 {
+    qint64 currentVer = Helper::currentVersionToInt();
+    qint64 remoteVer = Helper::stringVersionToInt(info.version());
+
     if( info.version().isEmpty() ||
-            Helper::stringVersionToInt(info.version())
-            >= Helper::currentVersionToInt() )
-    {
+            currentVer >= remoteVer ) {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
