@@ -83,6 +83,10 @@ GeneralSettings::~GeneralSettings()
     delete _ui;
 }
 
+QSize GeneralSettings::sizeHint() const {
+    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
+}
+
 void GeneralSettings::loadMiscSettings()
 {
     ConfigFile cfgFile;

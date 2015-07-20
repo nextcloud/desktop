@@ -34,6 +34,7 @@ class NetworkSettings : public QWidget
 public:
     explicit NetworkSettings(QWidget *parent = 0);
     ~NetworkSettings();
+    QSize sizeHint() const;
 
 private slots:
     void saveProxySettings();
