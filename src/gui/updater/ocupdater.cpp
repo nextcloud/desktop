@@ -137,10 +137,15 @@ int OCUpdater::downloadState() const
 
 void OCUpdater::setDownloadState(DownloadState state)
 {
+    auto oldState = _state;
     _state = state;
     emit downloadStateChanged();
 
-    if( _state == OCUpdater::DownloadComplete ) {
+    // show the notification if the download is complete (on every check)
+    // or once for system based updates.
+    if( _state == OCUpdater::DownloadComplete ||
+            (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem
+             && _state == OCUpdater::UpdateOnlyAvailableThroughSystem) ) {
         emit newUpdateAvailable(tr("Update Check"), statusString() );
     }
 }
