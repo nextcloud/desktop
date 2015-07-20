@@ -53,8 +53,9 @@ OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     // and set the timer regular interval which is usually large, like 10 hours.
     ConfigFile cfg;
     auto checkInterval = cfg.updateCheckInterval();
-    qDebug() << "Setting up regular update check every " << checkInterval /1000/60 << "seconds";
+    qDebug() << "Setting up regular update check every " << checkInterval /1000/60 << "minutes ";
    _updateCheckTimer->setInterval(checkInterval); // check every couple of hours as defined in config
+   _updateCheckTimer->start();
 }
 
 bool OCUpdater::performUpdate()
