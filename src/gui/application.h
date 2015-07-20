@@ -75,7 +75,6 @@ protected slots:
     void slotParseMessage(const QString&, QObject*);
     void slotCheckConnection();
     void slotUpdateConnectionErrors(int accountState);
-    void slotStartUpdateDetector();
     void slotUseMonoIconsChanged( bool );
     void slotLogin();
     void slotLogout();
@@ -84,7 +83,6 @@ protected slots:
     void slotAccountStateRemoved(AccountState *accountState);
     void slotAccountStateChanged(int state);
     void slotCrash();
-    void slotNotifyAboutAvailableUpdate();
 
 private:
     void setHelp();
@@ -108,7 +106,6 @@ private:
     ClientProxy _proxy;
 
     QTimer _checkConnectionTimer;
-    QTimer _updaterTimer;
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;

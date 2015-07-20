@@ -96,6 +96,7 @@ Updater *Updater::create()
 #else
     return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
+
 }
 
 

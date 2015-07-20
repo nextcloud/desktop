@@ -178,11 +178,14 @@ Application::Application(int &argc, char **argv) :
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     // Update checks
-    _updaterTimer.setInterval(cfg.updateCheckInterval()); // check every couple of hours as defined in config
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+        connect(updater,  SIGNAL(downloadStateChanged()),
+                this,     SLOT(slotNotifyAboutAvailableUpdate()), Qt::UniqueConnection);
+        connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
+                _gui,     SLOT(slotShowTrayMessage(QString,QString)) );
+    }
 
-    connect(&_updaterTimer, SIGNAL(timeout()), this, SLOT(slotStartUpdateDetector()));
-    QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
-
+    // Cleanup at Quit.
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
 }
@@ -247,34 +250,6 @@ void Application::slotCleanup()
 
     _gui->slotShutdown();
     _gui->deleteLater();
-}
-
-void Application::slotStartUpdateDetector()
-{
-    ConfigFile cfg;
-
-    if( cfg.skipUpdateCheck() ) {
-        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
-    } else {
-        if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
-            connect(updater, SIGNAL(downloadStateChanged()), this,
-                    SLOT(slotNotifyAboutAvailableUpdate()), Qt::UniqueConnection);
-
-            updater->backgroundCheckForUpdate();
-        }
-    }
-}
-
-void Application::slotNotifyAboutAvailableUpdate()
-{
-    if( _gui ) {
-        if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
-            // Show a tray message if an Update is ready...
-            if( updater->downloadState() == OCUpdater::DownloadComplete ) {
-                _gui->slotShowTrayMessage( tr("Update Check"), updater->statusString() );
-            }
-        }
-    }
 }
 
 void Application::slotCheckConnection()

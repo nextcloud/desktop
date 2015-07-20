@@ -42,7 +42,6 @@ public:
     bool performUpdate();
 
     void checkForUpdate() Q_DECL_OVERRIDE;
-    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
 
     QString statusString() const;
     int downloadState() const;
@@ -50,11 +49,14 @@ public:
 
 signals:
     void downloadStateChanged();
+    void newUpdateAvailable(const QString& header, const QString& message);
 
 public slots:
     void slotStartInstaller();
 
 private slots:
+    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
+
     void slotOpenUpdateUrl();
     void slotVersionInfoArrived();
     void slotTimedOut();
@@ -68,7 +70,8 @@ private:
     QUrl _updateUrl;
     int _state;
     QNetworkAccessManager *_accessManager;
-    QTimer *_timer;
+    QTimer *_timeoutWatchdog;  /** Timer to guard the timeout of an individual network request */
+    QTimer *_updateCheckTimer; /** Timer for the regular update check. */
     UpdateInfo _updateInfo;
 };
 

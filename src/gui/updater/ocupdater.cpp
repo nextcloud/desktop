@@ -42,8 +42,19 @@ OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
   , _updateUrl(url)
   , _state(Unknown)
   , _accessManager(new AccessManager(this))
-  , _timer(new QTimer(this))
+  , _timeoutWatchdog(new QTimer(this))
+  , _updateCheckTimer(new QTimer(this))
 {
+    // at startup, do a check in any case.
+    QTimer::singleShot( 3000, this, SLOT( backgroundCheckForUpdate()));
+
+    // connect the timer to the check slot
+    connect( _updateCheckTimer, SIGNAL(timeout()), this, SLOT(backgroundCheckForUpdate()));
+    // and set the timer regular interval which is usually large, like 10 hours.
+    ConfigFile cfg;
+    auto checkInterval = cfg.updateCheckInterval();
+    qDebug() << "Setting up regular update check every " << checkInterval /1000/60 << "seconds";
+   _updateCheckTimer->setInterval(checkInterval); // check every couple of hours as defined in config
 }
 
 bool OCUpdater::performUpdate()
@@ -67,14 +78,29 @@ void OCUpdater::backgroundCheckForUpdate()
 {
     int dlState = downloadState();
 
-     if( dlState == Unknown ||
-             dlState == UpToDate         ||
-             /* dlState == DownloadComplete ||  <- are we checking if a previous download was successful already? */
-             dlState == DownloadFailed   ||
-             dlState == DownloadTimedOut ) {
-         // how about  UpdateOnlyAvailableThroughSystem?
-         checkForUpdate();
-     }
+    ConfigFile cfg;
+
+    if( cfg.skipUpdateCheck() ) {
+        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
+        return;
+    }
+
+    // do the real update check depending on the internal state of updater.
+    switch( dlState ) {
+    case Unknown:
+    case UpToDate:
+    case DownloadFailed:
+    case DownloadTimedOut:
+        qDebug() << Q_FUNC_INFO << "checking for available update";
+        checkForUpdate();
+        break;
+    case DownloadComplete:
+        qDebug() << "Update is downloaded, skip new check.";
+        break;
+    case UpdateOnlyAvailableThroughSystem:
+        qDebug() << "Update is only available through system, skip check.";
+        break;
+    }
 }
 
 QString OCUpdater::statusString() const
@@ -112,6 +138,10 @@ void OCUpdater::setDownloadState(DownloadState state)
 {
     _state = state;
     emit downloadStateChanged();
+
+    if( _state == OCUpdater::DownloadComplete ) {
+        emit newUpdateAvailable(tr("Update Check"), statusString() );
+    }
 }
 
 void OCUpdater::slotStartInstaller()
@@ -128,8 +158,8 @@ void OCUpdater::slotStartInstaller()
 void OCUpdater::checkForUpdate()
 {
     QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
-    connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
-    _timer->start(30*1000);
+    connect(_timeoutWatchdog, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
+    _timeoutWatchdog->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
 
     setDownloadState(CheckingServer);
@@ -152,7 +182,7 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
-    _timer->stop();
+    _timeoutWatchdog->stop();
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if( reply->error() != QNetworkReply::NoError ) {
         qDebug() << "Failed to reach version check url: " << reply->errorString();
