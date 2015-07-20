@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>542</width>
-    <height>391</height>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -246,6 +246,9 @@
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QRadioButton" name="autoDownloadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
+          </property>
           <property name="text">
            <string>Limit automatically</string>
           </property>
@@ -275,6 +278,9 @@
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QRadioButton" name="autoUploadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
+          </property>
           <property name="text">
            <string>Limit automatically</string>
           </property>
