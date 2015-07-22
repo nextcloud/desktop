@@ -178,10 +178,9 @@ Application::Application(int &argc, char **argv) :
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     // Update checks
-    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
-        connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
-                _gui,     SLOT(slotShowTrayMessage(QString,QString)) );
-    }
+    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
+    connect(updaterScheduler, SIGNAL(updaterAnnouncement(QString, QString)),
+            _gui, SLOT(slotShowTrayMessage(QString, QString)));
 
     // Cleanup at Quit.
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));

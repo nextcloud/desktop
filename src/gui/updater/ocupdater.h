@@ -18,15 +18,66 @@
 #include <QObject>
 #include <QUrl>
 #include <QTemporaryFile>
+#include <QTimer>
 
 #include "updater/updateinfo.h"
 #include "updater/updater.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
-class QTimer;
 
 namespace OCC {
+
+/** @short Schedule update checks every couple of hours if the client runs.
+ *
+ * This class schedules regular update checks. It also checks the config
+ * if update checks are wanted at all.
+ *
+ * To reflect that all platforms have its own update scheme, a little
+ * complex class design was set up:
+ *
+ * For Windows and Linux, the updaters are inherited from OCUpdater, while
+ * the MacOSX SparkleUpdater directly uses the class Updater. On windows,
+ * NSISUpdater starts the update if a new version of the client is available.
+ * On MacOSX, the sparkle framework handles the installation of the new
+ * version. On Linux, the update capabilities by the underlying linux distro
+ * is relied on, and thus the PassiveUpdateNotifier just shows a notification
+ * if there is a new version once at every start of the application.
+ *
+ * Simple class diagram of the updater:
+ *
+ *           +---------------------------+
+ *     +-----+   UpdaterScheduler        +-----+
+ *     |     +------------+--------------+     |
+ *     v                  v                    v
+ * +------------+ +---------------------+ +----------------+
+ * |NSISUpdater | |PassiveUpdateNotifier| | SparkleUpdater |
+ * +-+----------+ +---+-----------------+ +-----+----------+
+ *   |                |                         |
+ *   |                v      +------------------+
+ *   |   +---------------+   v
+ *   +-->|   OCUpdater   +------+
+ *       +--------+------+      |
+ *                |   Updater   |
+ *                +-------------+
+ */
+
+class UpdaterScheduler : public QObject
+{
+    Q_OBJECT
+public:
+    UpdaterScheduler(QObject *parent);
+
+signals:
+    void updaterAnnouncement(const QString& title, const QString& msg);
+
+private slots:
+    void slotTimerFired();
+
+private:
+    QTimer _updateCheckTimer; /** Timer for the regular update check. */
+
+};
 
 /** @short Class that uses an ownCloud propritary XML format to fetch update information */
 class OCUpdater : public QObject, public Updater
@@ -71,7 +122,6 @@ private:
     int _state;
     QNetworkAccessManager *_accessManager;
     QTimer *_timeoutWatchdog;  /** Timer to guard the timeout of an individual network request */
-    QTimer *_updateCheckTimer; /** Timer for the regular update check. */
     UpdateInfo _updateInfo;
 };
 

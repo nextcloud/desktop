@@ -37,25 +37,59 @@ static const char seenVersionC[] = "Updater/seenVersion";
 static const char autoUpdateFailedVersionC[] = "Updater/autoUpdateFailedVersion";
 static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 
+
+UpdaterScheduler::UpdaterScheduler(QObject *parent) :
+    QObject(parent)
+{
+    connect( &_updateCheckTimer, SIGNAL(timeout()),
+             this, SLOT(slotTimerFired()) );
+
+    // Note: the sparkle-updater is not an OCUpdater and thus the dynamic_cast
+    // returns NULL. Clever detail.
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+        connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
+                this,     SIGNAL(updaterAnnouncement(QString,QString)) );
+    }
+
+    // at startup, do a check in any case.
+    QTimer::singleShot(3000, this, SLOT(slotTimerFired()));
+
+    ConfigFile cfg;
+    auto checkInterval = cfg.updateCheckInterval();
+    _updateCheckTimer.start(checkInterval);
+}
+
+void UpdaterScheduler::slotTimerFired()
+{
+    ConfigFile cfg;
+
+    // re-set the check interval if it changed in the config file meanwhile
+    auto checkInterval = cfg.updateCheckInterval();
+    if( checkInterval != _updateCheckTimer.interval() ) {
+        _updateCheckTimer.setInterval(checkInterval);
+        qDebug() << "Setting new update check interval " << checkInterval;
+    }
+
+    // consider the skipUpdateCheck flag in the config.
+    if( cfg.skipUpdateCheck() ) {
+        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
+        return;
+    }
+
+    Updater::instance()->backgroundCheckForUpdate();
+}
+
+
+/* ----------------------------------------------------------------- */
+
 OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
   , _state(Unknown)
   , _accessManager(new AccessManager(this))
   , _timeoutWatchdog(new QTimer(this))
-  , _updateCheckTimer(new QTimer(this))
 {
-    // at startup, do a check in any case.
-    QTimer::singleShot( 3000, this, SLOT( backgroundCheckForUpdate()));
 
-    // connect the timer to the check slot
-    connect( _updateCheckTimer, SIGNAL(timeout()), this, SLOT(backgroundCheckForUpdate()));
-    // and set the timer regular interval which is usually large, like 10 hours.
-    ConfigFile cfg;
-    auto checkInterval = cfg.updateCheckInterval();
-    qDebug() << "Setting up regular update check every " << checkInterval /1000/60 << "minutes ";
-   _updateCheckTimer->setInterval(checkInterval); // check every couple of hours as defined in config
-   _updateCheckTimer->start();
 }
 
 bool OCUpdater::performUpdate()
@@ -78,13 +112,6 @@ bool OCUpdater::performUpdate()
 void OCUpdater::backgroundCheckForUpdate()
 {
     int dlState = downloadState();
-
-    ConfigFile cfg;
-
-    if( cfg.skipUpdateCheck() ) {
-        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
-        return;
-    }
 
     // do the real update check depending on the internal state of updater.
     switch( dlState ) {
