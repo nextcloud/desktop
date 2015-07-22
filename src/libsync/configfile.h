@@ -113,7 +113,7 @@ public:
     void restoreGeometry(QWidget *w);
 
     // how often the check about new versions runs, default two hours
-    quint64 updateCheckInterval( const QString& connection = QString() ) const;
+    int updateCheckInterval( const QString& connection = QString() ) const;
 
     bool skipUpdateCheck( const QString& connection = QString() ) const;
     void setSkipUpdateCheck( bool, const QString& );

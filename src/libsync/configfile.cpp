@@ -382,17 +382,17 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     return interval;
 }
 
-quint64 ConfigFile::updateCheckInterval( const QString& connection ) const
+int ConfigFile::updateCheckInterval( const QString& connection ) const
 {
     QString con( connection );
     if( connection.isEmpty() ) con = defaultConnection();
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup( con );
 
-    quint64 defaultInterval = 1000*60*60*10; // ten hours
-    quint64 interval = settings.value( QLatin1String(updateCheckIntervalC), defaultInterval ).toULongLong();
+    int defaultInterval = 1000*60*60*10; // ten hours
+    int interval = settings.value( QLatin1String(updateCheckIntervalC), defaultInterval ).toInt();
 
-    quint64 minInterval = 1000*60*5;
+    int minInterval = 1000*60*5;
     if( interval < minInterval) {
         qDebug() << "Update check interval less than five minutes, setting " << minInterval;
         interval = minInterval;
