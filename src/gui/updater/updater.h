@@ -33,6 +33,8 @@ public:
     virtual void checkForUpdate() = 0;
     virtual void backgroundCheckForUpdate() = 0;
 
+    int downloadState() const;
+
     virtual bool handleStartup() = 0;
 
 protected:

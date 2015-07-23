@@ -36,13 +36,59 @@ static const char seenVersionC[] = "Updater/seenVersion";
 static const char autoUpdateFailedVersionC[] = "Updater/autoUpdateFailedVersion";
 static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 
+
+UpdaterScheduler::UpdaterScheduler(QObject *parent) :
+    QObject(parent)
+{
+    connect( &_updateCheckTimer, SIGNAL(timeout()),
+             this, SLOT(slotTimerFired()) );
+
+    // Note: the sparkle-updater is not an OCUpdater and thus the dynamic_cast
+    // returns NULL. Clever detail.
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+        connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
+                this,     SIGNAL(updaterAnnouncement(QString,QString)) );
+    }
+
+    // at startup, do a check in any case.
+    QTimer::singleShot(3000, this, SLOT(slotTimerFired()));
+
+    ConfigFile cfg;
+    auto checkInterval = cfg.updateCheckInterval();
+    _updateCheckTimer.start(checkInterval);
+}
+
+void UpdaterScheduler::slotTimerFired()
+{
+    ConfigFile cfg;
+
+    // re-set the check interval if it changed in the config file meanwhile
+    auto checkInterval = cfg.updateCheckInterval();
+    if( checkInterval != _updateCheckTimer.interval() ) {
+        _updateCheckTimer.setInterval(checkInterval);
+        qDebug() << "Setting new update check interval " << checkInterval;
+    }
+
+    // consider the skipUpdateCheck flag in the config.
+    if( cfg.skipUpdateCheck() ) {
+        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
+        return;
+    }
+
+    Updater::instance()->backgroundCheckForUpdate();
+}
+
+
+/* ----------------------------------------------------------------- */
+
 OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
     QObject(parent)
   , _updateUrl(url)
   , _state(Unknown)
   , _accessManager(new AccessManager(this))
-  , _timer(new QTimer(this))
+  , _timeoutWatchdog(new QTimer(this))
 {
+
 }
 
 bool OCUpdater::performUpdate()
@@ -65,8 +111,24 @@ bool OCUpdater::performUpdate()
 
 void OCUpdater::backgroundCheckForUpdate()
 {
-    // FIXME
-    checkForUpdate();
+    int dlState = downloadState();
+
+    // do the real update check depending on the internal state of updater.
+    switch( dlState ) {
+    case Unknown:
+    case UpToDate:
+    case DownloadFailed:
+    case DownloadTimedOut:
+        qDebug() << Q_FUNC_INFO << "checking for available update";
+        checkForUpdate();
+        break;
+    case DownloadComplete:
+        qDebug() << "Update is downloaded, skip new check.";
+        break;
+    case UpdateOnlyAvailableThroughSystem:
+        qDebug() << "Update is only available through system, skip check.";
+        break;
+    }
 }
 
 QString OCUpdater::statusString() const
@@ -102,8 +164,17 @@ int OCUpdater::downloadState() const
 
 void OCUpdater::setDownloadState(DownloadState state)
 {
+    auto oldState = _state;
     _state = state;
     emit downloadStateChanged();
+
+    // show the notification if the download is complete (on every check)
+    // or once for system based updates.
+    if( _state == OCUpdater::DownloadComplete ||
+            (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem
+             && _state == OCUpdater::UpdateOnlyAvailableThroughSystem) ) {
+        emit newUpdateAvailable(tr("Update Check"), statusString() );
+    }
 }
 
 void OCUpdater::slotStartInstaller()
@@ -120,8 +191,8 @@ void OCUpdater::slotStartInstaller()
 void OCUpdater::checkForUpdate()
 {
     QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
-    connect(_timer, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
-    _timer->start(30*1000);
+    connect(_timeoutWatchdog, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
+    _timeoutWatchdog->start(30*1000);
     connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
 
     setDownloadState(CheckingServer);
@@ -144,7 +215,7 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
-    _timer->stop();
+    _timeoutWatchdog->stop();
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     if( reply->error() != QNetworkReply::NoError ) {
         qDebug() << "Failed to reach version check url: " << reply->errorString();
@@ -355,10 +426,11 @@ PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
 
 void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 {
+    qint64 currentVer = Helper::currentVersionToInt();
+    qint64 remoteVer = Helper::stringVersionToInt(info.version());
+
     if( info.version().isEmpty() ||
-            Helper::stringVersionToInt(info.version())
-            >= Helper::currentVersionToInt() )
-    {
+            currentVer >= remoteVer ) {
         qDebug() << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {

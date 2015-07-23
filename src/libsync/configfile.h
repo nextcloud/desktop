@@ -119,7 +119,9 @@ public:
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
-    // installer
+    // how often the check about new versions runs, default two hours
+    int updateCheckInterval( const QString& connection = QString() ) const;
+
     bool skipUpdateCheck( const QString& connection = QString() ) const;
     void setSkipUpdateCheck( bool, const QString& );
 
