@@ -871,10 +871,14 @@ void Folder::setDirtyNetworkLimits()
     if (_engine) {
 
         ConfigFile cfg;
-        int downloadLimit = 0;
-        if (cfg.useDownloadLimit()) {
+        int downloadLimit = -75; // 75%
+        int useDownLimit = cfg.useDownloadLimit();
+        if (useDownLimit >= 1) {
             downloadLimit = cfg.downloadLimit() * 1000;
+        } else if (useDownLimit == 0) {
+            downloadLimit = 0;
         }
+
         int uploadLimit = -75; // 75%
         int useUpLimit = cfg.useUploadLimit();
         if ( useUpLimit >= 1) {
