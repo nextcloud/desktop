@@ -100,8 +100,8 @@ public:
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
     /** [checked, size in MB] **/
-    QPair<bool, quint64> newSharedFolderSizeLimit() const;
-    void setNewSharedFolderSizeLimit(bool isChecked, quint64 mbytes);
+    QPair<bool, quint64> newBigFolderSizeLimit() const;
+    void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
 
     static bool setConfDir(const QString &value);
 

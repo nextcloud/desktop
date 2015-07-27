@@ -58,7 +58,7 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
         connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
         connect(f, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
-        connect(f, SIGNAL(newSharedBigFolderDiscovered(QString)), this, SIGNAL(dirtyChanged()), Qt::UniqueConnection);
+        connect(f, SIGNAL(newBigFolderDiscovered(QString)), this, SIGNAL(dirtyChanged()), Qt::UniqueConnection);
     }
 
     endResetModel();

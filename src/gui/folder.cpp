@@ -850,14 +850,14 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
-    connect(_engine.data(), SIGNAL(newSharedFolder(QString)), this, SLOT(slotNewSharedBigFolderDiscovered(QString)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 
     setDirtyNetworkLimits();
 
     ConfigFile cfgFile;
-    auto newFolderLimit = cfgFile.newSharedFolderSizeLimit();
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
-    _engine->setNewSharedFolderSizeLimit(limit);
+    _engine->setNewBigFolderSizeLimit(limit);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
@@ -1044,7 +1044,7 @@ void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
     emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
 
-void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
+void Folder::slotNewBigFolderDiscovered(const QString &newF)
 {
     auto newFolder = newF;
     if (!newFolder.endsWith(QLatin1Char('/'))) {
@@ -1065,7 +1065,7 @@ void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
     if (!undecidedList.contains(newFolder)) {
         undecidedList.append(newFolder);
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-        emit newSharedBigFolderDiscovered(newFolder);
+        emit newBigFolderDiscovered(newFolder);
     }
 }
 

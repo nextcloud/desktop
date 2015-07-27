@@ -92,7 +92,7 @@ struct csync_s {
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
       int (*checkSelectiveSyncBlackListHook)(void*, const char*);
-      int (*checkSelectiveSyncNewShareHook)(void*, const char*);
+      int (*checkSelectiveSyncNewFolderHook)(void*, const char*);
 
 
       csync_vio_opendir_hook remote_opendir_hook;

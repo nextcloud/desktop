@@ -58,7 +58,7 @@
         <item>
          <widget class="QCheckBox" name="newFolderLimitCheckBox">
           <property name="text">
-           <string>Ask confirmation before downloading shared folders larger than</string>
+           <string>Ask confirmation before downloading folders larger than</string>
           </property>
           <property name="checked">
            <bool>true</bool>

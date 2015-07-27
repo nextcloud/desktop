@@ -63,8 +63,8 @@ static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
 static const char uploadLimitC[]      = "BWLimit/uploadLimit";
 static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
-static const char newSharedFolderSizeLimitC[] = "newSharedFolderSizeLimit";
-static const char useNewSharedFolderSizeLimitC[] = "useNewSharedFolderSizeLimit";
+static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
@@ -571,17 +571,17 @@ void ConfigFile::setDownloadLimit(int kbytes)
     setValue(downloadLimitC, kbytes);
 }
 
-QPair<bool, quint64> ConfigFile::newSharedFolderSizeLimit() const
+QPair<bool, quint64> ConfigFile::newBigFolderSizeLimit() const
 {
-    qint64 value = getValue(newSharedFolderSizeLimitC, QString(), 100).toLongLong();
-    bool use = value >= 0 && getValue(useNewSharedFolderSizeLimitC, QString(), true).toBool();
+    qint64 value = getValue(newBigFolderSizeLimitC, QString(), 100).toLongLong();
+    bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
     return qMakePair(use, quint64(qMax<qint64>(0, value)));
 }
 
-void ConfigFile::setNewSharedFolderSizeLimit(bool isChecked, quint64 mbytes)
+void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
 {
-    setValue(newSharedFolderSizeLimitC, mbytes);
-    setValue(useNewSharedFolderSizeLimitC, isChecked);
+    setValue(newBigFolderSizeLimitC, mbytes);
+    setValue(useNewBigFolderSizeLimitC, isChecked);
 }
 
 bool ConfigFile::monoIcons() const

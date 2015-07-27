@@ -62,14 +62,14 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *pat
     return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(QString::fromUtf8(path));
 }
 
-bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
+bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
 {
     // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
         return false;
     }
 
-    if (_newSharedFolderSizeLimit < 0) {
+    if (_newBigFolderSizeLimit < 0) {
         // no limit, everything is allowed;
         return false;
     }
@@ -83,10 +83,10 @@ bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
         _vioWaitCondition.wait(&_vioMutex);
     }
 
-    auto limit = _newSharedFolderSizeLimit;
+    auto limit = _newBigFolderSizeLimit;
     if (result > limit) {
         // we tell the UI there is a new folder
-        emit newSharedFolder(path);
+        emit newBigFolder(path);
         return true;
     } else {
         // it is not too big, put it in the white list (so we will not do more query for the children)
@@ -100,9 +100,9 @@ bool DiscoveryJob::checkSelectiveSyncNewShare(const QString& path)
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewShareCallback(void *data, const char *path)
+int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path)
 {
-    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewShare(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path));
 }
 
 
@@ -594,7 +594,7 @@ void DiscoveryJob::start() {
     _csync_ctx->callbacks.update_callback_userdata = this;
     _csync_ctx->callbacks.update_callback = update_job_update_callback;
     _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallback;
-    _csync_ctx->callbacks.checkSelectiveSyncNewShareHook = checkSelectiveSyncNewShareCallback;
+    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = checkSelectiveSyncNewFolderCallback;
 
     _csync_ctx->callbacks.remote_opendir_hook = remote_vio_opendir_hook;
     _csync_ctx->callbacks.remote_readdir_hook = remote_vio_readdir_hook;
@@ -607,7 +607,7 @@ void DiscoveryJob::start() {
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
-    _csync_ctx->callbacks.checkSelectiveSyncNewShareHook = 0;
+    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = 0;
     _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = 0;
     _csync_ctx->callbacks.update_callback = 0;
     _csync_ctx->callbacks.update_callback_userdata = 0;

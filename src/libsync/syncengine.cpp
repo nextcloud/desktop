@@ -70,7 +70,7 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
   , _hasRemoveFile(false)
   , _uploadLimit(0)
   , _downloadLimit(0)
-  , _newSharedFolderSizeLimit(-1)
+  , _newBigFolderSizeLimit(-1)
   , _anotherSyncNeeded(false)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
@@ -657,14 +657,14 @@ void SyncEngine::startSync()
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
-    discoveryJob->_newSharedFolderSizeLimit = _newSharedFolderSizeLimit;
+    discoveryJob->_newBigFolderSizeLimit = _newBigFolderSizeLimit;
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),
             this, SIGNAL(folderDiscovered(bool,QString)));
 
-    connect(discoveryJob, SIGNAL(newSharedFolder(QString)),
-            this, SIGNAL(newSharedFolder(QString)));
+    connect(discoveryJob, SIGNAL(newBigFolder(QString)),
+            this, SIGNAL(newBigFolder(QString)));
 
 
     // This is used for the DiscoveryJob to be able to request the main thread/
