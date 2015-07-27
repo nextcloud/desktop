@@ -1067,6 +1067,12 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
         emit newBigFolderDiscovered(newFolder);
     }
+    QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
+                         "Please go in the settings to select it if you wish to download it.")
+                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF);
+
+    auto logger = Logger::instance();
+    logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 
