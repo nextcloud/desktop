@@ -397,6 +397,8 @@ restart_sync:
                     csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
                 }
             }
+            QNetworkProxyFactory::setUseSystemConfiguration(false);
+            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
         }
     } else {
         clientProxy.setupQtProxyFromConfig();
