@@ -8,4 +8,9 @@ tell application "Finder"
 end tell
 EOF
 
+# Always enable the new 10.10 finder plugin if available
+if [ -x "$(command -v pluginkit)" ]; then
+    pluginkit -e use -i com.owncloud.desktopclient.FinderSyncExt
+fi
+
 exit 0
