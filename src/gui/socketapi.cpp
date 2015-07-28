@@ -420,6 +420,13 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         const QString folderForPath = shareFolder->path();
         const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
 
+        // Can't share root folder
+        if (QDir::cleanPath(remotePath) == "/") {
+           const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
+            sendMessage(socket, message);
+            return;
+        }
+
         SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFile);
 
         bool allowReshare = true; // lets assume the good
