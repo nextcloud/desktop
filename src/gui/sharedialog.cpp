@@ -335,8 +335,11 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
             }
 
             QString url;
-            // From ownCloud server version 8 on, a different share link scheme is used.
-            if (versionString.contains('.') && versionString.split('.')[0].toInt() >= 8) {
+            // From ownCloud server 8.2 the url field is always set for public shares
+            if (data.contains("url")) {
+                url = data.value("url").toString();
+            } else if (versionString.contains('.') && versionString.split('.')[0].toInt() >= 8) {
+                // From ownCloud server version 8 on, a different share link scheme is used.
                 url = Account::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString();
             } else {
                 QList<QPair<QString, QString>> queryArgs;
