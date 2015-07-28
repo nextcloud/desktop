@@ -1097,15 +1097,21 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString& path)
+QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNewDirectory)
 {
+    if (path.isEmpty()) {
+        return tr("No valid folder selected!");
+    }
+
     QFileInfo selFile( path );
     QString userInput = selFile.canonicalFilePath();
 
-    QStringList warnStrings;
+    if (!selFile.exists()) {
+        return checkPathValidityForNewFolder(selFile.dir().path(), true);
+    }
 
     if( !selFile.isDir() ) {
-        return tr("No valid local folder selected!");
+        return tr("The selected path is not a directory!");
     }
 
     if ( !selFile.isWritable() ) {
@@ -1127,12 +1133,12 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path)
             return tr("The local path %1 is already an upload folder. Please pick another one!")
                 .arg(QDir::toNativeSeparators(userInput));
         }
-        if (QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
+        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
             return tr("An already configured folder is contained in the current entry.");
         }
 
         QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
-        if (QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
+        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
             return tr("The selected folder is a symbolic link. An already configured "
                       "folder is contained in the folder this link is pointing to.");
         }

@@ -196,6 +196,20 @@ void AccountSettings::slotFolderWizardAccepted()
     definition.localPath    = folderWizard->field(QLatin1String("sourceFolder")).toString();
     definition.targetPath   = folderWizard->property("targetPath").toString();
 
+    {
+        QDir dir(definition.localPath);
+        if (!dir.exists()) {
+            qDebug() << "Creating folder" << definition.localPath;
+            if (!dir.mkpath(".")) {
+                QMessageBox::warning(this, tr("Folder creation failed"),
+                                     tr("<p>Could not create local folder <i>%1</i>.")
+                                        .arg(QDir::toNativeSeparators(definition.localPath)));
+                return;
+            }
+
+        }
+    }
+
     bool ignoreHidden = true;
     /* take the value from the definition of already existing folders. All folders have
      * the same setting so far, that's why it's ok to check the first one.
