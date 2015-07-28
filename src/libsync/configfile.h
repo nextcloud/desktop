@@ -54,9 +54,6 @@ public:
 
     bool passwordStorageAllowed(const QString &connection = QString::null );
 
-    QString ownCloudVersion() const;
-    void setOwnCloudVersion( const QString& );
-
     // max count of lines in the log window
     int  maxLogLines() const;
     void setMaxLogLines(int);
@@ -124,9 +121,6 @@ public:
 
     bool skipUpdateCheck( const QString& connection = QString() ) const;
     void setSkipUpdateCheck( bool, const QString& );
-
-    QString lastVersion() const;
-    void setLastVersion(const QString &version);
 
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
