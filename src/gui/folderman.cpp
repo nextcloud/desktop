@@ -846,12 +846,12 @@ QString FolderMan::getBackupName( QString fullPathName ) const
 
     if( fullPathName.isEmpty() ) return QString::null;
 
-     QString newName = fullPathName + QLatin1String(".oC_bak");
+     QString newName = fullPathName + tr(" (backup)");
      QFileInfo fi( newName );
      int cnt = 1;
      do {
          if( fi.exists() ) {
-             newName = fullPathName + QString( ".oC_bak_%1").arg(cnt++);
+             newName = fullPathName + tr(" (backup %1)").arg(cnt++);
              fi.setFile(newName);
          }
      } while( fi.exists() );
