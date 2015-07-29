@@ -29,8 +29,7 @@ namespace OCC {
 class Capabilities {
 
 public:
-    Capabilities(const Capabilities& capabilities);
-    Capabilities(const QVariantMap capabilities);
+    Capabilities(const QVariantMap &capabilities);
 
     bool publicLinkEnforcePassword() const;
     bool publicLinkEnforceExpireDate() const;

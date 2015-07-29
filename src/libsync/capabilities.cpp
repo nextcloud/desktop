@@ -18,11 +18,7 @@
 namespace OCC {
 
 
-Capabilities::Capabilities(const Capabilities &capabilities) {
-    _capabilities = capabilities._capabilities;
-}
-
-Capabilities::Capabilities(const QVariantMap capabilities)
+Capabilities::Capabilities(const QVariantMap &capabilities)
     : _capabilities(capabilities)
 {
 }

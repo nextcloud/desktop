@@ -139,7 +139,7 @@ public:
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
 
     void setCapabilities(const QVariantMap &caps);
-    const Capabilities * capabilities() const;
+    const Capabilities &capabilities() const;
     void setServerVersion(const QString &version);
     QString serverVersion();
 

@@ -440,9 +440,9 @@ void Account::setMigrated(bool mig)
     _wasMigrated = mig;
 }
 
-const Capabilities * Account::capabilities() const
+const Capabilities &Account::capabilities() const
 {
-    return &_capabilities;
+    return _capabilities;
 }
 
 void Account::setCapabilities(const QVariantMap &caps)
