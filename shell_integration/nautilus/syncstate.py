@@ -237,8 +237,10 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         if action == 'STATUS':
             newState = args[0]
             emblem = Emblems[newState]
+            filename = ':'.join(args[1:])
+
             if emblem:
-                itemStore = self.find_item_for_file(args[1])
+                itemStore = self.find_item_for_file(filename)
                 if itemStore:
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
