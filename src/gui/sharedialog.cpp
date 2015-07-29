@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "syncresult.h"
 #include "configfile.h"
+#include "capabilities.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -141,6 +142,22 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->errorLabel->setFrameShape(QFrame::Box);
     _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
     _ui->errorLabel->hide();
+
+
+    // Parse capabilities
+
+    // If password is enforced make don't allow users to disable it
+    if (_account->capabilities()->publicLinkEnforcePassword()) {
+        _ui->checkBox_password->setEnabled(false);
+    }
+
+    // If expiredate is enforced do not allow disable and set max days
+    if (_account->capabilities()->publicLinkEnforceExpireDate()) {
+        _ui->checkBox_expire->setEnabled(false);
+        _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
+            _account->capabilities()->publicLinkExpireDateDays()
+            ));
+    }
 }
 
 void ShareDialog::done( int r ) {
@@ -247,6 +264,11 @@ void ShareDialog::setPassword(const QString &password)
     OcsShareJob *job = new OcsShareJob(verb, url, _account, this);
     job->setPostParams(requestParams);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
+
+    if (_public_share_id == 0) {
+        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
+    }
+
     job->start();
     _passwordJobRunning = true;
 }
@@ -439,6 +461,23 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         QList<QPair<QString, QString> > postParams;
         postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
         postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
+
+        /*
+         * Check the capabilities if the server requires a password for a share
+         * Ask for it directly
+         */
+        if (_account->capabilities()->publicLinkEnforcePassword()) {
+            _ui->checkBox_password->setChecked(true);
+            _ui->checkBox_password->setEnabled(false);
+            _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+            _ui->lineEdit_password->setFocus();
+            _ui->pushButton_copy->hide();
+            _ui->widget_shareLink->show();
+
+            slotCheckBoxPasswordClicked();
+            return;
+        }
+
         OcsShareJob *job = new OcsShareJob("POST", url, _account, this);
         job->setPostParams(postParams);
         job->addPassStatusCode(403); // "password required" is not an error

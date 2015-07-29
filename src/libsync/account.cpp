@@ -18,6 +18,7 @@
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "../3rdparty/certificates/p12topem.h"
+#include "capabilities.h"
 
 #include <QSettings>
 #include <QMutex>
@@ -35,6 +36,7 @@ namespace OCC {
 
 Account::Account(QObject *parent)
     : QObject(parent)
+    , _capabilities(QVariantMap())
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
@@ -438,14 +440,14 @@ void Account::setMigrated(bool mig)
     _wasMigrated = mig;
 }
 
-QVariantMap Account::capabilities()
+const Capabilities * Account::capabilities() const
 {
-    return _capabilities;
+    return &_capabilities;
 }
 
 void Account::setCapabilities(const QVariantMap &caps)
 {
-    _capabilities = caps;
+    _capabilities = Capabilities(caps);
 }
 
 QString Account::serverVersion()
