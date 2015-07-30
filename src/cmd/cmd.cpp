@@ -268,6 +268,8 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
+    qsrand(QTime::currentTime().msec() * QCoreApplication::applicationPid());
+
     CmdOptions options;
     options.silent = false;
     options.trustSSL = false;
