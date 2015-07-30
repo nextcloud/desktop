@@ -307,7 +307,7 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
 QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        return createIndex(row, column, nullptr);
+        return createIndex(row, column/*, nullptr*/);
     }
     switch(classify(parent)) {
         case AddButton: return QModelIndex();
@@ -342,7 +342,7 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
     int i = 1;
     Q_ASSERT(pathIdx.at(0) < _folders.count());
     if (pathIdx.count() == 2) {
-        return createIndex(pathIdx.at(0), 0, nullptr);
+        return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
