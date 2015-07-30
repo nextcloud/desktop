@@ -396,7 +396,8 @@ bool CheckServerJob::finished()
 
 #if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (reply()->request().url().scheme() == QLatin1String("https")
-            && reply()->sslConfiguration().sessionTicket().isEmpty()) {
+            && reply()->sslConfiguration().sessionTicket().isEmpty()
+            && reply()->error() == QNetworkReply::NoError) {
         qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
 #endif
