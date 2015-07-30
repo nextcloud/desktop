@@ -11,11 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "config.h"
 
 #include "utility.h"
 
 #include "version.h"
-#include "config.h"
 
 // Note:  This file must compile without QtGui
 #include <QCoreApplication>
