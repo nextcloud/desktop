@@ -110,6 +110,7 @@ void PUTFileJob::start() {
 }
 
 void PUTFileJob::slotTimeout() {
+    qDebug() << "Timeout" << reply()->request().url();
     _errorString =  tr("Connection Timeout");
     reply()->abort();
 }

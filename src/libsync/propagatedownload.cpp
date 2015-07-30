@@ -286,6 +286,7 @@ void GETFileJob::slotReadyRead()
 
 void GETFileJob::slotTimeout()
 {
+    qDebug() << "Timeout" << reply()->request().url();
     _errorString =  tr("Connection Timeout");
     _errorStatus = SyncFileItem::FatalError;
     reply()->abort();
@@ -402,7 +403,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString());
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << _item->_httpErrorCode
+             << _tmpFile.size() << _item->_size << job->resumeStart()
+             << job->reply()->rawHeader("Content-Range") << job->reply()->rawHeader("Content-Length");
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
