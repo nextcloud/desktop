@@ -26,7 +26,7 @@ namespace OCC {
  * server
  * @ingroup libsync
  */
-class Capabilities {
+class OWNCLOUDSYNC_EXPORT Capabilities {
 
 public:
     Capabilities(const QVariantMap &capabilities);
