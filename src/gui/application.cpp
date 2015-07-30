@@ -76,7 +76,7 @@ QString applicationTrPath()
 #elif defined(Q_OS_MAC)
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
-    return QString::fromLatin1(DATADIR "/" APPLICATION_EXECUTABLE "/i18n/");
+    return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
 #endif
 }
 }
