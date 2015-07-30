@@ -912,6 +912,14 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotSyncFinished()
 {
+    qDebug() << " - client version" << qPrintable(Theme::instance()->version())
+             <<  " Qt" << qVersion()
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+              <<  " SSL " <<  QSslSocket::sslLibraryVersionString().toUtf8().data()
+#endif
+   ;
+
+
     if( _csyncError ) {
         qDebug() << "-> SyncEngine finished with ERROR, warn count is" << _syncResult.warnCount();
     } else {
