@@ -490,6 +490,15 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     const QByteArray sizeHeader("Content-Length");
     quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
 
+    if (!job->reply()->rawHeader(sizeHeader).isEmpty() && _tmpFile.size() > 0 && bodySize == 0) {
+        // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
+        // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
+        qDebug() << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
+        _tmpFile.remove();
+        done(SyncFileItem::NormalError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
+        return;
+    }
+
     if(bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart() ) {
         qDebug() << bodySize << _tmpFile.size() << job->resumeStart();
         _propagator->_anotherSyncNeeded = true;
