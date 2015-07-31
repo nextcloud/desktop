@@ -23,6 +23,10 @@
 #include "accessmanager.h"
 #include "utility.h"
 
+#include <QInputDialog>
+#include <QMutexLocker>
+#include <QApplication>
+
 namespace OCC
 {
 
@@ -36,9 +40,6 @@ AccessManager::AccessManager(QObject* parent)
     setProxy(proxy);
 #endif
     setCookieJar(new CookieJar);
-    connect(this, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
-            this, SLOT(slotProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
-
 }
 
 void AccessManager::setRawCookie(const QByteArray &rawCookie, const  QUrl &url)
@@ -71,17 +72,5 @@ QNetworkReply* AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
     return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
 }
-
-void AccessManager::slotProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
-{
-    Q_UNUSED(authenticator);
-    qDebug() << Q_FUNC_INFO << proxy.type();
-    // We put in the password here and in ClientProxy in the proxy itself.
-    if (!proxy.user().isEmpty() || !proxy.password().isEmpty()) {
-        authenticator->setUser(proxy.user());
-        authenticator->setPassword(proxy.password());
-    }
-}
-
 
 } // namespace OCC

@@ -48,6 +48,8 @@ class SocketConnect(GObject.GObject):
         self._sock = None
         self._listeners = [self._update_registered_paths]
         self._remainder = ''
+        self.nautilusVFSFile_table = {} # not needed in this object actually but shared 
+                                        # all over the other objects.
 
         # returns true when one should try again!
         if self._connectToSocketServer():
@@ -156,7 +158,9 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         syncedFile = False
         for reg_path in socketConnect.registered_paths:
             filename = get_local_path(file.get_uri())
-            if filename.startswith(reg_path):
+            # only show the menu extension if the file is synced and the sync
+            # status is ok. Not for ignored files etc.
+            if filename.startswith(reg_path) and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
                 syncedFile = True
 
         # if it is neither in a synced folder or is a directory
@@ -183,12 +187,12 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
     def __init__(self):
         GObject.GObject.__init__(self)
 
-        self.nautilusVFSFile_table = {}
+        socketConnect.nautilusVFSFile_table = {}
         socketConnect.addListener(self.handle_commands)
 
     def find_item_for_file(self, path):
-        if path in self.nautilusVFSFile_table:
-            return self.nautilusVFSFile_table[path]
+        if path in socketConnect.nautilusVFSFile_table:
+            return socketConnect.nautilusVFSFile_table[path]
         else:
             return None
 
@@ -202,12 +206,12 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
     def invalidate_items_underneath(self, path):
         update_items = []
-        if not self.nautilusVFSFile_table:
+        if not socketConnect.nautilusVFSFile_table:
             self.askForOverlay(path)
         else:
-            for p in self.nautilusVFSFile_table:
+            for p in socketConnect.nautilusVFSFile_table:
                 if p == path or p.startswith(path):
-                    item = self.nautilusVFSFile_table[p]['item']
+                    item = socketConnect.nautilusVFSFile_table[p]['item']
                     update_items.append(item)
 
             for item in update_items:
@@ -233,14 +237,16 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         if action == 'STATUS':
             newState = args[0]
             emblem = Emblems[newState]
+            filename = ':'.join(args[1:])
+
             if emblem:
-                itemStore = self.find_item_for_file(args[1])
+                itemStore = self.find_item_for_file(filename)
                 if itemStore:
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
                         item.add_emblem(emblem)
                         # print "Setting emblem on " + args[1]+ "<>"+emblem+"<>"
-                        self.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
+                        socketConnect.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
 
         elif action == 'UPDATE_VIEW':
             # Search all items underneath this path and invalidate them
@@ -262,7 +268,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
         for reg_path in socketConnect.registered_paths:
             if filename.startswith(reg_path):
-                self.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
+                socketConnect.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
 
                 # item.add_string_attribute('share_state', "share state")
                 self.askForOverlay(filename)

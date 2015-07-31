@@ -18,6 +18,7 @@ list(APPEND  FolderWatcher_SRC ../src/gui/folderwatcher_win.cpp)
 ENDIF()
 IF( APPLE )
 list(APPEND FolderWatcher_SRC ../src/gui/folderwatcher_mac.cpp)
+list(APPEND FolderWatcher_SRC ../src/gui/socketapisocket_mac.mm)
 ENDIF()
 
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")

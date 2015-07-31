@@ -77,6 +77,10 @@ public:
     /* Check if the path is ignored. */
     bool pathIsIgnored( const QString& path );
 
+    /* set if the folderwatcher ignores events of hidden files */
+    void setIgnoreHidden(bool ignore);
+    bool ignoreHidden();
+
 signals:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */
@@ -98,6 +102,7 @@ private:
     QStringList _ignores;
     QTime _timer;
     QSet<QString> _lastPaths;
+    bool  _ignoreHidden;
 
     friend class FolderWatcherPrivate;
 };

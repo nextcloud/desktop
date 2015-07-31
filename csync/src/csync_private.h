@@ -92,7 +92,7 @@ struct csync_s {
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
       int (*checkSelectiveSyncBlackListHook)(void*, const char*);
-      int (*checkSelectiveSyncNewShareHook)(void*, const char*);
+      int (*checkSelectiveSyncNewFolderHook)(void*, const char*);
 
 
       csync_vio_opendir_hook remote_opendir_hook;
@@ -167,6 +167,8 @@ struct csync_s {
    * This is useful during the initial local discovery as it speeds it up significantly.
    */
   bool db_is_empty;
+
+  bool ignore_hidden_files;
 
   struct csync_owncloud_ctx_s *owncloud_context;
 

@@ -55,6 +55,7 @@ struct CmdOptions {
     bool trustSSL;
     bool useNetrc;
     bool interactive;
+    bool ignoreHiddenFiles;
     QString exclude;
     QString unsyncedfolders;
 };
@@ -113,7 +114,7 @@ public:
           _sslTrusted(false)
     {}
 
-    QString queryPassword(bool *ok) Q_DECL_OVERRIDE {
+    QString queryPassword(bool *ok, const QString&) Q_DECL_OVERRIDE {
         if (ok) {
             *ok = true;
         }
@@ -154,6 +155,7 @@ void help()
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
     exit(1);
@@ -216,6 +218,8 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
             options->trustSSL = true;
         } else if( option == "-n") {
             options->useNetrc = true;
+        } else if( option == "-h") {
+            options->ignoreHiddenFiles = false;
         } else if( option == "--non-interactive") {
             options->interactive = false;
         } else if( (option == "-u" || option == "--user") && !it.peekNext().startsWith("-") ) {
@@ -264,11 +268,14 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
+    qsrand(QTime::currentTime().msec() * QCoreApplication::applicationPid());
+
     CmdOptions options;
     options.silent = false;
     options.trustSSL = false;
     options.useNetrc = false;
     options.interactive = true;
+    options.ignoreHiddenFiles = true;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
@@ -364,6 +371,9 @@ restart_sync:
         return EXIT_FAILURE;
     }
 
+    // ignore hidden files or not
+    _csync_ctx->ignore_hidden_files = options.ignoreHiddenFiles;
+
     csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     if( !options.proxy.isNull() ) {
         QString host;
@@ -389,6 +399,8 @@ restart_sync:
                     csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
                 }
             }
+            QNetworkProxyFactory::setUseSystemConfiguration(false);
+            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
         }
     } else {
         clientProxy.setupQtProxyFromConfig();

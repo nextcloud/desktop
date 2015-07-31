@@ -54,9 +54,6 @@ public:
 
     bool passwordStorageAllowed(const QString &connection = QString::null );
 
-    QString ownCloudVersion() const;
-    void setOwnCloudVersion( const QString& );
-
     // max count of lines in the log window
     int  maxLogLines() const;
     void setMaxLogLines(int);
@@ -100,8 +97,8 @@ public:
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
     /** [checked, size in MB] **/
-    QPair<bool, quint64> newSharedFolderSizeLimit() const;
-    void setNewSharedFolderSizeLimit(bool isChecked, quint64 mbytes);
+    QPair<bool, quint64> newBigFolderSizeLimit() const;
+    void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
 
     static bool setConfDir(const QString &value);
 
@@ -119,12 +116,11 @@ public:
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
-    // installer
+    // how often the check about new versions runs, default two hours
+    int updateCheckInterval( const QString& connection = QString() ) const;
+
     bool skipUpdateCheck( const QString& connection = QString() ) const;
     void setSkipUpdateCheck( bool, const QString& );
-
-    QString lastVersion() const;
-    void setLastVersion(const QString &version);
 
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);

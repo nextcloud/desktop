@@ -11,11 +11,11 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+#include "config.h"
 
 #include "utility.h"
 
 #include "version.h"
-#include "config.h"
 
 // Note:  This file must compile without QtGui
 #include <QCoreApplication>
@@ -126,7 +126,7 @@ QString Utility::octetsToString( qint64 octets )
         s = QCoreApplication::translate("Utility", "%L1 B");
     }
 
-    return (value > 9.95)  ? s.arg(qRound(value)) : s.arg(value, 0, 'f', 2);
+    return (value > 9.95)  ? s.arg(qRound(value)) : s.arg(value, 0, 'g', 2);
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c

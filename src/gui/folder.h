@@ -52,7 +52,7 @@ class FolderDefinition
 {
 public:
     FolderDefinition()
-        : paused(false)
+        : paused(false), ignoreHiddenFiles(false)
     {}
 
     /// The name of the folder in the ui and internally
@@ -63,6 +63,8 @@ public:
     QString targetPath;
     /// whether the folder is paused
     bool paused;
+    /// whether the folder syncs hidden files
+    bool ignoreHiddenFiles;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings& settings, const FolderDefinition& folder);
@@ -168,6 +170,13 @@ public:
 
      void setDirtyNetworkLimits();
 
+     /**
+      * Ignore syncing of hidden files or not. This is defined in the
+      * folder definition
+      */
+     bool ignoreHiddenFiles();
+     void setIgnoreHiddenFiles(bool ignore);
+
      // Used by the Socket API
      SyncJournalDb *journalDb() { return &_journal; }
 
@@ -189,7 +198,7 @@ signals:
     void syncFinished(const SyncResult &result);
     void scheduleToSync(Folder*);
     void progressInfo(const ProgressInfo& progress);
-    void newSharedBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
+    void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
 
 public slots:
 
@@ -244,7 +253,7 @@ private slots:
     void slotEmitFinishedDelayed();
 
     void watcherSlot(QString);
-    void slotNewSharedBigFolderDiscovered(const QString &);
+    void slotNewBigFolderDiscovered(const QString &);
 
 private:
     bool init();

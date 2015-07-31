@@ -54,6 +54,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Remove the account configuration from the client</string>
+        </property>
         <property name="text">
          <string>Delete</string>
         </property>

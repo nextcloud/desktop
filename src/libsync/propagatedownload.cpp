@@ -286,6 +286,7 @@ void GETFileJob::slotReadyRead()
 
 void GETFileJob::slotTimeout()
 {
+    qDebug() << "Timeout" << reply()->request().url();
     _errorString =  tr("Connection Timeout");
     _errorStatus = SyncFileItem::FatalError;
     reply()->abort();
@@ -402,7 +403,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString());
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << _item->_httpErrorCode
+             << _tmpFile.size() << _item->_size << job->resumeStart()
+             << job->reply()->rawHeader("Content-Range") << job->reply()->rawHeader("Content-Length");
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
@@ -485,6 +489,15 @@ void PropagateDownloadFileQNAM::slotGetFinished()
      */
     const QByteArray sizeHeader("Content-Length");
     quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
+
+    if (!job->reply()->rawHeader(sizeHeader).isEmpty() && _tmpFile.size() > 0 && bodySize == 0) {
+        // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
+        // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
+        qDebug() << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
+        _tmpFile.remove();
+        done(SyncFileItem::NormalError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
+        return;
+    }
 
     if(bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart() ) {
         qDebug() << bodySize << _tmpFile.size() << job->resumeStart();

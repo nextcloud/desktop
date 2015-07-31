@@ -283,6 +283,9 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             if(column_count > 12 && sqlite3_column_int64(stmt,12)) {
                 (*st)->size = sqlite3_column_int64(stmt, 12);
             }
+            if(column_count > 13) {
+                (*st)->has_ignored_files = sqlite3_column_int(stmt, 13);
+            }
         }
     } else {
         if( rc != SQLITE_DONE ) {
@@ -435,7 +438,7 @@ char *csync_statedb_get_etag( CSYNC *ctx, uint64_t jHash ) {
     return ret;
 }
 
-#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize FROM metadata WHERE pathlen>? AND path LIKE(?)"
+#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM metadata WHERE pathlen>? AND path LIKE(?)"
 
 int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int rc;

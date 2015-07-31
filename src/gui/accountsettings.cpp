@@ -117,7 +117,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     ui->quotaInfoLabel->setFont(smallFont);
 
     _quotaLabel = new QLabel(ui->quotaProgressBar);
-    (new QVBoxLayout(ui->quotaProgressBar))->addWidget(_quotaLabel);
+    QVBoxLayout *quotaProgressLayout = new QVBoxLayout(ui->quotaProgressBar);
+    quotaProgressLayout->setContentsMargins(-1,0,-1,0);
+    quotaProgressLayout->setSpacing(0);
+    quotaProgressLayout->addWidget(_quotaLabel);
 
     // This ensures the progress bar is big enough for the label.
     ui->quotaProgressBar->setMinimumHeight(_quotaLabel->height());
@@ -192,6 +195,31 @@ void AccountSettings::slotFolderWizardAccepted()
     definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
     definition.localPath    = folderWizard->field(QLatin1String("sourceFolder")).toString();
     definition.targetPath   = folderWizard->property("targetPath").toString();
+
+    {
+        QDir dir(definition.localPath);
+        if (!dir.exists()) {
+            qDebug() << "Creating folder" << definition.localPath;
+            if (!dir.mkpath(".")) {
+                QMessageBox::warning(this, tr("Folder creation failed"),
+                                     tr("<p>Could not create local folder <i>%1</i>.")
+                                        .arg(QDir::toNativeSeparators(definition.localPath)));
+                return;
+            }
+
+        }
+    }
+
+    bool ignoreHidden = true;
+    /* take the value from the definition of already existing folders. All folders have
+     * the same setting so far, that's why it's ok to check the first one.
+     * The default is to not sync hidden files
+     */
+    if( folderMan->map().count() > 0) {
+        ignoreHidden = folderMan->map().begin().value()->ignoreHiddenFiles();
+    }
+    definition.ignoreHiddenFiles = ignoreHidden;
+
     auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     folderMan->setSyncEnabled(true);

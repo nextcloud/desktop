@@ -49,7 +49,7 @@ public:
     void persist() Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
-    virtual QString queryPassword(bool *ok) = 0;
+    virtual QString queryPassword(bool *ok, const QString& hint) = 0;
     void invalidateToken() Q_DECL_OVERRIDE;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }

@@ -36,6 +36,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
         <property name="text">
          <string>Use Monochrome Icons</string>
         </property>
@@ -55,7 +58,7 @@
         <item>
          <widget class="QCheckBox" name="newFolderLimitCheckBox">
           <property name="text">
-           <string>Ask confirmation before downloading shared folders larger than</string>
+           <string>Ask confirmation before downloading folders larger than</string>
           </property>
           <property name="checked">
            <bool>true</bool>

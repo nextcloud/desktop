@@ -191,6 +191,17 @@ QString Folder::path() const
     return p;
 }
 
+bool Folder::ignoreHiddenFiles()
+{
+    bool re(_definition.ignoreHiddenFiles);
+    return re;
+}
+
+void Folder::setIgnoreHiddenFiles(bool ignore)
+{
+    _definition.ignoreHiddenFiles = ignore;
+}
+
 QString Folder::cleanPath()
 {
     QString cleanedPath = QDir::cleanPath(_definition.localPath);
@@ -813,6 +824,9 @@ void Folder::startSync(const QStringList &pathList)
         return;
     }
 
+    // pass the setting if hidden files are to be ignored, will be read in csync_update
+    _csync_ctx->ignore_hidden_files = _definition.ignoreHiddenFiles;
+
     _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), remotePath(), &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -836,14 +850,14 @@ void Folder::startSync(const QStringList &pathList)
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
-    connect(_engine.data(), SIGNAL(newSharedFolder(QString)), this, SLOT(slotNewSharedBigFolderDiscovered(QString)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 
     setDirtyNetworkLimits();
 
     ConfigFile cfgFile;
-    auto newFolderLimit = cfgFile.newSharedFolderSizeLimit();
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
-    _engine->setNewSharedFolderSizeLimit(limit);
+    _engine->setNewBigFolderSizeLimit(limit);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
@@ -857,10 +871,14 @@ void Folder::setDirtyNetworkLimits()
     if (_engine) {
 
         ConfigFile cfg;
-        int downloadLimit = 0;
-        if (cfg.useDownloadLimit()) {
+        int downloadLimit = -75; // 75%
+        int useDownLimit = cfg.useDownloadLimit();
+        if (useDownLimit >= 1) {
             downloadLimit = cfg.downloadLimit() * 1000;
+        } else if (useDownLimit == 0) {
+            downloadLimit = 0;
         }
+
         int uploadLimit = -75; // 75%
         int useUpLimit = cfg.useUploadLimit();
         if ( useUpLimit >= 1) {
@@ -894,6 +912,14 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotSyncFinished()
 {
+    qDebug() << " - client version" << qPrintable(Theme::instance()->version())
+             <<  " Qt" << qVersion()
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+              <<  " SSL " <<  QSslSocket::sslLibraryVersionString().toUtf8().data()
+#endif
+   ;
+
+
     if( _csyncError ) {
         qDebug() << "-> SyncEngine finished with ERROR, warn count is" << _syncResult.warnCount();
     } else {
@@ -1026,7 +1052,7 @@ void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
     emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
 
-void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
+void Folder::slotNewBigFolderDiscovered(const QString &newF)
 {
     auto newFolder = newF;
     if (!newFolder.endsWith(QLatin1Char('/'))) {
@@ -1047,8 +1073,14 @@ void Folder::slotNewSharedBigFolderDiscovered(const QString &newF)
     if (!undecidedList.contains(newFolder)) {
         undecidedList.append(newFolder);
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-        emit newSharedBigFolderDiscovered(newFolder);
+        emit newBigFolderDiscovered(newFolder);
     }
+    QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
+                         "Please go in the settings to select it if you wish to download it.")
+                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF);
+
+    auto logger = Logger::instance();
+    logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 
@@ -1086,6 +1118,7 @@ void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
     settings.setValue(QLatin1String("localPath"), folder.localPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
+    settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.endGroup();
 }
 
@@ -1097,6 +1130,7 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
+    folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     settings.endGroup();
     return true;
 }

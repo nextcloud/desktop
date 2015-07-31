@@ -74,6 +74,10 @@ message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 set(DATADIR ${DATA_INSTALL_DIR})
+if(WIN32)
+set(DATADIR "share")
+endif(WIN32)
+set(SHAREDIR ${DATADIR})
 
 #####
 ## handle BUILD_OWNCLOUD_OSX_BUNDLE
@@ -210,6 +214,7 @@ endif(UNIT_TESTING)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
+    configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
 else()
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)

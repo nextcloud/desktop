@@ -63,6 +63,7 @@ NetworkSettings::NetworkSettings(QWidget *parent) :
     connect(_ui->userLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
     connect(_ui->passwordLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
     connect(_ui->portSpinBox, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
+    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)), SLOT(saveProxySettings()));
 
     connect(_ui->uploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
     connect(_ui->noUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
@@ -77,6 +78,10 @@ NetworkSettings::NetworkSettings(QWidget *parent) :
 NetworkSettings::~NetworkSettings()
 {
     delete _ui;
+}
+
+QSize NetworkSettings::sizeHint() const {
+    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
 }
 
 void NetworkSettings::loadProxySettings()
@@ -105,12 +110,9 @@ void NetworkSettings::loadProxySettings()
     if (port == 0)
         port = 8080;
     _ui->portSpinBox->setValue(port);
-    if (!cfgFile.proxyUser().isEmpty())
-    {
-        _ui->authRequiredcheckBox->setChecked(true);
-        _ui->userLineEdit->setText(cfgFile.proxyUser());
-        _ui->passwordLineEdit->setText(cfgFile.proxyPassword());
-    }
+    _ui->authRequiredcheckBox->setChecked(cfgFile.proxyNeedsAuth());
+    _ui->userLineEdit->setText(cfgFile.proxyUser());
+    _ui->passwordLineEdit->setText(cfgFile.proxyPassword());
 }
 
 void NetworkSettings::loadBWLimitSettings()

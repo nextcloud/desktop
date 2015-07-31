@@ -83,21 +83,24 @@ GeneralSettings::~GeneralSettings()
     delete _ui;
 }
 
+QSize GeneralSettings::sizeHint() const {
+    return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
+}
+
 void GeneralSettings::loadMiscSettings()
 {
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
-    auto newFolderLimit = cfgFile.newSharedFolderSizeLimit();
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
 }
 
 void GeneralSettings::slotUpdateInfo()
 {
-    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance()))
-    {
+    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
         connect(updater, SIGNAL(downloadStateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
         connect(_ui->restartButton, SIGNAL(clicked()), qApp, SLOT(quit()), Qt::UniqueConnection);
@@ -117,7 +120,7 @@ void GeneralSettings::saveMiscSettings()
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
-    cfgFile.setNewSharedFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
+    cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
                                         _ui->newFolderLimitSpinBox->value());
 }
 

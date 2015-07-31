@@ -96,6 +96,7 @@ Updater *Updater::create()
 #else
     return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
+
 }
 
 
@@ -123,6 +124,11 @@ qint64 Updater::Helper::stringVersionToInt(const QString& version)
 QString Updater::clientVersion()
 {
     return QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_FULL));
+}
+
+int Updater::downloadState() const
+{
+    return instance()->downloadState();
 }
 
 } // namespace OCC

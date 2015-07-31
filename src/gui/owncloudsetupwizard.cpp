@@ -78,10 +78,8 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 
 void OwncloudSetupWizard::startWizard()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    AccountPtr account = Account::create();
+    AccountPtr account = AccountManager::createAccount();
     account->setCredentials(CredentialsFactory::create("dummy"));
-    account->setSslErrorHandler(new SslDialogErrorHandler);
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 

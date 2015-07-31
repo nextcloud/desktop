@@ -46,6 +46,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
+static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char transmissionChecksumC[] = "transmissionChecksum";
@@ -62,8 +63,8 @@ static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
 static const char uploadLimitC[]      = "BWLimit/uploadLimit";
 static const char downloadLimitC[]    = "BWLimit/downloadLimit";
 
-static const char newSharedFolderSizeLimitC[] = "newSharedFolderSizeLimit";
-static const char useNewSharedFolderSizeLimitC[] = "useNewSharedFolderSizeLimit";
+static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
@@ -356,7 +357,7 @@ void ConfigFile::setRemotePollInterval(int interval, const QString &connection )
     if( connection.isEmpty() ) con = defaultConnection();
 
     if( interval < 5000 ) {
-        qDebug() << "Remote Poll interval of " << interval << " is below fife seconds.";
+        qDebug() << "Remote Poll interval of " << interval << " is below five seconds.";
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -379,6 +380,24 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     if( interval < pollInterval) {
         qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
         interval = pollInterval;
+    }
+    return interval;
+}
+
+int ConfigFile::updateCheckInterval( const QString& connection ) const
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup( con );
+
+    int defaultInterval = 1000*60*60*10; // ten hours
+    int interval = settings.value( QLatin1String(updateCheckIntervalC), defaultInterval ).toInt();
+
+    int minInterval = 1000*60*5;
+    if( interval < minInterval) {
+        qDebug() << "Update check interval less than five minutes, setting " << minInterval;
+        interval = minInterval;
     }
     return interval;
 }
@@ -552,17 +571,17 @@ void ConfigFile::setDownloadLimit(int kbytes)
     setValue(downloadLimitC, kbytes);
 }
 
-QPair<bool, quint64> ConfigFile::newSharedFolderSizeLimit() const
+QPair<bool, quint64> ConfigFile::newBigFolderSizeLimit() const
 {
-    qint64 value = getValue(newSharedFolderSizeLimitC, QString(), 100).toLongLong();
-    bool use = value >= 0 && getValue(useNewSharedFolderSizeLimitC, QString(), true).toBool();
+    qint64 value = getValue(newBigFolderSizeLimitC, QString(), 500).toLongLong(); // Default to 500MB
+    bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
     return qMakePair(use, quint64(qMax<qint64>(0, value)));
 }
 
-void ConfigFile::setNewSharedFolderSizeLimit(bool isChecked, quint64 mbytes)
+void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
 {
-    setValue(newSharedFolderSizeLimitC, mbytes);
-    setValue(useNewSharedFolderSizeLimitC, isChecked);
+    setValue(newBigFolderSizeLimitC, mbytes);
+    setValue(useNewBigFolderSizeLimitC, isChecked);
 }
 
 bool ConfigFile::monoIcons() const
