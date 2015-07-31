@@ -298,20 +298,23 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
     //hide instruction NONE messages when log level is set to debug,
     //only show these messages on log level trace
+    const char *repo = ctx->current == REMOTE_REPLICA ? "server" : "client";
     if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
     {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                      "%-20s  dir: %s",
+                      "%-20s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
+                      repo,
                       cur->path);
         }
         else
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                      "%-20s file: %s",
+                      "%-20s %s file: %s",
                       csync_instruction_str(cur->instruction),
+                      repo,
                       cur->path);
         }
     }
@@ -320,15 +323,17 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                      "%-20s  dir: %s",
+                      "%-20s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
+                      repo,
                       cur->path);
         }
         else
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                      "%-20s file: %s",
+                      "%-20s %s file: %s",
                       csync_instruction_str(cur->instruction),
+                      repo,
                       cur->path);
         }
     }
