@@ -462,7 +462,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             _journal->setFileRecord(SyncJournalFileRecord(*item, _localPath + item->_file));
             item->_should_update_metadata = false;
         }
-        if (item->_isDirectory && (remote || file->should_update_metadata)) {
+        if (item->_isDirectory && file->should_update_metadata) {
             // Because we want still to update etags of directories
             dir = SyncFileItem::None;
         } else {
