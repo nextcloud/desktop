@@ -20,6 +20,7 @@
 #include "generalsettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
+#include "creds/abstractcredentials.h"
 #include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
@@ -113,7 +114,19 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
 
-    insertPreferencesPanel(0, accountIcon, s->account()->displayName(), accountSettings);
+    QString userWithoutMailHost = s->account()->credentials()->user();
+    if (userWithoutMailHost.contains('@')) {
+        userWithoutMailHost = userWithoutMailHost.left(userWithoutMailHost.lastIndexOf('@'));
+    }
+    QString hostWithoutTld = s->account()->url().host();
+    if (hostWithoutTld.contains('.')) {
+        hostWithoutTld = hostWithoutTld.left(hostWithoutTld.lastIndexOf('.'));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("www."), QLatin1String(""));
+    }
+
+    QString displayName = tr("%1\n%2").arg(userWithoutMailHost, hostWithoutTld);
+
+    insertPreferencesPanel(0, accountIcon, displayName, accountSettings);
 
     connect( accountSettings, &AccountSettings::folderChanged, _gui,  &ownCloudGui::slotFoldersChanged);
     connect( accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
