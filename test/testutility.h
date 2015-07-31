@@ -11,6 +11,8 @@
 
 #include "utility.h"
 
+#include "oc_bin.h"
+
 using namespace OCC::Utility;
 
 class TestUtility : public QObject
@@ -107,9 +109,9 @@ private slots:
     void testVersionOfInstalledBinary()
     {
 	if( isLinux() ) {
-                QString ver = versionOfInstalledBinary("/home/kf/owncloud.com/buildmirall/bin/owncloud");
+            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN);
 		qDebug() << "Version of installed ownCloud Binary: " << ver;
-		QVERIFY( !ver.isEmpty()); 
+		QVERIFY( !ver.isEmpty());
 	} else {
 		QVERIFY( versionOfInstalledBinary().isEmpty());
 	}
