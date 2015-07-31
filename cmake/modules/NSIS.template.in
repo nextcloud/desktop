@@ -720,6 +720,7 @@ Function .onInit
    ${MementoSectionRestore}
 
    UAC_TryAgain:
+      !insertmacro UAC_RunElevated
       ${Switch} $0
       ${Case} 0
           ${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
