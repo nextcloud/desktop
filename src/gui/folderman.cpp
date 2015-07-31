@@ -198,7 +198,11 @@ int FolderMan::setupFolders()
     auto settings = Account::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
-        return setupFoldersMigration();
+        int r = setupFoldersMigration();
+        if (r > 0) {
+            AccountManager::instance()->save();
+        }
+        return r;
     }
 
     qDebug() << "* Setup folders from settings file";
@@ -414,7 +418,7 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
         folder->saveToSettings();
     }
-    qDebug() << "Migrated!";
+    qDebug() << "Migrated!" << folder;
     settings.sync();
     return folder;
 }
