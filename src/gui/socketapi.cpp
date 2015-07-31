@@ -300,10 +300,6 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
         return;
     }
 
-    if (item._instruction == CSYNC_INSTRUCTION_NONE) {
-        return;
-    }
-
     Folder *f = FolderMan::instance()->folder(folder);
     if (!f) {
         return;

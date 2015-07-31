@@ -471,7 +471,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
                 _hasNoneFiles = true;
             }
 
-            emit syncItemDiscovered(*item);
             return re;
         }
         break;
