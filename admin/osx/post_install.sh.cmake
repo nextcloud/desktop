@@ -10,7 +10,7 @@ EOF
 
 # Always enable the new 10.10 finder plugin if available
 if [ -x "$(command -v pluginkit)" ]; then
-    pluginkit -e use -i com.owncloud.desktopclient.FinderSyncExt
+    pluginkit -e use -i @APPLICATION_REV_DOMAIN@.FinderSyncExt
 fi
 
 exit 0
