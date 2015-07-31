@@ -286,7 +286,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
-				OC_TEAM_IDENTIFIER_PREFIX = "";
+				OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX = "";
 				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -305,7 +305,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OC_APPLICATION_REV_DOMAIN = com.owncloud.desktopclient;
-				OC_TEAM_IDENTIFIER_PREFIX = "";
+				OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX = "";
 				PRODUCT_NAME = SyncStateFinder;
 				WRAPPER_EXTENSION = bundle;
 			};
