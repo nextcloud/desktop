@@ -110,10 +110,13 @@ private slots:
     {
 	if( isLinux() ) {
             QString ver = versionOfInstalledBinary(OWNCLOUD_BIN);
-		qDebug() << "Version of installed ownCloud Binary: " << ver;
-		QVERIFY( !ver.isEmpty());
+	    qDebug() << "Version of installed ownCloud Binary: " << ver;
+	    QVERIFY( !ver.isEmpty());
+
+	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.+" );
+            QVERIFY( rx.exactMatch(ver));
 	} else {
-		QVERIFY( versionOfInstalledBinary().isEmpty());
+	    QVERIFY( versionOfInstalledBinary().isEmpty());
 	}
     }
 };
