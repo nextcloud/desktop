@@ -414,6 +414,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
         folder->saveToSettings();
     }
+    qDebug() << "Migrated!";
+    settings.sync();
     return folder;
 }
 
