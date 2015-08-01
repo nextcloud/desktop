@@ -1,1 +1,0 @@
-NSIS.template.in
