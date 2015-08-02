@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
@@ -96,17 +96,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Niet geselecteerde mappen worden &lt;b&gt;verwijderd&lt;/b&gt; van uw lokale bestandssysteem en worden niet meer gesynchroniseerd met deze computer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="185"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Toepassen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Verwijder map</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Folder creation failed</source>
-        <translation type="unfinished"/>
+        <translation>Maken map mislukt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
@@ -186,17 +186,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Verbonden met %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="450"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Server %1 is tijdelijk niet beschikbaar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Uitgelogd van %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="454"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
@@ -613,32 +613,32 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>U heeft geen permissie om te schrijven naar de geselecteerde map!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Het lokale pad %1 is al een uploadmap. Kies een andere.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Er bestaat een al eerder geconfigureerde map in de huidige opdracht.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>De gekozen map is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1153"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Een reeds geconfigureerde map bevat de nu ingevoerde map.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>De gekozen map is een symbolic link. Een reeds geconfigureerde map is de bovenliggende map van de gekozen map, waarnaar de link verwijst.</translation>
     </message>
 </context>
 <context>
@@ -690,36 +690,37 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="635"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; onderzoeken</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="672"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4) %5 over bij een snelheid van %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 van %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="682"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="698"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 van %2, file %3 van %4
+Totaal resterende tijd %5</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="704"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>bestand %1 van %2</translation>
     </message>
 </context>
 <context>
@@ -891,7 +892,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Geavanceerd</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -911,7 +912,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="118"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Bewerk genegeerde bestanden</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1354,32 +1355,32 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Verbinding mislukt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kon niet verbinden met het opgegeven beveiligde serveradres. Hoe wilt u verder gaan?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Selecteer een andere URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Probeer onversleuteld over HTTP (onbeveiligd)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Configureer het client-side TLS-certificaat</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kon niet verbinden met het opgegeven beveiligde serveradres &lt;em&gt;%1&lt;/em&gt;.Hoe wilt u verder gaan?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1931,7 +1932,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>Gebruikersnaam:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
@@ -1946,12 +1947,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Wachtwoord:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstlabel</translation>
     </message>
 </context>
 <context>
@@ -3136,7 +3137,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>

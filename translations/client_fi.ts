@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
@@ -96,17 +96,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Ilman valintaa olevat kansiot &lt;b&gt;poistetaan&lt;/b&gt; paikallisesta tiedostojärjestelmästä, eikä niitä synkronoida enää jatkossa tämän tietokoneen kanssa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="185"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Toteuta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Asetusvirhe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
@@ -611,7 +611,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Sinulla ei ole kirjoitusoikeutta valittuun kansioon!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1139"/>
@@ -621,7 +621,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Tässä on jo olemassa asetettu kansio.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1148"/>
@@ -631,7 +631,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1153"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Jo aiemmin määritelty kansio sisältää nyt valitun kansion.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
@@ -694,30 +694,31 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="672"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3/%4) %5 jäljellä nopeudella %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="682"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="698"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2, tiedosto %3/%4
+Aikaa jäljellä yhteensä %5</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="704"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>tiedosto %1/%2</translation>
     </message>
 </context>
 <context>
@@ -889,7 +890,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Lisäasetukset</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -909,7 +910,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="118"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa sivuutettuja tiedostoja</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1351,7 +1352,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
@@ -1361,7 +1362,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Valitse eri verkko-osoite</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
@@ -1371,7 +1372,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Määritä asiakaspuolen TLS-varmenteen asetukset</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="37"/>
@@ -1924,7 +1925,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjätunnus:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
@@ -1939,12 +1940,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Salasana:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TekstiLeima</translation>
     </message>
 </context>
 <context>
@@ -3129,7 +3130,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>

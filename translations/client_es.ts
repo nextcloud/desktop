@@ -68,7 +68,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="77"/>
         <source>%1@%2</source>
-        <translation type="unfinished"/>
+        <translation>%1@%2</translation>
     </message>
 </context>
 <context>
@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
@@ -96,17 +96,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Las carpetas no seleccionadas serán &lt;b&gt;eliminadas&lt;/b&gt; de su sistema de archivos local y ya no serán sincronizadas con esta computadora</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="185"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Folder creation failed</source>
-        <translation type="unfinished"/>
+        <translation>Creación de carpeta falló</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
@@ -181,27 +181,27 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="444"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 como &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Conectado a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="450"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Servidor %1 no está disponible temporalmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Cerró sesión desde %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sin conexión a %1 en %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="489"/>
@@ -211,12 +211,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
         <source>Confirm Account Delete</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar eliminación de cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -244,37 +244,37 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="94"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="96"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="98"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="100"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Servicio no disponible</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="102"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>Error en la red</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Error en la configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Estado de cuenta desconocido</translation>
     </message>
 </context>
 <context>
@@ -543,12 +543,12 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderman.cpp" line="855"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(copia de seguridad)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="860"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(copia de seguridad %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1069"/>
@@ -613,32 +613,32 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>¡Usted no tiene permiso para escribir en la carpeta seleccionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La ruta local %1 ya es una carpeta de subidas. Por favor, seleccione otra</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>Ya hay una carpeta configurada dentro de la entrada actual.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta seleccionada es un enlace simbólico. Ya existe una carpeta configurada en la carpeta a la que apunta este enlace.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1153"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Una carpeta ya configurada contiene la carpeta introducida.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta seleccionada es un enlace simbólico. La carpeta raiz actualmente configurada ya contiene la carpeta seleccionada en su jerarquía.</translation>
     </message>
 </context>
 <context>
@@ -685,41 +685,42 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="125"/>
         <source>%1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="635"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Descubriendo &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="672"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4) quedan %5 a una velocidad de %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="682"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="698"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, archivo %3 de %4
+Tiempo restante %5</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="704"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>archivo %1 de %2</translation>
     </message>
 </context>
 <context>
@@ -881,7 +882,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>A la Bandeja de sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -891,7 +892,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Avanzado</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -901,7 +902,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>MB</source>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
@@ -911,12 +912,12 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="118"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar archivos ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Add an Account</source>
-        <translation type="unfinished"/>
+        <translation>Agregar una cuenta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="167"/>
@@ -975,12 +976,12 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar archivos ocultos</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ingored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Archivos ignorados por patrones</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -990,12 +991,12 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
         <source>Pattern</source>
-        <translation type="unfinished"/>
+        <translation>Patrón</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
         <source>Allow Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Permitir eliminación</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
@@ -1301,7 +1302,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Actualizar Verificación</translation>
     </message>
 </context>
 <context>
@@ -1353,32 +1354,32 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>La conexión falló</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fallo al conectar con la direccion del servidor seguro especificado. ¿Cómo desea proceder&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar una URL diferente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Reintentar no encriptado sobre HTTP (inseguro)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Configurar certificado TLS del Cliente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fallo al conectar con la dirección del servidor seguro &lt;em&gt;%1&lt;/em&gt;. ¿Cómo desea proceder&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1649,7 +1650,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="457"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Archivo fue eliminada del servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="505"/>
@@ -1924,32 +1925,32 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Autenticación de proxy necesaria</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>Nombre de usuario:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Proxy:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor de proxy necesita de un usuario y contraseña.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Texto Etiqueta</translation>
     </message>
 </context>
 <context>
@@ -2053,7 +2054,8 @@ No se recomienda usarla.</translation>
         <location filename="../src/gui/settingsdialogmac.cpp" line="127"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
 </context>
 <context>
@@ -2733,7 +2735,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir en navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
@@ -2795,12 +2797,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado desde cuentas:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
@@ -3129,12 +3131,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>0 seconds</source>
-        <translation type="unfinished"/>
+        <translation>0 segundos</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>

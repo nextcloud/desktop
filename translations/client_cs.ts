@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Smazat</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
@@ -96,17 +96,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Neoznačené složky budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="185"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Použít</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba konfigurace</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
@@ -613,32 +613,32 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nemáte oprávnění pro zápis do zvolené složky!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Místní cesta %1 je již nastavena jako složka pro odesílání. Zvolte, prosím, jinou!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>V aktuální položce se již nachází složka s nastavenou synchronizací.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Vybraná složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje nastavenou složku.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1153"/>
         <source>An already configured folder contains the currently entered folder.</source>
-        <translation type="unfinished"/>
+        <translation>Právě zadaná složka je již obsažena ve složce s nastavenou synchronizací.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation type="unfinished"/>
+        <translation>Zvolená složka je symbolický odkaz. Cílová složka tohoto odkazu již obsahuje složku s nastavenou synchronizací.</translation>
     </message>
 </context>
 <context>
@@ -690,36 +690,37 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="635"/>
         <source>Discovering &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Prohledávám &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="672"/>
         <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
         <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 z %4) zbývající čas %5 při rychlosti %6/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 ze %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="682"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="698"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
-        <translation type="unfinished"/>
+        <translation>%1 z %2, soubor %3 ze %4
+Celkový zbývající čas %5</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="704"/>
         <source>file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>soubor %1 z %2</translation>
     </message>
 </context>
 <context>
@@ -891,7 +892,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Pokročilé</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -911,7 +912,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="118"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editovat ignorované soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1354,32 +1355,32 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Spojení selhalo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nezdařilo se připojení k uvedené zabezpečené adrese serveru. Jak si přejete dále postupovat?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Vybrat jinou URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Zkusit bez šifrování přes HTTP (nezabezpečené)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Nakonfigurovat klientský TLS certifikát</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nezdařilo se připojení k zabezpečenému serveru &lt;em&gt;%1&lt;/em&gt;. Jak si přejete dále postupovat?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1933,7 +1934,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelské jméno:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
@@ -1948,12 +1949,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Heslo:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textový popisek</translation>
     </message>
 </context>
 <context>
@@ -3138,7 +3139,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>

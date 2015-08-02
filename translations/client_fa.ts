@@ -86,7 +86,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>حذف</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>منصرف شدن</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>رشته های ترجمه نشده</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
@@ -613,7 +613,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>شما اجازه نوشتن در پوشه های انتخاب شده را ندارید!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1139"/>
@@ -623,7 +623,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>An already configured folder is contained in the current entry.</source>
-        <translation type="unfinished"/>
+        <translation>در حال حاضر یک پوشه پیکربندی شده در ورودی فعلی موجود است.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1148"/>
@@ -891,7 +891,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>پیشرفته</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
@@ -911,7 +911,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="118"/>
         <source>Edit Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>ویرایش فایل های در نظر گرفته نشده</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
@@ -1925,7 +1925,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation type="unfinished"/>
+        <translation>نام کاربری:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
@@ -1940,12 +1940,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>رمز عبور:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>برچسب متنی</translation>
     </message>
 </context>
 <context>
