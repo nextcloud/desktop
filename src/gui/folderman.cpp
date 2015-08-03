@@ -854,7 +854,7 @@ QString FolderMan::getBackupName( QString fullPathName ) const
 
      QString newName = fullPathName + tr(" (backup)");
      QFileInfo fi( newName );
-     int cnt = 1;
+     int cnt = 2;
      do {
          if( fi.exists() ) {
              newName = fullPathName + tr(" (backup %1)").arg(cnt++);
