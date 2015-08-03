@@ -33,7 +33,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Files Ingored by Patterns</string>
+      <string>Files Ignored by Patterns</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
