@@ -443,7 +443,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libcrypto-10.dll"
    File "${MING_BIN}\libssl-10.dll"
    File "${MING_BIN}\libstdc++-6.dll"
-   File "${MING_BIN}\libwebp-4.dll"
+   File "${MING_BIN}\libwebp-5.dll"
    File "${MING_BIN}\libxslt-1.dll"
    File "${MING_BIN}\libxml2-2.dll"
    File "${MING_BIN}\zlib1.dll"
