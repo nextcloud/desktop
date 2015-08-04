@@ -84,7 +84,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
     }
 
     auto limit = _newBigFolderSizeLimit;
-    if (result > limit) {
+    if (result >= limit) {
         // we tell the UI there is a new folder
         emit newBigFolder(path);
         return true;
