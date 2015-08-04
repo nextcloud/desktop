@@ -106,7 +106,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   file_stat->name = c_utf8_from_locale(dirent->d_name);
 
   /* Check for availability of d_type, see manpage. */
-#ifdef _DIRENT_HAVE_D_TYPE
+#if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)
   switch (dirent->d_type) {
     case DT_FIFO:
     case DT_SOCK:

@@ -203,6 +203,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
     assert_non_null(dh);
 
     while( (dirent = csync_vio_readdir(csync, dh)) ) {
+        assert_non_null(dirent);
         assert_non_null(dirent->name);
 
         assert_int_equal( dirent->fields & CSYNC_VIO_FILE_STAT_FIELDS_TYPE, CSYNC_VIO_FILE_STAT_FIELDS_TYPE );
