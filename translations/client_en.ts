@@ -979,7 +979,7 @@ Account: %3
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
+        <source>Files Ignored by Patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

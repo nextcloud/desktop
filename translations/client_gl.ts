@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Non hai conexión con %1 en %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="489"/>
         <source>There are new shared folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hai novos cartafoles compartidos que non foron sincronizados, xa que son grandes de máis: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="94"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="96"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Estado da conta descoñecido</translation>
     </message>
 </context>
 <context>
@@ -501,7 +501,8 @@
         <location filename="../src/gui/folder.cpp" line="1078"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Foi engadido un novo cartafol maior de  %1 MB: %2.
+Vaia aos axustes e seleccióneo se quere descargalo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
@@ -646,7 +647,7 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Engadir un cartafol para sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -670,17 +671,17 @@ Confirma que quere realizar esta operación?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="107"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Ten que estar conectado para engadir un cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>A acción de engadir cartafoles está desactivada xa que vostede xa sincronizou todos os seus ficheiros. Se quere sincronizar varios cartafoles, retire o cartafol raíz configurado actualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="115"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Prema nesta botón para engadir un cartafol para sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="125"/>
@@ -882,7 +883,7 @@ Tempo total restante %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Para a área de notificación</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -897,7 +898,7 @@ Tempo total restante %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Ask confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmación antes de descargar cartafoles máis grandes de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -980,11 +981,11 @@ Conta: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar os ficheiros agochados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
+        <source>Files Ignored by Patterns</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -995,7 +996,7 @@ Conta: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
         <source>Pattern</source>
-        <translation>Modelo</translation>
+        <translation>Patrón</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
@@ -1213,7 +1214,7 @@ Os elementos aos que se lles permite a eliminación tamén se eliminarán se imp
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Limitar a 3/4 do largo de banda estimado</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
@@ -1309,7 +1310,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Comprobar actualizacións</translation>
     </message>
 </context>
 <context>
@@ -1932,7 +1933,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>O proxy require autenticación</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -2816,17 +2817,17 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="407"/>
         <location filename="../src/gui/owncloudgui.cpp" line="480"/>
         <source>Sign out</source>
-        <translation>Saír</translation>
+        <translation>Desconectar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="405"/>
         <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Desconectar de todos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Sign in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>Rexistrarse en todos...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
@@ -3292,7 +3293,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Aborting...</source>
-        <translation>Interrompendo</translation>
+        <translation>Cancelando...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>

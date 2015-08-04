@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Algunas carpetas, incluyendo redes montadas o carpetas compartidas, pueden tener diferentes límites.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;No se pudo crear la carpeta local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="253"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="489"/>
         <source>There are new shared folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hay nuevas carpetas compartidas que no puede ser sincronizadas debido a que son demasiado grandes: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
         <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;¿Desea eliminar la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esta acción no eliminará los archivos desde su cliente.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="420"/>
@@ -501,7 +501,8 @@
         <location filename="../src/gui/folder.cpp" line="1078"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Una nueva carpeta superior a %1 MB se ha agregado: %2.
+Por favor diríjase a los ajustes para seleccionarlo si desea descargarlo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1091"/>
@@ -603,12 +604,12 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderman.cpp" line="1109"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>¡La carpeta seleccionada no es válida!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>The selected path is not a directory!</source>
-        <translation type="unfinished"/>
+        <translation>¡La ruta seleccionada no es un directorio!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
@@ -675,7 +676,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Agregar carpeta está deshabilitada debido a que está sincronizando todos sus archivos. Si desea sincronizar múltiples carpetas, por favor quite la actual carpeta raíz configurada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="115"/>
@@ -897,7 +898,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Ask confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Preguntar antes que descargar carpetas superiores a</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -941,7 +942,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="290"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>La lectura desde el llavero falló y generó este error: &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -953,7 +954,11 @@ Tiempo restante %5</translation>
 User: %2
 Account: %3
 </source>
-        <translation type="unfinished"/>
+        <translation>Por favor ingrese %1 contraseña:
+
+Usuario: %2
+Cuenta: %3
+</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="41"/>
@@ -980,8 +985,8 @@ Account: %3
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
-        <translation>Archivos ignorados por patrones</translation>
+        <source>Files Ignored by Patterns</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1008,7 +1013,9 @@ Account: %3
         <source>Files or directories matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Archivos o directorios que coincidan con un patrón no serán sincronizados.
+
+Los elementos cuya eliminación está permitida serán eliminados si impiden que un directorio sea eliminado. Esto es útil por sus metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="122"/>
@@ -1207,7 +1214,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Limitar a 3/4 de la banda ancha estimada</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
@@ -2186,7 +2193,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="616"/>
         <source>Cannot find a folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>No se encuentra tal carpeta para ser cargada.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="650"/>
@@ -2550,7 +2557,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="390"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>El nombre del archivo contiene caracteres inválidos que no pueden ser sincronizados entre las plataformas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -3106,7 +3113,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln month(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln meses(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="306"/>

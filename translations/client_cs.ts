@@ -985,8 +985,8 @@ Uživatel: %2
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
-        <translation>Ignorovat soubory podle masky</translation>
+        <source>Files Ignored by Patterns</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>

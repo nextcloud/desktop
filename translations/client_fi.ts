@@ -68,7 +68,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="77"/>
         <source>%1@%2</source>
-        <translation type="unfinished"/>
+        <translation>%1@%2</translation>
     </message>
 </context>
 <context>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Poista kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
@@ -141,12 +141,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Folder creation failed</source>
-        <translation type="unfinished"/>
+        <translation>Kansion luominen epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="205"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Paikallisen kansion &lt;i&gt;%1&lt;/i&gt; luominen epäonnistui.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="253"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="514"/>
         <source>Confirm Account Delete</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista tilin poistaminen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -259,12 +259,12 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="100"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Palvelu ei ole käytettävissä</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="102"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>Verkkovirhe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="104"/>
@@ -601,12 +601,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1109"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Kelvollista kansiota ei ole valittu!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>The selected path is not a directory!</source>
-        <translation type="unfinished"/>
+        <translation>Valittu polku ei ole kansio!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1124"/>
@@ -644,7 +644,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Lisää synkronoitava kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -678,12 +678,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="115"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Napsauta valitaksesi synkronoitavan kansion.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="125"/>
         <source>%1 (%2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="635"/>
@@ -915,7 +915,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Add an Account</source>
-        <translation type="unfinished"/>
+        <translation>Lisää tili</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="167"/>
@@ -974,11 +974,11 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoi piilotiedostot</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
+        <source>Files Ignored by Patterns</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1648,7 +1648,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="457"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto poistettiin palvelimelta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="505"/>
@@ -1920,7 +1920,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Välityspalvelin vaatii tunnistautumisen</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -1930,12 +1930,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Välityspalvelin:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Välityspalvelin vaatii käyttäjätunnuksen ja salasanan.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2049,7 +2049,8 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/settingsdialogmac.cpp" line="127"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
 </context>
 <context>
@@ -2729,7 +2730,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Avaa selaimessa</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
@@ -2796,7 +2797,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Tili %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>

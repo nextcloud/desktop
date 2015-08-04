@@ -986,8 +986,8 @@ Conta: %3
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
-        <source>Files Ingored by Patterns</source>
-        <translation>Arquivos Ignorados por Padrões</translation>
+        <source>Files Ignored by Patterns</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
