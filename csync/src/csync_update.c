@@ -664,6 +664,14 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     int flen;
     int flag;
 
+    /* Conversion error */
+    if (dirent->name == NULL && dirent->original_name) {
+        ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
+        ctx->error_string = dirent->original_name; // take ownership
+        dirent->original_name = NULL;
+        goto error;
+    }
+
     d_name = dirent->name;
     if (d_name == NULL) {
       ctx->status_code = CSYNC_STATUS_READDIR_ERROR;

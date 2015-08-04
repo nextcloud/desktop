@@ -166,6 +166,11 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_OPENDIR_ERROR:
         errStr = tr("An error occurred while opening a directory");
         break;
+    case CSYNC_STATUS_READDIR_ERROR:
+        errStr = tr("Error while reading directory.");
+        break;
+    case CSYNC_STATUS_INVALID_CHARACTERS:
+        // Handled in callee
     default:
         errStr = tr("An internal error number %1 occurred.").arg( (int) err );
     }
@@ -542,6 +547,10 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
             errStr.append(" ");
         }
         errStr += QString::fromUtf8(errMsg);
+    }
+    // Special handling CSYNC_STATUS_INVALID_CHARACTERS
+    if (err == CSYNC_STATUS_INVALID_CHARACTERS) {
+        errStr = tr("Invalid characters, please rename \"%1\"").arg(errMsg);
     }
 
     // if there is csyncs url modifier in the error message, replace it.

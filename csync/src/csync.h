@@ -100,7 +100,8 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
     CYSNC_STATUS_FILE_LOCKED_OR_OPEN,
-    CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN
+    CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN,
+    CSYNC_STATUS_INVALID_CHARACTERS
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;
@@ -217,6 +218,8 @@ struct csync_vio_file_stat_s {
   enum csync_vio_file_type_e type;
 
   enum csync_vio_file_flags_e flags;
+
+  char *original_name; // only set if locale conversion fails
 };
 
 csync_vio_file_stat_t *csync_vio_file_stat_new(void);

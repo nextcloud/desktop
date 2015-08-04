@@ -46,6 +46,7 @@ static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 typedef struct {
     CSYNC *csync;
     char  *result;
+    char *ignored_dir;
 } statevar;
 
 /* remove the complete test dir */
@@ -204,8 +205,12 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
 
     while( (dirent = csync_vio_readdir(csync, dh)) ) {
         assert_non_null(dirent);
-        assert_non_null(dirent->name);
+        if (dirent->original_name) {
+            sv->ignored_dir = c_strdup(dirent->original_name);
+            continue;
+        }
 
+        assert_non_null(dirent->name);
         assert_int_equal( dirent->fields & CSYNC_VIO_FILE_STAT_FIELDS_TYPE, CSYNC_VIO_FILE_STAT_FIELDS_TYPE );
 
         if( c_streq( dirent->name, "..") || c_streq( dirent->name, "." )) {
@@ -416,13 +421,46 @@ static void check_readdir_longtree(void **state)
     assert_string_equal( sv->result, result);
 }
 
+// https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
+static void check_readdir_bigunicode(void **state)
+{
+    statevar *sv = (statevar*) *state;
+//    1: ? ASCII: 239 - EF
+//    2: ? ASCII: 187 - BB
+//    3: ? ASCII: 191 - BF
+//    4: ASCII: 32    - 20
+
+    char *p = 0;
+    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, "goodone/" );
+    int rc = _tmkdir(p, MKDIR_MASK);
+    assert_int_equal(rc, 0);
+    SAFE_FREE(p);
+
+    const char *t1 = "goodone/ugly\xEF\xBB\xBF\x32" ".txt";
+    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, t1 );
+    rc = _tmkdir(p, MKDIR_MASK);
+    SAFE_FREE(p);
+
+    assert_int_equal(rc, 0);
+
+    int files_cnt = 0;
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    // Only the directory with good name is returned
+    assert_string_equal( sv->result,
+                         "<DIR> C:/tmp/csync_test/goodone"
+     );
+    // Bad one is recognized though.. !
+    assert_string_equal( sv->ignored_dir, CSYNC_TEST_DIR "/goodone/" "ugly\xEF\xBB\xBF\x32" ".txt");
+    assert_int_equal(files_cnt, 0);
+}
+
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
         unit_test_setup_teardown(check_readdir_shorttree, setup_testenv, teardown),
         unit_test_setup_teardown(check_readdir_with_content, setup_testenv, teardown),
         unit_test_setup_teardown(check_readdir_longtree, setup_testenv, teardown),
-
+        unit_test_setup_teardown(check_readdir_bigunicode, setup_testenv, teardown),
     };
 
     return run_tests(tests);
