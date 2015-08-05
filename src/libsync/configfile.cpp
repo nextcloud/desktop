@@ -573,7 +573,8 @@ void ConfigFile::setDownloadLimit(int kbytes)
 
 QPair<bool, quint64> ConfigFile::newBigFolderSizeLimit() const
 {
-    qint64 value = getValue(newBigFolderSizeLimitC, QString(), 500).toLongLong(); // Default to 500MB
+    auto defaultValue = Theme::instance()->newBigFolderSizeLimit();
+    qint64 value = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
     bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
     return qMakePair(use, quint64(qMax<qint64>(0, value)));
 }
