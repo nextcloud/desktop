@@ -468,14 +468,15 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
                 }
             }
         }
-        newInfo._isUndecided = selectiveSyncUndecidedList.contains(path);
-        parentInfo->_subs.append(newInfo);
 
         foreach(const QString &str , selectiveSyncUndecidedList) {
-            if (str.startsWith(path)) {
+            if (str == path) {
+                newInfo._isUndecided = true;
+            } else if (str.startsWith(path)) {
                 undecidedIndexes.append(newInfo._pathIdx.last());
             }
         }
+        parentInfo->_subs.append(newInfo);
     }
 
     endInsertRows();
