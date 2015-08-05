@@ -94,8 +94,9 @@ public slots:
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
-    void slotFolderSyncStateChange();
     void slotLscolFinishedWithError(QNetworkReply *r);
+    void slotFolderSyncStateChange();
+    void slotNewBigFolder();
 
 private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
@@ -111,6 +112,7 @@ private:
 
 signals:
     void dirtyChanged();
+    void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has a undecided item
 };
 
 } // namespace OCC
