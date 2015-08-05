@@ -445,12 +445,19 @@ static void check_readdir_bigunicode(void **state)
 
     int files_cnt = 0;
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
-    // Only the directory with good name is returned
     assert_string_equal( sv->result,
                          "<DIR> C:/tmp/csync_test/goodone"
+#ifndef __APPLE__
+                        // On Mac, iconv will not return some files with fancy unicode.
+                        // Linux is not so picky about it and return everything and let the sync engine deal with it.
+                         "<DIR> C:/tmp/csync_test/goodone/ugly\xEF\xBB\xBF\x32" ".txt"
+#endif
      );
+
+#ifdef __APPLE__
     // Bad one is recognized though.. !
     assert_string_equal( sv->ignored_dir, CSYNC_TEST_DIR "/goodone/" "ugly\xEF\xBB\xBF\x32" ".txt");
+#endif
     assert_int_equal(files_cnt, 0);
 }
 
