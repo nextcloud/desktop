@@ -103,24 +103,24 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    static const qint64 kb = 1024;
-    static const qint64 mb = 1024 * kb;
-    static const qint64 gb = 1024 * mb;
-    static const qint64 tb = 1024 * gb;
+    static const qint64 kb = 1000;
+    static const qint64 mb = 1000 * kb;
+    static const qint64 gb = 1000 * mb;
+    static const qint64 tb = 1000 * gb;
 
     QString s;
     qreal value = octets;
     if (octets >= tb) {
-        s = QCoreApplication::translate("Utility", "%L1 TiB");
+        s = QCoreApplication::translate("Utility", "%L1 TB");
         value /= tb;
     } else if (octets >= gb) {
-        s = QCoreApplication::translate("Utility", "%L1 GiB");
+        s = QCoreApplication::translate("Utility", "%L1 GB");
         value /= gb;
     } else if (octets >= mb) {
-        s = QCoreApplication::translate("Utility", "%L1 MiB");
+        s = QCoreApplication::translate("Utility", "%L1 MB");
         value /= mb;
     } else if (octets >= kb) {
-        s = QCoreApplication::translate("Utility", "%L1 KiB");
+        s = QCoreApplication::translate("Utility", "%L1 kB");
         value /= kb;
     } else  {
         s = QCoreApplication::translate("Utility", "%L1 B");
