@@ -252,5 +252,21 @@ std::unique_ptr<QSettings> AccountState::settings()
     return s;
 }
 
+QString AccountState::shortDisplayNameForSettings() const
+{
+    QString userWithoutMailHost = account()->credentials()->user();
+    if (userWithoutMailHost.contains('@')) {
+        userWithoutMailHost = userWithoutMailHost.left(userWithoutMailHost.lastIndexOf('@'));
+    }
+    QString hostWithoutTld = account()->url().host();
+    if (hostWithoutTld.contains('.')) {
+        hostWithoutTld = hostWithoutTld.left(hostWithoutTld.lastIndexOf('.'));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("www."), QLatin1String(""));
+    }
+
+    return userWithoutMailHost + QLatin1String("\n") + hostWithoutTld;
+}
+
+
 
 } // namespace OCC

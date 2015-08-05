@@ -76,20 +76,22 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     toolBar->addWidget(spacer);
 
+    // Note: all the actions have a '\n' because the account name is in two lines and
+    // all buttons must have the same size in order to keep a good layout
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
-    _protocolAction = toolBar->addAction(protocolIcon, tr("Activity"));
+    _protocolAction = toolBar->addAction(protocolIcon, tr("Activity") + QLatin1Char('\n'));
     _protocolAction->setCheckable(true);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
     QIcon generalIcon(QLatin1String(":/client/resources/settings.png"));
-    QAction *generalAction = toolBar->addAction(generalIcon, tr("General"));
+    QAction *generalAction = toolBar->addAction(generalIcon, tr("General") + QLatin1Char('\n'));
     generalAction->setCheckable(true);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
     QIcon networkIcon(QLatin1String(":/client/resources/network.png"));
-    QAction *networkAction = toolBar->addAction(networkIcon, tr("Network"));
+    QAction *networkAction = toolBar->addAction(networkIcon, tr("Network") + QLatin1Char('\n'));
     networkAction->setCheckable(true);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
@@ -163,7 +165,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
     auto toolBar = qobject_cast<QToolBar*>(layout()->menuBar());
     Q_ASSERT(toolBar);
-    auto accountAction = new QAction(accountIcon, s->account()->displayName(), this);
+    auto accountAction = new QAction(accountIcon, s->shortDisplayNameForSettings(), this);
+    accountAction->setToolTip(s->account()->displayName());
     toolBar->insertAction(toolBar->actions().at(0), accountAction);
     accountAction->setCheckable(true);
     auto accountSettings = new AccountSettings(s, this);
