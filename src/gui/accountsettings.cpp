@@ -228,6 +228,10 @@ void AccountSettings::slotFolderWizardAccepted()
     Folder *f = folderMan->addFolder(_accountState, definition);
     if( f ) {
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+
+        // The user already accepted the selective sync dialog. everything is in the white list
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                                             QStringList() << QLatin1String("/"));
         folderMan->slotScheduleAllFolders();
         emit folderChanged();
     }

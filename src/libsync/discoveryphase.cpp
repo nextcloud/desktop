@@ -27,6 +27,12 @@ namespace OCC {
 static bool findPathInList(const QStringList &list, const QString &path)
 {
     Q_ASSERT(std::is_sorted(list.begin(), list.end()));
+
+    if (list.size() == 1 && list.first() == QLatin1String("/")) {
+        // Special case for the case "/" is there, it matches everything
+        return true;
+    }
+
     QString pathSlash = path + QLatin1Char('/');
 
     // Since the list is sorted, we can do a binary search.

@@ -474,6 +474,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             if (f) {
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                      _ocWizard->selectiveSyncBlacklist());
+                // The user already accepted the selective sync dialog. everything is in the white list
+                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                                                     QStringList() << QLatin1String("/"));
             }
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
