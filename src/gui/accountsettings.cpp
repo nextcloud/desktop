@@ -491,7 +491,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(QString());
     } else {
         ui->selectiveSyncNotification->setText(
-            tr("There are new shared folders that were not synchronized because they are too big: %1")
+            tr("There are new folders that were not synchronized because they are too big: %1")
                 .arg(undecidedFolder.join(tr(", "))));
         shouldBeVisible = true;
     }
