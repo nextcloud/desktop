@@ -136,6 +136,9 @@ void SqlDatabase::close()
 {
     if( _db ) {
         SQLITE_DO(sqlite3_close(_db) );
+        if (_errId != SQLITE_OK) {
+            qWarning() << "ERROR When closing DB" << _error << sqlite3_db_filename(_db, 0);
+        }
         _db = 0;
     }
 }
