@@ -11,6 +11,8 @@
 
 #include "utility.h"
 
+#include "oc_bin.h"
+
 using namespace OCC::Utility;
 
 class TestUtility : public QObject
@@ -99,6 +101,20 @@ private slots:
                  QString("2 day(s) 23 hour(s)") );
 
 
+    }
+
+    void testVersionOfInstalledBinary()
+    {
+	if( isLinux() ) {
+            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN);
+	    qDebug() << "Version of installed ownCloud Binary: " << ver;
+	    QVERIFY( !ver.isEmpty());
+
+	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.+" );
+            QVERIFY( rx.exactMatch(ver));
+	} else {
+	    QVERIFY( versionOfInstalledBinary().isEmpty());
+	}
     }
 };
 

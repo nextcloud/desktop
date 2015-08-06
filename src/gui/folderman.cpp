@@ -54,7 +54,8 @@ static qint64 msBetweenRequestAndSync = 2000;
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _currentSyncFolder(0),
-    _syncEnabled( true )
+    _syncEnabled( true ),
+    _appRestartRequired(false)
 {
     Q_ASSERT(!_instance);
     _instance = this;
@@ -473,6 +474,12 @@ void FolderMan::slotScheduleAllFolders()
     }
 }
 
+void FolderMan::slotScheduleAppRestart()
+{
+    _appRestartRequired = true;
+    qDebug() << "## Application restart requested!";
+}
+
 /*
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
@@ -540,6 +547,11 @@ void FolderMan::slotRunOneEtagJob()
         }
         if (_currentEtagJob.isNull()) {
             qDebug() << "No more remote ETag check jobs to schedule.";
+
+            /* now it might be a good time to check for restarting... */
+            if( _currentSyncFolder == NULL && _appRestartRequired ) {
+                restartApplication();
+            }
         } else {
             qDebug() << "Scheduling" << alias << "to check remote ETag";
             _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
@@ -1164,5 +1176,19 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNe
 
 }
 
+void FolderMan::restartApplication()
+{
+    if( Utility::isLinux() ) {
+        // restart:
+        qDebug() << "### Restarting application NOW, PID" << qApp->applicationPid() << "is ending.";
+        qApp->quit();
+        QStringList args = qApp->arguments();
+        QString prg = args.takeFirst();
+
+        QProcess::startDetached(prg, args);
+    } else {
+        qDebug() << "On this platform we do not restart.";
+    }
+}
 
 } // namespace OCC

@@ -88,6 +88,7 @@ Application::Application(int &argc, char **argv) :
     _gui(0),
     _theme(Theme::instance()),
     _helpOnly(false),
+    _versionOnly(false),
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false),
@@ -104,7 +105,7 @@ Application::Application(int &argc, char **argv) :
 #endif
     parseOptions(arguments());
     //no need to waste time;
-    if ( _helpOnly ) return;
+    if ( _helpOnly || _versionOnly ) return;
 
     if (isRunning())
         return;
@@ -174,6 +175,11 @@ Application::Application(int &argc, char **argv) :
     // Cleanup at Quit.
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
+    // remember the version of the currently running binary. On Linux it might happen that the
+    // package management updates the package while the app is running. This is detected in the
+    // updater slot: If the installed binary on the hd has a different version than the one
+    // running, the running app is restart. That happens in folderman.
+    _runningAppVersion = Utility::versionOfInstalledBinary();
 }
 
 Application::~Application()
@@ -211,6 +217,16 @@ void Application::slotCleanup()
     _gui->deleteLater();
 }
 
+
+    if( Utility::isLinux() ) {
+        // on linux, check if the installed binary is still the same version
+        // as the one that is running. If not, restart if possible.
+        const QByteArray fsVersion = Utility::versionOfInstalledBinary();
+
+        if( !(fsVersion.isEmpty() || _runningAppVersion.isEmpty()) && fsVersion != _runningAppVersion ) {
+            _folderManager->slotScheduleAppRestart();
+        }
+    }
 void Application::slotCheckConnection()
 {
     auto list = AccountManager::instance()->accounts();
@@ -339,6 +355,8 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--debug")) {
             _debugMode = true;
+        } else if (option == QLatin1String("--version")) {
+            _versionOnly = true;
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -385,6 +403,17 @@ void Application::showHelp()
 
     if (_theme->appName() == QLatin1String("ownCloud"))
         stream << endl << "For more information, see http://www.owncloud.org" << endl << endl;
+
+    displayHelpText(helpText);
+}
+
+void Application::showVersion()
+{
+    QString helpText;
+    QTextStream stream(&helpText);
+    stream << _theme->appName().toLatin1().constData()
+           << QLatin1String(" version ")
+           << _theme->version().toLatin1().constData() << endl;
 
     displayHelpText(helpText);
 }
@@ -483,6 +512,11 @@ void Application::setupTranslations()
 bool Application::giveHelp()
 {
     return _helpOnly;
+}
+
+bool Application::versionOnly()
+{
+    return _versionOnly;
 }
 
 void Application::showSettingsDialog()

@@ -1,0 +1,3 @@
+
+#define OWNCLOUD_BIN "@CMAKE_BINARY_DIR@/bin/owncloud"
+

@@ -59,6 +59,10 @@ int main(int argc, char **argv)
         app.showHelp();
         return 0;
     }
+    if( app.versionOnly() ) {
+        app.showVersion();
+        return 0;
+    }
 
     // check a environment variable for core dumps
 #ifdef Q_OS_UNIX

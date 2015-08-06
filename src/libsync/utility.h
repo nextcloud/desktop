@@ -98,6 +98,13 @@ namespace Utility
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
 
+    // Call the given command with the switch --version and retrun the first line
+    // of the output.
+    // If command is empty, the function calls the running application which, on
+    // Linux, might have changed while this one is running.
+    // For Mac and Windows, it returns QString()
+    OWNCLOUDSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString& command = QString() );
+
     class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;
