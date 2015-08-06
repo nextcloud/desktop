@@ -21,6 +21,7 @@
 #include "folderstatusdelegate.h"
 
 #include <QFileIconProvider>
+#include <QVarLengthArray>
 
 Q_DECLARE_METATYPE(QPersistentModelIndex)
 
