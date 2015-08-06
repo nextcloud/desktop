@@ -163,29 +163,27 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   len = strlen(path);
 
-  /* This code should probably be in csync_exclude, but it does not have the fs parameter.
-     Keep it here for now and TODO also find out if we want this for Windows
-     https://github.com/owncloud/mirall/issues/2086 */
-  if (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
-      return 0;
-  }
-
   /* Check if file is excluded */
   excluded = csync_excluded(ctx, path,type);
 
-  if (excluded != CSYNC_NOT_EXCLUDED) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
-    if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
-        return 1;
-    }
-    if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-        return 1;
-    }
-
-    if (ctx->current_fs) {
-        ctx->current_fs->has_ignored_files = true;
-    }
+  if( excluded == CSYNC_NOT_EXCLUDED ) {
+      /* Even if it is not excluded by a pattern, maybe it is to be ignored
+       * because it's a hidden file that should not be synced.
+       * This code should probably be in csync_exclude, but it does not have the fs parameter.
+       * Keep it here for now */
+      if (ctx->ignore_hidden_files && (fs->flags & CSYNC_VIO_FILE_FLAGS_HIDDEN)) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", path);
+          excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
+      }
+  } else {
+      /* File is ignored because it's matched by a user- or system exclude pattern. */
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", path, excluded);
+      if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
+          return 1;
+      }
+      if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+          return 1;
+      }
   }
 
   if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
@@ -208,9 +206,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->child_modified = 0;
   st->has_ignored_files = 0;
 
-  /* check hardlink count */
+  /* FIXME: Under which conditions are the following two ifs true and the code
+   * is executed? */
   if (type == CSYNC_FTW_TYPE_FILE ) {
-
     if (fs->mtime == 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
 
@@ -242,12 +240,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     st->instruction = CSYNC_INSTRUCTION_NONE;
     goto out;
   }
+
   if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
-      if( type == CSYNC_FTW_TYPE_SLINK ) {
-          st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
-      }
       st->instruction = CSYNC_INSTRUCTION_IGNORE;
-    goto out;
+      if (ctx->current_fs) {
+          ctx->current_fs->has_ignored_files = true;
+      }
+
+      goto out;
   }
 
   /* Update detection: Check if a database entry exists.
@@ -268,10 +268,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                             ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s",
+                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
                   fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm );
+                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
         if( !fs->etag) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
@@ -315,6 +315,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             /* file id or permissions has changed. Which means we need to update them in the DB. */
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
             st->should_update_metadata = true;
+        }
+        /* If it was remembered in the db that the remote dir has ignored files, store
+         * that so that the reconciler can make advantage of.
+         */
+        if( ctx->current == REMOTE_REPLICA ) {
+            st->has_ignored_files = tmp->has_ignored_files;
         }
         st->instruction = CSYNC_INSTRUCTION_NONE;
     } else {
@@ -395,12 +401,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 /* file not found in statedb */
                 st->instruction = CSYNC_INSTRUCTION_NEW;
 
-                if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewShareHook) {
-                    if (strchr(fs->remotePerm, 'S') != NULL) { /* check that the directory is shared */
-                        if (ctx->callbacks.checkSelectiveSyncNewShareHook(ctx->callbacks.update_callback_userdata, path)) {
-                            SAFE_FREE(st);
-                            return 1;
-                        }
+                if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
+                    if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, path)) {
+                        SAFE_FREE(st);
+                        return 1;
                     }
                 }
                 goto out;
@@ -418,13 +422,19 @@ out:
 
   /* Set the ignored error string. */
   if (st->instruction == CSYNC_INSTRUCTION_IGNORE) {
-    if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
-    } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
-    } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
-      st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
-    }
+      if( type == CSYNC_FTW_TYPE_SLINK ) {
+          st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
+      } else {
+          if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST; /* File listed on ignore list. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_INVALID_CHAR) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS;  /* File contains invalid characters. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_LONG_FILENAME) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
+          } else if (excluded == CSYNC_FILE_EXCLUDE_HIDDEN ) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
+          }
+      }
   }
   if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
       && type != CSYNC_FTW_TYPE_DIR) {
@@ -653,6 +663,14 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     size_t ulen = 0;
     int flen;
     int flag;
+
+    /* Conversion error */
+    if (dirent->name == NULL && dirent->original_name) {
+        ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
+        ctx->error_string = dirent->original_name; // take ownership
+        dirent->original_name = NULL;
+        goto error;
+    }
 
     d_name = dirent->name;
     if (d_name == NULL) {

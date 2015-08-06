@@ -89,6 +89,9 @@ public:
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
 
+    /** display name with two lines that is displayed in the settings  */
+    QString shortDisplayNameForSettings() const;
+
 private:
     void setState(State state);
 

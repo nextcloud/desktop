@@ -58,7 +58,7 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
         connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
         connect(f, SIGNAL(syncStateChange()), this, SLOT(slotFolderSyncStateChange()), Qt::UniqueConnection);
-        connect(f, SIGNAL(newSharedBigFolderDiscovered(QString)), this, SIGNAL(dirtyChanged()), Qt::UniqueConnection);
+        connect(f, SIGNAL(newBigFolderDiscovered(QString)), this, SLOT(slotNewBigFolder()), Qt::UniqueConnection);
     }
 
     endResetModel();
@@ -307,7 +307,7 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
 QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        return createIndex(row, column, nullptr);
+        return createIndex(row, column/*, nullptr*/);
     }
     switch(classify(parent)) {
         case AddButton: return QModelIndex();
@@ -342,7 +342,7 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
     int i = 1;
     Q_ASSERT(pathIdx.at(0) < _folders.count());
     if (pathIdx.count() == 2) {
-        return createIndex(pathIdx.at(0), 0, nullptr);
+        return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
@@ -437,6 +437,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     }
     auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
 
+    QVarLengthArray<int> undecidedIndexes;
+
     int i = 0;
     foreach (QString path, list) {
         SubFolderInfo newInfo;
@@ -466,11 +468,22 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
                 }
             }
         }
-        newInfo._isUndecided = selectiveSyncUndecidedList.contains(path);
+
+        foreach(const QString &str , selectiveSyncUndecidedList) {
+            if (str == path) {
+                newInfo._isUndecided = true;
+            } else if (str.startsWith(path)) {
+                undecidedIndexes.append(newInfo._pathIdx.last());
+            }
+        }
         parentInfo->_subs.append(newInfo);
     }
 
     endInsertRows();
+
+    for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
+        suggestExpand(idx.child(*it, 0));
+    }
 }
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
@@ -747,5 +760,32 @@ void FolderStatusModel::resetFolders()
 {
     setAccountState(_accountState);
 }
+
+void FolderStatusModel::slotNewBigFolder()
+{
+    auto f = qobject_cast<Folder *>(sender());
+    Q_ASSERT(f);
+
+    int folderIndex = -1;
+    for (int i = 0; i < _folders.count(); ++i) {
+        if (_folders.at(i)._folder == f) {
+            folderIndex = i;
+            break;
+        }
+    }
+    if (folderIndex < 0) { return; }
+
+    _folders[folderIndex]._fetched = false;
+    _folders[folderIndex]._fetching = false;
+    if (!_folders.at(folderIndex)._subs.isEmpty()) {
+        beginRemoveRows(index(folderIndex), 0, _folders.at(folderIndex)._subs.count() - 1);
+        _folders[folderIndex]._subs.clear();
+        endRemoveRows();
+    }
+
+    emit suggestExpand(index(folderIndex));
+    emit dirtyChanged();
+}
+
 
 } // namespace OCC

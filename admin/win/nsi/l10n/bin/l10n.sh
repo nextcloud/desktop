@@ -45,5 +45,7 @@ iconv -t CP932 -o Japanese.nsh Japanese.nsh
 iconv -t CP1250 -o Slovak.nsh Slovak.nsh
 iconv -t CP1254 -o Turkish.nsh Turkish.nsh
 iconv -t CP1252 -o Norwegian.nsh Norwegian.nsh
-
+iconv -t CP1250 -o Polish.nsh Polish.nsh
+iconv -t CP851  -o Slovak.nsh Slovak.nsh
+iconv -t CP851  -o Czech.nsh Czech.nsh
 

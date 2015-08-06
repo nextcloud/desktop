@@ -120,7 +120,7 @@ bool autoUpdaterAllowed()
     if ([expectedPath isEqualTo:bundlePath]) {
         return true;
     }
-    qWarning() << "ERROR: We are not in /Applications, won't check for update!";
+    qDebug() << "ERROR: We are not in /Applications, won't check for update!";
     return false;
 }
 

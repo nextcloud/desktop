@@ -152,6 +152,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         ConfigFile cfg;
         fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::SystemScope) );
         fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::UserScope) );
+        fw->setIgnoreHidden( folder->ignoreHiddenFiles() );
 
         // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
@@ -198,7 +199,11 @@ int FolderMan::setupFolders()
     auto settings = Account::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
-        return setupFoldersMigration();
+        int r = setupFoldersMigration();
+        if (r > 0) {
+            AccountManager::instance()->save();
+        }
+        return r;
     }
 
     qDebug() << "* Setup folders from settings file";
@@ -414,6 +419,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
         folder->saveToSettings();
     }
+    qDebug() << "Migrated!" << folder;
+    settings.sync();
     return folder;
 }
 
@@ -857,12 +864,12 @@ QString FolderMan::getBackupName( QString fullPathName ) const
 
     if( fullPathName.isEmpty() ) return QString::null;
 
-     QString newName = fullPathName + QLatin1String(".oC_bak");
+     QString newName = fullPathName + tr(" (backup)");
      QFileInfo fi( newName );
-     int cnt = 1;
+     int cnt = 2;
      do {
          if( fi.exists() ) {
-             newName = fullPathName + QString( ".oC_bak_%1").arg(cnt++);
+             newName = fullPathName + tr(" (backup %1)").arg(cnt++);
              fi.setFile(newName);
          }
      } while( fi.exists() );
@@ -1108,15 +1115,21 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString& path)
+QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNewDirectory)
 {
+    if (path.isEmpty()) {
+        return tr("No valid folder selected!");
+    }
+
     QFileInfo selFile( path );
     QString userInput = selFile.canonicalFilePath();
 
-    QStringList warnStrings;
+    if (!selFile.exists()) {
+        return checkPathValidityForNewFolder(selFile.dir().path(), true);
+    }
 
     if( !selFile.isDir() ) {
-        return tr("No valid local folder selected!");
+        return tr("The selected path is not a directory!");
     }
 
     if ( !selFile.isWritable() ) {
@@ -1138,12 +1151,12 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path)
             return tr("The local path %1 is already an upload folder. Please pick another one!")
                 .arg(QDir::toNativeSeparators(userInput));
         }
-        if (QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
+        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
             return tr("An already configured folder is contained in the current entry.");
         }
 
         QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
-        if (QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
+        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
             return tr("The selected folder is a symbolic link. An already configured "
                       "folder is contained in the folder this link is pointing to.");
         }

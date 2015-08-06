@@ -78,9 +78,8 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
 
 void OwncloudSetupWizard::startWizard()
 {
-    AccountPtr account = Account::create();
+    AccountPtr account = AccountManager::createAccount();
     account->setCredentials(CredentialsFactory::create("dummy"));
-    account->setSslErrorHandler(new SslDialogErrorHandler);
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 
@@ -475,6 +474,9 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             if (f) {
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                      _ocWizard->selectiveSyncBlacklist());
+                // The user already accepted the selective sync dialog. everything is in the white list
+                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                                                     QStringList() << QLatin1String("/"));
             }
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }

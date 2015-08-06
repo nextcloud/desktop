@@ -194,7 +194,7 @@ void SslButton::updateAccountState(AccountState *accountState)
     } else {
         setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
-        setMenu(nullptr);
+        setMenu(0);
     }
 }
 
@@ -208,6 +208,17 @@ void SslButton::slotUpdateMenu() {
     AccountPtr account = _accountState->account();
 
     if (account->url().scheme() == QLatin1String("https")) {
+        QString sslVersion = account->sslConfiguration().sessionCipher().protocolString()
+                + ", " + account->sslConfiguration().sessionCipher().authenticationMethod()
+                + ", " + account->sslConfiguration().sessionCipher().keyExchangeMethod()
+                + ", " + account->sslConfiguration().sessionCipher().encryptionMethod();
+        _menu->addAction(sslVersion)->setEnabled(false);
+
+#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
+        if (account->sslConfiguration().sessionTicket().isEmpty()) {
+            _menu->addAction(tr("No support for SSL session tickets/identifiers"))->setEnabled(false);
+        }
+#endif
 
         QList<QSslCertificate> chain = account->sslConfiguration().peerCertificateChain();
 

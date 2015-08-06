@@ -208,6 +208,13 @@ public:
      */
     virtual QString transmissionChecksum() const;
 
+    /**
+     * Default option for the newBigFolderSizeLimit.
+     * Size in MB of the maximum size of folder before we ask the confirmation.
+     * Set -1 to never ask confirmation.  0 to ask confirmation for every folder.
+     **/
+    virtual qint64 newBigFolderSizeLimit() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;

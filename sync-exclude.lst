@@ -39,3 +39,6 @@ desktop.ini
 ~*.tmp
 
 *.gnucash.tmp-*
+
+.synkron.*
+.sync.ffs_db

@@ -157,7 +157,8 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if( _reply->error() != QNetworkReply::NoError ) {
-        qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString();
+        qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString()
+                 << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
             qDebug() << Q_FUNC_INFO << _reply->rawHeader("Proxy-Authenticate");
         }

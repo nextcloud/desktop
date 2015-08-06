@@ -32,10 +32,9 @@
 #include "utility.h"
 #include "clientproxy.h"
 #include "sharedialog.h"
-
-#include "updater/updater.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+#include "updater/ocupdater.h"
 
 #include "config.h"
 
@@ -77,7 +76,7 @@ QString applicationTrPath()
 #elif defined(Q_OS_MAC)
     return QApplication::applicationDirPath()+QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
-    return QString::fromLatin1(DATADIR "/" APPLICATION_EXECUTABLE "/i18n/");
+    return QString::fromLatin1(SHAREDIR "/" APPLICATION_EXECUTABLE "/i18n/");
 #endif
 }
 }
@@ -168,12 +167,12 @@ Application::Application(int &argc, char **argv) :
     // Also check immediatly
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
-    if( cfg.skipUpdateCheck() ) {
-        qDebug() << Q_FUNC_INFO << "Skipping update check";
-    } else {
-        QTimer::singleShot( 3000, this, SLOT( slotStartUpdateDetector() ));
-    }
+    // Update checks
+    UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
+    connect(updaterScheduler, SIGNAL(updaterAnnouncement(QString, QString)),
+            _gui, SLOT(slotShowTrayMessage(QString, QString)));
 
+    // Cleanup at Quit.
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
 
     // remember the version of the currently running binary. On Linux it might happen that the
@@ -218,10 +217,6 @@ void Application::slotCleanup()
     _gui->deleteLater();
 }
 
-void Application::slotStartUpdateDetector()
-{
-    Updater *updater = Updater::instance();
-    updater->backgroundCheckForUpdate();
 
     if( Utility::isLinux() ) {
         // on linux, check if the installed binary is still the same version
@@ -232,8 +227,6 @@ void Application::slotStartUpdateDetector()
             _folderManager->slotScheduleAppRestart();
         }
     }
-}
-
 void Application::slotCheckConnection()
 {
     auto list = AccountManager::instance()->accounts();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>542</width>
-    <height>391</height>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -103,9 +103,6 @@
            </item>
            <item>
             <widget class="QSpinBox" name="portSpinBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -155,9 +152,6 @@
             </property>
             <item>
              <widget class="QLineEdit" name="userLineEdit">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
               <property name="text">
                <string/>
               </property>
@@ -165,9 +159,6 @@
             </item>
             <item>
              <widget class="QLineEdit" name="passwordLineEdit">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
               <property name="text">
                <string/>
               </property>
@@ -255,6 +246,9 @@
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QRadioButton" name="autoDownloadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
+          </property>
           <property name="text">
            <string>Limit automatically</string>
           </property>
@@ -284,6 +278,9 @@
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QRadioButton" name="autoUploadLimitRadioButton">
+          <property name="toolTip">
+           <string>Limit to 3/4 of estimated bandwidth</string>
+          </property>
           <property name="text">
            <string>Limit automatically</string>
           </property>

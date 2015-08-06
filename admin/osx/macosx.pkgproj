@@ -1021,11 +1021,11 @@
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>IDENTIFIER</key>
-				<string>com.owncCloud.finderPlugin</string>
+				<string>com.ownCloud.finderPlugin</string>
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
-				<string>Finder Plugin</string>
+				<string>Legacy Finder Plugin (OS X 10.9 or older)</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>

@@ -284,8 +284,15 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
             // NOT persisted into the new account.
         } else {
             // interactive password dialog starts here
+
+            QString hint;
+            if (job->error() != EntryNotFound) {
+                hint = tr("Reading from keychain failed with error: '%1'").arg(
+                        job->errorString());
+            }
+
             bool ok;
-            QString pwd = queryPassword(&ok);
+            QString pwd = queryPassword(&ok, hint);
             _fetchJobInProgress = false;
             if (ok) {
                 _password = pwd;
@@ -333,7 +340,15 @@ void HttpCredentials::invalidateToken()
     job2->setKey(kck);
     job2->start();
 
+    // clear the session cookie.
     _account->clearCookieJar();
+
+    // let QNAM fogets about the password
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    _account->networkAccessManager()->clearAccessCache();
+#else
+    _account->resetNetworkAccessManager();
+#endif
 }
 
 void HttpCredentials::persist()

@@ -28,7 +28,7 @@ class HttpCredentialsGui : public HttpCredentials {
 public:
     explicit HttpCredentialsGui() : HttpCredentials() {}
     HttpCredentialsGui(const QString& user, const QString& password, const QString& certificatePath, const QString& certificatePasswd) : HttpCredentials(user, password, certificatePath, certificatePasswd) {}
-    QString queryPassword(bool *ok) Q_DECL_OVERRIDE;
+    QString queryPassword(bool *ok, const QString& hint) Q_DECL_OVERRIDE;
 };
 
 } // namespace OCC

@@ -19,6 +19,7 @@
 #include <QLocale>
 
 #include "progressdispatcher.h"
+#include "owncloudgui.h"
 
 #include "ui_protocolwidget.h"
 
@@ -42,6 +43,7 @@ class ProtocolWidget : public QWidget
 public:
     explicit ProtocolWidget(QWidget *parent = 0);
     ~ProtocolWidget();
+    QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
     void slotProgressInfo( const QString& folder, const ProgressInfo& progress );

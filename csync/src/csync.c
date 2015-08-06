@@ -124,6 +124,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
 
   ctx->abort = false;
 
+  ctx->ignore_hidden_files = true;
+
   *csync = ctx;
   return 0;
 }
@@ -435,6 +437,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
 
       trav.error_status = cur->error_status;
       trav.should_update_metadata = cur->should_update_metadata;
+      trav.has_ignored_files = cur->has_ignored_files;
 
       if( other_node ) {
           csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
@@ -592,6 +595,7 @@ int csync_commit(CSYNC *ctx) {
   ctx->remote.read_from_db = 0;
   ctx->read_remote_from_db = true;
   ctx->db_is_empty = false;
+  ctx->ignore_hidden_files = true; // do NOT sync hidden files by default.
 
 
   /* Create new trees */

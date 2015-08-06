@@ -21,7 +21,7 @@
 #cmakedefine ZLIB_FOUND @ZLIB_FOUND@
 
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
-#cmakedefine DATADIR "@DATADIR@"
+#cmakedefine SHAREDIR "@SHAREDIR@"
 
 #ifndef NEON_WITH_LFS
 #cmakedefine NEON_WITH_LFS "@NEON_WITH_LFS@"

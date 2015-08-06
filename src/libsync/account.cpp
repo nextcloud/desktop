@@ -18,6 +18,7 @@
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "../3rdparty/certificates/p12topem.h"
+#include "capabilities.h"
 
 #include <QSettings>
 #include <QMutex>
@@ -35,6 +36,7 @@ namespace OCC {
 
 Account::Account(QObject *parent)
     : QObject(parent)
+    , _capabilities(QVariantMap())
     , _am(0)
     , _credentials(0)
     , _treatSslErrorsAsFailure(false)
@@ -134,7 +136,9 @@ void Account::setCredentials(AbstractCredentials *cred)
         _am->setCookieJar(jar);
     }
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
-            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+            SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
+    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+            SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
     connect(_credentials, SIGNAL(fetched()),
             SLOT(slotCredentialsFetched()));
 }
@@ -178,7 +182,9 @@ void Account::resetNetworkAccessManager()
     _am = _credentials->getQNAM();
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
-            SLOT(slotHandleErrors(QNetworkReply*,QList<QSslError>)));
+            SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
+    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+            SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 QNetworkAccessManager *Account::networkAccessManager()
@@ -368,7 +374,7 @@ void Account::setCredentialSetting(const QString &key, const QVariant &value)
     }
 }
 
-void Account::slotHandleErrors(QNetworkReply *reply , QList<QSslError> errors)
+void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors)
 {
     NetworkJobTimeoutPauser pauser(reply);
     QString out;
@@ -434,14 +440,14 @@ void Account::setMigrated(bool mig)
     _wasMigrated = mig;
 }
 
-QVariantMap Account::capabilities()
+const Capabilities &Account::capabilities() const
 {
     return _capabilities;
 }
 
 void Account::setCapabilities(const QVariantMap &caps)
 {
-    _capabilities = caps;
+    _capabilities = Capabilities(caps);
 }
 
 QString Account::serverVersion()

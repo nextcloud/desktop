@@ -104,9 +104,15 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
       goto err;
   }
   file_stat->name = c_utf8_from_locale(dirent->d_name);
+  if (file_stat->name == NULL) {
+      //file_stat->original_name = c_strdup(dirent->d_name);
+      asprintf(&file_stat->original_name, "%s/%s", handle->path, dirent->d_name);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Invalid characters in file/directory name, please rename: \"%s\" (%s)",
+                dirent->d_name, handle->path);
+  }
 
   /* Check for availability of d_type, see manpage. */
-#ifdef _DIRENT_HAVE_D_TYPE
+#if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)
   switch (dirent->d_type) {
     case DT_FIFO:
     case DT_SOCK:

@@ -161,8 +161,8 @@ class DiscoveryJob : public QObject {
      */
     bool isInSelectiveSyncBlackList(const QString &path) const;
     static int isInSelectiveSyncBlackListCallback(void *, const char *);
-    bool checkSelectiveSyncNewShare(const QString &path);
-    static int checkSelectiveSyncNewShareCallback(void*, const char*);
+    bool checkSelectiveSyncNewFolder(const QString &path);
+    static int checkSelectiveSyncNewFolderCallback(void*, const char*);
 
     // Just for progress
     static void update_job_update_callback (bool local,
@@ -182,7 +182,7 @@ class DiscoveryJob : public QObject {
 
 public:
     explicit DiscoveryJob(CSYNC *ctx, QObject* parent = 0)
-            : QObject(parent), _csync_ctx(ctx), _newSharedFolderSizeLimit(-1) {
+            : QObject(parent), _csync_ctx(ctx), _newBigFolderSizeLimit(-1) {
         // We need to forward the log property as csync uses thread local
         // and updates run in another thread
         _log_callback = csync_get_log_callback();
@@ -192,7 +192,7 @@ public:
 
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    qint64 _newSharedFolderSizeLimit;
+    qint64 _newBigFolderSizeLimit;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);
@@ -202,8 +202,8 @@ signals:
     void doOpendirSignal(QString url, DiscoveryDirectoryResult*);
     void doGetSizeSignal(const QString &path, qint64 *result);
 
-    // A new shared folder was discovered and was not synced because of the confirmation feature
-    void newSharedFolder(const QString &folder);
+    // A new folder was discovered and was not synced because of the confirmation feature
+    void newBigFolder(const QString &folder);
 };
 
 }

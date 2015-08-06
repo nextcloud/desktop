@@ -46,6 +46,7 @@ static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 typedef struct {
     CSYNC *csync;
     char  *result;
+    char *ignored_dir;
 } statevar;
 
 /* remove the complete test dir */
@@ -175,9 +176,12 @@ static void create_dirs( const char *path )
  *
  * It appends a listing to the result member of the incoming struct in *state
  * that can be compared later to what was expected in the calling functions.
+ * 
+ * The int parameter cnt contains the number of seen files (not dirs) in the
+ * whole tree.
  *
  */
-static void traverse_dir(void **state, const char *dir)
+static void traverse_dir(void **state, const char *dir, int *cnt)
 {
     csync_vio_handle_t *dh;
     csync_vio_file_stat_t *dirent;
@@ -200,8 +204,13 @@ static void traverse_dir(void **state, const char *dir)
     assert_non_null(dh);
 
     while( (dirent = csync_vio_readdir(csync, dh)) ) {
-        assert_non_null(dirent->name);
+        assert_non_null(dirent);
+        if (dirent->original_name) {
+            sv->ignored_dir = c_strdup(dirent->original_name);
+            continue;
+        }
 
+        assert_non_null(dirent->name);
         assert_int_equal( dirent->fields & CSYNC_VIO_FILE_STAT_FIELDS_TYPE, CSYNC_VIO_FILE_STAT_FIELDS_TYPE );
 
         if( c_streq( dirent->name, "..") || c_streq( dirent->name, "." )) {
@@ -216,20 +225,24 @@ static void traverse_dir(void **state, const char *dir)
                                         is_dir ? "<DIR>":"     ",
                                         subdir), -1 );
 
-        if( !sv->result ) {
-            sv->result = c_strdup( subdir_out);
-        } else {
-            int newlen = 1+strlen(sv->result)+strlen(subdir_out);
-            char *tmp = sv->result;
-            sv->result = c_malloc(newlen);
-            strcpy( sv->result, tmp);
-            SAFE_FREE(tmp);
+        if( is_dir ) {
+            if( !sv->result ) {
+                sv->result = c_strdup( subdir_out);
+            } else {
+                int newlen = 1+strlen(sv->result)+strlen(subdir_out);
+                char *tmp = sv->result;
+                sv->result = c_malloc(newlen);
+                strcpy( sv->result, tmp);
+                SAFE_FREE(tmp);
 
-            strcat( sv->result, subdir_out );
+                strcat( sv->result, subdir_out );
+            }
+        } else {
+            *cnt = *cnt +1;
         }
         output(subdir_out);
         if( is_dir ) {
-          traverse_dir( state, subdir);
+          traverse_dir( state, subdir, cnt);
         }
 
         SAFE_FREE(subdir);
@@ -295,8 +308,9 @@ static void check_readdir_shorttree(void **state)
 
     const char *t1 = "alibaba/und/die/vierzig/räuber/";
     create_dirs( t1 );
-
-    traverse_dir(state, CSYNC_TEST_DIR);
+    int files_cnt = 0;
+    
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
     assert_string_equal( sv->result,
                          "<DIR> C:/tmp/csync_test/alibaba"
@@ -304,11 +318,13 @@ static void check_readdir_shorttree(void **state)
                          "<DIR> C:/tmp/csync_test/alibaba/und/die"
                          "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig"
                          "<DIR> C:/tmp/csync_test/alibaba/und/die/vierzig/räuber" );
+    assert_int_equal(files_cnt, 0);
 }
 
 static void check_readdir_with_content(void **state)
 {
     statevar *sv = (statevar*) *state;
+    int files_cnt = 0;
 
     const char *t1 = "warum/nur/40/Räuber/";
     create_dirs( t1 );
@@ -317,15 +333,16 @@ static void check_readdir_with_content(void **state)
     create_file( t1, "пя́тница.txt", "Am Freitag tanzt der Ürk");
 
 
-    traverse_dir(state, CSYNC_TEST_DIR);
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
     assert_string_equal( sv->result,
                          "<DIR> C:/tmp/csync_test/warum"
                          "<DIR> C:/tmp/csync_test/warum/nur"
                          "<DIR> C:/tmp/csync_test/warum/nur/40"
-                         "<DIR> C:/tmp/csync_test/warum/nur/40/Räuber"
-                         "      C:/tmp/csync_test/warum/nur/40/Räuber/Räuber Max.txt"
-                         "      C:/tmp/csync_test/warum/nur/40/Räuber/пя́тница.txt");
+                         "<DIR> C:/tmp/csync_test/warum/nur/40/Räuber");
+    /*                   "      C:/tmp/csync_test/warum/nur/40/Räuber/Räuber Max.txt"
+                         "      C:/tmp/csync_test/warum/nur/40/Räuber/пя́тница.txt"); */
+    assert_int_equal(files_cnt, 2); /* Two files in the sub dir */
 }
 
 static void check_readdir_longtree(void **state)
@@ -390,7 +407,7 @@ static void check_readdir_longtree(void **state)
 
     /* assemble the result string ... */
     int overall_len = 1+strlen(r1)+strlen(r2)+strlen(r3);
-
+    int files_cnt = 0;
     char *result = c_malloc(overall_len);
     *result = '\0';
 
@@ -398,10 +415,50 @@ static void check_readdir_longtree(void **state)
     strcat(result, r2);
     strcat(result, r3);
 
-    traverse_dir(state, CSYNC_TEST_DIR);
-
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    assert_int_equal(files_cnt, 0);
     /* and compare. */
     assert_string_equal( sv->result, result);
+}
+
+// https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
+static void check_readdir_bigunicode(void **state)
+{
+    statevar *sv = (statevar*) *state;
+//    1: ? ASCII: 239 - EF
+//    2: ? ASCII: 187 - BB
+//    3: ? ASCII: 191 - BF
+//    4: ASCII: 32    - 20
+
+    char *p = 0;
+    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, "goodone/" );
+    int rc = _tmkdir(p, MKDIR_MASK);
+    assert_int_equal(rc, 0);
+    SAFE_FREE(p);
+
+    const char *t1 = "goodone/ugly\xEF\xBB\xBF\x32" ".txt";
+    asprintf( &p, "%s/%s", CSYNC_TEST_DIR, t1 );
+    rc = _tmkdir(p, MKDIR_MASK);
+    SAFE_FREE(p);
+
+    assert_int_equal(rc, 0);
+
+    int files_cnt = 0;
+    traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
+    assert_string_equal( sv->result,
+                         "<DIR> C:/tmp/csync_test/goodone"
+#ifndef __APPLE__
+                        // On Mac, iconv will not return some files with fancy unicode.
+                        // Linux is not so picky about it and return everything and let the sync engine deal with it.
+                         "<DIR> C:/tmp/csync_test/goodone/ugly\xEF\xBB\xBF\x32" ".txt"
+#endif
+     );
+
+#ifdef __APPLE__
+    // Bad one is recognized though.. !
+    assert_string_equal( sv->ignored_dir, CSYNC_TEST_DIR "/goodone/" "ugly\xEF\xBB\xBF\x32" ".txt");
+#endif
+    assert_int_equal(files_cnt, 0);
 }
 
 int torture_run_tests(void)
@@ -410,7 +467,7 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_readdir_shorttree, setup_testenv, teardown),
         unit_test_setup_teardown(check_readdir_with_content, setup_testenv, teardown),
         unit_test_setup_teardown(check_readdir_longtree, setup_testenv, teardown),
-
+        unit_test_setup_teardown(check_readdir_bigunicode, setup_testenv, teardown),
     };
 
     return run_tests(tests);

@@ -13,6 +13,7 @@
 
 #include "accountmanager.h"
 #include "sslerrordialog.h"
+#include "proxyauthhandler.h"
 #include <theme.h>
 #include <creds/credentialsfactory.h>
 #include <creds/abstractcredentials.h>
@@ -168,7 +169,7 @@ void AccountManager::save(const AccountPtr& acc, QSettings& settings)
 
 AccountPtr AccountManager::load(QSettings& settings)
 {
-    auto acc = Account::create();
+    auto acc = createAccount();
 
     acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
 
@@ -186,7 +187,6 @@ AccountPtr AccountManager::load(QSettings& settings)
     // now the cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));
     acc->setApprovedCerts(QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray()));
-    acc->setSslErrorHandler(new SslDialogErrorHandler);
     settings.endGroup();
 
     return acc;
@@ -217,6 +217,15 @@ void AccountManager::deleteAccount(AccountState* account)
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);
+}
+
+AccountPtr AccountManager::createAccount()
+{
+    AccountPtr acc = Account::create();
+    acc->setSslErrorHandler(new SslDialogErrorHandler);
+    connect(acc.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator*)),
+            ProxyAuthHandler::instance(), SLOT(handleProxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
+    return acc;
 }
 
 

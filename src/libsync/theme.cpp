@@ -248,6 +248,13 @@ QString Theme::transmissionChecksum() const
     return QString::null; // No transmission by default.
 }
 
+qint64 Theme::newBigFolderSizeLimit() const
+{
+    // Default to 500MB
+    return 500;
+}
+
+
 QString Theme::gitSHA1() const
 {
     QString devString;

@@ -361,6 +361,7 @@ void CheckServerJob::start()
 {
     setReply(getRequest(path()));
     setupConnections(reply());
+    connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(metaDataChangedSlot()));
     AbstractNetworkJob::start();
 }
 
@@ -390,13 +391,19 @@ bool CheckServerJob::installed(const QVariantMap &info)
     return info.value(QLatin1String("installed")).toBool();
 }
 
+void CheckServerJob::metaDataChangedSlot()
+{
+    // We used to have this in finished(), but because of a bug in Qt this did not always have the cipher etc.
+    account()->setSslConfiguration(reply()->sslConfiguration());
+}
+
+
 bool CheckServerJob::finished()
 {
-    account()->setSslConfiguration(reply()->sslConfiguration());
-
 #if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (reply()->request().url().scheme() == QLatin1String("https")
-            && reply()->sslConfiguration().sessionTicket().isEmpty()) {
+            && reply()->sslConfiguration().sessionTicket().isEmpty()
+            && reply()->error() == QNetworkReply::NoError) {
         qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
 #endif

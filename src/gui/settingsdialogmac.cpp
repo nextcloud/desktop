@@ -20,6 +20,7 @@
 #include "generalsettings.h"
 #include "networksettings.h"
 #include "accountsettings.h"
+#include "creds/abstractcredentials.h"
 #include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
@@ -113,7 +114,9 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
 
-    insertPreferencesPanel(0, accountIcon, s->account()->displayName(), accountSettings);
+    QString displayName = s->shortDisplayNameForSettings();
+
+    insertPreferencesPanel(0, accountIcon, displayName, accountSettings);
 
     connect( accountSettings, &AccountSettings::folderChanged, _gui,  &ownCloudGui::slotFoldersChanged);
     connect( accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);

@@ -93,9 +93,11 @@ public:
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
      * Make sure that this folder, or any subfolder is not sync'ed alrady.
      *
+     * \a forNewDirectory is internal and is used for recursion.
+     *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path);
+    QString checkPathValidityForNewFolder(const QString &path, bool forNewDirectory = false);
 
 signals:
     /**
