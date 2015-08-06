@@ -12,7 +12,6 @@ Var PageReinstall_OLD_Field_1
 Var PageReinstall_SAME_Field_1
 Var PageReinstall_SAME_Field_2
 Var PageReinstall_SAME_Field_3
-Var UNINSTALLER_APPDATA_TITLE
 Var PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE
 Var SEC_APPLICATION_DETAILS
 Var OPTION_SECTION_SC_SHELL_EXT_SECTION

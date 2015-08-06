@@ -12,7 +12,6 @@ StrCpy $PageReinstall_OLD_Field_1 "A newer version of ${APPLICATION_NAME} is alr
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_SAME_Field_2 "Add/Reinstall components"
 StrCpy $PageReinstall_SAME_Field_3 "Uninstall ${APPLICATION_NAME}"
-StrCpy $UNINSTALLER_APPDATA_TITLE "Uninstall ${APPLICATION_NAME}"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Choose the maintenance option to perform."
 StrCpy $SEC_APPLICATION_DETAILS "Installing ${APPLICATION_NAME} essentials."
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Integration for Windows Explorer"
