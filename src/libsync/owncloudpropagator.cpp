@@ -56,7 +56,7 @@ int OwncloudPropagator::maximumActiveJob()
         max = 3; //default
     }
 
-    if (_downloadLimit != 0 || _uploadLimit != 0) {
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
         // disable parallelism when there is a network limit.
         return 1;
     }
