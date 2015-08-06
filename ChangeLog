@@ -1,5 +1,19 @@
 ChangeLog
 =========
+version 2.0.0 (release 2015-08-??)
+  * Add support for multiple accounts (#3084)
+  * Do not sync new big folders from server without users consent (#3148)
+  * Fix situation where client would not reconnect after timeout (#2321)
+  * Bandwidth Throttling: Provide automatic limit setting for downloads (#3084)
+  * Sharing: Make use of Capability API (#3439)
+  * Sharing: Do not allow sharing the root folder (#3495)
+  * Updater: Check for updates periodically, not only once per run (#3044)
+  * Windows: Remove misleading option to remove sync data (#3461)
+  * Windows: Support paths >255 characters (#57)
+  * Windows: Do not provoke AD account locking if password changes (#2186)
+  * Windows: Fix installer when installing unprivileged (#2616, #2568)
+  * Mac OS: Support native finder integration for Yosemite (#2340)
+
 version 1.8.3 (release 2015-06-23)
   * Fix a bug in the Windows Installer that could crash explorer (#3320)
   * Reduce 'Connection closed' errors (#3318, #3313, #3298)
