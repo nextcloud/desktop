@@ -12,6 +12,7 @@ StrCpy $PageReinstall_OLD_Field_1 "Eine neuere Version von  ${APPLICATION_NAME} 
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} ist bereits installiert.\nWählen Sie eine Vorgehensweise und klicken Sie auf $\"Weiter$\"."
 StrCpy $PageReinstall_SAME_Field_2 "Komponenten hinzufügen"
 StrCpy $PageReinstall_SAME_Field_3 "${APPLICATION_NAME} entfernen"
+StrCpy $UNINSTALLER_APPDATA_TITLE "${APPLICATION_NAME} entfernen"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Wählen Sie zur Ausführung die Wartungsoption."
 StrCpy $SEC_APPLICATION_DETAILS "Installiere ${APPLICATION_NAME} Basis."
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Integration in den Windows Explorer"
@@ -39,3 +40,4 @@ StrCpy $INIT_INSTALLER_RUNNING "Das Installationsprogramm wird bereits ausgeführ
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Das Deinstallationsprogramm erfordert Administrator-Rechte. Bitte erneut versuchen."
 StrCpy $INIT_UNINSTALLER_RUNNING "Das Deinstallationsprogramm wird bereits ausgeführt."
 StrCpy $SectionGroup_Shortcuts "Verknüpfungen"
+StrCpy $UAC_ERROR_LOGON_SERVICE "Logon service is not running, aborting!"

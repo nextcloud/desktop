@@ -10,6 +10,7 @@ StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE "Elija como desea instalar ${
 StrCpy $PageReinstall_OLD_Field_1 "Una versión mas reciente de ${APPLICATION_NAME} esta actualmente instalada! No es recomendado que instale una versión antigua. Si realmente desea instalar esta versión obsoleta, es mejor que des-instale la versión actual primero. Seleccione la operación que desea realizar y presione en Siguiente para continuar. "
 StrCpy $PageReinstall_SAME_Field_2 "Agregar/Re-Instalar componentes"
 StrCpy $PageReinstall_SAME_Field_3 "Des-instalar ${APPLICATION_NAME}"
+StrCpy $UNINSTALLER_APPDATA_TITLE "Des-instalar ${APPLICATION_NAME}"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Elija la opción de mantenimiento a realizar."
 StrCpy $SEC_APPLICATION_DETAILS "Instalar  esenciales ${APPLICATION_NAME}."
 StrCpy $OPTION_SECTION_SC_START_MENU_SECTION "Acceso Directo en Menú de Programas"
@@ -39,3 +40,4 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Quick Launch shortcut for ${APPLICA
 StrCpy $UNINSTALL_MESSAGEBOX "It does not appear that ${APPLICATION_NAME} is installed in the directory '$INSTDIR'.$\r$\nContinue anyway (not recommended)?"
 StrCpy $INIT_NO_QUICK_LAUNCH "Quick Launch Shortcut (N/A)"
 StrCpy $UAC_ERROR_ELEVATE "Unable to elevate, error:"
+StrCpy $UAC_ERROR_LOGON_SERVICE "Logon service is not running, aborting!"

@@ -12,6 +12,7 @@ StrCpy $PageReinstall_OLD_Field_1 "รุ่นใหม่ของ ${APPLICATI
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} ได้ถูกติดตั้งแล้ว เลือกการดำเนินการที่คุณต้องการที่จะดำเนินการและคลิกถัดไปเพื่อดำเนินการต่อ"
 StrCpy $PageReinstall_SAME_Field_2 "ส่วนประกอบ เพิ่ม/ติดตั้งใหม่ "
 StrCpy $PageReinstall_SAME_Field_3 "ถอนการติดตั้ง ${APPLICATION_NAME}"
+StrCpy $UNINSTALLER_APPDATA_TITLE "ถอนการติดตั้ง ${APPLICATION_NAME}"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "เลือกตัวเลือกการบำรุงรักษาเพื่อดำเนินการ"
 StrCpy $SEC_APPLICATION_DETAILS "กำลังติดตั้งข้อมูลที่เป็นเป็นของ ${APPLICATION_NAME}"
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "บูรณาการสำหรับ Windows Explorer"
@@ -39,3 +40,4 @@ StrCpy $INIT_INSTALLER_RUNNING "กำลังทำการติดตั้
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "การถอนการติดตั้งนี้จะต้องมีการเข้าถึงส่วนผู้ดูแลระบบ กรุณาลองอีกครั้ง"
 StrCpy $INIT_UNINSTALLER_RUNNING "กำลังทำการถอนการติดตั้ง"
 StrCpy $SectionGroup_Shortcuts "ทางลัด"
+StrCpy $UAC_ERROR_LOGON_SERVICE "Logon service is not running, aborting!"

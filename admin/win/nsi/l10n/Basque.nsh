@@ -12,6 +12,7 @@ StrCpy $PageReinstall_OLD_Field_1 "${APPLICATION_NAME}ren bertsio berriago bat i
 StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} dagoeneko instalatuta dago.\nHautatu zer operazio egin nahi duzu eta klikatu Hurrengoa jarraitzeko."
 StrCpy $PageReinstall_SAME_Field_2 "Gehitu/Berrinstalatu osagaiak"
 StrCpy $PageReinstall_SAME_Field_3 "Desinstalatu ${APPLICATION_NAME}"
+StrCpy $UNINSTALLER_APPDATA_TITLE "Desinstalatu ${APPLICATION_NAME}"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Hautatu zer mantenu aukera egin nahi duzun."
 StrCpy $SEC_APPLICATION_DETAILS "${APPLICATION_NAME} ezinbestekoak instalatzen."
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Windows Explorerekin Integrazioa"
@@ -39,3 +40,4 @@ StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Desinstalatzaile honek administratzaile b
 StrCpy $INIT_UNINSTALLER_RUNNING "Desinstalatzailea dagoeneko martxan da."
 StrCpy $SectionGroup_Shortcuts "Lasterbideak"
 StrCpy $UAC_ERROR_ELEVATE "Unable to elevate, error:"
+StrCpy $UAC_ERROR_LOGON_SERVICE "Logon service is not running, aborting!"
