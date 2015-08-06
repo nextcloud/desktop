@@ -176,7 +176,6 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       StrCmp $LANGUAGE ${LANG_GREEK} Greek 0
       StrCmp $LANGUAGE ${LANG_BASQUE} Basque 0
       StrCmp $LANGUAGE ${LANG_GALICIAN} Galician 0
-      StrCmp $LANGUAGE ${LANG_SLOVAC} Slovak 0
       StrCmp $LANGUAGE ${LANG_POLISH} Polish 0
       StrCmp $LANGUAGE ${LANG_TURKISH} Turkish 0
       StrCmp $LANGUAGE ${LANG_NORWEGIAN} Norwegian 0
@@ -213,9 +212,6 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${VERSION}"
       Goto EndLanguageCmp
       Galician:
       !include "${source_path}/admin/win/nsi/l10n\Galician.nsh"
-      Goto EndLanguageCmp
-      Slovak:
-      !include "${source_path}/admin/win/nsi/l10n\Slovak.nsh"
       Goto EndLanguageCmp
       Polish:
       !include "${source_path}/admin/win/nsi/l10n\Polish.nsh"

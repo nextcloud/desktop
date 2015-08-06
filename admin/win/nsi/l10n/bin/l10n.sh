@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 L10NDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 SCRIPTDIR="$L10NDIR/bin"
 PODIR="$L10NDIR/pofiles"
@@ -46,6 +46,6 @@ iconv -t CP1250 -o Slovak.nsh Slovak.nsh
 iconv -t CP1254 -o Turkish.nsh Turkish.nsh
 iconv -t CP1252 -o Norwegian.nsh Norwegian.nsh
 iconv -t CP1250 -o Polish.nsh Polish.nsh
-iconv -t CP852  -o Slovak.nsh Slovak.nsh
 iconv -t CP852  -o Czech.nsh Czech.nsh
+#iconv -t CP852  -o Slovak.nsh Slovak.nsh
 
