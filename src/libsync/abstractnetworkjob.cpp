@@ -231,11 +231,11 @@ void AbstractNetworkJob::start()
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
-    qDebug() <<  this << "Timeout";
     if (reply()) {
+        qDebug() << Q_FUNC_INFO << this << "Timeout" << reply()->request().url();
         reply()->abort();
     } else {
-        qDebug() << "reply was NULL";
+        qDebug() << Q_FUNC_INFO << this << "Timeout reply was NULL";
     }
 }
 
