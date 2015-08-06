@@ -59,7 +59,6 @@
 
 	_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 	_registeredDirectories = [[NSMutableSet alloc] init];
-	_requestedUrls = [[NSMutableSet alloc] init];
 	_shareMenuTitle = nil;
 	
 	[_syncClientProxy start];
@@ -68,23 +67,8 @@
 
 #pragma mark - Primary Finder Sync protocol methods
 
-- (void)endObservingDirectoryAtURL:(NSURL *)url
-{
-	// The user is no longer seeing the container's contents.
-	// At this point we know that the status of any file as a direct child of url.filePathURL
-	// won't be displayed. Filter our _requestedUrls to get rid of them.
-	NSString *observedDirectoryPath = [url.filePathURL path];
-	[_requestedUrls filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-		NSURL *requestedUrl = (NSURL *)evaluatedObject;
-		NSString *parentDir = [[requestedUrl path] stringByDeletingLastPathComponent];
-		return [parentDir isEqualToString:observedDirectoryPath];
-	}]];
-}
-
 - (void)requestBadgeIdentifierForURL:(NSURL *)url
 {
-	[_requestedUrls addObject:url.filePathURL];
-	
 	BOOL isDir;
 	if ([[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory: &isDir] == NO) {
 		NSLog(@"ERROR: Could not determine file type of %@", [url path]);
@@ -128,14 +112,6 @@
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
 {
-	// This shouldn't be necessary, and will be a problem when we
-	// filter values of _requestedUrls even though Finder might still
-	// have an old status in its cache (and therefore won't re-request it)
-	// but will do OK until we get the socket API to re-push the status of everything needed.
-	[_requestedUrls enumerateObjectsUsingBlock: ^(id url, BOOL *stop) {
-		if ([[url path] hasPrefix:path])
-			[self requestBadgeIdentifierForURL: url];
-	}];
 }
 
 - (void)registerPath:(NSString*)path
