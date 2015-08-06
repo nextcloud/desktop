@@ -200,7 +200,7 @@ int FolderMan::setupFolders()
     if (accountsWithSettings.isEmpty()) {
         int r = setupFoldersMigration();
         if (r > 0) {
-            AccountManager::instance()->save();
+            AccountManager::instance()->save(false); // don't save credentials, they had not been loaded from keychain
         }
         return r;
     }

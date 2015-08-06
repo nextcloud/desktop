@@ -33,7 +33,7 @@ public:
     /**
      * Saves the accounts to a given settings file
      */
-    void save();
+    void save(bool saveCredentials = true);
 
     /**
      * Creates account objects from from a given settings file.
@@ -71,7 +71,7 @@ public:
     static AccountPtr createAccount();
 
 private:
-    void save(const AccountPtr& account, QSettings& settings);
+    void save(const AccountPtr& account, QSettings& settings, bool saveCredentials = true);
     AccountPtr load(QSettings& settings);
     bool restoreFromLegacySettings();
 

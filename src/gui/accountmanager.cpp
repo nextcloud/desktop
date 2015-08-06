@@ -119,21 +119,27 @@ bool AccountManager::restoreFromLegacySettings()
     return false;
 }
 
-void AccountManager::save()
+void AccountManager::save(bool saveCredentials)
 {
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
-        save(acc->account(), *settings);
+        save(acc->account(), *settings, saveCredentials);
         settings->endGroup();
     }
 }
 
-void AccountManager::save(const AccountPtr& acc, QSettings& settings)
+void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     if (acc->_credentials) {
-        acc->_credentials->persist();
+        if (saveCredentials) {
+            // Only persist the credentials if the parameter is set, on migration from 1.8.x
+            // we want to save the accounts but not overwrite the credentials
+            // (This is easier than asynchronously fetching the credentials from keychain and then
+            // re-persisting them)
+            acc->_credentials->persist();
+        }
         Q_FOREACH(QString key, acc->_settingsMap.keys()) {
             settings.setValue(key, acc->_settingsMap.value(key));
         }
