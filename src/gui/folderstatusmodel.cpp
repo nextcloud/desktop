@@ -661,6 +661,9 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     SyncFileItem curItem = progress._lastCompletedItem;
     qint64 curItemProgress = -1; // -1 means finished
     quint64 biggerItemSize = -1;
+    quint64 estimatedUpBw = 0;
+    quint64 estimatedDownBw = 0;
+    QString allFilenames;
     foreach(const ProgressInfo::ProgressItem &citm, progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
                                       && biggerItemSize < citm._item._size)) {
@@ -668,7 +671,21 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             curItem = citm._item;
             biggerItemSize = citm._item._size;
         }
+        if (citm._item._direction != SyncFileItem::Up){
+            estimatedDownBw += progress.fileProgress(citm._item).estimatedBandwidth;
+            //qDebug() << "DOWN" << citm._item._file << progress.fileProgress(citm._item).estimatedBandwidth;
+        } else {
+            estimatedUpBw += progress.fileProgress(citm._item).estimatedBandwidth;
+            //qDebug() << "UP" << citm._item._file << progress.fileProgress(citm._item).estimatedBandwidth;
+        }
+        if (allFilenames.length() > 0) {
+            allFilenames.append(", ");
+        }
+        allFilenames.append('\'');
+        allFilenames.append(QFileInfo(citm._item._file).fileName());
+        allFilenames.append('\'');
     }
+    //qDebug() << "Syncing bandwidth" << estimatedDownBw << estimatedUpBw;
     if (curItemProgress == -1) {
         curItemProgress = curItem._size;
     }
@@ -680,13 +697,24 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     if (ProgressInfo::isSizeDependent(curItem)) {
         QString s1 = Utility::octetsToString( curItemProgress );
         QString s2 = Utility::octetsToString( curItem._size );
-        quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
-        if (estimatedBw) {
+        //quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
+        if (estimatedUpBw || estimatedDownBw) {
+            /*
             //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
                 .arg(kindString, itemFileName, s1, s2,
                     Utility::durationToDescriptiveString(progress.fileProgress(curItem).estimatedEta),
                     Utility::octetsToString(estimatedBw) );
+            */
+            fileProgressString = tr("Syncing %1").arg(allFilenames);
+            if (estimatedDownBw > 0) {
+                fileProgressString.append(", ");
+                fileProgressString.append(tr("\u2193" " %1/s").arg(Utility::octetsToString(estimatedDownBw)));
+            }
+            if (estimatedUpBw > 0) {
+                fileProgressString.append(", ");
+                fileProgressString.append(tr("\u2191" " %1/s").arg(Utility::octetsToString(estimatedUpBw)));
+            }
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"
             fileProgressString = tr("%1 %2 (%3 of %4)") .arg(kindString, itemFileName, s1, s2);
