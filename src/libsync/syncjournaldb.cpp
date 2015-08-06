@@ -434,6 +434,7 @@ void SyncJournalDb::close()
     _deleteFileRecordRecursively.reset(0);
     _getErrorBlacklistQuery.reset(0);
     _setErrorBlacklistQuery.reset(0);
+    _getSelectiveSyncListQuery.reset(0);
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
