@@ -75,11 +75,14 @@ Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
             ret = Qt::ItemNeverHasChildren;
 #endif
-            if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
+            if (!_accountState->isConnected()) {
+                return ret;
+            } else if (_folders.count() == 1) {
+                auto remotePath = _folders.at(0)._folder->remotePath();
                 // special case when syncing the entire owncloud: disable the add folder button (#3438)
-                return ret;
-            } else if (!_accountState->isConnected()) {
-                return ret;
+                if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+                    return ret;
+                }
             }
             return Qt::ItemIsEnabled | ret;
         }
@@ -106,12 +109,14 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         } else if (role == Qt::ToolTipRole) {
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
-            } else if (_folders.count() == 1
-                        && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
-                // Syncing the entire owncloud: disable the add folder button (#3438)
-                return tr("Adding folder is disabled because your are already syncing all your files. "
-                          "If you want to sync multiple folders, please remove the currently "
-                          "configured root folder.");
+            } if (_folders.count() == 1) {
+                auto remotePath = _folders.at(0)._folder->remotePath();
+                if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+                    // Syncing the entire owncloud: disable the add folder button (#3438)
+                    return tr("Adding folder is disabled because your are already syncing all your files. "
+                            "If you want to sync multiple folders, please remove the currently "
+                            "configured root folder.");
+                }
             }
             return tr("Click this button to add a folder to synchronize.");
         }
