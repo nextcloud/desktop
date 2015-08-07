@@ -72,6 +72,7 @@ public:
 
 signals:
     void updaterAnnouncement(const QString& title, const QString& msg);
+    void requestRestart();
 
 private slots:
     void slotTimerFired();
@@ -106,6 +107,7 @@ public:
 signals:
     void downloadStateChanged();
     void newUpdateAvailable(const QString& header, const QString& message);
+    void requestRestart();
 
 public slots:
     void slotStartInstaller();
@@ -166,9 +168,11 @@ class PassiveUpdateNotifier : public OCUpdater {
 public:
     explicit PassiveUpdateNotifier(const QUrl &url, QObject *parent = 0);
     bool handleStartup() Q_DECL_OVERRIDE { return false; }
+    void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
 
 private:
     void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
+     QByteArray _runningAppVersion;
 };
 
 

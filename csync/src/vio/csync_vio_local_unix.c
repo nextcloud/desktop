@@ -106,7 +106,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   file_stat->name = c_utf8_from_locale(dirent->d_name);
   if (file_stat->name == NULL) {
       //file_stat->original_name = c_strdup(dirent->d_name);
-      if (asprintf(&file_stat->original_name, "%s/%s", handle->path, dirent->d_name)) {
+      if (asprintf(&file_stat->original_name, "%s/%s", handle->path, dirent->d_name) < 0) {
           goto err;
       }
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Invalid characters in file/directory name, please rename: \"%s\" (%s)",

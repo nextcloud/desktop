@@ -709,11 +709,20 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             fileProgressString = tr("Syncing %1").arg(allFilenames);
             if (estimatedDownBw > 0) {
                 fileProgressString.append(", ");
+// ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
+#ifdef Q_OS_WIN
+                fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
+#else
                 fileProgressString.append(tr("\u2193" " %1/s").arg(Utility::octetsToString(estimatedDownBw)));
+#endif
             }
             if (estimatedUpBw > 0) {
                 fileProgressString.append(", ");
+ #ifdef Q_OS_WIN
+                fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
+#else
                 fileProgressString.append(tr("\u2191" " %1/s").arg(Utility::octetsToString(estimatedUpBw)));
+#endif
             }
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"

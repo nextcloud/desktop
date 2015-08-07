@@ -171,15 +171,11 @@ Application::Application(int &argc, char **argv) :
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, SIGNAL(updaterAnnouncement(QString, QString)),
             _gui, SLOT(slotShowTrayMessage(QString, QString)));
+    connect(updaterScheduler, SIGNAL(requestRestart()),
+            _folderManager.data(), SLOT(slotScheduleAppRestart()));
 
     // Cleanup at Quit.
     connect (this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
-
-    // remember the version of the currently running binary. On Linux it might happen that the
-    // package management updates the package while the app is running. This is detected in the
-    // updater slot: If the installed binary on the hd has a different version than the one
-    // running, the running app is restart. That happens in folderman.
-    _runningAppVersion = Utility::versionOfInstalledBinary();
 }
 
 Application::~Application()
@@ -217,16 +213,6 @@ void Application::slotCleanup()
     _gui->deleteLater();
 }
 
-
-    if( Utility::isLinux() ) {
-        // on linux, check if the installed binary is still the same version
-        // as the one that is running. If not, restart if possible.
-        const QByteArray fsVersion = Utility::versionOfInstalledBinary();
-
-        if( !(fsVersion.isEmpty() || _runningAppVersion.isEmpty()) && fsVersion != _runningAppVersion ) {
-            _folderManager->slotScheduleAppRestart();
-        }
-    }
 void Application::slotCheckConnection()
 {
     auto list = AccountManager::instance()->accounts();
