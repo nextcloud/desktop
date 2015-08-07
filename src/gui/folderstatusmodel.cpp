@@ -566,13 +566,14 @@ void FolderStatusModel::slotApplySelectiveSync()
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-        // The folders that were undecided should be part of the white list if they are not in the blacklist
-        QStringList toAddToWhiteList;
-        foreach (const auto &undec, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList)) {
-            if (!blackList.contains(undec)) {
-                toAddToWhiteList.append(undec);
-            }
-        }
+        auto blackListSet = blackList.toSet();
+        auto oldBlackListSet = oldBlackList.toSet();
+
+        // The folders that were undecided or blacklisted and that are now checked should go on the white list.
+        // The user confirmed them already just now.
+        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(
+                SyncJournalDb::SelectiveSyncUndecidedList).toSet()) - blackListSet).toList();
+
         if (!toAddToWhiteList.isEmpty()) {
             auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
             whiteList += toAddToWhiteList;
@@ -582,8 +583,6 @@ void FolderStatusModel::slotApplySelectiveSync()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
         // do the sync if there was changes
-        auto blackListSet = blackList.toSet();
-        auto oldBlackListSet = oldBlackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
             if (folder->isBusy()) {
