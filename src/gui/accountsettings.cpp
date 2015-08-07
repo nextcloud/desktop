@@ -27,6 +27,7 @@
 #include "accountstate.h"
 #include "quotainfo.h"
 #include "accountmanager.h"
+#include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -529,6 +530,12 @@ void AccountSettings::slotDeleteAccount()
     auto manager = AccountManager::instance();
     manager->deleteAccount(_accountState);
     manager->save();
+
+    // if there is no more account, show the wizard.
+    if( manager->accounts().isEmpty() ) {
+        OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+    }
+
 }
 
 bool AccountSettings::event(QEvent* e)
