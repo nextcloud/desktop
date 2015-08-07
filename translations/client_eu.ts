@@ -531,112 +531,112 @@ Ziur zaude eragiketa hau egin nahi duzula?</translation>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Ezin izan da karpetaren egoera berrezarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Aurkitu da &apos;%1&apos; sinkronizazio erregistro zaharra, baina ezin da ezabatu. Ziurtatu aplikaziorik ez dela erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="855"/>
+        <location filename="../src/gui/folderman.cpp" line="867"/>
         <source> (backup)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="860"/>
+        <location filename="../src/gui/folderman.cpp" line="872"/>
         <source> (backup %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1069"/>
+        <location filename="../src/gui/folderman.cpp" line="1081"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1072"/>
+        <location filename="../src/gui/folderman.cpp" line="1084"/>
         <source>Waits to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1075"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1078"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Last Sync was successful.</source>
         <translation>Azkeneko sinkronizazioa ongi burutu zen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1086"/>
+        <location filename="../src/gui/folderman.cpp" line="1098"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Azkenengo sinkronizazioa ongi burutu zen, baina banakako fitxategi batzuetan abisuak egon dira.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1089"/>
+        <location filename="../src/gui/folderman.cpp" line="1101"/>
         <source>Setup Error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1092"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>User Abort.</source>
         <translation>Erabiltzaileak bertan behera utzi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1095"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1121"/>
         <source>No valid folder selected!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1132"/>
         <source>The selected path is not a directory!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1124"/>
+        <location filename="../src/gui/folderman.cpp" line="1136"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ez daukazu hautatutako karpetan idazteko baimenik!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1139"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation>%1 sarbidean badago kargatzeko karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1143"/>
+        <location filename="../src/gui/folderman.cpp" line="1155"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Karpeta honek dagoeneko konfiguratuta dagoen beste karpeta bat du barnean</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1148"/>
+        <location filename="../src/gui/folderman.cpp" line="1160"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation>Hautatutako karpeta esteka sinboliko bat da. Eta konfituratutako karpeta dagoeneko badago esteka apuntatzen duen karpetan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1153"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>Karpeta batek dagoeneko barnean du orain sartutako karpeta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1157"/>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation>Hautatutako karpeta esteka sinboliko bat da. Eta konfiguratutako karpeta estekak apuntatzen  duen karpetaren gurasoa da. </translation>
     </message>
@@ -668,57 +668,66 @@ Ziur zaude eragiketa hau egin nahi duzula?</translation>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="107"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="108"/>
         <source>You need to be connected to add a folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="112"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="115"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="116"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="125"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="648"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="649"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="685"/>
-        <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
-        <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="709"/>
+        <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="691"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="712"/>
+        <source>u2193 %1/s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="716"/>
+        <source>u2191 %1/s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%4 - %3tik)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="695"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="724"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="711"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="740"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation> %2-tik %1,  %4-tik %3 fitxategi
 Geratzen den denbora %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="717"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>file %1 of %2</source>
         <translation>%1. fitxategia %2tik</translation>
     </message>
@@ -1671,17 +1680,17 @@ Ez da gomendagarria erabltzea.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="92"/>
         <source>; Restoration Failed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="115"/>
         <source>Continue blacklisting:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="211"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2228,7 +2237,7 @@ Ez da gomendagarria erabltzea.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="453"/>
+        <location filename="../src/gui/socketapi.cpp" line="449"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"/>
@@ -2601,74 +2610,74 @@ Ez da gomendagarria erabltzea.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="553"/>
+        <location filename="../src/libsync/syncengine.cpp" line="552"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="623"/>
+        <location filename="../src/libsync/syncengine.cpp" line="622"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ezin izan da sinkronizazio egunerokoa hasieratu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="710"/>
+        <location filename="../src/libsync/syncengine.cpp" line="709"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="957"/>
-        <location filename="../src/libsync/syncengine.cpp" line="964"/>
+        <location filename="../src/libsync/syncengine.cpp" line="956"/>
+        <location filename="../src/libsync/syncengine.cpp" line="963"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="982"/>
+        <location filename="../src/libsync/syncengine.cpp" line="981"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="988"/>
+        <location filename="../src/libsync/syncengine.cpp" line="987"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="995"/>
+        <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1032"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1051"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ezabatzeko baimenik gabe, berrezartzen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1065"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Move not allowed, item restored</source>
         <translation>Mugitzea ez dago baimenduta, elementua berrezarri da</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Mugitzea ez dago baimenduta %1 irakurtzeko bakarrik delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1130"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
         <source>the destination</source>
         <translation>helburua</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1130"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
         <source>the source</source>
         <translation>jatorria</translation>
     </message>

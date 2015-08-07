@@ -531,112 +531,112 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Nie udało się zresetować stanu folderu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Stary sync journal &apos;%1&apos; został znaleziony, lecz nie mógł być usunięty. Proszę się upewnić, że żaden program go obecnie nie używa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="855"/>
+        <location filename="../src/gui/folderman.cpp" line="867"/>
         <source> (backup)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="860"/>
+        <location filename="../src/gui/folderman.cpp" line="872"/>
         <source> (backup %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1069"/>
+        <location filename="../src/gui/folderman.cpp" line="1081"/>
         <source>Undefined State.</source>
         <translation>Niezdefiniowany stan</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1072"/>
+        <location filename="../src/gui/folderman.cpp" line="1084"/>
         <source>Waits to start syncing.</source>
         <translation>Czekają na uruchomienie synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1075"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Preparing for sync.</source>
         <translation>Przygotowuję do synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1078"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Sync is running.</source>
         <translation>Synchronizacja w toku</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Last Sync was successful.</source>
         <translation>Ostatnia synchronizacja zakończona powodzeniem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1086"/>
+        <location filename="../src/gui/folderman.cpp" line="1098"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ostatnia synchronizacja udana, ale istnieją ostrzeżenia z pojedynczymi plikami.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1089"/>
+        <location filename="../src/gui/folderman.cpp" line="1101"/>
         <source>Setup Error.</source>
         <translation>Błąd ustawień.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1092"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>User Abort.</source>
         <translation>Użytkownik anulował.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1095"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Sync is paused.</source>
         <translation>Synchronizacja wstrzymana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (Synchronizacja jest zatrzymana)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1121"/>
         <source>No valid folder selected!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1132"/>
         <source>The selected path is not a directory!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1124"/>
+        <location filename="../src/gui/folderman.cpp" line="1136"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nie masz uprawnień, aby zapisywać w tym  katalogu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1139"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation>Ścieżka lokalna %1 już istnieje w  zdalnym folderze. Proszę wybrać inną!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1143"/>
+        <location filename="../src/gui/folderman.cpp" line="1155"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Folder jest już skonfigurowany w bieżącym wpisie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1148"/>
+        <location filename="../src/gui/folderman.cpp" line="1160"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation>Zaznaczony folder jest linkiem symbolicznym. Skonfigurowany folder jest tym, na który wskazuje ten link.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1153"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>Folder już skonfigurowany zawiera katalogi aktualnie wprowadzone.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1157"/>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation>Zaznaczony folder jest linkiem symbolicznym. Skonfigurowany już folder jest nadrzędnym w stosunku do folderu na który wskazuje ten link.</translation>
     </message>
@@ -668,57 +668,66 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="107"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="108"/>
         <source>You need to be connected to add a folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="112"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="115"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="116"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="125"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="648"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="649"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Rozpoznaję &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="685"/>
-        <source>%1 %2 (%3 of %4) %5 left at a rate of %6/s</source>
-        <extracomment>Example text: &quot;uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s&quot;</extracomment>
-        <translation>%1 %2 (%3 z %4) %5 pozostało z %6/s</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="709"/>
+        <source>Syncing %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="691"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="712"/>
+        <source>u2193 %1/s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="716"/>
+        <source>u2191 %1/s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 z %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="695"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="724"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="711"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="740"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 z %2, plik %3 z %4
 Pozostało czasu %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="717"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>file %1 of %2</source>
         <translation>plik %1 z %2</translation>
     </message>
@@ -1672,17 +1681,17 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="86"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="92"/>
         <source>; Restoration Failed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="109"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="115"/>
         <source>Continue blacklisting:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="211"/>
         <source>A file or directory was removed from a read only share, but restoring failed: %1</source>
         <translation>Plik lub katalog został usunięty z udziału z prawem tylko do odczytu, ale przywrócenie nie powiodło się: %1</translation>
     </message>
@@ -2229,7 +2238,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="453"/>
+        <location filename="../src/gui/socketapi.cpp" line="449"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"/>
@@ -2604,74 +2613,74 @@ Niezalecane jest jego użycie.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="553"/>
+        <location filename="../src/libsync/syncengine.cpp" line="552"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="623"/>
+        <location filename="../src/libsync/syncengine.cpp" line="622"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nie można zainicjować synchronizacji dziennika.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="710"/>
+        <location filename="../src/libsync/syncengine.cpp" line="709"/>
         <source>Cannot open the sync journal</source>
         <translation>Nie można otworzyć dziennika synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="957"/>
-        <location filename="../src/libsync/syncengine.cpp" line="964"/>
+        <location filename="../src/libsync/syncengine.cpp" line="956"/>
+        <location filename="../src/libsync/syncengine.cpp" line="963"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="982"/>
+        <location filename="../src/libsync/syncengine.cpp" line="981"/>
         <source>Not allowed because you don&apos;t have permission to add sub-directories in that directory</source>
         <translation>Nie masz uprawnień do dodawania podkatalogów w tym katalogu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="988"/>
+        <location filename="../src/libsync/syncengine.cpp" line="987"/>
         <source>Not allowed because you don&apos;t have permission to add parent directory</source>
         <translation>Nie masz uprawnień by dodać katalog nadrzędny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="995"/>
+        <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add files in that directory</source>
         <translation>Nie masz uprawnień by dodać pliki w tym katalogu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1014"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Wgrywanie niedozwolone, ponieważ plik jest tylko do odczytu na serwerze, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1032"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1052"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1051"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1065"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Move not allowed, item restored</source>
         <translation>Przenoszenie niedozwolone, obiekt przywrócony</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Przenoszenie niedozwolone, ponieważ %1 jest tylko do odczytu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1130"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
         <source>the destination</source>
         <translation>docelowy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1130"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1129"/>
         <source>the source</source>
         <translation>źródło</translation>
     </message>
