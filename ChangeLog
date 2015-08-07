@@ -19,9 +19,9 @@ version 2.0.0 (release 2015-08-??)
   * Windows: Fix installer when installing unprivileged (#2616, #2568)
   * Quota: Only refresh from server when UI is shown
   * SSL Button: Show more information
-  * owncloudcmd: Fix --httpproxy
+  * owncloudcmd: Fix --httpproxy (#3465)
   * System proxy: Ask user for credentials if needed
-  * Allow to not sync hidden files (Windows, OS X)
+  * Windows, OS X: Allow to not sync hidden files (#2086)
   * Several fixes and performance improvements in the sync engine
   * Network: Try to SSL session tickets/identifiers
   * Bandwidth Throttling: Provide automatic limit setting for downloads (#3084)
