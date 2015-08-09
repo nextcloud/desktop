@@ -701,7 +701,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
         <source>download %1/s</source>
-        <translation type="unfinished"/>
+        <translation>ricezione %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
@@ -711,7 +711,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
         <source>upload %1/s</source>
-        <translation type="unfinished"/>
+        <translation>invio %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>

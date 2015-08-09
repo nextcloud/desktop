@@ -696,27 +696,27 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="713"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
         <source>download %1/s</source>
-        <translation type="unfinished"/>
+        <translation>baixar %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
         <source>u2193 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2193 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
         <source>upload %1/s</source>
-        <translation type="unfinished"/>
+        <translation>enviar %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
         <source>u2191 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2191 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="733"/>
