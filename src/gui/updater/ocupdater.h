@@ -112,9 +112,10 @@ signals:
 public slots:
     void slotStartInstaller();
 
-private slots:
+protected slots:
     void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
 
+private slots:
     void slotOpenUpdateUrl();
     void slotVersionInfoArrived();
     void slotTimedOut();

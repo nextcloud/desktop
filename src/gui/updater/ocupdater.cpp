@@ -431,6 +431,7 @@ PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
 
 void PassiveUpdateNotifier::backgroundCheckForUpdate()
 {
+
     if( Utility::isLinux() ) {
         // on linux, check if the installed binary is still the same version
         // as the one that is running. If not, restart if possible.
@@ -440,6 +441,8 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
             emit requestRestart();
         }
     }
+
+    OCUpdater::backgroundCheckForUpdate();
 }
 
 void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
