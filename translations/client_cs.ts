@@ -701,7 +701,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
         <source>download %1/s</source>
-        <translation type="unfinished"/>
+        <translation>stahování %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
@@ -711,7 +711,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
         <source>upload %1/s</source>
-        <translation type="unfinished"/>
+        <translation>nahrávání %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
