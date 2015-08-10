@@ -230,6 +230,15 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+#ifdef Q_OS_WIN
+        // Windows has a 128-char tray tooltip length limit.
+        QStringList accountNames;
+        foreach (AccountStatePtr a, problemAccounts) {
+            accountNames.append(a->account()->displayName());
+        }
+        _tray->setToolTip(tr("Disconnected from %1").arg(
+                accountNames.join(QLatin1String(", "))));
+#else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
         foreach (AccountStatePtr a, problemAccounts) {
@@ -242,6 +251,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             messages.append(message);
         }
         _tray->setToolTip(messages.join(QLatin1String("\n\n")));
+#endif
         return;
     }
 
@@ -259,15 +269,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     // create the tray blob message, check if we have an defined state
     if( overallResult.status() != SyncResult::Undefined ) {
-        QStringList allStatusStrings;
         if( map.count() > 0 ) {
+#ifdef Q_OS_WIN
+            // Windows has a 128-char tray tooltip length limit.
+            trayMessage = folderMan->statusToString(overallResult.status(), false);
+#else
+            QStringList allStatusStrings;
             foreach(Folder* folder, map.values()) {
                 qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
                 QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
                 allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
             }
-
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
+#endif
         } else {
             trayMessage = tr("No sync folders configured.");
         }
