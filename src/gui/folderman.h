@@ -99,6 +99,15 @@ public:
      */
     QString checkPathValidityForNewFolder(const QString &path, bool forNewDirectory = false);
 
+    /**
+     * While ignoring hidden files can theoretically be switched per folder,
+     * it's currently a global setting that users can only change for all folders
+     * at once.
+     * These helper functions can be removed once it's properly per-folder.
+     */
+    bool ignoreHiddenFiles() const;
+    void setIgnoreHiddenFiles(bool ignore);
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.

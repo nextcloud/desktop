@@ -470,6 +470,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             }
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
+            folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
