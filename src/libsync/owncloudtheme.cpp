@@ -53,7 +53,7 @@ QString ownCloudTheme::about() const
                "Inc. in the United States, other countries, or both.</p>"
                )
             .arg(MIRALL_VERSION_STRING)
-            .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+            .arg("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
     devString += gitSHA1();
@@ -91,7 +91,7 @@ QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
 
 QString ownCloudTheme::helpUrl() const
 {
-    return QString::fromLatin1("http://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+    return QString::fromLatin1("https://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
 }
 
 #ifndef TOKEN_AUTH_ONLY
