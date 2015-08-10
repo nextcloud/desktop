@@ -21,7 +21,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="ignoreHiddenFilesCheckBox">
+       <widget class="QCheckBox" name="syncHiddenFilesCheckBox">
         <property name="text">
          <string>Sync hidden files</string>
         </property>

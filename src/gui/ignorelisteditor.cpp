@@ -58,7 +58,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setVisible(false);
 
-    ui->ignoreHiddenFilesCheckBox->setChecked( !FolderMan::instance()->ignoreHiddenFiles() );
+    ui->syncHiddenFilesCheckBox->setChecked( !FolderMan::instance()->ignoreHiddenFiles() );
 }
 
 IgnoreListEditor::~IgnoreListEditor()
@@ -68,7 +68,7 @@ IgnoreListEditor::~IgnoreListEditor()
 
 bool IgnoreListEditor::ignoreHiddenFiles()
 {
-    return ! ui->ignoreHiddenFilesCheckBox->isChecked();
+    return ! ui->syncHiddenFilesCheckBox->isChecked();
 }
 
 void IgnoreListEditor::slotItemSelectionChanged()
@@ -119,12 +119,11 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     }
 
     /* handle the hidden file checkbox */
-    bool ignoreHiddenFiles = ! ui->ignoreHiddenFilesCheckBox->isChecked();
 
     /* the ignoreHiddenFiles flag is a folder specific setting, but for now, it is
      * handled globally. Save it to every folder that is defined.
      */
-    FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles);
+    FolderMan::instance()->setIgnoreHiddenFiles(ignoreHiddenFiles());
 }
 
 void IgnoreListEditor::slotAddPattern()
