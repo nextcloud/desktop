@@ -59,7 +59,8 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_AND_REMOVE,
   CSYNC_FILE_EXCLUDE_LIST,
   CSYNC_FILE_EXCLUDE_INVALID_CHAR,
-  CSYNC_FILE_EXCLUDE_LONG_FILENAME
+  CSYNC_FILE_EXCLUDE_LONG_FILENAME,
+  CSYNC_FILE_EXCLUDE_HIDDEN
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
@@ -579,6 +580,11 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 
     // Is it excluded?
     CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, fileName.toUtf8(), type);
+    if( folder->ignoreHiddenFiles()
+            && (fi.isHidden()
+                || fi.fileName().startsWith(QLatin1Char('.'))) ) {
+        excl = CSYNC_FILE_EXCLUDE_HIDDEN;
+    }
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
