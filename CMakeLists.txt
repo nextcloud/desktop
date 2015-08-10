@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-cmake_policy(VERSION 2.8.12)
-cmake_policy(SET CMP0043 NEW) # For VERSION < 3.3
-cmake_policy(SET CMP0058 NEW) # For VERSION < 3.3
+cmake_policy(VERSION 2.8.0)
 
 project(client)
 
