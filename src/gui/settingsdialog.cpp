@@ -32,13 +32,23 @@
 #include <QDebug>
 #include <QSettings>
 #include <QToolBar>
+#include <QToolButton>
 #include <QLayout>
+#include <QVBoxLayout>
 
 namespace {
   const char TOOLBAR_CSS[] =
     "QToolBar { background: white; margin: 0; padding: 0; border: none; border-bottom: 1px solid %1; spacing: 0; } "
     "QToolBar QToolButton { background: white; border: none; border-bottom: 1px solid %1; margin: 0; padding: 0; } "
     "QToolBar QToolButton:checked { background: %2; color: %3; }";
+
+  void addActionToToolBar(QAction *action, QToolBar *tb) {
+    QToolButton* btn = new QToolButton;
+    btn->setDefaultAction(action);
+    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    tb->addWidget(btn);
+  }
 }
 
 namespace OCC {
@@ -54,11 +64,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     QToolBar *toolBar = new QToolBar;
-    toolBar->setIconSize(QSize(32,32));
     QString highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
     toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(dark).arg(highlightColor).arg(altBase));
+    toolBar->setIconSize(QSize(32, 32));
     toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     layout()->setMenuBar(toolBar);
 
@@ -68,6 +78,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect(closeWindowAction, SIGNAL(triggered()), SLOT(accept()));
     addAction(closeWindowAction);
 
+
     setObjectName("Settings"); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
@@ -75,24 +86,29 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     auto spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     toolBar->addWidget(spacer);
+    QActionGroup *group = new QActionGroup(this);
+    group->setExclusive(true);
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
-    _protocolAction = toolBar->addAction(protocolIcon, tr("Activity") + QLatin1Char('\n'));
+    _protocolAction = group->addAction(protocolIcon, tr("Activity"));
     _protocolAction->setCheckable(true);
+    addActionToToolBar(_protocolAction, toolBar);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
     QIcon generalIcon(QLatin1String(":/client/resources/settings.png"));
-    QAction *generalAction = toolBar->addAction(generalIcon, tr("General") + QLatin1Char('\n'));
+    QAction *generalAction =  group->addAction(generalIcon, tr("General"));
     generalAction->setCheckable(true);
+    addActionToToolBar(generalAction, toolBar);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
     QIcon networkIcon(QLatin1String(":/client/resources/network.png"));
-    QAction *networkAction = toolBar->addAction(networkIcon, tr("Network") + QLatin1Char('\n'));
+    QAction *networkAction =  group->addAction(networkIcon, tr("Network"));
     networkAction->setCheckable(true);
+    addActionToToolBar(networkAction, toolBar);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
@@ -100,11 +116,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _actions.insert(generalAction, generalSettings);
     _actions.insert(networkAction, networkSettings);
 
-    QActionGroup *group = new QActionGroup(this);
-    group->addAction(_protocolAction);
-    group->addAction(generalAction);
-    group->addAction(networkAction);
-    group->setExclusive(true);
     connect(group, SIGNAL(triggered(QAction*)), SLOT(slotSwitchPage(QAction*)));
 
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
@@ -167,8 +178,14 @@ void SettingsDialog::accountAdded(AccountState *s)
     Q_ASSERT(toolBar);
     auto accountAction = new QAction(accountIcon, s->shortDisplayNameForSettings(), this);
     accountAction->setToolTip(s->account()->displayName());
-    toolBar->insertAction(toolBar->actions().at(0), accountAction);
     accountAction->setCheckable(true);
+
+    QToolButton* accountButton = new QToolButton;
+    accountButton->setDefaultAction(accountAction);
+    accountButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    accountButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    toolBar->insertWidget(toolBar->actions().at(0), accountButton);
+
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0 , accountSettings);
     _actions.insert(accountAction, accountSettings);
