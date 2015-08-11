@@ -316,9 +316,8 @@ void ProgressInfo::Progress::update()
 
 void ProgressInfo::Progress::setCompleted(quint64 completed)
 {
-    _completed = completed;
-    _prevCompleted = qMin(_prevCompleted, completed);
-    _total = qMax(_total, completed);
+    _completed = qMin(completed, _total);
+    _prevCompleted = qMin(_prevCompleted, _completed);
 }
 
 
