@@ -342,7 +342,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             folderName = Theme::instance()->appNameGUI();
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->path()), this );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);

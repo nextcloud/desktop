@@ -177,6 +177,19 @@ void Folder::checkLocalPath()
     }
 }
 
+QString Folder::aliasGui() const
+{
+    if (remotePath().length() > 0 && remotePath() != QLatin1String("/")) {
+        QString a = QFile(remotePath()).fileName();
+        if (a.startsWith('/')) {
+            a = a.remove(0, 1);
+        }
+        return a;
+    } else {
+        return Theme::instance()->appNameGUI();
+    }
+}
+
 QString Folder::alias() const
 {
     return _definition.alias;

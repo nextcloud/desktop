@@ -101,6 +101,7 @@ public:
      * alias or nickname
      */
     QString alias() const;
+    QString aliasGui() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
      * local folder path
