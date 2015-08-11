@@ -239,11 +239,11 @@ signals:
      */
     void progressInfo( const QString& folder, const ProgressInfo& progress );
     /**
-     * @brief: the item's job is completed
+     * @brief: the item was completed by a job
      */
-    void jobCompleted(const QString &folder,
-                      const SyncFileItem & item,
-                      const PropagatorJob & job);
+    void itemCompleted(const QString &folder,
+                       const SyncFileItem & item,
+                       const PropagatorJob & job);
 
     void syncItemDiscovered(const QString &folder, const SyncFileItem & item);
 

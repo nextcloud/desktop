@@ -101,8 +101,8 @@ signals:
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(SyncFileItemVector&);
 
-    // after each job (successful or not)
-    void jobCompleted(const SyncFileItem&, const PropagatorJob&);
+    // after each item completed by a job (successful or not)
+    void itemCompleted(const SyncFileItem&, const PropagatorJob&);
 
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
@@ -122,7 +122,7 @@ signals:
 
 private slots:
     void slotRootEtagReceived(QString);
-    void slotJobCompleted(const SyncFileItem& item, const PropagatorJob & job);
+    void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotAdjustTotalTransmissionSize(qint64 change);

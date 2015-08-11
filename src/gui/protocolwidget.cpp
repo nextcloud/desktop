@@ -43,8 +43,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
             this, SLOT(slotProgressInfo(QString,ProgressInfo)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem,PropagatorJob)),
-            this, SLOT(slotJobComplete(QString,SyncFileItem,PropagatorJob)));
+    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString,SyncFileItem,PropagatorJob)),
+            this, SLOT(slotItemCompleted(QString,SyncFileItem,PropagatorJob)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -281,7 +281,7 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
     }
 }
 
-void ProtocolWidget::slotJobComplete(const QString &folder, const SyncFileItem &item, const PropagatorJob &job)
+void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem &item, const PropagatorJob &job)
 {
     if (qobject_cast<const PropagateDirectory*>(&job)) {
         return;

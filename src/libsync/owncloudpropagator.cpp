@@ -135,7 +135,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     _item->_status = status;
 
-    emit completed(*_item, *this);
+    emit itemCompleted(*_item, *this);
     emit finished(status);
 }
 
@@ -187,8 +187,8 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(completed(const SyncFileItemPtr &, const PropagatorJob &)),
-                    this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &, const PropagatorJob &)));
+            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &, const PropagatorJob &)),
+                    this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &)));
             QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
@@ -354,8 +354,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->append(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(completed(const SyncFileItem &, const PropagatorJob &)),
-            this, SIGNAL(completed(const SyncFileItem &, const PropagatorJob &)));
+    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+            this, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished()));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
@@ -612,7 +612,7 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
             (sender() == _firstJob.data() && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
         _state = Finished;
-        emit completed(*_item, *this);
+        emit itemCompleted(*_item, *this);
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
@@ -656,7 +656,7 @@ void PropagateDirectory::finalize()
         }
     }
     _state = Finished;
-    emit completed(*_item, *this);
+    emit itemCompleted(*_item, *this);
     emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
 }
 
