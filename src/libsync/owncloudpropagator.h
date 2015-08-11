@@ -94,7 +94,7 @@ signals:
     /**
      * Emitted when one item has been completed within a job.
      */
-    void completed(const SyncFileItem &);
+    void completed(const SyncFileItem &, const PropagatorJob &);
 
     /**
      * Emitted when all the sub-jobs have been finished and
@@ -207,7 +207,8 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-            connect(next, SIGNAL(completed(const SyncFileItem &)), this, SIGNAL(completed(const SyncFileItem &)));
+            connect(next, SIGNAL(completed(const SyncFileItem &, const PropagatorJob &)),
+                    this, SIGNAL(completed(const SyncFileItem &, const PropagatorJob &)));
             connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
             _runningNow++;
@@ -333,7 +334,7 @@ private slots:
     void scheduleNextJob();
 
 signals:
-    void completed(const SyncFileItem &);
+    void completed(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
     void finished();
     /**

@@ -682,7 +682,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         qWarning() << "Server do not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
 #ifdef USE_NEON
         PropagatorJob *newJob = new UpdateMTimeAndETagJob(_propagator, _item);
-        QObject::connect(newJob, SIGNAL(completed(SyncFileItem)), this, SLOT(finalize(SyncFileItem)));
+        QObject::connect(newJob, SIGNAL(completed(SyncFileItem, PropagatorJob)),
+                         this, SLOT(finalize(SyncFileItem)));
         QMetaObject::invokeMethod(newJob, "start");
         return;
 #else

@@ -242,7 +242,7 @@ private slots:
 
     void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const ProgressInfo& pi);
-    void slotJobCompleted(const SyncFileItem&);
+    void slotJobCompleted(const SyncFileItem&, const PropagatorJob&);
     void slotSyncItemDiscovered(const SyncFileItem & item);
 
     void slotRunEtagJob();

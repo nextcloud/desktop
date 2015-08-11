@@ -127,7 +127,7 @@ SocketApi::SocketApi(QObject* parent)
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder*)), this, SLOT(slotUpdateFolderView(Folder*)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString, const SyncFileItem &)),
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString, const SyncFileItem &, const PropagatorJob &)),
             SLOT(slotJobCompleted(QString, const SyncFileItem &)));
     connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString, const SyncFileItem &)),
             this, SLOT(slotSyncItemDiscovered(QString, const SyncFileItem &)));

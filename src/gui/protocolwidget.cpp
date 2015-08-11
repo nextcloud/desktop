@@ -26,6 +26,7 @@
 #include "syncfileitem.h"
 #include "folder.h"
 #include "openfilemanager.h"
+#include "owncloudpropagator.h"
 
 #include "ui_protocolwidget.h"
 
@@ -42,6 +43,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
             this, SLOT(slotProgressInfo(QString,ProgressInfo)));
+    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString,SyncFileItem,PropagatorJob)),
+            this, SLOT(slotJobComplete(QString,SyncFileItem,PropagatorJob)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -276,17 +279,21 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
         //Sync completed
         computeResyncButtonEnabled();
     }
-    SyncFileItem last = progress._lastCompletedItem;
-    if (last.isEmpty()) return;
+}
 
-    QTreeWidgetItem *item = createCompletedTreewidgetItem(folder, last);
-    if(item) {
-        _ui->_treeWidget->insertTopLevelItem(0, item);
+void ProtocolWidget::slotJobComplete(const QString &folder, const SyncFileItem &item, const PropagatorJob &job)
+{
+    if (qobject_cast<const PropagateDirectory*>(&job)) {
+        return;
+    }
+
+    QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, item);
+    if(line) {
+        _ui->_treeWidget->insertTopLevelItem(0, line);
         if (!_copyBtn->isEnabled()) {
             _copyBtn->setEnabled(true);
         }
     }
 }
-
 
 }
