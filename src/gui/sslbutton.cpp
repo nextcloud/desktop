@@ -188,7 +188,7 @@ void SslButton::updateAccountState(AccountState *accountState)
     if (account->url().scheme() == QLatin1String("https")) {
         QPixmap pm(Theme::hidpiFileName(":/client/resources/lock-https.png"));
         setIcon(QIcon(pm));
-        QSslCipher cipher = account->sslConfiguration().sessionCipher();
+        QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
         setMenu(_menu);
     } else {
@@ -208,19 +208,19 @@ void SslButton::slotUpdateMenu() {
     AccountPtr account = _accountState->account();
 
     if (account->url().scheme() == QLatin1String("https")) {
-        QString sslVersion = account->sslConfiguration().sessionCipher().protocolString()
-                + ", " + account->sslConfiguration().sessionCipher().authenticationMethod()
-                + ", " + account->sslConfiguration().sessionCipher().keyExchangeMethod()
-                + ", " + account->sslConfiguration().sessionCipher().encryptionMethod();
+        QString sslVersion = account->_sessionCipher.protocolString()
+                + ", " + account->_sessionCipher.authenticationMethod()
+                + ", " + account->_sessionCipher.keyExchangeMethod()
+                + ", " + account->_sessionCipher.encryptionMethod();
         _menu->addAction(sslVersion)->setEnabled(false);
 
 #if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
-        if (account->sslConfiguration().sessionTicket().isEmpty()) {
+        if (account->_sessionTicket.isEmpty()) {
             _menu->addAction(tr("No support for SSL session tickets/identifiers"))->setEnabled(false);
         }
 #endif
 
-        QList<QSslCertificate> chain = account->sslConfiguration().peerCertificateChain();
+        QList<QSslCertificate> chain = account->_peerCertificateChain;
 
         if (chain.isEmpty()) {
             qWarning() << "empty certificate chain";

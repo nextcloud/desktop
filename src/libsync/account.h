@@ -22,6 +22,7 @@
 #include <QSslSocket>
 #include <QSslCertificate>
 #include <QSslConfiguration>
+#include <QSslCipher>
 #include <QSslError>
 #include <QSharedPointer>
 #include "utility.h"
@@ -111,6 +112,12 @@ public:
     QSslConfiguration getOrCreateSslConfig();
     QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
     void setSslConfiguration(const QSslConfiguration &config);
+    // Because of bugs in Qt, we use this to store info needed for the SSL Button
+    QSslCipher _sessionCipher;
+    QByteArray _sessionTicket;
+    QList<QSslCertificate> _peerCertificateChain;
+
+
     /** The certificates of the account */
     QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);

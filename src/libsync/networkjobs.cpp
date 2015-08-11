@@ -18,6 +18,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QSslConfiguration>
+#include <QSslCipher>
 #include <QBuffer>
 #include <QXmlStreamReader>
 #include <QStringList>
@@ -362,6 +363,7 @@ void CheckServerJob::start()
     setReply(getRequest(path()));
     setupConnections(reply());
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(metaDataChangedSlot()));
+    connect(reply(), SIGNAL(encrypted()), this, SLOT(encryptedSlot()));
     AbstractNetworkJob::start();
 }
 
@@ -391,10 +393,28 @@ bool CheckServerJob::installed(const QVariantMap &info)
     return info.value(QLatin1String("installed")).toBool();
 }
 
+static void mergeSslConfigurationForSslButton(const QSslConfiguration &config, AccountPtr account)
+{
+    if (config.peerCertificateChain().length() > 0) {
+        account->_peerCertificateChain = config.peerCertificateChain();
+    }
+    if (!config.sessionCipher().isNull()) {
+        account->_sessionCipher = config.sessionCipher();
+    }
+    if (config.sessionTicket().length() > 0) {
+        account->_sessionTicket = config.sessionTicket();
+    }
+}
+
+void CheckServerJob::encryptedSlot()
+{
+    mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
+}
+
 void CheckServerJob::metaDataChangedSlot()
 {
-    // We used to have this in finished(), but because of a bug in Qt this did not always have the cipher etc.
     account()->setSslConfiguration(reply()->sslConfiguration());
+    mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
 
 
@@ -407,6 +427,8 @@ bool CheckServerJob::finished()
         qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
 #endif
+
+    mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 
     // The serverInstalls to /owncloud. Let's try that if the file wasn't found
     // at the original location
