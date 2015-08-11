@@ -81,9 +81,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     setWindowTitle(Theme::instance()->appNameGUI());
 
     // Add a spacer so config buttons are right aligned and account buttons will be left aligned
-    auto spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    _toolBar->addWidget(spacer);
+    _seperatorAction = _toolBar->addSeparator();
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
 
@@ -207,6 +205,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
+
+    _seperatorAction->setVisible(!_toolbarAccountActions.isEmpty());
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
@@ -226,6 +226,8 @@ void SettingsDialog::accountRemoved(AccountState *s)
             break;
         }
     }
+
+    _seperatorAction->setVisible(!_toolbarAccountActions.isEmpty());
 }
 
 void SettingsDialog::customizeStyle()
