@@ -182,7 +182,7 @@ quint64 ProgressInfo::completedSize() const
 void ProgressInfo::setProgressComplete(const SyncFileItem &item)
 {
     _currentItems.remove(item._file);
-    _fileProgress._completed += item._affectedItems;
+    _fileProgress.setCompleted(_fileProgress._completed + item._affectedItems);
     if (ProgressInfo::isSizeDependent(item)) {
         _totalSizeOfCompletedJobs += item._size;
     }
@@ -190,11 +190,11 @@ void ProgressInfo::setProgressComplete(const SyncFileItem &item)
     _lastCompletedItem = item;
 }
 
-void ProgressInfo::setProgressItem(const SyncFileItem &item, quint64 size)
+void ProgressInfo::setProgressItem(const SyncFileItem &item, quint64 completed)
 {
     _currentItems[item._file]._item = item;
-    _currentItems[item._file]._progress._completed = size;
     _currentItems[item._file]._progress._total = item._size;
+    _currentItems[item._file]._progress.setCompleted(completed);
     recomputeCompletedSize();
 
     // This seems dubious!
@@ -273,7 +273,7 @@ void ProgressInfo::recomputeCompletedSize()
         if (isSizeDependent(i._item))
             r += i._progress._completed;
     }
-    _sizeProgress._completed = r;
+    _sizeProgress.setCompleted(r);
 }
 
 ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
@@ -312,6 +312,13 @@ void ProgressInfo::Progress::update()
     _initialSmoothing *= 0.7; // goes from 1 to 0.03 in 10s
     _progressPerSec = smoothing * _progressPerSec + (1.0 - smoothing) * (_completed - _prevCompleted);
     _prevCompleted = _completed;
+}
+
+void ProgressInfo::Progress::setCompleted(quint64 completed)
+{
+    _completed = completed;
+    _prevCompleted = qMin(_prevCompleted, completed);
+    _total = qMax(_total, completed);
 }
 
 
