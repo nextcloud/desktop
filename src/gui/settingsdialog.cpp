@@ -63,15 +63,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
-    QToolBar *toolBar = new QToolBar;
+    _toolBar = new QToolBar;
     QString highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background).arg(dark).arg(highlightColor).arg(altBase));
-    toolBar->setIconSize(QSize(32, 32));
-    toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    layout()->setMenuBar(toolBar);
+    _toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background).arg(dark).arg(highlightColor).arg(altBase));
+    _toolBar->setIconSize(QSize(32, 32));
+    _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    layout()->setMenuBar(_toolBar);
 
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
@@ -83,41 +83,41 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     setObjectName("Settings"); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
-    // Add a spacer so config buttonns are right aligned and account buttons will be left aligned
+    // Add a spacer so config buttons are right aligned and account buttons will be left aligned
     auto spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    toolBar->addWidget(spacer);
-    QActionGroup *group = new QActionGroup(this);
-    group->setExclusive(true);
+    _toolBar->addWidget(spacer);
+    _actionGroup = new QActionGroup(this);
+    _actionGroup->setExclusive(true);
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
     QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
-    _protocolAction = group->addAction(protocolIcon, tr("Activity"));
+    _protocolAction = _actionGroup->addAction(protocolIcon, tr("Activity"));
     _protocolAction->setCheckable(true);
-    addActionToToolBar(_protocolAction, toolBar);
+    addActionToToolBar(_protocolAction, _toolBar);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
     QIcon generalIcon(QLatin1String(":/client/resources/settings.png"));
-    QAction *generalAction =  group->addAction(generalIcon, tr("General"));
+    QAction *generalAction = _actionGroup->addAction(generalIcon, tr("General"));
     generalAction->setCheckable(true);
-    addActionToToolBar(generalAction, toolBar);
+    addActionToToolBar(generalAction, _toolBar);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
     QIcon networkIcon(QLatin1String(":/client/resources/network.png"));
-    QAction *networkAction =  group->addAction(networkIcon, tr("Network"));
+    QAction *networkAction = _actionGroup->addAction(networkIcon, tr("Network"));
     networkAction->setCheckable(true);
-    addActionToToolBar(networkAction, toolBar);
+    addActionToToolBar(networkAction, _toolBar);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actions.insert(_protocolAction, protocolWidget);
-    _actions.insert(generalAction, generalSettings);
-    _actions.insert(networkAction, networkSettings);
+    _actionGroupWidgets.insert(_protocolAction, protocolWidget);
+    _actionGroupWidgets.insert(generalAction, generalSettings);
+    _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    connect(group, SIGNAL(triggered(QAction*)), SLOT(slotSwitchPage(QAction*)));
+    connect(_actionGroup, SIGNAL(triggered(QAction*)), SLOT(slotSwitchPage(QAction*)));
 
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             this, SLOT(accountAdded(AccountState*)));
@@ -128,7 +128,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     }
 
     // default to Account
-    toolBar->actions().at(0)->trigger();
+    _toolBar->actions().at(0)->trigger();
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
@@ -162,7 +162,7 @@ void SettingsDialog::accept() {
 
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
-    _ui->stack->setCurrentWidget(_actions.value(action));
+    _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
 }
 
 void SettingsDialog::showActivityPage()
@@ -175,8 +175,6 @@ void SettingsDialog::showActivityPage()
 void SettingsDialog::accountAdded(AccountState *s)
 {
     QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
-    auto toolBar = qobject_cast<QToolBar*>(layout()->menuBar());
-    Q_ASSERT(toolBar);
     auto accountAction = new QAction(accountIcon, s->shortDisplayNameForSettings(), this);
     accountAction->setToolTip(s->account()->displayName());
     accountAction->setCheckable(true);
@@ -185,37 +183,34 @@ void SettingsDialog::accountAdded(AccountState *s)
     accountButton->setDefaultAction(accountAction);
     accountButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     accountButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    toolBar->insertWidget(toolBar->actions().at(0), accountButton);
+
+    QAction* toolbarAction = _toolBar->insertWidget(_toolBar->actions().at(0), accountButton);
+    _toolbarActions.insert(accountAction, toolbarAction);
 
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0 , accountSettings);
-    _actions.insert(accountAction, accountSettings);
-
-    auto group = findChild<QActionGroup*>(
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-                    QString() , Qt::FindDirectChildrenOnly
-#endif
-        );
-    Q_ASSERT(group);
-    group->addAction(accountAction);
+    _actionGroup->addAction(accountAction);
+    _actionGroupWidgets.insert(accountAction, accountSettings);
 
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
-
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
 {
-    for (auto it = _actions.begin(); it != _actions.end(); ++it) {
+    for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
         auto as = qobject_cast<AccountSettings *>(*it);
         if (!as) {
             continue;
         }
         if (as->accountsState() == s) {
+            _toolBar->removeAction(_toolbarActions.value(it.key()));
+            _toolbarActions.remove(it.key());
+
             delete it.key();
             delete it.value();
-            _actions.erase(it);
+            _actionGroupWidgets.erase(it);
             break;
         }
     }

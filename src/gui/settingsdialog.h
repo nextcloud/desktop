@@ -20,6 +20,8 @@
 #include "progressdispatcher.h"
 
 class QAction;
+class QActionGroup;
+class QToolBar;
 class QStandardItemModel;
 
 namespace OCC {
@@ -62,7 +64,15 @@ private slots:
 
 private:
     Ui::SettingsDialog * const _ui;
-    QHash<QAction*, QWidget*> _actions;
+
+    QActionGroup* _actionGroup;
+    // Maps the actions from the action group to the corresponding widgets
+    QHash<QAction*, QWidget*> _actionGroupWidgets;
+
+    QToolBar* _toolBar;
+    // Maps the actions from the action group to the toolbar actions
+    QHash<QAction*, QAction*> _toolbarActions;
+
     QAction * _protocolAction;
     ownCloudGui *_gui;
 };
