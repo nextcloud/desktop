@@ -237,12 +237,10 @@ void SettingsDialog::customizeStyle()
     _toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background).arg(dark).arg(highlightColor).arg(altBase));
 
     Q_FOREACH(QAction *a, _actionGroup->actions()) {
-        qDebug() << Q_FUNC_INFO << a->property("iconPath").toString();
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
         a->setIcon(icon);
         QToolButton *btn = qobject_cast<QToolButton*>(_toolBar->widgetForAction(a));
         if (btn) {
-            qDebug() << "SETTING BUTTON!";
             btn->setIcon(icon);
         }
     }
@@ -252,12 +250,9 @@ void SettingsDialog::customizeStyle()
 QIcon SettingsDialog::createColorAwareIcon(const QString &name)
 {
     QColor  bg(palette().base().color());
-    qDebug() << Q_FUNC_INFO << bg << bg.name();
     QImage img(name);
     // account for different sensitivty of the human eye to certain colors
     double treshold = 1.0 - ( 0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue())/255.0;
-    qDebug() << Q_FUNC_INFO << bg.red() << bg.green() << bg.blue();
-    qDebug() << Q_FUNC_INFO << treshold;
     if (treshold > 0.5) {
         img.invertPixels(QImage::InvertRgb);
     }
