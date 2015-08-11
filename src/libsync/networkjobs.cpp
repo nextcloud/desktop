@@ -401,9 +401,11 @@ static void mergeSslConfigurationForSslButton(const QSslConfiguration &config, A
     if (!config.sessionCipher().isNull()) {
         account->_sessionCipher = config.sessionCipher();
     }
+#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (config.sessionTicket().length() > 0) {
         account->_sessionTicket = config.sessionTicket();
     }
+#endif
 }
 
 void CheckServerJob::encryptedSlot()
