@@ -160,7 +160,7 @@ public slots:
  * @brief Propagate a directory, and all its sub entries.
  * @ingroup libsync
  */
-class PropagateDirectory : public PropagatorJob {
+class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob {
     Q_OBJECT
 public:
     // e.g: create the directory
