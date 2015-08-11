@@ -38,8 +38,8 @@
 
 namespace {
   const char TOOLBAR_CSS[] =
-    "QToolBar { background: white; margin: 0; padding: 0; border: none; border-bottom: 1px solid %1; border-top: 1px solid %1; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %1; border-top: 1px solid %2; margin: 0; padding: 0; } "
+    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
+    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 0; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
 
   void addActionToToolBar(QAction *action, QToolBar *tb) {
