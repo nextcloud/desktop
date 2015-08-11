@@ -35,6 +35,8 @@
 #include <QToolButton>
 #include <QLayout>
 #include <QVBoxLayout>
+#include <QPixmap>
+#include <QImage>
 
 namespace {
   const char TOOLBAR_CSS[] =
@@ -64,11 +66,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     _toolBar = new QToolBar;
-    QString highlightColor(palette().highlight().color().name());
-    QString altBase(palette().alternateBase().color().name());
-    QString dark(palette().dark().color().name());
-    QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background).arg(dark).arg(highlightColor).arg(altBase));
     _toolBar->setIconSize(QSize(32, 32));
     _toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     layout()->setMenuBar(_toolBar);
@@ -92,23 +89,20 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    QIcon protocolIcon(QLatin1String(":/client/resources/activity.png"));
-    _protocolAction = _actionGroup->addAction(protocolIcon, tr("Activity"));
-    _protocolAction->setCheckable(true);
+    _protocolAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    _actionGroup->addAction(_protocolAction);
     addActionToToolBar(_protocolAction, _toolBar);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
-    QIcon generalIcon(QLatin1String(":/client/resources/settings.png"));
-    QAction *generalAction = _actionGroup->addAction(generalIcon, tr("General"));
-    generalAction->setCheckable(true);
+    QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
+    _actionGroup->addAction(generalAction);
     addActionToToolBar(generalAction, _toolBar);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
-    QIcon networkIcon(QLatin1String(":/client/resources/network.png"));
-    QAction *networkAction = _actionGroup->addAction(networkIcon, tr("Network"));
-    networkAction->setCheckable(true);
+    QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
+    _actionGroup->addAction(networkAction);
     addActionToToolBar(networkAction, _toolBar);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
@@ -138,6 +132,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotToggleLogBrowser()));
     addAction(showLogWindow);
 
+    customizeStyle();
+
     ConfigFile cfg;
     cfg.restoreGeometry(this);
 }
@@ -160,6 +156,23 @@ void SettingsDialog::accept() {
     QDialog::accept();
 }
 
+void SettingsDialog::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::StyleChange:
+    case QEvent::PaletteChange:
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    case QEvent::ThemeChange:
+#endif
+        customizeStyle();
+        break;
+    default:
+        break;
+    }
+
+    QDialog::changeEvent(e);
+}
+
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
@@ -174,10 +187,9 @@ void SettingsDialog::showActivityPage()
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
-    QIcon accountIcon(QLatin1String(":/client/resources/account.png"));
-    auto accountAction = new QAction(accountIcon, s->shortDisplayNameForSettings(), this);
+    auto accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
+                                                    s->shortDisplayNameForSettings());
     accountAction->setToolTip(s->account()->displayName());
-    accountAction->setCheckable(true);
 
     QToolButton* accountButton = new QToolButton;
     accountButton->setDefaultAction(accountAction);
@@ -216,6 +228,52 @@ void SettingsDialog::accountRemoved(AccountState *s)
     }
 }
 
+void SettingsDialog::customizeStyle()
+{
+    QString highlightColor(palette().highlight().color().name());
+    QString altBase(palette().alternateBase().color().name());
+    QString dark(palette().dark().color().name());
+    QString background(palette().base().color().name());
+    _toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background).arg(dark).arg(highlightColor).arg(altBase));
+
+    Q_FOREACH(QAction *a, _actionGroup->actions()) {
+        qDebug() << Q_FUNC_INFO << a->property("iconPath").toString();
+        QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
+        a->setIcon(icon);
+        QToolButton *btn = qobject_cast<QToolButton*>(_toolBar->widgetForAction(a));
+        if (btn) {
+            qDebug() << "SETTING BUTTON!";
+            btn->setIcon(icon);
+        }
+    }
+
+}
+
+QIcon SettingsDialog::createColorAwareIcon(const QString &name)
+{
+    QColor  bg(palette().base().color());
+    qDebug() << Q_FUNC_INFO << bg << bg.name();
+    QImage img(name);
+    // account for different sensitivty of the human eye to certain colors
+    double treshold = 1.0 - ( 0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue())/255.0;
+    qDebug() << Q_FUNC_INFO << bg.red() << bg.green() << bg.blue();
+    qDebug() << Q_FUNC_INFO << treshold;
+    if (treshold > 0.5) {
+        img.invertPixels(QImage::InvertRgb);
+    }
+
+    return QIcon(QPixmap::fromImage(img));
+}
+
+QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
+{
+    // all buttons must have the same size in order to keep a good layout
+    QIcon coloredIcon = createColorAwareIcon(iconPath);
+    QAction *action = new QAction(coloredIcon, text, this);
+    action->setCheckable(true);
+    action->setProperty("iconPath", iconPath);
+    return action;
+}
 
 
 } // namespace OCC

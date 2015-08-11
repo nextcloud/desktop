@@ -57,12 +57,16 @@ public slots:
 protected:
     void reject() Q_DECL_OVERRIDE;
     void accept() Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *);
 
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
 
 private:
+    void customizeStyle();
+    QIcon createColorAwareIcon(const QString &name);
+    QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     Ui::SettingsDialog * const _ui;
 
     QActionGroup* _actionGroup;
