@@ -404,7 +404,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
     case CSYNC_STATUS_INDIVIDUAL_STAT_FAILED:
-        item._errorString = tr("Stat failed.");
+        item->_errorString = tr("Stat failed.");
         break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
         item->_errorString = QLatin1String("Server temporarily unavailable.");
