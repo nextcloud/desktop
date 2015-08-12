@@ -28,6 +28,7 @@ class FolderStatusDelegate : public QStyledItemDelegate
 public:
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
+                    HeaderRole,
                     FolderPathRole,
                     FolderSecondPathRole,
                     FolderRemotePath,

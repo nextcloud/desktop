@@ -132,7 +132,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int margin = subFm.height()/4;
 
     QIcon statusIcon      = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
-    QString aliasText     = qvariant_cast<QString>(index.data(FolderAliasRole));
+    QString aliasText     = qvariant_cast<QString>(index.data(HeaderRole));
     QString pathText      = qvariant_cast<QString>(index.data(FolderPathRole));
     QString remotePath    = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     QStringList errorTexts= qvariant_cast<QStringList>(index.data(FolderErrorMsg));
