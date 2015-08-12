@@ -238,6 +238,7 @@ void ShareDialog::setPassword(const QString &password)
         // This happens because the entry field and the button both trigger this slot.
         return;
     }
+    _pi_link->startAnimation();
     _pi_password->startAnimation();
     QUrl url;
     QList<QPair<QString, QString> > requestParams;
@@ -319,6 +320,8 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
 
     ShareDialog::_shares = reply.value("ocs").toMap().value("data").toList();
     const QString versionString = _account->serverVersion();
+
+    qDebug() << Q_FUNC_INFO << versionString << "Fetched" << ShareDialog::_shares.count() << "shares";
 
     //Show link checkbox now
     _ui->checkBox_shareLink->setEnabled(true);
@@ -455,6 +458,7 @@ void ShareDialog::slotDeleteShareFetched(const QVariantMap &reply)
 
 void ShareDialog::slotCheckBoxShareLinkClicked()
 {
+    qDebug() << Q_FUNC_INFO <<( _ui->checkBox_shareLink->checkState() == Qt::Checked);
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked) {
         _pi_link->startAnimation();
         QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
@@ -467,6 +471,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
          * Ask for it directly
          */
         if (_account->capabilities().publicLinkEnforcePassword()) {
+            _pi_link->stopAnimation();
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
@@ -524,7 +529,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
     if (_ui->checkBox_password->checkState() == Qt::Checked) {
         _ui->lineEdit_password->show();
         _ui->pushButton_setPassword->show();
-        _ui->lineEdit_password->setPlaceholderText(tr("Password"));
+        _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
         _ui->lineEdit_password->setFocus();
     } else {
         ShareDialog::setPassword(QString());
