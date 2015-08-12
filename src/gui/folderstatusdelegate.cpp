@@ -224,7 +224,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString elidedRemotePathText;
 
     if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
-        elidedRemotePathText = subFm.elidedText(tr("Syncing all files in your account with"),
+        elidedRemotePathText = subFm.elidedText(tr("Syncing selected files in your account with"),
                                                 Qt::ElideRight, remotePathRect.width());
     } else {
         elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
