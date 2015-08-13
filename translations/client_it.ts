@@ -657,8 +657,8 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
-        <source>Syncing all files in your account with</source>
-        <translation>Sincronizza tutti i file nel tuo account con</translation>
+        <source>Syncing selected files in your account with</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
@@ -689,56 +689,56 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="653"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Rilevamento &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="713"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
         <source>Syncing %1</source>
         <translation>Sincronizzazione di %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
         <source>download %1/s</source>
         <translation>ricezione %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>upload %1/s</source>
         <translation>invio %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="733"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 di %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="737"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 di %2, file %3 di %4
 Totale tempo rimanente %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="759"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
         <source>file %1 of %2</source>
         <translation>file %1 di %2</translation>
     </message>
@@ -2127,7 +2127,7 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>imposta la password</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="691"/>
+        <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
         <translation>Percorso %1: %2</translation>
     </message>
@@ -2157,69 +2157,69 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Protetta da password</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="383"/>
+        <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Il file non può essere condiviso poiché è stato condiviso senza il permesso di condivisione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <source>Please Set Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="568"/>
+        <location filename="../src/gui/sharedialog.cpp" line="569"/>
         <source>&amp;Share link</source>
         <translation>Condividi colle&amp;gamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="582"/>
+        <location filename="../src/gui/sharedialog.cpp" line="587"/>
         <source>OCS API error code: %1</source>
         <translation>Codice di errore API OCS: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="604"/>
+        <location filename="../src/gui/sharedialog.cpp" line="609"/>
         <source>There is no sync folder configured.</source>
         <translation>Non è stata configurata alcuna cartella per la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="638"/>
+        <location filename="../src/gui/sharedialog.cpp" line="643"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Un file di sincronizzazione con lo stesso nome esiste già. Il file non può essere registrato per la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="683"/>
+        <location filename="../src/gui/sharedialog.cpp" line="688"/>
         <source>The file cannot be synced.</source>
         <translation>Il file non può essere sincronizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="628"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>La condivisione di cartelle esterne non funziona ancora.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="472"/>
-        <location filename="../src/gui/sharedialog.cpp" line="505"/>
+        <location filename="../src/gui/sharedialog.cpp" line="477"/>
+        <location filename="../src/gui/sharedialog.cpp" line="510"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>La condivisione pubblic&amp;a richiede una password</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="527"/>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="616"/>
+        <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
         <translation>Impossibile trovare una cartella di destinazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="650"/>
+        <location filename="../src/gui/sharedialog.cpp" line="655"/>
         <source>Waiting to upload...</source>
         <translation>In attesa di caricamento...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="652"/>
+        <location filename="../src/gui/sharedialog.cpp" line="657"/>
         <source>Unable to register in sync space.</source>
         <translation>Impossibile registrare nello spazio di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="693"/>
+        <location filename="../src/gui/sharedialog.cpp" line="698"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>La sincronizzazione del file registrato non è stata ancora completata.</translation>
     </message>

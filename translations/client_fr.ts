@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="105"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>Certains dossiers, dont partagés ou en réseau, peuvent avoir des limites différentes.</translation>
+        <translation>Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="154"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="77"/>
         <source>Storage Usage</source>
-        <translation>Utilisation du stockage</translation>
+        <translation>Utilisation de l&apos;espace de stockage</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="130"/>
@@ -141,12 +141,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="206"/>
         <source>Folder creation failed</source>
-        <translation>Echec de création du dossier</translation>
+        <translation>Échec de création du dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="207"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Impossible de créer le répertoire local &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>&lt;p&gt;Impossible de créer le dossier local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="450"/>
         <source>Connected to %1.</source>
-        <translation>Connecté à %1</translation>
+        <translation>Connecté à %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="452"/>
@@ -196,12 +196,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>Signed out from %1.</source>
-        <translation>Déconnecté de %1.</translation>
+        <translation>Session sur %1 fermée.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="456"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Pas de connexion de %1 à %2.</translation>
+        <translation>Pas de connexion à %1 sur %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="491"/>
@@ -614,12 +614,12 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1137"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Vous n&apos;avez pas la permission d&apos;écrire dans le dossier selectionné</translation>
+        <translation>Vous n&apos;avez pas la permission d&apos;écrire dans le dossier sélectionné !</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1152"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Le chemin d&apos;accès local %1 est déjà un dossier de téléchargement. Veuillez en choisir un autre !</translation>
+        <translation>Le chemin d&apos;accès local %1 est déjà un dossier de synchronisation. Veuillez en choisir un autre !</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1156"/>
@@ -657,8 +657,8 @@ Voulez-vous réellement effectuer cette opération ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
-        <source>Syncing all files in your account with</source>
-        <translation>Configuré pour synchroniser tous vos fichiers dans</translation>
+        <source>Syncing selected files in your account with</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
@@ -689,56 +689,56 @@ Voulez-vous réellement effectuer cette opération ?</translation>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="653"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Découverte de &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="713"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
         <source>Syncing %1</source>
         <translation>Synchronisation de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
         <source>download %1/s</source>
         <translation>réception %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>upload %1/s</source>
         <translation>envoi %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="733"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="737"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 de %2, fichier %3 de %4
 Temps restant total %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="759"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
         <source>file %1 of %2</source>
         <translation>fichier %1 de %2</translation>
     </message>
@@ -1125,7 +1125,7 @@ Les éléments dont la suppression est permise seront supprimés s&apos;ils emp�
     <message>
         <location filename="../src/libsync/logger.cpp" line="164"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;Le fichier &apos;%1&apos;&lt;br/&gt;ne peut être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;La sortie &lt;b&gt;ne peut pas&lt;/b&gt; être consignée dans le fichier de log !&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;Le fichier &apos;%1&apos;&lt;br/&gt;ne peut être ouvert en écriture.&lt;br/&gt;&lt;br/&gt;Le fichier de journalisation &lt;b&gt;ne peut pas&lt;/b&gt; être enregistré !&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1174,12 +1174,12 @@ Les éléments dont la suppression est permise seront supprimés s&apos;ils emp�
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation>Paramètres du serveur mandataire</translation>
+        <translation>Paramètres de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Pas de serveur mandataire</translation>
+        <translation>Pas de serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
@@ -1189,7 +1189,7 @@ Les éléments dont la suppression est permise seront supprimés s&apos;ils emp�
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Spécifier le mandataire manuellement à</translation>
+        <translation>Spécifier le proxy manuellement à</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1204,7 +1204,7 @@ Les éléments dont la suppression est permise seront supprimés s&apos;ils emp�
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation>Le serveur mandataire requiert une authentification</translation>
+        <translation>Le serveur proxy requiert une authentification</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
@@ -1249,27 +1249,27 @@ Les éléments dont la suppression est permise seront supprimés s&apos;ils emp�
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Nom d&apos;hôte du serveur mandataire</translation>
+        <translation>Nom d&apos;hôte du serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
         <source>Username for proxy server</source>
-        <translation>Nom d&apos;utilisateur pour le serveur mandataire</translation>
+        <translation>Nom d&apos;utilisateur pour le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="36"/>
         <source>Password for proxy server</source>
-        <translation>Mot de passe pour le serveur mandataire</translation>
+        <translation>Mot de passe pour le serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>HTTP(S) proxy</source>
-        <translation>Mandataire HTTP(S)</translation>
+        <translation>Proxy HTTP(S)</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>SOCKS5 proxy</source>
-        <translation>Mandataire SOCKS5</translation>
+        <translation>Proxy SOCKS5</translation>
     </message>
 </context>
 <context>
@@ -1299,7 +1299,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Impossible de télécharger la mise à jour. &lt;a href=&apos;%1&apos;&gt;Veuillez cliquer ici afin de télécharger la mise à jour manuellement.&lt;/a&gt;</translation>
+        <translation>Impossible de télécharger la mise à jour. Veuillez la &lt;a href=&apos;%1&apos;&gt;télécharger manuellement&lt;/a&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1342,7 +1342,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
         <source>Setup local folder options</source>
-        <translation>Configurer les options du dossier local</translation>
+        <translation>Configurez les options de dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
@@ -1432,7 +1432,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation>Configurer le serveur %1</translation>
+        <translation>Configurez le serveur %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="121"/>
@@ -2130,7 +2130,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Définir le mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="691"/>
+        <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
         <translation>Chemin %1 : %2</translation>
     </message>
@@ -2160,69 +2160,69 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Protégé par un mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="383"/>
+        <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Le fichier ne peut pas être partagé car il a été partagé sans permission de repartage.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <source>Please Set Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="568"/>
+        <location filename="../src/gui/sharedialog.cpp" line="569"/>
         <source>&amp;Share link</source>
         <translation>&amp;Partage par lien</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="582"/>
+        <location filename="../src/gui/sharedialog.cpp" line="587"/>
         <source>OCS API error code: %1</source>
         <translation>Code d&apos;erreur OCS API : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="604"/>
+        <location filename="../src/gui/sharedialog.cpp" line="609"/>
         <source>There is no sync folder configured.</source>
         <translation>Aucun dossier à synchroniser n&apos;est configuré.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="638"/>
+        <location filename="../src/gui/sharedialog.cpp" line="643"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Un fichier synchronisé avec le même nom existe déjà. Le fichier ne peut être ajouté à la synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="683"/>
+        <location filename="../src/gui/sharedialog.cpp" line="688"/>
         <source>The file cannot be synced.</source>
         <translation>Le fichier ne peut pas être synchronisé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="628"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Le partage de dossiers externes n&apos;est pas encore pris en charge.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="472"/>
-        <location filename="../src/gui/sharedialog.cpp" line="505"/>
+        <location filename="../src/gui/sharedialog.cpp" line="477"/>
+        <location filename="../src/gui/sharedialog.cpp" line="510"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Le p&amp;artage public nécessite un mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="527"/>
-        <source>Password</source>
-        <translation>Mot de passe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="616"/>
+        <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
         <translation>Impossible de trouver un dossier vers lequel téléverser.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="650"/>
+        <location filename="../src/gui/sharedialog.cpp" line="655"/>
         <source>Waiting to upload...</source>
         <translation>En attente d&apos;envoi...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="652"/>
+        <location filename="../src/gui/sharedialog.cpp" line="657"/>
         <source>Unable to register in sync space.</source>
         <translation>Impossible de s&apos;enregistrer à l&apos;espace de synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="693"/>
+        <location filename="../src/gui/sharedialog.cpp" line="698"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>La synchronisation du fichier n&apos;a pas encore pu être effectuée.</translation>
     </message>
@@ -2633,7 +2633,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Stat échoué.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
@@ -2862,12 +2862,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Sign out everywhere</source>
-        <translation>Se déconnecter de tout</translation>
+        <translation>Déconnecter tous les comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Sign in everywhere...</source>
-        <translation>Se connecter à tout</translation>
+        <translation>Connecter tous les comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="498"/>

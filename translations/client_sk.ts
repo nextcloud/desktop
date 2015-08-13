@@ -656,8 +656,8 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
-        <source>Syncing all files in your account with</source>
-        <translation>Synchronizácia všetkých súborov vo vašom účte z</translation>
+        <source>Syncing selected files in your account with</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
@@ -688,56 +688,56 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="653"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Prehľadávam &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="713"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
         <source>download %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>upload %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="733"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="737"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 z %2, súbor %3 z %4
 Celkom zostáva %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="759"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
         <source>file %1 of %2</source>
         <translation>súbor %1 z %2</translation>
     </message>
@@ -2123,7 +2123,7 @@ Nie je vhodné ju používať.</translation>
         <translation>Nastaviť heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="691"/>
+        <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
         <translation>%1 v umiestnení: %2</translation>
     </message>
@@ -2153,69 +2153,69 @@ Nie je vhodné ju používať.</translation>
         <translation>Chránené heslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="383"/>
+        <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Tento súbor nemožno zdieľať, lebo bol vyzdieľaný bez možnosti ďalšieho zdieľania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <source>Please Set Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="568"/>
+        <location filename="../src/gui/sharedialog.cpp" line="569"/>
         <source>&amp;Share link</source>
         <translation>&amp;Zdieľať odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="582"/>
+        <location filename="../src/gui/sharedialog.cpp" line="587"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API chybový kód: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="604"/>
+        <location filename="../src/gui/sharedialog.cpp" line="609"/>
         <source>There is no sync folder configured.</source>
         <translation>Nie je nakonfigurovaný žiadny synchronizačný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="638"/>
+        <location filename="../src/gui/sharedialog.cpp" line="643"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Súbor s rovnakým názvom už existuje. Nemožno ho preto registrovať na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="683"/>
+        <location filename="../src/gui/sharedialog.cpp" line="688"/>
         <source>The file cannot be synced.</source>
         <translation>Súbor nemožno synchronizovať.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="628"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Zdieľanie externých priečinkov ešte nefunguje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="472"/>
-        <location filename="../src/gui/sharedialog.cpp" line="505"/>
+        <location filename="../src/gui/sharedialog.cpp" line="477"/>
+        <location filename="../src/gui/sharedialog.cpp" line="510"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Verejné z&amp;dieľanie vyžaduje heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="527"/>
-        <source>Password</source>
-        <translation>Heslo</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="616"/>
+        <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="650"/>
+        <location filename="../src/gui/sharedialog.cpp" line="655"/>
         <source>Waiting to upload...</source>
         <translation>Čakanie na nahrávanie...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="652"/>
+        <location filename="../src/gui/sharedialog.cpp" line="657"/>
         <source>Unable to register in sync space.</source>
         <translation>Nemožno registrovať v synchronizačnom umiestnení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="693"/>
+        <location filename="../src/gui/sharedialog.cpp" line="698"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Synchronizácia registrovaného súboru ešte nebola dokončená.</translation>
     </message>

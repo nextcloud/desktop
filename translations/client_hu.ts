@@ -654,7 +654,7 @@ Are you sure you want to perform this operation?</source>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
-        <source>Syncing all files in your account with</source>
+        <source>Syncing selected files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -686,55 +686,55 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="653"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>&apos;%1&apos; felderítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="713"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="718"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
         <source>download %1/s</source>
         <translation>letöltés %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="720"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="726"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>upload %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="728"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="733"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="737"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="759"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
         <source>file %1 of %2</source>
         <translation>%1 / %2 fájl</translation>
     </message>
@@ -2112,7 +2112,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="691"/>
+        <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
         <translation type="unfinished"/>
     </message>
@@ -2142,69 +2142,69 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="383"/>
+        <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="563"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <source>Please Set Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="568"/>
+        <location filename="../src/gui/sharedialog.cpp" line="569"/>
         <source>&amp;Share link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="582"/>
+        <location filename="../src/gui/sharedialog.cpp" line="587"/>
         <source>OCS API error code: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="604"/>
+        <location filename="../src/gui/sharedialog.cpp" line="609"/>
         <source>There is no sync folder configured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="638"/>
+        <location filename="../src/gui/sharedialog.cpp" line="643"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="683"/>
+        <location filename="../src/gui/sharedialog.cpp" line="688"/>
         <source>The file cannot be synced.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="623"/>
+        <location filename="../src/gui/sharedialog.cpp" line="628"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="472"/>
-        <location filename="../src/gui/sharedialog.cpp" line="505"/>
+        <location filename="../src/gui/sharedialog.cpp" line="477"/>
+        <location filename="../src/gui/sharedialog.cpp" line="510"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="527"/>
-        <source>Password</source>
-        <translation>Jelszó</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="616"/>
+        <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="650"/>
+        <location filename="../src/gui/sharedialog.cpp" line="655"/>
         <source>Waiting to upload...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="652"/>
+        <location filename="../src/gui/sharedialog.cpp" line="657"/>
         <source>Unable to register in sync space.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="693"/>
+        <location filename="../src/gui/sharedialog.cpp" line="698"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation type="unfinished"/>
     </message>
@@ -2808,7 +2808,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="489"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 kilépés</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -2842,12 +2842,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Kijelentkezés mindenhonnan</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Sign in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>Kijelentkezés mindenhonnan...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="498"/>
@@ -2868,12 +2868,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2 szinkronizálása (%3 maradt)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="537"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>%1 szinkronizálása (%2 maradt)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="556"/>
@@ -2883,7 +2883,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="585"/>
         <source>Up to date</source>
-        <translation>Frissítve</translation>
+        <translation>Naprakész</translation>
     </message>
 </context>
 <context>
@@ -2891,7 +2891,7 @@ It is not advisable to use it.</source>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Verzió: %2. Bővebb információért látogass el ide: &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Készítők: Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz és még mások.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Minden jog fenntartva. ownCloud, Inc.&lt;/p&gt;&lt;p&gt;A GNU General Public License (GPL) 2.0-ás verziója alatt licencelve&lt;br/&gt;A ownCloud és a ownCloud logó a ownCloud, Inc. bejegyzett védjegye az Egyesült Államokban és más országokban.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2920,7 +2920,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="265"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálandó elemek kiválasztása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
@@ -2930,7 +2930,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>&amp;Start a clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Tiszta szinkronizálás elindítása (Mindent töröli a helyi könyvtárból!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="209"/>
@@ -2940,17 +2940,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="161"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Helyi adatok megtartása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="171"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local directory will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers directory.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ha ez a négyzet be van jelölve, akkor minden törölve lesz a helyi könyvtárból, amint elindul a tiszta szinkronizálás.&lt;/p&gt;&lt;p&gt;Ne jelöld be, ha a helyi fájljaidat felszeretnéd tölteni a szerver könyvtárába.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="224"/>
         <source>S&amp;ync everything from server</source>
-        <translation type="unfinished"/>
+        <translation>M&amp;inden szinkronizálása a szerverről</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="306"/>
@@ -2978,7 +2978,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Hiba címke</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
@@ -3072,7 +3072,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="157"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>Hiba címke</translation>
     </message>
 </context>
 <context>
@@ -3090,13 +3090,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation type="unfinished"/>
+        <translation>A teljes fiókod szinkronizálásra került a helyi könyvtárba.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
-        <translation type="unfinished"/>
+        <translation>Nyomógomb</translation>
     </message>
 </context>
 <context>
@@ -3104,22 +3104,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="126"/>
@@ -3129,42 +3129,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="304"/>
         <source>%Ln year(s)</source>
-        <translation type="unfinished"/>
+        <translation>%ln év</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln month(s)</source>
-        <translation type="unfinished"/>
+        <translation>%ln hónap</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln day(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln nap</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln hour(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln óra</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln minute(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln perc</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="309"/>
         <source>%Ln second(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln másodperc</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>0 seconds</source>
-        <translation type="unfinished"/>
+        <translation>0 másodperc</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>
         <source>%1 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2</translation>
     </message>
 </context>
 <context>
@@ -3172,12 +3172,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="38"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Rendszertálca nem elérhető</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation type="unfinished"/>
+        <translation>%1 - szüksége van egy működő rendszertálcára. Ha XFCE-t használsz, akkor kövesd &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;ezt az útmutatót&lt;/a&gt;. Egyébként, kérjük telepíts egy rendszertálca alkalmazást - mint például a &apos;trayer&apos; - és próbáld meg újra.</translation>
     </message>
 </context>
 <context>
@@ -3185,7 +3185,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="265"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Fordítva a &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; Git revizíóból, %3, %4 Qt %5, %6 felhasználásával&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3203,7 +3203,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Letöltve, átnevezve az ütköző fájl</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
@@ -3213,17 +3213,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
         <source>Moved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Áthelyezve ide: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Kihagyva</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>Fájlrendszer hozzáférési hiba</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -3273,42 +3273,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="58"/>
         <source>Status undefined</source>
-        <translation>Meghatározatlan állapit</translation>
+        <translation>Meghatározatlan állapot</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="61"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>Várakozás a szinkronizálás elindulására</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="64"/>
         <source>Sync is running</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás fut</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="67"/>
         <source>Sync Success</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás sikeres</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás sikeres, néhány fájl kihagyva</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Error</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálási hiba</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Setup Error</source>
-        <translation type="unfinished"/>
+        <translation>Telepítési hiba</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="79"/>
         <source>Preparing to sync</source>
-        <translation type="unfinished"/>
+        <translation>Felkészülés szinkronizálásra</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
@@ -3318,7 +3318,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Sync is paused</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás leállítva</translation>
     </message>
 </context>
 </TS>
