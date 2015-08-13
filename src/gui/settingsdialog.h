@@ -58,7 +58,7 @@ public slots:
 protected:
     void reject() Q_DECL_OVERRIDE;
     void accept() Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *);
+    void changeEvent(QEvent *) Q_DECL_OVERRIDE;
 
 private slots:
     void accountAdded(AccountState *);
