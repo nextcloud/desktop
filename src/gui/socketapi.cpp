@@ -141,6 +141,7 @@ SocketApi::~SocketApi()
     Q_ASSERT(_listeners.isEmpty() || _listeners.first()->parent() == &_localServer);
     _listeners.clear();
     slotClearExcludesList();
+    c_strlist_destroy(_excludes);
 }
 
 void SocketApi::slotClearExcludesList()
