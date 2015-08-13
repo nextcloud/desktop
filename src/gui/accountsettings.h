@@ -65,7 +65,6 @@ signals:
 public slots:
     void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
-    void slotDoubleClicked( const QModelIndex& );
     void slotUpdateQuota( qint64,qint64 );
     void slotAccountStateChanged(int state);
 
@@ -77,6 +76,7 @@ protected slots:
     void slotSyncCurrentFolderNow();
     void slotRemoveCurrentFolder();
     void slotResetCurrentFolder();
+    void slotOpenCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();

@@ -102,7 +102,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     addAction(syncNowAction);
 
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-    connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
@@ -161,6 +160,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             this, SLOT(slotRemoveCurrentFolder()));
     connect(menu->addAction(folderPaused ? tr("Resume") : tr("Pause")), SIGNAL(triggered(bool)),
             this, SLOT(slotEnableCurrentFolder()));
+    connect(menu->addAction(tr("Open folder in file browser")), SIGNAL(triggered(bool)),
+            this, SLOT(slotOpenCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
 
@@ -296,13 +297,14 @@ void AccountSettings::slotResetCurrentFolder()
     }
 }
 
-void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
+void AccountSettings::slotOpenCurrentFolder()
 {
-    if( ! indx.isValid() ) return;
-    QString alias = _model->data( indx, FolderStatusDelegate::FolderAliasRole ).toString();
-    if (alias.isEmpty()) return;
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
 
-    emit openFolderAlias( alias );
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+        emit openFolderAlias(alias);
+    }
 }
 
 void AccountSettings::showConnectionLabel( const QString& message, QStringList errors )
