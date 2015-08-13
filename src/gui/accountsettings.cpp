@@ -158,10 +158,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     menu->setAttribute(Qt::WA_DeleteOnClose);
     connect(menu->addAction(tr("Open folder")), SIGNAL(triggered(bool)),
             this, SLOT(slotOpenCurrentFolder()));
-    connect(menu->addAction(tr("Remove folder")), SIGNAL(triggered(bool)),
-            this, SLOT(slotRemoveCurrentFolder()));
     connect(menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync")), SIGNAL(triggered(bool)),
             this, SLOT(slotEnableCurrentFolder()));
+    connect(menu->addAction(tr("Remove folder")), SIGNAL(triggered(bool)),
+            this, SLOT(slotRemoveCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
 
