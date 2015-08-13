@@ -323,6 +323,16 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     painter->restore();
+
+    {
+        QStyleOptionToolButton btnOpt;
+        btnOpt.text = QLatin1String("...");
+        btnOpt.state = option.state;
+        btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
+        btnOpt.state |= QStyle::State_Raised;
+        btnOpt.rect = optionsButtonRect(option.rect);
+        QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
+    }
 }
 
 bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * model,
@@ -330,5 +340,22 @@ bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mo
 {
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
+
+QRect FolderStatusDelegate::optionsButtonRect(const QRect &within)
+{
+    QStyleOptionToolButton opt;
+    opt.text = QLatin1String("...");
+    QFontMetrics fm = QFontMetrics(QFont());
+    QSize textSize = fm.size(Qt::TextShowMnemonic, opt.text);
+    opt.rect.setSize(textSize);
+    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, textSize).
+        expandedTo(QApplication::globalStrut());
+
+    int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
+    return QRect(QPoint(within.right() - size.width() - margin,
+                        within.top() + within.height()/2 - size.height()/2),
+                 size);
+}
+
 
 } // namespace OCC

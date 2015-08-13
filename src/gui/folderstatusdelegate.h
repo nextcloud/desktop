@@ -51,6 +51,12 @@ public:
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                       const QModelIndex& index ) Q_DECL_OVERRIDE;
+
+
+    /**
+     * return the position of the option button within the item
+     */
+    static QRect optionsButtonRect(const QRect &within);
 private:
     static QString addFolderText();
 };

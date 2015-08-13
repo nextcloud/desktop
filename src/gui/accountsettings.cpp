@@ -172,6 +172,14 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
         slotAddFolder();
         return;
     }
+    if (_model->classify(indx) == FolderStatusModel::RootFolder) {
+        // tries to find if we clicked on the '...' button.
+        QTreeView *tv = ui->_folderList;
+        auto pos = tv->mapFromGlobal(QCursor::pos());
+        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx)).contains(pos)) {
+            slotCustomContextMenuRequested(pos);
+        }
+    }
 }
 
 void AccountSettings::slotAddFolder()
