@@ -330,6 +330,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state = option.state;
         btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
         btnOpt.state |= QStyle::State_Raised;
+        btnOpt.arrowType = Qt::NoArrow;
+        btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonRect(option.rect);
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
     }
