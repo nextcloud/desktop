@@ -76,6 +76,10 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
     connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
+
+    if (Theme::instance()->singleAccount()) {
+        _ui->addAccountButton->setVisible(false);
+    }
 }
 
 GeneralSettings::~GeneralSettings()

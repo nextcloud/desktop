@@ -201,6 +201,11 @@ bool Theme::singleSyncFolder() const {
     return false;
 }
 
+bool Theme::singleAccount() const
+{
+    return false;
+}
+
 QString Theme::defaultServerFolder() const
 {
     return QLatin1String("/");
