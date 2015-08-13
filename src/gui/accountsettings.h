@@ -58,9 +58,7 @@ public:
 
 signals:
     void folderChanged();
-    void openProtocol();
     void openFolderAlias( const QString& );
-    void infoFolderAlias( const QString& );
 
 public slots:
     void slotFolderActivated( const QModelIndex& );
