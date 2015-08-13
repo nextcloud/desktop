@@ -50,6 +50,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     if (about.isEmpty()) {
         _ui->aboutGroupBox->hide();
     } else {
+        _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
         _ui->aboutLabel->setText(about);
         _ui->aboutLabel->setWordWrap(true);
         _ui->aboutLabel->setOpenExternalLinks(true);
