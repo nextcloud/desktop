@@ -90,7 +90,7 @@ Other issues can affect synchronization of your ownCloud files:
 Log Files
 ---------
 
-Effectively debugging software requires as much relative information as can be
+Effectively debugging software requires as much relevant information as can be
 obtained.  To assist the ownCloud support personnel, please try to provide as
 many relevant logs as possible. Log output can help  with tracking down
 problems and, if you report a bug, log output can help to resolve an issue more
@@ -119,7 +119,7 @@ To obtain the client log file:
 
 5. Name the log file and click the 'Save' button.
 
-  The log files is saved in the location specifed.
+  The log file is saved in the location specifed.
 
 Alternatively, you can launch the ownCloud Log Output window using the
 ``--logwindow`` command. After issuing this command, the Log Output window
