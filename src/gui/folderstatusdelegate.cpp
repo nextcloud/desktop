@@ -285,7 +285,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pBRect.setTop( h );
         pBRect.setLeft( nextToIcon );
         pBRect.setHeight(barHeight);
-        pBRect.setWidth( overallWidth - progressTextWidth - margin );
+        pBRect.setWidth( overallWidth - progressTextWidth - 2 * margin );
 
         QStyleOptionProgressBarV2 pBarOpt;
 
