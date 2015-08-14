@@ -78,6 +78,9 @@ private:
     bool isAccountIdAvailable(const QString& id) const;
     QString generateFreeAccountId() const;
 
+public slots:
+    void wantsAccountSavedSlot(AccountPtr a);
+
 
 Q_SIGNALS:
     void accountAdded(AccountState *account);
