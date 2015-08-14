@@ -131,9 +131,10 @@ void AccountManager::save(bool saveCredentials)
 
 void AccountManager::wantsAccountSavedSlot(AccountPtr a)
 {
+    qDebug() << "Saving account" << a->url().toString();
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
-    save(a, *settings, true);
+    save(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 }
 
