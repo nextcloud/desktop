@@ -87,9 +87,9 @@ Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
             return Qt::ItemIsEnabled | ret;
         }
         case RootFolder:
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+            return  Qt::ItemIsEnabled;
         case SubFolder:
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+            return  Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
     }
     return 0;
 }
