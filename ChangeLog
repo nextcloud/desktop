@@ -9,11 +9,12 @@ version 2.0.0 (release 2015-08-??)
   * Use SI units for the file sizes
   * Improve progress reporting during sync (better estimations, show all files, show all bandwidth)
   * Windows: Support paths >255 characters (#57) by using Windows API instead of POSIX API
+  * Windows, OS X: Allow to not sync hidden files (#2086)
   * OS X: Show file name in UI if file has invalid UTF-8 in file name
   * Sharing: Make use of Capability API (#3439)
   * Sharing: Do not allow sharing the root folder (#3495)
   * Sharing: Show thumbnail
-  * Updater: Check for updates periodically, not only once per run (#3044)
+  * Client Updater: Check for updates periodically, not only once per run (#3044)
   * Windows: Remove misleading option to remove sync data (#3461)
   * Windows: Do not provoke AD account locking if password changes (#2186)
   * Windows: Fix installer when installing unprivileged (#2616, #2568)
@@ -21,10 +22,12 @@ version 2.0.0 (release 2015-08-??)
   * SSL Button: Show more information
   * owncloudcmd: Fix --httpproxy (#3465)
   * System proxy: Ask user for credentials if needed
-  * Windows, OS X: Allow to not sync hidden files (#2086)
   * Several fixes and performance improvements in the sync engine
-  * Network: Try to SSL session tickets/identifiers
+  * Network: Try to use SSL session tickets/identifiers. Check the SSL button to see if they are used.
   * Bandwidth Throttling: Provide automatic limit setting for downloads (#3084)
+
+version 1.8.4 (release 2015-07-13)
+  * Release to ship a security release of openSSL. No source changes of the ownCloud Client code.
 
 version 1.8.3 (release 2015-06-23)
   * Fix a bug in the Windows Installer that could crash explorer (#3320)
