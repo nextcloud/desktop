@@ -111,8 +111,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-    ui->connectLabel->setWordWrap(true);
-    ui->connectLabel->setOpenExternalLinks(true);
+
     QFont smallFont = ui->quotaInfoLabel->font();
     smallFont.setPointSize(smallFont.pointSize() * 0.8);
     ui->quotaInfoLabel->setFont(smallFont);
