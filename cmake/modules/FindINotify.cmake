@@ -15,7 +15,7 @@ mark_as_advanced(INOTIFY_INCLUDE_DIR)
 
 find_library(INOTIFY_LIBRARY inotify PATH_SUFFIXES lib/inotify)
 
-get_filename_component(INOTIFY_LIBRARY_DIR ${INOTIFY_LIBRARY} DIRECTORY)
+get_filename_component(INOTIFY_LIBRARY_DIR ${INOTIFY_LIBRARY} PATH)
 mark_as_advanced(INOTIFY_LIBRARY_DIR)
 
 # all listed variables are TRUE
