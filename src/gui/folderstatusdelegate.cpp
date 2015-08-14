@@ -272,7 +272,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if( !overallString.isEmpty() || !itemString.isEmpty()) {
         int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
         int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4); ;
-        int overallWidth = option.rect.width()-2*aliasMargin;
+        int overallWidth = option.rect.width()-aliasMargin-nextToIcon;
 
         painter->save();
 
@@ -283,7 +283,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         // Overall Progress Bar.
         QRect pBRect;
         pBRect.setTop( h );
-        pBRect.setLeft( iconRect.left());
+        pBRect.setLeft( nextToIcon );
         pBRect.setHeight(barHeight);
         pBRect.setWidth( overallWidth - progressTextWidth - margin );
 
@@ -312,7 +312,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         // Individual File Progress
         QRect fileRect;
         fileRect.setTop( pBRect.bottom() + margin);
-        fileRect.setLeft( iconRect.left());
+        fileRect.setLeft(pBRect.left());
         fileRect.setWidth(overallWidth);
         fileRect.setHeight(fileNameTextHeight);
         QString elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
