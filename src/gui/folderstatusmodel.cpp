@@ -797,6 +797,23 @@ void FolderStatusModel::slotFolderSyncStateChange()
 
     // update the icon etc. now
     slotUpdateFolderState(f);
+
+    if (state == SyncResult::Success) {
+        foreach (const SyncFileItemPtr &i, f->syncResult().syncFileItemVector()) {
+            if (i->_isDirectory && (i->_instruction == CSYNC_INSTRUCTION_NEW
+                    || i->_instruction == CSYNC_INSTRUCTION_REMOVE)) {
+                // There is a new or a removed folder. reset all data
+                _folders[folderIndex]._fetched = false;
+                _folders[folderIndex]._fetching = false;
+                if (!_folders.at(folderIndex)._subs.isEmpty()) {
+                    beginRemoveRows(index(folderIndex), 0, _folders.at(folderIndex)._subs.count() - 1);
+                    _folders[folderIndex]._subs.clear();
+                    endRemoveRows();
+                }
+                return;
+            }
+        }
+    }
 }
 
 void FolderStatusModel::resetFolders()
