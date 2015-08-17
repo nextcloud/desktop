@@ -69,7 +69,15 @@ FolderWizardLocalPath::FolderWizardLocalPath()
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
-    _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
+
+    QString newAlias = Theme::instance()->appName();
+    int count = 0;
+    while (FolderMan::instance()->folder(newAlias)) {
+        // There is already a folder configured with this name and folder names need to be unique
+        newAlias = Theme::instance()->appName() + QString::number(++count);
+    }
+    _ui.aliasLineEdit->setText( newAlias );
+
     _ui.aliasLineEdit->setToolTip(tr("The directory alias is a descriptive name for this sync connection."));
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
@@ -157,6 +165,11 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 
         QDir pickedDir(dir);
         QString newAlias = pickedDir.dirName();
+        int count = 0;
+        while (FolderMan::instance()->folder(newAlias)) {
+            // There is already a folder configured with this name and folder names need to be unique
+            newAlias = pickedDir.dirName() + QString::number(++count);
+        }
         if( !newAlias.isEmpty() ) {
             _ui.aliasLineEdit->setText(newAlias);
         }
