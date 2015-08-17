@@ -104,6 +104,11 @@ public:
     QString aliasGui() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
+     * short path to display on the GUI  (native separators)
+     */
+    QString shortGuiPath() const;
+
+    /**
      * local folder path
      */
     QString path() const;
@@ -122,11 +127,6 @@ public:
      * remote folder path with server url
      */
     QUrl remoteUrl() const;
-
-    /**
-     * local folder path with native separators
-     */
-    QString nativePath() const;
 
     /**
      * switch sync on or off

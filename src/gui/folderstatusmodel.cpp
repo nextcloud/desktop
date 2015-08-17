@@ -154,7 +154,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
-    case FolderStatusDelegate::FolderPathRole         : return  f->nativePath();
+    case FolderStatusDelegate::FolderPathRole         : return  f->shortGuiPath();
     case FolderStatusDelegate::FolderSecondPathRole   : return  f->remotePath();
     case FolderStatusDelegate::HeaderRole             : return  f->aliasGui();
     case FolderStatusDelegate::FolderAliasRole        : return  f->alias();

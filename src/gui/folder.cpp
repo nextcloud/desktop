@@ -204,6 +204,23 @@ QString Folder::path() const
     return p;
 }
 
+QString Folder::shortGuiPath() const
+{
+    QString p = _definition.localPath;
+    QString home = QDir::homePath();
+    if( ! home.endsWith('/') ) {
+        home.append('/');
+    }
+    if (p.startsWith(home)) {
+        p = p.mid(home.length());
+    }
+    if (p.length() > 1 && p.endsWith('/')) {
+        p.chop(1);
+    }
+    return QDir::toNativeSeparators(p);
+}
+
+
 bool Folder::ignoreHiddenFiles()
 {
     bool re(_definition.ignoreHiddenFiles);
@@ -239,11 +256,6 @@ QUrl Folder::remoteUrl() const
 {
     Q_ASSERT(_accountState);
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
-}
-
-QString Folder::nativePath() const
-{
-    return QDir::toNativeSeparators(path());
 }
 
 bool Folder::syncPaused() const
