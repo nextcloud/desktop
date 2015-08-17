@@ -216,17 +216,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Открыть папку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Продолжить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -2942,7 +2942,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Начать новую синхронизацию (Стирает локальную папку!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>

@@ -216,17 +216,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Pokračovat v synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pozastavit synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -658,7 +658,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
         <source>Syncing selected files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovat vybrané soubory z vašeho účtu s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
@@ -2167,7 +2167,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Nastavte prosím heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
@@ -2940,7 +2940,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Spustit novou synchroniza&amp;ci (Smaže lokální data!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>

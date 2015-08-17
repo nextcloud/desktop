@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="108"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>外部ネットワークストレージや共有フォルダーを含むフォルダーがある場合は、容量の上限値が異なる可能性があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="157"/>
@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="459"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 に接続</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
@@ -186,12 +186,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>%2 の %1 への接続がありません。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>転送容量が大きいため、同期されていない新しいフォルダーがあります: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt; アカウント &lt;i&gt;%1&lt;/i&gt; を本当に削除しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; これによりクライアントからファイルが削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -216,17 +216,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーを開く</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>再開</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>一時停止</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -501,7 +501,8 @@
         <location filename="../src/gui/folder.cpp" line="1092"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>新しい %1 MB以上のフォルダーが追加されました: %2
+ダウンロードしたい場合は、設定画面で選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1105"/>
@@ -608,7 +609,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1133"/>
         <source>The selected path is not a directory!</source>
-        <translation type="unfinished"/>
+        <translation>指定のパスは、ディレクトリではありません！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1137"/>
@@ -646,7 +647,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>同期するフォルダーを追加</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -670,17 +671,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>フォルダーを追加するためには、接続している必要があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="116"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>既に同期対象のフォルダーの為、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダー同期設定を削除してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>このボタンをクリックして同期フォルダーを追加してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
@@ -695,27 +696,27 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>同期中 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
         <source>download %1/s</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロード %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
         <source>u2193 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2193 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>upload %1/s</source>
-        <translation type="unfinished"/>
+        <translation>アップロード %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
         <source>u2191 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2191 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
@@ -901,7 +902,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>システムトレイ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -916,7 +917,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Ask confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>次の容量より大きい場合は、ダウンロード前に確認する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -936,7 +937,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Add an Account</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを追加</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="167"/>
@@ -960,7 +961,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="290"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>鍵情報の読み込みに失敗しました。エラー： &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -990,7 +991,7 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>共通除外設定</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1000,7 +1001,7 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>パターンでファイルを除外</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1027,7 +1028,9 @@ Account: %3
         <source>Files or directories matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>パターンに一致するファイルやディレクトリは同期されません。
+
+指定のディレクトリやファイルを削除させたくなくても、削除が許可されていて上記のパターンに含まれていない場合削除されてしまいます。例えばメタデータファイルに有用です。</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
@@ -1321,7 +1324,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>更新を確認</translation>
     </message>
 </context>
 <context>
@@ -1957,7 +1960,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>プロキシサーバにユーザー名とパスワードが必要です。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2149,12 +2152,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>再共有権限がない共有ため、このファイルは共有できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを入力してください</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
@@ -2196,7 +2199,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>アップロード先のフォルダーが見つかりません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="655"/>
@@ -2565,7 +2568,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="395"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>異なるプラットフォームOS間で利用できない不正な文字コードがファイル名に含まれているため、同期できません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2585,7 +2588,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading directory.</source>
-        <translation type="unfinished"/>
+        <translation>ディレクトリ読み込みエラー</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="175"/>
@@ -2630,7 +2633,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="555"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>無効な文字です、&quot;%1&quot; を変更してください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="625"/>
@@ -2732,12 +2735,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>ヘッダーのチェックサムが異常です。</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロードしたファイルがチェックサムエラーです。再ダウンロードします。</translation>
     </message>
 </context>
 <context>
@@ -2827,7 +2830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 から切断されました</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="243"/>
@@ -2849,12 +2852,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>全サーバーからサインアウト</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Sign in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>全サーバーにサインイン...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="498"/>
@@ -2927,7 +2930,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>クリーン同期を開始(ローカルフォルダーは削除されます！)(&amp;C)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>
