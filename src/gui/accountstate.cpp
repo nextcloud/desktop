@@ -259,9 +259,14 @@ QString AccountState::shortDisplayNameForSettings() const
         userWithoutMailHost = userWithoutMailHost.left(userWithoutMailHost.lastIndexOf('@'));
     }
     QString hostWithoutTld = account()->url().host();
-    if (hostWithoutTld.contains('.')) {
+    if (hostWithoutTld.contains('.') && !hostWithoutTld.at(0).isDigit()) {
         hostWithoutTld = hostWithoutTld.left(hostWithoutTld.lastIndexOf('.'));
         hostWithoutTld = hostWithoutTld.replace(QLatin1String("www."), QLatin1String(""));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("cloud."), QLatin1String(""));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("sync."), QLatin1String(""));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("drive."), QLatin1String(""));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("share."), QLatin1String(""));
+        hostWithoutTld = hostWithoutTld.replace(QLatin1String("web."), QLatin1String(""));
     }
 
     return userWithoutMailHost + QLatin1String("\n") + hostWithoutTld;
