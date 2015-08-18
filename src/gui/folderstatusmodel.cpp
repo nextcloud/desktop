@@ -86,6 +86,12 @@ Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
             }
             return Qt::ItemIsEnabled | ret;
         }
+        case ErrorLabel:
+            return Qt::ItemIsEnabled
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+                    | Qt::ItemNeverHasChildren
+#endif
+                    ;
         case RootFolder:
             return  Qt::ItemIsEnabled;
         case SubFolder:
@@ -141,6 +147,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
     }
         return QVariant();
+    case ErrorLabel:
+        switch(role) {
+            case Qt::DisplayRole: return tr("Error while loading the list of folder from the server.");
+            case Qt::FontRole: { QFont f; f.setItalic(true); return f; }
+            default: return QVariant();
+        }
     case RootFolder:
         break;
     }
@@ -277,17 +289,18 @@ int FolderStatusModel::rowCount(const QModelIndex& parent) const
     if (!parent.isValid()) {
         return _folders.count() + 1;
     }
-
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
+    if (info->_hasError)
+        return 1;
     return info->_subs.count();
 }
 
 FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex& index) const
 {
-    if (index.internalPointer()) {
-        return SubFolder;
+    if (auto sub = static_cast<SubFolderInfo*>(index.internalPointer())) {
+        return sub->_hasError ? ErrorLabel : SubFolder;
     }
     if (index.row() < _folders.count()) {
         return RootFolder;
@@ -299,8 +312,12 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
 {
     if (!index.isValid())
         return 0;
-    if (auto parentInfo = index.internalPointer()) {
-        return &static_cast<SubFolderInfo*>(parentInfo)->_subs[index.row()];
+    if (auto parentInfo = static_cast<SubFolderInfo*>(index.internalPointer())) {
+        if (parentInfo->_hasError) {
+            // Error label
+            return 0;
+        }
+        return &parentInfo->_subs[index.row()];
     } else {
         if (index.row() >= _folders.count()) {
             // AddButton
@@ -317,18 +334,22 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& par
         return createIndex(row, column/*, nullptr*/);
     }
     switch(classify(parent)) {
-        case AddButton: return QModelIndex();
+        case AddButton:
+        case ErrorLabel:
+            return QModelIndex();
         case RootFolder:
             if (_folders.count() <= parent.row())
                 return QModelIndex(); // should not happen
             return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
-        case SubFolder:
-            //return QModelIndex();
-            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.count() <= parent.row())
+        case SubFolder: {
+            auto info = static_cast<SubFolderInfo*>(parent.internalPointer());
+            if (info->_subs.count() <= parent.row())
                 return QModelIndex(); // should not happen
-            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.at(parent.row())._subs.count() <= row)
+            if (!info->_subs.at(parent.row())._hasError
+                    && info->_subs.at(parent.row())._subs.count() <= row)
                 return QModelIndex(); // should not happen
-            return createIndex(row, column, &static_cast<SubFolderInfo*>(parent.internalPointer())->_subs[parent.row()]);
+            return createIndex(row, column, &info->_subs[parent.row()]);
+        }
     }
     return QModelIndex();
 }
@@ -343,17 +364,18 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
         case AddButton:
             return QModelIndex();
         case SubFolder:
+        case ErrorLabel:
             break;
     }
-    auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_subs[child.row()]._pathIdx;
+    auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_pathIdx;
     int i = 1;
     Q_ASSERT(pathIdx.at(0) < _folders.count());
-    if (pathIdx.count() == 2) {
+    if (pathIdx.count() == 1) {
         return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
-    while (i < pathIdx.count() - 2) {
+    while (i < pathIdx.count() - 1) {
         Q_ASSERT(pathIdx.at(i) < info->_subs.count());
         info = &info->_subs[pathIdx.at(i)];
         ++i;
@@ -428,7 +450,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     auto list = list_;
     list.removeFirst(); // remove the parent item
 
-    beginInsertRows(idx, 0, list.count());
+    if (parentInfo->_hasError) {
+        beginRemoveRows(idx, 0 ,0);
+        parentInfo->_hasError = false;
+        endRemoveRows();
+    }
+
+    beginInsertRows(idx, 0, list.count() - 1);
 
     QUrl url = parentInfo->_folder->remoteUrl();
     QString pathToRemove = url.path();
@@ -495,14 +523,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
 {
-/*
-    if (r->error() == QNetworkReply::ContentNotFoundError) {
-        _loading->setText(tr("No subfolders currently on the server."));
-    } else {
-        _loading->setText(tr("An error occured while loading the list of sub folders."));
-    }
-    _loading->resize(_loading->sizeHint()); // because it's not in a layout
-*/
     auto job = qobject_cast<LsColJob *>(sender());
     Q_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
@@ -514,6 +534,10 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
         parentInfo->_fetching = false;
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
+        } else if (!parentInfo->_hasError) {
+            beginInsertRows(idx, 0, 0);
+            parentInfo->_hasError = true;
+            endInsertRows();
         }
     }
 }
