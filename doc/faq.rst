@@ -9,7 +9,7 @@ Some files are continuously uploaded to the server, even when they are not modif
 
 It is possible that another program is changing the modification date of the file.
 
-If the file is uses the ``.eml`` extention, Windows automatically and
+If the file is uses the ``.eml`` extension, Windows automatically and
 continually changes all files, unless you remove
 ``\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\PropertySystem\PropertyHandlers`
 from the windows registry.
