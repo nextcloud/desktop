@@ -416,96 +416,96 @@
         <translation>%1 není čitelný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="401"/>
+        <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="501"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo odebráno.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="503"/>
+        <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl odebrán.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 dalších souborů bylo staženo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="510"/>
+        <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl stažen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 a %2 dalších souborů bylo aktualizováno.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="517"/>
+        <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 byl aktualizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 byl přejmenován na %2 a %3 dalších souborů bylo přejmenováno.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 byl přejmenován na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 byl přesunut do %2 a %3 dalších souborů bylo přesunuto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="531"/>
+        <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 byl přemístěn do %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 a %2 další soubory nebyly kvůli chybě synchronizovány. Detaily jsou k nalezení v logu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="538"/>
+        <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 nebyl kvůli chybě synchronizován. Detaily jsou k nalezení v logu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>Sync Activity</source>
         <translation>Průběh synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="835"/>
+        <location filename="../src/gui/folder.cpp" line="847"/>
         <source>Could not read system exclude file</source>
         <translation>Nezdařilo se přečtení systémového exclude souboru</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1092"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Byl přidán nový adresář %2 větší než %1 MB.
 Pokud ho chcete stáhnout, přejděte prosím do nastavení a označte ho.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1105"/>
+        <location filename="../src/gui/folder.cpp" line="1117"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -514,17 +514,17 @@ Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>Remove All Files?</source>
         <translation>Odstranit všechny soubory?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1111"/>
+        <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>Remove all files</source>
         <translation>Odstranit všechny soubory</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1124"/>
         <source>Keep files</source>
         <translation>Ponechat soubory</translation>
     </message>
@@ -746,8 +746,8 @@ Celkový zbývající čas %5</translation>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="538"/>
-        <location filename="../src/gui/folderwizard.cpp" line="540"/>
+        <location filename="../src/gui/folderwizard.cpp" line="551"/>
+        <location filename="../src/gui/folderwizard.cpp" line="553"/>
         <source>Add Folder</source>
         <translation>Přidat složku</translation>
     </message>
@@ -765,22 +765,22 @@ Celkový zbývající čas %5</translation>
         <translation>Zadejte cestu k místní složce.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="73"/>
+        <location filename="../src/gui/folderwizard.cpp" line="81"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
         <translation>Alias složky je popisné jméno pro tuto synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="107"/>
+        <location filename="../src/gui/folderwizard.cpp" line="115"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation>Alias nemůže být prázdný. Zadejte prosím slovo, kterým složku popíšete.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="119"/>
+        <location filename="../src/gui/folderwizard.cpp" line="127"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation>Alias &lt;i&gt;%1&lt;/i&gt; je již používán. Zvolte prosím jiný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="152"/>
+        <location filename="../src/gui/folderwizard.cpp" line="160"/>
         <source>Select the source folder</source>
         <translation>Zvolte zdrojovou složku</translation>
     </message>
@@ -788,47 +788,47 @@ Celkový zbývající čas %5</translation>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="221"/>
         <source>Create Remote Folder</source>
         <translation>Vytvořit vzdálenou složku</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="222"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Zadejte název nově vytvářené složky níže &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="251"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Složka byla úspěšně vytvořena na %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="249"/>
+        <location filename="../src/gui/folderwizard.cpp" line="262"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ověření selhalo při připojení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="251"/>
+        <location filename="../src/gui/folderwizard.cpp" line="264"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Na %1 selhalo vytvoření složky. Zkontrolujte to, prosím, ručně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="332"/>
+        <location filename="../src/gui/folderwizard.cpp" line="345"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="436"/>
+        <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>This folder is already being synced.</source>
         <translation>Tato složka je již synchronizována.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="438"/>
+        <location filename="../src/gui/folderwizard.cpp" line="451"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Již synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, která je složce &lt;i&gt;%2&lt;/i&gt; nadřazená.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="442"/>
+        <location filename="../src/gui/folderwizard.cpp" line="455"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Již synchronizujete všechny své soubory. Synchronizování další složky &lt;b&gt;není&lt;/b&gt; podporováno. Pokud chcete synchronizovat více složek, odstraňte prosím synchronizaci aktuální kořenové složky.</translation>
     </message>
@@ -836,7 +836,7 @@ Celkový zbývající čas %5</translation>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="480"/>
+        <location filename="../src/gui/folderwizard.cpp" line="493"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Výběr synchronizace: Můžete dodatečně označit podsložky, které si nepřejete synchronizovat.</translation>
     </message>
@@ -1922,12 +1922,12 @@ Nedoporučuje se jí používat.</translation>
         <translation>Stav synchronizace byl zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="259"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation>V současné době nejsou na černé listině žádné soubory kvůli předchozím chybovým stavům a neprobíhá žádné stahování.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="268"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation><numerusform>%n soubor je ignorován kvůli předchozím chybám.
@@ -1936,7 +1936,7 @@ Nedoporučuje se jí používat.</translation>
 </numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="263"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="269"/>
         <source>%n files are partially downloaded.
 </source>
         <translation><numerusform>%n soubor je částečně stažen.
@@ -1945,7 +1945,7 @@ Nedoporučuje se jí používat.</translation>
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="264"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="270"/>
         <source>Try to sync these again.</source>
         <translation>Zkuste je znovu synchronizovat.</translation>
     </message>

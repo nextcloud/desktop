@@ -416,96 +416,96 @@
         <translation>%1 es ilegible.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="401"/>
+        <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="501"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 y %2 otros archivos han sido eliminados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="503"/>
+        <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido eliminado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 y %2 otros archivos han sido descargados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="510"/>
+        <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido descargado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 y %2 otros archivos han sido actualizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="517"/>
+        <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ha sido actualizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 ha sido renombrado a %2 y %3 otros archivos han sido renombrados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 ha sido renombrado a %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 ha sido movido a %2 y %3 otros archivos han sido movidos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="531"/>
+        <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 ha sido movido a %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 y otros %2 archivos no pudieron ser sincronizados debido a errores. Para más detalles, vea el registro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="538"/>
+        <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 no pudo ser sincronizado debido a un error. Para más detalles, vea el registro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="546"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>Sync Activity</source>
         <translation>Actividad de la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="835"/>
+        <location filename="../src/gui/folder.cpp" line="847"/>
         <source>Could not read system exclude file</source>
         <translation>No se pudo leer el archivo de exclusión del sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1092"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Una nueva carpeta superior a %1 MB se ha agregado: %2.
 Por favor diríjase a los ajustes para seleccionarlo si desea descargarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1105"/>
+        <location filename="../src/gui/folder.cpp" line="1117"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the file were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -514,17 +514,17 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
 ¿Está seguro de que desea realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>Remove All Files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1111"/>
+        <location filename="../src/gui/folder.cpp" line="1123"/>
         <source>Remove all files</source>
         <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1124"/>
         <source>Keep files</source>
         <translation>Conservar archivos</translation>
     </message>
@@ -746,8 +746,8 @@ Tiempo restante %5</translation>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="538"/>
-        <location filename="../src/gui/folderwizard.cpp" line="540"/>
+        <location filename="../src/gui/folderwizard.cpp" line="551"/>
+        <location filename="../src/gui/folderwizard.cpp" line="553"/>
         <source>Add Folder</source>
         <translation>Añadir carpeta</translation>
     </message>
@@ -765,22 +765,22 @@ Tiempo restante %5</translation>
         <translation>Ingrese la ruta de la carpeta local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="73"/>
+        <location filename="../src/gui/folderwizard.cpp" line="81"/>
         <source>The directory alias is a descriptive name for this sync connection.</source>
         <translation>El alias de la carpeta es un nombre descriptivo para esta conexión de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="107"/>
+        <location filename="../src/gui/folderwizard.cpp" line="115"/>
         <source>The alias can not be empty. Please provide a descriptive alias word.</source>
         <translation>El alias no puede estar en blanco. Por favor, proporcione un alias descriptivo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="119"/>
+        <location filename="../src/gui/folderwizard.cpp" line="127"/>
         <source>The alias &lt;i&gt;%1&lt;/i&gt; is already in use. Please pick another alias.</source>
         <translation>El alias &lt;i&gt;%1&lt;/i&gt; está en uso. Por favor, introduzca otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="152"/>
+        <location filename="../src/gui/folderwizard.cpp" line="160"/>
         <source>Select the source folder</source>
         <translation>Seleccione la carpeta de origen</translation>
     </message>
@@ -788,47 +788,47 @@ Tiempo restante %5</translation>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="208"/>
+        <location filename="../src/gui/folderwizard.cpp" line="221"/>
         <source>Create Remote Folder</source>
         <translation>Crear carpeta remota</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="209"/>
+        <location filename="../src/gui/folderwizard.cpp" line="222"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Introduzca más abajo el nombre de la nueva carpeta que crear &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="238"/>
+        <location filename="../src/gui/folderwizard.cpp" line="251"/>
         <source>Folder was successfully created on %1.</source>
         <translation>La carpeta fue creada con éxito en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="249"/>
+        <location filename="../src/gui/folderwizard.cpp" line="262"/>
         <source>Authentication failed accessing %1</source>
         <translation>Falló la autenticación al acceder a %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="251"/>
+        <location filename="../src/gui/folderwizard.cpp" line="264"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Fallo al crear la carpeta %1. Por favor, revíselo manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="332"/>
+        <location filename="../src/gui/folderwizard.cpp" line="345"/>
         <source>Choose this to sync the entire account</source>
         <translation>Elija esto para sincronizar la cuenta entera</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="436"/>
+        <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>This folder is already being synced.</source>
         <translation>Este directorio ya se ha sincronizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="438"/>
+        <location filename="../src/gui/folderwizard.cpp" line="451"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Ya ha sincronizado &lt;i&gt;%1&lt;/i&gt;, el cual es la carpeta de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="442"/>
+        <location filename="../src/gui/folderwizard.cpp" line="455"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Todavía se están sincronizando ficheros. &lt;b&gt;No&lt;/b&gt; se admite la sincronización de otras carpetas. Si quiere sincronizar múltiples carpetas, por favor revise la carpeta raíz configurada.</translation>
     </message>
@@ -836,7 +836,7 @@ Tiempo restante %5</translation>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="480"/>
+        <location filename="../src/gui/folderwizard.cpp" line="493"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Elija qué sinconizar: Opcionalmente puede deseleccionar subcarpetas remotas que no desee sincronizar</translation>
     </message>
@@ -1921,19 +1921,19 @@ No se recomienda usarla.</translation>
         <translation>El informe de sincronización fue copiado al portapapeles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="259"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="265"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation>Actualmente no hay archivos ignorados debido a errores previos y a que no hay descargas en progreso.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="262"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="268"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation><numerusform>%n Archivos han sido ignorados debido a errores previos.
 </numerusform><numerusform>%n Archivos han sido ignorados debido a errores previos. </numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="263"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="269"/>
         <source>%n files are partially downloaded.
 </source>
         <translation><numerusform>€n archivos han sido parcialmente descargados.
@@ -1941,7 +1941,7 @@ No se recomienda usarla.</translation>
 </numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="264"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="270"/>
         <source>Try to sync these again.</source>
         <translation>Intentar sincronizar de nuevo</translation>
     </message>
