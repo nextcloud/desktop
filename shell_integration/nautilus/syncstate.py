@@ -158,6 +158,9 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         syncedFile = False
         for reg_path in socketConnect.registered_paths:
             filename = get_local_path(file.get_uri())
+            #check if its a folder (ends with an /), if yes add a "/" otherwise it will not find the entry in the table
+            if os.path.isdir(filename+"/"):
+                filename=filename+"/"
             # only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
             if filename.startswith(reg_path) and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
