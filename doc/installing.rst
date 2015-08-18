@@ -68,7 +68,7 @@ On the next screen enter your ownCloud login and password.
 
 .. image:: images/client5.png
 
-Now you can select while folders and files to sync, and the location of your 
+Now you can select which folders and files to sync, and the location of your 
 local ownCloud folder.
 
 .. image:: images/client6.png
