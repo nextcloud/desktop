@@ -1,4 +1,4 @@
-The ownCloud Client reads a configuration file.  You can locate this configuration files as follows:
+The ownCloud Client reads a configuration file.  You can locate this configuration file as follows:
 
 On Linux distributions:
         ``$HOME/.local/share/data/ownCloud/owncloud.cfg``
