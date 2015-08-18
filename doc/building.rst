@@ -134,58 +134,38 @@ have it installed already.
 
 To cross-compile:
 
-1. Add the following repositories using YaST or ``zypper ar`` (adjust when using another openSUSE version)::
+1. Add the following repository using YaST or ``zypper ar`` (adjust when using another openSUSE version)::
 
-    zypper ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_13.2/windows:mingw.repo
-    zypper ar http://download.opensuse.org/repositories/windows:/mingw:/win32/openSUSE_13.2/windows:mingw:win32.repo
+    zypper ar https://build.opensuse.org/project/show/isv:ownCloud:toolchains:mingw:win32:stable
 
 2. Install the cross-compiler packages and the cross-compiled dependencies::
 
-    zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
-                      mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
-                      mingw32-headers mingw32-runtime site-config \
-                      mingw32-cross-libqt5-qmake mingw32-cross-libqt5-qttools mingw32-libqt5* \
-                      mingw32-cross-nsis
+   zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
+                mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
+                mingw32-headers mingw32-runtime site-config mingw32-libwebp \
+                mingw32-cross-libqt5-qmake mingw32-cross-libqt5-qttools mingw32-libqt5*
 
 3. For the installer, install the NSIS installer package::
 
-    zypper install mingw32-cross-nsis
+    zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-uac mingw32-cross-nsis-plugin-nsprocess
 
-4. Install the following plugin::
-
-    mingw32-cross-nsis-plugin-processes mingw32-cross-nsis-plugin-uac
-
-  .. note:: This plugin is typically required.  However, due to a current bug
-     in ``mingw``, the plugins do not currently build properly from source.
-
-5. Manually download and install the following files using ``rpm -ivh <package>``:
-
-  .. note:: These files also work for more recent openSUSE versions!
-
-  ::
-    # RPM depends on curl for installs from HTTP
-    zypper install curl
-
-    rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-processes-0-1.1.x86_64.rpm
-    rpm -ivh http://download.tomahawk-player.org/packman/mingw:32/openSUSE_12.1/x86_64/mingw32-cross-nsis-plugin-uac-0-3.1.x86_64.rpm
-
-6. Follow the `generic build instructions`_
+4. Follow the `generic build instructions`_
 
 .. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
      this parameter to the call to cmake, enter
      ``-DCMAKE_TOOLCHAIN_FILE=../client/admin/win/Toolchain-mingw32-openSUSE.cmake``.
 
-7. Build by running ``make``.
+5. Build by running ``make``.
 
 .. note:: Using ``make package`` produces an NSIS-based installer, provided
     the NSIS mingw32 packages are installed.
 
-8. If you want to sign the installer, acquire a `Microsoft Authenticode`_ Certificate and install ``osslsigncode`` to sign the installer::
+6. If you want to sign the installer, acquire a `Microsoft Authenticode`_ Certificate and install ``osslsigncode`` to sign the installer::
 
     zypper install osslsigncode
 
-9. Sign the package::
+7. Sign the package::
 
     osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha1 \
                -pass yourpass \
