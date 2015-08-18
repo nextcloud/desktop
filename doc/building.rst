@@ -7,7 +7,7 @@ This section explains how to build the ownCloud Client from source for all
 major platforms. You should read this section if you want to develop for the
 desktop client.
 
-.. note:: Building instruction are subject to change as development proceeds.
+.. note:: Build instructions are subject to change as development proceeds.
   Please check the version for which you want to build.
 
 The instructions contained in this topic were updated to work with version 1.7 of the ownCloud Client.
@@ -195,7 +195,7 @@ To cross-compile:
                -in ${unsigned_file} \
                -out ${installer_file}
 
-   for ``-in``, use URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
+   for ``-in``, use the URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
    you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
 
 
