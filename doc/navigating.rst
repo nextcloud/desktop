@@ -71,7 +71,7 @@ Using the Account Settings Window
 
 .. index:: account settings, user, password, Server URL
 
-The ``Account`` window provides a summary for your ownCloud account settings.  
+The ``Account`` window provides a summary of your ownCloud account settings.  
 You can manage which folders and files you want to synchronize, change your 
 account settings, and pause and resume synchronization.
 
@@ -96,12 +96,10 @@ The fields and options in this window include:
   root folder. 
 
 * ``Storage Usage`` field: Displays how much space your files are using on the 
-   ownCloud server.
+  ownCloud server.
 
 * ``Edit Ignored Files`` button: Launches the Ignored Files Editor.
 
-* ``Modify Account`` button: Use this to change your ownCloud server settings 
-  by launching the account setup wizard (see :doc:`accountsetup`).
 * ``Modify Account`` button: Use this to change your ownCloud server settings 
   by launching the account setup wizard (see :doc:`accountsetup`).
 
@@ -113,7 +111,7 @@ synchronization process.
 
 To add a new folder:
 
-1. Click the ``Add a Folder ...`` button in the Account window.
+1. Click the ``Add Folder ...`` button in the Account window.
 
   The ``Add Folder...`` window opens
 
@@ -195,11 +193,11 @@ startup, notifications, and using monochrome icons.
   startup.  By default, this option is enabled (checked) after you have configured
   your account.
 
-* ``Show Desktop Nofications`` checkbox: Provides the option to check (enable)
+* ``Show Desktop Notifications`` checkbox: Provides the option to check (enable)
   or uncheck (disable) notifications about sync activity.
 
 * ``Use Monochrome Icons`` checkbox: Provides the option to check (enable) or
-   uncheck (disable) the use of monochrome (visually less obtrusive) icons.
+  uncheck (disable) the use of monochrome (visually less obtrusive) icons.
 
 .. note:: This option can be useful on Mac OS X platforms.
 
@@ -257,7 +255,7 @@ Synchronization of files between a client and server can use a lot of
 bandwidth, so you can limit how much your ownCloud sync client uses.
 
 - ``No limit`` option: The default setting for the client; specifies that there
-  are no limit settings on the amount of data downloaded from the server. 
+  are no limit settings on the bandwidth used by data downloaded from the server. 
 
 - ``Limit to <value> KBytes/s`` option: Limits (throttles) the bandwidth to
   a customized value (in KBytes/second).
@@ -266,7 +264,7 @@ The Upload Bandwidth field (for data flowing from the ownCloud client to the
 server) provides the following options:
 
 - ``No limit`` option: The default setting for the client; specifies that there
-  are no limit settings on the amount of data downloaded from the server. 
+  are no limit settings on the bandwidth used by data uploaded to the server. 
 
 - ``Limit automatically``: When enabled, the ownCloud client surrenders
   available bandwidth to other applications.  Use this option if there are
