@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="61"/>
         <source>Remove the account configuration from the client</source>
-        <translation type="unfinished"/>
+        <translation>Remova a configuração de conta do cliente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="64"/>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="108"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Algumas pastas, incluindo a rede montada ou pastas compartilhadas, porderão ter limites diferentes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="157"/>
@@ -126,12 +126,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="214"/>
         <source>Folder creation failed</source>
-        <translation type="unfinished"/>
+        <translation>Falhou a criação da pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="215"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Não foi posssível criar a pasta local&lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="263"/>
@@ -176,22 +176,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor %1 está temporariamente indisponível.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="463"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Terminou a sesão de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Sem ligação para %1 em %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>Existem pastas novas que não foram sincronizadas porque estas eram muito grandes: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -201,12 +201,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Confirm Account Delete</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar Eliminação de Conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Deseja eliminar a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto irá remover os ficheiros no seu cliente.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -216,17 +216,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Abrir a pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Retomar sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pausar sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Estado de conta desconhecido</translation>
     </message>
 </context>
 <context>
@@ -602,12 +602,12 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/gui/folderman.cpp" line="1122"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Não foi selecionada nenhuma pasta válida!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1133"/>
         <source>The selected path is not a directory!</source>
-        <translation type="unfinished"/>
+        <translation>O caminho selecionado não é uma diretoria!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1137"/>
@@ -645,7 +645,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar Pasta para Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -656,7 +656,7 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
         <source>Syncing selected files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>A sincronizar os ficheiros selecionados na sua conta com</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
@@ -667,76 +667,81 @@ Se você, ou o seu administrador, reiniciou  a sua conta no servidor, escolha &q
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Precisa de estar ligado para adicionar uma pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="116"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Clique neste botão para adicionar uma pasta para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <source>Error while loading the list of folder from the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Descobrindo &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>Syncing %1</source>
         <translation>A sincronizar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
         <source>download %1/s</source>
         <translation>transerfência %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
         <source>upload %1/s</source>
         <translation>envio %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 of %2, ficheiro %3 de %4
 Tempo total restante %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
         <source>file %1 of %2</source>
         <translation>ficheiro %1 de %2</translation>
     </message>
@@ -915,7 +920,7 @@ Tempo total restante %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Ask confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmação antes de transferir as pastas maiores que</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -971,7 +976,11 @@ Tempo total restante %5</translation>
 User: %2
 Account: %3
 </source>
-        <translation type="unfinished"/>
+        <translation>Por favor, insira a senha %1:
+
+Utilizador: %2
+Conta: %3
+</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="41"/>
@@ -994,12 +1003,12 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar os ficheiros ocultados</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Ficheiros Ignorados por Padrões</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1668,7 +1677,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="457"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro foi eliminado do servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="505"/>
@@ -1944,7 +1953,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Necessário a autenticação do proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -1959,7 +1968,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor proxy precisa de um nome de utilizador e senha.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -1975,22 +1984,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="362"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="363"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Pastas não selecionadas serão &lt;b&gt;removidas&lt;/b&gt; do seu sistema local de ficheiros e não serão sincronizadas neste computador</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="376"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="377"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
         <translation>Escolher o que Sincronizar: Marque as sub pastas remotas que deseja sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="377"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="378"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Escolher o que Sincronizar: Desmarque as sub pastas remotas que não deseja sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="383"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="384"/>
         <source>Choose What to Sync</source>
         <translation>Escolher o Que Sincronizar</translation>
     </message>
@@ -2156,7 +2165,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, Definir Senha</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
@@ -2198,7 +2207,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="621"/>
         <source>Cannot find a folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível encontrar uma pasta para enviar para:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="655"/>
@@ -2587,7 +2596,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading directory.</source>
-        <translation type="unfinished"/>
+        <translation>Erro durante a leitura da diretoria.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="175"/>
@@ -2617,12 +2626,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="401"/>
         <source>File is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro é ignorado porque está ocultado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Estado falhou.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
@@ -2632,7 +2641,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="555"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Carateres inválidos, por favor, renomeie &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="625"/>

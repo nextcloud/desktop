@@ -668,75 +668,80 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="111"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
         <source>You need to be connected to add a folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="116"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="654"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <source>Error while loading the list of folder from the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="714"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
         <source>Syncing %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="719"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
         <source>download %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="721"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
         <source>upload %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="729"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="734"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="760"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
         <source>file %1 of %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1976,22 +1981,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="362"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="363"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="376"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="377"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="377"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="378"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="383"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="384"/>
         <source>Choose What to Sync</source>
         <translation type="unfinished"></translation>
     </message>
