@@ -286,7 +286,11 @@ int FolderStatusModel::columnCount(const QModelIndex&) const
 int FolderStatusModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        return _folders.count() + 1;
+        if( Theme::instance()->singleSyncFolder() &&  _folders.count() != 0) {
+            // "Add folder" button not visible in the singleSyncFolder configuration.
+            return _folders.count();
+        }
+        return _folders.count() + 1; // +1 for the "add folder" button
     }
     auto info = infoForIndex(parent);
     if (!info)
