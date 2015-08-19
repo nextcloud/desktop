@@ -112,19 +112,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 
-    QFont smallFont = ui->quotaInfoLabel->font();
-    smallFont.setPointSize(smallFont.pointSize() * 0.8);
-    ui->quotaInfoLabel->setFont(smallFont);
-
-    _quotaLabel = new QLabel(ui->quotaProgressBar);
-    QVBoxLayout *quotaProgressLayout = new QVBoxLayout(ui->quotaProgressBar);
-    quotaProgressLayout->setContentsMargins(-1,0,-1,0);
-    quotaProgressLayout->setSpacing(0);
-    quotaProgressLayout->addWidget(_quotaLabel);
-
-    // This ensures the progress bar is big enough for the label.
-    ui->quotaProgressBar->setMinimumHeight(_quotaLabel->height());
-
     ui->connectLabel->setText(tr("No account configured."));
 
     connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
@@ -419,25 +406,20 @@ void AccountSettings::slotOpenOC()
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {
     if( total > 0 ) {
-        ui->storageGroupBox->setVisible(true);
         ui->quotaProgressBar->setVisible(true);
-        ui->quotaInfoLabel->setVisible(true);
         ui->quotaProgressBar->setEnabled(true);
         // workaround the label only accepting ints (which may be only 32 bit wide)
         ui->quotaProgressBar->setMaximum(100);
-        int qVal = qRound(used/(double)total * 100);
-        if( qVal > 100 ) qVal = 100;
-        ui->quotaProgressBar->setValue(qVal);
+        const double percent = used/(double)total*100;
+        const int percentInt = qMin(qRound(percent), 100);
+        ui->quotaProgressBar->setValue(percentInt);
         QString usedStr = Utility::octetsToString(used);
         QString totalStr = Utility::octetsToString(total);
-        double percent = used/(double)total*100;
         QString percentStr = Utility::compactFormatDouble(percent, 1);
-        _quotaLabel->setText(tr("%1 (%3%) of %2 server space in use.").arg(usedStr, totalStr, percentStr));
+        ui->quotaInfoLabel->setText(tr("Storage space: %1 (%3%) of %2 in use").arg(usedStr, totalStr, percentStr));
     } else {
-        ui->storageGroupBox->setVisible(false);
-        ui->quotaInfoLabel->setVisible(false);
         ui->quotaProgressBar->setMaximum(0);
-        _quotaLabel->setText(tr("Currently there is no storage usage information available."));
+        ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
     }
 }
 
