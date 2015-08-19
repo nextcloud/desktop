@@ -51,17 +51,6 @@ namespace OCC {
 //
 // Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
 //
-void SettingsDialog::setDefaultAction()
-{
-    Q_FOREACH(QAction *action, _toolBar->actions()) {
-        if (QWidgetAction *wa = qobject_cast<QWidgetAction*>(action)) {
-            if (QToolButton *qtb = qobject_cast<QToolButton*>(wa->defaultWidget())) {
-                qtb->setChecked(true);
-                break;
-            }
-        }
-    }
-}
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent)
@@ -123,7 +112,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
         accountAdded(ai.data());
     }
 
-    setDefaultAction();
+    QTimer::singleShot(1, this, SLOT(showFirstPage()));
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
@@ -177,6 +166,20 @@ void SettingsDialog::changeEvent(QEvent *e)
 void SettingsDialog::slotSwitchPage(QAction *action)
 {
     _ui->stack->setCurrentWidget(_actionGroupWidgets.value(action));
+}
+
+void SettingsDialog::showFirstPage()
+{
+    Q_FOREACH(QAction *action, _toolBar->actions()) {
+        if (QWidgetAction *wa = qobject_cast<QWidgetAction*>(action)) {
+            if (QToolButton *qtb = qobject_cast<QToolButton*>(wa->defaultWidget())) {
+                if (QAction *a2 = qtb->defaultAction()) {
+                    qtb->defaultAction()->trigger();
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void SettingsDialog::showActivityPage()

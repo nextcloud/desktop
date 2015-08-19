@@ -50,8 +50,8 @@ public:
 
     void addAccount(const QString &title, QWidget *widget);
 
-    void setDefaultAction();
 public slots:
+    void showFirstPage();
     void showActivityPage();
     void slotSwitchPage(QAction *action);
 
