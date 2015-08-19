@@ -262,7 +262,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             // _model->removeRow( selected.row() );
             int ret = QMessageBox::question( this, tr("Confirm Folder Remove"),
                                              tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                                "<p><b>Note:</b> This will not remove the files from your client.</p>").arg(alias),
+                                                "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
                                              QMessageBox::Yes|QMessageBox::No );
 
             if( ret == QMessageBox::No ) {
@@ -524,7 +524,7 @@ void AccountSettings::slotDeleteAccount()
 {
     int ret = QMessageBox::question( this, tr("Confirm Account Delete"),
                                      tr("<p>Do you really want to delete the account <i>%1</i>?</p>"
-                                     "<p><b>Note:</b> This will not remove the files from your client.</p>")
+                                     "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                                         .arg(_accountState->account()->displayName()),
                                      QMessageBox::Yes|QMessageBox::No );
 
