@@ -523,7 +523,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
 void AccountSettings::slotDeleteAccount()
 {
     int ret = QMessageBox::question( this, tr("Confirm Account Delete"),
-                                     tr("<p>Do you really want to delete the account <i>%1</i>?</p>"
+                                     tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
                                         .arg(_accountState->account()->displayName()),
                                      QMessageBox::Yes|QMessageBox::No );
