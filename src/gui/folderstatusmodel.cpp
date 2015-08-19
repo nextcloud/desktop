@@ -150,7 +150,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case ErrorLabel:
         switch(role) {
             case Qt::DisplayRole: return tr("Error while loading the list of folder from the server.");
-            case Qt::FontRole: { QFont f; f.setItalic(true); return f; }
             default: return QVariant();
         }
     case RootFolder:
