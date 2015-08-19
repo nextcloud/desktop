@@ -149,7 +149,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
     case ErrorLabel:
         switch(role) {
-            case Qt::DisplayRole: return tr("Error while loading the list of folder from the server.");
+            case Qt::DisplayRole: return tr("Error while loading the list of folders from the server.");
             default: return QVariant();
         }
     case RootFolder:
@@ -427,7 +427,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
-    job->setTimeout(5 * 1000);
+    job->setTimeout(1);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
