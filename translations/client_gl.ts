@@ -139,11 +139,6 @@
         <translation>Confirmar a retirada do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="264"/>
-        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Confirma que quere deter a sincronización do cartafol &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt;  Isto non retirará os ficheiros no seu cliente.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Reset</source>
         <translation>Confirmar o restabelecemento do cartafol</translation>
@@ -205,8 +200,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
-        <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Confirma que quere eliminar a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt;  Isto non retirará os ficheiros no seu cliente.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -227,6 +222,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
         <translation>Por en pausa a sincronización</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="264"/>
+        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -651,17 +651,17 @@ Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="273"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
         <source>File</source>
         <translation>Ficheiro</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
         <translation>Sincronizando todos os ficheiros seleccionados na súa conta con</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>Ruta remota: %1</translation>
     </message>
@@ -690,60 +690,60 @@ Confirma que quere realizar esta operación?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
-        <source>Error while loading the list of folder from the server.</source>
+        <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Atopando «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="741"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>download %1/s</source>
         <translation>descargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="748"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>upload %1/s</source>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="756"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="761"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="765"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="781"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 de %2, ficheiro %3 of %4
 Tempo total restante %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>file %1 of %2</source>
         <translation>ficheiro %1 de %2</translation>
     </message>
@@ -2045,17 +2045,17 @@ Recomendámoslle que non o use.</translation>
         <translation>Axustes</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="94"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>Activity</source>
         <translation>Actividade</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>General</source>
         <translation>Xeral</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="106"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="95"/>
         <source>Network</source>
         <translation>Rede</translation>
     </message>

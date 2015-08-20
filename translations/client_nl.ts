@@ -139,11 +139,6 @@
         <translation>Bevestig het verwijderen van de map</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="264"/>
-        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van map &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal de bestanden niet van uw computer verwijderen.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Reset</source>
         <translation>Bevestig map reset</translation>
@@ -206,8 +201,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
-        <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Wilt u het account echt wissen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal de bestanden niet van uw computer verwijderen.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -217,16 +212,21 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Openen map</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Hervatten sync</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
+        <translation>Pauzeren sync</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="264"/>
+        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -652,17 +652,17 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="273"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
         <source>File</source>
         <translation>Bestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseren geselecteerde bestanden in uw account met</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>Extern pad: %1</translation>
     </message>
@@ -692,60 +692,60 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
-        <source>Error while loading the list of folder from the server.</source>
+        <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>&apos;%1&apos; onderzoeken</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="741"/>
         <source>Syncing %1</source>
         <translation>Synchroniseren %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>download %1/s</source>
         <translation>download %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="748"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>upload %1/s</source>
         <translation>upload %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="756"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="761"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 van %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="765"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="781"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 van %2, file %3 van %4
 Totaal resterende tijd %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>file %1 of %2</source>
         <translation>bestand %1 van %2</translation>
     </message>
@@ -2048,17 +2048,17 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="94"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>Activity</source>
         <translation>Activiteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>General</source>
         <translation>Algemeen</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="106"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="95"/>
         <source>Network</source>
         <translation>Netwerk</translation>
     </message>
@@ -2172,7 +2172,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Stel uw wachtwoord in</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
@@ -2638,7 +2638,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Stat mislukt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
@@ -2945,7 +2945,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Starten &amp;Schone sync (maakt lokale map leeg!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>

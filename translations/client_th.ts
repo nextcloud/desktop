@@ -139,11 +139,6 @@
         <translation>ยืนยันการลบโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="264"/>
-        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;คุณต้องการที่จะหยุดการประสานข้อมูลโฟลเดอร์ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะไม่ลบไฟล์จากไคลเอนต์ของคุณ&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Reset</source>
         <translation>ยืนยันการรีเซ็ตโฟลเดอร์</translation>
@@ -205,8 +200,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
-        <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;คุณต้องการที่จะลบบัญชี &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะไม่ลบไฟล์ที่ไคลเอนต์ของคุณ&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -227,6 +222,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
         <translation>หยุดประสานข้อมูลชั่วคราว</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="264"/>
+        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -650,17 +650,17 @@ Are you sure you want to perform this operation?</source>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="273"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
         <source>File</source>
         <translation>ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
         <translation>ซิงค์ไฟล์ที่เลือกในบัญชีของคุณด้วย</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>ตำแหน่งพาธระยะไกล: %1</translation>
     </message>
@@ -689,59 +689,59 @@ Are you sure you want to perform this operation?</source>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
-        <source>Error while loading the list of folder from the server.</source>
+        <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>กำลังค้นหา &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="741"/>
         <source>Syncing %1</source>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>download %1/s</source>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="748"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>upload %1/s</source>
         <translation>อัปโหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="756"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="761"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="765"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="781"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 จาก %2, ไฟล์ %3 จาก %4 เวลาที่เหลือทั้งหมด %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
@@ -2039,17 +2039,17 @@ It is not advisable to use it.</source>
         <translation>ตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="94"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>Activity</source>
         <translation>กิจกรรม</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>General</source>
         <translation>ทั่วไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="106"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="95"/>
         <source>Network</source>
         <translation>เครือข่าย</translation>
     </message>
@@ -2934,7 +2934,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>เริ่มต้นทำความสะอาดการประสานข้อมูล (ลบโฟลเดอร์ในระบบ)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>

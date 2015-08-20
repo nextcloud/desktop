@@ -139,11 +139,6 @@
         <translation>Baieztatu karpetaren ezabatzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="264"/>
-        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Bentan nahi duzu karpetaren sinkronizazioa gelditu? &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt;Honek ez du fitxategiak zure bezerotik ezabatuko.&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Confirm Folder Reset</source>
         <translation>Baieztatu Karpetaren Leheneratzea</translation>
@@ -205,7 +200,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
-        <source>&lt;p&gt;Do you really want to delete the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will not remove the files from your client.&lt;/p&gt;</source>
+        <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -226,6 +221,11 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Pause sync</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="264"/>
+        <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -650,17 +650,17 @@ Ziur zaude eragiketa hau egin nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="273"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
         <source>File</source>
         <translation>Fitxategia</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>Urruneko bidea: %1</translation>
     </message>
@@ -689,60 +689,60 @@ Ziur zaude eragiketa hau egin nahi duzula?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
-        <source>Error while loading the list of folder from the server.</source>
+        <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="678"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="738"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="741"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="743"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="746"/>
         <source>download %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="745"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="748"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="751"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="754"/>
         <source>upload %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="753"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="756"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="758"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="761"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%4 - %3tik)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="762"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="765"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="778"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="781"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation> %2-tik %1,  %4-tik %3 fitxategi
 Geratzen den denbora %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="784"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>file %1 of %2</source>
         <translation>%1. fitxategia %2tik</translation>
     </message>
@@ -2034,17 +2034,17 @@ Ez da gomendagarria erabltzea.</translation>
         <translation>Ezarpenak</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="94"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="83"/>
         <source>Activity</source>
         <translation>Jarduera</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="100"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="89"/>
         <source>General</source>
         <translation>Orokorra</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="106"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="95"/>
         <source>Network</source>
         <translation>Sarea</translation>
     </message>
