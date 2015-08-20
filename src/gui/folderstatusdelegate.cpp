@@ -37,22 +37,6 @@ QString FolderStatusDelegate::addFolderText()
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
-    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
-    if (classif == FolderStatusModel::AddButton) {
-        QFontMetrics fm(option.font);
-        QStyleOptionButton opt;
-        static_cast<QStyleOption&>(opt) = option;
-        opt.text = addFolderText();
-        return QApplication::style()->sizeFromContents(
-                QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).
-            expandedTo(QApplication::globalStrut());
-    }
-
-    if (classif != FolderStatusModel::RootFolder) {
-        return QStyledItemDelegate::sizeHint(option, index);
-    }
-
-    Q_UNUSED(option)
     QFont aliasFont = option.font;
     QFont font = option.font;
     aliasFont.setPointSize( font.pointSize() +2 );
@@ -62,6 +46,22 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
 
     int aliasMargin = aliasFm.height()/2;
     int margin = fm.height()/4;
+
+    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
+    if (classif == FolderStatusModel::AddButton) {
+        QFontMetrics fm(option.font);
+        QStyleOptionButton opt;
+        static_cast<QStyleOption&>(opt) = option;
+        opt.text = addFolderText();
+        return QApplication::style()->sizeFromContents(
+                QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).
+            expandedTo(QApplication::globalStrut())
+            + QSize(0, 2*aliasMargin);
+    }
+
+    if (classif != FolderStatusModel::RootFolder) {
+        return QStyledItemDelegate::sizeHint(option, index);
+    }
 
     // calc height
 
@@ -93,28 +93,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 {
     QStyledItemDelegate::paint(painter,option,index);
 
-    if (index.data(AddButton).toBool()) {
-        QSize hint = sizeHint(option, index);
-        QStyleOptionButton opt;
-        static_cast<QStyleOption&>(opt) = option;
-        opt.state &= ~QStyle::State_Selected;
-        opt.state |= QStyle::State_Raised;
-        opt.text = addFolderText();
-        opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
-        opt.rect.translate(0, 10);
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-                , option.widget
-#endif
-            );
-        return;
-    }
-
-    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
-        return;
-    }
-    painter->save();
-
     QFont aliasFont = option.font;
     QFont subFont   = option.font;
     QFont errorFont = subFont;
@@ -131,6 +109,28 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     int aliasMargin = aliasFm.height()/2;
     int margin = subFm.height()/4;
+
+    if (index.data(AddButton).toBool()) {
+        QSize hint = sizeHint(option, index);
+        QStyleOptionButton opt;
+        static_cast<QStyleOption&>(opt) = option;
+        opt.state &= ~QStyle::State_Selected;
+        opt.state |= QStyle::State_Raised;
+        opt.text = addFolderText();
+        opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
+        opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+                , option.widget
+#endif
+            );
+        return;
+    }
+
+    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+        return;
+    }
+    painter->save();
 
     QIcon statusIcon      = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
     QString aliasText     = qvariant_cast<QString>(index.data(HeaderRole));
