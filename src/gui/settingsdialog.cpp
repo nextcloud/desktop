@@ -174,7 +174,7 @@ void SettingsDialog::showFirstPage()
         if (QWidgetAction *wa = qobject_cast<QWidgetAction*>(action)) {
             if (QToolButton *qtb = qobject_cast<QToolButton*>(wa->defaultWidget())) {
                 if (QAction *a2 = qtb->defaultAction()) {
-                    qtb->defaultAction()->trigger();
+                    a2->trigger();
                     break;
                 }
             }
