@@ -29,10 +29,20 @@
 #include <QBuffer>
 #include <QFileIconProvider>
 #include <QClipboard>
+#include <QFileInfo>
 
 namespace {
     int SHARETYPE_PUBLIC = 3;
+
+//    int PERMISSION_READ = 1;
+    int PERMISSION_UPDATE = 2;
+    int PERMISSION_CREATE = 4;
+//    int PERMISSION_DELETE = 8;
+//    int PERMISSION_SHARE = 16;
+//    int PERMISSION_ALL = 31;
 }
+
+
 
 namespace OCC {
 
@@ -50,6 +60,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     setObjectName("SharingDialog"); // required as group for saveGeometry call
 
     _ui->setupUi(this);
+
+    //Is this a file or folder?
+    _isFile = QFileInfo(localPath).isFile();
+
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
     _ui->pushButton_copy->setEnabled(false);
     connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
@@ -64,8 +78,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _pi_link     = new QProgressIndicator();
     _pi_password = new QProgressIndicator();
     _pi_date     = new QProgressIndicator();
+    _pi_editing  = new QProgressIndicator();
     _ui->horizontalLayout_shareLink->addWidget(_pi_link);
     _ui->horizontalLayout_password->addWidget(_pi_password);
+    _ui->horizontalLayout_editing->addWidget(_pi_editing);
     // _ui->horizontalLayout_expire->addWidget(_pi_date);
 
     connect(_ui->checkBox_shareLink, SIGNAL(clicked()), this, SLOT(slotCheckBoxShareLinkClicked()));
@@ -75,6 +91,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotCalendarClicked(QDate)));
+    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotCheckBoxEditingClicked()));
 
     //Disable checkbox
     _ui->checkBox_shareLink->setEnabled(false);
@@ -153,6 +170,15 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
         _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
             _account->capabilities().sharePublicLinkExpireDateDays()
             ));
+    }
+
+    // File can't have public upload set.
+    if (_isFile) {
+        _ui->checkBox_editing->setEnabled(false);
+    } else {
+        if (!_account->capabilities().sharePublicLinkAllowUpload()) {
+            _ui->checkBox_editing->setEnabled(false);
+        }
     }
 }
 
@@ -355,6 +381,17 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
                 _ui->checkBox_expire->setChecked(false);
             }
 
+            if (data.value("permissions").isValid()) {
+                int permissions = data.value("permissions").toInt();
+                /*
+                 * Only directories can have public upload set
+                 * For public links the server sets CREATE and UPDATE permissions.
+                 */
+                if (!_isFile && (permissions & PERMISSION_UPDATE) && (permissions & PERMISSION_CREATE)) {
+                    _ui->checkBox_editing->setChecked(true);
+                }
+            }
+
             QString url;
             // From ownCloud server 8.2 the url field is always set for public shares
             if (data.contains("url")) {
@@ -541,7 +578,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     if (_ui->checkBox_expire->checkState() == Qt::Checked)
     {
         const QDate date = QDate::currentDate().addDays(1);
-        ShareDialog::setExpireDate(date);
+        setExpireDate(date);
         _ui->calendar->setDate(date);
         _ui->calendar->setMinimumDate(date);
         _ui->calendar->setEnabled(true);
@@ -557,6 +594,43 @@ void ShareDialog::slotPushButtonCopyLinkPressed()
 {
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(_shareUrl);
+}
+
+void ShareDialog::slotCheckBoxEditingClicked()
+{
+    ShareDialog::setPublicUpload(_ui->checkBox_editing->checkState() == Qt::Checked);
+}
+
+void ShareDialog::setPublicUpload(bool publicUpload)
+{
+    _ui->checkBox_editing->setEnabled(false);
+    _pi_editing->startAnimation();
+
+    const QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
+
+    QList<QPair<QString, QString> > requestParams;
+    const QString value = QString::fromLatin1(publicUpload ? "true" : "false");
+    requestParams.append(qMakePair(QString::fromLatin1("publicUpload"), value));
+
+    OcsShareJob *job = new OcsShareJob("PUT", url, _account, this);
+    job->setPostParams(requestParams);
+    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPublicUploadSet(QVariantMap)));
+
+    job->start();
+}
+
+void ShareDialog::slotPublicUploadSet(const QVariantMap &reply)
+{
+    QString message;
+    int code = getJsonReturnCode(reply, message);
+    if (code == 100) {
+        _ui->checkBox_editing->setEnabled(true);
+    } else {
+        qDebug() << Q_FUNC_INFO << reply;
+        displayError(code);
+    }
+
+    _pi_editing->stopAnimation();
 }
 
 void ShareDialog::setShareCheckBoxTitle(bool haveShares)
