@@ -258,14 +258,18 @@ void AccountSettings::slotRemoveCurrentFolder()
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
-            // remove from file system through folder man
-            // _model->removeRow( selected.row() );
-            int ret = QMessageBox::question( this, tr("Confirm Folder Remove"),
-                                             tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                                "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
-                                             QMessageBox::Yes|QMessageBox::No );
+            QMessageBox messageBox(QMessageBox::Question,
+                                   tr("Confirm Folder Remove"),
+                                   tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
+                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
+                                   QMessageBox::NoButton,
+                                   this);
+            QPushButton* yesButton =
+                    messageBox.addButton(tr("Stop syncing"), QMessageBox::YesRole);
+            messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
-            if( ret == QMessageBox::No ) {
+            messageBox.exec();
+            if (messageBox.clickedButton() != yesButton) {
                 return;
             }
 
@@ -522,14 +526,24 @@ void AccountSettings::refreshSelectiveSyncStatus()
 
 void AccountSettings::slotDeleteAccount()
 {
-    int ret = QMessageBox::question( this, tr("Confirm Account Delete"),
-                                     tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-                                     "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-                                        .arg(_accountState->account()->displayName()),
-                                     QMessageBox::Yes|QMessageBox::No );
+    // Deleting the account potentially deletes 'this', so
+    // the QMessageBox should be destroyed before that happens.
+    {
+        QMessageBox messageBox(QMessageBox::Question,
+                               tr("Confirm Account Delete"),
+                               tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+                                  "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+                                 .arg(_accountState->account()->displayName()),
+                               QMessageBox::NoButton,
+                               this);
+        QPushButton* yesButton =
+                messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+        messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
-    if( ret == QMessageBox::No ) {
-        return;
+        messageBox.exec();
+        if (messageBox.clickedButton() != yesButton) {
+            return;
+        }
     }
 
     auto manager = AccountManager::instance();
