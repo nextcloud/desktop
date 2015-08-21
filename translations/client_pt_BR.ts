@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Você realmente deseja remover a conexão desta conta&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto &lt;b&gt;não&lt;/b&gt; irá deletar nenhum arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="264"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Você realmente deseja para a sincronização desta pasta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto &lt;b&gt;não&lt;/b&gt; vai deletar qualquer arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -691,7 +691,7 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Erro enquanto carregava a lista de pastas do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>

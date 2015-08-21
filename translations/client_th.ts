@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="264"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;คุณต้องการที่จะหยุดการประสานข้อมูลโฟลเดอร์&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -690,7 +690,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาดในขณะที่โหลดรายชื่อโฟลเดอร์จากเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>

@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="264"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Θέλετε πραγματικά να σταματήσετε το συγχρονισμό του φακέλου &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -691,7 +691,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα κατά τη φόρτωση της λίστας φακέλων από το διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>

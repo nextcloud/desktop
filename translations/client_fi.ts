@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="459"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Yhteys muodostettu kohteeseen %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="461"/>
@@ -176,12 +176,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="463"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Kirjauduttu ulos kohteesta %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Ei yhteyttä kohteeseen %1 osoitteessa %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -282,7 +282,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>SSL-asiakkaan varmenteen tunnistautuminen</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Anna käyttäjätunnus ja salasana kohteeseen &apos;%1&apos; osoitteessa %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="35"/>
@@ -689,7 +689,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Virhe ladatessa kansiolistausta palvelimelta.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
@@ -1463,7 +1463,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="180"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Aikakatkaisu yrittäessä yhteyttä kohteeseen %1 osoitteessa %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="191"/>
@@ -1493,7 +1493,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="304"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Luodaan paikallista synkronointikansiota %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
@@ -2194,7 +2194,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="477"/>
         <location filename="../src/gui/sharedialog.cpp" line="510"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Julkinen jakaminen vaatii salasanan</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="621"/>
