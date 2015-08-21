@@ -191,7 +191,6 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
   const char *p = NULL;
   char *bname = NULL;
   char *dname = NULL;
-  char *prev_dname = NULL;
   char *conflict = NULL;
   int rc = -1;
   CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
@@ -340,53 +339,43 @@ CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path
           }
       }
 
-      /* if still not excluded, check each component of the path */
+      /* if still not excluded, check each component and leading directory of the path */
       if (match == CSYNC_NOT_EXCLUDED) {
-          int trailing_component = 1;
-          dname = c_dirname(path);
-          bname = c_basename(path);
+          char *segmented_path = strdup(path);
+          size_t len = strlen(segmented_path);
+          bool check_segname = !match_dirs_only || filetype != CSYNC_FTW_TYPE_FILE;
+          for (int j = len; ; --j) {
+              // read backwards until a path separator
+              if (j != 0 && segmented_path[j-1] != '/') {
+                  continue;
+              }
 
-          if (bname == NULL || dname == NULL) {
-              match = CSYNC_NOT_EXCLUDED;
-	      SAFE_FREE(bname);
-	      SAFE_FREE(dname);
-              SAFE_FREE(pattern_stored);
-              goto out;
+              // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
+              if (check_segname && segmented_path[j] != 0) {
+                  rc = csync_fnmatch(pattern, segmented_path + j, 0);
+                  if (rc == 0) {
+                      match = type;
+                      break;
+                  }
+              }
+              check_segname = true;
+
+              if (j == 0) {
+                  break;
+              }
+
+              // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
+              segmented_path[j-1] = '\0';
+              rc = csync_fnmatch(pattern, segmented_path, 0);
+              if (rc == 0) {
+                  match = type;
+                  break;
+              }
           }
-
-          /* Check each component of the path */
-          do {
-              /* Do not check the bname if its a file and the pattern matches dirs only. */
-              if ( !(trailing_component == 1 /* it is the trailing component */
-                     && match_dirs_only      /* but only directories are matched by the pattern */
-                     && filetype == CSYNC_FTW_TYPE_FILE) ) {
-                  /* Check the name component against the pattern */
-                  rc = csync_fnmatch(pattern, bname, 0);
-                  if (rc == 0) {
-                      match = type;
-                  }
-              }
-              if (!(c_streq(dname, ".") || c_streq(dname, "/"))) {
-                  rc = csync_fnmatch(pattern, dname, 0);
-                  if (rc == 0) {
-                      match = type;
-                  }
-              }
-              trailing_component = 0;
-              prev_dname = dname;
-              SAFE_FREE(bname);
-              bname = c_basename(prev_dname);
-              dname = c_dirname(prev_dname);
-              SAFE_FREE(prev_dname);
-
-          } while( match == CSYNC_NOT_EXCLUDED && !c_streq(dname, ".")
-                     && !c_streq(dname, "/") );
+          SAFE_FREE(segmented_path);
       }
       SAFE_FREE(pattern_stored);
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
   }
-
 
 out:
 
