@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="227"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation>El fitxer de distinació té una mida o data de modificació inesperada</translation>
+        <translation>El fitxer de destinació té una mida o data de modificació inesperada</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="108"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Algunes carpetes, incloent les carpetes muntades a través de xarxa o les compartides, poden tenir límits diferents.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="157"/>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha connexió amb %1 a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Segur que voleu eliminar la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; esborrarà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="264"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Segur que voleu aturar la sincronització de la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; esborrarà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="436"/>
@@ -502,7 +502,8 @@ Consulteu el registre per obtenir més informació.</translation>
         <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha afegit una carpeta nova de més de %1 MB: %2.
+Aneu a arranjament per seleccionar-la si voleu descarregar-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1117"/>
@@ -676,7 +677,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot afegir carpetes perquè ja esteu sincronitzant tots els vostres fitxers. Si voleu sincronitzar múltiples carpetes, elimineu la carpeta arrel configurada actualment.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
@@ -691,7 +692,7 @@ Esteu segur que voleu executar aquesta operació?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Error en carregar la llista de carpetes del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="681"/>
@@ -1238,7 +1239,7 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Limita a 3/4 de l&apos;ample de banda estimat</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
@@ -1324,7 +1325,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Es desconeix l&apos;estat de les actualitzacions: no s&apos;ha comprovat si hi ha actualitzacions noves.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -1334,7 +1335,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Comprova les actualitzacions</translation>
     </message>
 </context>
 <context>
@@ -1492,7 +1493,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor ha prohibit l&apos;accés. Per verificar que teniu permisos, &lt;a href=&quot;%1&quot;&gt;cliqueu aquí&lt;/a&gt; per accedir al servei amb el vostre navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="302"/>
@@ -1502,7 +1503,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="304"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està creant la carpeta de sincronització local %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
@@ -1607,7 +1608,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="82"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Salta la configuració de carpetes</translation>
     </message>
 </context>
 <context>
@@ -1625,7 +1626,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Obre %1 al navegador</translation>
     </message>
 </context>
 <context>
@@ -1736,12 +1737,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="60"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>Error en eliminar &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="71"/>
         <source>Could not remove directory &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut esborrar la carpeta &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="86"/>
@@ -1946,7 +1947,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="270"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>Intenta tornar a sincronitzar-los.</translation>
     </message>
 </context>
 <context>
@@ -2106,32 +2107,32 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Estableix la &amp;contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Estableix la data de &amp;venciment</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
         <source>Share link</source>
-        <translation>Enllaç de compartició</translation>
+        <translation>Comparteix l&apos;enllaç</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;en&amp;llaç</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Estableix la contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>Camí de %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="119"/>
@@ -2146,33 +2147,33 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="120"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Protegit amb contr&amp;asenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="225"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Protegit amb contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="386"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer no es pot compartir perquè va ser compartit sense permisos de compartició.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Establiu la contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
         <location filename="../src/gui/sharedialog.cpp" line="569"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>Com&amp;parteix l&apos;enllaç</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="587"/>
@@ -2182,12 +2183,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="609"/>
         <source>There is no sync folder configured.</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha cap carpeta de sincronització configurada.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="643"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Ja existeix un fitxer sincronitzat amb el mateix nom. El fitxer no es pot registrar per sincronitzar.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="688"/>
@@ -2482,7 +2483,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="104"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync ha fallat en carregar el fitxer del registre de transaccions. El fitxer està corromput.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="107"/>
@@ -2577,7 +2578,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="395"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>El nom del fitxer conté caràcters no vàlids que no es poden sincronitzar entre plataformes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2592,17 +2593,17 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>An error occurred while opening a directory</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error en obrir una carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading directory.</source>
-        <translation type="unfinished"/>
+        <translation>Error en llegir la carpeta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="175"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït l&apos;error intern número %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="230"/>
@@ -2725,7 +2726,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="284"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versió %1. Per més informació visiteu &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="288"/>
@@ -2735,7 +2736,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Distribuït per %1 i amb llicència GNU General Public License (GPL) Versió 2.0.&lt;br/&gt;%2 i el %2 logo són marques registrades de %1 als Estats Units, altres països, o ambdós.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2910,7 +2911,7 @@ No és aconsellada usar-la.</translation>
     <message utf8="true">
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versió %2. Per més informació visiteu &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Per Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz i altres.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;amb llicència GNU General Public License (GPL) versió 2.0&lt;br/&gt;ownCloud i el logo d&apos;ownCloud són marques registrades d&apos;ownCloud, Inc. als Estats Units, altres països, o ambdós.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
