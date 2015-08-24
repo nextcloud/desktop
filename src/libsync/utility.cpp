@@ -301,12 +301,12 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
 {
     struct Period { const char *name; quint64 msec; };
     Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000LL },
         { 0, 0 }
     };
 
