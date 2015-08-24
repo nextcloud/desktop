@@ -165,6 +165,28 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem*>(topLevelItem(0));
 
+    QUrl url = _account->davUrl();
+    QString pathToRemove = url.path();
+    if (!pathToRemove.endsWith('/')) {
+        pathToRemove.append('/');
+    }
+    pathToRemove.append(_folderPath);
+    if (!_folderPath.isEmpty())
+        pathToRemove.append('/');
+
+    // Since / cannot be in the blacklist, expand it to the actual
+    // list of top-level folders as soon as possible.
+    if (_oldBlackList == QStringList("/")) {
+        _oldBlackList.clear();
+        foreach (QString path, list) {
+            path.remove(pathToRemove);
+            if (path.isEmpty()) {
+                continue;
+            }
+            _oldBlackList.append(path);
+        }
+    }
+
     if (!root && list.size() <= 1) {
         _loading->setText(tr("No subfolders currently on the server."));
         _loading->resize(_loading->sizeHint()); // because it's not in a layout
@@ -184,15 +206,6 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
             root->setCheckState(0, Qt::PartiallyChecked);
         }
     }
-
-    QUrl url = _account->davUrl();
-    QString pathToRemove = url.path();
-    if (!pathToRemove.endsWith('/')) {
-        pathToRemove.append('/');
-    }
-    pathToRemove.append(_folderPath);
-    if (!_folderPath.isEmpty())
-        pathToRemove.append('/');
 
     foreach (QString path, list) {
         auto size = job ? job->_sizes.value(path) : 0;
@@ -325,6 +338,11 @@ QStringList SelectiveSyncTreeView::createBlackList(QTreeWidgetItem* root) const
     return result;
 }
 
+QStringList SelectiveSyncTreeView::oldBlackList() const
+{
+    return _oldBlackList;
+}
+
 qint64 SelectiveSyncTreeView::estimatedSize(QTreeWidgetItem* root)
 {
     if (!root) {
@@ -425,6 +443,11 @@ void SelectiveSyncDialog::accept()
 QStringList SelectiveSyncDialog::createBlackList() const
 {
     return _treeView->createBlackList();
+}
+
+QStringList SelectiveSyncDialog::oldBlackList() const
+{
+    return _treeView->oldBlackList();
 }
 
 qint64 SelectiveSyncDialog::estimatedSize()
