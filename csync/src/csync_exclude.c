@@ -44,24 +44,7 @@
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
-    c_strlist_t *list;
-
-    if (*inList == NULL) {
-        *inList = c_strlist_new(32);
-        if (*inList == NULL) {
-            return -1;
-        }
-    }
-
-    if ((*inList)->count == (*inList)->size) {
-        list = c_strlist_expand(*inList, 2 * (*inList)->size);
-        if (list == NULL) {
-            return -1;
-        }
-        *inList = list;
-    }
-
-    return c_strlist_add(*inList, string);
+    return c_strlist_add_grow(inList, string);
 }
 
 int csync_exclude_load(const char *fname, c_strlist_t **list) {
@@ -281,6 +264,31 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         goto out;
     }
 
+    /* Build a list of path components to check. */
+    c_strlist_t *path_components = c_strlist_new(32);
+    char *path_split = strdup(path);
+    size_t len = strlen(path_split);
+    for (int j = len; ; --j) {
+        // read backwards until a path separator is found
+        if (j != 0 && path_split[j-1] != '/') {
+            continue;
+        }
+
+        // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
+        if (path_split[j] != 0) {
+            c_strlist_add_grow(&path_components, path_split + j);
+        }
+
+        if (j == 0 || !check_leading_dirs) {
+            break;
+        }
+
+        // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
+        path_split[j-1] = '\0';
+        c_strlist_add_grow(&path_components, path_split);
+    }
+    SAFE_FREE(path_split);
+
     /* Loop over all exclude patterns and evaluate the given path */
     for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
         bool match_dirs_only = false;
@@ -319,41 +327,21 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
 
         /* if still not excluded, check each component and leading directory of the path */
         if (match == CSYNC_NOT_EXCLUDED) {
-            char *segmented_path = strdup(path);
-            size_t len = strlen(segmented_path);
-            bool check_segname = !match_dirs_only || filetype != CSYNC_FTW_TYPE_FILE;
-            for (int j = len; ; --j) {
-                // read backwards until a path separator
-                if (j != 0 && segmented_path[j-1] != '/') {
-                    continue;
-                }
-
-                // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
-                if (check_segname && segmented_path[j] != 0) {
-                    rc = csync_fnmatch(pattern, segmented_path + j, 0);
-                    if (rc == 0) {
-                        match = type;
-                        break;
-                    }
-                }
-                check_segname = true;
-
-                if (j == 0 || !check_leading_dirs) {
-                    break;
-                }
-
-                // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
-                segmented_path[j-1] = '\0';
-                rc = csync_fnmatch(pattern, segmented_path, 0);
+            size_t j = 0;
+            if (match_dirs_only && filetype == CSYNC_FTW_TYPE_FILE) {
+                j = 1; // skip the first entry, which is bname
+            }
+            for (; j < path_components->count; ++j) {
+                rc = csync_fnmatch(pattern, path_components->vector[j], 0);
                 if (rc == 0) {
                     match = type;
                     break;
                 }
             }
-            SAFE_FREE(segmented_path);
         }
         SAFE_FREE(pattern_stored);
     }
+    c_strlist_destroy(path_components);
 
   out:
 

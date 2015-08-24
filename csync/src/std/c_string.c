@@ -215,6 +215,25 @@ int c_strlist_add(c_strlist_t *strlist, const char *string) {
   return 0;
 }
 
+int c_strlist_add_grow(c_strlist_t **strlist, const char *string) {
+  if (*strlist == NULL) {
+    *strlist = c_strlist_new(32);
+    if (*strlist == NULL) {
+      return -1;
+    }
+  }
+
+  if ((*strlist)->count == (*strlist)->size) {
+    c_strlist_t *list = c_strlist_expand(*strlist, 2 * (*strlist)->size);
+    if (list == NULL) {
+      return -1;
+    }
+    *strlist = list;
+  }
+
+  return c_strlist_add(*strlist, string);
+}
+
 void c_strlist_clear(c_strlist_t *strlist) {
   size_t i = 0;
 

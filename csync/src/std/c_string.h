@@ -113,6 +113,19 @@ c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
 int c_strlist_add(c_strlist_t *strlist, const char *string);
 
 /**
+ * @brief  Add a string to the stringlist, growing it if necessary
+ *
+ * Duplicates the string and stores it in the stringlist.
+ * It also initializes the stringlist if it starts out as null.
+ *
+ * @param strlist  Stringlist to add the string.
+ * @param string   String to add.
+ *
+ * @return  0 on success, less than 0 and errno set if an error occured.
+ */
+int c_strlist_add_grow(c_strlist_t **strlist, const char *string);
+
+/**
  * @brief Removes all strings from the list.
  *
  * Frees the strings.

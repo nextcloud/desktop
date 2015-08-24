@@ -90,6 +90,11 @@ static void check_csync_excluded(void **state)
     CSYNC *csync = *state;
     int rc;
 
+    rc = csync_excluded(csync, "", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded(csync, "/", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
     rc = csync_excluded(csync, "krawel_krawel", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
     rc = csync_excluded(csync, ".kde/share/config/kwin.eventsrc", CSYNC_FTW_TYPE_FILE);
