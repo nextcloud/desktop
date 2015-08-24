@@ -142,6 +142,56 @@ static void check_csync_excluded(void **state)
 
 }
 
+static void check_csync_excluded_traversal(void **state)
+{
+    CSYNC *csync = *state;
+    int rc;
+
+    _csync_exclude_add( &(csync->excludes), "/exclude" );
+
+    /* Check toplevel dir, the pattern only works for toplevel dir. */
+    rc = csync_excluded_traversal(csync->excludes, "/exclude", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "/foo/exclude", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    /* check for a file called exclude. Must still work */
+    rc = csync_excluded_traversal(csync->excludes, "/exclude", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "/foo/exclude", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    /* Add an exclude for directories only: excl/ */
+    _csync_exclude_add( &(csync->excludes), "excl/" );
+    rc = csync_excluded_traversal(csync->excludes, "/excl", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "meep/excl", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "meep/excl/file", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED); // because leading dirs aren't checked!
+
+    rc = csync_excluded_traversal(csync->excludes, "/excl", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    _csync_exclude_add(&csync->excludes, "/excludepath/withsubdir");
+
+    rc = csync_excluded_traversal(csync->excludes, "/excludepath/withsubdir", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "/excludepath/withsubdir", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded_traversal(csync->excludes, "/excludepath/withsubdir2", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    rc = csync_excluded_traversal(csync->excludes, "/excludepath/withsubdir/foo", CSYNC_FTW_TYPE_DIR);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED); // because leading dirs aren't checked!
+}
+
 static void check_csync_pathes(void **state)
 {
     CSYNC *csync = *state;
@@ -218,21 +268,41 @@ static void check_csync_excluded_performance(void **state)
     int totalRc = 0;
 
     // Being able to use QElapsedTimer for measurement would be nice...
-    struct timeval before, after;
-    gettimeofday(&before, 0);
+    {
+        struct timeval before, after;
+        gettimeofday(&before, 0);
 
-    for (int i = 0; i < N; ++i) {
-        totalRc += csync_excluded(csync, "/this/is/quite/a/long/path/with/many/components", CSYNC_FTW_TYPE_DIR);
-        totalRc += csync_excluded(csync, "/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29", CSYNC_FTW_TYPE_FILE);
+        for (int i = 0; i < N; ++i) {
+            totalRc += csync_excluded(csync, "/this/is/quite/a/long/path/with/many/components", CSYNC_FTW_TYPE_DIR);
+            totalRc += csync_excluded(csync, "/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29", CSYNC_FTW_TYPE_FILE);
+        }
+        assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
+
+        gettimeofday(&after, 0);
+
+        const double total = (after.tv_sec - before.tv_sec)
+                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const double perCallMs = total / 2 / N * 1000;
+        printf("csync_excluded: %f ms per call\n", perCallMs);
     }
-    assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 
-    gettimeofday(&after, 0);
+    {
+        struct timeval before, after;
+        gettimeofday(&before, 0);
 
-    const double total = (after.tv_sec - before.tv_sec)
-            + (after.tv_usec - before.tv_usec) / 1.0e6;
-    const double perCallMs = total / 2 / N * 1000;
-    printf("csync_excluded: %f ms per call\n", perCallMs);
+        for (int i = 0; i < N; ++i) {
+            totalRc += csync_excluded_traversal(csync->excludes, "/this/is/quite/a/long/path/with/many/components", CSYNC_FTW_TYPE_DIR);
+            totalRc += csync_excluded_traversal(csync->excludes, "/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29", CSYNC_FTW_TYPE_FILE);
+        }
+        assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
+
+        gettimeofday(&after, 0);
+
+        const double total = (after.tv_sec - before.tv_sec)
+                + (after.tv_usec - before.tv_usec) / 1.0e6;
+        const double perCallMs = total / 2 / N * 1000;
+        printf("csync_excluded_traversal: %f ms per call\n", perCallMs);
+    }
 }
 
 int torture_run_tests(void)
@@ -241,6 +311,7 @@ int torture_run_tests(void)
         unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
         unit_test_setup_teardown(check_csync_exclude_load, setup, teardown),
         unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
+        unit_test_setup_teardown(check_csync_excluded_traversal, setup_init, teardown),
         unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
         unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
         unit_test_setup_teardown(check_csync_excluded_performance, setup_init, teardown),

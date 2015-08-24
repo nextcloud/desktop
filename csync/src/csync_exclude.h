@@ -66,12 +66,34 @@ void csync_exclude_destroy(CSYNC *ctx);
  *
  * This excludes also paths which can't be used without unix extensions.
  *
+ * The exclude list is checked against the full path, each component of
+ * the path and all leading directory strings, e.g.
+ * '/foo/bar/file' checks ('/foo/bar/file', 'foo', 'bar', 'file',
+ * '/foo/bar', '/foo').
+ *
  * @param ctx   The synchronizer context.
  * @param path  The patch to check.
  *
  * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
  */
 CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
+
+/**
+ * @brief Check if the given path should be excluded in a traversal situation.
+ *
+ * It does only part of the work that csync_excluded does because it's assumed
+ * that all leading directories have been run through csync_excluded_traversal()
+ * before. This can be significantly faster.
+ *
+ * That means for '/foo/bar/file' only ('/foo/bar/file', 'file') is checked
+ * against the exclude patterns.
+ *
+ * @param ctx   The synchronizer context.
+ * @param path  The patch to check.
+ *
+ * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
+ */
+CSYNC_EXCLUDE_TYPE csync_excluded_traversal(c_strlist_t *excludes, const char *path, int filetype);
 
 /**
  * @brief csync_excluded_no_ctx
