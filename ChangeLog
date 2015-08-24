@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.0.0 (release 2015-08-??)
+version 2.0.0 (release 2015-08-25)
   * Add support for multiple accounts (#3084)
   * Do not sync down new big folders from server without users consent (#3148)
   * Integrate Selective Sync into the default UI
@@ -25,6 +25,7 @@ version 2.0.0 (release 2015-08-??)
   * Several fixes and performance improvements in the sync engine
   * Network: Try to use SSL session tickets/identifiers. Check the SSL button to see if they are used.
   * Bandwidth Throttling: Provide automatic limit setting for downloads (#3084)
+  * Systray: Workaround for issue with Qt 5.5.0 #3656
 
 version 1.8.4 (release 2015-07-13)
   * Release to ship a security release of openSSL. No source changes of the ownCloud Client code.
