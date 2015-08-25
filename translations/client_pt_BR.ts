@@ -89,22 +89,29 @@
         <translation>Excluir</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="108"/>
+        <location filename="../src/gui/accountsettings.ui" line="92"/>
         <source>Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>Algumas pastas, incluindo as montada em rede ou pastas compartilhadas, podem ter limites diferentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="157"/>
+        <location filename="../src/gui/accountsettings.ui" line="95"/>
+        <source>Storage space: ...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="166"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Pastas não marcadas serão &lt;b&gt;removidos&lt;/b&gt; de seu sistema de arquivos local e não serão mais sincronizadas com este computador</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="188"/>
+        <location filename="../src/gui/accountsettings.ui" line="197"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="201"/>
+        <location filename="../src/gui/accountsettings.ui" line="210"/>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -114,127 +121,137 @@
         <translation>Conectado com &lt;server&gt; como &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="128"/>
+        <location filename="../src/gui/accountsettings.cpp" line="115"/>
         <source>No account configured.</source>
         <translation>Nenhuma conta configurada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="162"/>
+        <location filename="../src/gui/accountsettings.cpp" line="149"/>
         <source>Remove folder</source>
         <translation>Remover pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="214"/>
+        <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <source>Folder creation failed</source>
         <translation>Falha na criação de pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="215"/>
+        <location filename="../src/gui/accountsettings.cpp" line="202"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Não foi possível criar pasta local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="263"/>
+        <location filename="../src/gui/accountsettings.cpp" line="249"/>
         <source>Confirm Folder Remove</source>
         <translation>Confirmar Remoção da Pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="290"/>
+        <location filename="../src/gui/accountsettings.cpp" line="255"/>
+        <source>Stop syncing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="281"/>
         <source>Confirm Folder Reset</source>
         <translation>Confirme Reiniciar Pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="291"/>
+        <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja redefinir a pasta &lt;i&gt;%1&lt;/i&gt; e reconstruir seu banco de dados de clientes?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esta função é usada somente para manutenção. Nenhum arquivo será removido, mas isso pode causar significativo tráfego de dados e levar vários minutos ou horas, dependendo do tamanho da pasta. Somente use esta opção se adivertido por seu administrador.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="371"/>
+        <location filename="../src/gui/accountsettings.cpp" line="362"/>
         <source>Sync Running</source>
         <translation>Sincronização Acontecendo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="372"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>A operação de sincronização está acontecendo.&lt;br/&gt;Você deseja finaliza-la?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="455"/>
+        <location filename="../src/gui/accountsettings.cpp" line="419"/>
+        <source>Storage space: %1 (%3%) of %2 in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="441"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 como &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="459"/>
+        <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Connected to %1.</source>
         <translation>Conectado a %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="461"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>O Servidor %1 está temporariamente indisponível</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="463"/>
+        <location filename="../src/gui/accountsettings.cpp" line="449"/>
         <source>Signed out from %1.</source>
         <translation>Assibndado por %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="465"/>
+        <location filename="../src/gui/accountsettings.cpp" line="451"/>
         <source>No connection to %1 at %2.</source>
         <translation>Sem conexão para %1 em %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="500"/>
+        <location filename="../src/gui/accountsettings.cpp" line="486"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>Há novas pastas que não foram sincronizados, porque elas são muito grandes: 1%</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="501"/>
+        <location filename="../src/gui/accountsettings.cpp" line="487"/>
         <source>, </source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="515"/>
         <source>Confirm Account Delete</source>
         <translation>Confirmar a Eliminação da Conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja remover a conexão desta conta&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto &lt;b&gt;não&lt;/b&gt; irá deletar nenhum arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="431"/>
-        <source>%1 (%3%) of %2 server space in use.</source>
-        <translation>%1 (%3%) de %2 do espaço em uso no servidor.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="522"/>
+        <source>Remove connection</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="158"/>
+        <location filename="../src/gui/accountsettings.cpp" line="145"/>
         <source>Open folder</source>
         <translation>Abrir pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="160"/>
+        <location filename="../src/gui/accountsettings.cpp" line="147"/>
         <source>Resume sync</source>
         <translation>Resumir sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="160"/>
+        <location filename="../src/gui/accountsettings.cpp" line="147"/>
         <source>Pause sync</source>
         <translation>Pausar sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="264"/>
+        <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja para a sincronização desta pasta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Isto &lt;b&gt;não&lt;/b&gt; vai deletar qualquer arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="436"/>
+        <location filename="../src/gui/accountsettings.cpp" line="422"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Atualmente, não há informações de uso de armazenamento disponível.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="457"/>
         <source>No %1 connection configured.</source>
         <translation>Nenhuma %1 conexão configurada.</translation>
     </message>
@@ -751,8 +768,8 @@ Total de tempo que falta 5%</translation>
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="551"/>
-        <location filename="../src/gui/folderwizard.cpp" line="553"/>
+        <location filename="../src/gui/folderwizard.cpp" line="562"/>
+        <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Folder</source>
         <translation>Adicionar Pasta</translation>
     </message>
@@ -818,22 +835,27 @@ Total de tempo que falta 5%</translation>
         <translation>Falha ao criar a pasta em %1. Por favor, verifique manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="345"/>
+        <location filename="../src/gui/folderwizard.cpp" line="271"/>
+        <source>Failed to list a folder. Error: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="351"/>
         <source>Choose this to sync the entire account</source>
         <translation>Escolha esta opção para sincronizar a conta inteira</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="449"/>
+        <location filename="../src/gui/folderwizard.cpp" line="460"/>
         <source>This folder is already being synced.</source>
         <translation>Esta pasta já está sendo sincronizada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="451"/>
+        <location filename="../src/gui/folderwizard.cpp" line="462"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Você já está sincronizando &lt;i&gt;%1&lt;/i&gt;, que é uma pasta mãe de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="455"/>
+        <location filename="../src/gui/folderwizard.cpp" line="466"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Você já está sincronizando todos os seus arquivos. Sincronizar outra pasta &lt;b&gt;não&lt;/ b&gt; é possível. Se você deseja sincronizar várias pastas, por favor, remova a sincronização configurada atualmente para a pasta raiz.</translation>
     </message>
@@ -841,7 +863,7 @@ Total de tempo que falta 5%</translation>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="493"/>
+        <location filename="../src/gui/folderwizard.cpp" line="504"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Escolha o que Sincronizar: Você pode, opcionalmente, desmarcar subpastas remotas que você não deseja sincronizar.</translation>
     </message>
@@ -1376,8 +1398,8 @@ por privilégios adicionais durante o processo.</translation>
         <translation>Sincronizar Pasta Local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="269"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="290"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="306"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -1988,22 +2010,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="363"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="381"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>Pastas não marcadas serão &lt;b&gt;removidos&lt;/b&gt; de seu sistema de arquivos local e não serão mais sincronizadas com este computador</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="377"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="395"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
         <translation>Escolha o que Sincronizar: Selecione subpastas remotas que você deseja sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="378"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="396"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Escolha o que Sincronizar: Desmarque subpastas remotas que você não deseja sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="384"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="402"/>
         <source>Choose What to Sync</source>
         <translation>Escolher o que Sincronizar</translation>
     </message>
@@ -2026,13 +2048,13 @@ It is not advisable to use it.</source>
         <translation>Tamanho</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="169"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="216"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="191"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="229"/>
         <source>No subfolders currently on the server.</source>
         <translation>Nenhuma sub-pasta atualmente no servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="218"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="231"/>
         <source>An error occured while loading the list of sub folders.</source>
         <translation>Ocorreu um erro ao carregar a lista de sub-pastas.</translation>
     </message>
