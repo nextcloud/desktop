@@ -368,6 +368,12 @@ void ownCloudGui::setupContextMenu()
         }
     }
 
+    // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
+#ifdef Q_OS_LINUX
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    _tray->hide();
+#endif
+#endif
 
     if ( _contextMenu ) {
         _contextMenu->clear();
@@ -435,7 +441,6 @@ void ownCloudGui::setupContextMenu()
     // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
 #ifdef Q_OS_LINUX
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-    _tray->hide();
     _tray->show();
 #endif
 #endif
