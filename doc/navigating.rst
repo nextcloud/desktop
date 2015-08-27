@@ -87,18 +87,18 @@ Multi-Account Support
 
 You may now configure multiple ownCloud accounts in your desktop sync client. 
 Simply click the **Add an Account** button on the General tab, and follow the 
-account creation wizard.
+account creation wizard. The new account will appear as a new tab in the settings dialog, where you can adjust its settings at any time.
 
 Editing Ignored Files
 ---------------------
 
-The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
+The Ignored Files Editor can be opened by clicking on the button in the General tab of the settings dialog. The settings apply to all configured accounts. The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
 (that is, not synchronized) by the client and server during synchronizations. 
 You may add additional files or directories that you want to exclude from the 
 synchronization process. In addition to using standard characters, the Ignored 
 Files Editor enables you to use wild cards (for example, using an asterisk ‘*’ 
 to indicate multiple characters or a question mark ‘?’ to indicate a single 
-character).
+character). 
 
 For additional information see `Using the Ignored Files 
 Editor`_
