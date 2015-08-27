@@ -65,14 +65,13 @@ Using the Account Settings Window
 .. index:: account settings, user, password, Server URL
 
 Click **Settings** in the right-click menu to see a summary of your ownCloud 
-account settings. This shows which ownCloud account you are connected to, your 
+account settings. This shows which ownCloud account you are connected to (or accounts, if you have more than one) your 
 quota status, and a window for managing your synchronization settings.
 
 .. image:: images/client6.png
    :alt: Account settings window
-   
-At the top of this windows are four tabs: your account settings, which is 
-labeled with your ownCloud username, Activity, General, and Network.   
+
+At the top of the window are tabs for each configured sync account, and three others for Activity, General and Network settings.
 
 The Activity window contains the log of your recent activities, including files 
 downloaded and deleted.
