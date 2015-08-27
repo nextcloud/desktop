@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="95"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Espace de stockage : ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="166"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Arrêter la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="281"/>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Storage space: %1 (%3%) of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Espace de stockage : %1 disponibles sur %2 (%3%)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="441"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer la connexion</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="145"/>
@@ -837,7 +837,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de lister un répertoire. Erreur : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="351"/>
