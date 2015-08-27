@@ -34,7 +34,6 @@ improvements.
   * Don't show redundant directory entries in activity log
   * Remove deleted accounts properly from toolbar
   * File manager integration: Show hidden files as ignored
-  * Ignoring hidden files: Fix glitches when migrating from 1.8
   * Show wizard when last account was deleted
   * Do not sync down new big folders from server without user's consent
   * Integrate Selective Sync into the default UI
@@ -74,8 +73,8 @@ Enter your ownCloud login on the next screen.
 .. image:: images/client2.png
    :alt: form for entering your ownCloud login
 
-On the Local Folder Option screen you have multiple sync options. You may sync 
-all of your files on the ownCloud server or select which files to sync. The 
+On the Local Folder Option screen you may sync 
+all of your files on the ownCloud server, or select individual folders. The 
 default local sync folder is ``ownCloud``, in your home directory. You may 
 change this as well.
 
@@ -107,8 +106,8 @@ looks like the following example on Ubuntu Linux:
    right-click file menu in your file manager
 
 You may change your sync options at any time by opening your ownCloud client 
-and selecting which files to sync, or to remove from synchronization.
-you saw in the installation wizard. **If you un-check any folders or files that 
+and selecting which folders to sync, or to remove from synchronization.
+you saw in the installation wizard. **If you un-check any folders that 
 you have already synchronized, they will be deleted from your local system.**
 
 .. image:: images/client6.png
