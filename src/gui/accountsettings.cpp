@@ -489,7 +489,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 
     ui->selectiveSyncApply->setEnabled(_model->isDirty() || !undecidedFolder.isEmpty());
-    ui->selectiveSyncCancel->setEnabled(_model->isDirty());
     bool wasVisible = !ui->selectiveSyncStatus->isHidden();
     if (wasVisible != shouldBeVisible) {
         QSize hint = ui->selectiveSyncStatus->sizeHint();
