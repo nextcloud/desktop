@@ -480,8 +480,10 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
     if (undecidedFolder.isEmpty()) {
+        ui->selectiveSyncNotification->setVisible(false);
         ui->selectiveSyncNotification->setText(QString());
     } else {
+        ui->selectiveSyncNotification->setVisible(true);
         ui->selectiveSyncNotification->setText(
             tr("There are new folders that were not synchronized because they are too big: %1")
                 .arg(undecidedFolder.join(tr(", "))));
