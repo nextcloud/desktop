@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="95"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>พื้นที่จัดเก็บข้อมูล: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="166"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>ยกเลิกการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="281"/>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Storage space: %1 (%3%) of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>พื้นที่จัดเก็บข้อมูล: %1 (%3%) จาก %2 มีการใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="441"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>ลบการเชื่อมต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="145"/>
@@ -835,7 +835,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>รายการโฟลเดอร์ล้มเหลว ข้อผิดพลาด: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="351"/>
