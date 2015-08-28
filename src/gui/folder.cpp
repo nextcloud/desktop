@@ -156,13 +156,6 @@ void Folder::checkLocalPath()
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
     } else {
-        if( !FileSystem::fileExists(_definition.localPath) ) {
-            // try to create the local dir
-            QDir d(_definition.localPath);
-            if( d.mkpath(_definition.localPath) ) {
-                qDebug() << "Successfully created the local dir " << _definition.localPath;
-            }
-        }
         // Check directory again
         if( !FileSystem::fileExists(_definition.localPath) ) {
             _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
