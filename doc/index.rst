@@ -16,5 +16,4 @@ ownCloud Desktop Client Manual
    architecture
    troubleshooting
    faq
-   glossary 
-
+   glossary

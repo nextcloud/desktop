@@ -1,3 +1,4 @@
+================================
 Using the Synchronization Client
 ================================
 
@@ -38,242 +39,80 @@ so you should click it to see what it has to tell you.
 The red circle with the white "x" indicates a configuration error, such as an 
 incorrect login or server URL.
 
-Using the Desktop Client Menu
------------------------------
+Using the Right-Click Menu
+--------------------------
 
-A right-click on the icon opens the following menu:
+A right-click on the icon opens a menu for quick access to multiple operations.
 
 .. image:: images/menu.png
-
-**ownCloud Desktop Client menu**
+   :alt: the right-click sync client menu
 
 The Desktop Client menu provides the following options:
 
-* ``Open ownCloud in browser``: Launches the ownCloud Web interface.
-* ``Open folder 'ownCloud'``: Opens your local ownCloud folder. If you have 
-    defined multiple synchronization targets, the window displays each local 
-    folder.
-* **Disk space indicator**: Indicates the amount of space currently used on the 
-  server.
-* **Operation indicator**: Displays the status of the current synchronization 
-  process or indicates ``Up to date`` if the server and client are in sync.
-* **Recent Changes**: Displays the last six files modified, and shows the 
-  current synchronization status listing all changes since the last restart of the 
-  ownCloud client.
-* ``Settings...``: The settings menu.
-* ``Help``: Opens a browser to display ownCloud Desktop Client Guide.
-* ``Sign out``: Stops synchronization.
-* ``Quit ownCloud``: Quits the ownCloud Client, ending any currently running
-  synchronizations.
+* Open ownCloud in browser
+* Managed folder
+* Open folder [your local sync folder]
+* Up to date
+* Recent changes
+* Settings
+* Help
+* Sign out
+* Quit ownCloud
 
 Using the Account Settings Window
 ---------------------------------
 
 .. index:: account settings, user, password, Server URL
 
-The ``Account`` window provides a summary of your ownCloud account settings.  
-You can manage which folders and files you want to synchronize, change your 
-account settings, and pause and resume synchronization.
+Click **Settings** in the right-click menu to see a summary of your ownCloud 
+account settings. This shows which ownCloud account you are connected to (or accounts, if you have more than one) your 
+quota status, and a window for managing your synchronization settings.
 
-To access and modify the account settings:
+.. image:: images/client6.png
+   :alt: Account settings window
 
-.. image:: images/settings_account.png
-   :scale: 50 %
+At the top of the window are tabs for each configured sync account, and three others for Activity, General and Network settings.
 
-The fields and options in this window include:
+The Activity window contains the log of your recent activities, including files 
+downloaded and deleted.
 
-* ``Connected to <ownCloud instance> as <user>`` field:  Your user account on an ownCloud 
-  server.
+The General window has configuration options such as Launch on **System 
+Startup**, **Use Monochrome Icons**, and **Show Desktop Notifications**. This 
+is where you will find the **Edit Ignored Files** button, to launch the ignored 
+files editor, and two new features: **Ask confirmation before downloading 
+folders larger than [folder size]**, and **Add an Account**. 
 
-* ``Add Folder...`` button: Add another folder to the 
-  synchronization process (see ``Adding a Folder``).
+Multi-Account Support
+---------------------
 
-* ``Pause/Resume`` button: Pauses the current sync (or prevents the client from 
-  starting a new sync), or resumes the sync process.
-
-* ``Remove`` button: Removes the selected folder from the sync process.  This 
-  button is used when you want to synchronize only a few folders and not the 
-  root folder. 
-
-* ``Storage Usage`` field: Displays how much space your files are using on the 
-  ownCloud server.
-
-* ``Edit Ignored Files`` button: Launches the Ignored Files Editor.
-
-* ``Modify Account`` button: Use this to change your ownCloud server settings 
-  by launching the account setup wizard (see :doc:`accountsetup`).
-
-Adding a Folder
-^^^^^^^^^^^^^^^
-
-The ``Add Folder ...`` button enables you to add a new local folder to the 
-synchronization process.
-
-To add a new folder:
-
-1. Click the ``Add Folder ...`` button in the Account window.
-
-  The ``Add Folder...`` window opens
-
-.. image:: images/folderwizard_local.png
-
-2. Type a *unique* path and alias name to the folder, or use the ``Choose...`` 
-   button to open a graphical file picker.
-
-.. note:: Nested synchronizations are not supported.  You
-    cannot add a folder that is already contained within another synchronized
-    folder. In addition, you cannot add a higher level (parent) folder that
-    contains a folder to which you are already synchronizing.  By default, the
-    ownCloud Set Up Wizard synchronizes your entire ownCloud account to the root
-    folder of the ownCloud server. If you wish to sync certain specific folders and not 
-    the entire root, you must first remove the root folder.
-
-3. Click 'Next' to continue.
-
-  A window opens prompting you to select a remote destination folder on the
-  ownCloud server to synchronize.
-
-.. image:: images/folderwizard_remote.png
-
-4. Select a folder on the ownCloud server to which you want to synchronize your 
-   newly added local folder.
-
-.. note:: A server folder can only be synchronized with a particular client 
-  once. If you attempt to sync the root directory, you cannot sync with 
-  other folders on the server. Similarly, if you sync with folder ``/a``, you 
-  cannot create another sync with ``/a/b``, since ``b`` is already being 
-  synched.
+You may now configure multiple ownCloud accounts in your desktop sync client. 
+Simply click the **Add an Account** button on the General tab, and follow the 
+account creation wizard. The new account will appear as a new tab in the settings dialog, where you can adjust its settings at any time.
 
 Editing Ignored Files
-^^^^^^^^^^^^^^^^^^^^^
+---------------------
 
-The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
+The Ignored Files Editor can be opened by clicking on the button in the General tab of the settings dialog. The settings apply to all configured accounts. The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
 (that is, not synchronized) by the client and server during synchronizations. 
 You may add additional files or directories that you want to exclude from the 
 synchronization process. In addition to using standard characters, the Ignored 
 Files Editor enables you to use wild cards (for example, using an asterisk ‘*’ 
 to indicate multiple characters or a question mark ‘?’ to indicate a single 
-character).
+character). 
 
 For additional information see `Using the Ignored Files 
 Editor`_
 
-Using the Activity Settings Window
-----------------------------------
-
-.. index:: activity, recent changes, sync activity
-
-The Activity window provides an in-depth account of recent synchronization activity.  It 
-shows files that have not been synchronized because they are on the ignored files list, 
-or 
-because they cannot be synced due to containing special characters that cannot be stored 
-on certain file systems.
-
-.. image:: images/settings_activity.png
-
-You can open the Activity window in one of the following ways:
-
-- Click 'Activity' in the left frame of the ownCloud Settings window.
-
-- Invoke the window from the ownCloud Desktop Client menu by selecting ``Recent
-  Changes`` > ``Details...``.  (See Using the Desktop Client Menu.) 
-
-Using the General Settings Window
----------------------------------
-
-.. index:: general settings, auto start, startup, desktop notifications
-
-The General settings window has options for launching the client at system 
-startup, notifications, and using monochrome icons.
-
-.. image:: images/settings_general.png
-
-* ``Launch on System Startup`` checkbox: Provides the option to check (enable)
-  or uncheck (disable) whether the ownCloud Desktop Client launches at system
-  startup.  By default, this option is enabled (checked) after you have configured
-  your account.
-
-* ``Show Desktop Notifications`` checkbox: Provides the option to check (enable)
-  or uncheck (disable) notifications about sync activity.
-
-* ``Use Monochrome Icons`` checkbox: Provides the option to check (enable) or
-  uncheck (disable) the use of monochrome (visually less obtrusive) icons.
-
-.. note:: This option can be useful on Mac OS X platforms.
-
-* ``About`` field: Provides information about the software authors along with
-  pertinent build conditions.
-
-.. note:: Information in this field can be valuable when submitting a support 
-   request.
-
-* ``Updates`` field: Notifies you of any available updates for the ownCloud Desktop 
-  Client.
-
-Using the Network Settings Window
----------------------------------
+Using the Network Window
+------------------------
 
 .. index:: proxy settings, SOCKS, bandwith, throttling, limiting
 
-The Network settings window enables you to define network proxy settings, and also to 
-limit download and upload bandwidth.
+The Network settings window enables you to define network proxy settings, and 
+also to limit download and upload bandwidth. New to version 2.0 is the option 
+for automatic bandwidth limits.
 
 .. image:: images/settings_network.png
-
-Specifying Proxy Settings
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* ``No Proxy`` option: Do not use a proxy.
-
-* ``Use system proxy`` option: Default setting. Follows the systems proxy
-  settings.
-
-* ``Specify proxy manually as`` option: Enables you to specify
-  the following custom proxy settings:
-
-  - ``HTTP(S)``: Used when you are required to use an HTTP(S) proxy server (for 
-  example, Squid or Microsoft Forefront TMG). 
-  
-  - ``SOCKSv5``: Typically used in special company LAN setups, or in 
-  combination with the OpenSSH dynamic application level forwarding feature 
-  (see ``ssh -D``).
-  
-  - ``Host``: Host name or IP address of the proxy server along with the port 
-  number. HTTP proxies typically listen over Ports 8080 (default) or 3128. 
-  SOCKS servers typically listen over port 1080.
-
-* ``Proxy Server requires authentication`` checkbox: Provides the option to 
-  check (enable/require) or uncheck (disable/not require) proxy server 
-  authentication. When not checked, the proxy server must be configured to 
-  allow anonymous usage. When checked, a proxy server username and password is 
-  required.
-
-Bandwidth Limiting
-^^^^^^^^^^^^^^^^^^
-
-Synchronization of files between a client and server can use a lot of
-bandwidth, so you can limit how much your ownCloud sync client uses.
-
-- ``No limit`` option: The default setting for the client; specifies that there
-  are no limit settings on the bandwidth used by data downloaded from the server. 
-
-- ``Limit to <value> KBytes/s`` option: Limits (throttles) the bandwidth to
-  a customized value (in KBytes/second).
-
-The Upload Bandwidth field (for data flowing from the ownCloud client to the
-server) provides the following options:
-
-- ``No limit`` option: The default setting for the client; specifies that there
-  are no limit settings on the bandwidth used by data uploaded to the server. 
-
-- ``Limit automatically``: When enabled, the ownCloud client surrenders
-  available bandwidth to other applications.  Use this option if there are
-  issues with real time communication (for example, the use of IP phone or live
-  streaming) in conjunction with the ownCloud Client.
-
-- ``Limit to <value> KBytes/s`` option: Limits (throttles) the bandwidth to a
-  customized value (in KBytes/second).
-
 
 .. _ignoredFilesEditor-label:
 
@@ -288,13 +127,13 @@ can use the *Ignored Files Editor*.
 
 .. image:: images/ignored_files_editor.png
 
-For your convenience, the editor is
-pre-populated with a default list of typical ignore patterns. These patterns
-are contained in a system file (typically ``sync-exclude.lst``) located in the
-ownCloud Client application directory. You cannot modify these pre-populated
-patterns directly from the editor. However, if necessary, you can hover over
-any pattern in the list to show the path and filename associated with that
-pattern, locate the file, and edit the ``sync-exclude.lst`` file.
+For your convenience, the editor is pre-populated with a default list of typical 
+ignore patterns. These patterns are contained in a system file (typically 
+``sync-exclude.lst``) located in the ownCloud Client application directory. You 
+cannot modify these pre-populated patterns directly from the editor. However, if 
+necessary, you can hover over any pattern in the list to show the path and 
+filename associated with that pattern, locate the file, and edit the 
+``sync-exclude.lst`` file.
 
 .. note:: Modifying the global exclude definition file might render the client
    unusable or result in undesired behavior.
