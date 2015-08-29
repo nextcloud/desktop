@@ -16,7 +16,7 @@ Linux users must follow the instructions on the download page to add the
 appropriate repository for their Linux distribution, install the signing key, 
 and then use their package managers to install the desktop sync client. Linux 
 users will also update their sync clients via package manager, and the client 
-will display a notification when an update is available.
+will display a notification when an update is available. 
 
 Linux users must also have a password manager enabled, such as GNOME Keyring or
 KWallet, so that the sync client can login automatically.
@@ -24,84 +24,92 @@ KWallet, so that the sync client can login automatically.
 Improvements and New Features
 -----------------------------
 
-The 1.8 client has a number of enhancements and performance improvements, 
-including:
+The 2.0 release of the ownCloud desktop sync client has many new features and 
+improvements.
 
-* Graphical selective sync file and folder selector. Select which files and 
-  folders to sync with just a few clicks.
-* Selective sync on account setup. Set up which files and folders you want to 
-  sync when you create a new ownCloud account.
-* File manager integration: share files from Windows Explorer, Mac OS X Finder, 
-  and Nautilus on Linux.
-* Faster uploads and downloads.
+  * Multi-account support
+  * Many UI improvements
+  * Accessibility improvements (high contrast schemes)
+  * Automatic Bandwidth Throttling
+  * Don't show redundant directory entries in activity log
+  * Remove deleted accounts properly from toolbar
+  * File manager integration: Show hidden files as ignored
+  * Show wizard when last account was deleted
+  * Do not sync down new big folders from server without user's consent
+  * Integrate Selective Sync into the default UI
+  * More reliable reconnect after timeout
+  * Use SI units for the file sizes
+  * Improve progress reporting during sync
+  * Sharing: Do not allow sharing the root folder
+  * Sharing: Show thumbnail
+  * Client Updater: Check for updates periodically, not only once per run
+  * Quota: Only refresh from server when UI is shown
+  * SSL Button: Show more information
+  * System proxy: Ask user for credentials if needed
+  * Several fixes and performance improvements in the sync engine
+  * OS X: Show file name in UI if file has invalid UTF-8 in file name 
+  * OS X: Support native finder integration for 10.10 Yosemite  
+  * Network: Try to use SSL session tickets/identifiers
+  * Windows: Support paths >255 characters
+  * Windows, OS X: Allow to not sync hidden files
+  * Windows: Remove misleading option to remove sync data
+  * Windows: Do not provoke Active Directory account locking if password changes
+  * Windows: Fix installer when installing unprivileged
 
-.. note:: When you upgrade from 1.7, restart Windows to ensure that all new 
+.. note:: When you upgrade from 1.8, restart Windows to ensure that all new 
    features are visible.
 
-Installation
-------------
+Installation Wizard
+-------------------
 
 The installation wizard takes you step-by-step through configuration options and 
-account setup. These examples are on Windows 7; note the new "Integration for 
-Windows Explorer Option". This allows Windows users to share files directly 
-from their local ownCloud folder in Windows Explorer, rather than having to 
-open a Web browser and share from the ownCloud Web interface. Mac users get the 
-same option for Finder, and Linux users for Nautilus. 
+account setup. First you need to enter the URL of your ownCloud server.
 
 .. image:: images/client1.png
-
-The next screen selects the installation folder for the client. The default is 
-fine; don't change this without a good reason.
+   :alt: form for entering ownCloud server URL
+   
+Enter your ownCloud login on the next screen.
 
 .. image:: images/client2.png
+   :alt: form for entering your ownCloud login
 
-In the next screen, enter your ownCloud server URL.
+On the Local Folder Option screen you may sync 
+all of your files on the ownCloud server, or select individual folders. The 
+default local sync folder is ``ownCloud``, in your home directory. You may 
+change this as well.
 
 .. image:: images/client3.png
-
-If your ownCloud server has a self-signed SSL certificate, you will see a scary 
-warning. Check "Trust this certificate" and keep going.
+   :alt: Select which remote folders to sync, and which local folder to store 
+   them in.
+   
+When you have completed selecting your sync folders, click the Connect button 
+at the bottom right. The client will attempt to connect to your ownCloud 
+server, and when it is successful you'll see two buttons: one to connect to 
+your ownCloud Web GUI, and one to open your local folder. It will also start 
+synchronizing your files.
 
 .. image:: images/client4.png
+   :alt: A successful server connection, showing a button to connect to your 
+   Web GUI, and one to open your local ownCloud folder
 
-On the next screen enter your ownCloud login and password.
+Click the Finish button, and you're all done.   
+
+When you are in your local ownCloud folder, you can right-click any file or 
+folder, and then left-click "Share with ownCloud" to create a share link. Note 
+that Windows may also have a Share With option. This is not the ownCloud Share 
+option. Linux users must install the ``owncloud-client-nautilus`` package to 
+enable file sharing from the Nautilus file manager. The ownCloud share dialog 
+looks like the following example on Ubuntu Linux:
 
 .. image:: images/client5.png
-
-Now you can select which folders and files to sync, and the location of your 
-local ownCloud folder.
-
-.. image:: images/client6.png
-
-When you check "Choose what to sync" it opens a file picker. Note the warning 
-at the top that unchecked folders will be removed from your local filesystem. 
-On a new installation, when you have not yet synced with your ownCloud server, 
-no files will be deleted.
-
-.. image:: images/client7.png
-
-In the next screen you may click to open ownCloud in a Web browser, or open 
-your local ownCloud folder. Open your local ownCloud folder so you can see how 
-file manager integration works.
-
-.. image:: images/client8.png
-
-When you are in your local ownCloud folder you can right-click any file or 
-folder, and then left-click "Share with ownCloud" to create a share link. Note that Windows
-may also have a Share With option. This is not the ownCloud Share option. The 
-ownCloud share dialog looks like the following example:
-
-.. image:: images/client9.png
-
-You have the same options for creating a link share as you do when you're 
-logged into the ownCloud Web GUI: you may optionally set a password and 
-expiration date.
-
-.. image:: images/client10.png
+   :alt: the ownCloud file share option is integrated into the normal 
+   right-click file menu in your file manager
 
 You may change your sync options at any time by opening your ownCloud client 
-and clicking the "Choose what to sync" button. This opens the same file picker 
-you saw in the installation wizard. If you un-check any folders or files that 
-you have already synchronized they will be deleted.
+and selecting which folders to sync, or to remove from synchronization.
+you saw in the installation wizard. **If you un-check any folders that 
+you have already synchronized, they will be deleted from your local system.**
 
-.. image:: images/client11.png
+.. image:: images/client6.png
+   :alt: Client dialogue to select different files to sync, or to remove from 
+   syncing
