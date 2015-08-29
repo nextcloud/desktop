@@ -120,6 +120,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect( &_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
             this, SLOT(slotUpdateQuota(qint64,qint64)));
 
+    connect(ui->signInButton, SIGNAL(clicked()) , this, SLOT(slotSignInAccount()));
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
 }
 
@@ -443,6 +444,7 @@ void AccountSettings::slotAccountStateChanged(int state)
            serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
         }
 
+        ui->signInButton->setVisible(state == AccountState::SignedOut);
         if (state == AccountState::Connected) {
             showConnectionLabel( tr("Connected to %1.").arg(serverWithUser) );
         } else if (state == AccountState::ServiceUnavailable) {
@@ -507,6 +509,11 @@ void AccountSettings::refreshSelectiveSyncStatus()
             connect(anim, SIGNAL(finished()), ui->selectiveSyncStatus, SLOT(hide()));
         }
     }
+}
+
+void AccountSettings::slotSignInAccount()
+{
+    _accountState->setSignedOut(false);
 }
 
 void AccountSettings::slotDeleteAccount()

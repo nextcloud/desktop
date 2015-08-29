@@ -77,6 +77,7 @@ protected slots:
     void slotOpenCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
+    void slotSignInAccount();
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint&);
