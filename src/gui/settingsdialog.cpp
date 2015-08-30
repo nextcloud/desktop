@@ -42,7 +42,7 @@
 namespace {
   const char TOOLBAR_CSS[] =
     "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 0; } "
+    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
 }
 
@@ -69,12 +69,9 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     connect(closeWindowAction, SIGNAL(triggered()), SLOT(accept()));
     addAction(closeWindowAction);
 
-
     setObjectName("Settings"); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
-    // Add a spacer so config buttons are right aligned and account buttons will be left aligned
-    _seperatorAction = _toolBar->addSeparator();
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
 
@@ -191,14 +188,16 @@ void SettingsDialog::showActivityPage()
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
+    auto height = _toolBar->sizeHint().height();
     auto accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
-                                                    s->shortDisplayNameForSettings());
+                s->shortDisplayNameForSettings(height * 1.618)); // Golden ratio
     accountAction->setToolTip(s->account()->displayName());
 
     QToolButton* accountButton = new QToolButton;
-    accountButton->setDefaultAction(accountAction);
     accountButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    accountButton->setDefaultAction(accountAction);
     accountButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    accountButton->setMinimumWidth(height * 1.3);
 
     QAction* toolbarAction = _toolBar->insertWidget(_toolBar->actions().at(0), accountButton);
     _toolbarAccountActions.insert(accountAction, toolbarAction);
@@ -211,8 +210,6 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
-
-    _seperatorAction->setVisible(!_toolbarAccountActions.isEmpty());
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
@@ -232,8 +229,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
             break;
         }
     }
-
-    _seperatorAction->setVisible(!_toolbarAccountActions.isEmpty());
 }
 
 void SettingsDialog::customizeStyle()
@@ -284,6 +279,7 @@ void SettingsDialog::addActionToToolBar(QAction *action) {
     btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     _toolBar->addWidget(btn);
+    btn->setMinimumWidth(_toolBar->sizeHint().height() * 1.3);
 }
 
 } // namespace OCC

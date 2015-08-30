@@ -18,6 +18,7 @@
 
 #include <QDebug>
 #include <QSettings>
+#include <qfontmetrics.h>
 
 namespace OCC {
 
@@ -252,24 +253,17 @@ std::unique_ptr<QSettings> AccountState::settings()
     return s;
 }
 
-QString AccountState::shortDisplayNameForSettings() const
+QString AccountState::shortDisplayNameForSettings(int width) const
 {
-    QString userWithoutMailHost = account()->credentials()->user();
-    if (userWithoutMailHost.contains('@')) {
-        userWithoutMailHost = userWithoutMailHost.left(userWithoutMailHost.lastIndexOf('@'));
+    QString user = account()->credentials()->user();
+    QString host = account()->url().host();
+    if (width > 0) {
+        QFont f;
+        QFontMetrics fm(f);
+        host = fm.elidedText(host, Qt::ElideRight, width);
+        user = fm.elidedText(user, Qt::ElideRight, width);
     }
-    QString hostWithoutTld = account()->url().host();
-    if (hostWithoutTld.contains('.') && !hostWithoutTld.at(0).isDigit()) {
-        hostWithoutTld = hostWithoutTld.left(hostWithoutTld.lastIndexOf('.'));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("www."), QLatin1String(""));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("cloud."), QLatin1String(""));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("sync."), QLatin1String(""));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("drive."), QLatin1String(""));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("share."), QLatin1String(""));
-        hostWithoutTld = hostWithoutTld.replace(QLatin1String("web."), QLatin1String(""));
-    }
-
-    return userWithoutMailHost + QLatin1String("\n") + hostWithoutTld;
+    return user + QLatin1String("\n") + host;
 }
 
 
