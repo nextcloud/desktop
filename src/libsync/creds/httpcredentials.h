@@ -74,7 +74,6 @@ private:
     QString _certificatePasswd;
     bool _ready;
     bool _fetchJobInProgress; //True if the keychain job is in progress or the input dialog visible
-    bool _readPwdFromDeprecatedPlace;
 };
 
 } // namespace OCC

@@ -87,8 +87,7 @@ HttpCredentials::HttpCredentials()
       _certificatePath(),
       _certificatePasswd(),
       _ready(false),
-      _fetchJobInProgress(false),
-      _readPwdFromDeprecatedPlace(false)
+      _fetchJobInProgress(false)
 {
 }
 
@@ -236,7 +235,6 @@ void HttpCredentials::fetch()
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->start();
         _fetchJobInProgress = true;
-        _readPwdFromDeprecatedPlace = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -268,42 +266,26 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
         // error happend.
         // In all error conditions it should
         // ask the user for the password interactively now.
-        if( _readPwdFromDeprecatedPlace ) {
-            // there simply was not a password. Lets restart a read job without
-            // a settings object as we did it in older client releases.
-            ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        // interactive password dialog starts here
 
-            const QString kck = keychainKey(_account->url().toString(), _user);
-            job->setKey(kck);
-
-            connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
-            job->start();
-            _readPwdFromDeprecatedPlace = false; // do  try that only once.
-            _fetchJobInProgress = true;
-            // Note: if this read job succeeds, the value from the old place is still
-            // NOT persisted into the new account.
-        } else {
-            // interactive password dialog starts here
-
-            QString hint;
-            if (job->error() != EntryNotFound) {
-                hint = tr("Reading from keychain failed with error: '%1'").arg(
-                        job->errorString());
-            }
-
-            bool ok;
-            QString pwd = queryPassword(&ok, hint);
-            _fetchJobInProgress = false;
-            if (ok) {
-                _password = pwd;
-                _ready = true;
-                persist();
-            } else {
-                _password = QString::null;
-                _ready = false;
-            }
-            emit fetched();
+        QString hint;
+        if (job->error() != EntryNotFound) {
+            hint = tr("Reading from keychain failed with error: '%1'").arg(
+                    job->errorString());
         }
+
+        bool ok;
+        QString pwd = queryPassword(&ok, hint);
+        _fetchJobInProgress = false;
+        if (ok) {
+            _password = pwd;
+            _ready = true;
+            persist();
+        } else {
+            _password = QString::null;
+            _ready = false;
+        }
+        emit fetched();
     }
 }
 
