@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="125"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Opslagruimte: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="190"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Stop synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="281"/>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>Storage space: %1 (%3%) of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Opslagruimte: %1 (%3%) van %2 in gebruik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="441"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Verwijderen verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="145"/>
@@ -839,7 +839,7 @@ Totaal resterende tijd %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tonen mappenlijst mislukt. Fout: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="351"/>
@@ -1484,139 +1484,139 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="144"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="145"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Succesvol verbonden met %1: %2 versie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="168"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="169"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Kon geen verbinding maken met %1 op %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="180"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="181"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Time-out bij verbinden met %1 om %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="191"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="192"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Probeer te verbinden met %1 om %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="238"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="239"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>De geauthentiseerde aanvraag voor de server werd omgeleid naar &apos;%1&apos;. De URL is onjuist, de server is verkeerd geconfigureerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="260"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Er was een ongeldig antwoord op een geauthenticeerde webdav opvraging</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="252"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Toegang door server verboden. Om te verifiëren dat u toegang mag hebben, &lt;a href=&quot;%1&quot;&gt;klik hier&lt;/a&gt; om met uw browser toegang tot de service te krijgen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="302"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokale synch map %1 bestaat al, deze wordt ingesteld voor synchronisatie.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="304"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>Creating local sync folder %1...</source>
         <translation>Creëren lokale sync map %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="309"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="310"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="311"/>
         <source>failed.</source>
         <translation>mislukt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="312"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="313"/>
         <source>Could not create local folder %1</source>
         <translation>Kon lokale map %1 niet aanmaken</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="337"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="338"/>
         <source>No remote folder specified!</source>
         <translation>Geen externe map opgegeven!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="343"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
         <source>Error: %1</source>
         <translation>Fout: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="356"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>aanmaken map op ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="372"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="373"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Externe map %1 succesvol gecreërd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>De remote map %1 bestaat al. Verbinden voor synchroniseren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="376"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="378"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="377"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Het aanmaken van de map resulteerde in HTTP foutcode %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="380"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="381"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Het aanmaken van de remote map is mislukt, waarschijnlijk omdat uw inloggegevens fout waren.&lt;br/&gt;Ga terug en controleer uw inloggegevens.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="383"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="384"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Het aanmaken van de remote map is mislukt, waarschijnlijk omdat uw inloggegevens fout waren.&lt;/font&gt;&lt;br/&gt;ga terug en controleer uw inloggevens.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="388"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Aanmaken van remote map %1 mislukt met fout &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Er is een sync verbinding van %1 naar remote directory %2 opgezet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="411"/>
         <source>Successfully connected to %1!</source>
         <translation>Succesvol verbonden met %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Verbinding met %1 niet geslaagd. Probeer het nog eens.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
         <source>Folder rename failed</source>
         <translation>Hernoemen map mislukt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan de map niet verwijderen en backuppen, omdat de map of een bestand daarin, geopend is in een ander programma. Sluit de map of het bestand en drup op Opnieuw of annuleer de installatie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="483"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="484"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokale synch map %1 is succesvol aangemaakt!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
