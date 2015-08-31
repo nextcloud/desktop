@@ -330,6 +330,45 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
+QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString& path) const
+{
+    int slashPos = path.lastIndexOf('/');
+    if (slashPos == -1) {
+        // first level folder
+        for (int i = 0; i < _folders.size(); ++i) {
+            if (_folders.at(i)._folder == f) {
+                for (int j = 0; j < _folders.at(i)._subs.size(); ++j) {
+                    if (_folders.at(i)._subs.at(j)._name == path) {
+                        return index(j, 0, index(i));
+                    }
+                }
+                return QModelIndex();
+            }
+        }
+        return QModelIndex();
+    }
+
+    auto parent = indexForPath(f, path.left(slashPos));
+    if (!parent.isValid())
+        return parent;
+
+    if (slashPos == path.size() - 1) {
+        // The slash is the last part, we found our index
+        return parent;
+    }
+
+    auto parentInfo = infoForIndex(parent);
+    if (!parentInfo) {
+        return QModelIndex();
+    }
+    for (int i = 0; i < parentInfo->_subs.size(); ++i) {
+        if (parentInfo->_subs.at(i)._name == path.mid(slashPos  + 1)) {
+            return index(i, 0, parent);
+        }
+    }
+
+    return QModelIndex();
+}
 
 QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& parent) const
 {
