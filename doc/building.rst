@@ -61,7 +61,7 @@ To set up your build environment for development using HomeBrew_:
    Where ``x.z`` is the current version of Qt 5 that brew has installed
    on your machine.
 
-5. For compilation of the client, follow the :ref:`generic_build_instructions`.
+5. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
 6. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
    <install_dir>``. If you have a developer signing certificate, you can specify
@@ -126,7 +126,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
   The ownCloud binary will appear in the ``bin`` directory.
 
 Windows Installer Build (Cross-Compile)
------------------------
+---------------------------------------
 
 Due to the large number of dependencies, building the client installer for Windows
 is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
@@ -150,7 +150,7 @@ To cross-compile:
 
     zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-uac mingw32-cross-nsis-plugin-nsprocess
 
-4. Follow the `generic build instructions`_
+4. Follow the :ref:`generic-build-instructions`
 
 .. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
@@ -180,7 +180,7 @@ To cross-compile:
    you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
 
 
-.. _generic-build-instructions
+.. _generic-build-instructions:
 
 Generic Build Instructions
 --------------------------
