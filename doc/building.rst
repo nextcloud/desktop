@@ -119,7 +119,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
     cmake -G "MinGW Makefiles" ../client
     mingw32-make
 
-  .. note:: You can try using ninja to build in parallell using
+  .. note:: You can try using ninja to build in parallel using
      ``cmake -G Ninja ../client`` and ``ninja`` instead.
   .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
 
