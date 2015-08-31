@@ -167,6 +167,7 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
     virtual void slotTimeout() Q_DECL_OVERRIDE;
     virtual void metaDataChangedSlot();
+    virtual void encryptedSlot();
 
 private:
     bool _subdirFallback;

@@ -230,6 +230,15 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+#ifdef Q_OS_WIN
+        // Windows has a 128-char tray tooltip length limit.
+        QStringList accountNames;
+        foreach (AccountStatePtr a, problemAccounts) {
+            accountNames.append(a->account()->displayName());
+        }
+        _tray->setToolTip(tr("Disconnected from %1").arg(
+                accountNames.join(QLatin1String(", "))));
+#else
         QStringList messages;
         messages.append(tr("Disconnected from accounts:"));
         foreach (AccountStatePtr a, problemAccounts) {
@@ -242,6 +251,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             messages.append(message);
         }
         _tray->setToolTip(messages.join(QLatin1String("\n\n")));
+#endif
         return;
     }
 
@@ -259,15 +269,19 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     // create the tray blob message, check if we have an defined state
     if( overallResult.status() != SyncResult::Undefined ) {
-        QStringList allStatusStrings;
         if( map.count() > 0 ) {
+#ifdef Q_OS_WIN
+            // Windows has a 128-char tray tooltip length limit.
+            trayMessage = folderMan->statusToString(overallResult.status(), false);
+#else
+            QStringList allStatusStrings;
             foreach(Folder* folder, map.values()) {
                 qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
                 QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
                 allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
             }
-
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
+#endif
         } else {
             trayMessage = tr("No sync folders configured.");
         }
@@ -328,7 +342,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             folderName = Theme::instance()->appNameGUI();
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->alias()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->path()), this );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);
@@ -354,6 +368,12 @@ void ownCloudGui::setupContextMenu()
         }
     }
 
+    // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
+#ifdef Q_OS_LINUX
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    _tray->hide();
+#endif
+#endif
 
     if ( _contextMenu ) {
         _contextMenu->clear();
@@ -417,6 +437,13 @@ void ownCloudGui::setupContextMenu()
         _contextMenu->addAction(_actionLogin);
     }
     _contextMenu->addAction(_actionQuit);
+
+    // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
+#ifdef Q_OS_LINUX
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+    _tray->show();
+#endif
+#endif
 }
 
 

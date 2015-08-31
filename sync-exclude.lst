@@ -42,3 +42,5 @@ desktop.ini
 
 .synkron.*
 .sync.ffs_db
+.symform
+.symform-store

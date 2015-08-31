@@ -182,7 +182,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
 
 qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
 {
-#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD)
+#if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
     Q_UNUSED(ok)
     struct statvfs stat;
     statvfs(path.toUtf8().data(), &stat);
@@ -301,12 +301,12 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
 {
     struct Period { const char *name; quint64 msec; };
     Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000L },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000L },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000LL },
         { 0, 0 }
     };
 
@@ -379,7 +379,7 @@ bool Utility::isLinux()
 
 bool Utility::isBSD()
 {
-#if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
+#if defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
     return true;
 #else
     return false;

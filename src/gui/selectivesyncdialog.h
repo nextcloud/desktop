@@ -36,6 +36,7 @@ public:
 
     /// Returns a list of blacklisted paths, each including the trailing /
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
+    QStringList oldBlackList() const;
 
     //Estimate the total size of checked item (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = 0);
@@ -77,6 +78,7 @@ public:
     virtual void accept() Q_DECL_OVERRIDE;
 
     QStringList createBlackList() const;
+    QStringList oldBlackList() const;
 
     // Estimate the size of the total of sync'ed files from the server
     qint64 estimatedSize();

@@ -52,6 +52,9 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     connect(page, SIGNAL(loadFinished(bool)),
             this, SLOT(slotLoadFinished(bool)));
 
+    // Make sure to accept the same SSL certificate issues as the regular QNAM we use for syncing
+    QObject::connect(page->networkAccessManager(), SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+            _account.data(), SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
 
     // The Account keeps ownership of the cookie jar, it must outlive this webview.
     account->lendCookieJarTo(page->networkAccessManager());

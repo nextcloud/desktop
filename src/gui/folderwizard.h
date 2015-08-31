@@ -89,7 +89,8 @@ protected slots:
     void slotAddRemoteFolder();
     void slotCreateRemoteFolder(const QString&);
     void slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error);
-    void slotHandleNetworkError(QNetworkReply*);
+    void slotHandleMkdirNetworkError(QNetworkReply*);
+    void slotHandleLsColNetworkError(QNetworkReply*);
     void slotUpdateDirectories(const QStringList&);
     void slotRefreshFolders();
     void slotItemExpanded(QTreeWidgetItem*);
@@ -98,6 +99,7 @@ protected slots:
     void slotLsColFolderEntry();
     void slotTypedPathFound(const QStringList& subpaths);
 private:
+    LsColJob* runLsColJob(const QString& path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
     Ui_FolderWizardTargetPage _ui;

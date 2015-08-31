@@ -59,7 +59,8 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_AND_REMOVE,
   CSYNC_FILE_EXCLUDE_LIST,
   CSYNC_FILE_EXCLUDE_INVALID_CHAR,
-  CSYNC_FILE_EXCLUDE_LONG_FILENAME
+  CSYNC_FILE_EXCLUDE_LONG_FILENAME,
+  CSYNC_FILE_EXCLUDE_HIDDEN
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
@@ -126,8 +127,8 @@ SocketApi::SocketApi(QObject* parent)
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder*)), this, SLOT(slotUpdateFolderView(Folder*)));
-    connect(ProgressDispatcher::instance(), SIGNAL(jobCompleted(QString, const SyncFileItem &)),
-            SLOT(slotJobCompleted(QString, const SyncFileItem &)));
+    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, const SyncFileItem &, const PropagatorJob &)),
+            SLOT(slotItemCompleted(QString, const SyncFileItem &)));
     connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString, const SyncFileItem &)),
             this, SLOT(slotSyncItemDiscovered(QString, const SyncFileItem &)));
 }
@@ -140,6 +141,7 @@ SocketApi::~SocketApi()
     Q_ASSERT(_listeners.isEmpty() || _listeners.first()->parent() == &_localServer);
     _listeners.clear();
     slotClearExcludesList();
+    c_strlist_destroy(_excludes);
 }
 
 void SocketApi::slotClearExcludesList()
@@ -274,7 +276,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
     }
 }
 
-void SocketApi::slotJobCompleted(const QString &folder, const SyncFileItem &item)
+void SocketApi::slotItemCompleted(const QString &folder, const SyncFileItem &item)
 {
     if (_listeners.isEmpty()) {
         return;
@@ -579,6 +581,11 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 
     // Is it excluded?
     CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, fileName.toUtf8(), type);
+    if( folder->ignoreHiddenFiles()
+            && (fi.isHidden()
+                || fi.fileName().startsWith(QLatin1Char('.'))) ) {
+        excl = CSYNC_FILE_EXCLUDE_HIDDEN;
+    }
     if( excl != CSYNC_NOT_EXCLUDED ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }

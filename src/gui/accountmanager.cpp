@@ -129,6 +129,15 @@ void AccountManager::save(bool saveCredentials)
     }
 }
 
+void AccountManager::wantsAccountSavedSlot(AccountPtr a)
+{
+    qDebug() << "Saving account" << a->url().toString();
+    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    settings->beginGroup(a->id());
+    save(a, *settings, false); // don't save credentials they might not have been loaded yet
+    settings->endGroup();
+}
+
 void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
@@ -205,6 +214,9 @@ AccountState *AccountManager::addAccount(const AccountPtr& newAccount)
         id = generateFreeAccountId();
     }
     newAccount->_id = id;
+
+    QObject::connect(newAccount.data(), SIGNAL(wantsAccountSaved(AccountPtr)),
+            this, SLOT(wantsAccountSavedSlot(AccountPtr)));
 
     AccountStatePtr newAccountState(new AccountState(newAccount));
     _accounts << newAccountState;

@@ -405,6 +405,7 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.localPath = path;
     folderDefinition.targetPath = targetPath;
     folderDefinition.paused = paused;
+    folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
     folder = addFolderInternal(folderDefinition);
     if (folder) {
@@ -1174,6 +1175,24 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNe
 
     return QString();
 
+}
+
+bool FolderMan::ignoreHiddenFiles() const
+{
+    if (_folderMap.empty()) {
+        return true;
+    }
+    return _folderMap.begin().value()->ignoreHiddenFiles();
+}
+
+void FolderMan::setIgnoreHiddenFiles(bool ignore)
+{
+    // Note that the setting will revert to 'true' if all folders
+    // are deleted...
+    foreach (Folder* folder, _folderMap) {
+        folder->setIgnoreHiddenFiles(ignore);
+        folder->saveToSettings();
+    }
 }
 
 void FolderMan::restartApplication()

@@ -49,11 +49,10 @@ public:
     void fetchMore(const QModelIndex& parent) Q_DECL_OVERRIDE;
     bool hasChildren(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
-
     struct SubFolderInfo {
         SubFolderInfo()
             : _folder(0), _size(0), _fetched(false), _fetching(false), _isUndecided(false),
-            _checked(Qt::Checked) {}
+            _hasError(false), _checked(Qt::Checked) {}
         Folder *_folder;
         QString _name;
         QString _path;
@@ -63,6 +62,7 @@ public:
         bool _fetched; // If we did the LSCOL for this folder already
         bool _fetching;
         bool _isUndecided; // undecided folder are the big folder that the user has not accepted yet
+        bool _hasError; // If the last fetching job ended in an error
         Qt::CheckState _checked;
 
         struct Progress {
@@ -79,12 +79,18 @@ public:
 
     QVector<SubFolderInfo> _folders;
 
-    enum ItemType { RootFolder, SubFolder, AddButton/*, SelectiveSyncText*/ };
+    enum ItemType { RootFolder, SubFolder, AddButton, ErrorLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
+
+    /**
+     * return a QModelIndex for the given path within the given folder.
+     * Note: this method returns an invalid index if the path was not fetch from the server before
+     */
+    QModelIndex indexForPath(Folder *f, const QString &path) const;
 
 public slots:
     void slotUpdateFolderState(Folder *);

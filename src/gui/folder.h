@@ -52,7 +52,8 @@ class FolderDefinition
 {
 public:
     FolderDefinition()
-        : paused(false), ignoreHiddenFiles(false)
+        : paused(false)
+        , ignoreHiddenFiles(true)
     {}
 
     /// The name of the folder in the ui and internally
@@ -100,6 +101,12 @@ public:
      * alias or nickname
      */
     QString alias() const;
+    QString aliasGui() const; // since 2.0 we don't want to show aliases anymore, show the path instead
+
+    /**
+     * short path to display on the GUI  (native separators)
+     */
+    QString shortGuiPath() const;
 
     /**
      * local folder path
@@ -120,11 +127,6 @@ public:
      * remote folder path with server url
      */
     QUrl remoteUrl() const;
-
-    /**
-     * local folder path with native separators
-     */
-    QString nativePath() const;
 
     /**
      * switch sync on or off
@@ -240,7 +242,7 @@ private slots:
 
     void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const ProgressInfo& pi);
-    void slotJobCompleted(const SyncFileItem&);
+    void slotItemCompleted(const SyncFileItem&, const PropagatorJob&);
     void slotSyncItemDiscovered(const SyncFileItem & item);
 
     void slotRunEtagJob();

@@ -87,8 +87,17 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 }
                 longfile = QDir::cleanPath(longfile);
 
-                qDebug() << Q_FUNC_INFO << "Found change in" << longfile << "action:" << curEntry->Action;
-                emit changed(longfile);
+                // Skip modifications of folders: One of these is triggered for changes
+                // and new files in a folder, probably because of the folder's mtime
+                // changing. We don't need them.
+                bool skip = curEntry->Action == FILE_ACTION_MODIFIED
+                        && QFileInfo(longfile).isDir();
+
+                if (!skip) {
+                    //qDebug() << Q_FUNC_INFO << "Found change in" << longfile
+                    //         << "action:" << curEntry->Action;
+                    emit changed(longfile);
+                }
 
                 if (curEntry->NextEntryOffset == 0) {
                     break;

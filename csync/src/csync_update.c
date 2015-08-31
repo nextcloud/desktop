@@ -163,8 +163,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
   len = strlen(path);
 
-  /* Check if file is excluded */
-  excluded = csync_excluded(ctx, path,type);
+  if (type == CSYNC_FTW_TYPE_SKIP) {
+      excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
+  } else {
+    /* Check if file is excluded */
+    excluded = csync_excluded_traversal(ctx->excludes, path, type);
+  }
 
   if( excluded == CSYNC_NOT_EXCLUDED ) {
       /* Even if it is not excluded by a pattern, maybe it is to be ignored
@@ -233,12 +237,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       goto fastout; /* Skip copying of the etag. That's an important difference to upstream
                      * without etags. */
     }
-  }
-
-  /* Ignore non statable files and other strange cases. */
-  if (type == CSYNC_FTW_TYPE_SKIP) {
-    st->instruction = CSYNC_INSTRUCTION_NONE;
-    goto out;
   }
 
   if (excluded > CSYNC_NOT_EXCLUDED || type == CSYNC_FTW_TYPE_SLINK) {
@@ -433,6 +431,8 @@ out:
               st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME; /* File name is too long. */
           } else if (excluded == CSYNC_FILE_EXCLUDE_HIDDEN ) {
               st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
+          } else if (excluded == CSYNC_FILE_EXCLUDE_STAT_FAILED) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_STAT_FAILED;
           }
       }
   }

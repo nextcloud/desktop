@@ -75,18 +75,27 @@ Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
             ret = Qt::ItemNeverHasChildren;
 #endif
-            if (_folders.count() == 1 && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
+            if (!_accountState->isConnected()) {
+                return ret;
+            } else if (_folders.count() == 1) {
+                auto remotePath = _folders.at(0)._folder->remotePath();
                 // special case when syncing the entire owncloud: disable the add folder button (#3438)
-                return ret;
-            } else if (!_accountState->isConnected()) {
-                return ret;
+                if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+                    return ret;
+                }
             }
             return Qt::ItemIsEnabled | ret;
         }
+        case ErrorLabel:
+            return Qt::ItemIsEnabled
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+                    | Qt::ItemNeverHasChildren
+#endif
+                    ;
         case RootFolder:
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+            return  Qt::ItemIsEnabled;
         case SubFolder:
-            return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
+            return  Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
     }
     return 0;
 }
@@ -106,12 +115,14 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         } else if (role == Qt::ToolTipRole) {
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
-            } else if (_folders.count() == 1
-                        && _folders.at(0)._folder->remotePath() == QLatin1String("/")) {
-                // Syncing the entire owncloud: disable the add folder button (#3438)
-                return tr("Adding folder is disabled because your are already syncing all your files. "
-                          "If you want to sync multiple folders, please remove the currently "
-                          "configured root folder.");
+            } if (_folders.count() == 1) {
+                auto remotePath = _folders.at(0)._folder->remotePath();
+                if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+                    // Syncing the entire owncloud: disable the add folder button (#3438)
+                    return tr("Adding folder is disabled because your are already syncing all your files. "
+                            "If you want to sync multiple folders, please remove the currently "
+                            "configured root folder.");
+                }
             }
             return tr("Click this button to add a folder to synchronize.");
         }
@@ -136,6 +147,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
     }
         return QVariant();
+    case ErrorLabel:
+        switch(role) {
+            case Qt::DisplayRole: return tr("Error while loading the list of folders from the server.");
+            default: return QVariant();
+        }
     case RootFolder:
         break;
     }
@@ -149,8 +165,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
-    case FolderStatusDelegate::FolderPathRole         : return  f->nativePath();
+    case FolderStatusDelegate::FolderPathRole         : return  f->shortGuiPath();
     case FolderStatusDelegate::FolderSecondPathRole   : return  f->remotePath();
+    case FolderStatusDelegate::HeaderRole             : return  f->aliasGui();
     case FolderStatusDelegate::FolderAliasRole        : return  f->alias();
     case FolderStatusDelegate::FolderSyncPaused       : return  f->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected : return  accountConnected;
@@ -269,19 +286,24 @@ int FolderStatusModel::columnCount(const QModelIndex&) const
 int FolderStatusModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid()) {
-        return _folders.count() + 1;
+        if( Theme::instance()->singleSyncFolder() &&  _folders.count() != 0) {
+            // "Add folder" button not visible in the singleSyncFolder configuration.
+            return _folders.count();
+        }
+        return _folders.count() + 1; // +1 for the "add folder" button
     }
-
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
+    if (info->_hasError)
+        return 1;
     return info->_subs.count();
 }
 
 FolderStatusModel::ItemType FolderStatusModel::classify(const QModelIndex& index) const
 {
-    if (index.internalPointer()) {
-        return SubFolder;
+    if (auto sub = static_cast<SubFolderInfo*>(index.internalPointer())) {
+        return sub->_hasError ? ErrorLabel : SubFolder;
     }
     if (index.row() < _folders.count()) {
         return RootFolder;
@@ -293,8 +315,12 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
 {
     if (!index.isValid())
         return 0;
-    if (auto parentInfo = index.internalPointer()) {
-        return &static_cast<SubFolderInfo*>(parentInfo)->_subs[index.row()];
+    if (auto parentInfo = static_cast<SubFolderInfo*>(index.internalPointer())) {
+        if (parentInfo->_hasError) {
+            // Error label
+            return 0;
+        }
+        return &parentInfo->_subs[index.row()];
     } else {
         if (index.row() >= _folders.count()) {
             // AddButton
@@ -304,6 +330,45 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
+QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString& path) const
+{
+    int slashPos = path.lastIndexOf('/');
+    if (slashPos == -1) {
+        // first level folder
+        for (int i = 0; i < _folders.size(); ++i) {
+            if (_folders.at(i)._folder == f) {
+                for (int j = 0; j < _folders.at(i)._subs.size(); ++j) {
+                    if (_folders.at(i)._subs.at(j)._name == path) {
+                        return index(j, 0, index(i));
+                    }
+                }
+                return QModelIndex();
+            }
+        }
+        return QModelIndex();
+    }
+
+    auto parent = indexForPath(f, path.left(slashPos));
+    if (!parent.isValid())
+        return parent;
+
+    if (slashPos == path.size() - 1) {
+        // The slash is the last part, we found our index
+        return parent;
+    }
+
+    auto parentInfo = infoForIndex(parent);
+    if (!parentInfo) {
+        return QModelIndex();
+    }
+    for (int i = 0; i < parentInfo->_subs.size(); ++i) {
+        if (parentInfo->_subs.at(i)._name == path.mid(slashPos  + 1)) {
+            return index(i, 0, parent);
+        }
+    }
+
+    return QModelIndex();
+}
 
 QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& parent) const
 {
@@ -311,18 +376,22 @@ QModelIndex FolderStatusModel::index(int row, int column, const QModelIndex& par
         return createIndex(row, column/*, nullptr*/);
     }
     switch(classify(parent)) {
-        case AddButton: return QModelIndex();
+        case AddButton:
+        case ErrorLabel:
+            return QModelIndex();
         case RootFolder:
             if (_folders.count() <= parent.row())
                 return QModelIndex(); // should not happen
             return createIndex(row, column, const_cast<SubFolderInfo *>(&_folders[parent.row()]));
-        case SubFolder:
-            //return QModelIndex();
-            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.count() <= parent.row())
+        case SubFolder: {
+            auto info = static_cast<SubFolderInfo*>(parent.internalPointer());
+            if (info->_subs.count() <= parent.row())
                 return QModelIndex(); // should not happen
-            if (static_cast<SubFolderInfo*>(parent.internalPointer())->_subs.at(parent.row())._subs.count() <= row)
+            if (!info->_subs.at(parent.row())._hasError
+                    && info->_subs.at(parent.row())._subs.count() <= row)
                 return QModelIndex(); // should not happen
-            return createIndex(row, column, &static_cast<SubFolderInfo*>(parent.internalPointer())->_subs[parent.row()]);
+            return createIndex(row, column, &info->_subs[parent.row()]);
+        }
     }
     return QModelIndex();
 }
@@ -337,17 +406,18 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
         case AddButton:
             return QModelIndex();
         case SubFolder:
+        case ErrorLabel:
             break;
     }
-    auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_subs[child.row()]._pathIdx;
+    auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_pathIdx;
     int i = 1;
     Q_ASSERT(pathIdx.at(0) < _folders.count());
-    if (pathIdx.count() == 2) {
+    if (pathIdx.count() == 1) {
         return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
-    while (i < pathIdx.count() - 2) {
+    while (i < pathIdx.count() - 1) {
         Q_ASSERT(pathIdx.at(i) < info->_subs.count());
         info = &info->_subs[pathIdx.at(i)];
         ++i;
@@ -422,7 +492,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     auto list = list_;
     list.removeFirst(); // remove the parent item
 
-    beginInsertRows(idx, 0, list.count());
+    if (parentInfo->_hasError) {
+        beginRemoveRows(idx, 0 ,0);
+        parentInfo->_hasError = false;
+        endRemoveRows();
+    }
+
+    beginInsertRows(idx, 0, list.count() - 1);
 
     QUrl url = parentInfo->_folder->remoteUrl();
     QString pathToRemove = url.path();
@@ -489,14 +565,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
 {
-/*
-    if (r->error() == QNetworkReply::ContentNotFoundError) {
-        _loading->setText(tr("No subfolders currently on the server."));
-    } else {
-        _loading->setText(tr("An error occured while loading the list of sub folders."));
-    }
-    _loading->resize(_loading->sizeHint()); // because it's not in a layout
-*/
     auto job = qobject_cast<LsColJob *>(sender());
     Q_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
@@ -508,6 +576,10 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
         parentInfo->_fetching = false;
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
+        } else if (!parentInfo->_hasError) {
+            beginInsertRows(idx, 0, 0);
+            parentInfo->_hasError = true;
+            endInsertRows();
         }
     }
 }
@@ -566,13 +638,14 @@ void FolderStatusModel::slotApplySelectiveSync()
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
-        // The folders that were undecided should be part of the white list if they are not in the blacklist
-        QStringList toAddToWhiteList;
-        foreach (const auto &undec, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList)) {
-            if (!blackList.contains(undec)) {
-                toAddToWhiteList.append(undec);
-            }
-        }
+        auto blackListSet = blackList.toSet();
+        auto oldBlackListSet = oldBlackList.toSet();
+
+        // The folders that were undecided or blacklisted and that are now checked should go on the white list.
+        // The user confirmed them already just now.
+        QStringList toAddToWhiteList = ((oldBlackListSet + folder->journalDb()->getSelectiveSyncList(
+                SyncJournalDb::SelectiveSyncUndecidedList).toSet()) - blackListSet).toList();
+
         if (!toAddToWhiteList.isEmpty()) {
             auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
             whiteList += toAddToWhiteList;
@@ -582,8 +655,6 @@ void FolderStatusModel::slotApplySelectiveSync()
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
         // do the sync if there was changes
-        auto blackListSet = blackList.toSet();
-        auto oldBlackListSet = oldBlackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
             if (folder->isBusy()) {
@@ -792,6 +863,23 @@ void FolderStatusModel::slotFolderSyncStateChange()
 
     // update the icon etc. now
     slotUpdateFolderState(f);
+
+    if (state == SyncResult::Success) {
+        foreach (const SyncFileItemPtr &i, f->syncResult().syncFileItemVector()) {
+            if (i->_isDirectory && (i->_instruction == CSYNC_INSTRUCTION_NEW
+                    || i->_instruction == CSYNC_INSTRUCTION_REMOVE)) {
+                // There is a new or a removed folder. reset all data
+                _folders[folderIndex]._fetched = false;
+                _folders[folderIndex]._fetching = false;
+                if (!_folders.at(folderIndex)._subs.isEmpty()) {
+                    beginRemoveRows(index(folderIndex), 0, _folders.at(folderIndex)._subs.count() - 1);
+                    _folders[folderIndex]._subs.clear();
+                    endRemoveRows();
+                }
+                return;
+            }
+        }
+    }
 }
 
 void FolderStatusModel::resetFolders()

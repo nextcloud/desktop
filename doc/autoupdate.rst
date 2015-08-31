@@ -106,7 +106,7 @@ using the system-wide ``.plist`` file.  To access this file:
 
  	/Library/Preferences/
 
- 2. Locate and open the following file::
+2. Locate and open the following file::
 
  	com.owncloud.desktopclient.plist
 

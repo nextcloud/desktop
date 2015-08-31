@@ -403,6 +403,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
+    case CSYNC_STATUS_INDIVIDUAL_STAT_FAILED:
+        item->_errorString = tr("Stat failed.");
+        break;
     case CSYNC_STATUS_SERVICE_UNAVAILABLE:
         item->_errorString = QLatin1String("Server temporarily unavailable.");
         break;
@@ -799,8 +802,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator (_account, session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
-    connect(_propagator.data(), SIGNAL(completed(const SyncFileItem &)),
-            this, SLOT(slotJobCompleted(const SyncFileItem &)));
+    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
@@ -855,7 +858,7 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     }
 }
 
-void SyncEngine::slotJobCompleted(const SyncFileItem &item)
+void SyncEngine::slotItemCompleted(const SyncFileItem &item, const PropagatorJob &job)
 {
     const char * instruction_str = csync_instruction_str(item._instruction);
     qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
@@ -867,7 +870,7 @@ void SyncEngine::slotJobCompleted(const SyncFileItem &item)
     }
 
     emit transmissionProgress(*_progressInfo);
-    emit jobCompleted(item);
+    emit itemCompleted(item, job);
 }
 
 void SyncEngine::slotFinished()

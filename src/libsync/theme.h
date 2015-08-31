@@ -111,6 +111,10 @@ public:
      * Characteristics: bool if more than one sync folder is allowed
      */
     virtual bool singleSyncFolder() const;
+    /**
+     * When true, there can only be one account.
+     */
+    virtual bool singleAccount() const;
 
     /**
     * URL to help file

@@ -10,8 +10,11 @@
         <file>resources/warning.png</file>
         <file>resources/warning@2x.png</file>
         <file>resources/settings.png</file>
+        <file>resources/settings@2x.png</file>
         <file>resources/activity.png</file>
+        <file>resources/activity@2x.png</file>
         <file>resources/network.png</file>
+        <file>resources/network@2x.png</file>
         <file>resources/lock-http.png</file>
         <file>resources/lock-http@2x.png</file>
         <file>resources/lock-https.png</file>

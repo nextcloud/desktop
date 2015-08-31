@@ -27,6 +27,7 @@
 #include "accountstate.h"
 #include "quotainfo.h"
 #include "accountmanager.h"
+#include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
 
 #include <math.h>
@@ -101,7 +102,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     addAction(syncNowAction);
 
     connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
-    connect(ui->_folderList, SIGNAL(doubleClicked(QModelIndex)),SLOT(slotDoubleClicked(QModelIndex)));
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
@@ -111,20 +111,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-    ui->connectLabel->setWordWrap(true);
-    ui->connectLabel->setOpenExternalLinks(true);
-    QFont smallFont = ui->quotaInfoLabel->font();
-    smallFont.setPointSize(smallFont.pointSize() * 0.8);
-    ui->quotaInfoLabel->setFont(smallFont);
-
-    _quotaLabel = new QLabel(ui->quotaProgressBar);
-    QVBoxLayout *quotaProgressLayout = new QVBoxLayout(ui->quotaProgressBar);
-    quotaProgressLayout->setContentsMargins(-1,0,-1,0);
-    quotaProgressLayout->setSpacing(0);
-    quotaProgressLayout->addWidget(_quotaLabel);
-
-    // This ensures the progress bar is big enough for the label.
-    ui->quotaProgressBar->setMinimumHeight(_quotaLabel->height());
 
     ui->connectLabel->setText(tr("No account configured."));
 
@@ -156,10 +142,12 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     QMenu *menu = new QMenu(tv);
     menu->setAttribute(Qt::WA_DeleteOnClose);
+    connect(menu->addAction(tr("Open folder")), SIGNAL(triggered(bool)),
+            this, SLOT(slotOpenCurrentFolder()));
+    connect(menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync")), SIGNAL(triggered(bool)),
+            this, SLOT(slotEnableCurrentFolder()));
     connect(menu->addAction(tr("Remove folder")), SIGNAL(triggered(bool)),
             this, SLOT(slotRemoveCurrentFolder()));
-    connect(menu->addAction(folderPaused ? tr("Resume") : tr("Pause")), SIGNAL(triggered(bool)),
-            this, SLOT(slotEnableCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
 
@@ -169,6 +157,14 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
             && indx.flags() & Qt::ItemIsEnabled) {
         slotAddFolder();
         return;
+    }
+    if (_model->classify(indx) == FolderStatusModel::RootFolder) {
+        // tries to find if we clicked on the '...' button.
+        QTreeView *tv = ui->_folderList;
+        auto pos = tv->mapFromGlobal(QCursor::pos());
+        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx)).contains(pos)) {
+            slotCustomContextMenuRequested(pos);
+        }
     }
 }
 
@@ -211,15 +207,11 @@ void AccountSettings::slotFolderWizardAccepted()
         }
     }
 
-    bool ignoreHidden = true;
     /* take the value from the definition of already existing folders. All folders have
-     * the same setting so far, that's why it's ok to check the first one.
+     * the same setting so far.
      * The default is to not sync hidden files
      */
-    if( folderMan->map().count() > 0) {
-        ignoreHidden = folderMan->map().begin().value()->ignoreHiddenFiles();
-    }
-    definition.ignoreHiddenFiles = ignoreHidden;
+    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
     auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
@@ -253,14 +245,18 @@ void AccountSettings::slotRemoveCurrentFolder()
         QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
-            // remove from file system through folder man
-            // _model->removeRow( selected.row() );
-            int ret = QMessageBox::question( this, tr("Confirm Folder Remove"),
-                                             tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                                "<p><b>Note:</b> This will not remove the files from your client.</p>").arg(alias),
-                                             QMessageBox::Yes|QMessageBox::No );
+            QMessageBox messageBox(QMessageBox::Question,
+                                   tr("Confirm Folder Remove"),
+                                   tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
+                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
+                                   QMessageBox::NoButton,
+                                   this);
+            QPushButton* yesButton =
+                    messageBox.addButton(tr("Stop syncing"), QMessageBox::YesRole);
+            messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
-            if( ret == QMessageBox::No ) {
+            messageBox.exec();
+            if (messageBox.clickedButton() != yesButton) {
                 return;
             }
 
@@ -299,13 +295,14 @@ void AccountSettings::slotResetCurrentFolder()
     }
 }
 
-void AccountSettings::slotDoubleClicked( const QModelIndex& indx )
+void AccountSettings::slotOpenCurrentFolder()
 {
-    if( ! indx.isValid() ) return;
-    QString alias = _model->data( indx, FolderStatusDelegate::FolderAliasRole ).toString();
-    if (alias.isEmpty()) return;
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
 
-    emit openFolderAlias( alias );
+    if( selected.isValid() ) {
+        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+        emit openFolderAlias(alias);
+    }
 }
 
 void AccountSettings::showConnectionLabel( const QString& message, QStringList errors )
@@ -409,25 +406,20 @@ void AccountSettings::slotOpenOC()
 void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 {
     if( total > 0 ) {
-        ui->storageGroupBox->setVisible(true);
         ui->quotaProgressBar->setVisible(true);
-        ui->quotaInfoLabel->setVisible(true);
         ui->quotaProgressBar->setEnabled(true);
         // workaround the label only accepting ints (which may be only 32 bit wide)
         ui->quotaProgressBar->setMaximum(100);
-        int qVal = qRound(used/(double)total * 100);
-        if( qVal > 100 ) qVal = 100;
-        ui->quotaProgressBar->setValue(qVal);
+        const double percent = used/(double)total*100;
+        const int percentInt = qMin(qRound(percent), 100);
+        ui->quotaProgressBar->setValue(percentInt);
         QString usedStr = Utility::octetsToString(used);
         QString totalStr = Utility::octetsToString(total);
-        double percent = used/(double)total*100;
         QString percentStr = Utility::compactFormatDouble(percent, 1);
-        _quotaLabel->setText(tr("%1 (%3%) of %2 server space in use.").arg(usedStr, totalStr, percentStr));
+        ui->quotaInfoLabel->setText(tr("Storage space: %1 (%3%) of %2 in use").arg(usedStr, totalStr, percentStr));
     } else {
-        ui->storageGroupBox->setVisible(false);
-        ui->quotaInfoLabel->setVisible(false);
         ui->quotaProgressBar->setMaximum(0);
-        _quotaLabel->setText(tr("Currently there is no storage usage information available."));
+        ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
     }
 }
 
@@ -488,8 +480,10 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
     if (undecidedFolder.isEmpty()) {
+        ui->selectiveSyncNotification->setVisible(false);
         ui->selectiveSyncNotification->setText(QString());
     } else {
+        ui->selectiveSyncNotification->setVisible(true);
         ui->selectiveSyncNotification->setText(
             tr("There are new folders that were not synchronized because they are too big: %1")
                 .arg(undecidedFolder.join(tr(", "))));
@@ -497,7 +491,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 
     ui->selectiveSyncApply->setEnabled(_model->isDirty() || !undecidedFolder.isEmpty());
-    ui->selectiveSyncCancel->setEnabled(_model->isDirty());
     bool wasVisible = !ui->selectiveSyncStatus->isHidden();
     if (wasVisible != shouldBeVisible) {
         QSize hint = ui->selectiveSyncStatus->sizeHint();
@@ -516,19 +509,35 @@ void AccountSettings::refreshSelectiveSyncStatus()
 
 void AccountSettings::slotDeleteAccount()
 {
-    int ret = QMessageBox::question( this, tr("Confirm Account Delete"),
-                                     tr("<p>Do you really want to delete the account <i>%1</i>?</p>"
-                                     "<p><b>Note:</b> This will not remove the files from your client.</p>")
-                                        .arg(_accountState->account()->displayName()),
-                                     QMessageBox::Yes|QMessageBox::No );
+    // Deleting the account potentially deletes 'this', so
+    // the QMessageBox should be destroyed before that happens.
+    {
+        QMessageBox messageBox(QMessageBox::Question,
+                               tr("Confirm Account Delete"),
+                               tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+                                  "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+                                 .arg(_accountState->account()->displayName()),
+                               QMessageBox::NoButton,
+                               this);
+        QPushButton* yesButton =
+                messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+        messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
-    if( ret == QMessageBox::No ) {
-        return;
+        messageBox.exec();
+        if (messageBox.clickedButton() != yesButton) {
+            return;
+        }
     }
 
     auto manager = AccountManager::instance();
     manager->deleteAccount(_accountState);
     manager->save();
+
+    // if there is no more account, show the wizard.
+    if( manager->accounts().isEmpty() ) {
+        OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+    }
+
 }
 
 bool AccountSettings::event(QEvent* e)

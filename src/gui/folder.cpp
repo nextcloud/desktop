@@ -177,6 +177,19 @@ void Folder::checkLocalPath()
     }
 }
 
+QString Folder::aliasGui() const
+{
+    if (remotePath().length() > 0 && remotePath() != QLatin1String("/")) {
+        QString a = QFile(remotePath()).fileName();
+        if (a.startsWith('/')) {
+            a = a.remove(0, 1);
+        }
+        return a;
+    } else {
+        return Theme::instance()->appNameGUI();
+    }
+}
+
 QString Folder::alias() const
 {
     return _definition.alias;
@@ -190,6 +203,23 @@ QString Folder::path() const
     }
     return p;
 }
+
+QString Folder::shortGuiPath() const
+{
+    QString p = _definition.localPath;
+    QString home = QDir::homePath();
+    if( ! home.endsWith('/') ) {
+        home.append('/');
+    }
+    if (p.startsWith(home)) {
+        p = p.mid(home.length());
+    }
+    if (p.length() > 1 && p.endsWith('/')) {
+        p.chop(1);
+    }
+    return QDir::toNativeSeparators(p);
+}
+
 
 bool Folder::ignoreHiddenFiles()
 {
@@ -226,11 +256,6 @@ QUrl Folder::remoteUrl() const
 {
     Q_ASSERT(_accountState);
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
-}
-
-QString Folder::nativePath() const
-{
-    return QDir::toNativeSeparators(path());
 }
 
 bool Folder::syncPaused() const
@@ -848,7 +873,8 @@ void Folder::startSync(const QStringList &pathList)
                     SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
     connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
-    connect(_engine.data(), SIGNAL(jobCompleted(const SyncFileItem &)), this, SLOT(slotJobCompleted(const SyncFileItem &)));
+    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 
@@ -1033,8 +1059,8 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
     ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
 }
 
-// a job is completed: count the errors and forward to the ProgressDispatcher
-void Folder::slotJobCompleted(const SyncFileItem &item)
+// a item is completed: count the errors and forward to the ProgressDispatcher
+void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
 {
     if (item.hasErrorStatus()) {
         _stateLastSyncItemsWithError.insert(item._file);
@@ -1044,7 +1070,7 @@ void Folder::slotJobCompleted(const SyncFileItem &item)
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
-    emit ProgressDispatcher::instance()->jobCompleted(alias(), item);
+    emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
 }
 
 void Folder::slotSyncItemDiscovered(const SyncFileItem & item)

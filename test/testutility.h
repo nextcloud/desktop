@@ -106,6 +106,10 @@ private slots:
     void testVersionOfInstalledBinary()
     {
 	if( isLinux() ) {
+            if ( qgetenv("DISPLAY").isEmpty() ) {
+                // Current requires an X-Server
+                return;
+            }
             QString ver = versionOfInstalledBinary(OWNCLOUD_BIN);
 	    qDebug() << "Version of installed ownCloud Binary: " << ver;
 	    QVERIFY( !ver.isEmpty());

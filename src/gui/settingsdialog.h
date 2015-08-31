@@ -20,6 +20,8 @@
 #include "progressdispatcher.h"
 
 class QAction;
+class QActionGroup;
+class QToolBar;
 class QStandardItemModel;
 
 namespace OCC {
@@ -49,20 +51,34 @@ public:
     void addAccount(const QString &title, QWidget *widget);
 
 public slots:
+    void showFirstPage();
     void showActivityPage();
     void slotSwitchPage(QAction *action);
 
 protected:
     void reject() Q_DECL_OVERRIDE;
     void accept() Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *) Q_DECL_OVERRIDE;
 
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
 
 private:
+    void customizeStyle();
+    QIcon createColorAwareIcon(const QString &name);
+    QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
+    void addActionToToolBar(QAction *action);
     Ui::SettingsDialog * const _ui;
-    QHash<QAction*, QWidget*> _actions;
+
+    QActionGroup* _actionGroup;
+    // Maps the actions from the action group to the corresponding widgets
+    QHash<QAction*, QWidget*> _actionGroupWidgets;
+
+    QToolBar* _toolBar;
+    // Maps the actions from the action group to the toolbar actions
+    QHash<QAction*, QAction*> _toolbarAccountActions;
+
     QAction * _protocolAction;
     ownCloudGui *_gui;
 };

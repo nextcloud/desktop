@@ -80,6 +80,7 @@ void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();
     account->setCredentials(CredentialsFactory::create("dummy"));
+    account->setUrl(Theme::instance()->overrideServerUrl());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
 
@@ -470,6 +471,8 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             }
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
+            folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,

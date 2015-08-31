@@ -26,6 +26,7 @@
 #include "syncfileitem.h"
 #include "folder.h"
 #include "openfilemanager.h"
+#include "owncloudpropagator.h"
 
 #include "ui_protocolwidget.h"
 
@@ -42,6 +43,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
             this, SLOT(slotProgressInfo(QString,ProgressInfo)));
+    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString,SyncFileItem,PropagatorJob)),
+            this, SLOT(slotItemCompleted(QString,SyncFileItem,PropagatorJob)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -96,7 +99,7 @@ void ProtocolWidget::copyToClipboard()
             << qSetFieldWidth(64)
             << child->data(1,Qt::DisplayRole).toString()
                 // folder
-            << qSetFieldWidth(15)
+            << qSetFieldWidth(30)
             << child->data(2, Qt::DisplayRole).toString()
                 // action
             << qSetFieldWidth(15)
@@ -158,7 +161,7 @@ void ProtocolWidget::cleanIgnoreItems(const QString& folder)
     for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
         bool isErrorItem = item->data(0, IgnoredIndicatorRole).toBool();
-        QString itemFolder = item->data(2, Qt::DisplayRole).toString();
+        QString itemFolder = item->data(2, Qt::UserRole).toString();
         if( isErrorItem && itemFolder == folder ) {
             delete item;
         }
@@ -176,7 +179,7 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
 
 void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
 {
-    QString folderName = item->text(2);
+    QString folderName = item->data(2, Qt::UserRole).toString();
     QString fileName = item->text(1);
 
     Folder *folder = FolderMan::instance()->folder(folderName);
@@ -200,6 +203,11 @@ QString ProtocolWidget::fixupFilename( const QString& name )
 
 QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
 {
+    auto f = FolderMan::instance()->folder(folder);
+    if (!f) {
+        return 0;
+    }
+
     QStringList columns;
     QDateTime timestamp = QDateTime::currentDateTime();
     const QString timeStr = timeString(timestamp);
@@ -207,7 +215,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
 
     columns << timeStr;
     columns << fixupFilename(item._originalFile);
-    columns << folder;
+    columns << f->shortGuiPath();
 
     // If the error string is set, it's prefered because it is a useful user message.
     QString message = item._errorString;
@@ -238,6 +246,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(1, item._file);
     twitem->setToolTip(3, message );
+    twitem->setData(2,  Qt::UserRole, folder);
     return twitem;
 }
 
@@ -276,17 +285,21 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
         //Sync completed
         computeResyncButtonEnabled();
     }
-    SyncFileItem last = progress._lastCompletedItem;
-    if (last.isEmpty()) return;
+}
 
-    QTreeWidgetItem *item = createCompletedTreewidgetItem(folder, last);
-    if(item) {
-        _ui->_treeWidget->insertTopLevelItem(0, item);
+void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem &item, const PropagatorJob &job)
+{
+    if (qobject_cast<const PropagateDirectory*>(&job)) {
+        return;
+    }
+
+    QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, item);
+    if(line) {
+        _ui->_treeWidget->insertTopLevelItem(0, line);
         if (!_copyBtn->isEnabled()) {
             _copyBtn->setEnabled(true);
         }
     }
 }
-
 
 }

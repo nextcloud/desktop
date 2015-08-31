@@ -69,7 +69,15 @@ FolderWizardLocalPath::FolderWizardLocalPath()
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
     registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
-    _ui.aliasLineEdit->setText( Theme::instance()->appNameGUI() );
+
+    QString newAlias = Theme::instance()->appName();
+    int count = 0;
+    while (FolderMan::instance()->folder(newAlias)) {
+        // There is already a folder configured with this name and folder names need to be unique
+        newAlias = Theme::instance()->appName() + QString::number(++count);
+    }
+    _ui.aliasLineEdit->setText( newAlias );
+
     _ui.aliasLineEdit->setToolTip(tr("The directory alias is a descriptive name for this sync connection."));
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
@@ -157,6 +165,11 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 
         QDir pickedDir(dir);
         QString newAlias = pickedDir.dirName();
+        int count = 0;
+        while (FolderMan::instance()->folder(newAlias)) {
+            // There is already a folder configured with this name and folder names need to be unique
+            newAlias = pickedDir.dirName() + QString::number(++count);
+        }
         if( !newAlias.isEmpty() ) {
             _ui.aliasLineEdit->setText(newAlias);
         }
@@ -227,7 +240,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
                  SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotHandleNetworkError(QNetworkReply*)));
+    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotHandleMkdirNetworkError(QNetworkReply*)));
     job->start();
 }
 
@@ -242,7 +255,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
     }
 }
 
-void FolderWizardRemotePath::slotHandleNetworkError(QNetworkReply *reply)
+void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
     if( reply && !_account->credentials()->stillValid(reply) ) {
@@ -251,6 +264,12 @@ void FolderWizardRemotePath::slotHandleNetworkError(QNetworkReply *reply)
         showWarn(tr("Failed to create the folder on %1. Please check manually.")
                  .arg(Theme::instance()->appNameGUI()));
     }
+}
+
+void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
+{
+    showWarn(tr("Failed to list a folder. Error: %1")
+             .arg(errorMessage(reply->errorString(), reply->readAll())));
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
@@ -343,11 +362,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 
 void FolderWizardRemotePath::slotRefreshFolders()
 {
-    LsColJob *job = new LsColJob(_account, "/", this);
-    job->setProperties(QList<QByteArray>() << "resourcetype");
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-            SLOT(slotUpdateDirectories(QStringList)));
-    job->start();
+    runLsColJob("/");
     _ui.folderTreeWidget->clear();
     _ui.folderEntry->clear();
 }
@@ -355,11 +370,7 @@ void FolderWizardRemotePath::slotRefreshFolders()
 void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    LsColJob *job = new LsColJob(_account, dir, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype");
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-            SLOT(slotUpdateDirectories(QStringList)));
-    job->start();
+    runLsColJob(dir);
 }
 
 void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
@@ -392,17 +403,30 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
     if (path.startsWith(QLatin1Char('/')))
         path = path.mid(1);
 
-    LsColJob *job = new LsColJob(_account, path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype");
+    LsColJob *job = runLsColJob(path);
+    // no error handling, no updating, we do this manually
+    disconnect(job, 0, this, 0);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotTypedPathFound(QStringList)));
-    job->start();
 }
 
 void FolderWizardRemotePath::slotTypedPathFound(const QStringList& subpaths)
 {
     slotUpdateDirectories(subpaths);
     selectByPath(_ui.folderEntry->text());
+}
+
+LsColJob* FolderWizardRemotePath::runLsColJob(const QString& path)
+{
+    LsColJob *job = new LsColJob(_account, path, this);
+    job->setProperties(QList<QByteArray>() << "resourcetype");
+    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
+            SLOT(slotUpdateDirectories(QStringList)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
+            SLOT(slotHandleLsColNetworkError(QNetworkReply*)));
+    job->start();
+
+    return job;
 }
 
 FolderWizardRemotePath::~FolderWizardRemotePath()

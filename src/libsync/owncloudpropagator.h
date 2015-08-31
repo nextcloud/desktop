@@ -94,7 +94,7 @@ signals:
     /**
      * Emitted when one item has been completed within a job.
      */
-    void completed(const SyncFileItem &);
+    void itemCompleted(const SyncFileItem &, const PropagatorJob &);
 
     /**
      * Emitted when all the sub-jobs have been finished and
@@ -160,7 +160,7 @@ public slots:
  * @brief Propagate a directory, and all its sub entries.
  * @ingroup libsync
  */
-class PropagateDirectory : public PropagatorJob {
+class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob {
     Q_OBJECT
 public:
     // e.g: create the directory
@@ -207,7 +207,8 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-            connect(next, SIGNAL(completed(const SyncFileItem &)), this, SIGNAL(completed(const SyncFileItem &)));
+            connect(next, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+                    this, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
             connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
             _runningNow++;
@@ -333,7 +334,7 @@ private slots:
     void scheduleNextJob();
 
 signals:
-    void completed(const SyncFileItem &);
+    void itemCompleted(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
     void finished();
     /**

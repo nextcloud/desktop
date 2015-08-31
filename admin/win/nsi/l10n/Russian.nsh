@@ -38,6 +38,6 @@ StrCpy $UAC_ERROR_ELEVATE "Невозможно повысить привиле�
 StrCpy $UAC_INSTALLER_REQUIRE_ADMIN "Этому установщику требуются права администратора, попробуйте ещё раз"
 StrCpy $INIT_INSTALLER_RUNNING "Установщик уже запущен."
 StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Этому деинсталлятору требуются права администратора, попробуйте ещё раз"
+StrCpy $UAC_ERROR_LOGON_SERVICE "Служба входа в систему не запущена, прерывание!"
 StrCpy $INIT_UNINSTALLER_RUNNING "Программа удаления уже выполняется."
 StrCpy $SectionGroup_Shortcuts "Ярлыки"
-StrCpy $UAC_ERROR_LOGON_SERVICE "Logon service is not running, aborting!"

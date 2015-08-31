@@ -66,7 +66,7 @@ private slots:
     void slotNewConnection();
     void onLostConnection();
     void slotReadSocket();
-    void slotJobCompleted(const QString &, const SyncFileItem &);
+    void slotItemCompleted(const QString &, const SyncFileItem &);
     void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
 
 private:

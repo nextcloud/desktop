@@ -44,24 +44,7 @@
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
-    c_strlist_t *list;
-
-    if (*inList == NULL) {
-        *inList = c_strlist_new(32);
-        if (*inList == NULL) {
-            return -1;
-        }
-    }
-
-    if ((*inList)->count == (*inList)->size) {
-        list = c_strlist_expand(*inList, 2 * (*inList)->size);
-        if (list == NULL) {
-            return -1;
-        }
-        *inList = list;
-    }
-
-    return c_strlist_add(*inList, string);
+    return c_strlist_add_grow(inList, string);
 }
 
 int csync_exclude_load(const char *fname, c_strlist_t **list) {
@@ -186,210 +169,190 @@ bool csync_is_windows_reserved_word(const char* filename) {
   return false;
 }
 
-CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
-  size_t i = 0;
-  const char *p = NULL;
-  char *bname = NULL;
-  char *dname = NULL;
-  char *prev_dname = NULL;
-  char *conflict = NULL;
-  int rc = -1;
-  CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
-  CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
+static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const char *path, int filetype, bool check_leading_dirs) {
+    size_t i = 0;
+    const char *p = NULL;
+    const char *bname = NULL;
+    size_t blen = 0;
+    char *conflict = NULL;
+    int rc = -1;
+    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
+    CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
 
-    for (p = path; *p; p++) {
-      switch (*p) {
-        case '\\':
-        case ':':
-        case '?':
-        case '*':
-        case '"':
-        case '>':
-        case '<':
-        case '|':
-          return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-        default:
-          break;
+      for (p = path; *p; p++) {
+        switch (*p) {
+          case '\\':
+          case ':':
+          case '?':
+          case '*':
+          case '"':
+          case '>':
+          case '<':
+          case '|':
+            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+          default:
+            break;
+        }
       }
+
+    /* split up the path */
+    bname = strrchr(path, '/');
+    if (bname) {
+        bname += 1; // don't include the /
+    } else {
+        bname = path;
+    }
+    blen = strlen(bname);
+
+    rc = csync_fnmatch(".csync_journal.db*", bname, 0);
+    if (rc == 0) {
+        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        goto out;
     }
 
-  /* split up the path */
-  dname = c_dirname(path);
-  bname = c_basename(path);
+    // check the strlen and ignore the file if its name is longer than 254 chars.
+    // whenever changing this also check createDownloadTmpFileName
+    if (blen > 254) {
+        match = CSYNC_FILE_EXCLUDE_LONG_FILENAME;
+        goto out;
+    }
 
-  if (bname == NULL || dname == NULL) {
-      match = CSYNC_NOT_EXCLUDED;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-      goto out;
-  }
+  #ifdef _WIN32
+    // Windows cannot sync files ending in spaces (#2176). It also cannot
+    // distinguish files ending in '.' from files without an ending,
+    // as '.' is a separator that is not stored internally, so let's
+    // not allow to sync those to avoid file loss/ambiguities (#416)
+    if (blen > 1 && (bname[blen-1]== ' ' || bname[blen-1]== '.' )) {
+        match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        goto out;
+    }
 
-  rc = csync_fnmatch(".csync_journal.db*", bname, 0);
-  if (rc == 0) {
-      match = CSYNC_FILE_SILENTLY_EXCLUDED;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-      goto out;
-  }
-
-  // check the strlen and ignore the file if its name is longer than 254 chars.
-  // whenever changing this also check createDownloadTmpFileName
-  if (strlen(bname) > 254) {
-      match = CSYNC_FILE_EXCLUDE_LONG_FILENAME;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-      goto out;
-  }
-
-#ifdef _WIN32
-  // Windows cannot sync files ending in spaces (#2176). It also cannot
-  // distinguish files ending in '.' from files without an ending,
-  // as '.' is a separator that is not stored internally, so let's
-  // not allow to sync those to avoid file loss/ambiguities (#416)
-  size_t blen = strlen(bname);
-  if (blen > 1 && (bname[blen-1]== ' ' || bname[blen-1]== '.' )) {
+    if (csync_is_windows_reserved_word(bname)) {
       match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
       goto out;
-  }
+    }
+  #endif
 
-  if (csync_is_windows_reserved_word(bname)) {
-    match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-    SAFE_FREE(bname);
-    SAFE_FREE(dname);
-    goto out;
-  }
-#endif
+    rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
+    if (rc == 0) {
+        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        goto out;
+    }
 
-  rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
-  if (rc == 0) {
-      match = CSYNC_FILE_SILENTLY_EXCLUDED;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-      goto out;
-  }
+    /* Always ignore conflict files, not only via the exclude list */
+    rc = csync_fnmatch("*_conflict-*", bname, 0);
+    if (rc == 0) {
+        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        goto out;
+    }
 
-  /* Always ignore conflict files, not only via the exclude list */
-  rc = csync_fnmatch("*_conflict-*", bname, 0);
-  if (rc == 0) {
-      match = CSYNC_FILE_SILENTLY_EXCLUDED;
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-      goto out;
-  }
+    if (getenv("CSYNC_CONFLICT_FILE_USERNAME")) {
+        rc = asprintf(&conflict, "*_conflict_%s-*", getenv("CSYNC_CONFLICT_FILE_USERNAME"));
+        if (rc < 0) {
+            goto out;
+        }
+        rc = csync_fnmatch(conflict, path, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            SAFE_FREE(conflict);
+            goto out;
+        }
+        SAFE_FREE(conflict);
+    }
 
-  if (getenv("CSYNC_CONFLICT_FILE_USERNAME")) {
-      rc = asprintf(&conflict, "*_conflict_%s-*", getenv("CSYNC_CONFLICT_FILE_USERNAME"));
-      if (rc < 0) {
-          SAFE_FREE(bname);
-          SAFE_FREE(dname);
-          goto out;
-      }
-      rc = csync_fnmatch(conflict, path, 0);
-      if (rc == 0) {
-          match = CSYNC_FILE_SILENTLY_EXCLUDED;
-          SAFE_FREE(conflict);
-          SAFE_FREE(bname);
-          SAFE_FREE(dname);
-          goto out;
-      }
-      SAFE_FREE(conflict);
-  }
+    if( ! excludes ) {
+        goto out;
+    }
 
-  SAFE_FREE(bname);
-  SAFE_FREE(dname);
+    /* Build a list of path components to check. */
+    c_strlist_t *path_components = c_strlist_new(32);
+    char *path_split = strdup(path);
+    size_t len = strlen(path_split);
+    for (int j = len; ; --j) {
+        // read backwards until a path separator is found
+        if (j != 0 && path_split[j-1] != '/') {
+            continue;
+        }
 
-  if( ! excludes ) {
-      goto out;
-  }
+        // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
+        if (path_split[j] != 0) {
+            c_strlist_add_grow(&path_components, path_split + j);
+        }
 
-  /* Loop over all exclude patterns and evaluate the given path */
-  for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
-      bool match_dirs_only = false;
-      char *pattern_stored = c_strdup(excludes->vector[i]);
-      char* pattern = pattern_stored;
+        if (j == 0 || !check_leading_dirs) {
+            break;
+        }
 
-      type = CSYNC_FILE_EXCLUDE_LIST;
-      if (strlen(pattern) < 1) {
-	  SAFE_FREE(pattern_stored);
-          continue;
-      }
-      /* Ecludes starting with ']' means it can be cleanup */
-      if (pattern[0] == ']') {
-          ++pattern;
-          if (filetype == CSYNC_FTW_TYPE_FILE) {
-              type = CSYNC_FILE_EXCLUDE_AND_REMOVE;
-          }
-      }
-      /* Check if the pattern applies to pathes only. */
-      if (pattern[strlen(pattern)-1] == '/') {
-          match_dirs_only = true;
-          pattern[strlen(pattern)-1] = '\0'; /* Cut off the slash */
-      }
+        // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
+        path_split[j-1] = '\0';
+        c_strlist_add_grow(&path_components, path_split);
+    }
+    SAFE_FREE(path_split);
 
-      /* check if the pattern contains a / and if, compare to the whole path */
-      if (strchr(pattern, '/')) {
-          rc = csync_fnmatch(pattern, path, FNM_PATHNAME);
-          if( rc == 0 ) {
-              match = type;
-          }
-          /* if the pattern requires a dir, but path is not, its still not excluded. */
-          if (match_dirs_only && filetype != CSYNC_FTW_TYPE_DIR) {
-              match = CSYNC_NOT_EXCLUDED;
-          }
-      }
+    /* Loop over all exclude patterns and evaluate the given path */
+    for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
+        bool match_dirs_only = false;
+        char *pattern_stored = c_strdup(excludes->vector[i]);
+        char* pattern = pattern_stored;
 
-      /* if still not excluded, check each component of the path */
-      if (match == CSYNC_NOT_EXCLUDED) {
-          int trailing_component = 1;
-          dname = c_dirname(path);
-          bname = c_basename(path);
+        type = CSYNC_FILE_EXCLUDE_LIST;
+        if (strlen(pattern) < 1) {
+            SAFE_FREE(pattern_stored);
+            continue;
+        }
+        /* Excludes starting with ']' means it can be cleanup */
+        if (pattern[0] == ']') {
+            ++pattern;
+            if (filetype == CSYNC_FTW_TYPE_FILE) {
+                type = CSYNC_FILE_EXCLUDE_AND_REMOVE;
+            }
+        }
+        /* Check if the pattern applies to pathes only. */
+        if (pattern[strlen(pattern)-1] == '/') {
+            match_dirs_only = true;
+            pattern[strlen(pattern)-1] = '\0'; /* Cut off the slash */
+        }
 
-          if (bname == NULL || dname == NULL) {
-              match = CSYNC_NOT_EXCLUDED;
-	      SAFE_FREE(bname);
-	      SAFE_FREE(dname);
-              SAFE_FREE(pattern_stored);
-              goto out;
-          }
+        /* check if the pattern contains a / and if, compare to the whole path */
+        if (strchr(pattern, '/')) {
+            rc = csync_fnmatch(pattern, path, FNM_PATHNAME);
+            if( rc == 0 ) {
+                match = type;
+            }
+            /* if the pattern requires a dir, but path is not, its still not excluded. */
+            if (match_dirs_only && filetype != CSYNC_FTW_TYPE_DIR) {
+                match = CSYNC_NOT_EXCLUDED;
+            }
+        }
 
-          /* Check each component of the path */
-          do {
-              /* Do not check the bname if its a file and the pattern matches dirs only. */
-              if ( !(trailing_component == 1 /* it is the trailing component */
-                     && match_dirs_only      /* but only directories are matched by the pattern */
-                     && filetype == CSYNC_FTW_TYPE_FILE) ) {
-                  /* Check the name component against the pattern */
-                  rc = csync_fnmatch(pattern, bname, 0);
-                  if (rc == 0) {
-                      match = type;
-                  }
-              }
-              if (!(c_streq(dname, ".") || c_streq(dname, "/"))) {
-                  rc = csync_fnmatch(pattern, dname, 0);
-                  if (rc == 0) {
-                      match = type;
-                  }
-              }
-              trailing_component = 0;
-              prev_dname = dname;
-              SAFE_FREE(bname);
-              bname = c_basename(prev_dname);
-              dname = c_dirname(prev_dname);
-              SAFE_FREE(prev_dname);
+        /* if still not excluded, check each component and leading directory of the path */
+        if (match == CSYNC_NOT_EXCLUDED) {
+            size_t j = 0;
+            if (match_dirs_only && filetype == CSYNC_FTW_TYPE_FILE) {
+                j = 1; // skip the first entry, which is bname
+            }
+            for (; j < path_components->count; ++j) {
+                rc = csync_fnmatch(pattern, path_components->vector[j], 0);
+                if (rc == 0) {
+                    match = type;
+                    break;
+                }
+            }
+        }
+        SAFE_FREE(pattern_stored);
+    }
+    c_strlist_destroy(path_components);
 
-          } while( match == CSYNC_NOT_EXCLUDED && !c_streq(dname, ".")
-                     && !c_streq(dname, "/") );
-      }
-      SAFE_FREE(pattern_stored);
-      SAFE_FREE(bname);
-      SAFE_FREE(dname);
-  }
+  out:
 
+    return match;
+}
 
-out:
+CSYNC_EXCLUDE_TYPE csync_excluded_traversal(c_strlist_t *excludes, const char *path, int filetype) {
+  return _csync_excluded_common(excludes, path, filetype, false);
+}
 
-  return match;
+CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
+  return _csync_excluded_common(excludes, path, filetype, true);
 }
 

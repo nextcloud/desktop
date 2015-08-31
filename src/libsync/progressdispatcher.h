@@ -27,6 +27,8 @@
 
 namespace OCC {
 
+class PropagatorJob;
+
 /**
  * @brief The ProgressInfo class
  * @ingroup libsync
@@ -126,6 +128,12 @@ public:
          */
         void update();
 
+        /**
+         * Changes the _completed value and does sanity checks on
+         * _prevCompleted and _total.
+         */
+        void setCompleted(quint64 completed);
+
         // Updated by update()
         double _progressPerSec;
         quint64 _prevCompleted;
@@ -155,7 +163,7 @@ public:
 
     void setProgressComplete(const SyncFileItem &item);
 
-    void setProgressItem(const SyncFileItem &item, quint64 size);
+    void setProgressItem(const SyncFileItem &item, quint64 completed);
 
     /**
      * Get the total completion estimate
@@ -231,9 +239,11 @@ signals:
      */
     void progressInfo( const QString& folder, const ProgressInfo& progress );
     /**
-     * @brief: the item's job is completed
+     * @brief: the item was completed by a job
      */
-    void jobCompleted(const QString &folder, const SyncFileItem & item);
+    void itemCompleted(const QString &folder,
+                       const SyncFileItem & item,
+                       const PropagatorJob & job);
 
     void syncItemDiscovered(const QString &folder, const SyncFileItem & item);
 

@@ -47,7 +47,7 @@ Synchronization by Time versus ETag
 .. index:: time stamps, file times, etag, unique id
 
 Until the release of ownCloud 4.5 and ownCloud Client 1.1, the ownCloud
-synchronization process employed a single file property -- the file modificatin
+synchronization process employed a single file property -- the file modification
 time -- to decide which file was newer and needed to be synchronized to the
 other repository.
 
@@ -76,7 +76,7 @@ a synchronization process.
    not support using the file ID functionality.
 
 Before the 1.3.0 release of the Desktop Client, the synchronization process
-might create faux conflict files if time deviates. Original and changed files
+might create false conflict files if time deviates. Original and changed files
 conflict only in their timestamp, but not in their content. This behaviour was
 changed to employ a binary check if files differ.
 
@@ -104,7 +104,7 @@ depending on server/client combination:
 +--------------------+-------------------+----------------------------+
 
 We strongly recommend using ownCloud Server release 4.5 or later when using
-ownCloud Client 1.1 or later. Using incompatible time stamp-based
+ownCloud Client 1.1 or later. Using an incompatible time stamp-based
 synchronization mechanism can lead to data loss in rare cases, especially when
 multiple clients are involved and one utilizes a non-synchronized NTP time.
 
@@ -120,7 +120,7 @@ traverses the file tree and compares the modification time of each file with an
 expected value stored in its database. If the value is not the same, the client
 determines that the file has been modified in the local repository.
 
-.. note:: On the local side, the modification time a good attribute to use for 
+.. note:: On the local side, the modification time is a good attribute to use for 
    detecting changes, because
    the value does not depend on time shifts and such.
 
@@ -131,8 +131,8 @@ changed and no synchronization occurs.
 
 In the event a file has changed on both the local and the remote repository
 since the last sync run, it can not easily be decided which version of the file
-is the one that should be used. However, changes to any side be lost.  Instead,
-a *conflict case* is created. The client resolves this conflic by creating a
+is the one that should be used. However, changes to any side will not be lost.  Instead,
+a *conflict case* is created. The client resolves this conflict by creating a
 conflict file of the older of the two files and saving the newer file under the
 original file name. Conflict files are always created on the client and never
 on the server. The conflict file uses the same name as the original file, but
@@ -156,18 +156,18 @@ By default, the ownCloud Client ignores the following files:
 * Files starting with ``.csync_journal.db``, as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
-a line in the exclude file starts with the character `]` directly followed by
+a line in the exclude file starts with the character ``]`` directly followed by
 the file pattern), files matching the pattern are considered *fleeting meta
-data*. These files are ingored and *removed* by the client if found in the
+data*. These files are ignored and *removed* by the client if found in the
 synchronized folder. This is suitable for meta files created by some
 applications that have no sustainable meaning.
 
-If a pattern ends with the backslash (`/`) character, only directories are
+If a pattern ends with the forwardslash (``/``) character, only directories are
 matched. The pattern is only applied for directory components of filenames
 selected using the checkbox.
 
 To match filenames against the exclude patterns, the unix standard C library
-function fnmatch is used. This procesx checks the filename against the
+function fnmatch is used. This process checks the filename against the
 specified pattern using standard shell wildcard pattern matching. For more
 information, please refer to `The opengroup website
 <http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`_.
