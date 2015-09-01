@@ -92,7 +92,6 @@ private:
     QUrl   _OCUrl;
     bool _wasDisabledBefore;
     AccountState *_accountState;
-    QLabel *_quotaLabel;
     QuotaInfo _quotaInfo;
 };
 

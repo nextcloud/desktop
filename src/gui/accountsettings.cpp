@@ -121,7 +121,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
             this, SLOT(slotUpdateQuota(qint64,qint64)));
 
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
-
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
