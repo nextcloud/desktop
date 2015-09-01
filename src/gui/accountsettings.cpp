@@ -286,9 +286,10 @@ void AccountSettings::slotResetCurrentFolder()
                                          QMessageBox::Yes|QMessageBox::No );
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
-            Folder *f = folderMan->folder(alias);
-            f->slotTerminateSync();
-            f->wipe();
+            if(Folder *f = folderMan->folder(alias)) {
+                f->slotTerminateSync();
+                f->wipe();
+            }
             folderMan->slotScheduleAllFolders();
         }
     }
