@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.0.1 (release 2015-09-xx)
+version 2.0.1 (release 2015-09-01)
   * AccountWizard: fix when the theme specify a override URL (#3699)
 
 version 2.0.0 (release 2015-08-25)
