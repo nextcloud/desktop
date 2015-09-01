@@ -84,7 +84,7 @@ public:
 
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
-    void checkConnectivity();
+    void checkConnectivity(AbstractCredentials::FetchMode credentialsFetchMode);
 
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();

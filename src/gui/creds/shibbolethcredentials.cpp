@@ -28,6 +28,7 @@
 
 #include "accessmanager.h"
 #include "account.h"
+#include "logger.h"
 #include "theme.h"
 #include "cookiejar.h"
 #include "syncengine.h"
@@ -94,6 +95,7 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
   : _ready(true),
     _stillValid(true),
     _fetchJobInProgress(false),
+    _interactiveFetch(true),
     _browser(0),
     _shibCookie(cookie)
 {
@@ -191,11 +193,12 @@ bool ShibbolethCredentials::ready() const
     return _ready;
 }
 
-void ShibbolethCredentials::fetch()
+void ShibbolethCredentials::fetch(FetchMode mode)
 {
     if(_fetchJobInProgress) {
         return;
     }
+    _interactiveFetch = mode == Interactive;
 
     if (_user.isEmpty()) {
         _user = _account->credentialSetting(QLatin1String(userC)).toString();
@@ -357,8 +360,13 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
         _stillValid = true;
         _fetchJobInProgress = false;
         Q_EMIT fetched();
-    } else {
+    } else if (_interactiveFetch) {
         showLoginWindow();
+    } else {
+        Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("You need to re-login to continue using the account %1.").arg(_account->displayName()));
+        _ready = false;
+        _fetchJobInProgress = false;
+        Q_EMIT fetched();
     }
 }
 

@@ -30,6 +30,7 @@ class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
     Q_OBJECT
 
 public:
+    enum FetchMode { Interactive, NonInteractive };
     AbstractCredentials();
     // No need for virtual destructor - QObject already has one.
 
@@ -48,7 +49,7 @@ public:
     virtual QString user() const = 0;
     virtual QNetworkAccessManager* getQNAM() const = 0;
     virtual bool ready() const = 0;
-    virtual void fetch() = 0;
+    virtual void fetch(FetchMode mode = Interactive) = 0;
     virtual bool stillValid(QNetworkReply *reply) = 0;
     virtual void persist() = 0;
     /** Invalidates auth token, or password for basic auth */

@@ -55,7 +55,7 @@ public:
     QString user() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
-    void fetch() Q_DECL_OVERRIDE;
+    void fetch(FetchMode mode = Interactive) Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
     void persist() Q_DECL_OVERRIDE;
     void invalidateToken() Q_DECL_OVERRIDE;
@@ -94,6 +94,7 @@ private:
     bool _ready;
     bool _stillValid;
     bool _fetchJobInProgress;
+    bool _interactiveFetch;
     QPointer<ShibbolethWebView> _browser;
     QNetworkCookie _shibCookie;
     QString _user;

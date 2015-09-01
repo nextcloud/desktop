@@ -79,7 +79,7 @@ void AccountState::setState(State state)
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
-            checkConnectivity();
+            checkConnectivity(AbstractCredentials::Interactive);
         }
     }
 
@@ -131,7 +131,7 @@ bool AccountState::isConnectedOrTemporarilyUnavailable() const
     return isConnected() || _state == ServiceUnavailable;
 }
 
-void AccountState::checkConnectivity()
+void AccountState::checkConnectivity(AbstractCredentials::FetchMode credentialsFetchMode)
 {
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
@@ -141,7 +141,7 @@ void AccountState::checkConnectivity()
         qDebug() << "ConnectionValidator already running, ignoring";
         return;
     }
-    ConnectionValidator * conValidator = new ConnectionValidator(account());
+    ConnectionValidator * conValidator = new ConnectionValidator(account(), credentialsFetchMode);
     _connectionValidator = conValidator;
     connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
             SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
@@ -243,7 +243,10 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
         delete _connectionValidator;
     }
 
-    checkConnectivity();
+    // If we made it this far, it means that we either fetched credentials
+    // interactively, or that we already aborted for missing/invalid credentials.
+    Q_ASSERT(credentials->ready());
+    checkConnectivity(AbstractCredentials::Interactive);
 }
 
 std::unique_ptr<QSettings> AccountState::settings()

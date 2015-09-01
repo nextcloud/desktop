@@ -24,6 +24,7 @@
 
 #include "account.h"
 #include "accessmanager.h"
+#include "logger.h"
 #include "utility.h"
 #include "theme.h"
 #include "syncengine.h"
@@ -87,7 +88,8 @@ HttpCredentials::HttpCredentials()
       _certificatePath(),
       _certificatePasswd(),
       _ready(false),
-      _fetchJobInProgress(false)
+      _fetchJobInProgress(false),
+      _interactiveFetch(true)
 {
 }
 
@@ -97,7 +99,8 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
       _certificatePath(certificatePath),
       _certificatePasswd(certificatePasswd),
       _ready(true),
-      _fetchJobInProgress(false)
+      _fetchJobInProgress(false),
+      _interactiveFetch(true)
 {
 }
 
@@ -199,11 +202,12 @@ QString HttpCredentials::fetchUser()
     return _user;
 }
 
-void HttpCredentials::fetch()
+void HttpCredentials::fetch(FetchMode mode)
 {
     if (_fetchJobInProgress) {
         return;
     }
+    _interactiveFetch = mode == Interactive;
 
     // User must be fetched from config file
     fetchUser();
@@ -274,8 +278,12 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
                     job->errorString());
         }
 
-        bool ok;
-        QString pwd = queryPassword(&ok, hint);
+        bool ok = false;
+        QString pwd;
+        if (_interactiveFetch)
+            pwd = queryPassword(&ok, hint);
+        else
+            Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("You need to re-login to continue using the account %1.").arg(_account->displayName()));
         _fetchJobInProgress = false;
         if (ok) {
             _password = pwd;

@@ -23,9 +23,10 @@
 
 namespace OCC {
 
-ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountPtr account, AbstractCredentials::FetchMode credentialsFetchMode, QObject *parent)
     : QObject(parent),
       _account(account),
+      _credentialsFetchMode(credentialsFetchMode),
       _isCheckingServerAndAuth(false)
 {
 }
@@ -128,7 +129,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
         // We can't proceed with the auth check because we don't have credentials.
         // Fetch them now! Once fetched, a new connectivity check will be
         // initiated anyway.
-        creds->fetch();
+        creds->fetch(_credentialsFetchMode);
 
         // no result is reported
         deleteLater();

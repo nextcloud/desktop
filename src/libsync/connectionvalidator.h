@@ -20,6 +20,7 @@
 #include <QVariantMap>
 #include <QNetworkReply>
 #include "accountfwd.h"
+#include "creds/abstractcredentials.h"
 
 namespace OCC {
 
@@ -68,7 +69,7 @@ class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(AccountPtr account, QObject *parent = 0);
+    explicit ConnectionValidator(AccountPtr account, AbstractCredentials::FetchMode credentialsFetchMode, QObject *parent = 0);
 
     enum Status {
         Undefined,
@@ -114,6 +115,7 @@ private:
 
     QStringList _errors;
     AccountPtr   _account;
+    AbstractCredentials::FetchMode _credentialsFetchMode;
     bool _isCheckingServerAndAuth;
 };
 
