@@ -441,9 +441,11 @@ void Folder::bubbleUpSyncResult()
                     break;
                 case CSYNC_INSTRUCTION_CONFLICT:
                 case CSYNC_INSTRUCTION_SYNC:
-                    updatedItems++;
-                    if (!firstItemUpdated)
-                        firstItemUpdated = item;
+                    if (!item->_isDirectory) {
+                        updatedItems++;
+                        if (!firstItemUpdated)
+                            firstItemUpdated = item;
+                    }
                     break;
                 case CSYNC_INSTRUCTION_ERROR:
                     qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();
