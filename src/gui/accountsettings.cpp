@@ -88,6 +88,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     connect(ui->_folderList, SIGNAL(expanded(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
     connect(ui->_folderList, SIGNAL(collapsed(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
+    connect(ui->selectiveSyncNotification, SIGNAL(linkActivated(QString)),
+            this, SLOT(slotLinkActivated(QString)));
     connect(_model, SIGNAL(suggestExpand(QModelIndex)), ui->_folderList, SLOT(expand(QModelIndex)));
     connect(_model, SIGNAL(dirtyChanged()), this, SLOT(refreshSelectiveSyncStatus()));
     refreshSelectiveSyncStatus();
@@ -510,6 +512,12 @@ void AccountSettings::slotAccountStateChanged(int state)
     }
 }
 
+void AccountSettings::slotLinkActivated(const QString& link)
+{
+    qDebug() << "xxxx " << link;
+}
+
+
 AccountSettings::~AccountSettings()
 {
     delete ui;
@@ -542,9 +550,17 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(QString());
     } else {
         ui->selectiveSyncNotification->setVisible(true);
-        ui->selectiveSyncNotification->setText(
-            tr("There are new folders that were not synchronized because they are too big: %1")
-                .arg(undecidedFolder.join(tr(", "))));
+        QString msg = tr("There are new folders that were not synchronized because they are too big: ");
+
+        int cnt = 0;
+        foreach(auto& folder, undecidedFolder) {
+            if( cnt++ ) {
+                msg += QLatin1String(", ");
+            }
+            QString p = QString::fromLatin1("<a href=\"%1\">%1</a>").arg(folder);
+            msg += p;
+        }
+        ui->selectiveSyncNotification->setText(msg);
         shouldBeVisible = true;
     }
 

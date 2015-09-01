@@ -82,6 +82,7 @@ protected slots:
     void slotCustomContextMenuRequested(const QPoint&);
     void slotFolderListClicked( const QModelIndex& indx );
     void doExpand();
+    void slotLinkActivated(const QString &link);
 
 private:
     void showConnectionLabel(const QString& message,
