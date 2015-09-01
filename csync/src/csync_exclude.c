@@ -268,23 +268,23 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     c_strlist_t *path_components = c_strlist_new(32);
     char *path_split = strdup(path);
     size_t len = strlen(path_split);
-    for (int j = len; ; --j) {
+    for (i = len; ; --i) {
         // read backwards until a path separator is found
-        if (j != 0 && path_split[j-1] != '/') {
+        if (i != 0 && path_split[i-1] != '/') {
             continue;
         }
 
         // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
-        if (path_split[j] != 0) {
-            c_strlist_add_grow(&path_components, path_split + j);
+        if (path_split[i] != 0) {
+            c_strlist_add_grow(&path_components, path_split + i);
         }
 
-        if (j == 0 || !check_leading_dirs) {
+        if (i == 0 || !check_leading_dirs) {
             break;
         }
 
         // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
-        path_split[j-1] = '\0';
+        path_split[i-1] = '\0';
         c_strlist_add_grow(&path_components, path_split);
     }
     SAFE_FREE(path_split);

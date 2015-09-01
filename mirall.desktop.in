@@ -7,3 +7,4 @@ Comment=@APPLICATION_NAME@ desktop synchronization client
 GenericName=Folder Sync
 Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3

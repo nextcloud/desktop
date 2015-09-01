@@ -1,5 +1,6 @@
 .. _building-label:
 
+===============================
 Appendix A: Building the Client
 ===============================
 
@@ -23,7 +24,7 @@ Linux
    * openSUSE: ``zypper ref; zypper si -d owncloud-client``
    * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
 
-3. Follow the `generic build instructions`_.
+3. Follow the :ref:`generic-build-instructions`.
 
 4. (Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory.
 
@@ -43,7 +44,7 @@ The tested and preferred way to develop in this environment is through the use
 of HomeBrew_. The ownCloud team has its own repository containing non-standard
 recipes.
 
-To set up your build enviroment for development using HomeBrew_:
+To set up your build environment for development using HomeBrew_:
 
 1. Add the ownCloud repository using the following command::
 
@@ -60,7 +61,7 @@ To set up your build enviroment for development using HomeBrew_:
    Where ``x.z`` is the current version of Qt 5 that brew has installed
    on your machine.
 
-5. For compilation of the client, follow the `generic build instructions`_.
+5. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
 6. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
    <install_dir>``. If you have a developer signing certificate, you can specify
@@ -118,14 +119,14 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
     cmake -G "MinGW Makefiles" ../client
     mingw32-make
 
-  .. note:: You can try using ninja to build parallelly using
+  .. note:: You can try using ninja to build in parallel using
      ``cmake -G Ninja ../client`` and ``ninja`` instead.
-  .. note:: Refer to the `generic build instructions`_ section for additional options.
+  .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
 
-  The owncloud binary will appear in the ``bin`` directory.
+  The ownCloud binary will appear in the ``bin`` directory.
 
 Windows Installer Build (Cross-Compile)
------------------------
+---------------------------------------
 
 Due to the large number of dependencies, building the client installer for Windows
 is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
@@ -149,7 +150,7 @@ To cross-compile:
 
     zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-uac mingw32-cross-nsis-plugin-nsprocess
 
-4. Follow the `generic build instructions`_
+4. Follow the :ref:`generic-build-instructions`
 
 .. note:: When building for Windows platforms, you must specify a special
      toolchain file that enables cmake to locate the platform-specific tools. To add
@@ -179,7 +180,8 @@ To cross-compile:
    you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
 
 
-.. _`generic build instructions`:
+.. _generic-build-instructions:
+
 Generic Build Instructions
 --------------------------
 

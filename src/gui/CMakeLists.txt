@@ -62,7 +62,6 @@ set(client_SRCS
     sslerrordialog.cpp
     syncrunfilelog.cpp
     systray.cpp
-    accountmigrator.cpp
     quotainfo.cpp
     accountstate.cpp
     addcertificatedialog.cpp

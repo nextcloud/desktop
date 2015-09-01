@@ -121,7 +121,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
             this, SLOT(slotUpdateQuota(qint64,qint64)));
 
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
-
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
@@ -287,9 +286,10 @@ void AccountSettings::slotResetCurrentFolder()
                                          QMessageBox::Yes|QMessageBox::No );
         if( ret == QMessageBox::Yes ) {
             FolderMan *folderMan = FolderMan::instance();
-            Folder *f = folderMan->folder(alias);
-            f->slotTerminateSync();
-            f->wipe();
+            if(Folder *f = folderMan->folder(alias)) {
+                f->slotTerminateSync();
+                f->wipe();
+            }
             folderMan->slotScheduleAllFolders();
         }
     }
@@ -409,16 +409,18 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         ui->quotaProgressBar->setVisible(true);
         ui->quotaProgressBar->setEnabled(true);
         // workaround the label only accepting ints (which may be only 32 bit wide)
-        ui->quotaProgressBar->setMaximum(100);
         const double percent = used/(double)total*100;
         const int percentInt = qMin(qRound(percent), 100);
         ui->quotaProgressBar->setValue(percentInt);
         QString usedStr = Utility::octetsToString(used);
         QString totalStr = Utility::octetsToString(total);
         QString percentStr = Utility::compactFormatDouble(percent, 1);
-        ui->quotaInfoLabel->setText(tr("Storage space: %1 (%3%) of %2 in use").arg(usedStr, totalStr, percentStr));
+        QString toolTip = tr("%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.").arg(usedStr, totalStr, percentStr);
+        ui->quotaInfoLabel->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
+        ui->quotaInfoLabel->setToolTip(toolTip);
+        ui->quotaProgressBar->setToolTip(toolTip);
     } else {
-        ui->quotaProgressBar->setMaximum(0);
+        ui->quotaProgressBar->setVisible(false);
         ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
     }
 }

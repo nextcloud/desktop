@@ -172,7 +172,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::FolderSyncPaused       : return  f->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected : return  accountConnected;
     case Qt::ToolTipRole:
-        return Theme::instance()->statusHeaderText(f->syncResult().status());
+        if ( accountConnected )
+            return Theme::instance()->statusHeaderText(f->syncResult().status());
+        else
+            return tr("Signed out");
     case FolderStatusDelegate::FolderStatusIconRole:
         if ( accountConnected ) {
             auto theme = Theme::instance();

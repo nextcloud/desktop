@@ -19,7 +19,6 @@
 #include "theme.h"
 #include "socketapi.h"
 #include "account.h"
-#include "accountmigrator.h"
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "filesystem.h"
