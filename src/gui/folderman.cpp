@@ -321,7 +321,7 @@ SocketApi *FolderMan::socketApi()
     return this->_socketApi;
 }
 
-QString FolderMan::unescapeAlias( const QString& alias ) const
+QString FolderMan::unescapeAlias( const QString& alias )
 {
     QString a(alias);
 

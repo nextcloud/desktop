@@ -1142,7 +1142,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 
 void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
 {
-    settings.beginGroup(folder.alias);
+    settings.beginGroup(FolderMan::escapeAlias(folder.alias));
     settings.setValue(QLatin1String("localPath"), folder.localPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
@@ -1154,7 +1154,7 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
                             FolderDefinition* folder)
 {
     settings.beginGroup(alias);
-    folder->alias = alias;
+    folder->alias = FolderMan::unescapeAlias(alias);
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();

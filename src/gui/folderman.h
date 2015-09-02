@@ -86,6 +86,7 @@ public:
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
     static QString escapeAlias( const QString& );
+    static QString unescapeAlias( const QString& );
 
     SocketApi *socketApi();
 
@@ -192,8 +193,6 @@ private:
 
     // restarts the application (Linux only)
     void restartApplication();
-
-    QString unescapeAlias( const QString& ) const;
 
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;
