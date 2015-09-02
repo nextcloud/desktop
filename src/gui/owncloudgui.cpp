@@ -42,6 +42,16 @@
 #include <QX11Info>
 #endif
 
+// Enables workarounds for bugs introduced in Qt 5.5.0
+// In particular QTBUG-47863 #3672 (tray menu fails to update and
+// becomes unresponsive) and QTBUG-48068 #3722 (click signal is
+// emitted several times)
+#ifdef Q_OS_LINUX
+#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+#define WORKAROUND_QT_TRAY_DBUS
+#endif
+#endif
+
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
@@ -145,16 +155,14 @@ void ownCloudGui::setupOverlayIcons()
 }
 
 // This should rather be in application.... or rather in ConfigFile?
-void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
+void ownCloudGui::slotOpenSettingsDialog()
 {
     // if account is set up, start the configuration wizard.
     if( !AccountManager::instance()->accounts().isEmpty() ) {
-        if( openSettings ) {
-            if (_settingsDialog.isNull() || !_settingsDialog->isVisible()) {
-                slotShowSettings();
-            } else {
-                _settingsDialog->close();
-            }
+        if (_settingsDialog.isNull() || !_settingsDialog->isVisible()) {
+            slotShowSettings();
+        } else {
+            _settingsDialog->close();
         }
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
@@ -164,11 +172,20 @@ void ownCloudGui::slotOpenSettingsDialog( bool openSettings )
 
 void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
+#ifdef WORKAROUND_QT_TRAY_DBUS
+    static QElapsedTimer last_click;
+    if (last_click.isValid() && last_click.elapsed() < 200) {
+        return;
+    }
+    last_click.start();
+#endif
+
     // A click on the tray icon should only open the status window on Win and
     // Linux, not on Mac. They want a menu entry.
 #if !defined Q_OS_MAC
     if( reason == QSystemTrayIcon::Trigger ) {
-        slotOpenSettingsDialog(true); // start settings if config is existing.
+        // Start settings if config is existing.
+        slotOpenSettingsDialog();
     }
 #else
     // On Mac, if the settings dialog is already visible but hidden
@@ -368,11 +385,8 @@ void ownCloudGui::setupContextMenu()
         }
     }
 
-    // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
-#ifdef Q_OS_LINUX
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+#ifdef WORKAROUND_QT_TRAY_DBUS
     _tray->hide();
-#endif
 #endif
 
     if ( _contextMenu ) {
@@ -438,11 +452,8 @@ void ownCloudGui::setupContextMenu()
     }
     _contextMenu->addAction(_actionQuit);
 
-    // Workaround for #3656, Qt 5.5.0 + dbus based tray integration.
-#ifdef Q_OS_LINUX
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
+#ifdef WORKAROUND_QT_TRAY_DBUS
     _tray->show();
-#endif
 #endif
 }
 
