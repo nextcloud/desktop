@@ -238,12 +238,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) di %2 in uso. Alcune cartelle, incluse quelle montate in rete o le cartelle condivise, potrebbero avere limiti diversi.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1% di %2 in uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="424"/>

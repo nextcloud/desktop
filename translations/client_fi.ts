@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>Havaittu uusia kansioita, joita ei ole synkronoitu niiden suuren koon vuoksi: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="491"/>
@@ -238,12 +238,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2 (%3 %) käytössä. Jotkin kansiot, mukaan lukien verkkojaot ja jaetut kansiot, voivat sisältää eri rajoitukset.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1/%2 käytössä</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="424"/>
@@ -686,7 +686,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Yhteyden tulee olla muodostettu, jotta voit lisätä kansion</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
@@ -840,7 +840,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="271"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kansion listaaminen epäonnistui. Virhe: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="351"/>
@@ -2879,7 +2879,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="425"/>
         <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu ulos kaikkialta</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="433"/>
