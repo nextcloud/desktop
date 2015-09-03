@@ -29,6 +29,7 @@ static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
+static const char versionC[] = "version";
 }
 
 
@@ -45,7 +46,8 @@ bool AccountManager::restore()
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty()) {
+    if (settings->childGroups().isEmpty()
+            && !settings->contains(QLatin1String(versionC))) {
         return restoreFromLegacySettings();
     }
 
@@ -122,6 +124,7 @@ bool AccountManager::restoreFromLegacySettings()
 void AccountManager::save(bool saveCredentials)
 {
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    settings->setValue(QLatin1String(versionC), 2);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
         save(acc->account(), *settings, saveCredentials);
