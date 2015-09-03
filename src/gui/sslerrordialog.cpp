@@ -63,7 +63,7 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent) :
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi( this );
-    setWindowTitle( tr("SSL Connection") );
+    setWindowTitle( tr("Untrusted Certificate") );
     QPushButton *okButton =
             _ui->_dialogButtonBox->button( QDialogButtonBox::Ok );
     QPushButton *cancelButton =
@@ -131,8 +131,9 @@ bool SslErrorDialog::checkFailingCertsKnown( const QList<QSslError> &errors )
             msg += QL("<link rel='stylesheet' type='text/css' href='format.css'>");
             msg += QL("</head><body>");
 
+    auto host = _account->url().host();
+    msg += QL("<h3>") + tr("Cannot connect securely to <i>%1</i>:").arg(host) + QL("</h3>");
     // loop over the unknown certs and line up their errors.
-            msg += QL("<h3>") + tr("Warnings about current SSL Connection:") + QL("</h3>");
     msg += QL("<div id=\"ca_errors\">");
     foreach( const QSslCertificate& cert, _unknownCerts ) {
         msg += QL("<div id=\"ca_error\">");
