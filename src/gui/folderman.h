@@ -109,6 +109,16 @@ public:
     bool ignoreHiddenFiles() const;
     void setIgnoreHiddenFiles(bool ignore);
 
+    /**
+     * Access to the current queue of scheduled folders.
+     */
+    QQueue<Folder*> scheduleQueue() const;
+
+    /**
+     * Access to the currently syncing folder.
+     */
+    Folder* currentSyncFolder() const;
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
@@ -116,6 +126,11 @@ signals:
       * Attention: The folder may be zero. Do a general update of the state than.
       */
     void folderSyncStateChange(Folder*);
+
+    /**
+     * Indicates when the schedule queue changes.
+     */
+    void scheduleQueueChanged();
 
     void folderListLoaded(const Folder::Map &);
 

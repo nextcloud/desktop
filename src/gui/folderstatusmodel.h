@@ -101,7 +101,8 @@ public slots:
 private slots:
     void slotUpdateDirectories(const QStringList &);
     void slotLscolFinishedWithError(QNetworkReply *r);
-    void slotFolderSyncStateChange();
+    void slotFolderSyncStateChange(Folder* f);
+    void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 
 private:

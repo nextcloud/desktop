@@ -134,6 +134,7 @@ int FolderMan::unloadAndDeleteAllFolders()
     _lastSyncFolder = 0;
     _currentSyncFolder = 0;
     _scheduleQueue.clear();
+    emit scheduleQueueChanged();
 
     Q_ASSERT(_folderMap.count() == 0);
     return cnt;
@@ -254,7 +255,7 @@ int FolderMan::setupFoldersMigration()
         Folder *f = setupFolderFromOldConfigFile( alias, accountState );
         if( f ) {
             slotScheduleSync(f);
-            emit( folderSyncStateChange( f ) );
+            emit folderSyncStateChange(f);
         }
     }
 
@@ -502,16 +503,17 @@ void FolderMan::slotScheduleSync( Folder *f )
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(f) ) {
-        if(f->canSync()) {
-            f->prepareToSync();
-        } else {
+        if( !f->canSync() ) {
             qDebug() << "Folder is not ready to sync, not scheduled!";
             if( _socketApi ) {
                 _socketApi->slotUpdateFolderView(f);
             }
             return;
         }
+        f->prepareToSync();
+        emit folderSyncStateChange(f);
         _scheduleQueue.enqueue(f);
+        emit scheduleQueueChanged();
     } else {
         qDebug() << " II> Sync for folder " << alias << " already scheduled, do not enqueue!";
     }
@@ -593,6 +595,7 @@ void FolderMan::slotAccountStateChanged()
                 it.remove();
             }
         }
+        emit scheduleQueueChanged();
     }
 }
 
@@ -685,6 +688,7 @@ void FolderMan::slotStartScheduledFolderSync()
 
     // Try to start the top scheduled sync.
     Folder *f = _scheduleQueue.dequeue();
+    emit scheduleQueueChanged();
     Q_ASSERT(f);
 
     // Start syncing this folder!
@@ -843,7 +847,9 @@ void FolderMan::slotRemoveFolder( Folder *f )
         terminateSyncProcess();
     }
 
-    _scheduleQueue.removeAll(f);
+    if (_scheduleQueue.removeAll(f) > 0) {
+        emit scheduleQueueChanged();
+    }
 
     f->wipe();
     f->setSyncPaused(true);
@@ -1192,6 +1198,16 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
         folder->setIgnoreHiddenFiles(ignore);
         folder->saveToSettings();
     }
+}
+
+QQueue<Folder*> FolderMan::scheduleQueue() const
+{
+    return _scheduleQueue;
+}
+
+Folder *FolderMan::currentSyncFolder() const
+{
+    return _currentSyncFolder;
 }
 
 void FolderMan::restartApplication()
