@@ -72,7 +72,6 @@ set(client_SRCS
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp
     creds/shibboleth/shibbolethwebview.cpp
-    creds/shibboleth/shibbolethrefresher.cpp
     creds/shibboleth/shibbolethuserjob.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp

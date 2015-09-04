@@ -66,15 +66,10 @@ public:
     static QNetworkCookie findShibCookie(Account *, QList<QNetworkCookie> cookies = QList<QNetworkCookie>());
     static QByteArray shibCookieName();
 
-public Q_SLOTS:
-    void invalidateAndFetch() Q_DECL_OVERRIDE;
-
 private Q_SLOTS:
     void onShibbolethCookieReceived(const QNetworkCookie&);
     void slotBrowserRejected();
-    void onFetched();
     void slotReadJobDone(QKeychain::Job*);
-    void slotInvalidateAndFetchInvalidateDone(QKeychain::Job*);
     void slotReplyFinished(QNetworkReply*);
     void slotUserFetched(const QString& user);
     void slotFetchUser();
@@ -82,7 +77,6 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void newCookie(const QNetworkCookie& cookie);
-    void invalidatedAndFetched(const QByteArray& cookieData);
 
 private:
     void storeShibCookie(const QNetworkCookie &cookie);

@@ -54,7 +54,7 @@ public:
     virtual void persist() = 0;
     /** Invalidates auth token, or password for basic auth */
     virtual void invalidateToken() = 0;
-    virtual void invalidateAndFetch() {
+    void invalidateAndFetch() {
         invalidateToken();
         fetch();
     }

@@ -12,7 +12,6 @@
  * for more details.
  */
 
-#include <QMutex>
 #include <QSettings>
 #include <QNetworkReply>
 #include <QMessageBox>
@@ -21,7 +20,6 @@
 
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethwebview.h"
-#include "creds/shibboleth/shibbolethrefresher.h"
 #include "creds/shibbolethcredentials.h"
 #include "shibboleth/shibbolethuserjob.h"
 #include "creds/credentialscommon.h"
@@ -46,39 +44,6 @@ namespace
 // Not "user" because it has a special meaning for http
 const char userC[] = "shib_user";
 const char shibCookieNameC[] = "_shibsession_";
-
-int shibboleth_redirect_callback(CSYNC* csync_ctx,
-                                 const char* uri)
-{
-    if (!csync_ctx || !uri) {
-        return 1;
-    }
-
-    const QString qurl(QString::fromLatin1(uri));
-    QRegExp shibbolethyWords ("SAML|wayf");
-
-    shibbolethyWords.setCaseSensitivity (Qt::CaseInsensitive);
-    if (!qurl.contains(shibbolethyWords)) {
-        return 1;
-    }
-
-    SyncEngine* engine = reinterpret_cast<SyncEngine*>(csync_get_userdata(csync_ctx));
-    AccountPtr account = engine->account();
-    ShibbolethCredentials* creds = qobject_cast<ShibbolethCredentials*>(account->credentials());
-    if (!creds) {
-      qDebug() << "Not a Shibboleth creds instance!";
-      return 1;
-    }
-
-    QMutex mutex;
-    QMutexLocker locker(&mutex);
-    ShibbolethRefresher refresher(account, creds, csync_ctx);
-
-    // blocks
-    refresher.refresh();
-
-    return creds->ready() ? 0 : 1;
-}
 
 } // ns
 
@@ -132,12 +97,7 @@ QByteArray ShibbolethCredentials::prepareCookieData() const
 
 void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    typedef int (*csync_owncloud_redirect_callback_t)(CSYNC* ctx, const char* uri);
-
-    csync_owncloud_redirect_callback_t cb = shibboleth_redirect_callback;
-
     csync_set_module_property(ctx, "session_key", prepareCookieData().data());
-    csync_set_module_property(ctx, "redirect_callback", &cb);
 }
 
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
@@ -232,9 +192,11 @@ void ShibbolethCredentials::persist()
     }
 }
 
-// only used by Application::slotLogout(). Use invalidateAndFetch for normal usage
 void ShibbolethCredentials::invalidateToken()
 {
+    _ready = false;
+    _fetchJobInProgress = true;
+
     CookieJar *jar = static_cast<CookieJar*>(_account->networkAccessManager()->cookieJar());
 
     // Remove the _shibCookie
@@ -309,38 +271,6 @@ void ShibbolethCredentials::slotBrowserRejected()
     _ready = false;
     _fetchJobInProgress = false;
     Q_EMIT fetched();
-}
-
-void ShibbolethCredentials::invalidateAndFetch()
-{
-    _ready = false;
-    _fetchJobInProgress = true;
-
-    // delete the credentials, then in the slot fetch them again (which will trigger browser)
-    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    job->setSettings(_account->settingsWithGroup(Theme::instance()->appName(), job).release());
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)));
-    job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
-    job->start();
-}
-
-void ShibbolethCredentials::slotInvalidateAndFetchInvalidateDone(QKeychain::Job*)
-{
-    connect (this, SIGNAL(fetched()),
-             this, SLOT(onFetched()));
-    _fetchJobInProgress = false;
-    // small hack to support the ShibbolethRefresher hack
-    // we already rand fetch() with a valid account object,
-    // and hence know the url on refresh
-    fetch();
-}
-
-void ShibbolethCredentials::onFetched()
-{
-    disconnect (this, SIGNAL(fetched()),
-                this, SLOT(onFetched()));
-
-    Q_EMIT invalidatedAndFetched(prepareCookieData());
 }
 
 void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
