@@ -68,7 +68,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="77"/>
         <source>%1@%2</source>
-        <translation type="unfinished"/>
+        <translation>%1@%2</translation>
     </message>
 </context>
 <context>
@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Remove the account configuration from the client</source>
-        <translation type="unfinished"/>
+        <translation>Usuń konfigurację konta z klienta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -91,12 +91,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Przestrzeń: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="167"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Niezaznaczone katalogi zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
@@ -123,17 +123,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="148"/>
         <source>Remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Usuń katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
         <source>Folder creation failed</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się stworzyć katalogu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nie można stworzyć lokalnego katalogu &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="248"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Zatrzymaj synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
@@ -168,17 +168,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 jako &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Podłączony do %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="449"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer %1 jest tymczasowo niedostępny.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="451"/>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Brak połączenia do %1 z %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="518"/>
         <source>Confirm Account Delete</source>
-        <translation type="unfinished"/>
+        <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
@@ -213,22 +213,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Usuwanie połączenia</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="144"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz katalog</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Przywróć synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Zatrzymaj synchronizację</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -261,37 +261,37 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="95"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Odłączony</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="97"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Rozłączony</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="99"/>
         <source>Connected</source>
-        <translation type="unfinished"/>
+        <translation>Połączony</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Usługa niedostępna</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="103"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd sieci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="105"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Błąd konfiguracji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Status konta nieznany</translation>
     </message>
 </context>
 <context>
@@ -560,12 +560,12 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="867"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(kopia zapasowa)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="872"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(kopia zapasowa %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1081"/>
@@ -625,7 +625,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1132"/>
         <source>The selected path is not a directory!</source>
-        <translation type="unfinished"/>
+        <translation>Zaznaczona ścieżka nie jest katalogiem!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1136"/>
@@ -663,7 +663,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder to Synchronize</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj katalog do synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -712,7 +712,7 @@ Czy jesteś pewien/pewna, że chcesz wykonać tę operację?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="178"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Odłączony</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="723"/>
@@ -953,7 +953,7 @@ Pozostało czasu %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>MB</source>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="109"/>
@@ -968,7 +968,7 @@ Pozostało czasu %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="142"/>
         <source>Add an Account</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj konto</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="167"/>
@@ -1984,12 +1984,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>Proxy:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer proxy wymaga nazwy użytkownika i hasła.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2007,7 +2007,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="381"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Niezaznaczone katalogi zostaną &lt;b&gt;usunięte&lt;/b&gt; z lokalnego systemu plików i nie będą już więcej synchronizowane na tym komputerze.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="395"/>
@@ -2121,7 +2121,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>Ścieżka ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
@@ -2141,7 +2141,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj &amp;link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -2151,12 +2151,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="696"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 ścieżka: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="119"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 udostępnione</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="98"/>
@@ -2166,7 +2166,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>Folder: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="120"/>
@@ -2186,7 +2186,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="532"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Proszę podać hasło</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="568"/>
@@ -2283,7 +2283,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/socketapi.cpp" line="451"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>Współdzielone z %1</translation>
     </message>
 </context>
 <context>
@@ -2421,68 +2421,67 @@ Niezalecane jest jego użycie.</translation>
         <translation>Zaufaj temu zaświadczeniu mimo wszystko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
-        <source>SSL Connection</source>
-        <translation>Połączenie szyfrowane</translation>
+        <source>Untrusted Certificate</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
-        <source>Warnings about current SSL Connection:</source>
-        <translation>Ostrzeżenia dotyczące bieżącego połączenia SSL:</translation>
+        <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
         <source>with Certificate %1</source>
         <translation>z certyfikatem %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;nie określono&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Organization: %1</source>
         <translation>Organizacja: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
         <source>Unit: %1</source>
         <translation>Jednostka: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Country: %1</source>
         <translation>Kraj: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Odcisk (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Odcisk (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Effective Date: %1</source>
         <translation>Data wejścia w życie: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Expiration Date: %1</source>
         <translation>Data wygaśnięcia: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
         <source>Issuer: %1</source>
         <translation>Wystawca: %1</translation>
     </message>
@@ -2642,7 +2641,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa pliku zbyt długa</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="401"/>
@@ -2652,7 +2651,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Błąd statystyk.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
@@ -2797,7 +2796,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="395"/>
@@ -2859,7 +2858,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="256"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Rozłączony z %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="260"/>
@@ -2869,7 +2868,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="262"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>Dostęp  %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
@@ -2881,12 +2880,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="439"/>
         <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Wyloguj z wszystkich</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="447"/>
         <source>Sign in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>Zaloguj do wszystkich...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="522"/>
@@ -3144,22 +3143,22 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="114"/>
         <source>%L1 TB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 TB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="117"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="120"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="123"/>
         <source>%L1 kB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="126"/>
@@ -3169,17 +3168,17 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="304"/>
         <source>%Ln year(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln rok(lat)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln month(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln miesiąc(ęcy)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln day(s)</source>
-        <translation type="unfinished"/>
+        <translation>%Ln dzień(dni)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="307"/>
@@ -3199,7 +3198,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>0 seconds</source>
-        <translation type="unfinished"/>
+        <translation>0 sekund</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="334"/>

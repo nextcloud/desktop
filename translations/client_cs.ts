@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Prostor úložiště: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="167"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="280"/>
@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Odstranit připojení</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="144"/>
@@ -238,12 +238,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Používaných %1 (%3%) z %2. Některé adresáře včetně připojených síťových  nebo sdílených adresářů mohou mít odlišné limity.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Používaných %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="424"/>
@@ -2434,68 +2434,67 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přesto tomuto certifikátu důvěřovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
-        <source>SSL Connection</source>
-        <translation>SSL spojení</translation>
+        <source>Untrusted Certificate</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
-        <source>Warnings about current SSL Connection:</source>
-        <translation>Varování o aktuálním SSL spojení:</translation>
+        <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
         <source>with Certificate %1</source>
         <translation>s certifikátem %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;nespecifikováno&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Organization: %1</source>
         <translation>Organizace: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
         <source>Unit: %1</source>
         <translation>Jednotka: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Country: %1</source>
         <translation>Země: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Otisk (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Otisk (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Effective Date: %1</source>
         <translation>Datum účinnosti: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Expiration Date: %1</source>
         <translation>Datum vypršení: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
         <source>Issuer: %1</source>
         <translation>Vydavatel: %1</translation>
     </message>

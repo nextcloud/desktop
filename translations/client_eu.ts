@@ -2418,68 +2418,67 @@ Ez da gomendagarria erabltzea.</translation>
         <translation>Fidatu ziurtagiri honetaz hala ere</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.ui" line="44"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
-        <source>SSL Connection</source>
-        <translation>SSL Konexioa</translation>
+        <source>Untrusted Certificate</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
-        <source>Warnings about current SSL Connection:</source>
-        <translation>Abisua uneko SSL konexioari buruz:</translation>
+        <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="170"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
         <source>with Certificate %1</source>
         <translation>%1 ziurtagiriarekin</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="178"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;zehaztu gabe&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Organization: %1</source>
         <translation>Erakundea: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
         <source>Unit: %1</source>
         <translation>Unitatea: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="203"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="204"/>
         <source>Country: %1</source>
         <translation>Herrialdea: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Hatz-marka (MD5): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="191"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Hatz-marka (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
         <source>Effective Date: %1</source>
         <translation>Balio-data: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Expiration Date: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
         <source>Issuer: %1</source>
         <translation>Jaulkitzailea: %1</translation>
     </message>
