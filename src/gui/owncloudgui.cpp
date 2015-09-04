@@ -42,16 +42,6 @@
 #include <QX11Info>
 #endif
 
-// Enables workarounds for bugs introduced in Qt 5.5.0
-// In particular QTBUG-47863 #3672 (tray menu fails to update and
-// becomes unresponsive) and QTBUG-48068 #3722 (click signal is
-// emitted several times)
-#ifdef Q_OS_LINUX
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-#define WORKAROUND_QT_TRAY_DBUS
-#endif
-#endif
-
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
@@ -66,6 +56,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 #endif
     _logBrowser(0),
     _recentActionsMenu(0),
+    _qdbusmenuWorkaround(false),
     _folderOpenActionMapper(new QSignalMapper(this)),
     _recentItemsMapper(new QSignalMapper(this)),
     _app(parent)
@@ -172,13 +163,13 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 {
-#ifdef WORKAROUND_QT_TRAY_DBUS
-    static QElapsedTimer last_click;
-    if (last_click.isValid() && last_click.elapsed() < 200) {
-        return;
+    if (_qdbusmenuWorkaround) {
+        static QElapsedTimer last_click;
+        if (last_click.isValid() && last_click.elapsed() < 200) {
+            return;
+        }
+        last_click.start();
     }
-    last_click.start();
-#endif
 
     // A click on the tray icon should only open the status window on Win and
     // Linux, not on Mac. They want a menu entry.
@@ -385,11 +376,10 @@ void ownCloudGui::setupContextMenu()
         }
     }
 
-#ifdef WORKAROUND_QT_TRAY_DBUS
-    _tray->hide();
-#endif
-
     if ( _contextMenu ) {
+        if (_qdbusmenuWorkaround) {
+            _tray->hide();
+        }
         _contextMenu->clear();
         _recentActionsMenu->clear();
         _recentActionsMenu->addAction(tr("None."));
@@ -400,6 +390,17 @@ void ownCloudGui::setupContextMenu()
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
         _tray->setContextMenu(_contextMenu.data());
+
+        // Enables workarounds for bugs introduced in Qt 5.5.0
+        // In particular QTBUG-47863 #3672 (tray menu fails to update and
+        // becomes unresponsive) and QTBUG-48068 #3722 (click signal is
+        // emitted several times)
+        QObject* platformMenu = reinterpret_cast<QObject*>(_tray->contextMenu()->platformMenu());
+        if (platformMenu
+                && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
+            _qdbusmenuWorkaround = true;
+            qDebug() << "Enabled QDBusPlatformMenu workaround";
+        }
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
     // We must call deleteLater because we might be called from the press in one of the action.
@@ -452,9 +453,9 @@ void ownCloudGui::setupContextMenu()
     }
     _contextMenu->addAction(_actionQuit);
 
-#ifdef WORKAROUND_QT_TRAY_DBUS
-    _tray->show();
-#endif
+    if (_qdbusmenuWorkaround) {
+        _tray->show();
+    }
 }
 
 

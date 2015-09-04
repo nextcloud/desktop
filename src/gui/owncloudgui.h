@@ -98,6 +98,7 @@ private:
     QScopedPointer<QMenu> _contextMenu;
     QMenu *_recentActionsMenu;
     QVector<QMenu*> _accountMenus;
+    bool _qdbusmenuWorkaround;
 
     QAction *_actionLogin;
     QAction *_actionLogout;
