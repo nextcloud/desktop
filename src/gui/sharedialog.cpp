@@ -104,15 +104,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     QString ocDir(_sharePath);
     ocDir.truncate(ocDir.length()-fileName.length());
 
-    if( ocDir == QLatin1String("/")) {
+    ocDir.replace(QRegExp("^/*"), "");
+    ocDir.replace(QRegExp("/*$"), "");
+    if( ocDir.isEmpty() ) {
         _ui->label_sharePath->setText(QString());
     } else {
-        if( ocDir.startsWith(QLatin1Char('/')) ) {
-            ocDir = ocDir.mid(1, -1);
-        }
-        if( ocDir.endsWith(QLatin1Char('/')) ) {
-            ocDir.chop(1);
-        }
         _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
     }
 
