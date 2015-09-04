@@ -146,13 +146,47 @@ static void check_to_multibyte(void **state)
 
 static void check_long_win_path(void **state)
 {
-    const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3"; // check a short path
-    const char *exp_path = "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3";
-    const char *new_short = c_path_to_UNC(path);
-
     (void) state; /* unused */
 
-    assert_string_equal(new_short, exp_path);
+    {
+        const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3"; // check a short path
+        const char *exp_path = "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3";
+        const char *new_short = c_path_to_UNC(path);
+        assert_string_equal(new_short, exp_path);
+        SAFE_FREE(new_short);
+    }
+
+    {
+        const char *path = "\\\\foo\\bar/MY_MUSIC.mp3";
+        const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
+        const char *new_short = c_path_to_UNC(path);
+        assert_string_equal(new_short, exp_path);
+        SAFE_FREE(new_short);
+    }
+
+    {
+        const char *path = "//foo\\bar/MY_MUSIC.mp3";
+        const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
+        const char *new_short = c_path_to_UNC(path);
+        assert_string_equal(new_short, exp_path);
+        SAFE_FREE(new_short);
+    }
+
+    {
+        const char *path = "\\foo\\bar";
+        const char *exp_path = "\\\\?\\foo\\bar";
+        const char *new_short = c_path_to_UNC(path);
+        assert_string_equal(new_short, exp_path);
+        SAFE_FREE(new_short);
+    }
+
+    {
+        const char *path = "/foo/bar";
+        const char *exp_path = "\\\\?\\foo\\bar";
+        const char *new_short = c_path_to_UNC(path);
+        assert_string_equal(new_short, exp_path);
+        SAFE_FREE(new_short);
+    }
 
     const char *longPath = "D://alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
             "elonglonglonglong/flonglonglonglong/glonglonglonglong/hlonglonglonglong/ilonglonglonglong/"
@@ -170,7 +204,7 @@ static void check_long_win_path(void **state)
 
     // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
     assert_int_equal( strlen(new_long), 286);
-
+    SAFE_FREE(new_long);
 }
 
 int torture_run_tests(void)

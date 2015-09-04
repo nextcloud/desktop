@@ -393,8 +393,8 @@ int c_parse_uri(const char *uri,
 
 /*
  * This function takes a path and converts it to a UNC representation of the
- * string. That means that it prepends a \\?\ and convertes all slashes to
- * backslashes.
+ * string. That means that it prepends a \\?\ (unless already UNC) and converts
+ * all slashes to backslashes.
  *
  * Note the following:
  *  - The string must be absolute.
@@ -408,27 +408,28 @@ int c_parse_uri(const char *uri,
  {
      int len = 0;
      char *longStr = NULL;
-     int i = 4; // index where to start changing "/"=>"\"
 
      len = strlen(str);
      longStr = c_malloc(len+5);
      *longStr = '\0';
 
      // prepend \\?\ and convert '/' => '\' to support long names
-     if( str[0] == '/' ) {
-         strncpy( longStr, "\\\\?", 4);
-         i=3;
+     if( str[0] == '/' || str[0] == '\\' ) {
+         // Don't prepend if already UNC
+         if( !(len > 1 && (str[1] == '/' || str[1] == '\\')) ) {
+            strcpy( longStr, "\\\\?");
+         }
      } else {
-         strncpy( longStr, "\\\\?\\", 5); // prepend string by this four magic chars.
+         strcpy( longStr, "\\\\?\\"); // prepend string by this four magic chars.
      }
      strncat( longStr, str, len );
 
      /* replace all occurences of / with the windows native \ */
-     while(longStr[i] != '\0') {
-         if(longStr[i] == '/') {
-             longStr[i] = '\\';
+     char *c = longStr;
+     for (; *c; ++c) {
+         if(*c == '/') {
+             *c = '\\';
          }
-         i++;
      }
      return longStr;
  }
