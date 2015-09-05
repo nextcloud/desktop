@@ -548,112 +548,112 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Nemožno resetovať stav priečinka</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Starý synchronizačný žurnál &apos;%1&apos; nájdený, avšak neodstrániteľný. Prosím uistite sa, že žiadna aplikácia ho práve nevyužíva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="867"/>
+        <location filename="../src/gui/folderman.cpp" line="873"/>
         <source> (backup)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="872"/>
+        <location filename="../src/gui/folderman.cpp" line="878"/>
         <source> (backup %1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1084"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Waits to start syncing.</source>
         <translation>Čakanie na štart synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1087"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Preparing for sync.</source>
         <translation>Príprava na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1090"/>
+        <location filename="../src/gui/folderman.cpp" line="1096"/>
         <source>Sync is running.</source>
         <translation>Synchronizácia prebieha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1093"/>
+        <location filename="../src/gui/folderman.cpp" line="1099"/>
         <source>Last Sync was successful.</source>
         <translation>Posledná synchronizácia sa úspešne skončila.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1098"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Posledná synchronizácia bola úspešná, ale s varovaniami pre individuálne súbory.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Setup Error.</source>
         <translation>Chyba pri inštalácii.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1104"/>
+        <location filename="../src/gui/folderman.cpp" line="1110"/>
         <source>User Abort.</source>
         <translation>Zrušené používateľom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1107"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>Sync is paused.</source>
         <translation>Synchronizácia je pozastavená.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1113"/>
+        <location filename="../src/gui/folderman.cpp" line="1119"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizácia je pozastavená)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1121"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>No valid folder selected!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>The selected path is not a directory!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnenia pre zápis do daného priečinka!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation>Lokálna cesta %1 je už nastavená ako priečinok na odosielanie. Zvoľte prosím iný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>V aktuálnej položke je už obsiahnutý rovnaký konfigurovaný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1160"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation>Zvolený priečinok je symbolický odkaz. Cieľový priečinok tohoto odkazu už obsahuje nastavený priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1165"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>V aktuálnom priečinku je už obsiahnutý tento priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <location filename="../src/gui/folderman.cpp" line="1175"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation>Zvolený priečinok je symbolický odkaz. Cieľový priečinok tohoto odkazu už obsahuje nastavený priečinok. </translation>
     </message>
@@ -685,88 +685,103 @@ Ste si istý, že chcete uskutočniť danú operáciu?</translation>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>You need to be connected to add a folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="178"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
         <source>Signed out</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="723"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Prehľadávam &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="783"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>Syncing %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="788"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="792"/>
         <source>download %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="790"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="796"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="800"/>
         <source>upload %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="798"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="802"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="803"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="811"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="823"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="827"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 z %2, súbor %3 z %4
 Celkom zostáva %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="829"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>file %1 of %2</source>
         <translation>súbor %1 z %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <source>Waiting...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
+        <source>Waiting for %n other folder(s)...</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <source>Preparing to sync...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2155,12 +2170,12 @@ Nie je vhodné ju používať.</translation>
         <translation>Nastaviť heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="696"/>
+        <location filename="../src/gui/sharedialog.cpp" line="692"/>
         <source>%1 path: %2</source>
         <translation>%1 v umiestnení: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="119"/>
+        <location filename="../src/gui/sharedialog.cpp" line="115"/>
         <source>%1 Sharing</source>
         <translation>%1 zdieľanie</translation>
     </message>
@@ -2170,84 +2185,84 @@ Nie je vhodné ju používať.</translation>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="116"/>
+        <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
         <translation>Priečinok: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>P&amp;assword protect</source>
         <translation>Ch&amp;rániť heslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="225"/>
+        <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Password Protected</source>
         <translation>Chránené heslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="386"/>
+        <location filename="../src/gui/sharedialog.cpp" line="382"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Tento súbor nemožno zdieľať, lebo bol vyzdieľaný bez možnosti ďalšieho zdieľania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="568"/>
-        <location filename="../src/gui/sharedialog.cpp" line="569"/>
+        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
         <translation>&amp;Zdieľať odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="587"/>
+        <location filename="../src/gui/sharedialog.cpp" line="583"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API chybový kód: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="609"/>
+        <location filename="../src/gui/sharedialog.cpp" line="605"/>
         <source>There is no sync folder configured.</source>
         <translation>Nie je nakonfigurovaný žiadny synchronizačný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="643"/>
+        <location filename="../src/gui/sharedialog.cpp" line="639"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Súbor s rovnakým názvom už existuje. Nemožno ho preto registrovať na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="688"/>
+        <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
         <translation>Súbor nemožno synchronizovať.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="628"/>
+        <location filename="../src/gui/sharedialog.cpp" line="624"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Zdieľanie externých priečinkov ešte nefunguje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="477"/>
-        <location filename="../src/gui/sharedialog.cpp" line="510"/>
+        <location filename="../src/gui/sharedialog.cpp" line="473"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Verejné z&amp;dieľanie vyžaduje heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="621"/>
+        <location filename="../src/gui/sharedialog.cpp" line="617"/>
         <source>Cannot find a folder to upload to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="655"/>
+        <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Waiting to upload...</source>
         <translation>Čakanie na nahrávanie...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="657"/>
+        <location filename="../src/gui/sharedialog.cpp" line="653"/>
         <source>Unable to register in sync space.</source>
         <translation>Nemožno registrovať v synchronizačnom umiestnení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="698"/>
+        <location filename="../src/gui/sharedialog.cpp" line="694"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Synchronizácia registrovaného súboru ešte nebola dokončená.</translation>
     </message>
@@ -2780,152 +2795,152 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Please sign in</source>
         <translation>Prihláste sa prosím</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Folder %1: %2</source>
         <translation>Priečinok %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>No sync folders configured.</source>
         <translation>Nie sú nastavené žiadne synchronizačné priečinky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>There are no sync folders configured.</source>
         <translation>Nie sú nastavené žiadne priečinky na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation>Žiaden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Recent Changes</source>
         <translation>Nedávne zmeny</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Managed Folders:</source>
         <translation>Spravované priečinky:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Otvoriť priečinok &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Otvoriť %1 v prehliadači</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>Unknown status</source>
         <translation>Neznámy stav</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Settings...</source>
         <translation>Nastavenia...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>Details...</source>
         <translation>Podrobnosti...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Quit %1</source>
         <translation>Ukončiť %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Sign in...</source>
         <translation>Prihlásiť do...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>Sign out</source>
         <translation>Odhlásiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>Sign out everywhere</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Sign in everywhere...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Zlyhanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="540"/>
         <source>No items synced recently</source>
         <translation>Žiadne nedávno synchronizované položky</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="551"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="552"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Prehľadávam &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="557"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synchronizuje sa %1 z %2  (zostáva %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="562"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronizuje sa %1  (zostáva %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="610"/>
         <source>Up to date</source>
         <translation>Až do dnešného dňa</translation>
     </message>

@@ -549,112 +549,112 @@ Confirma que quere realizar esta operación?</translation>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Non foi posíbel restabelecer o estado do cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Atopouse un rexistro de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningunha aplicación.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="867"/>
+        <location filename="../src/gui/folderman.cpp" line="873"/>
         <source> (backup)</source>
         <translation>(copia de seguranza)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="872"/>
+        <location filename="../src/gui/folderman.cpp" line="878"/>
         <source> (backup %1)</source>
         <translation>(copia de seguranza %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Undefined State.</source>
         <translation>Estado sen definir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1084"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Waits to start syncing.</source>
         <translation>Agardando polo comezo da sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1087"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Preparing for sync.</source>
         <translation>Preparando para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1090"/>
+        <location filename="../src/gui/folderman.cpp" line="1096"/>
         <source>Sync is running.</source>
         <translation>Estase sincronizando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1093"/>
+        <location filename="../src/gui/folderman.cpp" line="1099"/>
         <source>Last Sync was successful.</source>
         <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1098"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>A última sincronización fíxose correctamente, mais con algún aviso en ficheiros individuais.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Setup Error.</source>
         <translation>Erro de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1104"/>
+        <location filename="../src/gui/folderman.cpp" line="1110"/>
         <source>User Abort.</source>
         <translation>Interrompido polo usuario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1107"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>Sync is paused.</source>
         <translation>Sincronización en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1113"/>
+        <location filename="../src/gui/folderman.cpp" line="1119"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (sincronización en pausa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1121"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>No valid folder selected!</source>
         <translation>Non seleccionou ningún cartafol correcto!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>The selected path is not a directory!</source>
         <translation>A ruta seleccionada non é dun directorio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Vostede non ten permiso para escribir neste cartafol!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation>A ruta local %1 xa é un cartafol de envío. Escolla outro!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Xa hai un cartafol configurado que xa está dentro da entrada actual.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1160"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation>O cartafol seleccionado é unha ligazón simbólica. Xa hai un cartafol configurado no cartafol ao que apunta esta ligazón.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1165"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>Xa hai un cartafol configurado que contén o cartafol que foi indicado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <location filename="../src/gui/folderman.cpp" line="1175"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation>O cartafol seleccionado é unha ligazón simbólica. Un cartafol xa configurado é o pai do seleccionado actualmente e contén o cartafol ao que apunta esta ligazón.</translation>
     </message>
@@ -686,88 +686,103 @@ Confirma que quere realizar esta operación?</translation>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>You need to be connected to add a folder</source>
         <translation>Ten que estar conectado para engadir un cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation>A acción de engadir cartafoles está desactivada xa que vostede xa sincronizou todos os seus ficheiros. Se quere sincronizar varios cartafoles, retire o cartafol raíz configurado actualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Prema nesta botón para engadir un cartafol para sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="178"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
         <source>Signed out</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="723"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Atopando «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="783"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="788"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="792"/>
         <source>download %1/s</source>
         <translation>descargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="790"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="796"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="800"/>
         <source>upload %1/s</source>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="798"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="802"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="803"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="811"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="823"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="827"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 de %2, ficheiro %3 of %4
 Tempo total restante %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="829"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>file %1 of %2</source>
         <translation>ficheiro %1 de %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <source>Waiting...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
+        <source>Waiting for %n other folder(s)...</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <source>Preparing to sync...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2159,12 +2174,12 @@ Recomendámoslle que non o use.</translation>
         <translation>Estabelecer o contrasinal</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="696"/>
+        <location filename="../src/gui/sharedialog.cpp" line="692"/>
         <source>%1 path: %2</source>
         <translation>Ruta a %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="119"/>
+        <location filename="../src/gui/sharedialog.cpp" line="115"/>
         <source>%1 Sharing</source>
         <translation>Compartindo %1</translation>
     </message>
@@ -2174,84 +2189,84 @@ Recomendámoslle que non o use.</translation>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="116"/>
+        <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
         <translation>Cartafol: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>P&amp;assword protect</source>
         <translation>Contr&amp;asinal de protección</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="225"/>
+        <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Password Protected</source>
         <translation>Protexido con contrasinal</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="386"/>
+        <location filename="../src/gui/sharedialog.cpp" line="382"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Non é posíbel compartir o ficheiro, xa que foi compartido sen permisis para compartir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
         <translation>Estabeleza o contrasinal</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="568"/>
-        <location filename="../src/gui/sharedialog.cpp" line="569"/>
+        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
         <translation>&amp;Ligazón para compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="587"/>
+        <location filename="../src/gui/sharedialog.cpp" line="583"/>
         <source>OCS API error code: %1</source>
         <translation>API OCS API código de erro: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="609"/>
+        <location filename="../src/gui/sharedialog.cpp" line="605"/>
         <source>There is no sync folder configured.</source>
         <translation>Non hai ningún cartafol de sincronización configurado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="643"/>
+        <location filename="../src/gui/sharedialog.cpp" line="639"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Xa existe un ficheiro de sincronización co mesmo nome. Non é posíbel rexistrar o ficheiro para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="688"/>
+        <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
         <translation>Non é posíbel sincronizar o ficheiro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="628"/>
+        <location filename="../src/gui/sharedialog.cpp" line="624"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>A compartición de directorios externos aínda non está a funcionar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="477"/>
-        <location filename="../src/gui/sharedialog.cpp" line="510"/>
+        <location filename="../src/gui/sharedialog.cpp" line="473"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>A comp&amp;artición pública precisa de contrasinal </translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="621"/>
+        <location filename="../src/gui/sharedialog.cpp" line="617"/>
         <source>Cannot find a folder to upload to.</source>
         <translation>Non é posíbel atopar un cartafol que enviar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="655"/>
+        <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Waiting to upload...</source>
         <translation>Agardando polo envío...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="657"/>
+        <location filename="../src/gui/sharedialog.cpp" line="653"/>
         <source>Unable to register in sync space.</source>
         <translation>Non é posíbel facer un rexistro no espazo de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="698"/>
+        <location filename="../src/gui/sharedialog.cpp" line="694"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>A sincronización di ficheiro rexistrado no non foi satisfactoria.</translation>
     </message>
@@ -2784,152 +2799,152 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Please sign in</source>
         <translation>Ten que rexistrarse</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Folder %1: %2</source>
         <translation>Cartafol %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>No sync folders configured.</source>
         <translation>Non se configuraron cartafoles de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>There are no sync folders configured.</source>
         <translation>Non existen cartafoles de sincronización configurados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation>Nada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Recent Changes</source>
         <translation>Cambios recentes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Managed Folders:</source>
         <translation>Cartafoles xestionados:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Abrir o cartafol «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 nun navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>Unknown status</source>
         <translation>Estado descoñecido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Settings...</source>
         <translation>Axustes...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>Details...</source>
         <translation>Detalles...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>Help</source>
         <translation>Axuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Quit %1</source>
         <translation>Saír de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Sign in...</source>
         <translation>Rexistrarse...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation>Desconectado de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation>Desconectado das contas:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Conta %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>Sign out</source>
         <translation>Desconectar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>Sign out everywhere</source>
         <translation>Desconectar de todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Sign in everywhere...</source>
         <translation>Rexistrarse en todos...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Quebrou agora</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="540"/>
         <source>No items synced recently</source>
         <translation>Non hai elementos sincronizados recentemente</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="551"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="552"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Atopando «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="557"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sincronizando %1 of %2  (restan %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="562"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (restan %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="610"/>
         <source>Up to date</source>
         <translation>Actualizado</translation>
     </message>

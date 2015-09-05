@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="418"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) από %2 σε χρήση. Μερικοί φάκελοι, συμπεριλαμβανομένων των δικτυακών ή των κοινόχρηστων μπορεί να έχουν διαφορετικά όρια.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="419"/>
@@ -549,112 +549,112 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Δεν ήταν δυνατό να επαναφερθεί η κατάσταση του φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμία εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="867"/>
+        <location filename="../src/gui/folderman.cpp" line="873"/>
         <source> (backup)</source>
         <translation>(αντίγραφο ασφαλείας)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="872"/>
+        <location filename="../src/gui/folderman.cpp" line="878"/>
         <source> (backup %1)</source>
         <translation>(αντίγραοφ ασφαλέιας %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Undefined State.</source>
         <translation>Απροσδιόριστη Κατάσταση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1084"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Waits to start syncing.</source>
         <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1087"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Preparing for sync.</source>
         <translation>Προετοιμασία για συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1090"/>
+        <location filename="../src/gui/folderman.cpp" line="1096"/>
         <source>Sync is running.</source>
         <translation>Ο συγχρονισμός εκτελείται.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1093"/>
+        <location filename="../src/gui/folderman.cpp" line="1099"/>
         <source>Last Sync was successful.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1098"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής, αλλά υπήρχαν προειδοποιήσεις σε συγκεκριμένα αρχεία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Setup Error.</source>
         <translation>Σφάλμα Ρύθμισης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1104"/>
+        <location filename="../src/gui/folderman.cpp" line="1110"/>
         <source>User Abort.</source>
         <translation>Ματαίωση από Χρήστη.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1107"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>Sync is paused.</source>
         <translation>Παύση συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1113"/>
+        <location filename="../src/gui/folderman.cpp" line="1119"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Παύση συγχρονισμού)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1121"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>No valid folder selected!</source>
         <translation>Δεν επιλέχθηκε έγκυρος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>The selected path is not a directory!</source>
         <translation>Η επιλεγμένη διαδρομή δεν είναι κατάλογος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Δεν έχετε δικαιώματα εγγραφής στον επιλεγμένο φάκελο!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation>Η τοπική διαδρομή %1 είναι ήδη ένας φάκελος μεταφόρτωσης. Παρακαλώ επιλέξτε κάποιον άλλο!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Ένας ήδη ρυθμισμένος φάκελος περιέχεται στην τρέχουσα καταχώρηση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1160"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ένας ήδη ρυθμισμένος φάκελος περιέχεται στο φάκελο στον οποίο καταλήγει αυτός ο σύνδεσμος.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1165"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>Ένας ήδη ρυθμισμένος φάκελος περιέχει τον φάκελο που μόλις επιλέξατε. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <location filename="../src/gui/folderman.cpp" line="1175"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation>Ο επιλεγμένος φάκελος είναι ένας συμβολικός σύνδεσμος. Ο φάκελος στον οποίο οδηγεί ο σύνδεσμος περιέχεται σε έναν φάκελο που είναι ήδη ρυθμισμένος.</translation>
     </message>
@@ -686,79 +686,79 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>You need to be connected to add a folder</source>
         <translation>Πρέπει να έχετε συνδεθεί για να προσθέσετε φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation>Η προσθήκη φακέλου είναι απενεργοποιημένη επειδή συγχρονίζετε ήδη όλα σας τα αρχεία. Εάν θέλετε να συγχρονίσετε πολλαπλούς φακέλους, παρακαλούμε αφαιρέστε την τρέχουσα ρύθμιση συγχρονισμού του ριζικού φακέλου.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Κάντε κλικ σε αυτό το κουμπί για να προσθέσετε ένα φάκελο προς συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Σφάλμα κατά τη φόρτωση της λίστας φακέλων από το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="178"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
         <source>Signed out</source>
         <translation>Αποσύνδεση</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="723"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Εντοπισμός &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="783"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>Syncing %1</source>
         <translation>Συγχρονισμός %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="788"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="792"/>
         <source>download %1/s</source>
         <translation>λήψη %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="790"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="796"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="800"/>
         <source>upload %1/s</source>
         <translation>μεταφόρτωση %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="798"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="802"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="803"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 από %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="811"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="823"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="827"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 από %2, αρχείο %3 από%4
@@ -766,9 +766,24 @@ Total time left %5</source>
 Συνολικός χρόνος που απομένει %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="829"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>file %1 of %2</source>
         <translation>αρχείο %1 από %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <source>Waiting...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
+        <source>Waiting for %n other folder(s)...</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <source>Preparing to sync...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2163,12 +2178,12 @@ It is not advisable to use it.</source>
         <translation>Ορισμός κωδικού πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="696"/>
+        <location filename="../src/gui/sharedialog.cpp" line="692"/>
         <source>%1 path: %2</source>
         <translation>%1 διαδρομή: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="119"/>
+        <location filename="../src/gui/sharedialog.cpp" line="115"/>
         <source>%1 Sharing</source>
         <translation>%1 Διαμοιράστηκε</translation>
     </message>
@@ -2178,84 +2193,84 @@ It is not advisable to use it.</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="116"/>
+        <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
         <translation>Φάκελος: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>P&amp;assword protect</source>
         <translation>Π&amp;ροστασία με κωδικό</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="225"/>
+        <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Password Protected</source>
         <translation>Προστατευμένο με κωδικό πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="386"/>
+        <location filename="../src/gui/sharedialog.cpp" line="382"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
         <translation>Παρακαλούμε ορίστε Κωδικό</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="568"/>
-        <location filename="../src/gui/sharedialog.cpp" line="569"/>
+        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
         <translation>Δ&amp;ιαμοιρασμός συνδέσμου</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="587"/>
+        <location filename="../src/gui/sharedialog.cpp" line="583"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API κωδικός λάθους: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="609"/>
+        <location filename="../src/gui/sharedialog.cpp" line="605"/>
         <source>There is no sync folder configured.</source>
         <translation>Δεν έχει οριστεί φάκελος συνχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="643"/>
+        <location filename="../src/gui/sharedialog.cpp" line="639"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation>Ήδη υπάρχει αρχείο συγχρονισμού με το ίδιο όνομα. Το αρχείο δεν μπορεί να καταχωρηθεί προς συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="688"/>
+        <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
         <translation>Το αρχείο δεν μπορεί να συγχρονιστεί.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="628"/>
+        <location filename="../src/gui/sharedialog.cpp" line="624"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation>Ο  διαμοιρασμός εξωτερικών καταλόγων δεν λειτουργεί ακόμα.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="477"/>
-        <location filename="../src/gui/sharedialog.cpp" line="510"/>
+        <location filename="../src/gui/sharedialog.cpp" line="473"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Ο δημόσιος &amp;διαμοιρασμός απαιτεί κωδικό πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="621"/>
+        <location filename="../src/gui/sharedialog.cpp" line="617"/>
         <source>Cannot find a folder to upload to.</source>
         <translation>Αδυναμία εύρεσης φακέλου μεταφόρτωσης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="655"/>
+        <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Waiting to upload...</source>
         <translation>Αναμονή για μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="657"/>
+        <location filename="../src/gui/sharedialog.cpp" line="653"/>
         <source>Unable to register in sync space.</source>
         <translation>Αδυναμία καταχώρησης στο χώρο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="698"/>
+        <location filename="../src/gui/sharedialog.cpp" line="694"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation>Ο συγχρονισμός του καταχωρημένου αρχείου δεν πέτυχε ακόμη.</translation>
     </message>
@@ -2437,12 +2452,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Μη έμπιστο πιστοποιητικό</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ασφαλούς σύνδεσης σε &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
@@ -2788,152 +2803,152 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Please sign in</source>
         <translation>Παρκαλώ συνδεθείτε</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Folder %1: %2</source>
         <translation>Φάκελος %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>No sync folders configured.</source>
         <translation>Δεν έχουν οριστεί φάκελοι συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>There are no sync folders configured.</source>
         <translation>Δεν έχουν ρυθμιστεί φάκελοι συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
         <translation>Άνοιγμα στον περιηγητή ιστού</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation>Καμμία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Recent Changes</source>
         <translation>Πρόσφατες Αλλαγές</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Managed Folders:</source>
         <translation>Φάκελοι υπό Διαχείριση:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Άνοιγμα φακέλου &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Άνοιγμα %1 στον περιηγητή</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>Unknown status</source>
         <translation>Άγνωστη κατάσταση</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Settings...</source>
         <translation>Ρυθμίσεις...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>Details...</source>
         <translation>Λεπτομέρειες...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>Help</source>
         <translation>Βοήθεια</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Quit %1</source>
         <translation>Κλείσιμο %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Sign in...</source>
         <translation>Σύνδεση...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation>Αποσυνδέθηκε από %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation>Αποσυνδέθηκε από τους λογαριασμούς:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Λογαριασμός %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>Sign out</source>
         <translation>Αποσύνδεση</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>Sign out everywhere</source>
         <translation>Αποσύνδεση από παντού</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Sign in everywhere...</source>
         <translation>Συνδεση παντού...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Κατάρρευση τώρα</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="540"/>
         <source>No items synced recently</source>
         <translation>Κανένα στοιχείο δεν συγχρονίστηκε πρόσφατα</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="551"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="552"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation>Εντοπισμός &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="557"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Συγχρονισμός %1 από %2 (%3 απομένουν)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="562"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Συγχρονισμός %1 (%2 απομένουν)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="610"/>
         <source>Up to date</source>
         <translation>Ενημερωμένο</translation>
     </message>

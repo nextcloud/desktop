@@ -547,112 +547,112 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="274"/>
+        <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>Could not reset folder state</source>
         <translation>Kansion tilaa ei voitu alustaa</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="276"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="867"/>
+        <location filename="../src/gui/folderman.cpp" line="873"/>
         <source> (backup)</source>
         <translation> (varmuuskopio)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="872"/>
+        <location filename="../src/gui/folderman.cpp" line="878"/>
         <source> (backup %1)</source>
         <translation> (varmuuskopio %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1081"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source>Undefined State.</source>
         <translation>Määrittelemätön tila.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1084"/>
+        <location filename="../src/gui/folderman.cpp" line="1090"/>
         <source>Waits to start syncing.</source>
         <translation>Odottaa synkronoinnin alkamista.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1087"/>
+        <location filename="../src/gui/folderman.cpp" line="1093"/>
         <source>Preparing for sync.</source>
         <translation>Valmistellaan synkronointia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1090"/>
+        <location filename="../src/gui/folderman.cpp" line="1096"/>
         <source>Sync is running.</source>
         <translation>Synkronointi on meneillään.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1093"/>
+        <location filename="../src/gui/folderman.cpp" line="1099"/>
         <source>Last Sync was successful.</source>
         <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1098"/>
+        <location filename="../src/gui/folderman.cpp" line="1104"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Viimeisin synkronointi onnistui, mutta yksittäisten tiedostojen kanssa ilmeni varoituksia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1101"/>
+        <location filename="../src/gui/folderman.cpp" line="1107"/>
         <source>Setup Error.</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1104"/>
+        <location filename="../src/gui/folderman.cpp" line="1110"/>
         <source>User Abort.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1107"/>
+        <location filename="../src/gui/folderman.cpp" line="1113"/>
         <source>Sync is paused.</source>
         <translation>Synkronointi on keskeytetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1113"/>
+        <location filename="../src/gui/folderman.cpp" line="1119"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synkronointi on keskeytetty)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1121"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>No valid folder selected!</source>
         <translation>Kelvollista kansiota ei ole valittu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>The selected path is not a directory!</source>
         <translation>Valittu polku ei ole kansio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Sinulla ei ole kirjoitusoikeutta valittuun kansioon!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The local path %1 is already an upload folder. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>An already configured folder is contained in the current entry.</source>
         <translation>Tässä on jo olemassa asetettu kansio.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1160"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1165"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>An already configured folder contains the currently entered folder.</source>
         <translation>Jo aiemmin määritelty kansio sisältää nyt valitun kansion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <location filename="../src/gui/folderman.cpp" line="1175"/>
         <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
         <translation type="unfinished"/>
     </message>
@@ -684,88 +684,103 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="117"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>You need to be connected to add a folder</source>
         <translation>Yhteyden tulee olla muodostettu, jotta voit lisätä kansion</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Napsauta valitaksesi synkronoitavan kansion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Virhe ladatessa kansiolistausta palvelimelta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="178"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
         <source>Signed out</source>
         <translation>Kirjauduttu ulos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="723"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="783"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
         <source>Syncing %1</source>
         <translation>Synkronoidaan %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="788"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="792"/>
         <source>download %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="790"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="796"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="800"/>
         <source>upload %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="798"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="802"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="803"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="811"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="823"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="827"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1/%2, tiedosto %3/%4
 Aikaa jäljellä yhteensä %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="829"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>file %1 of %2</source>
         <translation>tiedosto %1/%2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <source>Waiting...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
+        <source>Waiting for %n other folder(s)...</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <source>Preparing to sync...</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2147,12 +2162,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Aseta salasana</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="696"/>
+        <location filename="../src/gui/sharedialog.cpp" line="692"/>
         <source>%1 path: %2</source>
         <translation>%1-polku: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="119"/>
+        <location filename="../src/gui/sharedialog.cpp" line="115"/>
         <source>%1 Sharing</source>
         <translation>%1 - Jakaminen</translation>
     </message>
@@ -2162,84 +2177,84 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="116"/>
+        <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
         <translation>Kansio: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="116"/>
         <source>P&amp;assword protect</source>
         <translation>&amp;Suojaa salasanalla</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="225"/>
+        <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Password Protected</source>
         <translation>Salasanasuojattu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="386"/>
+        <location filename="../src/gui/sharedialog.cpp" line="382"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="532"/>
+        <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
         <translation>Aseta salasana</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="568"/>
-        <location filename="../src/gui/sharedialog.cpp" line="569"/>
+        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
         <translation>&amp;Jaa linkki</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="587"/>
+        <location filename="../src/gui/sharedialog.cpp" line="583"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API -virhekoodi: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="609"/>
+        <location filename="../src/gui/sharedialog.cpp" line="605"/>
         <source>There is no sync folder configured.</source>
         <translation>Synkronointikansiota ei ole määritetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="643"/>
+        <location filename="../src/gui/sharedialog.cpp" line="639"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="688"/>
+        <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
         <translation>Tiedostoa ei voi synkronoida.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="628"/>
+        <location filename="../src/gui/sharedialog.cpp" line="624"/>
         <source>Sharing of external directories is not yet working.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="477"/>
-        <location filename="../src/gui/sharedialog.cpp" line="510"/>
+        <location filename="../src/gui/sharedialog.cpp" line="473"/>
+        <location filename="../src/gui/sharedialog.cpp" line="506"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>&amp;Julkinen jakaminen vaatii salasanan</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="621"/>
+        <location filename="../src/gui/sharedialog.cpp" line="617"/>
         <source>Cannot find a folder to upload to.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="655"/>
+        <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Waiting to upload...</source>
         <translation>Odotetaan siirtoa...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="657"/>
+        <location filename="../src/gui/sharedialog.cpp" line="653"/>
         <source>Unable to register in sync space.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="698"/>
+        <location filename="../src/gui/sharedialog.cpp" line="694"/>
         <source>Sync of registered file was not successful yet.</source>
         <translation type="unfinished"/>
     </message>
@@ -2772,152 +2787,152 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Please sign in</source>
         <translation>Kirjaudu sisään</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="298"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
         <source>Folder %1: %2</source>
         <translation>Kansio %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="294"/>
         <source>No sync folders configured.</source>
         <translation>Synkronointikansioita ei ole määritetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>There are no sync folders configured.</source>
         <translation>Synkronointikansioita ei ole määritelty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
         <translation>Avaa selaimessa</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
         <source>Recent Changes</source>
         <translation>Viimeisimmät muutokset</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Managed Folders:</source>
         <translation>Hallitut kansiot:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Avaa kansio &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Avaa %1 selaimeen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="504"/>
         <source>Unknown status</source>
         <translation>Tuntematon tila</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Settings...</source>
         <translation>Asetukset...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
         <source>Details...</source>
         <translation>Tiedot...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="512"/>
         <source>Help</source>
         <translation>Ohje</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="514"/>
         <source>Quit %1</source>
         <translation>Lopeta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Sign in...</source>
         <translation>Kirjaudu sisään...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="260"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Tili %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="441"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="519"/>
         <source>Sign out</source>
         <translation>Kirjaudu ulos</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="439"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>Sign out everywhere</source>
         <translation>Kirjaudu ulos kaikkialta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Sign in everywhere...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="522"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="539"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="540"/>
         <source>No items synced recently</source>
         <translation>Kohteita ei ole synkronoitu äskettäin</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="551"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="552"/>
         <source>Discovering &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="556"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="557"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synkronoidaan %1/%2  (%3 jäljellä)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="562"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkronoidaan %1 (%2 jäljellä)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="610"/>
         <source>Up to date</source>
         <translation>Ajan tasalla</translation>
     </message>
