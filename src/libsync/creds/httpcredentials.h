@@ -73,7 +73,6 @@ protected:
 private:
     QString _certificatePath;
     QString _certificatePasswd;
-    bool _fetchJobInProgress; //True if the keychain job is in progress or the input dialog visible
 };
 
 } // namespace OCC

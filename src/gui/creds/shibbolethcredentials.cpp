@@ -51,14 +51,12 @@ ShibbolethCredentials::ShibbolethCredentials()
       _url(),
       _ready(false),
       _stillValid(false),
-      _fetchJobInProgress(false),
       _browser(0)
 {}
 
 ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
   : _ready(true),
     _stillValid(true),
-    _fetchJobInProgress(false),
     _browser(0),
     _shibCookie(cookie)
 {
@@ -153,15 +151,10 @@ bool ShibbolethCredentials::ready() const
 
 void ShibbolethCredentials::fetchFromKeychain()
 {
-    if(_fetchJobInProgress) {
-        return;
-    }
-
     if (_user.isEmpty()) {
         _user = _account->credentialSetting(QLatin1String(userC)).toString();
     }
     if (_ready) {
-        _fetchJobInProgress = false;
         Q_EMIT fetched();
     } else {
         _url = _account->url();
@@ -171,7 +164,6 @@ void ShibbolethCredentials::fetchFromKeychain()
         job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->start();
-        _fetchJobInProgress = true;
     }
 }
 
@@ -197,7 +189,6 @@ void ShibbolethCredentials::persist()
 void ShibbolethCredentials::invalidateToken()
 {
     _ready = false;
-    _fetchJobInProgress = true;
 
     CookieJar *jar = static_cast<CookieJar*>(_account->networkAccessManager()->cookieJar());
 
@@ -263,7 +254,6 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 
     _stillValid = true;
     _ready = true;
-    _fetchJobInProgress = false;
     Q_EMIT asked();
 }
 
@@ -271,7 +261,6 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 void ShibbolethCredentials::slotBrowserRejected()
 {
     _ready = false;
-    _fetchJobInProgress = false;
     Q_EMIT asked();
 }
 
@@ -290,11 +279,9 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
 
         _ready = true;
         _stillValid = true;
-        _fetchJobInProgress = false;
         Q_EMIT fetched();
     } else {
         _ready = false;
-        _fetchJobInProgress = false;
         Q_EMIT fetched();
     }
 }

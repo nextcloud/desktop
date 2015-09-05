@@ -88,7 +88,6 @@ private:
 
     bool _ready;
     bool _stillValid;
-    bool _fetchJobInProgress;
     QPointer<ShibbolethWebView> _browser;
     QNetworkCookie _shibCookie;
     QString _user;

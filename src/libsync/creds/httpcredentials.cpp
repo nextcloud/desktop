@@ -82,8 +82,7 @@ const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
 HttpCredentials::HttpCredentials()
-    : _ready(false),
-      _fetchJobInProgress(false)
+    : _ready(false)
 {
 }
 
@@ -92,8 +91,7 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
       _password(password),
       _ready(true),
       _certificatePath(certificatePath),
-      _certificatePasswd(certificatePasswd),
-      _fetchJobInProgress(false)
+      _certificatePasswd(certificatePasswd)
 {
 }
 
@@ -197,11 +195,6 @@ QString HttpCredentials::fetchUser()
 
 void HttpCredentials::fetchFromKeychain()
 {
-    // FIXME: Should this check go if we check in AccountState instead?
-    if (_fetchJobInProgress) {
-        return;
-    }
-
     // User must be fetched from config file
     fetchUser();
     _certificatePath = _account->credentialSetting(QLatin1String(certifPathC)).toString();
@@ -231,7 +224,6 @@ void HttpCredentials::fetchFromKeychain()
         job->setKey(kck);
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->start();
-        _fetchJobInProgress = true;
     }
 }
 bool HttpCredentials::stillValid(QNetworkReply *reply)
@@ -250,7 +242,6 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
     QKeychain::Error error = job->error();
 
-    _fetchJobInProgress = false;
     if( !_password.isEmpty() && error == NoError ) {
 
         // All cool, the keychain did not come back with error.
