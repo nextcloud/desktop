@@ -229,7 +229,7 @@ void Application::slotCheckConnection()
 
     if (list.isEmpty()) {
         // let gui open the setup wizard
-        _gui->slotOpenSettingsDialog( true );
+        _gui->slotOpenSettingsDialog();
 
         _checkConnectionTimer.stop(); // don't popup the wizard on interval;
     }

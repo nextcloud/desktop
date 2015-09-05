@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QCheckBox" name="_cbTrustConnect">
      <property name="font">
       <font>
@@ -26,7 +26,7 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QDialogButtonBox" name="_dialogButtonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -34,18 +34,6 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="font">
-      <font>
-       <pointsize>14</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>SSL Connection</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QTextBrowser" name="_tbErrors">
      <property name="openExternalLinks">
       <bool>true</bool>

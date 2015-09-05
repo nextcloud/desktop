@@ -20,7 +20,7 @@
 #include "utility.h"
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
-
+#include "accountmanager.h"
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
@@ -78,9 +78,11 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
     connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
 
-    if (Theme::instance()->singleAccount()) {
-        _ui->addAccountButton->setVisible(false);
-    }
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
+            SLOT(slotAccountAddedOrRemoved()));
+    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
+            SLOT(slotAccountAddedOrRemoved()));
+    slotAccountAddedOrRemoved();
 }
 
 GeneralSettings::~GeneralSettings()
@@ -158,6 +160,13 @@ void GeneralSettings::slotOpenAccountWizard()
         topLevelWidget()->close();
     }
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
+}
+
+void GeneralSettings::slotAccountAddedOrRemoved()
+{
+    _ui->addAccountButton->setVisible(
+        AccountManager::instance()->accounts().isEmpty()
+            || !Theme::instance()->singleAccount());
 }
 
 
