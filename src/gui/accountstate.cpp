@@ -15,6 +15,7 @@
 #include "accountmanager.h"
 #include "account.h"
 #include "creds/abstractcredentials.h"
+#include "logger.h"
 
 #include <QDebug>
 #include <QSettings>
@@ -28,6 +29,7 @@ AccountState::AccountState(AccountPtr account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
+    , _credentialsFetchMode(Interactive)
 {
     qRegisterMetaType<AccountState*>("AccountState*");
 
@@ -35,6 +37,8 @@ AccountState::AccountState(AccountPtr account)
             SLOT(slotInvalidCredentials()));
     connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials*)),
             SLOT(slotCredentialsFetched(AbstractCredentials*)));
+    connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials*)),
+            SLOT(slotCredentialsAsked(AbstractCredentials*)));
 }
 
 AccountState::~AccountState()
@@ -79,7 +83,7 @@ void AccountState::setState(State state)
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
-            checkConnectivity(AbstractCredentials::Interactive);
+            checkConnectivity(Interactive);
         }
     }
 
@@ -131,7 +135,7 @@ bool AccountState::isConnectedOrTemporarilyUnavailable() const
     return isConnected() || _state == ServiceUnavailable;
 }
 
-void AccountState::checkConnectivity(AbstractCredentials::FetchMode credentialsFetchMode)
+void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
 {
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
@@ -141,7 +145,8 @@ void AccountState::checkConnectivity(AbstractCredentials::FetchMode credentialsF
         qDebug() << "ConnectionValidator already running, ignoring";
         return;
     }
-    ConnectionValidator * conValidator = new ConnectionValidator(account(), credentialsFetchMode);
+    _credentialsFetchMode = credentialsFetchMode;
+    ConnectionValidator * conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
     connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
             SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
@@ -232,6 +237,29 @@ void AccountState::slotInvalidCredentials()
 
 void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
 {
+    if (!credentials->ready()) {
+        // No exiting credentials found in the keychain
+        if (_credentialsFetchMode == Interactive)
+            credentials->askFromUser();
+        else {
+            Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("You need to re-login to continue using the account %1.").arg(_account->displayName()));
+            setState(SignedOut);
+            _waitingForNewCredentials = false;
+        }
+        return;
+    }
+
+    _waitingForNewCredentials = false;
+
+    // When new credentials become available we always want to restart the
+    // connection validation, even if it's currently running.
+    delete _connectionValidator;
+
+    checkConnectivity(_credentialsFetchMode);
+}
+
+void AccountState::slotCredentialsAsked(AbstractCredentials* credentials)
+{
     _waitingForNewCredentials = false;
 
     if (!credentials->ready()) {
@@ -242,14 +270,9 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
 
     // When new credentials become available we always want to restart the
     // connection validation, even if it's currently running.
-    if (_connectionValidator) {
-        delete _connectionValidator;
-    }
+    delete _connectionValidator;
 
-    // If we made it this far, it means that we either fetched credentials
-    // interactively, or that we already aborted for missing/invalid credentials.
-    Q_ASSERT(credentials->ready());
-    checkConnectivity(AbstractCredentials::Interactive);
+    checkConnectivity(_credentialsFetchMode);
 }
 
 std::unique_ptr<QSettings> AccountState::settings()

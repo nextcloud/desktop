@@ -44,12 +44,11 @@ public:
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
-    void fetch(FetchMode mode = Interactive) Q_DECL_OVERRIDE;
+    void fetchFromKeychain() Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
     void persist() Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
-    virtual QString queryPassword(bool *ok, const QString& hint) = 0;
     void invalidateToken() Q_DECL_OVERRIDE;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
@@ -68,13 +67,13 @@ protected:
     QString _user;
     QString _password;
     QString _previousPassword;
+    QString _fetchErrorString;
+    bool _ready;
 
 private:
     QString _certificatePath;
     QString _certificatePasswd;
-    bool _ready;
     bool _fetchJobInProgress; //True if the keychain job is in progress or the input dialog visible
-    bool _interactiveFetch;
 };
 
 } // namespace OCC

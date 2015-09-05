@@ -56,9 +56,14 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
     return true;
 }
 
-void DummyCredentials::fetch(FetchMode)
+void DummyCredentials::fetchFromKeychain()
 {
     Q_EMIT(fetched());
+}
+
+void DummyCredentials::askFromUser()
+{
+    Q_EMIT(asked());
 }
 
 void DummyCredentials::persist()

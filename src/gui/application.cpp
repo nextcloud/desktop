@@ -223,7 +223,7 @@ void Application::slotCheckConnection()
         // when the error is permanent.
         if (state != AccountState::SignedOut
                 && state != AccountState::ConfigurationError) {
-            accountState->checkConnectivity(AbstractCredentials::NonInteractive);
+            accountState->checkConnectivity(AccountState::NonInteractive);
         }
     }
 

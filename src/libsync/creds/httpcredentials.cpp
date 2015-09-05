@@ -24,7 +24,6 @@
 
 #include "account.h"
 #include "accessmanager.h"
-#include "logger.h"
 #include "utility.h"
 #include "theme.h"
 #include "syncengine.h"
@@ -83,24 +82,18 @@ const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
 HttpCredentials::HttpCredentials()
-    : _user(),
-      _password(),
-      _certificatePath(),
-      _certificatePasswd(),
-      _ready(false),
-      _fetchJobInProgress(false),
-      _interactiveFetch(true)
+    : _ready(false),
+      _fetchJobInProgress(false)
 {
 }
 
 HttpCredentials::HttpCredentials(const QString& user, const QString& password, const QString& certificatePath, const QString& certificatePasswd)
     : _user(user),
       _password(password),
+      _ready(true),
       _certificatePath(certificatePath),
       _certificatePasswd(certificatePasswd),
-      _ready(true),
-      _fetchJobInProgress(false),
-      _interactiveFetch(true)
+      _fetchJobInProgress(false)
 {
 }
 
@@ -202,12 +195,12 @@ QString HttpCredentials::fetchUser()
     return _user;
 }
 
-void HttpCredentials::fetch(FetchMode mode)
+void HttpCredentials::fetchFromKeychain()
 {
+    // FIXME: Should this check go if we check in AccountState instead?
     if (_fetchJobInProgress) {
         return;
     }
-    _interactiveFetch = mode == Interactive;
 
     // User must be fetched from config file
     fetchUser();
@@ -257,8 +250,8 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
 
     QKeychain::Error error = job->error();
 
+    _fetchJobInProgress = false;
     if( !_password.isEmpty() && error == NoError ) {
-        _fetchJobInProgress = false;
 
         // All cool, the keychain did not come back with error.
         // Still, the password can be empty which indicates a problem and
@@ -268,31 +261,11 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *job)
     } else {
         // we come here if the password is empty or any other keychain
         // error happend.
-        // In all error conditions it should
-        // ask the user for the password interactively now.
-        // interactive password dialog starts here
 
-        QString hint;
-        if (job->error() != EntryNotFound) {
-            hint = tr("Reading from keychain failed with error: '%1'").arg(
-                    job->errorString());
-        }
+        _fetchErrorString = job->error() != EntryNotFound ? job->errorString() : QString();
 
-        bool ok = false;
-        QString pwd;
-        if (_interactiveFetch)
-            pwd = queryPassword(&ok, hint);
-        else
-            Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("You need to re-login to continue using the account %1.").arg(_account->displayName()));
-        _fetchJobInProgress = false;
-        if (ok) {
-            _password = pwd;
-            _ready = true;
-            persist();
-        } else {
-            _password = QString::null;
-            _ready = false;
-        }
+        _password = QString();
+        _ready = false;
         emit fetched();
     }
 }

@@ -23,24 +23,34 @@ using namespace QKeychain;
 namespace OCC
 {
 
-    QString HttpCredentialsGui::queryPassword(bool *ok, const QString& hint)
+void HttpCredentialsGui::askFromUser()
 {
-    if (!ok) {
-        return QString();
-    }
+    // The rest of the code assumes that this will be done asynchronously
+    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+}
 
+void HttpCredentialsGui::askFromUserAsync()
+{
     QString msg = tr("Please enter %1 password:\n"
                      "\n"
                      "User: %2\n"
                      "Account: %3\n")
                   .arg(Theme::instance()->appNameGUI(), _user, _account->displayName());
-    if (!hint.isEmpty()) {
-        msg += QLatin1String("\n") + hint + QLatin1String("\n");
+    if (!_fetchErrorString.isEmpty()) {
+        msg += QLatin1String("\n") + tr("Reading from keychain failed with error: '%1'").arg(
+                    _fetchErrorString) + QLatin1String("\n");
     }
 
-    return QInputDialog::getText(0, tr("Enter Password"), msg,
+    bool ok = false;
+    QString pwd = QInputDialog::getText(0, tr("Enter Password"), msg,
                                  QLineEdit::Password, _previousPassword,
-                                 ok);
+                                 &ok);
+    if (ok) {
+        _password = pwd;
+        _ready = true;
+        persist();
+    }
+    emit asked();
 }
 
 } // namespace OCC

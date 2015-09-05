@@ -26,7 +26,6 @@
 
 #include "accessmanager.h"
 #include "account.h"
-#include "logger.h"
 #include "theme.h"
 #include "cookiejar.h"
 #include "syncengine.h"
@@ -60,7 +59,6 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie& cookie)
   : _ready(true),
     _stillValid(true),
     _fetchJobInProgress(false),
-    _interactiveFetch(true),
     _browser(0),
     _shibCookie(cookie)
 {
@@ -153,12 +151,11 @@ bool ShibbolethCredentials::ready() const
     return _ready;
 }
 
-void ShibbolethCredentials::fetch(FetchMode mode)
+void ShibbolethCredentials::fetchFromKeychain()
 {
     if(_fetchJobInProgress) {
         return;
     }
-    _interactiveFetch = mode == Interactive;
 
     if (_user.isEmpty()) {
         _user = _account->credentialSetting(QLatin1String(userC)).toString();
@@ -176,6 +173,11 @@ void ShibbolethCredentials::fetch(FetchMode mode)
         job->start();
         _fetchJobInProgress = true;
     }
+}
+
+void ShibbolethCredentials::askFromUser()
+{
+    showLoginWindow();
 }
 
 bool ShibbolethCredentials::stillValid(QNetworkReply *reply)
@@ -262,7 +264,7 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
     _stillValid = true;
     _ready = true;
     _fetchJobInProgress = false;
-    Q_EMIT fetched();
+    Q_EMIT asked();
 }
 
 
@@ -270,7 +272,7 @@ void ShibbolethCredentials::slotBrowserRejected()
 {
     _ready = false;
     _fetchJobInProgress = false;
-    Q_EMIT fetched();
+    Q_EMIT asked();
 }
 
 void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
@@ -290,10 +292,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
         _stillValid = true;
         _fetchJobInProgress = false;
         Q_EMIT fetched();
-    } else if (_interactiveFetch) {
-        showLoginWindow();
     } else {
-        Logger::instance()->postOptionalGuiLog(tr("Reauthentication required"), tr("You need to re-login to continue using the account %1.").arg(_account->displayName()));
         _ready = false;
         _fetchJobInProgress = false;
         Q_EMIT fetched();

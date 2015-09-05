@@ -23,10 +23,9 @@
 
 namespace OCC {
 
-ConnectionValidator::ConnectionValidator(AccountPtr account, AbstractCredentials::FetchMode credentialsFetchMode, QObject *parent)
+ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent),
       _account(account),
-      _credentialsFetchMode(credentialsFetchMode),
       _isCheckingServerAndAuth(false)
 {
 }

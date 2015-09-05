@@ -141,6 +141,8 @@ void Account::setCredentials(AbstractCredentials *cred)
             SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
     connect(_credentials, SIGNAL(fetched()),
             SLOT(slotCredentialsFetched()));
+    connect(_credentials, SIGNAL(asked()),
+            SLOT(slotCredentialsAsked()));
 }
 
 QUrl Account::davUrl() const
@@ -421,6 +423,11 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
 void Account::slotCredentialsFetched()
 {
     emit credentialsFetched(_credentials);
+}
+
+void Account::slotCredentialsAsked()
+{
+    emit credentialsAsked(_credentials);
 }
 
 void Account::handleInvalidCredentials()
