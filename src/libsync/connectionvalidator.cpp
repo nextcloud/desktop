@@ -42,7 +42,7 @@ QString ConnectionValidator::statusString( Status stat )
         return QLatin1String("NotConfigured");
     case ServerVersionMismatch:
         return QLatin1String("Server Version Mismatch");
-    case CredentialsWrong:
+    case CredentialsMissingOrWrong:
         return QLatin1String("Credentials Wrong");
     case StatusNotFound:
         return QLatin1String("Status not found");
@@ -122,18 +122,10 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
     }
 
     // now check the authentication
-    AbstractCredentials *creds = _account->credentials();
-    if (creds->ready()) {
+    if (_account->credentials()->ready())
         QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
-    } else {
-        // We can't proceed with the auth check because we don't have credentials.
-        // Fetch them now! Once fetched, a new connectivity check will be
-        // initiated anyway.
-        creds->fetch(_credentialsFetchMode);
-
-        // no result is reported
-        deleteLater();
-    }
+    else
+        reportResult( CredentialsMissingOrWrong );
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -184,7 +176,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
         qDebug() <<  reply->error() << reply->errorString();
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
-        stat = CredentialsWrong;
+        stat = CredentialsMissingOrWrong;
 
     } else if( reply->error() != QNetworkReply::NoError ) {
         _errors << errorMessage(reply->errorString(), reply->readAll());

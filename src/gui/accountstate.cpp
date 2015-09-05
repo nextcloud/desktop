@@ -202,8 +202,8 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         // much more likely, so keep trying to connect.
         setState(NetworkError);
         break;
-    case ConnectionValidator::CredentialsWrong:
-        account()->handleInvalidCredentials();
+    case ConnectionValidator::CredentialsMissingOrWrong:
+        slotInvalidCredentials();
         break;
     case ConnectionValidator::UserCanceledCredentials:
         setState(SignedOut);
@@ -219,9 +219,12 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
 void AccountState::slotInvalidCredentials()
 {
-    if (isSignedOut()) {
+    if (isSignedOut() || _waitingForNewCredentials)
         return;
-    }
+
+    if (account()->credentials()->ready())
+        account()->credentials()->invalidateToken();
+    account()->credentials()->fetchFromKeychain();
 
     setState(ConfigurationError);
     _waitingForNewCredentials = true;
