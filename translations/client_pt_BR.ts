@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Selecione um diretório no seu computador para ser sincronizado:</translation>
+        <translation>Selecione um diretório no seu computador para ser sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -173,27 +173,27 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>Connected to %1.</source>
-        <translation>Conectado a %1</translation>
+        <translation>Conectado a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="449"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>O Servidor %1 está temporariamente indisponível</translation>
+        <translation>O Servidor %1 está temporariamente indisponível.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="451"/>
         <source>Signed out from %1.</source>
-        <translation>Assibndado por %1</translation>
+        <translation>Assibndado por %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Sem conexão para %1 em %2</translation>
+        <translation>Sem conexão para %1 em %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="490"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation>Há novas pastas que não foram sincronizados, porque elas são muito grandes: 1%</translation>
+        <translation>Há novas pastas que não foram sincronizados, porque elas são muito grandes: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="491"/>
@@ -606,7 +606,7 @@ Você tem certeza que quer executar esta operação?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1110"/>
         <source>User Abort.</source>
-        <translation>Usuário Abortou</translation>
+        <translation>Usuário Abortou.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1113"/>
@@ -762,7 +762,7 @@ Você tem certeza que quer executar esta operação?</translation>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 de %2, arquivo %3 de %4
-Total de tempo que falta 5%</translation>
+Total de tempo que falta %5</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
@@ -772,17 +772,17 @@ Total de tempo que falta 5%</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>Waiting...</source>
-        <translation type="unfinished"/>
+        <translation>Esperando...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Preparing to sync...</source>
-        <translation type="unfinished"/>
+        <translation>Preparando para sincronizar...</translation>
     </message>
 </context>
 <context>
@@ -1400,7 +1400,7 @@ por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="139"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 Pasta &apos;% 2&apos; está sincronizada com pasta local &apos;% 3&apos;</translation>
+        <translation>%1 Pasta &apos;%2&apos; está sincronizada com pasta local &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1504,7 +1504,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="145"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Conectado com sucesso a %1: 2% versão %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Conectado com sucesso a %1: %2 versão %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="169"/>
@@ -1765,7 +1765,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="145"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>Atenção, possível caso de sensibilidade de minúscula/maiúscula, choque com 1%</translation>
+        <translation>Atenção, possível caso de sensibilidade de minúscula/maiúscula, choque com %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
@@ -2014,7 +2014,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>O servidor de proxy necessita de usuário e senha</translation>
+        <translation>O servidor de proxy necessita de usuário e senha.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2341,7 +2341,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
         <source>State/Province:</source>
-        <translation>Estado/Província</translation>
+        <translation>Estado/Província:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -3085,7 +3085,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="75"/>
         <source>&amp;Username:</source>
-        <translation>Nome de &amp;Usuário</translation>
+        <translation>Nome de &amp;Usuário:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="85"/>
@@ -3100,7 +3100,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="102"/>
         <source>Enter the ownCloud password.</source>
-        <translation>Digite a senha ownCloud:</translation>
+        <translation>Digite a senha ownCloud.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="117"/>
@@ -3120,7 +3120,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetuppage.ui" line="147"/>
         <source>Enter the url of the ownCloud you want to connect to (without http or https).</source>
-        <translation>Digite a URL do ownCloud que você deseja se conectar (sem http ou https)</translation>
+        <translation>Digite a URL do ownCloud que você deseja se conectar (sem http ou https).</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="83"/>
