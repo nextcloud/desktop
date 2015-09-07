@@ -395,12 +395,19 @@ void ownCloudGui::setupContextMenu()
         // In particular QTBUG-47863 #3672 (tray menu fails to update and
         // becomes unresponsive) and QTBUG-48068 #3722 (click signal is
         // emitted several times)
+        // The Qt version check intentionally uses 5.0.0 (where platformMenu()
+        // was introduced) instead of 5.5.0 to avoid issues where the Qt
+        // version used to build is different from the one used at runtime.
+#ifdef Q_OS_LINUX
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         QObject* platformMenu = reinterpret_cast<QObject*>(_tray->contextMenu()->platformMenu());
         if (platformMenu
                 && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
             _qdbusmenuWorkaround = true;
             qDebug() << "Enabled QDBusPlatformMenu workaround";
         }
+#endif
+#endif
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
     // We must call deleteLater because we might be called from the press in one of the action.
