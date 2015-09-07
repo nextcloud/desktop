@@ -17,12 +17,11 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
  ******************************************************************************/
 
-#include <koverlayiconplugin.h>
+#include <Dolphin/KOverlayIconPlugin>
 #include <KPluginFactory>
 #include <KPluginLoader>
-#include <kdebug.h>
-#include <kfileitem.h>
 #include <QtNetwork/QLocalSocket>
+#include <KIOCore/kfileitem.h>
 
 
 class OwncloudDolphinPlugin : public KOverlayIconPlugin
@@ -44,12 +43,12 @@ public:
         if (!url.isLocalFile())
             return QStringList();
         const QByteArray localFile = url.toLocalFile().toUtf8();
-        kDebug() << localFile;
+//         kDebug() << localFile;
 
         tryConnect();
         if (m_socket.state() == QLocalSocket::ConnectingState) {
             if (!m_socket.waitForConnected(100)) {
-                kWarning() << "not connected" << m_socket.errorString();
+//                kWarning() << "not connected" << m_socket.errorString();
             }
         }
         if (m_socket.state() == QLocalSocket::ConnectedState) {
@@ -89,7 +88,6 @@ private:
         if (status.contains("+SWM"))
             r << "document-share";
 
-        kDebug() << status << r;
         return r;
     }
 
@@ -102,7 +100,6 @@ private slots:
             QByteArray line;
             qSwap(line, m_line);
             line.chop(1);
-            kDebug() << "got line " << line;
             if (line.isEmpty())
                 continue;
             QList<QByteArray> tokens = line.split(':');
@@ -126,6 +123,5 @@ private slots:
 
 K_PLUGIN_FACTORY(OwncloudDolphinPluginFactory, registerPlugin<OwncloudDolphinPlugin>();)
 K_EXPORT_PLUGIN(OwncloudDolphinPluginFactory("ownclouddolhpinplugin"))
-
 
 #include "ownclouddolphinplugin.moc"
