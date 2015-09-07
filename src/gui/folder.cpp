@@ -168,7 +168,7 @@ void Folder::checkLocalPath()
             _syncResult.setErrorString(tr("Local folder %1 does not exist.").arg(_definition.localPath));
             _syncResult.setStatus( SyncResult::SetupError );
         } else if( !fi.isDir() ) {
-            _syncResult.setErrorString(tr("%1 should be a directory but is not.").arg(_definition.localPath));
+            _syncResult.setErrorString(tr("%1 should be a folder but is not.").arg(_definition.localPath));
             _syncResult.setStatus( SyncResult::SetupError );
         } else if( !fi.isReadable() ) {
             _syncResult.setErrorString(tr("%1 is not readable.").arg(_definition.localPath));

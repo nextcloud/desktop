@@ -36,7 +36,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
-    ui->descriptionLabel->setText(tr("Files or directories matching a pattern will not be synchronized.\n\n"
+    ui->descriptionLabel->setText(tr("Files or folders matching a pattern will not be synchronized.\n\n"
                                      "Items where deletion is allowed will be deleted if they prevent a "
                                      "directory from being removed. "
                                      "This is useful for meta data."));

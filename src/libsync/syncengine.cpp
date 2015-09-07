@@ -98,7 +98,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
         errStr = tr("CSync failed to load or create the journal file. "
-                    "Make sure you have read and write permissions in the local sync directory.");
+                    "Make sure you have read and write permissions in the local sync folder.");
         break;
     case CSYNC_STATUS_STATEDB_CORRUPTED:
         errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
@@ -146,7 +146,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to access") + " "; // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
-        errStr = tr("CSync tried to create a directory that already exists.");
+        errStr = tr("CSync tried to create a folder that already exists.");
         break;
     case CSYNC_STATUS_OUT_OF_SPACE:
         errStr = tr("CSync: No space on %1 server available.").arg(qApp->applicationName());
@@ -161,13 +161,13 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("The service is temporarily unavailable");
         break;
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
-        errStr = tr("The mounted directory is temporarily not available on the server");
+        errStr = tr("The mounted folder is temporarily not available on the server");
         break;
     case CSYNC_STATUS_OPENDIR_ERROR:
-        errStr = tr("An error occurred while opening a directory");
+        errStr = tr("An error occurred while opening a folder");
         break;
     case CSYNC_STATUS_READDIR_ERROR:
-        errStr = tr("Error while reading directory.");
+        errStr = tr("Error while reading folder.");
         break;
     case CSYNC_STATUS_INVALID_CHARACTERS:
         // Handled in callee
@@ -594,7 +594,7 @@ void SyncEngine::startSync()
 
     if (!QDir(_localPath).exists()) {
         // No _tr, it should only occur in non-mirall
-        emit csyncError("Unable to find local sync directory.");
+        emit csyncError("Unable to find local sync folder.");
         finalize();
         return;
     }
@@ -981,20 +981,20 @@ void SyncEngine::checkForPermission()
                     qDebug() << "checkForPermission: ERROR" << (*it)->_file;
                     (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                     (*it)->_status = SyncFileItem::NormalError;
-                    (*it)->_errorString = tr("Not allowed because you don't have permission to add sub-directories in that directory");
+                    (*it)->_errorString = tr("Not allowed because you don't have permission to add subfolders that folder");
 
                     for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
                         it = it_next;
                         (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                         (*it)->_status = SyncFileItem::NormalError;
-                        (*it)->_errorString = tr("Not allowed because you don't have permission to add parent directory");
+                        (*it)->_errorString = tr("Not allowed because you don't have permission to add parent folder");
                     }
 
                 } else if (!(*it)->_isDirectory && !perms.contains("C")) {
                     qDebug() << "checkForPermission: ERROR" << (*it)->_file;
                     (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                     (*it)->_status = SyncFileItem::NormalError;
-                    (*it)->_errorString = tr("Not allowed because you don't have permission to add files in that directory");
+                    (*it)->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
                 }
                 break;
             }
@@ -1040,7 +1040,7 @@ void SyncEngine::checkForPermission()
                             it = it_next;
 
                             if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE) {
-                                qWarning() << "non-removed job within a removed directory"
+                                qWarning() << "non-removed job within a removed folder"
                                            << (*it)->_file << (*it)->_instruction;
                                 continue;
                             }

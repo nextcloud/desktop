@@ -80,7 +80,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
         return false;
     }
 
-    // Go in the main thread to do a PROPFIND to know the size of this directory
+    // Go in the main thread to do a PROPFIND to know the size of this folder
     qint64 result = -1;
 
     {
