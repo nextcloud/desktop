@@ -208,7 +208,7 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
             || item._status == SyncFileItem::Restoration) {
         done( SyncFileItem::SoftError, msg);
     } else {
-        done( item._status, tr("A file or directory was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
+        done( item._status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
     }
 }
 

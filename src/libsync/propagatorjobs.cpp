@@ -95,9 +95,9 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
     if (success) {
         success = QDir().rmdir(absolute);
         if (!success) {
-            _error += PropagateLocalRemove::tr("Could not remove directory '%1';")
+            _error += PropagateLocalRemove::tr("Could not remove folder '%1';")
                 .arg(QDir::toNativeSeparators(absolute)) + " ";
-            qDebug() << "Error removing directory" << absolute;
+            qDebug() << "Error removing folder" << absolute;
         }
     }
     return success;
@@ -141,14 +141,14 @@ void PropagateLocalMkdir::start()
     QDir newDir(_propagator->_localDir + _item->_file);
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
     if( Utility::fsCasePreserving() && _propagator->localFileNameClash(_item->_file ) ) {
-        qDebug() << "WARN: new directory to create locally already exists!";
+        qDebug() << "WARN: new folder to create locally already exists!";
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
     }
     _propagator->addTouchedFile(newDirStr);
     QDir localDir(_propagator->_localDir);
     if (!localDir.mkpath(_item->_file)) {
-        done( SyncFileItem::NormalError, tr("could not create directory %1").arg(newDirStr) );
+        done( SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr) );
         return;
     }
 

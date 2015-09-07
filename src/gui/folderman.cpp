@@ -1135,7 +1135,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNe
     }
 
     if( !selFile.isDir() ) {
-        return tr("The selected path is not a directory!");
+        return tr("The selected path is not a folder!");
     }
 
     if ( !selFile.isWritable() ) {

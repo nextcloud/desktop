@@ -78,7 +78,7 @@ FolderWizardLocalPath::FolderWizardLocalPath()
     }
     _ui.aliasLineEdit->setText( newAlias );
 
-    _ui.aliasLineEdit->setToolTip(tr("The directory alias is a descriptive name for this sync connection."));
+    _ui.aliasLineEdit->setToolTip(tr("The folder alias is a descriptive name for this sync connection."));
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 }
