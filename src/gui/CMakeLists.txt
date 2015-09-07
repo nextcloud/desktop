@@ -50,6 +50,8 @@ set(client_SRCS
     ignorelisteditor.cpp
     logbrowser.cpp
     networksettings.cpp
+    ocsjob.cpp
+    ocssharejob.cpp
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
@@ -62,6 +64,7 @@ set(client_SRCS
     sslerrordialog.cpp
     syncrunfilelog.cpp
     systray.cpp
+    thumbnailjob.cpp
     quotainfo.cpp
     accountstate.cpp
     addcertificatedialog.cpp

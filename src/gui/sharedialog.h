@@ -15,54 +15,12 @@
 #ifndef SHAREDIALOG_H
 #define SHAREDIALOG_H
 
-#include "networkjobs.h"
 #include "accountfwd.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
-#include <QTreeWidgetItem>
+#include <QVariantMap>
 
 namespace OCC {
-
-/**
- * @brief The OcsShareJob class
- * @ingroup gui
- */
-class OcsShareJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    explicit OcsShareJob(const QByteArray& verb, const QUrl& url, AccountPtr account, QObject* parent = 0);
-
-    void setPostParams(const QList<QPair<QString, QString> >& postParams);
-    void addPassStatusCode(int code);
-
-public slots:
-    void start() Q_DECL_OVERRIDE;
-signals:
-    void jobFinished(QVariantMap reply);
-private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
-private:
-    QByteArray _verb;
-    QUrl _url;
-    QList<QPair<QString, QString> > _postParams;
-    QVector<int> _passStatusCodes;
-};
-
-
-class ThumbnailJob : public AbstractNetworkJob {
-    Q_OBJECT
-public:
-    explicit ThumbnailJob(const QString& path, AccountPtr account, QObject* parent = 0);
-public slots:
-    void start() Q_DECL_OVERRIDE;
-signals:
-    void jobFinished(int statusCode, QByteArray reply);
-private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
-private:
-    QUrl _url;
-};
-
 
 namespace Ui {
 class ShareDialog;

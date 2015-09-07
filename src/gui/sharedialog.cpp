@@ -14,16 +14,17 @@
 
 #include "sharedialog.h"
 #include "ui_sharedialog.h"
-#include "networkjobs.h"
 #include "account.h"
 #include "json.h"
 #include "folderman.h"
 #include "folder.h"
 #include "accountmanager.h"
 #include "theme.h"
-#include "syncresult.h"
 #include "configfile.h"
 #include "capabilities.h"
+
+#include "ocssharejob.h"
+#include "thumbnailjob.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -41,8 +42,6 @@ namespace {
 //    int PERMISSION_SHARE = 16;
 //    int PERMISSION_ALL = 31;
 }
-
-
 
 namespace OCC {
 
@@ -188,15 +187,6 @@ void ShareDialog::done( int r ) {
     QDialog::done(r);
 }
 
-static int getJsonReturnCode(const QVariantMap &json, QString &message)
-{
-    //TODO proper checking
-    int code = json.value("ocs").toMap().value("meta").toMap().value("statuscode").toInt();
-    message = json.value("ocs").toMap().value("meta").toMap().value("message").toString();
-
-    return code;
-}
-
 void ShareDialog::setExpireDate(const QDate &date)
 {
     if( _public_share_id == 0 ) {
@@ -204,25 +194,16 @@ void ShareDialog::setExpireDate(const QDate &date)
         return;
     }
     _pi_date->startAnimation();
-    QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-    QList<QPair<QString, QString> > postParams;
 
-    if (date.isValid()) {
-        postParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
-    } else {
-        postParams.append(qMakePair(QString::fromLatin1("expireDate"), QString()));
-    }
-
-    OcsShareJob *job = new OcsShareJob("PUT", url, _account, this);
-    job->setPostParams(postParams);
+    OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotExpireSet(QVariantMap)));
-    job->start();
+    job->setExpireDate(date);
 }
 
 void ShareDialog::slotExpireSet(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OCSJob::getJsonReturnCode(reply, message);
     if (code != 100) {
         displayError(code);
     } 
@@ -262,44 +243,33 @@ void ShareDialog::setPassword(const QString &password)
     }
     _pi_link->startAnimation();
     _pi_password->startAnimation();
-    QUrl url;
+    QString path;
     QList<QPair<QString, QString> > requestParams;
     QByteArray verb("PUT");
 
     if( _public_share_id > 0 ) {
-        url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-        requestParams.append(qMakePair(QString::fromLatin1("password"), password));
+        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
+        job->setPassword(password);
     } else {
-        // lets create a new share.
-        url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
-        requestParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
-        requestParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
-        requestParams.append(qMakePair(QString::fromLatin1("password"), password));
-        verb = "POST";
-
-        if( _ui->checkBox_expire->isChecked() ) {
-            QDate date = _ui->calendar->date();
-            if( date.isValid() ) {
-                requestParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
-            }
-        }
-    }
-    OcsShareJob *job = new OcsShareJob(verb, url, _account, this);
-    job->setPostParams(requestParams);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
-
-    if (_public_share_id == 0) {
+        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
-    }
 
-    job->start();
+        QDate date;
+        if( _ui->checkBox_expire->isChecked() ) {
+            date = _ui->calendar->date();
+        }
+
+        job->createShare(_sharePath, OcsShareJob::SHARETYPE::LINK, password, date);
+    }
     _passwordJobRunning = true;
 }
 
 void ShareDialog::slotPasswordSet(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     if (code != 100) {
         displayError(code);
     }
@@ -316,14 +286,9 @@ void ShareDialog::slotPasswordSet(const QVariantMap &reply)
 
 void ShareDialog::getShares()
 {
-    QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
-    QList<QPair<QString, QString> > params;
-    params.append(qMakePair(QString::fromLatin1("path"), _sharePath));
-    url.setQueryItems(params);
-    OcsShareJob *job = new OcsShareJob("GET", url, _account, this);
-    job->addPassStatusCode(404); // don't report error if share doesn't exist yet
+    OcsShareJob *job = new OcsShareJob(_account, this);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotSharesFetched(QVariantMap)));
-    job->start();
+    job->getShares(_sharePath);
 
     if (QFileInfo(_localPath).isFile()) {
         ThumbnailJob *job2 = new ThumbnailJob(_sharePath, _account, this);
@@ -335,7 +300,7 @@ void ShareDialog::getShares()
 void ShareDialog::slotSharesFetched(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     if (code != 100 && code != 404) {
         displayError(code);
     }
@@ -352,7 +317,7 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
     Q_FOREACH(auto share, ShareDialog::_shares) {
         QVariantMap data = share.toMap();
 
-        if (data.value("share_type").toInt() == SHARETYPE_PUBLIC) {
+        if (data.value("share_type").toInt() == static_cast<int>(OcsShareJob::SHARETYPE::LINK)) {
             _public_share_id = data.value("id").toULongLong();
             _ui->pushButton_copy->show();
 
@@ -465,7 +430,7 @@ void ShareDialog::setShareLink( const QString& url )
 void ShareDialog::slotDeleteShareFetched(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     if (code != 100) {
         displayError(code);
     }
@@ -494,10 +459,6 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
     qDebug() << Q_FUNC_INFO <<( _ui->checkBox_shareLink->checkState() == Qt::Checked);
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked) {
         _pi_link->startAnimation();
-        QUrl url = Account::concatUrlPath(_account->url(), QLatin1String("ocs/v1.php/apps/files_sharing/api/v1/shares"));
-        QList<QPair<QString, QString> > postParams;
-        postParams.append(qMakePair(QString::fromLatin1("path"), _sharePath));
-        postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(SHARETYPE_PUBLIC)));
 
         /*
          * Check the capabilities if the server requires a password for a share
@@ -516,24 +477,21 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
             return;
         }
 
-        OcsShareJob *job = new OcsShareJob("POST", url, _account, this);
-        job->setPostParams(postParams);
-        job->addPassStatusCode(403); // "password required" is not an error
+        OcsShareJob *job = new OcsShareJob(_account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
-        job->start();
+        job->createShare(_sharePath, OcsShareJob::SHARETYPE::LINK);
     } else {
         _pi_link->startAnimation();
-        QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-        OcsShareJob *job = new OcsShareJob("DELETE", url, _account, this);
+        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotDeleteShareFetched(QVariantMap)));
-        job->start();
+        job->deleteShare();
     }
 }
 
 void ShareDialog::slotCreateShareFetched(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     _pi_link->stopAnimation();
 
     if (code == 403) {
@@ -782,97 +740,6 @@ void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &
     QPixmap p;
     p.loadFromData(reply, "PNG");
     _ui->label_icon->setPixmap(p);
-}
-
-OcsShareJob::OcsShareJob(const QByteArray &verb, const QUrl &url, AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, "", parent),
-  _verb(verb),
-  _url(url)
-{
-    _passStatusCodes.append(100);
-    setIgnoreCredentialFailure(true);
-}
-
-void OcsShareJob::setPostParams(const QList<QPair<QString, QString> >& postParams)
-{
-    _postParams = postParams;
-}
-
-void OcsShareJob::addPassStatusCode(int code)
-{
-    _passStatusCodes.append(code);
-}
-
-void OcsShareJob::start()
-{
-    QNetworkRequest req;
-    req.setRawHeader("OCS-APIREQUEST", "true");
-    req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // Url encode the _postParams and put them in a buffer.
-    QByteArray postData;
-    Q_FOREACH(auto tmp2, _postParams) {
-        if (! postData.isEmpty()) {
-            postData.append("&");
-        }
-        postData.append(QUrl::toPercentEncoding(tmp2.first));
-        postData.append("=");
-        postData.append(QUrl::toPercentEncoding(tmp2.second));
-    }
-    QBuffer *buffer = new QBuffer;
-    buffer->setData(postData);
-
-    auto queryItems = _url.queryItems();
-    queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    _url.setQueryItems(queryItems);
-
-    setReply(davRequest(_verb, _url, req, buffer));
-    setupConnections(reply());
-    buffer->setParent(reply());
-    AbstractNetworkJob::start();
-}
-
-bool OcsShareJob::finished()
-{
-    const QString replyData = reply()->readAll();
-
-    bool success;
-    QVariantMap json = QtJson::parse(replyData, success).toMap();
-    if (!success) {
-        qDebug() << "Could not parse reply to" << _verb << _url << _postParams
-                 << ":" << replyData;
-    }
-
-    QString message;
-    const int statusCode = getJsonReturnCode(json, message);
-    if (!_passStatusCodes.contains(statusCode)) {
-        qDebug() << "Reply to" << _verb << _url << _postParams
-                 << "has unexpected status code:" << statusCode << replyData;
-    }
-
-    emit jobFinished(json);
-    return true;
-}
-
-ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, "", parent)
-{
-    _url = Account::concatUrlPath(account->url(), QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path);
-    setIgnoreCredentialFailure(true);
-}
-
-void ThumbnailJob::start()
-{
-    qDebug() << Q_FUNC_INFO;
-    setReply(getRequest(_url));
-    setupConnections(reply());
-    AbstractNetworkJob::start();
-}
-
-bool ThumbnailJob::finished()
-{
-    emit jobFinished(reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(), reply()->readAll());
-    return true;
 }
 
 }
