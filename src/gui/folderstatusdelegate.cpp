@@ -30,7 +30,7 @@ namespace OCC {
 
 QString FolderStatusDelegate::addFolderText()
 {
-    return tr("Add Folder to Synchronize");
+    return tr("Add Folder Sync Connection");
 }
 
 //alocate each item size in listview.
