@@ -791,7 +791,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 #ifdef Q_OS_WIN
                 fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #else
-                fileProgressString.append(tr("\u2193" " %1/s").arg(Utility::octetsToString(estimatedDownBw)));
+                fileProgressString.append(trUtf8("\u2193" " %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #endif
             }
             if (estimatedUpBw > 0) {
@@ -799,7 +799,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
  #ifdef Q_OS_WIN
                 fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #else
-                fileProgressString.append(tr("\u2191" " %1/s").arg(Utility::octetsToString(estimatedUpBw)));
+                fileProgressString.append(trUtf8("\u2191" " %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #endif
             }
         } else {
