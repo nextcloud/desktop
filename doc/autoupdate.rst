@@ -73,8 +73,8 @@ To prevent automatic updates, but allow manual overrides:
 
 1. Edit these Registry keys:
 
-    a. (32-bit) ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``
-    b. (64-bit) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\ownCloud\ownCloud``
+    a. (32-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``
+    b. (64-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\ownCloud\ownCloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 
@@ -87,7 +87,7 @@ To prevent automatic updates and disallow manual overrides:
 .. note::This is the preferred method of controlling the updater behavior using 
    Group Policies.
 
-1. Migrate to the following directory::
+1. Edit this Registry key:
 
 	HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud
 
