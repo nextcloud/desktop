@@ -71,6 +71,12 @@ static const char optionsC[] =
 
 QString applicationTrPath()
 {
+    QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
+    if (QDir(devTrPath).exists()) {
+        // might miss Qt, QtKeyChain, etc.
+        qDebug() << "Running from build location! Translations may be incomplete!";
+        return devTrPath;
+    }
 #if defined(Q_OS_WIN)
    return QApplication::applicationDirPath();
 #elif defined(Q_OS_MAC)
