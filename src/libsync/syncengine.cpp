@@ -414,6 +414,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_status = SyncFileItem::SoftError;
         _temporarilyUnavailablePaths.insert(item->_file);
         break;
+    case CSYNC_STATUS_PERMISSION_DENIED:
+        item->_errorString = QLatin1String("Directory not accessible on client, permission denied.");
+        item->_status = SyncFileItem::SoftError;
+        break;
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
