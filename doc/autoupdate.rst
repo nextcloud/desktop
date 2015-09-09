@@ -87,7 +87,7 @@ To prevent automatic updates and disallow manual overrides:
 .. note::This is the preferred method of controlling the updater behavior using 
    Group Policies.
 
-1. Migrate to the following directory::
+1. Edit this Registry key:
 
 	HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud
 
