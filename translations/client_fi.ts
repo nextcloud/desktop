@@ -2579,17 +2579,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Liitetty kansio on väliaikaisesti pois käytöstä tällä palvelimella</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Kansiota avatessa tapahtui virhe</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kansiota lukiessa tapahtui virhe</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="984"/>

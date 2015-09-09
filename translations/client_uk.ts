@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="105"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка конфігурації</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="107"/>
