@@ -475,12 +475,16 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
-        if (folder->accountState() != _accountState) { continue; }
+        if (folder->accountState() != _accountState) {
+            continue;
+        }
+
         auto undecidedList =  folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
         foreach(const auto &it, undecidedList) {
-            undecidedFolder += ( folder->alias() + QLatin1String("/") + it);
+            undecidedFolder.append(it);
         }
     }
+
     if (undecidedFolder.isEmpty()) {
         ui->selectiveSyncNotification->setVisible(false);
         ui->selectiveSyncNotification->setText(QString());
