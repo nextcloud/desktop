@@ -145,7 +145,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             this, SLOT(slotOpenCurrentFolder()));
     connect(menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync")), SIGNAL(triggered(bool)),
             this, SLOT(slotEnableCurrentFolder()));
-    connect(menu->addAction(tr("Remove folder")), SIGNAL(triggered(bool)),
+    connect(menu->addAction(tr("Remove sync")), SIGNAL(triggered(bool)),
             this, SLOT(slotRemoveCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
