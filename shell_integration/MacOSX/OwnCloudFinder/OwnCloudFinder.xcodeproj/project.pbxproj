@@ -12,7 +12,7 @@
 		692C18A516660C4700BF6A53 /* ContextMenuHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18A416660C4600BF6A53 /* ContextMenuHandlers.m */; };
 		692C18A9166617F500BF6A53 /* IconOverlayHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18A8166617F500BF6A53 /* IconOverlayHandlers.m */; };
 		692C18AC1666392700BF6A53 /* MenuManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 692C18AB1666392700BF6A53 /* MenuManager.m */; };
-		6993878616494C000044E4DF /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6993878516494C000044E4DF /* RequestManager.m */; };
+		6993878616494C000044E4DF /* RequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6993878516494C000044E4DF /* RequestManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		69948B361636D50E0093B6CE /* ContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 69948B351636D50E0093B6CE /* ContentManager.m */; };
 		8C37DD9F161593BD00016A95 /* FinderHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C37DD9A161593BD00016A95 /* FinderHook.m */; };
 		8C37DDB2161593FF00016A95 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C37DDB1161593FF00016A95 /* Cocoa.framework */; };
