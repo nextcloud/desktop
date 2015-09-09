@@ -69,6 +69,13 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
 
+    /* Set the left contents margin of the layout to zero to make the checkboxes
+     * align properly vertically , fixes bug #3758
+     */
+    int m0, m1, m2, m3;
+    _ui->horizontalLayout_3->getContentsMargins( &m0, &m1, &m2, &m3 );
+    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3 );
+
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
     QString themeDir = QString::fromLatin1(":/client/theme/%1/")
