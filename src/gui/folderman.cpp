@@ -1154,27 +1154,35 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNe
 
         if (QDir::cleanPath(f->path()) == QDir::cleanPath(userInput)
                 && QDir::cleanPath(QDir(f->path()).canonicalPath()) == QDir(userInput).canonicalPath()) {
-            return tr("The local path %1 is already an upload folder. Please pick another one!")
+            return tr("The local folder %1 is already used in a folder sync connection. "
+                      "Please pick another one!")
                 .arg(QDir::toNativeSeparators(userInput));
         }
         if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
-            return tr("An already configured folder is contained in the current entry.");
+            return tr("The local folder %1 already contains a folder used in a folder sync connection. "
+                      "Please pick another one!")
+                .arg(QDir::toNativeSeparators(userInput));
         }
 
         QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
         if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
-            return tr("The selected folder is a symbolic link. An already configured "
-                      "folder is contained in the folder this link is pointing to.");
+            return tr("The local folder %1 is a symbolic link. "
+                      "The link target already contains a folder used in a folder sync connection. "
+                      "Please pick another one!")
+                .arg(QDir::toNativeSeparators(userInput));
         }
 
         if (QDir::cleanPath(QString(userInput)).startsWith( QDir::cleanPath(folderDir)+'/')) {
-            return tr("An already configured folder contains the currently entered folder.");
+            return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
+                      "Please pick another one!")
+                .arg(QDir::toNativeSeparators(userInput));
         }
 
         if (absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)+'/')) {
-            return tr("The selected folder is a symbolic link. An already configured folder "
-                      "is the parent of the current selected contains the folder this link is "
-                      "pointing to.");
+            return tr("The local folder %1 is a symbolic link. "
+                      "The link target is already contained in a folder used in a folder sync connection. "
+                      "Please pick another one!")
+                .arg(QDir::toNativeSeparators(userInput));
         }
     }
 
