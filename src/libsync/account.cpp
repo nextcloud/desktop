@@ -61,6 +61,17 @@ Account::~Account()
     delete _am;
 }
 
+QString Account::davPath() const
+{
+    // make sure to have a trailing slash
+    if( !_davPath.endsWith('/') ) {
+        QString dp(_davPath);
+        dp.append('/');
+        return dp;
+    }
+    return _davPath;
+}
+
 void Account::setSharedThis(AccountPtr sharedThis)
 {
     _sharedThis = sharedThis.toWeakRef();

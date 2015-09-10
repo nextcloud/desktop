@@ -60,7 +60,12 @@ public:
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
-    QString davPath() const { return _davPath; }
+    /**
+     * @brief The possibly themed dav path for the account. Is has
+     *        a trailing slash.
+     * @returns the (themeable) dav path for the account.
+     */
+    QString davPath() const;
     void setDavPath(const QString&s) { _davPath = s; }
 
     static AccountPtr create();
