@@ -67,7 +67,7 @@ private slots:
        QByteArray sum = calcMd5(file);
 
        QByteArray sSum = shellSum("/usr/bin/md5sum", file);
-       qDebug() << "calulated" << sum << "versus md5sum:"<< sSum;
+       qDebug() << "calculated" << sum << "versus md5sum:"<< sSum;
        QVERIFY(!sSum.isEmpty());
        QVERIFY(!sum.isEmpty());
        QVERIFY(sSum == sum );
@@ -82,7 +82,7 @@ private slots:
        QByteArray sum = calcSha1(file);
 
        QByteArray sSum = shellSum("/usr/bin/sha1sum", file);
-       qDebug() << "calulated" << sum << "versus sha1sum:"<< sSum;
+       qDebug() << "calculated" << sum << "versus sha1sum:"<< sSum;
        QVERIFY(!sSum.isEmpty());
        QVERIFY(!sum.isEmpty());
        QVERIFY(sSum == sum );
