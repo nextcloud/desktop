@@ -103,10 +103,11 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    static const qint64 kb = 1000;
-    static const qint64 mb = 1000 * kb;
-    static const qint64 gb = 1000 * mb;
-    static const qint64 tb = 1000 * gb;
+#define THE_FACTOR 1024
+    static const qint64 kb = THE_FACTOR;
+    static const qint64 mb = THE_FACTOR * kb;
+    static const qint64 gb = THE_FACTOR * mb;
+    static const qint64 tb = THE_FACTOR * gb;
 
     QString s;
     qreal value = octets;
