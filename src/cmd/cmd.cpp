@@ -150,7 +150,7 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
-    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folder (selective sync)" << std::endl;
+    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
@@ -443,7 +443,7 @@ restart_sync:
 
 
     if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
-        // Always make sure at least one list had been loaded
+        // Always make sure at least one list has been loaded
         qFatal("Cannot load system exclude list or list supplied via --exclude");
         return EXIT_FAILURE;
     }
