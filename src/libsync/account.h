@@ -61,7 +61,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
     /**
-     * @brief The possibly themed dav path for the account. Is has
+     * @brief The possibly themed dav path for the account. It has
      *        a trailing slash.
      * @returns the (themeable) dav path for the account.
      */
