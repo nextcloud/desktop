@@ -85,7 +85,7 @@ else(UNIX AND NOT WIN32)
 endif (UNIX AND NOT WIN32)
 
 if (MSVC)
-    # Use secure functions by defaualt and suppress warnings about
+    # Use secure functions by default and suppress warnings about
     #"deprecated" functions
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1")
