@@ -85,8 +85,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
-        <source>Delete</source>
-        <translation>Löschen</translation>
+        <source>Remove Account</source>
+        <translation>Nutzerkonto entfernen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="530"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -119,11 +119,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="115"/>
         <source>No account configured.</source>
         <translation>Kein Konto konfiguriert.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="148"/>
-        <source>Remove folder</source>
-        <translation>Ordner entfernen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -192,27 +187,27 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <translation>Keine Verbindung zu %1 auf %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="490"/>
+        <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>Einige neue Ordner wurden nicht synchronisiert, weil sie zu groß sind: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Confirm Account Delete</source>
         <translation>Konto wirklich entfernen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wollen Sie wirklich die Verbindung zum Konto &lt;i&gt;%1&lt;/i&gt; lösen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Anmerkung:&lt;/b&gt; Dieser Vorgang wird &lt;b&gt;keine&lt;/b&gt; Dateien löschen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="529"/>
         <source>Remove connection</source>
         <translation>Verbindung entfernen</translation>
     </message>
@@ -230,6 +225,11 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Pause sync</source>
         <translation>Synchronisation pausieren</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="148"/>
+        <source>Remove sync</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -635,36 +635,36 @@ Sind Sie sicher, dass sie diese Operation durchführen wollen?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
-        <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Das lokale Verzeichnis %1 ist bereits ein Verzeichnis zum Hochladen. Bitte wählen Sie ein anderes Verzeichnis!</translation>
+        <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>Ein bereits konfigurierter Ordner ist im aktuellen Verzeichnis vorhanden.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
+        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1166"/>
-        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>Das gewählte Verzeichnis ist ein symbolischer Link. Ein bereits konfigurierter Ordner befindet sich in dem Ordner auf den dieser Link zeigt.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1171"/>
-        <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Ein bereits konfigurierter Ordner beinhaltet den aktuell eingegebenen Ordner.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
-        <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>Der ausgewählte Ordner ist ein symbolischer Link. Ein bereits konfigurierter Ordner ist die Wurzel des aktuell ausgewählten Ordners, auf den der Link zeigt.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
-        <source>Add Folder to Synchronize</source>
-        <translation>Zu synchronisierenden Ordner hinzufügen.</translation>
+        <source>Add Folder Sync Connection</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -2603,17 +2603,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="984"/>
+        <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="990"/>
+        <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="997"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2693,64 +2693,64 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>Stat fehlgeschlagen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="429"/>
         <source>Filename encoding is not valid</source>
         <translation>Dateikodierung ist ungültig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="555"/>
+        <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Ungültige Zeichenm bitte benennen Sie &quot;%1&quot; um</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="629"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Synchronisationsbericht konnte nicht initialisiert werden.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="712"/>
+        <location filename="../src/libsync/syncengine.cpp" line="716"/>
         <source>Cannot open the sync journal</source>
         <translation>Synchronisationsbericht kann nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="959"/>
-        <location filename="../src/libsync/syncengine.cpp" line="966"/>
+        <location filename="../src/libsync/syncengine.cpp" line="963"/>
+        <location filename="../src/libsync/syncengine.cpp" line="970"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Aufgrund der »Zu synchronisierende Elemente auswählen«-Sperrliste ignoriert</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1017"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Das Hochladen dieser Datei ist nicht erlaubt, da die Datei auf dem Server schreibgeschützt ist, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1038"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1058"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Löschen nicht erlaubt, Wiederherstellung</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokale Dateien und Freigabeordner wurden entfernt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>Move not allowed, item restored</source>
         <translation>Verschieben nicht erlaubt, Element wiederhergestellt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1135"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Verschieben nicht erlaubt, da %1 schreibgeschützt ist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the destination</source>
         <translation>Das Ziel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the source</source>
         <translation>Die Quelle</translation>
     </message>

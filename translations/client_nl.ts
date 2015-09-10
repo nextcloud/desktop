@@ -85,8 +85,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
-        <source>Delete</source>
-        <translation>Verwijderen</translation>
+        <source>Remove Account</source>
+        <translation>Verwijder account</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="530"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -119,11 +119,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="115"/>
         <source>No account configured.</source>
         <translation>Geen account ingesteld.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="148"/>
-        <source>Remove folder</source>
-        <translation>Verwijder map</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -168,8 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="443"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>
-%1 als &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 als &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
@@ -192,27 +186,27 @@
         <translation>Geen verbinding met %1 op %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="490"/>
+        <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>Er zijn nieuwe mappen die niet gesynchroniseerd werden omdat ze te groot zijn: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Confirm Account Delete</source>
         <translation>Bevestig verwijderen account</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt u echt de verbinding met het account &lt;i&gt;%1&lt;/i&gt; verbreken?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hierdoor verwijdert u &lt;b&gt;geen&lt;/b&gt; bestanden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="529"/>
         <source>Remove connection</source>
         <translation>Verwijderen verbinding</translation>
     </message>
@@ -230,6 +224,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Pause sync</source>
         <translation>Pauzeren sync</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="148"/>
+        <source>Remove sync</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -636,36 +635,36 @@ Weet u zeker dat u deze bewerking wilt uitvoeren?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
-        <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>Het lokale pad %1 is al een uploadmap. Kies een andere.</translation>
+        <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>Er bestaat een al eerder geconfigureerde map in de huidige opdracht.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
+        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1166"/>
-        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>De gekozen map is een symbolic link. De map waarnaar deze link verwijst bevat een reeds geconfigureerde map.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1171"/>
-        <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Een reeds geconfigureerde map bevat de nu ingevoerde map.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
-        <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>De gekozen map is een symbolic link. Een reeds geconfigureerde map is de bovenliggende map van de gekozen map, waarnaar de link verwijst.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
-        <source>Add Folder to Synchronize</source>
-        <translation>Voor map toe om te synchroniseren</translation>
+        <source>Add Folder Sync Connection</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -1411,7 +1410,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="147"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Waarschuwing:&lt;/strong&gt; De lokale map is niet leeg. Maak een keuze!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="246"/>
@@ -1759,7 +1758,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="211"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Er is een bestand of map verwijderd van een alleen-lezen share, maar herstellen is mislukt: %1</translation>
     </message>
 </context>
 <context>
@@ -1772,7 +1771,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>kon map %1 niet maken</translation>
     </message>
 </context>
 <context>
@@ -1785,7 +1784,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>Kon map &apos;%1&apos; niet verwijderen;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -2594,32 +2593,32 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>De gemounte map is tijdelijk niet beschikbaar op de server</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het openen van een map</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Fout tijdens lezen map.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="984"/>
+        <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders that folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan omdat u geen rechten hebt om sub-mappen aan te maken in die map</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="990"/>
+        <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan omdat u geen rechten hebt om een bovenliggende map toe te voegen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="997"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan omdat u geen rechten hebt om bestanden in die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="152"/>
@@ -2649,12 +2648,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="100"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>CSync kon het journal bestand niet maken of lezen. Controleer of u de juiste lees- en schrijfrechten in de lokale syncmap hebt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync probeerde een al bestaande map aan te maken.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="161"/>
@@ -2697,64 +2696,64 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Stat mislukt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="429"/>
         <source>Filename encoding is not valid</source>
         <translation>Bestandsnaamcodering is niet geldig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="555"/>
+        <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Ongeldige karakters, hernoem &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="629"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Niet in staat om een synchronisatie transactielog te starten.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="712"/>
+        <location filename="../src/libsync/syncengine.cpp" line="716"/>
         <source>Cannot open the sync journal</source>
         <translation>Kan het sync transactielog niet openen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="959"/>
-        <location filename="../src/libsync/syncengine.cpp" line="966"/>
+        <location filename="../src/libsync/syncengine.cpp" line="963"/>
+        <location filename="../src/libsync/syncengine.cpp" line="970"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Genegeerd vanwege de &quot;wat synchroniseren&quot; zwarte lijst</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1017"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Niet toegestaan om dit bestand te uploaden, omdat het alleen-lezen is op de server, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1038"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1058"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Niet toegestaan om te verwijderen, herstellen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokale bestanden en share-map verwijderd. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>Move not allowed, item restored</source>
         <translation>Verplaatsen niet toegestaan, object hersteld</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1135"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Verplaatsen niet toegestaan omdat %1 alleen-lezen is</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the destination</source>
         <translation>bestemming</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the source</source>
         <translation>bron</translation>
     </message>
@@ -2986,7 +2985,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als deze checkbox is aangevinkt zullen bestaande bestanden in de lokale map worden gewist om een schone sync vanaf de server te starten.&lt;/p&gt;&lt;p&gt;Vink dit niet aan als de lokale bestanden naar de map op de server zouden moeten worden geüploaded.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>

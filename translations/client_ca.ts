@@ -85,8 +85,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
-        <source>Delete</source>
-        <translation>Esborra</translation>
+        <source>Remove Account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <location filename="../src/gui/accountsettings.cpp" line="255"/>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="530"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -119,11 +119,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="115"/>
         <source>No account configured.</source>
         <translation>No hi ha cap compte configurat</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="148"/>
-        <source>Remove folder</source>
-        <translation>Elimina la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="200"/>
@@ -191,27 +186,27 @@
         <translation>No hi ha connexió amb %1 a %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="490"/>
+        <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>Hi ha carpetes noves que no s&apos;han pogut sincronitzar perquè són massa grans: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Confirm Account Delete</source>
         <translation>Confirmeu l&apos;eliminació del compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Segur que voleu eliminar la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; esborrarà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="529"/>
         <source>Remove connection</source>
         <translation>Elimina la connexió</translation>
     </message>
@@ -229,6 +224,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Pause sync</source>
         <translation>Pausa la sincronització</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="148"/>
+        <source>Remove sync</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -636,36 +636,36 @@ Esteu segur que voleu executar aquesta operació?</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
-        <source>The local path %1 is already an upload folder. Please pick another one!</source>
-        <translation>La ruta local %1 ja és n directori de pujada. Si us play, seleccioneu un altre!</translation>
+        <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
-        <source>An already configured folder is contained in the current entry.</source>
-        <translation>L&apos;entrada actual conté una carpeta ja configurada.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
+        <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1166"/>
-        <source>The selected folder is a symbolic link. An already configured folder is contained in the folder this link is pointing to.</source>
-        <translation>El fitxer seleccionat és un enllaç simbòlic. Aquest enllaç apunta a una carpeta ja configurada.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
+        <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1171"/>
-        <source>An already configured folder contains the currently entered folder.</source>
-        <translation>Un directori ja configurat conté el directori que heu introduït.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
-        <source>The selected folder is a symbolic link. An already configured folder is the parent of the current selected contains the folder this link is pointing to.</source>
-        <translation>El directori seleccionat és un enllaç simbòlic. Ja heu configurat una carpeta que apunta als pares de la carpeta que apunta aquest enllaç.</translation>
+        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
-        <source>Add Folder to Synchronize</source>
-        <translation>Afegeix una carpeta per sincronitzar</translation>
+        <source>Add Folder Sync Connection</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -2600,17 +2600,17 @@ No és aconsellada usar-la.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="984"/>
+        <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="990"/>
+        <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="997"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2690,64 +2690,64 @@ No és aconsellada usar-la.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="429"/>
         <source>Filename encoding is not valid</source>
         <translation>La codificació del nom de fitxer no és vàlida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="555"/>
+        <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Caràcters no vàlids. Reanomeneu &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="625"/>
+        <location filename="../src/libsync/syncengine.cpp" line="629"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>No es pot inicialitzar un periòdic de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="712"/>
+        <location filename="../src/libsync/syncengine.cpp" line="716"/>
         <source>Cannot open the sync journal</source>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="959"/>
-        <location filename="../src/libsync/syncengine.cpp" line="966"/>
+        <location filename="../src/libsync/syncengine.cpp" line="963"/>
+        <location filename="../src/libsync/syncengine.cpp" line="970"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>S&apos;ignora degut al filtre a «Trieu què sincronitzar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1017"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet pujar aquest fitxer perquè només és de lectura en el servidor, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1038"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1058"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet l&apos;eliminació, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
         <source>Local files and share folder removed.</source>
         <translation>Fitxers locals i carpeta compartida esborrats.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>Move not allowed, item restored</source>
         <translation>No es permet moure&apos;l, l&apos;element es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1135"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No es permet moure perquè %1 només és de lectura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the destination</source>
         <translation>el destí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1136"/>
         <source>the source</source>
         <translation>l&apos;origen</translation>
     </message>
