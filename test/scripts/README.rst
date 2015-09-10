@@ -7,7 +7,7 @@ This is a set of scripts comprising of two parts:
 * ``torture_create_files.pl``: Generation of a real file tree based on the
   layout files (deterministic)
 
-These scripts allow to produce a data set with the following criteria:
+These scripts allow a data set to be produced with the following criteria:
 
 * realistic in naming
 * realistic in file size
@@ -15,8 +15,8 @@ These scripts allow to produce a data set with the following criteria:
 
 without checking in the actual data. Instead, a layout file that gets generated
 once (reference.lay) is checked in. This makes it possible to produce
-standardized benchmarks for mirall. It allows allows to check for files gone
-missing in action and other kinds of corruption produced during sync run.
+standardized benchmarks for mirall. It allows checking for files gone
+missing in action and other kinds of corruption produced during sync runs.
 
 ``torture_create_files.pl`` can be fine tuned via variables in the script
 header. It sources its file names from ``dict`` wordlist, file extensions and
