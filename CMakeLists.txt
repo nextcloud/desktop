@@ -32,7 +32,7 @@ include(Warnings)
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
 
-# disable the crashrepoter if libcrashreporter-qt is not available or we're building for ARM
+# disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
     set( WITH_CRASHREPORTER OFF )
 endif()
@@ -114,16 +114,16 @@ endif()
 # this option creates only libocsync and libowncloudsync
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
-# When this option is enabled, 5xx errors are not added to the clacklist
-# Normaly you don't want to enable this option because if a particular file
-# trigger a bug on the server, you want the file to be blacklisted.
+# When this option is enabled, 5xx errors are not added to the blacklist
+# Normally you don't want to enable this option because if a particular file
+# triggers a bug on the server, you want the file to be blacklisted.
 option(OWNCLOUD_5XX_NO_BLACKLIST "OWNCLOUD_5XX_NO_BLACKLIST" OFF)
 if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
 endif()
 
 if(APPLE)
-  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesigh key's TeamIdentifier/Organizational Unit" )
+  set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
 #### find libs
@@ -138,7 +138,7 @@ if(HAVE_QT5)
   message(STATUS "Using Qt ${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}.x")
   if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
     if (${Qt5Core_VERSION_MINOR} EQUAL "4" OR ${Qt5Core_VERSION_MINOR} GREATER 4)
-      message(STATUS "We would not require Neon in this setup, compile without!")
+      message(STATUS "We do not require Neon in this setup, compile without!")
       set(USE_NEON FALSE)
     else()
       message(STATUS "If possible compile me with Qt 5.4 or higher.")
