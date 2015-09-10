@@ -30,26 +30,24 @@ private slots:
     {
         QLocale::setDefault(QLocale("en"));
         QCOMPARE(octetsToString(999) , QString("999 B"));
-        QCOMPARE(octetsToString(1024) , QString("1 kB"));
-        QCOMPARE(octetsToString(1110) , QString("1.1 kB"));
+        QCOMPARE(octetsToString(1024) , QString("1 KB"));
+        QCOMPARE(octetsToString(1364) , QString("1.3 KB"));
 
-        QCOMPARE(octetsToString(9110) , QString("9.1 kB"));
-        QCOMPARE(octetsToString(9910) , QString("9.9 kB"));
-        QCOMPARE(octetsToString(9999) , QString("10 kB"));
-        QCOMPARE(octetsToString(10240) , QString("10 kB"));
+        QCOMPARE(octetsToString(9110) , QString("8.9 KB"));
+        QCOMPARE(octetsToString(9910) , QString("9.7 KB"));
+        QCOMPARE(octetsToString(10240) , QString("10 KB"));
 
-        QCOMPARE(octetsToString(123456) , QString("123 kB"));
+        QCOMPARE(octetsToString(123456) , QString("121 KB"));
         QCOMPARE(octetsToString(1234567) , QString("1.2 MB"));
         QCOMPARE(octetsToString(12345678) , QString("12 MB"));
-        QCOMPARE(octetsToString(123456789) , QString("123 MB"));
-        QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("5 GB"));
+        QCOMPARE(octetsToString(123456789) , QString("118 MB"));
+        QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("4.7 GB"));
 
         QCOMPARE(octetsToString(1), QString("1 B"));
         QCOMPARE(octetsToString(2), QString("2 B"));
-        QCOMPARE(octetsToString(1000), QString("1 kB"));
-        QCOMPARE(octetsToString(1000*1000), QString("1 MB"));
-        QCOMPARE(octetsToString(1000LL*1000*1000), QString("1 GB"));
-        QCOMPARE(octetsToString(1000LL*1000*1000*1000), QString("1 TB"));
+        QCOMPARE(octetsToString(1024), QString("1 KB"));
+        QCOMPARE(octetsToString(1024*1024), QString("1 MB"));
+        QCOMPARE(octetsToString(1024LL*1024*1024), QString("1 GB"));
     }
 
     void testLaunchOnStartup()
