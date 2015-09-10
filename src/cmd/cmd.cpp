@@ -185,15 +185,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     }
 
     options->target_url = args.takeLast();
-    // check if the webDAV path was added to the url and append if not.
-    if(!options->target_url.endsWith("/")) {
-        options->target_url.append("/");
-    }
-    if( !options->target_url.contains( Theme::instance()->webDavPath() )) {
-        options->target_url.append(Theme::instance()->webDavPath());
-    }
-    if (options->target_url.startsWith("http"))
-        options->target_url.replace(0, 4, "owncloud");
+
     options->source_dir = args.takeLast();
     if (!options->source_dir.endsWith('/')) {
         options->source_dir.append('/');
@@ -280,6 +272,21 @@ int main(int argc, char **argv) {
 
     parseOptions( app.arguments(), &options );
 
+    AccountPtr account = Account::create();
+
+    if( !account ) {
+        qFatal("Could not initialize account!");
+        return EXIT_FAILURE;
+    }
+    // check if the webDAV path was added to the url and append if not.
+    if(!options.target_url.endsWith("/")) {
+        options.target_url.append("/");
+    }
+    if( !options.target_url.contains( account->davPath() )) {
+        options.target_url.append(account->davPath());
+    }
+    if (options.target_url.startsWith("http"))
+        options.target_url.replace(0, 4, "owncloud");
     QUrl url = QUrl::fromUserInput(options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
@@ -330,8 +337,6 @@ int main(int argc, char **argv) {
 
     // take the unmodified url to pass to csync_create()
     QByteArray remUrl = options.target_url.toUtf8();
-
-    AccountPtr account = Account::create();
 
     // Find the folder and the original owncloud url
     QStringList splitted = url.path().split(account->davPath());

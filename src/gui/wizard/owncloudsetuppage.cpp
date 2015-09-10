@@ -106,7 +106,7 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
     if (url.endsWith("index.php")) {
         newUrl.chop(9);
     }
-    QString webDavPath = Theme::instance()->webDavPath();
+    QString webDavPath = _ocWizard->account()->davPath();
     if (url.endsWith(webDavPath)) {
         newUrl.chop( webDavPath.length() );
     }
