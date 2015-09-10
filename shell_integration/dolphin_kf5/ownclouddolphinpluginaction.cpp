@@ -17,79 +17,43 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
  ******************************************************************************/
 
-#include <Dolphin/KOverlayIconPlugin>
 #include <KPluginFactory>
 #include <KPluginLoader>
+#include <KIOWidgets/kabstractfileitemactionplugin.h>
 #include <QtNetwork/QLocalSocket>
 #include <KIOCore/kfileitem.h>
+#include <KIOCore/KFileItemListProperties>
+#include <QtWidgets/QAction>
 
 
-
-class OwncloudDolphinPlugin : public KOverlayIconPlugin
-{
+class Connector : QObject {
     Q_OBJECT
-    QLocalSocket m_socket;
-    typedef QHash<QByteArray, QByteArray> StatusMap;
-    StatusMap m_status;
-    QByteArray m_line;
-
 public:
-    explicit OwncloudDolphinPlugin(QObject* parent, const QList<QVariant>&) : KOverlayIconPlugin(parent) {
+    QLocalSocket m_socket;
+    QByteArray m_line;
+    QVector<QString> m_paths;
+    QString m_shareActionString;
+
+    Connector() {
         connect(&m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
         tryConnect();
     }
 
-    virtual QStringList getOverlays(const KFileItem& item) {
-        auto url = item.url();
-        if (!url.isLocalFile())
-            return QStringList();
-        const QByteArray localFile = url.toLocalFile().toUtf8();
-//         kDebug() << localFile;
 
-        tryConnect();
-        if (m_socket.state() == QLocalSocket::ConnectingState) {
-            if (!m_socket.waitForConnected(100)) {
-//                kWarning() << "not connected" << m_socket.errorString();
-            }
-        }
-        if (m_socket.state() == QLocalSocket::ConnectedState) {
-            m_socket.write("RETRIEVE_FILE_STATUS:");
-            m_socket.write(localFile);
-            m_socket.write("\n");
-        }
-
-        StatusMap::iterator it = m_status.find(localFile);
-        if (it != m_status.constEnd()) {
-            return  overlaysForString(*it);
-        }
-        return QStringList();
-    }
-
-
-
-private:
     void tryConnect() {
+
         if (m_socket.state() != QLocalSocket::UnconnectedState)
             return;
         QString runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
         QString socketPath = runtimeDir + "/" + "ownCloud" + "/socket";
         m_socket.connectToServer(socketPath);
-    }
-
-    QStringList overlaysForString(const QByteArray status) {
-        QStringList r;
-        if (status.startsWith("NOP"))
-            return r;
-
-        if (status.startsWith("OK"))
-            r << "dialog-ok";
-        if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "view-refresh";
-
-        if (status.contains("+SWM"))
-            r << "document-share";
-
-        return r;
+        if (m_socket.state() == QLocalSocket::ConnectingState) {
+            m_socket.waitForConnected(100);
+        }
+        if (m_socket.state() == QLocalSocket::ConnectedState) {
+            m_socket.write("SHARE_MENU_TITLE:\n");
+            m_socket.flush();
+        }
     }
 
 private slots:
@@ -103,26 +67,64 @@ private slots:
             line.chop(1);
             if (line.isEmpty())
                 continue;
-            QList<QByteArray> tokens = line.split(':');
-            if (tokens.count() != 3)
+            if (line.startsWith("REGISTER_PATH:")) {
+                QString file = QString::fromUtf8(line.mid(line.indexOf(':') + 1));
+                m_paths.append(file);
                 continue;
-            if (tokens[0] != "STATUS" && tokens[0] != "BROADCAST")
+            } else if (line.startsWith("SHARE_MENU_TITLE:")) {
+                m_shareActionString = QString::fromUtf8(line.mid(line.indexOf(':') + 1));
                 continue;
-            if (tokens[2].isEmpty())
-                continue;
-
-            const QByteArray name = tokens[2];
-            QByteArray &status = m_status[name]; // reference to the item in the hash
-            if (status == tokens[1])
-                continue;
-            status = tokens[1];
-
-            emit this->overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
+            }
         }
     }
 };
 
-K_PLUGIN_FACTORY(OwncloudDolphinPluginFactory, registerPlugin<OwncloudDolphinPlugin>();)
-K_EXPORT_PLUGIN(OwncloudDolphinPluginFactory("ownclouddolhpinplugin"))
 
-#include "ownclouddolphinplugin.moc"
+class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
+{
+public:
+    explicit OwncloudDolphinPluginAction(QObject* parent, const QList<QVariant>&) : KAbstractFileItemActionPlugin(parent) {
+    }
+
+    QList<QAction*> actions(const KFileItemListProperties& fileItemInfos, QWidget* parentWidget) Q_DECL_OVERRIDE
+    {
+        static Connector connector;
+        connector.tryConnect();
+
+        QList<QUrl> urls = fileItemInfos.urlList();
+        if (urls.count() != 1 || connector.m_socket.state() != QLocalSocket::ConnectedState)
+            return {};
+
+        auto url = urls.first();
+
+
+        if (!url.isLocalFile())
+            return {};
+        auto localFile = url.toLocalFile();
+
+
+        if (!std::any_of(connector.m_paths.begin(), connector.m_paths.end(), [&](const QString &s) {
+                                return localFile.startsWith(s);
+                        } ))
+             return {};
+
+        auto act = new QAction(parentWidget);
+        act->setText(connector.m_shareActionString);
+        auto socket = &connector.m_socket;
+        connect(act, &QAction::triggered, this, [localFile, socket] {
+            socket->write("SHARE:");
+            socket->write(localFile.toUtf8());
+            socket->write("\n");
+            socket->flush();
+        } );
+
+        return { act };
+
+    }
+
+};
+
+K_PLUGIN_FACTORY(OwncloudDolphinPluginActionFactory, registerPlugin<OwncloudDolphinPluginAction>();)
+K_EXPORT_PLUGIN(OwncloudDolphinPluginActionFactory("ownclouddolhpinpluginaction"))
+
+#include "ownclouddolphinpluginaction.moc"

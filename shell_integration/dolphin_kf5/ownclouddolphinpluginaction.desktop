@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Service
+Name=OwncloudAction
+ServiceTypes=KFileItemAction/Plugin
+MimeType=text/plain;
+X-KDE-Library=ownclouddolphinpluginaction

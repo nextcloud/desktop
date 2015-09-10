@@ -11,7 +11,7 @@ find_package(ECM 1.2.0 REQUIRED CONFIG)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS CoreAddons)
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS CoreAddons KIO)
 
 find_package(DolphinVcs REQUIRED)
 set_package_properties(DolphinVcs PROPERTIES
@@ -35,3 +35,9 @@ add_library(ownclouddolphinplugin MODULE ownclouddolphinplugin.cpp)
 target_link_libraries(ownclouddolphinplugin DolphinVcs Qt5::Network KF5::CoreAddons KF5::KIOCore)
 install(FILES ownclouddolphinplugin.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 install(TARGETS ownclouddolphinplugin DESTINATION ${KDE_INSTALL_PLUGINDIR})
+
+
+add_library(ownclouddolphinpluginaction MODULE ownclouddolphinpluginaction.cpp)
+target_link_libraries(ownclouddolphinpluginaction Qt5::Network KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets)
+install(FILES ownclouddolphinpluginaction.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(TARGETS ownclouddolphinpluginaction DESTINATION ${KDE_INSTALL_PLUGINDIR})
