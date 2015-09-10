@@ -56,7 +56,7 @@ The Desktop Client menu provides the following options:
 * Recent changes
 * Settings
 * Help
-* Sign out
+* Log out
 * Quit ownCloud
 
 Using the Account Settings Window

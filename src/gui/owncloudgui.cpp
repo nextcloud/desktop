@@ -319,11 +319,11 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
 
     if (separateMenu) {
         if (accountState->isSignedOut()) {
-            QAction* signin = menu->addAction(tr("Sign in..."));
+            QAction* signin = menu->addAction(tr("Log in..."));
             signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signin, SIGNAL(triggered()), this, SLOT(slotLogin()));
         } else {
-            QAction* signout = menu->addAction(tr("Sign out"));
+            QAction* signout = menu->addAction(tr("Log out"));
             signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
         }
@@ -444,17 +444,17 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->addSeparator();
     if (atLeastOneSignedIn) {
         if (accountList.count() > 1) {
-            _actionLogout->setText(tr("Sign out everywhere"));
+            _actionLogout->setText(tr("Log out everywhere"));
         } else {
-            _actionLogout->setText(tr("Sign out"));
+            _actionLogout->setText(tr("Log out"));
         }
         _contextMenu->addAction(_actionLogout);
     }
     if (atLeastOneSignedOut) {
         if (accountList.count() > 1) {
-            _actionLogin->setText(tr("Sign in everywhere..."));
+            _actionLogin->setText(tr("Log in everywhere..."));
         } else {
-            _actionLogin->setText(tr("Sign in..."));
+            _actionLogin->setText(tr("Log in..."));
         }
         _contextMenu->addAction(_actionLogin);
     }
@@ -521,9 +521,9 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-    _actionLogin = new QAction(tr("Sign in..."), this);
+    _actionLogin = new QAction(tr("Log in..."), this);
     connect(_actionLogin, SIGNAL(triggered()), this, SLOT(slotLogin()));
-    _actionLogout = new QAction(tr("Sign out"), this);
+    _actionLogout = new QAction(tr("Log out"), this);
     connect(_actionLogout, SIGNAL(triggered()), this, SLOT(slotLogout()));
 
     if(_app->debugMode()) {
