@@ -132,11 +132,11 @@ static OwnCloudFinderRequestManager* sharedInstance = nil;
 {
 	// NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
 
-	// clear the registered pathes.
+	// clear the registered paths.
 	_registeredPathes = [[NSMutableDictionary alloc] init];
 	[_requestedPaths removeAllObjects];
 
-    // clear the caches in conent manager
+    // clear the caches in content manager
 	OwnCloudFinderContentManager *contentman = [OwnCloudFinderContentManager sharedInstance];
 	[contentman clearFileNameCache];
 	[contentman repaintAllWindows];

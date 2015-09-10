@@ -225,7 +225,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             for item in update_items:
                 item.invalidate_extension_info()
 
-    # Handles a single line of server respoonse and sets the emblem
+    # Handles a single line of server response and sets the emblem
     def handle_commands(self, action, args):
         Emblems = { 'OK'        : appname +'_ok',
                     'SYNC'      : appname +'_sync',
