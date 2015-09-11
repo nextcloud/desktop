@@ -64,14 +64,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::Account</name>
-    <message>
-        <location filename="../src/libsync/account.cpp" line="77"/>
-        <source>%1@%2</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -1465,29 +1457,29 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="50"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Connect to %1</source>
         <translation>Повежи %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="52"/>
         <source>Setup %1 server</source>
         <translation>Подеси %1 сервер</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="121"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="127"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Ова адреса НИЈЕ безбедна јер није шифрована.
 Не препоручује се њено коришћење.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="125"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="131"/>
         <source>This url is secure. You can use it.</source>
         <translation>Ова адреса је безбедна. Можете је користити.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="164"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="170"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Следеће &gt;</translation>
     </message>
@@ -2301,7 +2293,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="451"/>
+        <location filename="../src/gui/socketapi.cpp" line="452"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Подели са %1</translation>
@@ -2820,6 +2812,20 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <source>Log in...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
+        <source>Log out</source>
+        <translation>Одјава</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation>Нема</translation>
@@ -2843,6 +2849,16 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Отвори %1 у прегледачу</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <source>Log out everywhere</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <source>Log in everywhere...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="511"/>
@@ -2870,13 +2886,6 @@ It is not advisable to use it.</source>
         <translation>Напусти %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
-        <source>Sign in...</source>
-        <translation>Пријави се...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"/>
@@ -2889,23 +2898,6 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
-        <source>Sign out</source>
-        <translation>Одјави се</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
-        <source>Sign out everywhere</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
-        <source>Sign in everywhere...</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3161,67 +3153,62 @@ It is not advisable to use it.</source>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="114"/>
-        <source>%L1 TB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/utility.cpp" line="117"/>
+        <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 GB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="120"/>
+        <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 MB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="123"/>
-        <source>%L1 kB</source>
+        <location filename="../src/libsync/utility.cpp" line="125"/>
+        <source>%L1 KB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="126"/>
+        <location filename="../src/libsync/utility.cpp" line="128"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="304"/>
+        <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln year(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="305"/>
+        <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln month(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="306"/>
+        <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln day(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="307"/>
+        <location filename="../src/libsync/utility.cpp" line="309"/>
         <source>%Ln hour(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="308"/>
+        <location filename="../src/libsync/utility.cpp" line="310"/>
         <source>%Ln minute(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="309"/>
+        <location filename="../src/libsync/utility.cpp" line="311"/>
         <source>%Ln second(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="319"/>
+        <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>0 seconds</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="336"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

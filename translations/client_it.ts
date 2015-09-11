@@ -64,14 +64,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::Account</name>
-    <message>
-        <location filename="../src/libsync/account.cpp" line="77"/>
-        <source>%1@%2</source>
-        <translation>%1@%2</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -228,7 +220,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="148"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -636,27 +628,27 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1157"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella locale %1 è già utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella locale %1 contiene già una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1169"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella locale %1 è un collegamento simbolico. La destinazione del collegamento contiene già una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1176"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella locale %1 è già contenuta in una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1182"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella locale %1 è un collegamento simbolico. La destinazione del collegamento è già contenuta in una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
 </context>
 <context>
@@ -664,7 +656,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi connessioni di sincronizzazione cartelle</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
@@ -1471,29 +1463,29 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="50"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Connect to %1</source>
         <translation>Connetti a %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="52"/>
         <source>Setup %1 server</source>
         <translation>Configura il server %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="121"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="127"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Questo URL NON è sicuro poiché non è cifrato.
 Non è consigliabile utilizzarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="125"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="131"/>
         <source>This url is secure. You can use it.</source>
         <translation>Questo URL è sicuro. Puoi utilizzarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="164"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="170"/>
         <source>&amp;Next &gt;</source>
         <translation>Ava&amp;nti &gt;</translation>
     </message>
@@ -2305,7 +2297,7 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="451"/>
+        <location filename="../src/gui/socketapi.cpp" line="452"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Condividi con %1</translation>
@@ -2824,6 +2816,20 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Apri nel browser</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <source>Log in...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
+        <source>Log out</source>
+        <translation>Esci</translation>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="385"/>
         <source>None.</source>
         <translation>Nessuna.</translation>
@@ -2847,6 +2853,16 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>Apri %1 nel browser...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
+        <source>Log out everywhere</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <source>Log in everywhere...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="511"/>
@@ -2874,13 +2890,6 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Esci da %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
-        <source>Sign in...</source>
-        <translation>Accedi...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
         <translation>Disconnesso dal %1</translation>
@@ -2894,23 +2903,6 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Account %1: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
-        <source>Sign out</source>
-        <translation>Esci</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="447"/>
-        <source>Sign out everywhere</source>
-        <translation>Disconnetti ovunque</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
-        <source>Sign in everywhere...</source>
-        <translation>Accedi ovunque...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="530"/>
@@ -3165,67 +3157,62 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="114"/>
-        <source>%L1 TB</source>
-        <translation>%L1 TB</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/utility.cpp" line="117"/>
+        <location filename="../src/libsync/utility.cpp" line="119"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="120"/>
+        <location filename="../src/libsync/utility.cpp" line="122"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="123"/>
-        <source>%L1 kB</source>
-        <translation>%L1 kB</translation>
+        <location filename="../src/libsync/utility.cpp" line="125"/>
+        <source>%L1 KB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="126"/>
+        <location filename="../src/libsync/utility.cpp" line="128"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="304"/>
+        <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln year(s)</source>
         <translation>%Ln anno(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="305"/>
+        <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln month(s)</source>
         <translation>%Ln mese(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="306"/>
+        <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln day(s)</source>
         <translation>%Ln giorno(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="307"/>
+        <location filename="../src/libsync/utility.cpp" line="309"/>
         <source>%Ln hour(s)</source>
         <translation>%Ln ora(e)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="308"/>
+        <location filename="../src/libsync/utility.cpp" line="310"/>
         <source>%Ln minute(s)</source>
         <translation>%Ln minuto(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="309"/>
+        <location filename="../src/libsync/utility.cpp" line="311"/>
         <source>%Ln second(s)</source>
         <translation>%Ln secondo(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="319"/>
+        <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>0 seconds</source>
         <translation>0 secondi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="336"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
