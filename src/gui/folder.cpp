@@ -1118,7 +1118,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
     QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
            "This might be because the folder was silently reconfigured, or that all "
-           "the file were manually removed.\n"
+           "the files were manually removed.\n"
            "Are you sure you want to perform this operation?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
                        msg.arg(alias()));
