@@ -245,7 +245,7 @@ void AccountSettings::slotRemoveCurrentFolder()
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
             QMessageBox messageBox(QMessageBox::Question,
-                                   tr("Confirm Folder Remove"),
+                                   tr("Confirm Sync Removal"),
                                    tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
                                       "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
                                    QMessageBox::NoButton,
