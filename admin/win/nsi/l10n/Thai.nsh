@@ -9,7 +9,6 @@ StrCpy $PageReinstall_NEW_Field_3 "อย่าถอนการติดตั
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE "ติดตั้งแล้ว"
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE "เลือกวิธีที่คุณต้องการติดตั้ง ${APPLICATION_NAME}"
 StrCpy $PageReinstall_OLD_Field_1 "รุ่นใหม่ของ ${APPLICATION_NAME} ถูกติดตั้งแล้ว! เราไม่แนะนำให้คุณติดตั้งรุ่นเก่า ถ้าคุณอยากจะติดตั้งรุ่นเก่าก็สามารถสอนการติดตั้งได้"
-StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} ได้ถูกติดตั้งแล้ว เลือกการดำเนินการที่คุณต้องการที่จะดำเนินการและคลิกถัดไปเพื่อดำเนินการต่อ"
 StrCpy $PageReinstall_SAME_Field_2 "ส่วนประกอบ เพิ่ม/ติดตั้งใหม่ "
 StrCpy $PageReinstall_SAME_Field_3 "ถอนการติดตั้ง ${APPLICATION_NAME}"
 StrCpy $UNINSTALLER_APPDATA_TITLE "ถอนการติดตั้ง ${APPLICATION_NAME}"
@@ -41,3 +40,4 @@ StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "การถอนการติดต�
 StrCpy $UAC_ERROR_LOGON_SERVICE "บริการเข้าสู่ระบบไม่ทำงาน กำลังยกเลิก!"
 StrCpy $INIT_UNINSTALLER_RUNNING "กำลังทำการถอนการติดตั้ง"
 StrCpy $SectionGroup_Shortcuts "ทางลัด"
+StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.$\r$\nSelect the operation you want to perform and click Next to continue."

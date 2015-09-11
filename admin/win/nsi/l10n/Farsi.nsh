@@ -32,7 +32,7 @@ StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Killing ${APPLICATION_EXECUTAB
 StrCpy $PageReinstall_NEW_Field_1 "An older version of ${APPLICATION_NAME} is installed on your system. It is recommended that you uninstall the current version before installing. Select the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE "Choose how you want to install ${APPLICATION_NAME}."
 StrCpy $PageReinstall_OLD_Field_1 "A newer version of ${APPLICATION_NAME} is already installed! It is not recommended that you install an older version. If you really want to install this older version, it is better to uninstall the current version first. Select the operation you want to perform and click Next to continue."
-StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
+StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.$\r$\nSelect the operation you want to perform and click Next to continue."
 StrCpy $PageReinstall_SAME_Field_3 "Uninstall ${APPLICATION_NAME}"
 StrCpy $UNINSTALLER_APPDATA_TITLE "Uninstall ${APPLICATION_NAME}"
 StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Choose the maintenance option to perform."

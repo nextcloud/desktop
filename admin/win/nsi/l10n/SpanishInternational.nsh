@@ -30,7 +30,7 @@ StrCpy $UAC_UNINSTALLER_REQUIRE_ADMIN "Este des-instalador requiere acceso admin
 StrCpy $INIT_UNINSTALLER_RUNNING "El des-instalador ya esta corriendo"
 StrCpy $SectionGroup_Shortcuts "Accesos Directos"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Found ${APPLICATION_EXECUTABLE} process(s) which need to be stopped.$\nDo you want the installer to stop these for you?"
-StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
+StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} is already installed.$\r$\nSelect the operation you want to perform and click Next to continue."
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Integration for Windows Explorer"
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "Installing Integration for Windows Explorer"
 StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_SECTION "Quick Launch Shortcut"
