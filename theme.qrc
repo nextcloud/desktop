@@ -33,13 +33,6 @@
         <file>theme/colored/state-sync-256.png</file>
         <file>theme/colored/wizard_logo.png</file>
         <file>theme/colored/wizard_logo@2x.png</file>
-        <file>theme/white/owncloud-icon-512.png</file>
-        <file>theme/white/owncloud-icon-256.png</file>
-        <file>theme/white/owncloud-icon-128.png</file>
-        <file>theme/white/owncloud-icon-22.png</file>
-        <file>theme/white/owncloud-icon-32.png</file>
-        <file>theme/white/owncloud-icon-48.png</file>
-        <file>theme/white/owncloud-icon-64.png</file>
         <file>theme/white/state-error-32.png</file>
         <file>theme/white/state-error-64.png</file>
         <file>theme/white/state-error-128.png</file>
@@ -64,13 +57,6 @@
         <file>theme/white/state-sync-64.png</file>
         <file>theme/white/state-sync-128.png</file>
         <file>theme/white/state-sync-256.png</file>
-        <file>theme/black/owncloud-icon-512.png</file>
-        <file>theme/black/owncloud-icon-256.png</file>
-        <file>theme/black/owncloud-icon-128.png</file>
-        <file>theme/black/owncloud-icon-22.png</file>
-        <file>theme/black/owncloud-icon-32.png</file>
-        <file>theme/black/owncloud-icon-48.png</file>
-        <file>theme/black/owncloud-icon-64.png</file>
         <file>theme/black/state-error-32.png</file>
         <file>theme/black/state-error-64.png</file>
         <file>theme/black/state-error-128.png</file>
