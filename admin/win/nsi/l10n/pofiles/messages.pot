@@ -65,9 +65,9 @@ msgstr "A newer version of ${APPLICATION_NAME} is already installed! It is not r
 
 #. PageReinstall_SAME_Field_1
 msgid ""
-"${APPLICATION_NAME} ${VERSION} is already installed.\r\n"
+"${APPLICATION_NAME} ${VERSION} is already installed.$\r$\n"
 "Select the operation you want to perform and click Next to continue."
-msgstr "${APPLICATION_NAME} ${VERSION} is already installed.\r\nSelect the operation you want to perform and click Next to continue."
+msgstr "${APPLICATION_NAME} ${VERSION} is already installed.$\r$\nSelect the operation you want to perform and click Next to continue."
 
 #. PageReinstall_SAME_Field_2
 msgid "Add/Reinstall components"
