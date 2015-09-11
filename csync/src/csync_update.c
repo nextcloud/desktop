@@ -637,9 +637,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               if( previous_fs ) {
                   previous_fs->has_ignored_files = true;
               }
+              goto done;
           }
-          goto done;
-          // previously return 0;
       } else if(errno == ENOENT) {
           asp = asprintf( &ctx->error_string, "%s", uri);
           if (asp < 0) {
@@ -661,6 +660,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               }
               goto done;
           }
+          /* if current_fs is not defined here, better throw an error */
       } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
       }
