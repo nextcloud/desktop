@@ -21,41 +21,34 @@
 #include <KPluginFactory>
 #include <QtNetwork/QLocalSocket>
 #include <KIOCore/kfileitem.h>
-
+#include <QTimer>
+#include "ownclouddolphinpluginhelper.h"
 
 class OwncloudDolphinPlugin : public KOverlayIconPlugin
 {
     Q_PLUGIN_METADATA(IID "com.owncloud.ovarlayiconplugin" FILE "ownclouddolphinplugin.json");
     Q_OBJECT
 
-    QLocalSocket m_socket;
     typedef QHash<QByteArray, QByteArray> StatusMap;
     StatusMap m_status;
-    QByteArray m_line;
 
 public:
-    explicit OwncloudDolphinPlugin(QObject* parent = 0) : KOverlayIconPlugin(parent) {
-        connect(&m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
-        tryConnect();
+
+    OwncloudDolphinPlugin() {
+        auto helper = OwncloudDolphinPluginHelper::instance();
+        QObject::connect(helper, &OwncloudDolphinPluginHelper::commandRecieved,
+                         this, &OwncloudDolphinPlugin::slotCommandRecieved);
     }
 
-    virtual QStringList getOverlays(const QUrl& url) override {
+    QStringList getOverlays(const QUrl& url) override {
+        auto helper = OwncloudDolphinPluginHelper::instance();
+        if (!helper->isConnected())
+            return QStringList();
         if (!url.isLocalFile())
             return QStringList();
         const QByteArray localFile = url.toLocalFile().toUtf8();
-//         kDebug() << localFile;
 
-        tryConnect();
-        if (m_socket.state() == QLocalSocket::ConnectingState) {
-            if (!m_socket.waitForConnected(100)) {
-//                kWarning() << "not connected" << m_socket.errorString();
-            }
-        }
-        if (m_socket.state() == QLocalSocket::ConnectedState) {
-            m_socket.write("RETRIEVE_FILE_STATUS:");
-            m_socket.write(localFile);
-            m_socket.write("\n");
-        }
+        helper->sendCommand("RETRIEVE_FILE_STATUS:" + localFile + "\n");
 
         StatusMap::iterator it = m_status.find(localFile);
         if (it != m_status.constEnd()) {
@@ -64,18 +57,8 @@ public:
         return QStringList();
     }
 
-
-
 private:
-    void tryConnect() {
-        if (m_socket.state() != QLocalSocket::UnconnectedState)
-            return;
-        QString runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-        QString socketPath = runtimeDir + "/" + "ownCloud" + "/socket";
-        m_socket.connectToServer(socketPath);
-    }
-
-    QStringList overlaysForString(const QByteArray status) {
+    QStringList overlaysForString(const QByteArray &status) {
         QStringList r;
         if (status.startsWith("NOP"))
             return r;
@@ -91,33 +74,23 @@ private:
         return r;
     }
 
-private slots:
-    void readyRead() {
-        while (m_socket.bytesAvailable()) {
-            m_line += m_socket.readLine();
-            if (!m_line.endsWith("\n"))
-                continue;
-            QByteArray line;
-            qSwap(line, m_line);
-            line.chop(1);
-            if (line.isEmpty())
-                continue;
-            QList<QByteArray> tokens = line.split(':');
-            if (tokens.count() != 3)
-                continue;
-            if (tokens[0] != "STATUS" && tokens[0] != "BROADCAST")
-                continue;
-            if (tokens[2].isEmpty())
-                continue;
+    void slotCommandRecieved(const QByteArray &line) {
 
-            const QByteArray name = tokens[2];
-            QByteArray &status = m_status[name]; // reference to the item in the hash
-            if (status == tokens[1])
-                continue;
-            status = tokens[1];
+        QList<QByteArray> tokens = line.split(':');
+        if (tokens.count() != 3)
+            return;
+        if (tokens[0] != "STATUS" && tokens[0] != "BROADCAST")
+            return;
+        if (tokens[2].isEmpty())
+            return;
 
-            emit this->overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
-        }
+        const QByteArray name = tokens[2];
+        QByteArray &status = m_status[name]; // reference to the item in the hash
+        if (status == tokens[1])
+            return;
+        status = tokens[1];
+
+        emit overlaysChanged(QUrl::fromLocalFile(QString::fromUtf8(name)), overlaysForString(status));
     }
 };
 

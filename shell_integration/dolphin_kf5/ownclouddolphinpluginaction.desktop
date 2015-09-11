@@ -2,5 +2,5 @@
 Type=Service
 Name=OwncloudAction
 ServiceTypes=KFileItemAction/Plugin
-MimeType=text/plain;
+MimeType=application/octet-stream;inode/directory;
 X-KDE-Library=ownclouddolphinpluginaction

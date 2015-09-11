@@ -24,102 +24,39 @@
 #include <KIOCore/kfileitem.h>
 #include <KIOCore/KFileItemListProperties>
 #include <QtWidgets/QAction>
-
-
-class Connector : QObject {
-    Q_OBJECT
-public:
-    QLocalSocket m_socket;
-    QByteArray m_line;
-    QVector<QString> m_paths;
-    QString m_shareActionString;
-
-    Connector() {
-        connect(&m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
-        tryConnect();
-    }
-
-
-    void tryConnect() {
-
-        if (m_socket.state() != QLocalSocket::UnconnectedState)
-            return;
-        QString runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-        QString socketPath = runtimeDir + "/" + "ownCloud" + "/socket";
-        m_socket.connectToServer(socketPath);
-        if (m_socket.state() == QLocalSocket::ConnectingState) {
-            m_socket.waitForConnected(100);
-        }
-        if (m_socket.state() == QLocalSocket::ConnectedState) {
-            m_socket.write("SHARE_MENU_TITLE:\n");
-            m_socket.flush();
-        }
-    }
-
-private slots:
-    void readyRead() {
-        while (m_socket.bytesAvailable()) {
-            m_line += m_socket.readLine();
-            if (!m_line.endsWith("\n"))
-                continue;
-            QByteArray line;
-            qSwap(line, m_line);
-            line.chop(1);
-            if (line.isEmpty())
-                continue;
-            if (line.startsWith("REGISTER_PATH:")) {
-                QString file = QString::fromUtf8(line.mid(line.indexOf(':') + 1));
-                m_paths.append(file);
-                continue;
-            } else if (line.startsWith("SHARE_MENU_TITLE:")) {
-                m_shareActionString = QString::fromUtf8(line.mid(line.indexOf(':') + 1));
-                continue;
-            }
-        }
-    }
-};
-
+#include <QtCore/QTimer>
+#include "ownclouddolphinpluginhelper.h"
 
 class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
 {
 public:
-    explicit OwncloudDolphinPluginAction(QObject* parent, const QList<QVariant>&) : KAbstractFileItemActionPlugin(parent) {
-    }
+    explicit OwncloudDolphinPluginAction(QObject* parent, const QList<QVariant>&)
+        : KAbstractFileItemActionPlugin(parent) { }
 
     QList<QAction*> actions(const KFileItemListProperties& fileItemInfos, QWidget* parentWidget) Q_DECL_OVERRIDE
     {
-        static Connector connector;
-        connector.tryConnect();
-
+        auto helper = OwncloudDolphinPluginHelper::instance();
         QList<QUrl> urls = fileItemInfos.urlList();
-        if (urls.count() != 1 || connector.m_socket.state() != QLocalSocket::ConnectedState)
+        if (urls.count() != 1 || !helper->isConnected())
             return {};
 
         auto url = urls.first();
-
-
         if (!url.isLocalFile())
             return {};
         auto localFile = url.toLocalFile();
 
-
-        if (!std::any_of(connector.m_paths.begin(), connector.m_paths.end(), [&](const QString &s) {
+        const auto paths = helper->paths();
+        if (!std::any_of(paths.begin(), paths.end(), [&](const QString &s) {
                                 return localFile.startsWith(s);
                         } ))
              return {};
 
         auto act = new QAction(parentWidget);
-        act->setText(connector.m_shareActionString);
-        auto socket = &connector.m_socket;
-        connect(act, &QAction::triggered, this, [localFile, socket] {
-            socket->write("SHARE:");
-            socket->write(localFile.toUtf8());
-            socket->write("\n");
-            socket->flush();
+        act->setText(helper->shareActionString());
+        connect(act, &QAction::triggered, this, [localFile, helper] {
+            helper->sendCommand("SHARE:"+localFile.toUtf8()+"\n");
         } );
-
         return { act };
-
     }
 
 };

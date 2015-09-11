@@ -32,10 +32,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
-kcoreaddons_add_plugin(ownclouddolphinplugin INSTALL_NAMESPACE "kf5/overlayicon" JSON ownclouddolphinplugin.json SOURCES ownclouddolphinplugin.cpp)
+kcoreaddons_add_plugin(ownclouddolphinplugin INSTALL_NAMESPACE "kf5/overlayicon" JSON ownclouddolphinplugin.json
+            SOURCES ownclouddolphinplugin.cpp ownclouddolphinpluginhelper.cpp)
 target_link_libraries(ownclouddolphinplugin Qt5::Network KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets)
 
-add_library(ownclouddolphinpluginaction MODULE ownclouddolphinpluginaction.cpp)
+add_library(ownclouddolphinpluginaction MODULE ownclouddolphinpluginaction.cpp ownclouddolphinpluginhelper.cpp)
 target_link_libraries(ownclouddolphinpluginaction Qt5::Network KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets)
 install(FILES ownclouddolphinpluginaction.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 install(TARGETS ownclouddolphinpluginaction DESTINATION ${KDE_INSTALL_PLUGINDIR})
