@@ -189,8 +189,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
-        <source>Confirm Account Delete</source>
-        <translation>ยืนยันการลบบัญชี</translation>
+        <source>Confirm Account Removal</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -2813,7 +2813,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <location filename="../src/gui/owncloudgui.cpp" line="524"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>เข้าสู่ระบบ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="326"/>
@@ -2850,12 +2850,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="447"/>
         <source>Log out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>ออกจากระบบในที่อื่นๆ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="455"/>
         <source>Log in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>เข้าสู่ระบบจากที่อื่นๆ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="511"/>
@@ -3162,7 +3162,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 กิโลไบต์</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="128"/>

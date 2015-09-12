@@ -189,7 +189,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
-        <source>Confirm Account Delete</source>
+        <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>

@@ -190,8 +190,8 @@ Diese Funktion ist nur für Wartungszwecke gedacht. Es werden keine Dateien entf
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
-        <source>Confirm Account Delete</source>
-        <translation>Konto wirklich entfernen?</translation>
+        <source>Confirm Account Removal</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>

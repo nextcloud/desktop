@@ -189,7 +189,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
-        <source>Confirm Account Delete</source>
+        <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -200,27 +200,27 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="529"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda ühendus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="144"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>Ava kaust</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Taasta sünroonimist</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Peata sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="148"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>Eemalda sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
@@ -763,7 +763,7 @@ Aega kokku jäänud %5</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>Waiting...</source>
-        <translation type="unfinished"/>
+        <translation>Ootamine...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
@@ -3158,7 +3158,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="128"/>

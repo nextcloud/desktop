@@ -189,8 +189,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
-        <source>Confirm Account Delete</source>
-        <translation>Vahvista tilin poistaminen</translation>
+        <source>Confirm Account Removal</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -2812,7 +2812,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <location filename="../src/gui/owncloudgui.cpp" line="524"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu sisään...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="326"/>
