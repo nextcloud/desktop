@@ -370,12 +370,6 @@
         <translation>認証エラー: ユーザー名またはパスワードが間違っています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>%1 に接続できません</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>timeout</source>
         <translation>タイムアウト</translation>

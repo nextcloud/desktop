@@ -370,12 +370,6 @@
         <translation>Erreur d&apos;authentification: nom d&apos;utilisateur et/ou mot de passe incorrect(s).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>Impossible de se connecter à %1</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>timeout</source>
         <translation>délai d&apos;attente</translation>

@@ -370,12 +370,6 @@
         <translation>Błąd autentykacji: nazwa użytkownika lub hasło są nieprawidłowe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>Nie mogę połączyć się do %1</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>timeout</source>
         <translation>wygaśnięcie</translation>

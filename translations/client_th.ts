@@ -190,7 +190,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>ยืนยันการลบบัญชี</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -368,12 +368,6 @@
         <location filename="../src/libsync/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>ข้อผิดพลาดในการตรวจสอบ: ทั้งชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>ไม่สามารถเชื่อมต่อไปยัง %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>

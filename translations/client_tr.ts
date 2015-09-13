@@ -370,12 +370,6 @@
         <translation>Giriş hatası: Kullanıcı adı veya parola hatalı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>%1 bağlantısı yapılamadı</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
         <source>timeout</source>
         <translation>zaman aşımı</translation>

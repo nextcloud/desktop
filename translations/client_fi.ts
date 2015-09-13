@@ -190,7 +190,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista tilin poistaminen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -368,12 +368,6 @@
         <location filename="../src/libsync/connectionvalidator.cpp" line="143"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Tunnistautumisvirhe: käyttäjätunnus tai salasana on väärin.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="145"/>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="153"/>
-        <source>Unable to connect to %1</source>
-        <translation>Yhteys %1iin epäonnistui</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="154"/>
