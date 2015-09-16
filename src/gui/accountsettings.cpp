@@ -121,6 +121,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
             this, SLOT(slotUpdateQuota(qint64,qint64)));
 
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
+
+    // Expand already on single click
+    ui->_folderList->setExpandsOnDoubleClick(false);
+    QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
+        ui->_folderList, SLOT(expand(const QModelIndex &)));
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
