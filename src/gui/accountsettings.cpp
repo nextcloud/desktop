@@ -130,7 +130,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
 void AccountSettings::doExpand()
 {
-    ui->_folderList->expandToDepth(1);
+    ui->_folderList->expandToDepth(0);
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
