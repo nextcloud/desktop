@@ -25,15 +25,13 @@ improvements.
   * Multi-account support
   * Many UI improvements
   * Accessibility improvements (high contrast schemes)
-  * Automatic Bandwidth Throttling
-  * Don't show redundant directory entries in activity log
+  * Automatic bandwidth throttling
+  * No redundant directory entries in activity log
   * Remove deleted accounts properly from toolbar
-  * File manager integration: Show hidden files as ignored
-  * Show wizard when last account was deleted
-  * Do not sync down new big folders from server without user's consent
-  * Integrate Selective Sync into the default UI
+  * File manager integration: show hidden files as ignored
+  * Do not sync new big folders from server without user's consent
+  * Integrate selective sync into the default UI
   * More reliable reconnect after timeout
-  * Use SI units for the file sizes
   * Improve progress reporting during sync
   * Sharing: Do not allow sharing the root folder
   * Sharing: Show thumbnail

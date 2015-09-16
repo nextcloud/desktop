@@ -54,24 +54,4 @@ synchronizing your files.
    :alt: A successful server connection, showing a button to connect to your 
     Web GUI, and one to open your local ownCloud folder
 
-Click the Finish button, and you're all done.   
-
-When you are in your local ownCloud folder, you can right-click any file or 
-folder, and then left-click "Share with ownCloud" to create a share link. Note 
-that Windows may also have a Share With option. This is not the ownCloud Share 
-option. Linux users must install the ``owncloud-client-nautilus`` package to 
-enable file sharing from the Nautilus file manager. The ownCloud share dialog 
-looks like the following example on Ubuntu Linux:
-
-.. image:: images/client-5.png
-   :alt: the ownCloud file share option is integrated into the normal 
-    right-click file menu in your file manager
-
-You may change your sync options at any time by opening your ownCloud client 
-and selecting which folders to sync, or to remove from synchronization.
-you saw in the installation wizard. **If you un-check any folders that 
-you have already synchronized, they will be deleted from your local system.**
-
-.. image:: images/client-6.png
-   :alt: Client dialogue to select different files to sync, or to remove from 
-    syncing
+Click the Finish button, and you're all done. 
