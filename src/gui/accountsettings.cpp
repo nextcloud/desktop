@@ -128,6 +128,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
         ui->_folderList, SLOT(expand(const QModelIndex &)));
 }
 
+void AccountSettings::doExpand()
+{
+    ui->_folderList->expandToDepth(1);
+}
+
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 {
     QTreeView *tv = ui->_folderList;
@@ -148,6 +153,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     menu->setAttribute(Qt::WA_DeleteOnClose);
     connect(menu->addAction(tr("Open folder")), SIGNAL(triggered(bool)),
             this, SLOT(slotOpenCurrentFolder()));
+    connect(menu->addAction(tr("Choose What to Sync")), SIGNAL(triggered(bool)),
+            this, SLOT(doExpand()));
     connect(menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync")), SIGNAL(triggered(bool)),
             this, SLOT(slotEnableCurrentFolder()));
     connect(menu->addAction(tr("Remove sync")), SIGNAL(triggered(bool)),

@@ -80,6 +80,7 @@ protected slots:
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint&);
+    void doExpand();
 
 private:
     void showConnectionLabel(const QString& message,
