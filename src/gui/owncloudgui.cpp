@@ -765,6 +765,10 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         qDebug() << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
     }
+
+    // For https://github.com/owncloud/client/issues/3783
+    _settingsDialog->hide();
+
     const auto accountState = folder->accountState();
 
     qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
