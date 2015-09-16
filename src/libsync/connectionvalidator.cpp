@@ -150,6 +150,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
+    Q_UNUSED(url);
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
     _errors.append(tr("timeout"));
     reportResult( Timeout );
