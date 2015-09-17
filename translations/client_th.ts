@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="260"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>ยืนยันลบการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
@@ -517,7 +517,9 @@ Please go in the settings to select it if you wish to download it.</source>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>การประสานข้อมูลนี้จะลบไฟล์ทั้งหมดที่อยู่ในโฟลเดอร์ประสานข้อมูล &apos;%1&apos;
+สาเหตุเนื่องจากมีการเปลี่ยนแปลงข้อมูลโฟลเดอร์หรือไฟล์ทั้งหมดถูกลบด้วยตนเอง
+คุณแน่ใจว่าคุณต้องการที่จะดำเนินการนี้?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
@@ -2700,7 +2702,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>

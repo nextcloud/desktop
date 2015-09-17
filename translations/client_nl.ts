@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="260"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>Bevestig Sync verwijdering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
@@ -517,7 +517,9 @@ Ga naar de instellingen om het te selecteren als u deze wilt downloaden.</transl
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Deze sync zou alle bestanden in syncmap &apos;%1&apos; verwijderen.
+Dat zou kunnen gebeuren omdat de map stilletjes was geherconfigureerd, of omdat alle bestanden handmatig zijn verwijderd.
+Weet je zeker dat je door wilt gaan?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
@@ -2708,7 +2710,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Niet toegestaan omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>

@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="260"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>Conferma rimozione sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
@@ -517,7 +517,9 @@ Vai nelle impostazioni per selezionarla se desideri scaricarla.</translation>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Questa sincronizzazione rimuoverà tutti i file nella cartella di sincronizzazione &apos;%1&apos;.
+Ciò potrebbe accadere in caso di riconfigurazione della cartella o di rimozione manuale di tutti i file.
+Sei sicuro di voler eseguire questa operazione?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1123"/>
@@ -2706,7 +2708,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Non consentito poiché non disponi dei permessi per aggiungere sottocartelle in quella cartella</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>
