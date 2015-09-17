@@ -693,6 +693,9 @@ void Folder::saveToSettings() const
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
+
+    settings->sync();
+    qDebug() << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
 }
 
 void Folder::removeFromSettings() const

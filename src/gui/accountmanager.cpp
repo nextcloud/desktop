@@ -130,6 +130,9 @@ void AccountManager::save(bool saveCredentials)
         save(acc->account(), *settings, saveCredentials);
         settings->endGroup();
     }
+
+    settings->sync();
+    qDebug() << "Saved all account settings, status:" << settings->status();
 }
 
 void AccountManager::wantsAccountSavedSlot(AccountPtr a)
@@ -139,6 +142,9 @@ void AccountManager::wantsAccountSavedSlot(AccountPtr a)
     settings->beginGroup(a->id());
     save(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
+
+    settings->sync();
+    qDebug() << "Saved account settings, status:" << settings->status();
 }
 
 void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveCredentials)
@@ -161,7 +167,6 @@ void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveC
         if (acc->_settingsMap.contains(httpUserC))
             settings.setValue(userC, acc->_settingsMap.value(httpUserC));
     }
-    settings.sync();
 
     // Save accepted certificates.
     settings.beginGroup(QLatin1String("General"));
