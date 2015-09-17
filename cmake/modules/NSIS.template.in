@@ -741,8 +741,6 @@ Function .onInit
          Quit
       ${EndSwitch}
 
-   ClearError
-
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Installer") i .r1 ?e'
    Pop $R0
@@ -807,8 +805,6 @@ Function un.onInit
          Abort
          Quit
       ${EndSwitch}
-
-   ClearError
 
    ;Prevent multiple instances.
    System::Call 'kernel32::CreateMutexA(i 0, i 0, t "${APPLICATION_SHORTNAME}Uninstaller") i .r1 ?e'
