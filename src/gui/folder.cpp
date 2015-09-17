@@ -1160,7 +1160,21 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     settings.endGroup();
+
+    // Old settings can contain paths with native separators. In the rest of the
+    // code we assum /, so clean it up now.
+    folder->localPath = prepareLocalPath(folder->localPath);
+
     return true;
+}
+
+QString FolderDefinition::prepareLocalPath(const QString& path)
+{
+    QString p = QDir::fromNativeSeparators(path);
+    if (!p.endsWith(QLatin1Char('/'))) {
+        p.append(QLatin1Char('/'));
+    }
+    return p;
 }
 
 } // namespace OCC
