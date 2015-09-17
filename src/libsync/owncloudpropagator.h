@@ -171,13 +171,13 @@ public:
 
     SyncFileItemPtr _item;
 
-    int _current; // index of the current running job
-    int _runningNow; // number of subJob running now
+    int _jobsFinished; // number of jobs that have completed
+    int _runningNow; // number of subJobs running right now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus)
+        , _firstJob(0), _item(item),  _jobsFinished(0), _runningNow(0), _hasError(SyncFileItem::NoStatus)
     { }
 
     virtual ~PropagateDirectory() {

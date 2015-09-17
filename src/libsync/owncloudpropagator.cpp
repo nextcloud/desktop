@@ -619,17 +619,16 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
         _hasError = status;
     }
     _runningNow--;
+    _jobsFinished++;
 
-    int total = _subJobs.count();
-    if (!_firstJob) {
-        total--;
+    int totalJobs = _subJobs.count();
+    if (_firstJob) {
+        totalJobs++;
     }
-
-    _current++;
 
     // We finished to processing all the jobs
     // check if we finished
-    if (_current >= total) {
+    if (_jobsFinished >= totalJobs) {
         Q_ASSERT(!_runningNow); // how can we finished if there are still jobs running now
         finalize();
     } else {
