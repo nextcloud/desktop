@@ -186,6 +186,10 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    // Make sure all folders are gone, otherwise removing the
+    // accounts will remove the associated folders from the settings.
+    FolderMan::instance()->unloadAndDeleteAllFolders();
+
     // Remove the account from the account manager so it can be deleted.
     AccountManager::instance()->shutdown();
 }
