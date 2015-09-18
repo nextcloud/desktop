@@ -37,6 +37,7 @@ public:
     explicit OwncloudConnectionMethodDialog(QWidget *parent = 0);
     ~OwncloudConnectionMethodDialog();
     enum {
+        Closed = 0,
         No_TLS,
         Client_Side_TLS,
         Back

@@ -266,6 +266,7 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
                     slotAskSSLClientCertificate();
                     break;
+                case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
                 default:
                     // No-op.
