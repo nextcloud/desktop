@@ -98,11 +98,12 @@ offers three additional options:
 * Pause Sync
 * Remove Sync
 
-**Remove Sync** suspends all synchronization with an account without removing 
-the account. This is useful when you know you're not going to be able to 
-connect to your ownCloud server, for example when you're traveling, or when you 
-want to save bandwidth. When you're ready to resume synchronization click the 
-**Add Folder Sync Connection** button.
+**Pause Sync** pauses sync operations without making any changes to your account.
+
+**Remove Sync** suspends synchronization without removing the account, and it 
+removes your folder sync selection. When you're ready to resume synchronization 
+click the **Add Folder Sync Connection** button, and re-select the folders you 
+want to sync.
 
 .. image:: images/client-7.png
    :alt: Extra options for sync operations
