@@ -3169,7 +3169,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
         <source>%L1 KB</source>
-        <translation>%L1 KB</translation>
+        <translation>%L1 Ko</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="128"/>
@@ -3184,7 +3184,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln month(s)</source>
-        <translation>%d mois</translation>
+        <translation>%Ln mois</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="308"/>
