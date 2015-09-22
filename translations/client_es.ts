@@ -1072,7 +1072,7 @@ Cuenta: %3
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Los archivos o directorios que coincidan con un patrón no serán sincronizados.
 
-Los elementos cuya eliminación está permitida serán eliminados si impiden que un directorio sea eliminado. esto es útil por sus metadatos.</translation>
+Los elementos cuya eliminación está permitida serán eliminados si impiden que un directorio sea eliminado. Esto es útil para sus metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
@@ -1611,7 +1611,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>Conexión a %1 no se ha podido establecer. Por favor compruebelo de nuevo.</translation>
+        <translation>No se ha podido establecer la conexión con %1. Por favor, compruébelo de nuevo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
@@ -2581,7 +2581,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation>El directorio montado no está, temporalmente, disponible en el servidor</translation>
+        <translation>El directorio montado no está disponible temporalmente en el servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>

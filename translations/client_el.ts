@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση Αφαίρεσης Συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="262"/>
@@ -517,7 +517,9 @@ Please go in the settings to select it if you wish to download it.</source>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Αυτός ο συγχρονισμός θα αφαιρούσε όλα τα αρχεία του φακέλου συγχρονισμού &apos;%1&apos;
+Αυτό μπορεί να συμβαίνει επειδή ο φάκελος επαναρυθμίστηκε σιωπηλά ή ότι όλα τα αρχεία αφαιρέθηκαν χειροκίνητα.
+Είστε σίγουροι ότι θέλετε να εκτελέσετε αυτή τη λειτουργία;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>
@@ -2710,7 +2712,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>
