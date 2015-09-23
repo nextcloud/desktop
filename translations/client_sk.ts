@@ -160,7 +160,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="462"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation type="unfinished"/>
+        <translation>Server %1 je dočasne nedostupný.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="464"/>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrďte ostránenie účtu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="536"/>
@@ -210,37 +210,37 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Obnoviť synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="160"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="261"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdiť odstránenie synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="262"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Naozaj si prajete zastaviť synchronizácu priečinka &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka:&lt;/b&gt; Toto &lt;b&gt;nevymaže&lt;/b&gt; žiadne súbory.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="431"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) z %2 je využitých. Niektoré priečinky, vrátane sieťových a zdieľaných, môžu mať iné limity.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="432"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 z %2 je využitých</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="437"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Služba nedostupná</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="103"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Neznámy stav účtu</translation>
     </message>
 </context>
 <context>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="171"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 by mal byť priečinok, avšak nie je.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="174"/>
@@ -509,14 +509,17 @@
         <location filename="../src/gui/folder.cpp" line="1109"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Bol pridaný nový priečinok, väčší ako %1 MB: %2.
+Pokiaľ si ho prajete stiahnuť, vyberte ho v nastaveniach.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1122"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Táto synchronizácia odstráni všetky súbory v synchronizovanom priečinku &apos;%1&apos;.
+Dôvodom môže byť, že sa daný priečinok potichu rekonfiguroval, alebo boli súbory manuálne odstránené.
+Ste si istý, že chcete pokračovať?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>
@@ -609,12 +612,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1131"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Nebol zvolený platný priečinok.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>Zvolená cesta nie je priečinok.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1146"/>
@@ -663,7 +666,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
-        <translation type="unfinished"/>
+        <translation>Synchornizácia vybraných súborov vášho účtu s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
@@ -676,7 +679,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Na pridanie priečinku je nutné byť pripojený</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
