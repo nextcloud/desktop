@@ -189,7 +189,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
     h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
+                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS+FILE_FLAG_OPEN_REPARSE_POINT, NULL );
     if( h == INVALID_HANDLE_VALUE ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %s", uri );
         errno = GetLastError();
