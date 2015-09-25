@@ -80,6 +80,7 @@ protected slots:
     void slotDeleteAccount();
     void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint&);
+    void slotFolderListClicked( const QModelIndex& indx );
     void doExpand();
 
 private:
