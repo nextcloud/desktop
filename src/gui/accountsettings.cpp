@@ -135,8 +135,10 @@ void AccountSettings::doExpand()
 
 void AccountSettings::slotFolderListClicked( const QModelIndex& indx )
 {
-    if( _accountState && _accountState->state() == AccountState::Connected ) {
-        ui->_folderList->expand(indx);
+    if( _model->classify(indx) == FolderStatusModel::RootFolder  &&
+            _accountState && _accountState->state() == AccountState::Connected ) {
+        bool expanded = ! (ui->_folderList->isExpanded(indx));
+        ui->_folderList->setExpanded(indx, expanded);
     }
 }
 
