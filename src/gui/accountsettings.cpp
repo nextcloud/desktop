@@ -125,12 +125,19 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     // Expand already on single click
     ui->_folderList->setExpandsOnDoubleClick(false);
     QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
-        ui->_folderList, SLOT(expand(const QModelIndex &)));
+                     this, SLOT(slotFolderListClicked(const QModelIndex&)));
 }
 
 void AccountSettings::doExpand()
 {
     ui->_folderList->expandToDepth(0);
+}
+
+void AccountSettings::slotFolderListClicked( const QModelIndex& indx )
+{
+    if( _accountState && _accountState->state() == AccountState::Connected ) {
+        ui->_folderList->expand(indx);
+    }
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
@@ -470,6 +477,18 @@ void AccountSettings::slotAccountStateChanged(int state)
     } else {
         // ownCloud is not yet configured.
         showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
+    }
+
+    /* Allow to expand the item if the account is connected. */
+    ui->_folderList->setItemsExpandable( state == AccountState::Connected );
+
+    /* check if there are expanded root items, if so, close them, if the state is different from being Connected. */
+    if( state != AccountState::Connected ) {
+        int i;
+        for (i = 0; i < _model->rowCount(); ++i) {
+            if (ui->_folderList->isExpanded(_model->index(i)))
+                ui->_folderList->setExpanded(_model->index(i), false);
+        }
     }
 }
 
