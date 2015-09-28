@@ -101,6 +101,8 @@ Application::Application(int &argc, char **argv) :
     _userTriggeredConnect(false),
     _debugMode(false)
 {
+    _startedAt.start();
+
 // TODO: Can't set this without breaking current config pathes
 //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
@@ -301,6 +303,12 @@ void Application::slotParseMessage(const QString &msg, QObject*)
         parseOptions(options);
         setupLogging();
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
+        qDebug() << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
+        if (isSessionRestored() && _startedAt.elapsed() < 10*1000) {
+            // This call is mirrored with the one in int main()
+            qWarning() << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
+            return;
+        }
         showSettingsDialog();
     }
 }
