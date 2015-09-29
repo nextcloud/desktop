@@ -93,8 +93,6 @@ private:
     OwncloudWizardResultPage* _resultPage;
     AbstractCredentialsWizardPage* _credentialsPage;
 
-    QString _configFile;
-    QString _oCUser;
     QStringList _setupLog;
 };
 
