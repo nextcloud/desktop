@@ -517,7 +517,9 @@ Pokud ho chcete stáhnout, přejděte prosím do nastavení a označte ho.</tran
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Tato synchronizace by smazala všechny soubory ve složce &apos;%1&apos;.
+Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím, že byly všechny soubory ručně odstraněny.
+Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>
@@ -2709,7 +2711,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>
