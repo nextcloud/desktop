@@ -157,17 +157,24 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     tv->setCurrentIndex(index);
     bool folderPaused = _model->data( index, FolderStatusDelegate::FolderSyncPaused).toBool();
+    bool folderConnected = _model->data( index, FolderStatusDelegate::FolderAccountConnected ).toBool();
 
     QMenu *menu = new QMenu(tv);
     menu->setAttribute(Qt::WA_DeleteOnClose);
-    connect(menu->addAction(tr("Open folder")), SIGNAL(triggered(bool)),
-            this, SLOT(slotOpenCurrentFolder()));
-    connect(menu->addAction(tr("Choose What to Sync")), SIGNAL(triggered(bool)),
-            this, SLOT(doExpand()));
-    connect(menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync")), SIGNAL(triggered(bool)),
-            this, SLOT(slotEnableCurrentFolder()));
-    connect(menu->addAction(tr("Remove sync")), SIGNAL(triggered(bool)),
-            this, SLOT(slotRemoveCurrentFolder()));
+
+    QAction *ac = menu->addAction(tr("Open folder"));
+    connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotOpenCurrentFolder()));
+
+    ac = menu->addAction(tr("Choose What to Sync"));
+    ac->setEnabled(folderConnected);
+    connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
+
+    ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
+    ac->setEnabled(folderConnected);
+    connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotEnableCurrentFolder()));
+
+    ac = menu->addAction(tr("Remove sync"));
+    connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotRemoveCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
 
