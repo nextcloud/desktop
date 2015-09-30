@@ -97,8 +97,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="277"/>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="284"/>
+        <location filename="../src/gui/accountsettings.cpp" line="571"/>
         <source>Cancel</source>
         <translation>Άκυρο</translation>
     </message>
@@ -113,142 +113,142 @@
         <translation>Δεν ρυθμίστηκε λογαριασμός.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="229"/>
         <source>Folder creation failed</source>
         <translation>Αποτυχία αφαίρεσης φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="223"/>
+        <location filename="../src/gui/accountsettings.cpp" line="230"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Αδυναμία δημιουργίας τοπικού φακέλου &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>Stop syncing</source>
         <translation>Διακοπή συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="302"/>
+        <location filename="../src/gui/accountsettings.cpp" line="309"/>
         <source>Confirm Folder Reset</source>
         <translation>Επιβεβαίωση Επαναφοράς Φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="310"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε στ&apos; αλήθεια να επαναφέρετε το φάκελο &lt;i&gt;%1&lt;/i&gt; και να επαναδημιουργήσετε τη βάση δεδομένων του δέκτη;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτή η λειτουργία έχει σχεδιαστεί αποκλειστικά για λόγους συντήρησης. Κανένα αρχείο δεν θα αφαιρεθεί, αλλά αυτό μπορεί να προκαλέσει σημαντική κίνηση δεδομένων και να πάρει αρκετά λεπτά ή ώρες μέχρι να ολοκληρωθεί, ανάλογα με το μέγεθος του φακέλου. Χρησιμοποιείστε αυτή την επιλογή μόνο εάν έχετε συμβουλευτεί αναλόγως από το διαχειριστή σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="384"/>
+        <location filename="../src/gui/accountsettings.cpp" line="391"/>
         <source>Sync Running</source>
         <translation>Εκτελείται Συγχρονισμός </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="385"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Η λειτουργία συγχρονισμού εκτελείται.&lt;br/&gt; Θέλετε να την τερματίσετε;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="465"/>
+        <location filename="../src/gui/accountsettings.cpp" line="472"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 ως &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="469"/>
+        <location filename="../src/gui/accountsettings.cpp" line="476"/>
         <source>Connected to %1.</source>
         <translation>Συνδεδεμένο με %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Ο διακομιστής %1 δεν είναι διαθέσιμος προσωρινά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="473"/>
+        <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>Signed out from %1.</source>
         <translation>Αποσυνδέθηκε από %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="475"/>
+        <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>No connection to %1 at %2.</source>
         <translation>Δεν υπάρχει σύνδεση με το %1 στο %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>Υπάρχουν νέοι φάκελοι που δεν συγχρονίσθηκαν επειδή είναι πολυ μεγάλοι: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="529"/>
+        <location filename="../src/gui/accountsettings.cpp" line="536"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="556"/>
+        <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Confirm Account Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="557"/>
+        <location filename="../src/gui/accountsettings.cpp" line="564"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>Remove connection</source>
         <translation>Αφαίρεση σύνδεσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="163"/>
+        <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Open folder</source>
         <translation>Άνοιγμα φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="165"/>
+        <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Choose What to Sync</source>
         <translation>Επιλέξτε Τι θα Συγχρονιστεί</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Resume sync</source>
         <translation>Συνέχιση συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Pause sync</source>
         <translation>Παύση συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="169"/>
+        <location filename="../src/gui/accountsettings.cpp" line="176"/>
         <source>Remove sync</source>
         <translation>Αφαίρεση συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="271"/>
+        <location filename="../src/gui/accountsettings.cpp" line="278"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να σταματήσετε το συγχρονισμό του φακέλου &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="440"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) από %2 σε χρήση. Μερικοί φάκελοι, συμπεριλαμβανομένων των δικτυακών ή των κοινόχρηστων μπορεί να έχουν διαφορετικά όρια.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>%1 of %2 in use</source>
         <translation>%1 από %2 σε χρήση</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Προς το παρόν δεν υπάρχουν πληροφορίες χρήσης χώρου αποθήκευσης διαθέσιμες.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="481"/>
+        <location filename="../src/gui/accountsettings.cpp" line="488"/>
         <source>No %1 connection configured.</source>
         <translation>Δεν έχει ρυθμιστεί σύνδεση με το %1.</translation>
     </message>
@@ -1634,12 +1634,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="73"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="71"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 Οδηγός Σύνδεσης</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="82"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="80"/>
         <source>Skip folders configuration</source>
         <translation>Παράλειψη διαμόρφωσης φακέλων</translation>
     </message>

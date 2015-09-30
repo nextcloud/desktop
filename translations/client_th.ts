@@ -97,8 +97,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="277"/>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="284"/>
+        <location filename="../src/gui/accountsettings.cpp" line="571"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>
@@ -113,142 +113,142 @@
         <translation>ไม่มีการกำหนดค่าบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="229"/>
         <source>Folder creation failed</source>
         <translation>สร้างโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="223"/>
+        <location filename="../src/gui/accountsettings.cpp" line="230"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;ไม่สามารถสร้างโฟลเดอร์ต้นทาง &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>Stop syncing</source>
         <translation>ยกเลิกการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="302"/>
+        <location filename="../src/gui/accountsettings.cpp" line="309"/>
         <source>Confirm Folder Reset</source>
         <translation>ยืนยันการรีเซ็ตโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="303"/>
+        <location filename="../src/gui/accountsettings.cpp" line="310"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการที่จะตั้งค่าโฟลเดอร์ &lt;i&gt;%1&lt;/i&gt; และสร้างฐานข้อมูลไคลเอนต์ของคุณหรือไม่?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt;ฟังก์ชั่นนี้ถูกออกแบบมาเพื่อวัตถุประสงค์ในการซ่อมบำรุงเท่านั้น จะไม่มีไฟล์ที่ถูกลบออก แต่นี้อาจทำให้เกิดการจราจรข้อมูลที่สำคัญและใช้เวลาหลายนาทีหรือชั่วโมงขึ้นอยู่กับขนาดของโฟลเดอร์ ใช้ตัวเลือกนี้หากได้รับคำแนะนำจากผู้ดูแลระบบของคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="384"/>
+        <location filename="../src/gui/accountsettings.cpp" line="391"/>
         <source>Sync Running</source>
         <translation>กำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="385"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>การดำเนินการเพื่อประสานข้อมูลกำลังทำงานอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงานหรือไม่?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="465"/>
+        <location filename="../src/gui/accountsettings.cpp" line="472"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 เช่น &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="469"/>
+        <location filename="../src/gui/accountsettings.cpp" line="476"/>
         <source>Connected to %1.</source>
         <translation>เชื่อมต่อกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="471"/>
+        <location filename="../src/gui/accountsettings.cpp" line="478"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>เซิร์ฟเวอร์ %1 ไม่สามารถใช้ได้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="473"/>
+        <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>Signed out from %1.</source>
         <translation>ลงชื่อออกจาก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="475"/>
+        <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>No connection to %1 at %2.</source>
         <translation>ไม่มีการเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
         <translation>มีโฟลเดอร์ใหม่ที่ไม่ถูกประสานข้อมูลเพราะโฟลเดอร์มีขนาดใหญ่เกินไป: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="529"/>
+        <location filename="../src/gui/accountsettings.cpp" line="536"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="556"/>
+        <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Confirm Account Removal</source>
         <translation>ยืนยันการลบบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="557"/>
+        <location filename="../src/gui/accountsettings.cpp" line="564"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>Remove connection</source>
         <translation>ลบการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="163"/>
+        <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Open folder</source>
         <translation>เปิดโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="165"/>
+        <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Choose What to Sync</source>
         <translation>เลือกสิ่งที่ต้องการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Resume sync</source>
         <translation>ประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Pause sync</source>
         <translation>หยุดประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="169"/>
+        <location filename="../src/gui/accountsettings.cpp" line="176"/>
         <source>Remove sync</source>
         <translation>ลบการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
         <translation>ยืนยันลบการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="271"/>
+        <location filename="../src/gui/accountsettings.cpp" line="278"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการที่จะหยุดการประสานข้อมูลโฟลเดอร์&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="440"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>มีการใช้งาน %1 (%3%) จาก %2  บางโฟลเดอร์รวมทั้งเครือข่ายที่ติดตั้งหรือโฟลเดอร์ที่แชร์อาจมีข้อจำกัดที่แตกต่างกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="441"/>
+        <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>%1 of %2 in use</source>
         <translation>มีการใช้งาน %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="481"/>
+        <location filename="../src/gui/accountsettings.cpp" line="488"/>
         <source>No %1 connection configured.</source>
         <translation>ไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
     </message>
@@ -1632,12 +1632,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudWizard</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="73"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="71"/>
         <source>%1 Connection Wizard</source>
         <translation>%1 ตัวช่วยสร้างการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="82"/>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="80"/>
         <source>Skip folders configuration</source>
         <translation>ข้ามการกำหนดค่าโฟลเดอร์</translation>
     </message>
