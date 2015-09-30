@@ -128,7 +128,8 @@ void PropagateRemoteMove::slotMoveJobFinished()
             return;
         }
 
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
+                                                    &_propagator->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }

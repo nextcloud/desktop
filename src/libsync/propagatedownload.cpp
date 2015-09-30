@@ -481,7 +481,8 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
         SyncFileItem::Status status = job->errorStatus();
         if (status == SyncFileItem::NoStatus) {
-            status = classifyError(err, _item->_httpErrorCode);
+            status = classifyError(err, _item->_httpErrorCode,
+                                   &_propagator->_anotherSyncNeeded);
         }
 
         done(status, job->errorString());
