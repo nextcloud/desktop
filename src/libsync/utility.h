@@ -38,7 +38,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
-    OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path, bool *ok = 0);
+    OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path);
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
     /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
 

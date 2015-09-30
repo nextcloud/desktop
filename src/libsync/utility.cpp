@@ -180,29 +180,26 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName,
     setLaunchOnStartup_private(appName, guiName, enable);
 }
 
-qint64 Utility::freeDiskSpace(const QString &path, bool *ok)
+qint64 Utility::freeDiskSpace(const QString &path)
 {
 #if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
-    Q_UNUSED(ok)
     struct statvfs stat;
-    statvfs(path.toUtf8().data(), &stat);
-    return (qint64) stat.f_bavail * stat.f_frsize;
+    if (statvfs(path.toLocal8Bit().data(), &stat) == 0) {
+        return (qint64) stat.f_bavail * stat.f_frsize;
+    }
 #elif defined(Q_OS_UNIX)
-    Q_UNUSED(ok)
     struct statvfs64 stat;
-    statvfs64(path.toUtf8().data(), &stat);
-    return (qint64) stat.f_bavail * stat.f_frsize;
+    if (statvfs64(path.toLocal8Bit().data(), &stat) == 0) {
+        return (qint64) stat.f_bavail * stat.f_frsize;
+    }
 #elif defined(Q_OS_WIN)
     ULARGE_INTEGER freeBytes;
     freeBytes.QuadPart = 0L;
-    if( !GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL ) ) {
-        if (ok) *ok = false;
+    if (GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL )) {
+        return freeBytes.QuadPart;
     }
-    return freeBytes.QuadPart;
-#else
-    if (ok) *ok = false;
-    return 0;
 #endif
+    return -1;
 }
 
 QString Utility::compactFormatDouble(double value, int prec, const QString& unit)
