@@ -84,6 +84,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
     connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
+    connect(_ui->openSyncLog, SIGNAL(clicked()), SLOT(slotOpenSyncLog()));
 
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountAddedOrRemoved()));
@@ -148,6 +149,11 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
+}
+
+void GeneralSettings::slotOpenSyncLog()
+{
+
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()

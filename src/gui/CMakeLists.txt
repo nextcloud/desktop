@@ -21,6 +21,7 @@ set(client_UI
     ignorelisteditor.ui
     networksettings.ui
     protocolwidget.ui
+    synclogdialog.ui
     settingsdialog.ui
     sharedialog.ui
     sslerrordialog.ui
@@ -68,6 +69,7 @@ set(client_SRCS
     authenticationdialog.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
+    synclogdialog.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp

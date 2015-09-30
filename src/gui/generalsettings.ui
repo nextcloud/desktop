@@ -23,14 +23,14 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
-         <string>Launch on System Startup</string>
+         <string>&amp;Launch on System Startup</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="desktopNotificationsCheckBox">
         <property name="text">
-         <string>Show Desktop Notifications</string>
+         <string>Show &amp;Desktop Notifications</string>
         </property>
        </widget>
       </item>
@@ -40,7 +40,7 @@
          <string>For System Tray</string>
         </property>
         <property name="text">
-         <string>Use Monochrome Icons</string>
+         <string>Use &amp;Monochrome Icons</string>
         </property>
        </widget>
       </item>
@@ -53,12 +53,60 @@
       <string>Advanced</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QPushButton" name="ignoredFilesButton">
+          <property name="text">
+           <string>Edit &amp;Ignored Files</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="addAccountButton">
+          <property name="text">
+           <string>&amp;Add an Account</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
       <item row="1" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QCheckBox" name="newFolderLimitCheckBox">
           <property name="text">
-           <string>Ask confirmation before downloading folders larger than</string>
+           <string>Ask &amp;confirmation before downloading folders larger than</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -97,7 +145,7 @@
         </item>
        </layout>
       </item>
-      <item row="2" column="0" colspan="2">
+      <item row="2" column="0">
        <widget class="QCheckBox" name="crashreporterCheckBox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -106,45 +154,21 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Show crash reporter</string>
+         <string>S&amp;how crash reporter</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QPushButton" name="ignoredFilesButton">
+         <widget class="QPushButton" name="openSyncLog">
           <property name="text">
-           <string>Edit Ignored Files</string>
+           <string>&amp;Open Synclog</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QPushButton" name="addAccountButton">
-          <property name="text">
-           <string>Add an Account</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
+         <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -243,6 +267,18 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>autostartCheckBox</tabstop>
+  <tabstop>desktopNotificationsCheckBox</tabstop>
+  <tabstop>monoIconsCheckBox</tabstop>
+  <tabstop>ignoredFilesButton</tabstop>
+  <tabstop>addAccountButton</tabstop>
+  <tabstop>newFolderLimitCheckBox</tabstop>
+  <tabstop>newFolderLimitSpinBox</tabstop>
+  <tabstop>crashreporterCheckBox</tabstop>
+  <tabstop>openSyncLog</tabstop>
+  <tabstop>restartButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
