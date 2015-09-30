@@ -69,6 +69,12 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror, in
         return SyncFileItem::SoftError;
     }
 
+    if (httpCode == 423) {
+        // "Locked"
+        // Should be temporary.
+        return SyncFileItem::SoftError;
+    }
+
     return SyncFileItem::NormalError;
 }
 
