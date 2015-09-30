@@ -57,7 +57,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     if (_item->_httpErrorCode == 405) {
         // This happens when the directory already exist. Nothing to do.
     } else if (err != QNetworkReply::NoError) {
-        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
+                                                    &_propagator->_anotherSyncNeeded);
         auto errorString = _job->reply()->errorString();
         if (_job->reply()->hasRawHeader("OC-ErrorString")) {
             errorString = _job->reply()->rawHeader("OC-ErrorString");

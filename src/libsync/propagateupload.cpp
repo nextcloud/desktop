@@ -582,7 +582,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
             _propagator->_anotherSyncNeeded = true;
         }
 
-        abortWithError(classifyError(err, _item->_httpErrorCode), errorString);
+        SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
+                                                    &_propagator->_anotherSyncNeeded);
+        abortWithError(status, errorString);
         return;
     }
 
