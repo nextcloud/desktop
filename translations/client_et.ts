@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="227"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Sihtkausta fail on ootamatu suuruse või muutmise ajaga</translation>
     </message>
 </context>
 <context>
