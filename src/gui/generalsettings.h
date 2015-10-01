@@ -19,6 +19,8 @@
 
 namespace OCC {
 class IgnoreListEditor;
+class SyncLogDialog;
+class ProtocolWidget;
 
 namespace Ui {
 class GeneralSettings;
@@ -53,6 +55,8 @@ private:
 
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
+    QPointer<SyncLogDialog> _syncLogDialog;
+    ProtocolWidget *_protocolWidget;
 };
 
 

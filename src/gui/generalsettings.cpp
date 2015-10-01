@@ -21,6 +21,8 @@
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
+#include "synclogdialog.h"
+#include "protocolwidget.h"
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
@@ -68,6 +70,8 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
+
+    _protocolWidget = new ProtocolWidget;
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
@@ -153,7 +157,13 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 
 void GeneralSettings::slotOpenSyncLog()
 {
-
+    if (_syncLogDialog.isNull()) {
+        _syncLogDialog = new SyncLogDialog(this, _protocolWidget);
+        _syncLogDialog->setAttribute( Qt::WA_DeleteOnClose, true );
+        _syncLogDialog->open();
+    } else {
+        ownCloudGui::raiseDialog(_syncLogDialog);
+    }
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()
