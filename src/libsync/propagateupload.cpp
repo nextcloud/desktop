@@ -213,6 +213,18 @@ void PropagateUploadFileQNAM::start()
     // in any case, the validator will emit signal startUpload to let the flow
     // continue in slotStartUpload here.
     TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
+
+    // If the config file does not specify a checksum type but the
+    // server supports it choose a type based on that.
+    if (validator->checksumType().isEmpty()) {
+        QStringList checksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
+        if (!checksumTypes.isEmpty()) {
+            // TODO: We might want to prefer some types over others instead
+            // of choosing the first.
+            validator->setChecksumType(checksumTypes.first());
+        }
+    }
+
     connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(slotStartUpload(QByteArray)));
     validator->uploadValidation();
 }

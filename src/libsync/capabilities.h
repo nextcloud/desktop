@@ -34,6 +34,7 @@ public:
     bool publicLinkEnforcePassword() const;
     bool publicLinkEnforceExpireDate() const;
     int  publicLinkExpireDateDays() const;
+    QStringList supportedChecksumTypes() const;
 
 private:
     QVariantMap _capabilities;

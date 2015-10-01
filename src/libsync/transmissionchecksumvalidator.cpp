@@ -17,32 +17,29 @@
 #include "syncfileitem.h"
 #include "propagatorjobs.h"
 #include "configfile.h"
+#include "account.h"
 
 #include <qtconcurrentrun.h>
 
 namespace OCC {
 
 TransmissionChecksumValidator::TransmissionChecksumValidator(const QString& filePath, QObject *parent)
-  :QObject(parent),
+  : QObject(parent),
     _filePath(filePath)
 {
-
+    // If the config file specifies a checksum type, use that.
+    ConfigFile cfg;
+    _checksumType = cfg.transmissionChecksum();
 }
 
-void TransmissionChecksumValidator::setChecksumType( const QByteArray& type )
+void TransmissionChecksumValidator::setChecksumType(const QString& type)
 {
     _checksumType = type;
 }
 
 QString TransmissionChecksumValidator::checksumType() const
 {
-    QString checksumType = _checksumType;
-    if( checksumType.isEmpty() ) {
-        ConfigFile cfg;
-        checksumType = cfg.transmissionChecksum();
-    }
-
-    return checksumType;
+    return _checksumType;
 }
 
 void TransmissionChecksumValidator::uploadValidation()

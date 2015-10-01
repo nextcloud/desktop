@@ -38,4 +38,9 @@ int Capabilities::publicLinkExpireDateDays() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
 }
 
+QStringList Capabilities::supportedChecksumTypes() const
+{
+    return QStringList();
+}
+
 }

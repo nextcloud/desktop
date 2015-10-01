@@ -15,6 +15,7 @@
 #pragma once
 
 #include "owncloudlib.h"
+#include "accountfwd.h"
 
 #include <QObject>
 #include <QByteArray>
@@ -53,9 +54,12 @@ public:
      */
     void downloadValidation( const QByteArray& checksumHeader );
 
-    // This is only used in test cases (by now). This class reads the required
-    // test case from the config file.
-    void setChecksumType(const QByteArray &type );
+    /**
+     * By default the checksum type is read from the config file, but can be overridden
+     * with this method.
+     */
+    void setChecksumType(const QString& type);
+
     QString checksumType() const;
 
 signals:
@@ -67,7 +71,7 @@ private slots:
     void slotDownloadChecksumCalculated();
 
 private:
-    QByteArray    _checksumType;
+    QString       _checksumType;
     QByteArray    _expectedHash;
     QByteArray    _checksumHeader;
 
