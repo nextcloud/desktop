@@ -37,6 +37,17 @@ typedef struct ne_prop_result_set_s ne_prop_result_set;
 
 namespace OCC {
 
+/** Free disk space threshold below which syncs will abort and not even start.
+ */
+qint64 criticalFreeSpaceLimit();
+
+/** The client will not intentionally reduce the available free disk space below
+ *  this limit.
+ *
+ * Uploads will still run and downloads that are small enough will continue too.
+ */
+qint64 freeSpaceLimit();
+
 class SyncJournalDb;
 class OwncloudPropagator;
 
@@ -77,6 +88,13 @@ public:
     };
 
     virtual JobParallelism parallelism() { return FullParallelism; }
+
+    /** The space that the running jobs need to complete but don't actually use yet.
+     *
+     * Note that this does *not* include the disk space that's already
+     * in use by running jobs for things like a download-in-progress.
+     */
+    virtual qint64 committedDiskSpace() const { return 0; }
 
 public slots:
     virtual void abort() {}
@@ -203,6 +221,8 @@ public:
 
     void finalize();
 
+    qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
+
 private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
@@ -321,6 +341,17 @@ public:
 
     AccountPtr account() const;
 
+    enum DiskSpaceResult
+    {
+        DiskSpaceOk,
+        DiskSpaceFailure,
+        DiskSpaceCritical
+    };
+
+    /** Checks whether there's enough disk space available to complete
+     *  all jobs that are currently running.
+     */
+    DiskSpaceResult diskSpaceCheck() const;
 
 private slots:
 

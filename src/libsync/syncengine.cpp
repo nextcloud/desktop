@@ -54,18 +54,6 @@ extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 namespace OCC {
 
-/* The minimum amount of space required to start a sync run */
-static qint64 minFreeSpace()
-{
-    static bool ok = false;
-    static qint64 freeSpace = qgetenv("OWNCLOUD_MIN_FREE_SPACE").toLongLong(&ok);
-    if (ok) {
-        return freeSpace;
-    }
-
-    return 250 * 1000 * 1000LL;
-}
-
 bool SyncEngine::_syncRunning = false;
 
 SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
@@ -612,7 +600,7 @@ void SyncEngine::startSync()
     }
 
     // Check free size on disk first.
-    const qint64 minFree = minFreeSpace();
+    const qint64 minFree = criticalFreeSpaceLimit();
     const qint64 freeBytes = Utility::freeDiskSpace(_localPath);
     if (freeBytes >= 0) {
         qDebug() << "There are" << freeBytes << "bytes available at" << _localPath

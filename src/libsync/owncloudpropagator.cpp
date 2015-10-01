@@ -45,6 +45,32 @@
 
 namespace OCC {
 
+qint64 criticalFreeSpaceLimit()
+{
+    qint64 value = 50 * 1000 * 1000LL;
+
+    static bool hasEnv = false;
+    static qint64 env = qgetenv("OWNCLOUD_CRITICAL_FREE_SPACE").toLongLong(&hasEnv);
+    if (hasEnv) {
+        value = env;
+    }
+
+    return qBound(0LL, value, freeSpaceLimit());
+}
+
+qint64 freeSpaceLimit()
+{
+    qint64 value = 250 * 1000 * 1000LL;
+
+    static bool hasEnv = false;
+    static qint64 env = qgetenv("OWNCLOUD_FREE_SPACE").toLongLong(&hasEnv);
+    if (hasEnv) {
+        value = env;
+    }
+
+    return value;
+}
+
 OwncloudPropagator::~OwncloudPropagator()
 {}
 
@@ -532,6 +558,24 @@ AccountPtr OwncloudPropagator::account() const
     return _account;
 }
 
+OwncloudPropagator::DiskSpaceResult OwncloudPropagator::diskSpaceCheck() const
+{
+    const qint64 freeBytes = Utility::freeDiskSpace(_localDir);
+    if (freeBytes < 0) {
+        return DiskSpaceOk;
+    }
+
+    if (freeBytes < criticalFreeSpaceLimit()) {
+        return DiskSpaceCritical;
+    }
+
+    if (freeBytes - _rootJob->committedDiskSpace() < freeSpaceLimit()) {
+        return DiskSpaceFailure;
+    }
+
+    return DiskSpaceOk;
+}
+
 // ================================================================================
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
@@ -658,6 +702,15 @@ void PropagateDirectory::finalize()
     _state = Finished;
     emit itemCompleted(*_item, *this);
     emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+}
+
+qint64 PropagateDirectory::committedDiskSpace() const
+{
+    qint64 needed = 0;
+    foreach (PropagatorJob* job, _subJobs) {
+        needed += job->committedDiskSpace();
+    }
+    return needed;
 }
 
 CleanupPollsJob::~CleanupPollsJob()

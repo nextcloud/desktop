@@ -346,6 +346,30 @@ void PropagateDownloadFileQNAM::start()
 
     FileSystem::setFileHidden(_tmpFile.fileName(), true);
 
+    _resumeStart = _tmpFile.size();
+    if (_resumeStart > 0) {
+        if (_resumeStart == _item->_size) {
+            qDebug() << "File is already complete, no need to download";
+            _tmpFile.close();
+            downloadFinished();
+            return;
+        }
+    }
+
+    // If there's not enough space to fully download this file, stop.
+    const auto diskSpaceResult = _propagator->diskSpaceCheck();
+    if (diskSpaceResult == OwncloudPropagator::DiskSpaceFailure) {
+        done(SyncFileItem::NormalError,
+             tr("The download would reduce free disk space below %1").arg(
+                 Utility::octetsToString(freeSpaceLimit())));
+        return;
+    } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
+        done(SyncFileItem::FatalError,
+             tr("Free space on disk is less than %1").arg(
+                 Utility::octetsToString(criticalFreeSpaceLimit())));
+        return;
+    }
+
     {
         SyncJournalDb::DownloadInfo pi;
         pi._etag = _item->_etag;
@@ -355,24 +379,13 @@ void PropagateDownloadFileQNAM::start()
         _propagator->_journal->commit("download file start");
     }
 
-
     QMap<QByteArray, QByteArray> headers;
-
-    quint64 startSize = _tmpFile.size();
-    if (startSize > 0) {
-        if (startSize == _item->_size) {
-            qDebug() << "File is already complete, no need to download";
-            _tmpFile.close();
-            downloadFinished();
-            return;
-        }
-    }
 
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(_propagator->account(),
                             _propagator->_remoteFolder + _item->_file,
-                            &_tmpFile, headers, expectedEtagForResume, startSize);
+                            &_tmpFile, headers, expectedEtagForResume, _resumeStart);
     } else {
         // We were provided a direct URL, use that one
         qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item->_file << _item->_directDownloadUrl;
@@ -384,13 +397,21 @@ void PropagateDownloadFileQNAM::start()
         QUrl url = QUrl::fromUserInput(_item->_directDownloadUrl);
         _job = new GETFileJob(_propagator->account(),
                               url,
-                              &_tmpFile, headers, expectedEtagForResume, startSize);
+                              &_tmpFile, headers, expectedEtagForResume, _resumeStart);
     }
     _job->setBandwidthManager(&_propagator->_bandwidthManager);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
     _propagator->_activeJobs ++;
     _job->start();
+}
+
+qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
+{
+    if (_state == Running) {
+        return qBound(0ULL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
+    }
+    return 0;
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
@@ -684,7 +705,8 @@ void PropagateDownloadFileQNAM::downloadFinished()
 void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
 {
     if (!_job) return;
-    emit progress(*_item, received + _job->resumeStart());
+    _downloadProgress = received;
+    emit progress(*_item, _resumeStart + received);
 }
 
 

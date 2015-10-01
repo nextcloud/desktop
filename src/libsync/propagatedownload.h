@@ -110,8 +110,9 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item) {}
+        : PropagateItemJob(propagator, item), _resumeStart(0), _downloadProgress(0) {}
     void start() Q_DECL_OVERRIDE;
+    qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
 private slots:
     void slotGetFinished();
@@ -121,6 +122,8 @@ private slots:
     void slotChecksumFail( const QString& errMsg );
 
 private:
+    quint64 _resumeStart;
+    qint64 _downloadProgress;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
 };
