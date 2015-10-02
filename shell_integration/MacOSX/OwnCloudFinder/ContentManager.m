@@ -179,8 +179,8 @@ static OwnCloudFinderContentManager* sharedInstance = nil;
 {
 	//NSLog(@"%@", NSStringFromSelector(_cmd));
 
-	// We won't request the new state if if finds the path in _fileNamesCache
-	// Move all entries to _oldFileNamesCache so that the get re-requested, but
+	// We won't request the new state if it finds the path in _fileNamesCache
+	// Move all entries to _oldFileNamesCache so that they get re-requested, but
 	// still available while we refill the cache
 	[_oldFileNamesCache addEntriesFromDictionary:_fileNamesCache];
 	[_fileNamesCache removeAllObjects];

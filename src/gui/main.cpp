@@ -89,6 +89,7 @@ int main(int argc, char **argv)
     if(app.isRunning()) {
         qDebug() << Q_FUNC_INFO << "Already running, exiting...";
         if (app.isSessionRestored()) {
+            // This call is mirrored with the one in Application::slotParseMessage
             qDebug() << "Session was restored, don't notify app!";
             return -1;
         }
@@ -99,8 +100,9 @@ int main(int argc, char **argv)
             if(!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
         }
-        if(!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS")))
+        if(!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
             return -1;
+        }
         return 0;
     } else {
         if (!QSystemTrayIcon::isSystemTrayAvailable()) {

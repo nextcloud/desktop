@@ -11,7 +11,7 @@ Test Plan
 
 => Start oCC and configure to 
   - oC setup start
-    = Popup "No ownCloud connection was confgured yet." appears.
+    = Popup "No ownCloud connection was configured yet." appears.
 
   - Setup with correct values:
     - oC where local folder $HOME/ownCloud does not exist
@@ -21,7 +21,7 @@ Test Plan
     - oC where remote folder clientsync does not exist
       = oC set up, but no initial sync folder created
 
-    - oC where remote folder clientsync not exists
+    - oC where remote folder clientsync does not exist
       = oC set up with initial sync folder ~/ownCloud => oC//clientsync
 
   - Setup with wrong url
@@ -72,12 +72,12 @@ Test Plan
    - provide good password:
      = oC works and never asks again
    - provide wrong password:
-     = oC tells that username or passwd is wrong.
+     = oC tells that username or password is wrong.
 
 4.2 Do store password
   - Start to configure oC. Checkmark the "Do not store password.." checkbox.
    = The password entry field is enabled and takes a passwd
    = No dialog pops up to ask for the passwd
-   = in oC config file the password appears and the nostorepasswd param is false.
+   = in oC config file the password appears and the nostoredpasswd param is false.
   - Restart oC.
    = Sync starts, no ask for password.

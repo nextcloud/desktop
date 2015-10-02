@@ -103,24 +103,26 @@ void Utility::setupFavLink(const QString &folder)
 
 QString Utility::octetsToString( qint64 octets )
 {
-    static const qint64 kb = 1000;
-    static const qint64 mb = 1000 * kb;
-    static const qint64 gb = 1000 * mb;
-    static const qint64 tb = 1000 * gb;
+#define THE_FACTOR 1024
+    static const qint64 kb = THE_FACTOR;
+    static const qint64 mb = THE_FACTOR * kb;
+    static const qint64 gb = THE_FACTOR * mb;
 
     QString s;
     qreal value = octets;
-    if (octets >= tb) {
-        s = QCoreApplication::translate("Utility", "%L1 TB");
-        value /= tb;
-    } else if (octets >= gb) {
+
+    // do not display terra byte with the current units, as when
+    // the MB, GB and KB units were made, there was no TB,
+    // see the JEDEC standard
+    // https://en.wikipedia.org/wiki/JEDEC_memory_standards
+    if (octets >= gb) {
         s = QCoreApplication::translate("Utility", "%L1 GB");
         value /= gb;
     } else if (octets >= mb) {
         s = QCoreApplication::translate("Utility", "%L1 MB");
         value /= mb;
     } else if (octets >= kb) {
-        s = QCoreApplication::translate("Utility", "%L1 kB");
+        s = QCoreApplication::translate("Utility", "%L1 KB");
         value /= kb;
     } else  {
         s = QCoreApplication::translate("Utility", "%L1 B");

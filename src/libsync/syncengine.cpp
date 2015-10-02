@@ -414,6 +414,10 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_status = SyncFileItem::SoftError;
         _temporarilyUnavailablePaths.insert(item->_file);
         break;
+    case CSYNC_STATUS_PERMISSION_DENIED:
+        item->_errorString = QLatin1String("Directory not accessible on client, permission denied.");
+        item->_status = SyncFileItem::SoftError;
+        break;
     default:
         Q_ASSERT("Non handled error-status");
         /* No error string */
@@ -990,7 +994,7 @@ void SyncEngine::checkForPermission()
                     qDebug() << "checkForPermission: ERROR" << (*it)->_file;
                     (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                     (*it)->_status = SyncFileItem::NormalError;
-                    (*it)->_errorString = tr("Not allowed because you don't have permission to add subfolders that folder");
+                    (*it)->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
 
                     for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
                         it = it_next;

@@ -157,13 +157,18 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         # internal or external file?!
         syncedFile = False
         for reg_path in socketConnect.registered_paths:
+            topLevelFolder=False
             filename = get_local_path(file.get_uri())
             #check if its a folder (ends with an /), if yes add a "/" otherwise it will not find the entry in the table
             if os.path.isdir(filename+"/"):
                 filename=filename+"/"
+                #check if toplevel folder, we need to ignore those as they cannot be shared
+                if filename.count("/") < (reg_path.count("/")+2):
+                    topLevelFolder=True                
             # only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
-            if filename.startswith(reg_path) and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
+            # ignore top level folders
+            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
                 syncedFile = True
 
         # if it is neither in a synced folder or is a directory
@@ -220,7 +225,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             for item in update_items:
                 item.invalidate_extension_info()
 
-    # Handles a single line of server respoonse and sets the emblem
+    # Handles a single line of server response and sets the emblem
     def handle_commands(self, action, args):
         Emblems = { 'OK'        : appname +'_ok',
                     'SYNC'      : appname +'_sync',

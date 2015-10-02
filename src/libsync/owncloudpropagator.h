@@ -189,13 +189,13 @@ public:
 
     SyncFileItemPtr _item;
 
-    int _current; // index of the current running job
-    int _runningNow; // number of subJob running now
+    int _jobsFinished; // number of jobs that have completed
+    int _runningNow; // number of subJobs running right now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _current(-1), _runningNow(0), _hasError(SyncFileItem::NoStatus)
+        , _firstJob(0), _item(item),  _jobsFinished(0), _runningNow(0), _hasError(SyncFileItem::NoStatus)
     { }
 
     virtual ~PropagateDirectory() {
@@ -269,8 +269,8 @@ public:
     ne_session_s * const _session;
 
     const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include remote.php/webdav)
-    const QString _remoteFolder; // folder. (same as remoteDir but without remote.php/webdav)
+    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include WebDAV path)
+    const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
 
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emit once

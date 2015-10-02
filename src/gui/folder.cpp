@@ -693,6 +693,9 @@ void Folder::saveToSettings() const
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
+
+    settings->sync();
+    qDebug() << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
 }
 
 void Folder::removeFromSettings() const
@@ -1118,7 +1121,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
     QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
            "This might be because the folder was silently reconfigured, or that all "
-           "the file were manually removed.\n"
+           "the files were manually removed.\n"
            "Are you sure you want to perform this operation?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
                        msg.arg(alias()));
@@ -1160,7 +1163,21 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     settings.endGroup();
+
+    // Old settings can contain paths with native separators. In the rest of the
+    // code we assum /, so clean it up now.
+    folder->localPath = prepareLocalPath(folder->localPath);
+
     return true;
+}
+
+QString FolderDefinition::prepareLocalPath(const QString& path)
+{
+    QString p = QDir::fromNativeSeparators(path);
+    if (!p.endsWith(QLatin1Char('/'))) {
+        p.append(QLatin1Char('/'));
+    }
+    return p;
 }
 
 } // namespace OCC

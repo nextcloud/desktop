@@ -49,11 +49,7 @@ static OwnCloudFinderRequestManager* sharedInstance = nil;
 
 - (void)dealloc
 {
-	[_syncClientProxy release];
-
 	sharedInstance = nil;
-
-	[super dealloc];
 }
 
 + (OwnCloudFinderRequestManager*)sharedInstance
@@ -136,12 +132,11 @@ static OwnCloudFinderRequestManager* sharedInstance = nil;
 {
 	// NSLog(@"Socket DISconnected! %@", [err localizedDescription]);
 
-	// clear the registered pathes.
-	[_registeredPathes release];
+	// clear the registered paths.
 	_registeredPathes = [[NSMutableDictionary alloc] init];
 	[_requestedPaths removeAllObjects];
 
-    // clear the caches in conent manager
+    // clear the caches in content manager
 	OwnCloudFinderContentManager *contentman = [OwnCloudFinderContentManager sharedInstance];
 	[contentman clearFileNameCache];
 	[contentman repaintAllWindows];

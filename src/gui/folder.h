@@ -73,6 +73,9 @@ public:
     /// Reads a folder definition from a settings group with the name 'alias'.
     static bool load(QSettings& settings, const QString& alias,
                      FolderDefinition* folder);
+
+    /// Ensure / as separator and trailing /.
+    static QString prepareLocalPath(const QString& path);
 };
 
 /**

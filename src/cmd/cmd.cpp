@@ -150,7 +150,7 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
-    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folder (selective sync)" << std::endl;
+    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
@@ -185,15 +185,7 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     }
 
     options->target_url = args.takeLast();
-    // check if the remote.php/webdav tail was added and append if not.
-    if(!options->target_url.endsWith("/")) {
-        options->target_url.append("/");
-    }
-    if( !options->target_url.contains("remote.php/webdav/")) {
-        options->target_url.append("remote.php/webdav/");
-    }
-    if (options->target_url.startsWith("http"))
-        options->target_url.replace(0, 4, "owncloud");
+
     options->source_dir = args.takeLast();
     if (!options->source_dir.endsWith('/')) {
         options->source_dir.append('/');
@@ -280,6 +272,21 @@ int main(int argc, char **argv) {
 
     parseOptions( app.arguments(), &options );
 
+    AccountPtr account = Account::create();
+
+    if( !account ) {
+        qFatal("Could not initialize account!");
+        return EXIT_FAILURE;
+    }
+    // check if the webDAV path was added to the url and append if not.
+    if(!options.target_url.endsWith("/")) {
+        options.target_url.append("/");
+    }
+    if( !options.target_url.contains( account->davPath() )) {
+        options.target_url.append(account->davPath());
+    }
+    if (options.target_url.startsWith("http"))
+        options.target_url.replace(0, 4, "owncloud");
     QUrl url = QUrl::fromUserInput(options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
@@ -330,8 +337,6 @@ int main(int argc, char **argv) {
 
     // take the unmodified url to pass to csync_create()
     QByteArray remUrl = options.target_url.toUtf8();
-
-    AccountPtr account = Account::create();
 
     // Find the folder and the original owncloud url
     QStringList splitted = url.path().split(account->davPath());
@@ -443,7 +448,7 @@ restart_sync:
 
 
     if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
-        // Always make sure at least one list had been loaded
+        // Always make sure at least one list has been loaded
         qFatal("Cannot load system exclude list or list supplied via --exclude");
         return EXIT_FAILURE;
     }

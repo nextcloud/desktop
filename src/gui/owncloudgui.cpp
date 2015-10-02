@@ -317,18 +317,6 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     actionOpenoC->setProperty(propertyAccountC, QVariant::fromValue(accountState->account()));
     QObject::connect(actionOpenoC, SIGNAL(triggered(bool)), SLOT(slotOpenOwnCloud()));
 
-    if (separateMenu) {
-        if (accountState->isSignedOut()) {
-            QAction* signin = menu->addAction(tr("Sign in..."));
-            signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
-            connect(signin, SIGNAL(triggered()), this, SLOT(slotLogin()));
-        } else {
-            QAction* signout = menu->addAction(tr("Sign out"));
-            signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
-            connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
-        }
-    }
-
     FolderMan *folderMan = FolderMan::instance();
     bool firstFolder = true;
     bool singleSyncFolder = folderMan->map().size() == 1 && Theme::instance()->singleSyncFolder();
@@ -355,6 +343,20 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);
     }
+
+     menu->addSeparator();
+     if (separateMenu) {
+         if (accountState->isSignedOut()) {
+             QAction* signin = menu->addAction(tr("Log in..."));
+             signin->setProperty(propertyAccountC, QVariant::fromValue(accountState));
+             connect(signin, SIGNAL(triggered()), this, SLOT(slotLogin()));
+         } else {
+             QAction* signout = menu->addAction(tr("Log out"));
+             signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
+             connect(signout, SIGNAL(triggered()), this, SLOT(slotLogout()));
+         }
+     }
+
 }
 
 void ownCloudGui::setupContextMenu()
@@ -444,17 +446,17 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->addSeparator();
     if (atLeastOneSignedIn) {
         if (accountList.count() > 1) {
-            _actionLogout->setText(tr("Sign out everywhere"));
+            _actionLogout->setText(tr("Log out everywhere"));
         } else {
-            _actionLogout->setText(tr("Sign out"));
+            _actionLogout->setText(tr("Log out"));
         }
         _contextMenu->addAction(_actionLogout);
     }
     if (atLeastOneSignedOut) {
         if (accountList.count() > 1) {
-            _actionLogin->setText(tr("Sign in everywhere..."));
+            _actionLogin->setText(tr("Log in everywhere..."));
         } else {
-            _actionLogin->setText(tr("Sign in..."));
+            _actionLogin->setText(tr("Log in..."));
         }
         _contextMenu->addAction(_actionLogin);
     }
@@ -521,9 +523,9 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-    _actionLogin = new QAction(tr("Sign in..."), this);
+    _actionLogin = new QAction(tr("Log in..."), this);
     connect(_actionLogin, SIGNAL(triggered()), this, SLOT(slotLogin()));
-    _actionLogout = new QAction(tr("Sign out"), this);
+    _actionLogout = new QAction(tr("Log out"), this);
     connect(_actionLogout, SIGNAL(triggered()), this, SLOT(slotLogout()));
 
     if(_app->debugMode()) {
@@ -765,6 +767,10 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         qDebug() << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
     }
+
+    // For https://github.com/owncloud/client/issues/3783
+    _settingsDialog->hide();
+
     const auto accountState = folder->accountState();
 
     qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;

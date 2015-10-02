@@ -453,10 +453,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         // is changed.
         auto account = applyAccountChanges();
 
-        QString localFolder = QDir::fromNativeSeparators(_ocWizard->localFolder());
-        if( !localFolder.endsWith(QLatin1Char('/'))) {
-            localFolder.append(QLatin1Char('/'));
-        }
+        QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {

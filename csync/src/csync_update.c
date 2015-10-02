@@ -630,7 +630,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
-          return 0;
+          if (ctx->current_fs) {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+              ctx->current_fs->error_status = CSYNC_STATUS_PERMISSION_DENIED;
+              /* If a directory has ignored files, put the flag on the parent directory as well */
+              if( previous_fs ) {
+                  previous_fs->has_ignored_files = true;
+              }
+              goto done;
+          }
       } else if(errno == ENOENT) {
           asp = asprintf( &ctx->error_string, "%s", uri);
           if (asp < 0) {
@@ -652,6 +660,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               }
               goto done;
           }
+          /* if current_fs is not defined here, better throw an error */
       } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
       }

@@ -841,9 +841,7 @@ void FolderMan::slotRemoveFolder( Folder *f )
 
     const bool currentlyRunning = (_currentSyncFolder == f);
     if( currentlyRunning ) {
-        // let the folder delete itself when done and
         // abort the sync now
-        connect(f, SIGNAL(syncFinished(SyncResult)), f, SLOT(deleteLater()));
         terminateSyncProcess();
     }
 
@@ -858,7 +856,13 @@ void FolderMan::slotRemoveFolder( Folder *f )
     f->removeFromSettings();
 
     unloadFolder( f);
-    if( !currentlyRunning ) {
+    if( currentlyRunning ) {
+        // We want to schedule the next folder once this is done
+        connect(f, SIGNAL(syncFinished(SyncResult)),
+                SLOT(slotFolderSyncFinished(SyncResult)));
+        // Let the folder delete itself when done.
+        connect(f, SIGNAL(syncFinished(SyncResult)), f, SLOT(deleteLater()));
+    } else {
         delete f;
     }
 }

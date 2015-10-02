@@ -20,7 +20,7 @@ sqlite3 is a runtime requirement. libsmbclient is needed for
 the smb plugin, libssh for the sftp plugin. libneon is required for the 
 ownCloud plugin.
 
-Note that these version numbers are version we know works correctly. If you
+Note that these version numbers are versions we know work correctly. If you
 build and run csync successfully with an older version, please let us know.
 
 
@@ -63,7 +63,7 @@ CMake options using `cmakesetup` (Windows) or `ccmake` (GNU/Linux and MacOS X).
 
 ## Installing
 
-Befor installing you can run the tests if everything is working:
+Before installing you can run the tests if everything is working:
 
     make test
 

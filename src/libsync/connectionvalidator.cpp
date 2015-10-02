@@ -134,7 +134,7 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     if( reply && ! _account->credentials()->stillValid(reply)) {
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     }  else {
-        _errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
+        //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
         _errors.append( reply->errorString() );
     }
     reportResult( StatusNotFound );
@@ -142,7 +142,8 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
 {
-    _errors.append(tr("Unable to connect to %1").arg(url.toString()));
+    Q_UNUSED(url);
+    //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
     _errors.append(tr("timeout"));
     reportResult( Timeout );
 }

@@ -60,7 +60,12 @@ public:
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
-    QString davPath() const { return _davPath; }
+    /**
+     * @brief The possibly themed dav path for the account. It has
+     *        a trailing slash.
+     * @returns the (themeable) dav path for the account.
+     */
+    QString davPath() const;
     void setDavPath(const QString&s) { _davPath = s; }
 
     static AccountPtr create();
@@ -195,7 +200,7 @@ private:
     static QString _configFileName;
     QByteArray _pemCertificate; 
     QString _pemPrivateKey;  
-    QString _davPath; // default "remote.php/webdav/";
+    QString _davPath; // defaults to value from theme, might be overwritten in brandings
     bool _wasMigrated;
     friend class AccountManager;
 };

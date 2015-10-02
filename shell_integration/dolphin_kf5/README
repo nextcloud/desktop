@@ -1,7 +1,7 @@
 
 
 - The patch 0001-KOverlayIconPlugin.patch should be applied to kde-baseapps git repository
-(It should applies to frameworks branch)
+(It should apply to frameworks branch)
 
 - Recompile and install dolphin (frameworks branch)
 

@@ -45,6 +45,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _progressIndi(new QProgressIndicator (this))
 {
     _ui.setupUi(this);
+    _ocWizard = qobject_cast<OwncloudWizard *>(parent);
 
     Theme *theme = Theme::instance();
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
@@ -66,7 +67,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
 
     addCertDial = new AddCertificateDialog(this);
-    _ocWizard = qobject_cast<OwncloudWizard *>(parent);
     connect(_ocWizard,SIGNAL(needCertificate()),this,SLOT(slotAskSSLClientCertificate()));
 }
 
@@ -106,11 +106,17 @@ void OwncloudSetupPage::slotUrlChanged(const QString& url)
     if (url.endsWith("index.php")) {
         newUrl.chop(9);
     }
-    if (url.endsWith("remote.php/webdav")) {
-        newUrl.chop(17);
-    }
-    if (url.endsWith("remote.php/webdav/")) {
-        newUrl.chop(18);
+    if( _ocWizard && _ocWizard->account() ) {
+        QString webDavPath = _ocWizard->account()->davPath();
+        if (url.endsWith(webDavPath)) {
+            newUrl.chop( webDavPath.length() );
+        }
+        if( webDavPath.endsWith(QLatin1Char('/')) ) {
+            webDavPath.chop(1); // cut off the slash
+            if( url.endsWith(webDavPath)) {
+                newUrl.chop(webDavPath.length());
+            }
+        }
     }
     if (newUrl != url) {
         _ui.leUrl->setText(newUrl);
@@ -260,6 +266,7 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
                     slotAskSSLClientCertificate();
                     break;
+                case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
                 default:
                     // No-op.

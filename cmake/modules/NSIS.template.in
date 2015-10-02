@@ -107,7 +107,7 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !define MEMENTO_REGISTRY_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
 
 ;-----------------------------------------------------------------------------
-; Modern User Interface (MUI) defintions and setup.
+; Modern User Interface (MUI) definitions and setup.
 ;-----------------------------------------------------------------------------
 !define MUI_ABORTWARNING
 !define MUI_ICON ${NSI_PATH}\installer.ico
@@ -556,7 +556,7 @@ Section -post
    DetailPrint $UNINSTALLER_REGISTRY_Detail
    SetDetailsPrint listonly
 
-   ;Version numbers used to detect existing installation version for comparisson.
+   ;Version numbers used to detect existing installation version for comparison.
    WriteRegStr HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "" $INSTDIR
    WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMajor" "${VER_MAJOR}"
    WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMinor" "${VER_MINOR}"

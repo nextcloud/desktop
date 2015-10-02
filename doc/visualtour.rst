@@ -31,7 +31,7 @@ provides the following menu:
   since the last restart of ownCloud Client.
 * ``Settings...``: provides access to the settings menu.
 * ``Help``: Opens a browser to display this help.
-* ``Sign out``: Signs the client of of the server.
+* ``Log out``: Logs the client out of the server.
 * ``Quit ownCloud``: Quits ownCloud Client, ending a currently running
   sync run.
 

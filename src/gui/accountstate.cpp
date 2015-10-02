@@ -286,10 +286,15 @@ QString AccountState::shortDisplayNameForSettings(int width) const
 {
     QString user = account()->credentials()->user();
     QString host = account()->url().host();
+    int port = account()->url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        host.append(QLatin1Char(':'));
+        host.append(QString::number(port));
+    }
     if (width > 0) {
         QFont f;
         QFontMetrics fm(f);
-        host = fm.elidedText(host, Qt::ElideRight, width);
+        host = fm.elidedText(host, Qt::ElideMiddle, width);
         user = fm.elidedText(user, Qt::ElideRight, width);
     }
     return user + QLatin1String("\n") + host;

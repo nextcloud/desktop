@@ -394,7 +394,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)
 {
     bool re = false;
-    if( _remoteDir.contains("remote.php/webdav/Shared") ) {
+    if( _remoteDir.contains( _account->davPath() + QLatin1String("Shared") ) ) {
         // The Shared directory is synced as its own sync connection
         re = true;
     } else {
@@ -663,17 +663,16 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
         _hasError = status;
     }
     _runningNow--;
+    _jobsFinished++;
 
-    int total = _subJobs.count();
-    if (!_firstJob) {
-        total--;
+    int totalJobs = _subJobs.count();
+    if (_firstJob) {
+        totalJobs++;
     }
-
-    _current++;
 
     // We finished to processing all the jobs
     // check if we finished
-    if (_current >= total) {
+    if (_jobsFinished >= totalJobs) {
         Q_ASSERT(!_runningNow); // how can we finished if there are still jobs running now
         finalize();
     } else {

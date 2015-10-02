@@ -300,7 +300,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         }
 
     } else {
-        // Remove /remote.php/webdav/folder/ from /remote.php/webdav/folder/subfile.txt
+        // Remove <webDAV-Url>/folder/ from <webDAV-Url>/folder/subfile.txt
         file.remove(0, _lsColJob->reply()->request().url().path().length());
         // remove trailing slash
         while (file.endsWith('/')) {

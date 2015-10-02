@@ -72,7 +72,7 @@
 	_remoteEnd = (NSDistantObject <ChannelProtocol> *)tx;
 	[_remoteEnd setProtocolForProxy:@protocol(ChannelProtocol)];
 
-	// Everything is set up, start querrying
+	// Everything is set up, start querying
 	[self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
 }
 

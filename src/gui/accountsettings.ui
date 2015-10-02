@@ -89,7 +89,7 @@
          <string>Remove the account configuration from the client</string>
         </property>
         <property name="text">
-         <string>Delete</string>
+         <string>Remove Account</string>
         </property>
        </widget>
       </item>

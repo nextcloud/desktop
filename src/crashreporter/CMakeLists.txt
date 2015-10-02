@@ -58,7 +58,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
     if(BUILD_OWNCLOUD_OSX_BUNDLE)
        get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
        install(CODE "
-        message(STATUS \"Deploying (Qt) dependencies and fixing library pathes...\")
+        message(STATUS \"Deploying (Qt) dependencies and fixing library paths...\")
         execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE} ${QT_QMAKE_EXECUTABLE})
         " COMPONENT RUNTIME)
     endif()

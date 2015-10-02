@@ -9,7 +9,7 @@ StrCpy $PageReinstall_NEW_Field_3 "อย่าถอนการติดตั
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE "ติดตั้งแล้ว"
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_SUBTITLE "เลือกวิธีที่คุณต้องการติดตั้ง ${APPLICATION_NAME}"
 StrCpy $PageReinstall_OLD_Field_1 "รุ่นใหม่ของ ${APPLICATION_NAME} ถูกติดตั้งแล้ว! เราไม่แนะนำให้คุณติดตั้งรุ่นเก่า ถ้าคุณอยากจะติดตั้งรุ่นเก่าก็สามารถสอนการติดตั้งได้"
-StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} ได้ถูกติดตั้งแล้ว เลือกการดำเนินการที่คุณต้องการที่จะดำเนินการและคลิกถัดไปเพื่อดำเนินการต่อ"
+StrCpy $PageReinstall_SAME_Field_1 "${APPLICATION_NAME} ${VERSION} ถูกติดตั้งไปแล้ว$ $\nเลือกดำเนินงานที่คุณต้องการและคลิกถัดไปเพื่อดำเนินการต่อ"
 StrCpy $PageReinstall_SAME_Field_2 "ส่วนประกอบ เพิ่ม/ติดตั้งใหม่ "
 StrCpy $PageReinstall_SAME_Field_3 "ถอนการติดตั้ง ${APPLICATION_NAME}"
 StrCpy $UNINSTALLER_APPDATA_TITLE "ถอนการติดตั้ง ${APPLICATION_NAME}"

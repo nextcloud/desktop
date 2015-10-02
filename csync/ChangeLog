@@ -21,9 +21,9 @@ version 0.91.3  (released 2013-12-11, ownCloud Client 1.5.0rc1)
 version 0.91.2 (released 2013-12-10, ownCloud Client 1.5.0beta3)
  * have translatable error message for indiv. file errors.
  * Use uint64_t for inode on win32 to fix a type glitch.
- * Add test that directrories are properly moved.
+ * Add test that directories are properly moved.
  * Handle symlinks correctly.
- * Do not longer recurse into ignored directories in update 
+ * No longer recurse into ignored directories in update 
    phase.
  * Added proper symlink detection for win32 platform.
 
@@ -77,7 +77,7 @@ version 0.90.0  (released 2013-09-04, ownCloud Client 1.4.0)
   * Added c_rename function to csync std.
   * Fix: Do renames of files before any puts.
   * Improved database integrity checks.
-  * Improvements of database writing efficiendy.
+  * Improvements of database writing efficiency.
   * Fix: stat file on win32 even if its opened by application.
   * httpbf: configurable block size and threshold.
   * Many fixes found by a Coverity check.
@@ -159,7 +159,7 @@ version 0.70.0 and 0.70.1 were beta versions.
 
 version 0.60.2  (released 2012-11-26)
   * Migration to cross platform testing system cmocka.
-  * Fixed variuos minor things incl. potential mem leaks.
+  * Fixed various minor things incl. potential mem leaks.
   * Clang fixes.
   * Moved journal database to sync directory.
   * Fixed more csync->ocsync renaming issues.
@@ -247,7 +247,7 @@ version 0.50.0 (released 2013-08-01)
   * Added new logging framework (removed log4c dependency).
   * Added new config parser (removed iniparser dependency).
   * Added cmocka tests.
-  * Added a way to exported file_tree_walk functions.
+  * Added a way to export file_tree_walk functions.
   * Added capabilities for modules.
   * Added possiblity to push information to the modules.
   * Added iconv support to support various char sets.

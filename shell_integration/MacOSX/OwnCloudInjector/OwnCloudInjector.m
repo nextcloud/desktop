@@ -11,7 +11,7 @@
 
 EXPORT OSErr HandleLoadEvent(const AppleEvent* ev, AppleEvent* reply, long refcon);
 
-static NSString* globalLock = @"I'm the global lock to prevent concruent handler executions";
+static NSString* globalLock = @"I'm the global lock to prevent concurrent handler executions";
 
 // SIMBL-compatible interface
 @interface OwnCloudShell : NSObject { }

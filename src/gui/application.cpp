@@ -71,6 +71,12 @@ static const char optionsC[] =
 
 QString applicationTrPath()
 {
+    QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
+    if (QDir(devTrPath).exists()) {
+        // might miss Qt, QtKeyChain, etc.
+        qDebug() << "Running from build location! Translations may be incomplete!";
+        return devTrPath;
+    }
 #if defined(Q_OS_WIN)
    return QApplication::applicationDirPath();
 #elif defined(Q_OS_MAC)
@@ -95,6 +101,8 @@ Application::Application(int &argc, char **argv) :
     _userTriggeredConnect(false),
     _debugMode(false)
 {
+    _startedAt.start();
+
 // TODO: Can't set this without breaking current config pathes
 //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
@@ -180,6 +188,12 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application()
 {
+    // Make sure all folders are gone, otherwise removing the
+    // accounts will remove the associated folders from the settings.
+    if (_folderManager) {
+        _folderManager->unloadAndDeleteAllFolders();
+    }
+
     // Remove the account from the account manager so it can be deleted.
     AccountManager::instance()->shutdown();
 }
@@ -291,6 +305,12 @@ void Application::slotParseMessage(const QString &msg, QObject*)
         parseOptions(options);
         setupLogging();
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
+        qDebug() << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
+        if (isSessionRestored() && _startedAt.elapsed() < 10*1000) {
+            // This call is mirrored with the one in int main()
+            qWarning() << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
+            return;
+        }
         showSettingsDialog();
     }
 }

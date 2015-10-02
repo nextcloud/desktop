@@ -19,6 +19,7 @@
 #include <QPointer>
 #include <QQueue>
 #include <QTimer>
+#include <QElapsedTimer>
 
 #include "qtsingleapplication.h"
 
@@ -96,6 +97,8 @@ private:
 
     bool _helpOnly;
     bool _versionOnly;
+
+    QElapsedTimer _startedAt;
 
     // options from command line:
     bool _showLogWindow;

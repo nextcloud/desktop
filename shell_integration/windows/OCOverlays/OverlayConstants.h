@@ -24,7 +24,7 @@
 
 #define OVERLAY_GENERIC_NAME        L"OC Overlay Handler"
 
-// two spaces to put us a head of the competition :/
+// two spaces to put us ahead of the competition :/
 #define OVERLAY_NAME_ERROR			L"  OCError"
 #define OVERLAY_NAME_ERROR_SHARED	L"  OCErrorShared"
 #define OVERLAY_NAME_OK				L"  OCOK"

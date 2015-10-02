@@ -160,7 +160,7 @@ private:
 /**
  *  @brief Updater that only implements notification for use in settings
  *
- *  The implementation does how show popups
+ *  The implementation does not show popups
  *
  *  @ingroup gui
  */

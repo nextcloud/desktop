@@ -74,6 +74,12 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   }
 
   if (!dirname || handle->hFind == INVALID_HANDLE_VALUE) {
+      int retcode = GetLastError();
+      if( retcode == ERROR_FILE_NOT_FOUND ) {
+          errno = ENOENT;
+      } else {
+          errno = EACCES;
+      }
       SAFE_FREE(handle);
       return NULL;
   }
@@ -99,6 +105,9 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   // FindClose returns non-zero on success
   if( FindClose(handle->hFind) != 0 ) {
       rc = 0;
+  } else {
+      // error case, set errno
+      errno = EBADF;
   }
 
   SAFE_FREE(handle->path);
@@ -117,7 +126,8 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   errno = 0;
   file_stat = csync_vio_file_stat_new();
   if (file_stat == NULL) {
-    goto err;
+      errno = ENOMEM;
+      goto err;
   }
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
@@ -179,7 +189,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
     h = CreateFileW( wuri, 0, FILE_SHARE_READ, NULL, OPEN_EXISTING,
-                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
+                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS+FILE_FLAG_OPEN_REPARSE_POINT, NULL );
     if( h == INVALID_HANDLE_VALUE ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %s", uri );
         errno = GetLastError();
