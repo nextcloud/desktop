@@ -18,6 +18,7 @@
 #include "owncloudlib.h"
 
 #include <QVariantMap>
+#include <QStringList>
 
 namespace OCC {
 
