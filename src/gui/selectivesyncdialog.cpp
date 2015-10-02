@@ -156,7 +156,7 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
     }
 }
 
-void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
+void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
 
@@ -173,6 +173,22 @@ void SelectiveSyncTreeView::slotUpdateDirectories(const QStringList&list)
     pathToRemove.append(_folderPath);
     if (!_folderPath.isEmpty())
         pathToRemove.append('/');
+
+    // Check for excludes.
+    //
+    // We would like to use Folder::isFileExcluded, but the folder doesn't
+    // exist yet. So we just create one temporarily...
+    FolderDefinition def;
+    def.localPath = pathToRemove;
+    def.ignoreHiddenFiles = FolderMan::instance()->ignoreHiddenFiles();
+    Folder f(def);
+    QMutableListIterator<QString> it(list);
+    while (it.hasNext()) {
+        it.next();
+        if (f.isFileExcluded(it.value())) {
+            it.remove();
+        }
+    }
 
     // Since / cannot be in the blacklist, expand it to the actual
     // list of top-level folders as soon as possible.

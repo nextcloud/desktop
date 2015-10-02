@@ -496,21 +496,31 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
         return;
     }
 
-    auto list = list_;
-    list.removeFirst(); // remove the parent item
-
     if (parentInfo->_hasError) {
         beginRemoveRows(idx, 0 ,0);
         parentInfo->_hasError = false;
         endRemoveRows();
     }
 
-    beginInsertRows(idx, 0, list.count() - 1);
+    auto list = list_;
+    list.removeFirst(); // remove the parent item
 
     QUrl url = parentInfo->_folder->remoteUrl();
     QString pathToRemove = url.path();
     if (!pathToRemove.endsWith('/'))
         pathToRemove += '/';
+
+    // Drop the folder base path and check for excludes.
+    QMutableListIterator<QString> it(list);
+    while (it.hasNext()) {
+        it.next();
+        if (parentInfo->_folder->isFileExcluded(it.value())) {
+            it.remove();
+        }
+        it.value().remove(pathToRemove);
+    }
+
+    beginInsertRows(idx, 0, list.count() - 1);
 
     parentInfo->_fetched = true;
     parentInfo->_fetching = false;
@@ -531,7 +541,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
         newInfo._pathIdx << i++;
         auto size = job ? job->_sizes.value(path) : 0;
         newInfo._size = size;
-        path.remove(pathToRemove);
         newInfo._path = path;
         newInfo._name = path.split('/', QString::SkipEmptyParts).last();
 
