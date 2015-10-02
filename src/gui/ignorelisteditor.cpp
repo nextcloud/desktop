@@ -16,6 +16,7 @@
 #include "ignorelisteditor.h"
 #include "folderman.h"
 #include "ui_ignorelisteditor.h"
+#include "excludedfiles.h"
 
 #include <QFile>
 #include <QDir>
@@ -126,6 +127,8 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->slotScheduleSync(folder);
     }
+
+    ExcludedFiles::instance().reloadExcludes();
 }
 
 void IgnoreListEditor::slotAddPattern()

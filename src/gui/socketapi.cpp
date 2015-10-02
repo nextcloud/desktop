@@ -52,30 +52,12 @@
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.0"
 
-extern "C" {
-
-enum csync_exclude_type_e {
-  CSYNC_NOT_EXCLUDED   = 0,
-  CSYNC_FILE_SILENTLY_EXCLUDED,
-  CSYNC_FILE_EXCLUDE_AND_REMOVE,
-  CSYNC_FILE_EXCLUDE_LIST,
-  CSYNC_FILE_EXCLUDE_INVALID_CHAR,
-  CSYNC_FILE_EXCLUDE_LONG_FILENAME,
-  CSYNC_FILE_EXCLUDE_HIDDEN
-};
-typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
-
-CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
-int csync_exclude_load(const char *fname, c_strlist_t **list);
-}
-
 namespace OCC {
 
 #define DEBUG qDebug() << "SocketApi: "
 
 SocketApi::SocketApi(QObject* parent)
     : QObject(parent)
-    , _excludes(0)
 {
     QString socketPath;
 
@@ -141,29 +123,6 @@ SocketApi::~SocketApi()
     // All remaining sockets will be destroyed with _localServer, their parent
     Q_ASSERT(_listeners.isEmpty() || _listeners.first()->parent() == &_localServer);
     _listeners.clear();
-    slotClearExcludesList();
-    c_strlist_destroy(_excludes);
-}
-
-void SocketApi::slotClearExcludesList()
-{
-    c_strlist_clear(_excludes);
-}
-
-void SocketApi::slotReadExcludes()
-{
-    ConfigFile cfgFile;
-    slotClearExcludesList();
-    QString excludeList = cfgFile.excludeFile( ConfigFile::SystemScope );
-    if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added system ignore list to socketapi:" << excludeList.toUtf8();
-        csync_exclude_load(excludeList.toUtf8(), &_excludes);
-    }
-    excludeList = cfgFile.excludeFile( ConfigFile::UserScope );
-    if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
-        csync_exclude_load(excludeList.toUtf8(), &_excludes);
-    }
 }
 
 void SocketApi::slotNewConnection()
@@ -268,7 +227,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
                 f->syncResult().status() == SyncResult::SetupError ) {
 
             broadcastMessage(QLatin1String("STATUS"), f->path() ,
-                             this->fileStatus(f, "", _excludes).toSocketAPIString());
+                             this->fileStatus(f, "").toSocketAPIString());
 
             broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
         } else {
@@ -387,7 +346,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
         statusString = QLatin1String("NOP");
     } else {
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
-        SyncFileStatus fileStatus = this->fileStatus(syncFolder, file, _excludes);
+        SyncFileStatus fileStatus = this->fileStatus(syncFolder, file);
 
         statusString = fileStatus.toSocketAPIString();
     }
@@ -541,7 +500,7 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
 /**
  * Get status about a single file.
  */
-SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileName, c_strlist_t *excludes )
+SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileName)
 {
     QString file = folder->path();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
@@ -581,13 +540,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // Is it excluded?
-    CSYNC_EXCLUDE_TYPE excl = csync_excluded_no_ctx(excludes, fileName.toUtf8(), type);
-    if( folder->ignoreHiddenFiles()
-            && (fi.isHidden()
-                || fi.fileName().startsWith(QLatin1Char('.'))) ) {
-        excl = CSYNC_FILE_EXCLUDE_HIDDEN;
-    }
-    if( excl != CSYNC_NOT_EXCLUDED ) {
+    if( folder->isFileExcluded(file) ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 

@@ -197,6 +197,11 @@ public:
      /// Removes the folder from the account's settings.
      void removeFromSettings() const;
 
+     /**
+      * Returns whether a file inside this folder should be excluded.
+      */
+     bool isFileExcluded(const QString& fullPath) const;
+
 signals:
     void syncStateChange();
     void syncStarted();

@@ -35,6 +35,7 @@
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 #include "updater/ocupdater.h"
+#include "excludedfiles.h"
 
 #include "config.h"
 
@@ -135,6 +136,13 @@ Application::Application(int &argc, char **argv) :
     setupLogging();
     setupTranslations();
 
+    // Setup global excludes
+    ConfigFile cfg;
+    ExcludedFiles& excludes = ExcludedFiles::instance();
+    excludes.addExcludeFilePath( cfg.excludeFile(ConfigFile::SystemScope) );
+    excludes.addExcludeFilePath( cfg.excludeFile(ConfigFile::UserScope) );
+    excludes.reloadExcludes();
+
     _folderManager.reset(new FolderMan);
 
     connect(this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseMessage(QString, QObject*)));
@@ -145,7 +153,6 @@ Application::Application(int &argc, char **argv) :
 
     setQuitOnLastWindowClosed(false);
 
-    ConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect (_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
 

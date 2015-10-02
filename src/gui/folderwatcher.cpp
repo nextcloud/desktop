@@ -32,12 +32,14 @@
 #include "folderwatcher_linux.h"
 #endif
 
+#include "excludedfiles.h"
+#include "folder.h"
 
 namespace OCC {
 
-FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
-    : QObject(parent),
-      _ignoreHidden(true)
+FolderWatcher::FolderWatcher(const QString &root, Folder* folder)
+    : QObject(folder),
+      _folder(folder)
 {
     _d.reset(new FolderWatcherPrivate(this, root));
 
@@ -47,81 +49,17 @@ FolderWatcher::FolderWatcher(const QString &root, QObject *parent)
 FolderWatcher::~FolderWatcher()
 { }
 
-void FolderWatcher::setIgnoreHidden(bool ignore)
-{
-    _ignoreHidden = ignore;
-}
-
-bool FolderWatcher::ignoreHidden()
-{
-    return _ignoreHidden;
-}
-
-void FolderWatcher::addIgnoreListFile( const QString& file )
-{
-    if( file.isEmpty() ) return;
-
-    QFile infile( file );
-    if (!infile.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
-
-    while (!infile.atEnd()) {
-        QString line = QString::fromLocal8Bit( infile.readLine() ).trimmed();
-        if( !(line.startsWith( QLatin1Char('#') ) || line.isEmpty()) ) {
-            _ignores.append(line);
-        }
-    }
-}
-
-QStringList FolderWatcher::ignores() const
-{
-    return _ignores;
-}
-
 bool FolderWatcher::pathIsIgnored( const QString& path )
 {
     if( path.isEmpty() ) return true;
+    if( !_folder ) return false;
 
-    // if events caused by changes to hidden files should be ignored, a QFileInfo
-    // object will tell us if the file is hidden
-    if( _ignoreHidden ) {
-        QFileInfo fInfo(path);
-        if( fInfo.isHidden() ) {
-            qDebug() << "* Discarded as is hidden!" << fInfo.filePath();
-            return true;
-        }
+#ifndef OWNCLOUD_TEST
+    if (_folder->isFileExcluded(path)) {
+        qDebug() << "* Ignoring file" << path;
+        return true;
     }
-
-    // TODO: Best use csync_excluded_no_ctx() here somehow!
-    foreach (QString pattern, _ignores) {
-        // The leading ] is a tag and not part of the pattern.
-        if (pattern.startsWith(']')) {
-            pattern.remove(0, 1);
-        }
-
-        if(pattern.endsWith('/')) {
-            // directory only pattern. But since path components are
-            // checked later, we cut off the trailing dir.
-            pattern.chop(1);
-        }
-
-        QRegExp regexp(pattern);
-        regexp.setPatternSyntax(QRegExp::Wildcard);
-
-        // if the pattern contains / it needs to match the entire path
-        if (pattern.contains('/') && regexp.exactMatch(path)) {
-            qDebug() << "* Discarded by ignore pattern: " << path;
-            return true;
-        }
-
-        QStringList components = path.split('/');
-        foreach (const QString& comp, components) {
-            if(regexp.exactMatch(comp)) {
-                qDebug() << "* Discarded by component ignore pattern " << comp;
-                return true;
-            }
-        }
-    }
+#endif
     return false;
 }
 

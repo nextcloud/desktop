@@ -60,7 +60,6 @@ FolderMan::FolderMan(QObject *parent) :
     _instance = this;
 
     _socketApi = new SocketApi(this);
-    _socketApi->slotReadExcludes();
 
     ConfigFile cfg;
     int polltime = cfg.remotePollInterval();
@@ -149,10 +148,6 @@ void FolderMan::registerFolderMonitor( Folder *folder )
 
     if( !_folderWatchers.contains(folder->alias() ) ) {
         FolderWatcher *fw = new FolderWatcher(folder->path(), folder);
-        ConfigFile cfg;
-        fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::SystemScope) );
-        fw->addIgnoreListFile( cfg.excludeFile(ConfigFile::UserScope) );
-        fw->setIgnoreHidden( folder->ignoreHiddenFiles() );
 
         // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
@@ -696,13 +691,6 @@ void FolderMan::slotStartScheduledFolderSync()
         _currentSyncFolder = f;
 
         f->startSync( QStringList() );
-
-        // reread the excludes of the socket api
-        // FIXME: the excludes need rework.
-        if( _socketApi ) {
-            _socketApi->slotClearExcludesList();
-            _socketApi->slotReadExcludes();
-        }
     }
 }
 

@@ -30,6 +30,7 @@ class QTimer;
 namespace OCC {
 
 class FolderWatcherPrivate;
+class Folder;
 
 /**
  * @brief Montiors a directory recursively for changes
@@ -53,18 +54,8 @@ public:
     /**
      * @param root Path of the root of the folder
      */
-    FolderWatcher(const QString &root, QObject *parent = 0L);
+    FolderWatcher(const QString &root, Folder* folder = 0L);
     virtual ~FolderWatcher();
-
-    /**
-      * Set a file name to load a file with ignore patterns.
-      *
-      * Valid entries do not start with a hash sign (#)
-      * and may contain wildcards
-      */
-    void addIgnoreListFile( const QString& );
-
-    QStringList ignores() const;
 
     /**
      * Not all backends are recursive by default.
@@ -76,10 +67,6 @@ public:
 
     /* Check if the path is ignored. */
     bool pathIsIgnored( const QString& path );
-
-    /* set if the folderwatcher ignores events of hidden files */
-    void setIgnoreHidden(bool ignore);
-    bool ignoreHidden();
 
 signals:
     /** Emitted when one of the watched directories or one
@@ -99,10 +86,9 @@ protected:
 
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
-    QStringList _ignores;
     QTime _timer;
     QSet<QString> _lastPaths;
-    bool  _ignoreHidden;
+    Folder* _folder;
 
     friend class FolderWatcherPrivate;
 };
