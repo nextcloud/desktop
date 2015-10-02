@@ -446,7 +446,7 @@ void ownCloudGui::setupContextMenu()
     _contextMenu->addSeparator();
     if (atLeastOneSignedIn) {
         if (accountList.count() > 1) {
-            _actionLogout->setText(tr("Log out everywhere"));
+            _actionLogout->setText(tr("Log out of all accounts"));
         } else {
             _actionLogout->setText(tr("Log out"));
         }
@@ -454,7 +454,7 @@ void ownCloudGui::setupContextMenu()
     }
     if (atLeastOneSignedOut) {
         if (accountList.count() > 1) {
-            _actionLogin->setText(tr("Log in everywhere..."));
+            _actionLogin->setText(tr("Log in to all accounts..."));
         } else {
             _actionLogin->setText(tr("Log in..."));
         }
