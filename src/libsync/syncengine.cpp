@@ -654,14 +654,6 @@ void SyncEngine::startSync()
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
     bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
-    if (fileRecordCount >= 0 && fileRecordCount < 50 && !usingSelectiveSync) {
-        qDebug() << "===== Activating recursive PROPFIND (currently" << fileRecordCount << "file records)";
-        bool no_recursive_propfind = false;
-        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-    } else {
-        bool no_recursive_propfind = true;
-        csync_set_module_property(_csync_ctx, "no_recursive_propfind", &no_recursive_propfind);
-    }
 
     csync_set_userdata(_csync_ctx, this);
     _account->credentials()->syncContextPreStart(_csync_ctx);
