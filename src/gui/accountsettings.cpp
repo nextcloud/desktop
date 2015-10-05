@@ -515,6 +515,22 @@ void AccountSettings::slotAccountStateChanged(int state)
 void AccountSettings::slotLinkActivated(const QString& link)
 {
     qDebug() << "xxxx " << link;
+    int row = -1;
+
+    const QStringList li = link.split(QLatin1String("?indx="));
+    bool ok;
+    if( li.count() > 1) {
+        row = li.at(1).toInt(&ok);
+    }
+    if( ok && row > -1 ) {
+        QModelIndex indx = _model->index(row, 0);
+        if( indx.isValid() ) {
+            QItemSelection selects(indx, indx);
+            ui->_folderList->setSelectionMode(QAbstractItemView::SingleSelection);
+            ui->_folderList->selectionModel()->setCurrentIndex(indx, QItemSelectionModel::Select);
+            qDebug() << "Setting current index";
+        }
+    }
 }
 
 
@@ -534,37 +550,39 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 
+    QString msg;
+    int cnt = 0;
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
         if (folder->accountState() != _accountState) {
             continue;
         }
 
         auto undecidedList =  folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
+        QString p;
         foreach(const auto &it, undecidedList) {
-            undecidedFolder.append(it);
+            // FIXME: add the folder alias in a hoover hint.
+            // folder->alias() + QLatin1String("/")
+            if( cnt++ ) {
+                msg += QLatin1String(", ");
+            }
+            QString myFolder = (it);
+            if(myFolder.endsWith(QLatin1Char('/'))) myFolder.chop(1);
+            QString modelIndexStr = QString::number(_model->indexForPath(folder, myFolder).row());
+            msg += QString::fromLatin1("<a href=\"%1?indx=%2\">%1?indx=%2</a>").arg(myFolder).arg(modelIndexStr);
         }
     }
 
-    if (undecidedFolder.isEmpty()) {
+    if (msg.isEmpty()) {
         ui->selectiveSyncNotification->setVisible(false);
         ui->selectiveSyncNotification->setText(QString());
     } else {
         ui->selectiveSyncNotification->setVisible(true);
-        QString msg = tr("There are new folders that were not synchronized because they are too big: ");
-
-        int cnt = 0;
-        foreach(auto& folder, undecidedFolder) {
-            if( cnt++ ) {
-                msg += QLatin1String(", ");
-            }
-            QString p = QString::fromLatin1("<a href=\"%1\">%1</a>").arg(folder);
-            msg += p;
-        }
-        ui->selectiveSyncNotification->setText(msg);
+        QString wholeMsg = tr("There are new folders that were not synchronized because they are too big: ") + msg;
+        ui->selectiveSyncNotification->setText(wholeMsg);
         shouldBeVisible = true;
     }
 
-    ui->selectiveSyncApply->setEnabled(_model->isDirty() || !undecidedFolder.isEmpty());
+    ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
     bool wasVisible = !ui->selectiveSyncStatus->isHidden();
     if (wasVisible != shouldBeVisible) {
         QSize hint = ui->selectiveSyncStatus->sizeHint();
