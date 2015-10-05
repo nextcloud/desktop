@@ -25,8 +25,8 @@ namespace OCC {
 
 /**
  * This is a job-like class to check that the server is up and that we are connected.
- * There is two entry point: checkServerAndAuth and checkAuthentication
- * checkAutentication is the quick version that only do the propfind
+ * There are two entry points: checkServerAndAuth and checkAuthentication
+ * checkAuthentication is the quick version that only does the propfind
  * while checkServerAndAuth is doing the 3 calls.
  *
  * We cannot use the capabilites call to test the login and the password because of
@@ -53,7 +53,7 @@ namespace OCC {
         |
         +-> slotAuthFailed --> X
         |
-        +-> slotAuthSuccess --+--> X (depending if comming from checkServerAndAuth or not)
+        +-> slotAuthSuccess --+--> X (depending if coming from checkServerAndAuth or not)
                               |
   +---------------------------+
   |

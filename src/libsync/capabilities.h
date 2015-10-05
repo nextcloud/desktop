@@ -23,7 +23,7 @@
 namespace OCC {
 
 /**
- * @brief The Capabilities class represent the capabilities of an ownCloud
+ * @brief The Capabilities class represents the capabilities of an ownCloud
  * server
  * @ingroup libsync
  */

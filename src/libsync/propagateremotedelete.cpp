@@ -109,7 +109,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     // is ok. This will happen for files that are in the DB but not on
     // the server or the local file system.
     if (httpStatus != 204 && httpStatus != 404) {
-        // Normaly we expect "204 No Content"
+        // Normally we expect "204 No Content"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
         done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 204, but received \"%1 %2\".")

@@ -195,8 +195,8 @@ Theme::Theme() :
 
 }
 
-// if this option return true, the client only supports one folder to sync.
-// The Add-Button is removed accoringly.
+// If this option returns true, the client only supports one folder to sync.
+// The Add-Button is removed accordingly.
 bool Theme::singleSyncFolder() const {
     return false;
 }

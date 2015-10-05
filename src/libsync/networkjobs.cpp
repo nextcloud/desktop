@@ -311,7 +311,7 @@ void LsColJob::start()
 
 // TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
 // would allow us to be more asynchronous in processing while data is coming from the network,
-// not in all in one big blobb at the end.
+// not all in one big blob at the end.
 bool LsColJob::finished()
 {
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
@@ -432,7 +432,7 @@ bool CheckServerJob::finished()
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 
-    // The serverInstalls to /owncloud. Let's try that if the file wasn't found
+    // The server installs to /owncloud. Let's try that if the file wasn't found
     // at the original location
     if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
         _subdirFallback = true;

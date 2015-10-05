@@ -193,7 +193,7 @@ void Logger::enterNextLogFile()
             dir.mkpath(".");
         }
 
-        // Find out what is the file with the highest nymber if any
+        // Find out what is the file with the highest number if any
         QStringList files = dir.entryList(QStringList("owncloud.log.*"),
                                     QDir::Files);
         QRegExp rx("owncloud.log.(\\d+)");

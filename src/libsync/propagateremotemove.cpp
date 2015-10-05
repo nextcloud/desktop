@@ -69,13 +69,13 @@ void PropagateRemoteMove::start()
     QString targetFile(_propagator->getFilePath(_item->_renameTarget));
 
     if (_item->_file == _item->_renameTarget) {
-        // The parents has been renamed already so there is nothing more to do.
+        // The parent has been renamed already so there is nothing more to do.
         finalize();
         return;
     }
     if (_item->_file == QLatin1String("Shared") ) {
         // Before owncloud 7, there was no permissions system. At the time all the shared files were
-        // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happens
+        // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happened
 
         QString versionString = _propagator->account()->serverVersion();
         if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
@@ -138,7 +138,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
     _item->_responseTimeStamp = _job->responseTimestamp();
 
     if (_item->_httpErrorCode != 201 ) {
-        // Normaly we expect "201 Created"
+        // Normally we expect "201 Created"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
         done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")

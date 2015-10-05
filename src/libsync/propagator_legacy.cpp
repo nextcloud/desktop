@@ -204,8 +204,8 @@ void PropagateUploadFileLegacy::start()
         if( state == HBF_SUCCESS ) {
             QByteArray previousEtag;
             if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag") {
-                // We add quotes because the owncloud server always add quotes around the etag, and
-                //  csync_owncloud.c's owncloud_file_id always strip the quotes.
+                // We add quotes because the owncloud server always adds quotes around the etag, and
+                //  csync_owncloud.c's owncloud_file_id always strips the quotes.
                 previousEtag = '"' + _item->_etag + '"';
                 trans->previous_etag = previousEtag.data();
             }
@@ -240,7 +240,7 @@ void PropagateUploadFileLegacy::start()
                     continue;
                 }
 
-                const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+                const QString errMsg = tr("Local file changed during sync, syncing once it arrives completely");
                 done( SyncFileItem::SoftError, errMsg );
             } else if( state == HBF_USER_ABORTED ) {
                 const QString errMsg = tr("Sync was aborted by user.");
@@ -273,7 +273,7 @@ void PropagateUploadFileLegacy::start()
         _propagator->_journal->commit("upload file start");
 
         if (hbf_validate_source_file(trans.data()) == HBF_SOURCE_FILE_CHANGE) {
-            /* Did the source file changed since the upload ?
+            /* Has the source file changed since the upload ?
              *               This is different from the previous check because the previous check happens between
              *               chunks while this one happens when the whole file has been uploaded.
              *
@@ -299,7 +299,7 @@ void PropagateUploadFileLegacy::start()
                 qDebug() << "Remove the invalid file from server:" << rc;
             }
 
-            const QString errMsg = tr("Local file changed during sync, syncing once it arrived completely");
+            const QString errMsg = tr("Local file changed during sync, syncing once it arrives completely");
             done( SyncFileItem::SoftError, errMsg );
             return;
         }
@@ -506,7 +506,7 @@ void PropagateDownloadFileLegacy::install_content_reader( ne_request *req, void 
     if (start != that->_resumeStart) {
         qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << that->_resumeStart;
         if (start == 0) {
-            // device don't support range, just stry again from scratch
+            // device doesn't support range, just try again from scratch
             that->_file->close();
             if (!that->_file->open(QIODevice::WriteOnly)) {
                 that->abortTransfer(req, that->_file->errorString());

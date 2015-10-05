@@ -124,7 +124,7 @@ private slots:
 };
 
 /**
- * @brief This job implements the assynchronous PUT
+ * @brief This job implements the asynchronous PUT
  *
  * If the server replies to a PUT with a OC-Finish-Poll url, we will query this url until the server
  * replies with an etag. https://github.com/owncloud/core/issues/12097
@@ -171,7 +171,7 @@ private:
     /**
      * This is the next chunk that we need to send. Starting from 0 even if _startChunk != 0
      * (In other words,  _startChunk + _currentChunk is really the number of the chunk we need to send next)
-     * (In other words, _currentChunk is the number of chunk that we already sent or start sending)
+     * (In other words, _currentChunk is the number of the chunk that we already sent or started sending)
      */
     int _currentChunk;
     int _chunkCount; /// Total number of chunks for this file

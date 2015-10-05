@@ -81,7 +81,7 @@ protected:
     QByteArray    _responseTimestamp;
     QElapsedTimer _durationTimer;
     quint64       _duration;
-    bool          _timedout;  // set to true when the timeout slot is recieved
+    bool          _timedout;  // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.

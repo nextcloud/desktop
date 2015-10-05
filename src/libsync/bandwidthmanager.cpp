@@ -294,7 +294,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 
     // We want to wait twice as long since we want to give all
     // devices the same quota we used now since we don't want
-    // any upload to timeout
+    // any download to timeout
     _relativeDownloadDelayTimer.setInterval(realWaitTimeMsec);
     _relativeDownloadDelayTimer.start();
 
@@ -339,7 +339,7 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
     _relativeLimitCurrentMeasuredJob->setBandwidthLimited(false);
     _relativeLimitCurrentMeasuredJob->setChoked(false);
 
-    // choke all other UploadDevices
+    // choke all other download jobs
     Q_FOREACH(GETFileJob *gfj, _downloadJobList) {
         if (gfj != _relativeLimitCurrentMeasuredJob) {
             gfj->setBandwidthLimited(true);

@@ -79,7 +79,7 @@ void SyncJournalDb::startTransaction()
         _transaction = 1;
         // qDebug() << "XXX Transaction start!";
     } else {
-        qDebug() << "Database Transaction is running, do not starting another one!";
+        qDebug() << "Database Transaction is running, not starting another one!";
     }
 }
 
@@ -189,7 +189,7 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
 
-    /* Because insert are so slow, e do everything in a transaction, and one need to call commit */
+    /* Because insert is so slow, we do everything in a transaction, and only need one call to commit */
     startTransaction();
 
     SqlQuery createQuery(_db);
@@ -334,7 +334,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     /*
-     * If we are upgrading from a client version older than 1.5 is found,
+     * If we are upgrading from a client version older than 1.5,
      * we cannot read from the database because we need to fetch the files id and etags.
      *
      *  If 1.8.0 caused missing data in the local tree, so we also don't read from DB
@@ -789,7 +789,7 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString>& filepathsToKeep,
         }
     }
 
-    // Incoroporate results back into main DB
+    // Incorporate results back into main DB
     walCheckpoint();
 
     return true;
@@ -1341,8 +1341,8 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QString& path)
 
 void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
 {
-    //Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
-    //get the info from the server
+    // Make sure that on the next sync, fileName is not read from the DB but uses the PROPFIND to
+    // get the info from the server
     // We achieve that by clearing the etag of the parents directory recursively
 
     QMutexLocker locker(&_mutex);
@@ -1352,7 +1352,7 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
     }
 
     SqlQuery query(_db);
-    // This query will match entries for whitch the path is a prefix of fileName
+    // This query will match entries for which the path is a prefix of fileName
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;"); // CSYNC_FTW_TYPE_DIR == 2
     query.bindValue(1, fileName);
     if( !query.exec() ) {

@@ -297,7 +297,7 @@ void HttpCredentials::invalidateToken()
     // clear the session cookie.
     _account->clearCookieJar();
 
-    // let QNAM fogets about the password
+    // let QNAM forget about the password
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     _account->networkAccessManager()->clearAccessCache();
 #else

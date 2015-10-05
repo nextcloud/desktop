@@ -88,7 +88,7 @@ public:
         auto data1 = d1.constData();
         auto data2 = d2.constData();
 
-        // Find the lenght of the largest prefix
+        // Find the length of the largest prefix
         int prefixL = 0;
         auto minSize = std::min(d1.size(), d2.size());
         while (prefixL < minSize && data1[prefixL] == data2[prefixL]) { prefixL++; }
@@ -124,7 +124,7 @@ public:
                 || !_errorString.isEmpty();
     }
 
-    // Variables usefull for everybody
+    // Variables useful for everybody
     QString _file;
     QString _renameTarget;
     Type _type BITFIELD(3);
@@ -137,7 +137,7 @@ public:
     /// without the status being FileIgnored.
     bool                 _hasBlacklistEntry BITFIELD(1);
 
-    // Variables usefull to report to the user
+    // Variables useful to report to the user
     Status               _status BITFIELD(4);
     bool                 _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     bool                 _should_update_metadata BITFIELD(1);
