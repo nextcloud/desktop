@@ -253,7 +253,7 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    // Because clicking on it also changes it, restore it to the previous state in case the user cancel the dialog
+    // Because clicking on it also changes it, restore it to the previous state in case the user cancelled the dialog
     _ui.rSyncEverything->setChecked(_selectiveSyncBlacklist.isEmpty());
 
     AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
@@ -308,3 +308,4 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 }
 
 } // namespace OCC
+

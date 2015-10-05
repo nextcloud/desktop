@@ -33,7 +33,7 @@ QString FolderStatusDelegate::addFolderText()
     return tr("Add Folder Sync Connection");
 }
 
-//alocate each item size in listview.
+// allocate each item size in listview.
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {

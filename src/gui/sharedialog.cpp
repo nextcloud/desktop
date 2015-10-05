@@ -117,7 +117,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     // check if the file is already inside of a synced folder
     if( sharePath.isEmpty() ) {
         // The file is not yet in an ownCloud synced folder. We could automatically
-        // copy it over, but that is skipped as not all questions can be anwered that
+        // copy it over, but that is skipped as not all questions can be answered that
         // are involved in that, see https://github.com/owncloud/client/issues/2732
         //
         // _ui->checkBox_shareLink->setEnabled(false);
@@ -142,7 +142,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     // Parse capabilities
 
-    // If password is enforced make don't allow users to disable it
+    // If password is enforced then don't allow users to disable it
     if (_account->capabilities().publicLinkEnforcePassword()) {
         _ui->checkBox_password->setEnabled(false);
     }
@@ -224,7 +224,7 @@ void ShareDialog::slotPasswordReturnPressed()
 
 void ShareDialog::slotPasswordChanged(const QString& newText)
 {
-    // disable the set-passwort button
+    // disable the set-password button
     _ui->pushButton_setPassword->setEnabled( newText.length() > 0 );
 }
 
@@ -639,7 +639,7 @@ bool ShareDialog::uploadExternalFile()
         _ui->label_sharePath->setText(tr("A sync file with the same name exists. "
                                          "The file cannot be registered to sync."));
         // TODO: Add a file comparison here. If the existing file is still the same
-        // then the file-to-copy we can share it.
+        // as the file-to-copy we can share it.
         _sharePath.clear();
     } else {
         _uploadFails = 0;

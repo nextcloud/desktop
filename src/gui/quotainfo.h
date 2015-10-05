@@ -29,7 +29,7 @@ class PropfindJob;
  *
  * It is typically owned by the AccountSetting page.
  *
- * The quota is requested if those 3 conditions are met:
+ * The quota is requested if these 3 conditions are met:
  *  - This object is active via setActive() (typically if the settings page is visible.)
  *  - The account is connected.
  *  - Every 30 seconds (defaultIntervalT) or 5 seconds in case of failure (failIntervalT)
@@ -52,7 +52,7 @@ public:
 
     /**
      * When the quotainfo is active, it requests the quota at regular interval.
-     * When setting it to active it will request the quota imediatly if the last time
+     * When setting it to active it will request the quota immediately if the last time
      * the quota was requested was more than the interval
      */
     void setActive(bool active);
@@ -75,7 +75,7 @@ private:
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
     QTimer _jobRestartTimer;
-    QDateTime _lastQuotaRecieved; // the time at which de quota was recieved last
+    QDateTime _lastQuotaRecieved; // the time at which the quota was received last
     bool _active; // if we should check at regular interval (when the UI is visible)
     QPointer<PropfindJob> _job; // the currently running job
 };

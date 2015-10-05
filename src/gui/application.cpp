@@ -104,7 +104,7 @@ Application::Application(int &argc, char **argv) :
 {
     _startedAt.start();
 
-// TODO: Can't set this without breaking current config pathes
+// TODO: Can't set this without breaking current config paths
 //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName( _theme->appNameGUI() );
@@ -179,7 +179,7 @@ Application::Application(int &argc, char **argv) :
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
     _checkConnectionTimer.setInterval(32 * 1000); // check for connection every 32 seconds.
     _checkConnectionTimer.start();
-    // Also check immediatly
+    // Also check immediately
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
 
     // Update checks
@@ -451,7 +451,7 @@ void Application::setHelp()
 
 QString substLang(const QString &lang)
 {
-    // Map the more apropriate script codes
+    // Map the more appropriate script codes
     // to country codes as used by Qt and
     // transifex translation conventions.
 
@@ -493,7 +493,7 @@ void Application::setupTranslations()
             // Permissive approach: Qt and keychain translations
             // may be missing, but Qt translations must be there in order
             // for us to accept the language. Otherwise, we try with the next.
-            // "en" is an exeption as it is the default language and may not
+            // "en" is an exception as it is the default language and may not
             // have a translation file provided.
             qDebug() << Q_FUNC_INFO << "Using" << lang << "translation";
             setProperty("ui_lang", lang);

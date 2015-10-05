@@ -74,7 +74,7 @@ private:
     QString keychainUsernameKey() const;
     QString keychainPasswordKey() const;
 
-    /// The hostname:port of the current proxy, used for detetcting switches
+    /// The hostname:port of the current proxy, used for detecting switches
     /// to a different proxy.
     QString _proxy;
 

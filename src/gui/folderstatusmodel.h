@@ -61,7 +61,7 @@ public:
         qint64 _size;
         bool _fetched; // If we did the LSCOL for this folder already
         bool _fetching;
-        bool _isUndecided; // undecided folder are the big folder that the user has not accepted yet
+        bool _isUndecided; // undecided folders are the big folders that the user has not accepted yet
         bool _hasError; // If the last fetching job ended in an error
         Qt::CheckState _checked;
 
@@ -88,7 +88,7 @@ public:
 
     /**
      * return a QModelIndex for the given path within the given folder.
-     * Note: this method returns an invalid index if the path was not fetch from the server before
+     * Note: this method returns an invalid index if the path was not fetched from the server before
      */
     QModelIndex indexForPath(Folder *f, const QString &path) const;
 
@@ -119,7 +119,7 @@ private:
 
 signals:
     void dirtyChanged();
-    void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has a undecided item
+    void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has an undecided item
 };
 
 } // namespace OCC

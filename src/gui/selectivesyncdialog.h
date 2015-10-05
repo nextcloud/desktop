@@ -38,7 +38,7 @@ public:
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
     QStringList oldBlackList() const;
 
-    //Estimate the total size of checked item (recursively)
+    // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = 0);
     void refreshFolders();
 

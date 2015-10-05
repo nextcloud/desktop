@@ -36,13 +36,13 @@ public:
     void save(bool saveCredentials = true);
 
     /**
-     * Creates account objects from from a given settings file.
+     * Creates account objects from a given settings file.
      * return true if the account was restored
      */
     bool restore();
 
     /**
-     * Add this account in the list of saved account.
+     * Add this account in the list of saved accounts.
      * Typically called from the wizard
      */
     AccountState *addAccount(const AccountPtr &newAccount);
@@ -54,7 +54,7 @@ public:
 
     /**
      * Return a list of all accounts.
-     * (this is a list of QSharedPointer for internal reason, one should normaly not keep a copy of them)
+     * (this is a list of QSharedPointer for internal reasons, one should normally not keep a copy of them)
      */
     QList<AccountStatePtr> accounts() { return _accounts; }
 

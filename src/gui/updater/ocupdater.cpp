@@ -425,7 +425,7 @@ PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
     // remember the version of the currently running binary. On Linux it might happen that the
     // package management updates the package while the app is running. This is detected in the
     // updater slot: If the installed binary on the hd has a different version than the one
-    // running, the running app is restart. That happens in folderman.
+    // running, the running app is restarted. That happens in folderman.
     _runningAppVersion = Utility::versionOfInstalledBinary();
 }
 

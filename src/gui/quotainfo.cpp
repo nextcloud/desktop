@@ -100,7 +100,7 @@ void QuotaInfo::slotCheckQuota()
 
 void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
 {
-    // The server can return frational bytes (#1374)
+    // The server can return fractional bytes (#1374)
     // <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>
     quint64 avail = result["quota-available-bytes"].toDouble();
     _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();

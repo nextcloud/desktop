@@ -33,14 +33,14 @@ class FolderWatcherPrivate;
 class Folder;
 
 /**
- * @brief Montiors a directory recursively for changes
+ * @brief Monitors a directory recursively for changes
  *
  * Folder Watcher monitors a directory and its sub directories
  * for changes in the local file system. Changes are signalled
  * through the pathChanged() signal.
  *
  * Note that if new folders are created, this folderwatcher class
- * does not automatically adds them to the list of monitored
+ * does not automatically add them to the list of monitored
  * dirs. That is the responsibility of the user of this class to
  * call addPath() with the new dir.
  *
@@ -60,7 +60,7 @@ public:
     /**
      * Not all backends are recursive by default.
      * Those need to be notified when a directory is added or removed while the watcher is disabled.
-     * This is a no-op for backend that are recursive
+     * This is a no-op for backends that are recursive
      */
     void addPath(const QString&);
     void removePath(const QString&);

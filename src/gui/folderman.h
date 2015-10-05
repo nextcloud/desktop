@@ -92,7 +92,7 @@ public:
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
-     * Make sure that this folder, or any subfolder is not sync'ed alrady.
+     * Make sure that this folder, or any subfolder is not sync'ed already.
      *
      * \a forNewDirectory is internal and is used for recursion.
      *
@@ -123,7 +123,7 @@ signals:
     /**
       * signal to indicate a folder has changed its sync state.
       *
-      * Attention: The folder may be zero. Do a general update of the state than.
+      * Attention: The folder may be zero. Do a general update of the state then.
       */
     void folderSyncStateChange(Folder*);
 
@@ -162,7 +162,7 @@ public slots:
 
     // slot to add a folder to the syncing queue
     void slotScheduleSync(Folder*);
-    // slot to scheule an ETag job
+    // slot to schedule an ETag job
     void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
     void slotEtagJobDestroyed (QObject*);
     void slotRunOneEtagJob();

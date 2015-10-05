@@ -244,7 +244,7 @@ int FolderMan::setupFoldersMigration()
     dir.setFilter(QDir::Files | QDir::Hidden);
     QStringList list = dir.entryList();
 
-    // Normaly there should be only one account when migrating.
+    // Normally there should be only one account when migrating.
     AccountState* accountState = AccountManager::instance()->accounts().value(0).data();
     foreach ( const QString& alias, list ) {
         Folder *f = setupFolderFromOldConfigFile( alias, accountState );
@@ -345,8 +345,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
     qDebug() << "  ` -> setting up:" << file;
     QString escapedAlias(file);
-    // check the unescaped variant (for the case the filename comes out
-    // of the directory listing. If the file is not existing, escape the
+    // check the unescaped variant (for the case when the filename comes out
+    // of the directory listing). If the file does not exist, escape the
     // file and try again.
     QFileInfo cfgFile( _folderConfigPath, file);
 
@@ -356,7 +356,7 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
         cfgFile.setFile( _folderConfigPath, escapedAlias );
     }
     if( !cfgFile.isReadable() ) {
-        qDebug() << "Can not read folder definition for alias " << cfgFile.filePath();
+        qDebug() << "Cannot read folder definition for alias " << cfgFile.filePath();
         return folder;
     }
 
@@ -594,12 +594,12 @@ void FolderMan::slotAccountStateChanged()
     }
 }
 
-// only enable or disable foldermans will to schedule and do syncs.
+// only enable or disable foldermans will schedule and do syncs.
 // this is not the same as Pause and Resume of folders.
 void FolderMan::setSyncEnabled( bool enabled )
 {
     if (!_syncEnabled && enabled && !_scheduleQueue.isEmpty()) {
-        // We have things in our queue that were waiting the the connection to go back on.
+        // We have things in our queue that were waiting for the connection to come back on.
         startScheduledSyncSoon();
     }
     _syncEnabled = enabled;
@@ -906,7 +906,7 @@ bool FolderMan::startFromScratch( const QString& localFolder )
                     _socketApi->slotUnregisterPath(f->alias());
                 }
                 f->journalDb()->close();
-                f->slotTerminateSync(); // Normaly it should not be running, but viel hilft viel
+                f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
             }
         }
 
@@ -936,7 +936,7 @@ void FolderMan::setDirtyProxy(bool value)
 
             if (f->accountState() && f->accountState()->account()
                     && f->accountState()->account()->networkAccessManager()) {
-                // Need to do this have us not use the old determined system proxy
+                // Need to do this so we do not use the old determined system proxy
                 f->accountState()->account()->networkAccessManager()->setProxy(
                             QNetworkProxy(QNetworkProxy::DefaultProxy));
             }
@@ -962,7 +962,7 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     int cnt = folders.count();
 
     // if one folder: show the state of the one folder.
-    // if more folder:
+    // if more folders:
     // if one of them has an error -> show error
     // if one is paused, but others ok, show ok
     // do not show "problem" in the tray
@@ -1079,7 +1079,7 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
         folderMessage = tr( "Undefined State." );
         break;
     case SyncResult::NotYetStarted:
-        folderMessage = tr( "Waits to start syncing." );
+        folderMessage = tr( "Waiting to start syncing." );
         break;
     case SyncResult::SyncPrepare:
         folderMessage = tr( "Preparing for sync." );

@@ -107,7 +107,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
 
 // Use this to do platform specific code to make overlay icons appear
 // in the gui
-// MacOSX: perform a AppleScript code peace to load the Finder Plugin.
+// MacOSX: perform a AppleScript code piece to load the Finder Plugin.
 
 
 void ownCloudGui::setupOverlayIcons()
@@ -136,7 +136,7 @@ void ownCloudGui::setupOverlayIcons()
               p.waitForFinished(5000);
               QByteArray result = p.readAll();
               QString resultAsString(result); // if appropriate
-              qDebug() << "Laod Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
+              qDebug() << "Load Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
                        << (p.exitCode() != 0 ? p.errorString() : QString::null);
         } else  {
             qDebug() << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
@@ -269,7 +269,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
         return;
     }
 
-    // display the info of the least successful sync (eg. not just display the result of the latest sync
+    // display the info of the least successful sync (eg. do not just display the result of the latest sync)
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map map = folderMan->map();
@@ -412,7 +412,7 @@ void ownCloudGui::setupContextMenu()
 #endif
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
-    // We must call deleteLater because we might be called from the press in one of the action.
+    // We must call deleteLater because we might be called from the press in one of the actions.
     foreach (auto menu, _accountMenus) { menu->deleteLater(); }
     _accountMenus.clear();
     if (accountList.count() > 1) {
@@ -486,7 +486,7 @@ void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QStrin
 
 
 /*
- * open the folder with the given Alais
+ * open the folder with the given Alias
  */
 void ownCloudGui::slotFolderOpenAction( const QString& alias )
 {
@@ -580,7 +580,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
     if (!progress._lastCompletedItem.isEmpty() && !Progress::isIgnoredKind(progress._lastCompletedItem._status)) {
 
         if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
-            // display a warn icon if warnings happend.
+            // display a warn icon if warnings happened.
             QIcon warnIcon(":/client/resources/warning");
             _actionRecent->setIcon(warnIcon);
         }

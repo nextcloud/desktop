@@ -110,7 +110,7 @@ LogBrowser::LogBrowser(QWidget *parent) :
 
     setModal(false);
 
-    // Direct connection for log comming from this thread, and queued for the one in a different thread
+    // Direct connection for log coming from this thread, and queued for the one in a different thread
     connect(Logger::instance(), SIGNAL(newLog(QString)),this,SLOT(slotNewLog(QString)), Qt::AutoConnection);
 
     QAction *showLogWindow = new QAction(this);

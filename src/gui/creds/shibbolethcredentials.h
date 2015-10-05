@@ -44,7 +44,7 @@ Q_OBJECT
 public:
     ShibbolethCredentials();
 
-    /* create a credentials for an already connected account */
+    /* create credentials for an already connected account */
     ShibbolethCredentials(const QNetworkCookie &cookie);
 
     void setAccount(Account* account) Q_DECL_OVERRIDE;

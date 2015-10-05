@@ -123,7 +123,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 auto remotePath = _folders.at(0)._folder->remotePath();
                 if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
                     // Syncing the entire owncloud: disable the add folder button (#3438)
-                    return tr("Adding folder is disabled because your are already syncing all your files. "
+                    return tr("Adding folder is disabled because you are already syncing all your files. "
                             "If you want to sync multiple folders, please remove the currently "
                             "configured root folder.");
                 }
@@ -192,7 +192,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 } else if( status == SyncResult::Undefined ) {
                     return theme->syncStateIcon( SyncResult::SyncRunning);
                 } else {
-                    // kepp the previous icon for the prepare phase.
+                    // keep the previous icon for the prepare phase.
                     if( status == SyncResult::Problem) {
                         return theme->syncStateIcon( SyncResult::Success);
                     } else {
@@ -227,7 +227,7 @@ bool FolderStatusModel::setData(const QModelIndex& index, const QVariant& value,
             info->_checked = checked;
             if (checked == Qt::Checked) {
                 // If we are checked, check that we may need to check the parent as well if
-                // all the sibilings are also checked
+                // all the siblings are also checked
                 QModelIndex parent = index.parent();
                 auto parentInfo = infoForIndex(parent);
                 if (parentInfo && parentInfo->_checked != Qt::Checked) {
@@ -670,7 +670,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         // clear the undecided list
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
 
-        // do the sync if there was changes
+        // do the sync if there were changes
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         if (!changes.isEmpty()) {
             if (folder->isBusy()) {
@@ -838,7 +838,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             .arg(currentFile).arg(totalFileCount)
             .arg( Utility::durationToDescriptiveString(progress.totalProgress().estimatedEta) );
     } else if (totalFileCount > 0) {
-        // Don't attemt to estimate the time left if there is no kb to transfer.
+        // Don't attempt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
     }
 
@@ -846,7 +846,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
     int overallPercent = 0;
     if( totalFileCount > 0 ) {
-        // Add one 'byte' for each files so the percentage is moving when deleting or renaming files
+        // Add one 'byte' for each file so the percentage is moving when deleting or renaming files
         overallPercent = qRound(double(completedSize + completedFile)/double(totalSize + totalFileCount) * 100.0);
     }
     pi->_overallPercent = qBound(0, overallPercent, 100);

@@ -223,7 +223,7 @@ void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& shi
 void ShibbolethCredentials::slotFetchUser()
 {
     // We must first do a request to webdav so the session is enabled.
-    // (because for some reason we wan't access the API without that..  a bug in the server maybe?)
+    // (because for some reason we can't access the API without that..  a bug in the server maybe?)
     EntityExistsJob* job = new EntityExistsJob(_account->sharedFromThis(), _account->davPath(), this);
     connect(job, SIGNAL(exists(QNetworkReply*)), this, SLOT(slotFetchUserHelper()));
     job->setIgnoreCredentialFailure(true);
