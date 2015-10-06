@@ -77,6 +77,7 @@ private:
 
     Q_INVOKABLE void command_VERSION(const QString& argument, QIODevice* socket);
 
+    Q_INVOKABLE void command_SHARE_STATUS(const QString& localFile, QIODevice *socket);
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QIODevice* socket);
     QString buildRegisterPathMessage(const QString& path);
 
