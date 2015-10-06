@@ -271,7 +271,7 @@ void SelectiveSyncTreeView::slotItemChanged(QTreeWidgetItem *item, int col)
 
     if (item->checkState(0) == Qt::Checked) {
         // If we are checked, check that we may need to check the parent as well if
-        // all the sibilings are also checked
+        // all the siblings are also checked
         QTreeWidgetItem *parent = item->parent();
         if (parent && parent->checkState(0) != Qt::Checked) {
             bool hasUnchecked = false;

@@ -41,7 +41,7 @@ namespace OCC {
 SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     : MacPreferencesWindow(parent), _gui(gui)
 {
-    // do not show minimize button. There is no use, and retoring the
+    // do not show minimize button. There is no use, and restoring the
     // dialog from minimize is broken in MacPreferencesWindow
     setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint |
                    Qt::WindowCloseButtonHint | Qt::WindowMaximizeButtonHint);

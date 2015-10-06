@@ -88,14 +88,14 @@ Folder::Folder(const FolderDefinition& definition,
 
 bool Folder::init()
 {
-    // We need to reconstruct the url because the path need to be fully decoded, as csync will  re-encode the path:
+    // We need to reconstruct the url because the path needs to be fully decoded, as csync will re-encode the path:
     //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
     //  csync_owncloud will then re-encode everything.
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QUrl url = remoteUrl();
     QString url_string = url.scheme() + QLatin1String("://") + url.authority(QUrl::EncodeDelimiters) + url.path(QUrl::FullyDecoded);
 #else
-    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a provlem when parsing the path from QUrl::setPath
+    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a problem when parsing the path from QUrl::setPath
     QString url_string = remoteUrl().toString();
 #endif
     url_string = Utility::toCSyncScheme(url_string);
@@ -1017,14 +1017,14 @@ void Folder::slotSyncFinished()
     }
 
     if (_syncResult.status() == SyncResult::Success) {
-        // Clear the white list as all the folder that should be on that list are sync-ed
+        // Clear the white list as all the folders that should be on that list are sync-ed
         journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
     }
 
     emit syncStateChange();
 
     // The syncFinished result that is to be triggered here makes the folderman
-    // clearing the current running sync folder marker.
+    // clear the current running sync folder marker.
     // Lets wait a bit to do that because, as long as this marker is not cleared,
     // file system change notifications are ignored for that folder. And it takes
     // some time under certain conditions to make the file system notifications

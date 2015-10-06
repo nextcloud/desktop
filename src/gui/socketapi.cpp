@@ -270,7 +270,7 @@ void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem
     QString path = f->path() + item.destination();
 
     // the trailing slash for directories must be appended as the filenames coming in
-    // from the plugins have that too. Otherwise the according entry item is not found
+    // from the plugins have that too. Otherwise the matching entry item is not found
     // in the plugin.
     if( item._type == SyncFileItem::Type::Directory ) {
         path += QLatin1Char('/');
@@ -544,7 +544,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
-    // Error if it is in the selective sync blacklistr
+    // Error if it is in the selective sync blacklist
     foreach(const auto &s, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
         if (fileNameSlash.startsWith(s)) {
             return SyncFileStatus(SyncFileStatus::STATUS_ERROR);

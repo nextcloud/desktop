@@ -75,8 +75,8 @@ void FolderWatcher::changeDetected( const QStringList& paths )
 
     // TODO: this shortcut doesn't look very reliable:
     //   - why is the timeout only 1 second?
-    //   - what if there are more than one file being updated frequently?
-    //   - why do we skip the file alltogether instead of e.g. reducing the upload frequency?
+    //   - what if there is more than one file being updated frequently?
+    //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
 
     // Check if the same path was reported within the last second.
     QSet<QString> pathsSet = paths.toSet();

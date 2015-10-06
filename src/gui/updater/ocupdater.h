@@ -35,15 +35,15 @@ namespace OCC {
  * This class schedules regular update checks. It also checks the config
  * if update checks are wanted at all.
  *
- * To reflect that all platforms have its own update scheme, a little
+ * To reflect that all platforms have their own update scheme, a little
  * complex class design was set up:
  *
  * For Windows and Linux, the updaters are inherited from OCUpdater, while
  * the MacOSX SparkleUpdater directly uses the class Updater. On windows,
  * NSISUpdater starts the update if a new version of the client is available.
  * On MacOSX, the sparkle framework handles the installation of the new
- * version. On Linux, the update capabilities by the underlying linux distro
- * is relied on, and thus the PassiveUpdateNotifier just shows a notification
+ * version. On Linux, the update capabilities of the underlying linux distro
+ * are relied on, and thus the PassiveUpdateNotifier just shows a notification
  * if there is a new version once at every start of the application.
  *
  * Simple class diagram of the updater:
@@ -83,7 +83,7 @@ private:
 };
 
 /**
- * @brief Class that uses an ownCloud propritary XML format to fetch update information
+ * @brief Class that uses an ownCloud proprietary XML format to fetch update information
  * @ingroup gui
  */
 class OCUpdater : public QObject, public Updater

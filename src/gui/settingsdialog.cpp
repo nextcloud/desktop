@@ -251,7 +251,7 @@ QIcon SettingsDialog::createColorAwareIcon(const QString &name)
 {
     QColor  bg(palette().base().color());
     QImage img(name);
-    // account for different sensitivty of the human eye to certain colors
+    // account for different sensitivity of the human eye to certain colors
     double treshold = 1.0 - ( 0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue())/255.0;
     if (treshold > 0.5) {
         img.invertPixels(QImage::InvertRgb);
