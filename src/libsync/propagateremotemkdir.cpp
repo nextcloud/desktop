@@ -55,7 +55,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (_item->_httpErrorCode == 405) {
-        // This happens when the directory already exist. Nothing to do.
+        // This happens when the directory already exists. Nothing to do.
     } else if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &_propagator->_anotherSyncNeeded);
@@ -66,7 +66,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         done(status, errorString);
         return;
     } else if (_item->_httpErrorCode != 201) {
-        // Normaly we expect "201 Created"
+        // Normally we expect "201 Created"
         // If it is not the case, it might be because of a proxy or gateway intercepting the request, so we must
         // throw an error.
         done(SyncFileItem::NormalError, tr("Wrong HTTP code returned by server. Expected 201, but received \"%1 %2\".")

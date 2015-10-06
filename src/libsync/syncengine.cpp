@@ -140,7 +140,7 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("A HTTP transmission error happened.");
         break;
     case CSYNC_STATUS_PERMISSION_DENIED:
-        errStr = tr("CSync failed due to not handled permission deniend.");
+        errStr = tr("CSync failed due to unhandled permission denied.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
         errStr = tr("CSync failed to access") + " "; // filename gets added.
@@ -319,7 +319,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         }
     }
 
-    // Gets a default-contructed SyncFileItemPtr or the one from the first walk (=local walk)
+    // Gets a default-constructed SyncFileItemPtr or the one from the first walk (=local walk)
     SyncFileItemPtr item = _syncItemMap.value(key);
     if (!item)
         item = SyncFileItemPtr(new SyncFileItem);
@@ -358,7 +358,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     /* The flag "serverHasIgnoredFiles" is true if item in question is a directory
      * that has children which are ignored in sync, either because the files are
-     * matched by an ignore pattern, or because they are  hidden.
+     * matched by an ignore pattern, or because they are hidden.
      *
      * Only the information about the server side ignored files is stored to the
      * database and thus written to the item here. For the local repository its
@@ -374,7 +374,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
     if (!renameTarget.isEmpty()) {
-        // Yes, this record both the rename renameTarget and the original so we keep both in case of a rename
+        // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
         _seenFiles.insert(renameTarget);
     }
 
@@ -464,8 +464,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // Or for files that were detected as "resolved conflict".
             // They should have been a conflict because they both were new, or both
             // had their local mtime or remote etag modified, but the size and mtime
-            // is the same on the server.  This typically happen when the database is removed.
-            // Nothing will be done for those file, but we still need to update the database.
+            // is the same on the server.  This typically happens when the database is removed.
+            // Nothing will be done for those files, but we still need to update the database.
 
             // Even if the mtime is different on the server, we always want to keep the mtime from
             // the file system in the DB, this is to avoid spurious upload on the next sync
@@ -475,7 +475,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             item->_should_update_metadata = false;
         }
         if (item->_isDirectory && file->should_update_metadata) {
-            // Because we want still to update etags of directories
+            // Because we want to still update etags of directories
             dir = SyncFileItem::None;
         } else {
             // No need to do anything.
@@ -509,7 +509,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         if (!remote && file->instruction == CSYNC_INSTRUCTION_SYNC) {
             // An upload of an existing file means that the file was left unchanged on the server
-            // This count as a NONE for detecting if all the file on the server were changed
+            // This counts as a NONE for detecting if all the files on the server were changed
             _hasNoneFiles = true;
         }
         break;
@@ -1075,7 +1075,7 @@ void SyncEngine::checkForPermission()
                     // delete jobs intact. It is not physically tried to remove this files
                     // underneath, propagator sees that.
                     if( (*it)->_isDirectory ) {
-                        // put a more descriptive message if really a top level share dir is removed.
+                        // put a more descriptive message if a top level share dir really is removed.
                         if( it == _syncedItems.begin() || !(path.startsWith((*(it-1))->_file)) ) {
                             (*it)->_errorString = tr("Local files and share folder removed.");
                         }

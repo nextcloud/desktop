@@ -35,7 +35,7 @@ namespace OCC {
 
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
-// This function also adds a dot at the begining of the filename to hide the file on OS X and Linux
+// This function also adds a dot at the beginning of the filename to hide the file on OS X and Linux
 QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous) {
     QString tmpFileName;
     QString tmpPath;
@@ -57,7 +57,7 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous) {
     }
 }
 
-// DOES NOT take owncership of the device.
+// DOES NOT take ownership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QString& path, QFile *device,
                     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
                     quint64 resumeStart,  QObject* parent)
@@ -171,7 +171,7 @@ void GETFileJob::slotMetaDataChanged()
     if (start != _resumeStart) {
         qDebug() << Q_FUNC_INFO <<  "Wrong content-range: "<< ranges << " while expecting start was" << _resumeStart;
         if (ranges.isEmpty()) {
-            // device don't support range, just stry again from scratch
+            // device doesn't support range, just try again from scratch
             _device->close();
             if (!_device->open(QIODevice::WriteOnly)) {
                 _errorString = _device->errorString();
@@ -548,9 +548,9 @@ void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
 QString makeConflictFileName(const QString &fn, const QDateTime &dt)
 {
     QString conflictFileName(fn);
-    // Add _conflict-XXXX  before the extention.
+    // Add _conflict-XXXX  before the extension.
     int dotLocation = conflictFileName.lastIndexOf('.');
-    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
     if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
         dotLocation = conflictFileName.size();
     }
@@ -571,9 +571,9 @@ namespace { // Anonymous namespace for the recall feature
 static QString makeRecallFileName(const QString &fn)
 {
     QString recallFileName(fn);
-    // Add _recall-XXXX  before the extention.
+    // Add _recall-XXXX  before the extension.
     int dotLocation = recallFileName.lastIndexOf('.');
-    // If no extention, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
     if (dotLocation <= recallFileName.lastIndexOf('/') + 1) {
         dotLocation = recallFileName.size();
     }
@@ -640,7 +640,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
-    // We need to fetch the time again because some file system such as FAT have a less than a second
+    // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
 

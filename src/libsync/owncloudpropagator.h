@@ -55,7 +55,7 @@ class OwncloudPropagator;
  * @brief the base class of propagator jobs
  *
  * This can either be a job, or a container for jobs.
- * If it is a composite jobs, it then inherits from PropagateDirectory
+ * If it is a composite job, it then inherits from PropagateDirectory
  *
  * @ingroup libsync
  */
@@ -78,12 +78,12 @@ public:
 
         /** Jobs can be run in parallel to this job */
         FullParallelism,
-        /** This job do not support parallelism, and no other job shall
+        /** This job does not support parallelism, and no other job shall
             be started until this one has finished */
         WaitForFinished,
 
-        /** This job support paralelism with other jobs in the same directory, but it should
-             not be paralelized with jobs in other directories  (typically a move operation) */
+        /** This job supports parallelism with other jobs in the same directory, but it should
+             not be parallelized with jobs in other directories  (typically a move operation) */
         WaitForFinishedInParentDirectory
     };
 
@@ -273,7 +273,7 @@ public:
     const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
 
     SyncJournalDb * const _journal;
-    bool _finishedEmited; // used to ensure that finished is only emit once
+    bool _finishedEmited; // used to ensure that finished is only emitted once
 
 
 public:
@@ -309,7 +309,7 @@ public:
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
 
-    /* The maximum number of active job in parallel  */
+    /* The maximum number of active jobs in parallel  */
     int maximumActiveJob();
 
     bool isInSharedDirectory(const QString& file);
@@ -355,7 +355,7 @@ public:
 
 private slots:
 
-    /** Emit the finished signal and make sure it is only emit once */
+    /** Emit the finished signal and make sure it is only emitted once */
     void emitFinished() {
         if (!_finishedEmited)
             emit finished();

@@ -77,7 +77,7 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
     do {
         int r = f1.read(buffer1, BufferSize);
         if (f2.read(buffer2, BufferSize) != r) {
-            // this should normaly not happen: the file are supposed to have the same size.
+            // this should normally not happen: the files are supposed to have the same size.
             return false;
         }
         if (r <= 0) {
@@ -244,8 +244,8 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     success = orig.fileEngine()->rename(destinationFileName);
     // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
 #else
-    // We want a rename that also overwite.  QFile::rename does not overwite.
-    // Qt 5.1 has QSaveFile::renameOverwrite we cold use.
+    // We want a rename that also overwites.  QFile::rename does not overwite.
+    // Qt 5.1 has QSaveFile::renameOverwrite we could use.
     // ### FIXME
     success = true;
     bool destExists = fileExists(destinationFileName);

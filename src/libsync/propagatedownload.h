@@ -43,7 +43,7 @@ class GETFileJob : public AbstractNetworkJob {
     time_t _lastModified;
 public:
 
-    // DOES NOT take owncership of the device.
+    // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString& path, QFile *device,
                         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
                         quint64 resumeStart, QObject* parent = 0);

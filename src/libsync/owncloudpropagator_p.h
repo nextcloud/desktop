@@ -47,7 +47,7 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
 }
 
 /**
- * Fiven an error from the network, map to a SyncFileItem::Status error
+ * Given an error from the network, map to a SyncFileItem::Status error
  */
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
                                           int httpCode,

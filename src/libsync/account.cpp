@@ -181,7 +181,7 @@ void Account::clearCookieJar()
 
 /*! This shares our official cookie jar (containing all the tasty
     authentication cookies) with another QNAM while making sure
-    of not loosing its ownership. */
+    of not losing its ownership. */
 void Account::lendCookieJarTo(QNetworkAccessManager *guest)
 {
     auto jar = _am->cookieJar();

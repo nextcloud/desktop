@@ -82,7 +82,7 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT bool hasDarkSystray();
 
-    // convinience OS detection methods
+    // convenience OS detection methods
     OWNCLOUDSYNC_EXPORT bool isWindows();
     OWNCLOUDSYNC_EXPORT bool isMac();
     OWNCLOUDSYNC_EXPORT bool isUnix();
@@ -98,7 +98,7 @@ namespace Utility
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
 
-    // Call the given command with the switch --version and retrun the first line
+    // Call the given command with the switch --version and rerun the first line
     // of the output.
     // If command is empty, the function calls the running application which, on
     // Linux, might have changed while this one is running.
@@ -116,7 +116,7 @@ namespace Utility
         quint64 addLapTime( const QString& lapName );
         void reset();
 
-        // out helpers, return the masured times.
+        // out helpers, return the measured times.
         QDateTime startTime() const;
         QDateTime timeOfLap( const QString& lapName ) const;
         quint64 durationOfLap( const QString& lapName ) const;

@@ -27,9 +27,9 @@ class SyncJournalFileRecord;
 class SyncJournalErrorBlacklistRecord;
 
 /**
- * @brief Class that handle the sync database
+ * @brief Class that handles the sync database
  *
- * This class is thread safe. All public function are locking the mutex.
+ * This class is thread safe. All public functions lock the mutex.
  * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
@@ -97,11 +97,11 @@ public:
          * For the sync engine, those folders are considered as if they were not there, so the local
          * folders will be deleted */
         SelectiveSyncBlackList = 1,
-        /** When a shared flder has a size bigger than a configured size, it is by default not sync'ed
+        /** When a shared folder has a size bigger than a configured size, it is by default not sync'ed
          * Unless it is in the white list, in which case the folder is sync'ed and all its children.
          * If a folder is both on the black and the white list, the black list wins */
         SelectiveSyncWhiteList = 2,
-        /** List of big sync folder that have not been confirmed by the user yet and that the UI
+        /** List of big sync folders that have not been confirmed by the user yet and that the UI
          * should notify about */
         SelectiveSyncUndecidedList = 3
     };
@@ -111,7 +111,7 @@ public:
     void setSelectiveSyncList(SelectiveSyncListType type, const QStringList &list);
 
     /**
-     * Make sure that on the next sync, filName is not read from the DB but use the PROPFIND to
+     * Make sure that on the next sync, fileName is not read from the DB but uses the PROPFIND to
      * get the info from the server
      */
     void avoidReadFromDbOnNextSync(const QString& fileName);
@@ -126,7 +126,7 @@ public:
     bool postSyncCleanup(const QSet<QString>& filepathsToKeep,
                          const QSet<QString>& prefixesToKeep);
 
-    /* Because sqlite transactions is really slow, we encapsulate everything in big transactions
+    /* Because sqlite transactions are really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.
      */
     void commit(const QString &context, bool startTrans = true);

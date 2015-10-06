@@ -29,8 +29,8 @@ namespace OCC {
 class Account;
 
 /**
- * The Discovery Phase was once called "update" phase in csync therms.
- * Its goal is to look at the files in one of the remote and check comared to the db
+ * The Discovery Phase was once called "update" phase in csync terms.
+ * Its goal is to look at the files in one of the remote and check compared to the db
  * if the files are new, or changed.
  */
 

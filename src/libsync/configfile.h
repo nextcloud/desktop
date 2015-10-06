@@ -60,7 +60,7 @@ public:
 
     /* Server poll interval in milliseconds */
     int remotePollInterval( const QString& connection = QString() ) const;
-    /* Set poll interval. Value in microseconds has to be larger than 5000 */
+    /* Set poll interval. Value in milliseconds has to be larger than 5000 */
     void setRemotePollInterval(int interval, const QString& connection = QString() );
 
     /* Force sync interval, in milliseconds */

@@ -200,7 +200,7 @@ private slots:
  * \code
  * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
  * connect(job, SIGNAL(jsonRecieved(QVariantMap)), ...)
- * The recieved QVariantMap is empty in case of error  or otherwise is a map as parsed by QtJson
+ * The received QVariantMap is empty in case of error or otherwise is a map as parsed by QtJson
  * \encode
  *
  * @ingroup libsync
