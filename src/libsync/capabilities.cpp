@@ -23,19 +23,39 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
 {
 }
 
-bool Capabilities::publicLinkEnforcePassword() const
+bool Capabilities::shareAPI() const
+{
+    if (_capabilities["files_sharing"].toMap().contains("api_enabled")) {
+        return _capabilities["files_sharing"].toMap()["api_enabled"].toBool();
+    } else {
+        // This was later added so if it is not present just assume the API is enabled.
+        return true;
+    }
+}
+
+bool Capabilities::sharePublicLink() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["enabled"].toBool();
+}
+
+bool Capabilities::sharePublicLinkEnforcePassword() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
 }
 
-bool Capabilities::publicLinkEnforceExpireDate() const
+bool Capabilities::sharePublicLinkEnforceExpireDate() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enforced"].toBool();
 }
 
-int Capabilities::publicLinkExpireDateDays() const
+int Capabilities::sharePublicLinkExpireDateDays() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
+}
+
+bool Capabilities::shareResharing() const
+{
+    return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
 QStringList Capabilities::supportedChecksumTypes() const
