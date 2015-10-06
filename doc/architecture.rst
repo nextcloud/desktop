@@ -108,7 +108,7 @@ ownCloud Client 1.1 or later. Using an incompatible time stamp-based
 synchronization mechanism can lead to data loss in rare cases, especially when
 multiple clients are involved and one utilizes a non-synchronized NTP time.
 
-.. _`NTP time synchronisation`: http://en.wikipedia.org/wiki/Network_Time_Protocol
+.. _`NTP time synchronization`: http://en.wikipedia.org/wiki/Network_Time_Protocol
 .. _Etag: http://en.wikipedia.org/wiki/HTTP_ETag
 
 Comparison and Conflict Cases
