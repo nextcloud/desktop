@@ -349,13 +349,21 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
 
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString& path) const
 {
+    if( !f ) {
+        return QModelIndex();
+    }
+
     int slashPos = path.lastIndexOf('/');
     if (slashPos == -1) {
         // first level folder
         for (int i = 0; i < _folders.size(); ++i) {
             if (_folders.at(i)._folder == f) {
+                if( path.isEmpty() ) { // the folder object
+                    return index(i, 0);
+                }
                 for (int j = 0; j < _folders.at(i)._subs.size(); ++j) {
-                    if (_folders.at(i)._subs.at(j)._name == path) {
+                    const QString subName = _folders.at(i)._subs.at(j)._name;
+                    if (subName == path) {
                         return index(j, 0, index(i));
                     }
                 }
@@ -499,6 +507,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
             this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
     job->start();
+
     QPersistentModelIndex persistentIndex(parent);
     job->setProperty(propertyParentIndexC , QVariant::fromValue(persistentIndex));
 
