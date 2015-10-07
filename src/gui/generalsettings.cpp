@@ -100,6 +100,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 GeneralSettings::~GeneralSettings()
 {
     delete _ui;
+    delete _syncLogDialog;
 }
 
 QSize GeneralSettings::sizeHint() const {
@@ -157,9 +158,12 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 
 void GeneralSettings::slotOpenSyncLog()
 {
+    // the protocolwidget is connected to the ProgressDispatcher ot collect
+    // notifications also in case the logwindow is not visible. It is passed
+    // here to the LogDialog constructor which is not destroyed once created
+    // except in the destructor here.
     if (_syncLogDialog.isNull()) {
-        _syncLogDialog = new SyncLogDialog(this, _protocolWidget);
-        _syncLogDialog->setAttribute( Qt::WA_DeleteOnClose, true );
+        _syncLogDialog = new SyncLogDialog(0, _protocolWidget);
         _syncLogDialog->open();
     } else {
         ownCloudGui::raiseDialog(_syncLogDialog);

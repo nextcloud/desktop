@@ -30,7 +30,6 @@ SyncLogDialog::SyncLogDialog(QWidget *parent, ProtocolWidget *protoWidget) :
    QDialog(parent),
     _ui(new Ui::SyncLogDialog)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SyncLogDialog"); // required as group for saveGeometry call
 
     _ui->setupUi(this);
