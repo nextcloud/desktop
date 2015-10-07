@@ -514,25 +514,32 @@ void AccountSettings::slotAccountStateChanged(int state)
 
 void AccountSettings::slotLinkActivated(const QString& link)
 {
-    qDebug() << "xxxx " << link;
-    int row = -1;
-
-    const QStringList li = link.split(QLatin1String("?indx="));
-    bool ok;
+    // Parse folder alias and filename from the link, calculate the index
+    // and select it if it exists.
+    const QStringList li = link.split(QLatin1String("?folder="));
     if( li.count() > 1) {
-        row = li.at(1).toInt(&ok);
-    }
-    if( ok && row > -1 ) {
-        QModelIndex indx = _model->index(row, 0);
+        QString myFolder = li[0];
+        const QString alias = li[1];
+        if(myFolder.endsWith(QLatin1Char('/'))) myFolder.chop(1);
+
+        Folder *f = FolderMan::instance()->folder(alias);
+        QModelIndex folderIndx = _model->indexForPath(f, QString());
+
+        if( !ui->_folderList->isExpanded(folderIndx)) {
+            ui->_folderList->setExpanded(folderIndx, true);
+            return;
+        }
+
+        QModelIndex indx = _model->indexForPath(f, myFolder);
         if( indx.isValid() ) {
-            QItemSelection selects(indx, indx);
             ui->_folderList->setSelectionMode(QAbstractItemView::SingleSelection);
-            ui->_folderList->selectionModel()->setCurrentIndex(indx, QItemSelectionModel::Select);
-            qDebug() << "Setting current index";
+            ui->_folderList->setCurrentIndex(indx);
+            ui->_folderList->scrollTo(indx);
+        } else {
+            qDebug() << "Unable to find a valid index for " << myFolder;
         }
     }
 }
-
 
 AccountSettings::~AccountSettings()
 {
@@ -542,7 +549,6 @@ AccountSettings::~AccountSettings()
 void AccountSettings::refreshSelectiveSyncStatus()
 {
     bool shouldBeVisible = _model->isDirty();
-    QStringList undecidedFolder;
     for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
         auto index = _model->index(i);
         if (ui->_folderList->isExpanded(index) && _model->rowCount(index) > 0) {
@@ -566,9 +572,15 @@ void AccountSettings::refreshSelectiveSyncStatus()
                 msg += QLatin1String(", ");
             }
             QString myFolder = (it);
-            if(myFolder.endsWith(QLatin1Char('/'))) myFolder.chop(1);
-            QString modelIndexStr = QString::number(_model->indexForPath(folder, myFolder).row());
-            msg += QString::fromLatin1("<a href=\"%1?indx=%2\">%1?indx=%2</a>").arg(myFolder).arg(modelIndexStr);
+            if( myFolder.endsWith('/')) {
+                myFolder.chop(1);
+            }
+            QModelIndex theIndx = _model->indexForPath(folder, myFolder);
+            if(theIndx.isValid()) {
+                msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>").arg(myFolder).arg(folder->alias());
+            } else {
+                msg += myFolder; // no link because we do not know the index yet.
+            }
         }
     }
 
