@@ -95,7 +95,7 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
     if (success) {
         success = QDir().rmdir(absolute);
         if (!success) {
-            _error += PropagateLocalRemove::tr("Could not remove folder '%1';")
+            _error += PropagateLocalRemove::tr("Could not remove folder '%1'")
                 .arg(QDir::toNativeSeparators(absolute)) + " ";
             qDebug() << "Error removing folder" << absolute;
         }
