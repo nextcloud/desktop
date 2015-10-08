@@ -92,18 +92,27 @@ have the following features:
   removed synchronization on an account (see **Remove Sync** below).
 
 The little button with three dots that sits to the right of the sync status bar 
-offers three additional options:
+offers four additional options:
 
 * Open Folder
-* Pause Sync
+* Choose What to Sync
+* Pause Sync / Resume Sync
 * Remove Sync
 
-**Pause Sync** pauses sync operations without making any changes to your account.
+**Open Folder** opens a file explorer window displaying the client-side folder
+that is being synced.
 
-**Remove Sync** suspends synchronization without removing the account, and it 
-removes your folder sync selection. When you're ready to resume synchronization 
-click the **Add Folder Sync Connection** button, and re-select the folders you 
-want to sync.
+**Choose What to Sync** opens the folder sync tree view. From there you can
+choose to sync all or only some of the folders in the folder tree.
+
+**Pause Sync** pauses sync operations for just this folder sync connection
+without making any changes to your account.
+**Resume Sync** resumes sync operations for this folder sync connection.
+
+**Remove Sync** removes this folder sync connection without removing the
+account. If you want to synchronize the folder tree again then click the
+**Add Folder Sync Connection** button, and re-select the folder tree that
+you want to sync.
 
 .. image:: images/client-7.png
    :alt: Extra options for sync operations
