@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="227"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>فایل مقصد دارای سایز و یا تاریخ ویرایش غیرمتعارف است</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation type="unfinished"/>
+        <translation>یک پوشه محلی را برای اجرای بهنگام‌سازی انتخاب کنید</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation type="unfinished"/>
+        <translation>انتخاب یک پوشه مقصد راه‌دور</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>حجم فضای ذخیره‌سازی: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="167"/>
@@ -105,12 +105,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="54"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>متصل به &lt;server&gt;  به عنوان &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="115"/>
         <source>No account configured.</source>
-        <translation type="unfinished"/>
+        <translation>هیچ حساب‌کاربری‌ای تنظیم نشده‌ است.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="229"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>توقف بهنگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="309"/>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>بازکردن پوشه</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>توقف به‌هنگام‌سازی </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="176"/>
