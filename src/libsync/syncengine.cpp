@@ -494,6 +494,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // Even if the mtime is different on the server, we always want to keep the mtime from
             // the file system in the DB, this is to avoid spurious upload on the next sync
             item->_modtime = file->other.modtime;
+            // same for the size
+            item->_size = file->other.size;
 
             // If the 'W' remote permission changed, update the local filesystem
             SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
