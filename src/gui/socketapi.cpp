@@ -38,6 +38,7 @@
 #include <QDir>
 #include <QApplication>
 #include <QLocalSocket>
+#include <QStringBuilder>
 
 #include <sqlite3.h>
 
@@ -351,8 +352,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
         statusString = fileStatus.toSocketAPIString();
     }
 
-    QString message = QLatin1String("STATUS:")+statusString+QLatin1Char(':')
-            +QDir::toNativeSeparators(argument);
+    const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') %  QDir::toNativeSeparators(argument);
     sendMessage(socket, message);
 }
 
