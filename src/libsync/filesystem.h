@@ -18,6 +18,7 @@
 #include <QString>
 #include <ctime>
 #include <QCryptographicHash>
+#include <QFileInfo>
 
 #include <owncloudlib.h>
 
@@ -73,7 +74,7 @@ qint64 OWNCLOUDSYNC_EXPORT getSize(const QString& filename);
  * Use this over QFileInfo::exists() and QFile::exists() to avoid bugs with lnk
  * files, see above.
  */
-bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename);
+bool OWNCLOUDSYNC_EXPORT fileExists(const QString& filename,  const QFileInfo& = QFileInfo() );
 
 /**
  * @brief Rename the file \a originFileName to \a destinationFileName.

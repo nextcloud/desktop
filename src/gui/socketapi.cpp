@@ -517,7 +517,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         fileNameSlash += QLatin1Char('/');
     }
 
-    if( !FileSystem::fileExists(file) ) {
+    const QFileInfo fi(file);
+    if( !FileSystem::fileExists(file, fi) ) {
         qDebug() << "OO File " << file << " is not existing";
         return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
     }
@@ -525,7 +526,6 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     // file is ignored?
     // Qt considers .lnk files symlinks on Windows so we need to work
     // around that here.
-    const QFileInfo fi(file);
     if( fi.isSymLink()
 #ifdef Q_OS_WIN
             && fi.suffix() != "lnk"

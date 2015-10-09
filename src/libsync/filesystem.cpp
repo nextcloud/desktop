@@ -403,7 +403,7 @@ static bool fileExistsWin(const QString& filename)
 }
 #endif
 
-bool FileSystem::fileExists(const QString& filename)
+bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
@@ -411,8 +411,15 @@ bool FileSystem::fileExists(const QString& filename)
         return fileExistsWin(filename);
     }
 #endif
-    QFileInfo file(filename);
-    return file.exists();
+    bool re = fileInfo.exists();
+    // if the filename is different from the filename in fileInfo, the fileInfo is
+    // not valid. There needs to be one initialised here. Otherwise the incoming
+    // fileInfo is re-used.
+    if( fileInfo.filePath() != filename ) {
+        QFileInfo myFI(filename);
+        re = myFI.exists();
+    }
+    return re;
 }
 
 #ifdef Q_OS_WIN
