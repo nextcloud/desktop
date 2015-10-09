@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>انتخاب موارد همگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="172"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="95"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>خارج شد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="97"/>
@@ -398,7 +398,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="524"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>متوقف شده توسط کاربر</translation>
     </message>
 </context>
 <context>
@@ -686,7 +686,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>برای افزودن پوشه به همگام‌سازی روی این دکمه کلیک کنید.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
@@ -701,7 +701,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>خارج شد</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
@@ -765,12 +765,12 @@ Total time left %5</source>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>در انتظار برای %n پوشه‌‎ی دیگر ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Preparing to sync...</source>
-        <translation type="unfinished"/>
+        <translation>آماده‌سازی همگام‌سازی ...</translation>
     </message>
 </context>
 <context>
@@ -1385,7 +1385,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی پوشه‌ی &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="147"/>
@@ -1409,7 +1409,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>ارتباط ناموفق بود</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
@@ -1419,7 +1419,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>انتخاب URL متفاوت</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
@@ -1460,7 +1460,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="52"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>راه‌اندازی %1 سرور</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="127"/>
@@ -1489,7 +1489,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="169"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>ارتباط ناموفق با %1 در %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="181"/>
@@ -1671,7 +1671,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="435"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی توسط کاربر متوقف شد.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="488"/>
@@ -1750,7 +1750,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>امکان ایجاد پوشه %1 وجود ندارد</translation>
     </message>
 </context>
 <context>
@@ -1763,7 +1763,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>امکان حذف پوشه &apos;%1&apos;وجود ندارد،</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1834,7 +1834,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="246"/>
         <source>Sync was aborted by user.</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی توسط کاربر متوقف شد.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="252"/>
@@ -1858,7 +1858,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
         <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>فایل محلی در حین همگام‌سازی تغییر کرده است.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="558"/>
@@ -1878,7 +1878,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="620"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>فایل محلی در حین همگام‌سازی حذف شده است.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="646"/>
@@ -1926,7 +1926,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="71"/>
         <source>Retry Sync</source>
-        <translation type="unfinished"/>
+        <translation>تلاش مجدد برای همگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="75"/>
@@ -1976,7 +1976,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>نیازمند احراز هویت پروکسی </translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -1991,7 +1991,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>سرور پروکسی نیازمند نام‌کاربری و رمزعبور است.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2024,7 +2024,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="402"/>
         <source>Choose What to Sync</source>
-        <translation type="unfinished"/>
+        <translation>انتخاب موارد همگام‌سازی</translation>
     </message>
 </context>
 <context>
@@ -2118,7 +2118,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="41"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>اشتراک‌گذاری برچسب</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
@@ -2143,7 +2143,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>کپی &amp; لینک</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -2153,12 +2153,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="692"/>
         <source>%1 path: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 مسیر: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="115"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 اشتراک‌گذاری</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="98"/>
@@ -2168,7 +2168,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>پوشه: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
@@ -2178,7 +2178,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>محافظت شده توسط رمزعبور</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="382"/>
@@ -2194,7 +2194,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharedialog.cpp" line="564"/>
         <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;اشتراک‌گذاری لینک</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="583"/>
@@ -2214,7 +2214,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>امکان همگام‌سازی فایل وجود ندارد.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="624"/>
@@ -2235,7 +2235,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="651"/>
         <source>Waiting to upload...</source>
-        <translation type="unfinished"/>
+        <translation>درحال انتظار آپلود...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="653"/>
@@ -2293,12 +2293,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="102"/>
         <source>&lt;h3&gt;Certificate Details&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;جزئیات گواهینامه s&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Common Name (CN):</source>
-        <translation type="unfinished"/>
+        <translation>نام مشترک (CN):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="106"/>
@@ -2308,17 +2308,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>سازمان (O):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="109"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>واحد سازمان (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
         <source>State/Province:</source>
-        <translation type="unfinished"/>
+        <translation>استان:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -2328,27 +2328,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="112"/>
         <source>Serial:</source>
-        <translation type="unfinished"/>
+        <translation>سریال:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="115"/>
         <source>&lt;h3&gt;Issuer&lt;/h3&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h3&gt;صادر کننده&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
         <source>Issuer:</source>
-        <translation type="unfinished"/>
+        <translation>صادرکننده:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="119"/>
         <source>Issued on:</source>
-        <translation type="unfinished"/>
+        <translation>صدور در:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="120"/>
         <source>Expires on:</source>
-        <translation type="unfinished"/>
+        <translation>منقضی شده در:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="123"/>
@@ -2378,7 +2378,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="155"/>
         <source>%1 (self-signed)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (self-signed)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="157"/>
@@ -2399,7 +2399,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="230"/>
         <source>Certificate information:</source>
-        <translation type="unfinished"/>
+        <translation>اطلاعات گواهینامه:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="196"/>
@@ -2423,12 +2423,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>گواهینامه‎ی غیر معتبر</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>عدم امکان اتصال امن به &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
@@ -2478,7 +2478,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>تاریخ انقضا: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
@@ -2571,12 +2571,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>یک خطا در هنگام باز کردن یک پوشه رخ داده‌ است</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>خطا در هنگام خواندن پوشه</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="994"/>
@@ -2601,7 +2601,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="158"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>متوقف شده توسط کاربر</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="395"/>
@@ -2661,7 +2661,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>وضعیت ناموفق</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="429"/>
@@ -2744,7 +2744,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="284"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;نسخه %1. برای اطلاعات بیشتر لطفا اینجا را مشاهده کنید t &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="288"/>
@@ -2803,7 +2803,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>ورود...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="354"/>
@@ -2820,7 +2820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="391"/>
         <source>Recent Changes</source>
-        <translation type="unfinished"/>
+        <translation>تغییرات اخیر</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
@@ -2840,17 +2840,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>Log out everywhere</source>
-        <translation type="unfinished"/>
+        <translation>خروج از همه‌جا</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>Log in everywhere...</source>
-        <translation type="unfinished"/>
+        <translation>ورود در همه‌جا</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="513"/>
         <source>Unknown status</source>
-        <translation type="unfinished"/>
+        <translation>وضعیت نامعلوم</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>
@@ -2870,7 +2870,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>خروج %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="247"/>
@@ -2896,7 +2896,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="549"/>
         <source>No items synced recently</source>
-        <translation type="unfinished"/>
+        <translation>هیچ موردی به تازگی همگام‌سازی نشده است</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
@@ -2968,7 +2968,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>انتخاب موارد همگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="147"/>
@@ -2983,7 +2983,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="190"/>
         <source>&amp;Keep local data</source>
-        <translation type="unfinished"/>
+        <translation>&amp; نگهداری داده‌ محلی</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="237"/>
@@ -2993,7 +2993,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="319"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>پیغام وضعیت</translation>
     </message>
 </context>
 <context>
@@ -3016,7 +3016,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="58"/>
         <source>Error Label</source>
-        <translation type="unfinished"/>
+        <translation>برچسب خطا</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="112"/>
@@ -3251,7 +3251,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>نادیده گرفته شد</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
@@ -3311,7 +3311,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="61"/>
         <source>Waiting to start sync</source>
-        <translation type="unfinished"/>
+        <translation>در حال انتظار برای شروع همگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="64"/>
