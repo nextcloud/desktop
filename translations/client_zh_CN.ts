@@ -73,17 +73,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Remove the account configuration from the client</source>
-        <translation type="unfinished"/>
+        <translation>从客户端中删除账号设置</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>删除账号</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>存储空间:...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="167"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>停止同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="309"/>
@@ -170,12 +170,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>没有到位于%2中的%1的连接</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>部分新文件夹没有被同步，因为他们太大：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="536"/>
@@ -185,22 +185,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>确认删除账号</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="564"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;你确定要删除账号的连接？ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>删除连接</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Open folder</source>
-        <translation type="unfinished"/>
+        <translation>打开文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -210,22 +210,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>恢复同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="172"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>暂停同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="176"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>删除同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>确认删除同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="278"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="171"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 应该是一个文件夹，但是它现在不是文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="174"/>
@@ -609,12 +609,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1131"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>没有选择有效的文件夹！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>选择的路径不是一个文件夹！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1146"/>
@@ -760,7 +760,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>Waiting...</source>
-        <translation type="unfinished"/>
+        <translation>请稍等...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
@@ -1357,7 +1357,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>检查更新</translation>
     </message>
 </context>
 <context>
@@ -1385,7 +1385,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>同步文件夹 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="147"/>
@@ -1750,7 +1750,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>无法创建文件夹 %1</translation>
     </message>
 </context>
 <context>
@@ -1763,7 +1763,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>无法删除文件夹 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>

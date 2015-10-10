@@ -2603,7 +2603,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1001"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Non autorisé car vous n&apos;avez pas les droits pour ajouter des fichiers dans ce dossier</translation>
+        <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="152"/>
