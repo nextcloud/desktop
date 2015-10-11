@@ -2133,7 +2133,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>تعیین &amp;تاریخ انقضا</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2188,7 +2188,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>لطفا رمزعبور را تعیین کنید</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="564"/>
@@ -2199,7 +2199,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="583"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>خطای OCS API با کد: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="605"/>
@@ -2626,12 +2626,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>سرویس بصورت موقت خارج از دسترس است</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="175"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>یک خطای داخلی با شماره خطای  %1  رخ داده است.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="230"/>
@@ -2666,12 +2666,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="429"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>رمزگذاری نام فایل معتبر نیست</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>کاراکتر نامعتبر، لطفا &quot;%1&quot; را تغییر نام دهید</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="629"/>
@@ -2692,28 +2692,28 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="988"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>با توجه به عدم اجازه‌ی شما به ایجاد زیرپوشه به پوشه مجاز نیست</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1021"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>آپلود این فایل با توجه به فقط-خواندنی بودن آن در سرور مجاز نیست، در حال بازگرداندن</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1038"/>
         <location filename="../src/libsync/syncengine.cpp" line="1058"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>حذف مجاز نیست، در حال بازگردادن</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1071"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>فایل‌های محلی و پوشه‌ی اشتراک حذف شد.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>انتقال مجاز نیست، مورد بازگردانده شد</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1135"/>
@@ -2791,12 +2791,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>There are no sync folders configured.</source>
-        <translation type="unfinished"/>
+        <translation>هیچ پوشه‌ای برای همگام‌سازی تنظیم نشده است.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>باز کردن در مرورگر</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="350"/>
@@ -2830,7 +2830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>بازکردن پوشه‌ی &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -2875,7 +2875,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>قطع‌شده از %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3256,7 +3256,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Filesystem access error</source>
-        <translation type="unfinished"/>
+        <translation>خطای دسترسی به فایل‌های سیستمی</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -3292,7 +3292,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>نادیده گرفتن</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
@@ -3326,7 +3326,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی موفق، تعداد از فایل‌ها نادیده گرفته شده‌اند.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
