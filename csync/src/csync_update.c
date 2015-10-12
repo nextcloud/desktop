@@ -640,7 +640,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
       }
-      //
+      // 403 Forbidden can be sent by the server if the file firewall is active.
+      // A file or directory should be ignored and sync must continue. See #3490
       else if(errno == ERRNO_FORBIDDEN) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Directory access Forbidden (File Firewall?)");
           if (ctx->current_fs) {
