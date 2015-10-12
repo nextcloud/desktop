@@ -640,6 +640,20 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
       }
+      //
+      else if(errno == ERRNO_FORBIDDEN) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Directory access Forbidden (File Firewall?)");
+          if (ctx->current_fs) {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+              ctx->current_fs->error_status = CSYNC_STATUS_FORBIDDEN;
+              /* If a directory has ignored files, put the flag on the parent directory as well */
+              if( previous_fs ) {
+                  previous_fs->has_ignored_files = true;
+              }
+              goto done;
+          }
+          /* if current_fs is not defined here, better throw an error */
+      }
       // The server usually replies with the custom "503 Storage not available"
       // if some path is temporarily unavailable. But in some cases a standard 503
       // is returned too. Thus we can't distinguish the two and will treat any

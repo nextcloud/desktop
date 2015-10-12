@@ -160,8 +160,10 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
     case 423:           /* Locked */
         new_errno = EACCES;
         break;
-    case 400:           /* Bad Request */
     case 403:           /* Forbidden */
+        new_errno = ERRNO_FORBIDDEN;
+        break;
+    case 400:           /* Bad Request */
     case 409:           /* Conflict */
     case 411:           /* Length Required */
     case 412:           /* Precondition Failed */
