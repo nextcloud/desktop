@@ -39,6 +39,7 @@ owncloud_add_test(XmlParse "")
 owncloud_add_test(FileSystem "")
 owncloud_add_test(TransChecksumValidator "")
 
+owncloud_add_test(ExcludedFiles "")
 
 SET(FolderMan_SRC ../src/gui/folderman.cpp)
 list(APPEND FolderMan_SRC ../src/gui/folder.cpp )

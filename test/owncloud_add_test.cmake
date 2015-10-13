@@ -24,5 +24,6 @@ macro(owncloud_add_test test_class additional_cpp)
     )
 
     add_definitions(-DOWNCLOUD_TEST)
+    add_definitions(-DOWNCLOUD_BIN_PATH=${CMAKE_BINARY_DIR}/bin)
     add_test(NAME ${OWNCLOUD_TEST_CLASS}Test COMMAND ${OWNCLOUD_TEST_CLASS}Test)
 endmacro()
