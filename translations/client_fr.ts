@@ -190,7 +190,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="564"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Êtes-vous sûr de vouloir supprimer le compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; Aucun fichiers ne seront supprimés&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Êtes-vous sûr de vouloir enlever le compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; Aucun fichier ne sera supprimé&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -225,12 +225,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
-        <translation>Confirmez la suppression de la synchronisation</translation>
+        <translation>Confirmation de suppression</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="278"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Voulez-vous vraiment arrêter de synchroniser le dossier &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt;Aucun fichiers ne seront supprimés.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Voulez-vous vraiment arrêter de synchroniser le dossier &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt;Aucun fichier ne sera supprimé.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Unknown account state</source>
-        <translation>Statut du compte inconnu</translation>
+        <translation>Etat du compte inconnu</translation>
     </message>
 </context>
 <context>
@@ -953,7 +953,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Ask confirmation before downloading folders larger than</source>
-        <translation>Demander avant de télécharger des dossiers de taille supérieure à</translation>
+        <translation>Demander avant de télécharger les dossiers de taille supérieure à</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -997,7 +997,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/libsync/creds/httpcredentials.cpp" line="290"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Erreur lors de l&apos;accès au trousseau : %1</translation>
+        <translation>Erreur lors de l&apos;accès au trousseau : &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1056,7 @@ Compte : %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
         <source>Allow Deletion</source>
-        <translation>Permettre la suppression</translation>
+        <translation>Suppr. auto</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
@@ -1070,7 +1070,7 @@ Compte : %3
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Les fichiers ou dossiers dont les noms correspondent à un modèle ne seront pas synchronisés. 
 
-Les éléments dont la suppression est permise seront supprimés s&apos;ils empêchent l&apos;effacement d&apos;un répertoire. C&apos;est utile pour les fichiers de méta-données.</translation>
+Les éléments dont la suppression automatique est permise seront supprimés s&apos;ils empêchent l&apos;effacement d&apos;un répertoire. C&apos;est utile pour les fichiers de méta-données.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="109"/>
@@ -1427,7 +1427,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>Sélectionner une URL différente</translation>
+        <translation>Choisir une URL différente</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
