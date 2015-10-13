@@ -55,7 +55,7 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
     if( !_folder ) return false;
 
 #ifndef OWNCLOUD_TEST
-    if (_folder->isFileExcluded(path)) {
+    if (_folder->isFileExcludedAbsolute(path)) {
         qDebug() << "* Ignoring file" << path;
         return true;
     }

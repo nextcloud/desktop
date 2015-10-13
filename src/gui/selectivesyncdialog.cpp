@@ -185,7 +185,9 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
     QMutableListIterator<QString> it(list);
     while (it.hasNext()) {
         it.next();
-        if (f.isFileExcluded(it.value())) {
+        QString path = it.value();
+        path.remove(pathToRemove);
+        if (f.isFileExcludedRelative(path)) {
             it.remove();
         }
     }
@@ -195,7 +197,6 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
     if (_oldBlackList == QStringList("/")) {
         _oldBlackList.clear();
         foreach (QString path, list) {
-            path.remove(pathToRemove);
             if (path.isEmpty()) {
                 continue;
             }

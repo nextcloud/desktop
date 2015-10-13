@@ -514,10 +514,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     QMutableListIterator<QString> it(list);
     while (it.hasNext()) {
         it.next();
-        if (parentInfo->_folder->isFileExcluded(it.value())) {
+        it.value().remove(pathToRemove);
+        if (parentInfo->_folder->isFileExcludedRelative(it.value())) {
             it.remove();
-        } else {
-            it.value().remove(pathToRemove);
         }
     }
 

@@ -540,7 +540,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // Is it excluded?
-    if( folder->isFileExcluded(file) ) {
+    if( folder->isFileExcludedAbsolute(file) ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 

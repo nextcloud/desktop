@@ -707,7 +707,7 @@ void Folder::removeFromSettings() const
     settings->remove(_definition.alias);
 }
 
-bool Folder::isFileExcluded(const QString& fullPath) const
+bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
 {
     QString myFullPath = fullPath;
     if (myFullPath.endsWith(QLatin1Char('/'))) {
@@ -722,6 +722,11 @@ bool Folder::isFileExcluded(const QString& fullPath) const
     QString relativePath = myFullPath.mid(path().size());
     auto excl = ExcludedFiles::instance().isExcluded(myFullPath, relativePath, _definition.ignoreHiddenFiles);
     return excl != CSYNC_NOT_EXCLUDED;
+}
+
+bool Folder::isFileExcludedRelative(const QString& relativePath) const
+{
+    return isFileExcludedAbsolute(path() + relativePath);
 }
 
 void Folder::watcherSlot(QString fn)
