@@ -516,8 +516,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
         it.next();
         if (parentInfo->_folder->isFileExcluded(it.value())) {
             it.remove();
+        } else {
+            it.value().remove(pathToRemove);
         }
-        it.value().remove(pathToRemove);
     }
 
     beginInsertRows(idx, 0, list.count() - 1);
