@@ -18,7 +18,7 @@
 #include <accountfwd.h>
 #include <QAbstractItemModel>
 #include <QVector>
-
+#include <QElapsedTimer>
 
 class QNetworkReply;
 namespace OCC {
@@ -51,19 +51,29 @@ public:
 
     struct SubFolderInfo {
         SubFolderInfo()
-            : _folder(0), _size(0), _fetched(false), _fetching(false), _isUndecided(false),
-            _hasError(false), _checked(Qt::Checked) {}
+            : _folder(0), _size(0), _fetched(false), _fetching(false),
+            _hasError(false), _fetchingLabel(false), _isUndecided(false), _checked(Qt::Checked) {}
         Folder *_folder;
         QString _name;
         QString _path;
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
         qint64 _size;
+
         bool _fetched; // If we did the LSCOL for this folder already
-        bool _fetching;
-        bool _isUndecided; // undecided folders are the big folders that the user has not accepted yet
+        bool _fetching; // Whether a LSCOL job is currently running
         bool _hasError; // If the last fetching job ended in an error
+        bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
+
+        bool _isUndecided; // undecided folders are the big folders that the user has not accepted yet
+
         Qt::CheckState _checked;
+
+        // Whether this has a FetchLabel subrow
+        bool hasLabel() const;
+
+        // Reset all subfolders and fetch status
+        void resetSubs(FolderStatusModel* model, QModelIndex index);
 
         struct Progress {
             Progress() : _warningCount(0), _overallPercent(0) {}
@@ -79,7 +89,7 @@ public:
 
     QVector<SubFolderInfo> _folders;
 
-    enum ItemType { RootFolder, SubFolder, AddButton, ErrorLabel };
+    enum ItemType { RootFolder, SubFolder, AddButton, FetchLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
@@ -105,11 +115,24 @@ private slots:
     void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 
+    /**
+     * "In progress" labels for fetching data from the server are only
+     * added after some time to avoid popping.
+     */
+    void slotShowFetchProgress();
+
 private:
     QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
                                 const QStringList& oldBlackList) const;
     const AccountState* _accountState;
     bool _dirty;  // If the selective sync checkboxes were changed
+
+    /**
+     * Keeps track of items that are fetching data from the server.
+     *
+     * See slotShowPendingFetchProgress()
+     */
+    QMap<QPersistentModelIndex, QElapsedTimer> _fetchingItems;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     //the roles argument was added in Qt5
@@ -120,6 +143,8 @@ private:
 signals:
     void dirtyChanged();
     void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has an undecided item
+
+    friend class SubFolderInfo;
 };
 
 } // namespace OCC
