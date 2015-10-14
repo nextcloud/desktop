@@ -351,7 +351,10 @@ void PropagateDownloadFileQNAM::start()
         if (_resumeStart == _item->_size) {
             qDebug() << "File is already complete, no need to download";
             _tmpFile.close();
-            downloadFinished();
+
+            // Unfortunately we lost the checksum header, if any...
+            QByteArray checksumHeader;
+            downloadFinished(checksumHeader);
             return;
         }
     }
@@ -532,7 +535,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // will also emit the validated() signal to continue the flow in slot downloadFinished()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
-    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished()));
+    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished(QByteArray)));
     connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
     validator->start(_tmpFile.fileName(), job->reply()->rawHeader(checkSumHeaderC));
 }
@@ -611,8 +614,12 @@ static void handleRecallFile(const QString &fn)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::downloadFinished()
+void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& checksumHeader)
 {
+    if (!checksumHeader.isEmpty()) {
+        _item->_checksumHeader = checksumHeader;
+    }
+
     QString fn = _propagator->getFilePath(_item->_file);
 
     // In case of file name clash, report an error
