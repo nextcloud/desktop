@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>372</width>
-    <height>241</height>
+    <height>277</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -92,6 +92,84 @@
       <property name="rightMargin">
        <number>0</number>
       </property>
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_password">
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_setPassword">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Set &amp;password </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="checkBox_expire">
+          <property name="text">
+           <string>Set &amp;expiration date</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="calendar">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_password">
+        <item>
+         <widget class="QCheckBox" name="checkBox_password">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Set password</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="sizeConstraint">
@@ -128,23 +206,17 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_password">
+      <item row="3" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_editing">
         <item>
-         <widget class="QCheckBox" name="checkBox_password">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QCheckBox" name="checkBox_editing">
           <property name="text">
-           <string>Set password</string>
+           <string>Allow editing</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_3">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -155,54 +227,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="leftMargin">
-         <number>20</number>
-        </property>
-        <item>
-         <widget class="QLineEdit" name="lineEdit_password">
-          <property name="echoMode">
-           <enum>QLineEdit::Password</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_setPassword">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Set &amp;password </string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="3" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QCheckBox" name="checkBox_expire">
-          <property name="text">
-           <string>Set &amp;expiration date</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDateEdit" name="calendar">
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-         </widget>
         </item>
        </layout>
       </item>
@@ -252,7 +276,6 @@
   <zorder>errorLabel</zorder>
   <zorder>widget_shareLink</zorder>
   <zorder>buttonBox</zorder>
-  <zorder>checkBox_password</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

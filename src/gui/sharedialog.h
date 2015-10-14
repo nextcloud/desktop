@@ -100,6 +100,8 @@ private slots:
     void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
+    void slotCheckBoxEditingClicked();
+    void slotPublicUploadSet(const QVariantMap &reply);
 
     void done( int r );
 private:
@@ -109,6 +111,7 @@ private:
     void setShareLink( const QString& url );
     void resizeEvent(QResizeEvent *e);
     void redrawElidedUrl();
+    void setPublicUpload(bool publicUpload);
 
     Ui::ShareDialog *_ui;
     AccountPtr _account;
@@ -130,8 +133,10 @@ private:
     QProgressIndicator *_pi_link;
     QProgressIndicator *_pi_password;
     QProgressIndicator *_pi_date;
+    QProgressIndicator *_pi_editing;
 
     bool _resharingAllowed;
+    bool _isFile;
 };
 
 }

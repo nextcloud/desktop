@@ -38,6 +38,11 @@ bool Capabilities::sharePublicLink() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["enabled"].toBool();
 }
 
+bool Capabilities::sharePublicLinkAllowUpload() const
+{
+    return  _capabilities["files_sharing"].toMap()["public"].toMap()["upload"].toBool();
+}
+
 bool Capabilities::sharePublicLinkEnforcePassword() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
