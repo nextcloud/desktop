@@ -206,6 +206,7 @@ bool SyncJournalDb::checkConnect()
                          "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
                         // updateDatabaseStructure() will add a fileid column
                         // updateDatabaseStructure() will add a remotePerm column
+                        // updateDatabaseStructure() will add a checksumHeader column
                          "PRIMARY KEY(phash)"
                          ");");
 
@@ -346,13 +347,13 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
-    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM "
+    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, checksumHeader FROM "
                                  "metadata WHERE phash=?1" );
 
     _setFileRecordQuery.reset(new SqlQuery(_db) );
     _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote) "
-                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14);" );
+                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, checksumHeader) "
+                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15);" );
 
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
@@ -527,6 +528,17 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal("update database structure: add ignoredChildrenRemote col");
     }
+
+    if( columns.indexOf(QLatin1String("checksumHeader")) == -1 ) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN checksumHeader TEXT;");
+        if( !query.exec()) {
+            sqlFail("updateMetadataTableStructure: add checksumHeader column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add checksumHeader col");
+    }
+
     return re;
 }
 
@@ -642,6 +654,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         _setFileRecordQuery->bindValue(12, remotePerm );
         _setFileRecordQuery->bindValue(13, record._fileSize );
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1:0);
+        _setFileRecordQuery->bindValue(15, record._checksumHeader );
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -652,7 +665,8 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
                  << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
-                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0);
+                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0)
+                 << record._checksumHeader;
 
         _setFileRecordQuery->reset();
         return true;
@@ -732,6 +746,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._remotePerm = _getFileRecordQuery->baValue(9);
             rec._fileSize   = _getFileRecordQuery->int64Value(10);
             rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
+            rec._checksumHeader = _getFileRecordQuery->baValue(12);
         } else {
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename;

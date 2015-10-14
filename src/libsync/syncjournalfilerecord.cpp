@@ -35,7 +35,8 @@ SyncJournalFileRecord::SyncJournalFileRecord()
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
       _type(item._type), _etag(item._etag), _fileId(item._fileId), _fileSize(item._size),
-      _remotePerm(item._remotePerm), _mode(0), _serverHasIgnoredFiles(item._serverHasIgnoredFiles)
+      _remotePerm(item._remotePerm), _mode(0), _serverHasIgnoredFiles(item._serverHasIgnoredFiles),
+      _checksumHeader(item._checksumHeader)
 {
     // use the "old" inode coming with the item for the case where the
     // filesystem stat fails. That can happen if the the file was removed
