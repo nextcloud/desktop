@@ -94,10 +94,7 @@ void TransmissionChecksumValidator::downloadValidation( const QByteArray& checks
 {
     // if the incoming header is empty, there was no checksum header, and
     // no validation can happen. Just continue.
-    const QString csType = checksumType();
-
-    // for empty checksum type, everything is valid.
-    if( csType.isEmpty() ) {
+    if( checksumHeader.isEmpty() ) {
         emit validated(QByteArray());
         return;
     }
