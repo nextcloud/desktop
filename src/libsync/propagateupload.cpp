@@ -209,19 +209,32 @@ void PropagateUploadFileQNAM::start()
 
     _stopWatch.start();
 
-    // do whatever is needed to add a checksum to the http upload request.
-    // in any case, the validator will emit signal startUpload to let the flow
-    // continue in slotStartUpload here.
+    auto supportedChecksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
+
+    // If we already have a checksum header and the checksum type is supported
+    // by the server, we keep that - otherwise recompute.
+    if (!_item->_checksumHeader.isEmpty()) {
+        QByteArray checksumType;
+        QByteArray checksum;
+        if (parseChecksumHeader(_item->_checksumHeader, &checksumType, &checksum)
+                && supportedChecksumTypes.contains(checksumType)) {
+            // TODO: We could validate the old checksum and thereby determine whether
+            // an upload is necessary or not.
+            slotStartUpload(checksumType, checksum);
+            return;
+        }
+    }
+
+    // Compute a new checksum.
     auto computeChecksum = new ComputeChecksum(this);
 
     // If the config file does not specify a checksum type but the
-    // server supports it choose a type based on that.
+    // server supports it, choose a type based on that.
     if (computeChecksum->checksumType().isEmpty()) {
-        auto checksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
-        if (!checksumTypes.isEmpty()) {
+        if (!supportedChecksumTypes.isEmpty()) {
             // TODO: We might want to prefer some types over others instead
             // of choosing the first.
-            computeChecksum->setChecksumType(checksumTypes.first());
+            computeChecksum->setChecksumType(supportedChecksumTypes.first());
         }
     }
 
@@ -232,8 +245,14 @@ void PropagateUploadFileQNAM::start()
 
 void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, const QByteArray& checksum)
 {
+    // Store the computed checksum in the database, if different
+    auto newChecksumHeader = makeChecksumHeader(checksumType, checksum);
+    if (newChecksumHeader != _item->_checksumHeader) {
+        _item->_checksumHeader = newChecksumHeader;
+        _propagator->_journal->updateFileRecordChecksumHeader(_item->_file, _item->_checksumHeader);
+    }
+
     const QString fullFilePath = _propagator->getFilePath(_item->_file);
-    _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));

@@ -42,6 +42,7 @@ public:
     bool setFileRecord( const SyncJournalFileRecord& record );
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
+    bool updateFileRecordChecksumHeader(const QString& filename, const QByteArray& checksumHeader);
     bool exists();
     void walCheckpoint();
 
@@ -159,6 +160,7 @@ private:
     int _transaction;
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
+    QScopedPointer<SqlQuery> _setFileRecordChecksumHeaderQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
     QScopedPointer<SqlQuery> _setDownloadInfoQuery;
     QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;

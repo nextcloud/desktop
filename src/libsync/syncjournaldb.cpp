@@ -355,6 +355,9 @@ bool SyncJournalDb::checkConnect()
                                  "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, checksumHeader) "
                                  "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15);" );
 
+    _setFileRecordChecksumHeaderQuery.reset(new SqlQuery(_db) );
+    _setFileRecordChecksumHeaderQuery->prepare("UPDATE metadata SET checksumHeader = ?2 WHERE phash == ?1;");
+
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
                                     "downloadinfo WHERE path=?1" );
@@ -833,6 +836,35 @@ int SyncJournalDb::getFileRecordCount()
     }
 
     return 0;
+}
+
+bool SyncJournalDb::updateFileRecordChecksumHeader(const QString &filename, const QByteArray &checksumHeader)
+{
+    QMutexLocker locker(&_mutex);
+
+    qlonglong phash = getPHash(filename);
+    if( !checkConnect() ) {
+        qDebug() << "Failed to connect database.";
+        return false;
+    }
+
+    auto & query = _setFileRecordChecksumHeaderQuery;
+
+    query->reset();
+    query->bindValue(1, QString::number(phash));
+    query->bindValue(2, checksumHeader);
+
+    if( !query->exec() ) {
+        qWarning() << "Error SQL statement setFileRecordChecksumHeaderQuery: "
+                   << query->lastQuery() <<  " :"
+                   << query->error();
+        return false;
+    }
+
+    qDebug() << query->lastQuery() << phash << checksumHeader;
+
+    query->reset();
+    return true;
 }
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo * res)
