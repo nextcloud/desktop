@@ -63,9 +63,9 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
-QStringList Capabilities::supportedChecksumTypes() const
+QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
-    return QStringList();
+    return QList<QByteArray>();
 }
 
 }

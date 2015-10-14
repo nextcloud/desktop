@@ -212,27 +212,28 @@ void PropagateUploadFileQNAM::start()
     // do whatever is needed to add a checksum to the http upload request.
     // in any case, the validator will emit signal startUpload to let the flow
     // continue in slotStartUpload here.
-    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
+    auto computeChecksum = new ComputeChecksum(this);
 
     // If the config file does not specify a checksum type but the
     // server supports it choose a type based on that.
-    if (validator->checksumType().isEmpty()) {
-        QStringList checksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
+    if (computeChecksum->checksumType().isEmpty()) {
+        auto checksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
         if (!checksumTypes.isEmpty()) {
             // TODO: We might want to prefer some types over others instead
             // of choosing the first.
-            validator->setChecksumType(checksumTypes.first());
+            computeChecksum->setChecksumType(checksumTypes.first());
         }
     }
 
-    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(slotStartUpload(QByteArray)));
-    validator->uploadValidation();
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            SLOT(slotStartUpload(QByteArray,QByteArray)));
+    computeChecksum->start(filePath);
 }
 
-void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
+void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, const QByteArray& checksum)
 {
     const QString fullFilePath = _propagator->getFilePath(_item->_file);
-    _item->_checksum = checksum;
+    _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -478,14 +479,14 @@ void PropagateUploadFileQNAM::startNextChunk()
             if( currentChunkSize == 0 ) { // if the last chunk pretends to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
             }
-            if( !_item->_checksum.isEmpty() ) {
-                headers[checkSumHeaderC] = _item->_checksum;
+            if( !_item->_checksumHeader.isEmpty() ) {
+                headers[checkSumHeaderC] = _item->_checksumHeader;
             }
         }
     } else {
         // checksum if its only one chunk
-        if( !_item->_checksum.isEmpty() ) {
-            headers[checkSumHeaderC] = _item->_checksum;
+        if( !_item->_checksumHeader.isEmpty() ) {
+            headers[checkSumHeaderC] = _item->_checksumHeader;
         }
     }
 

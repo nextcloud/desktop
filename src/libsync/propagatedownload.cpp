@@ -531,11 +531,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // Do checksum validation for the download. If there is no checksum header, the validator
     // will also emit the validated() signal to continue the flow in slot downloadFinished()
     // as this is (still) also correct.
-    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(_tmpFile.fileName(), this);
+    ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
     connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished()));
     connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
-    validator->downloadValidation(job->reply()->rawHeader(checkSumHeaderC));
-
+    validator->start(_tmpFile.fileName(), job->reply()->rawHeader(checkSumHeaderC));
 }
 
 void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )

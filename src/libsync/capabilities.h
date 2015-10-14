@@ -39,7 +39,7 @@ public:
     bool sharePublicLinkEnforceExpireDate() const;
     int  sharePublicLinkExpireDateDays() const;
     bool shareResharing() const;
-    QStringList supportedChecksumTypes() const;
+    QList<QByteArray> supportedChecksumTypes() const;
 
 private:
     QVariantMap _capabilities;

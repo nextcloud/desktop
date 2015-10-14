@@ -23,62 +23,79 @@
 
 namespace OCC {
 
+/// Creates a checksum header from type and value.
+QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& checksum);
+
+/// Parses a checksum header
+bool parseChecksumHeader(const QByteArray& header, QByteArray* type, QByteArray* checksum);
+
 /**
- * @brief The TransmissionChecksumValidator class
- * @ingroup libsync
+ * Computes the checksum of a file.
+ * \ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT TransmissionChecksumValidator : public QObject
+class OWNCLOUDSYNC_EXPORT ComputeChecksum : public QObject
 {
     Q_OBJECT
 public:
-    explicit TransmissionChecksumValidator(const QString& filePath, QObject *parent = 0);
-
-    /**
-     * method to prepare a checksum for transmission and save it to the _checksum
-     * member of the SyncFileItem *item.
-     * The kind of requested checksum is taken from config. No need to set from outside.
-     *
-     * In any case of processing (checksum set, no checksum required and also unusual error)
-     * the object will emit the signal validated(). The item->_checksum is than either
-     * set to a proper value or empty.
-     */
-    void uploadValidation();
-
-    /**
-     * method to verify the checksum coming with requests in a checksum header. The required
-     * checksum method is read from config.
-     *
-     * If no checksum is there, or if a correct checksum is there, the signal validated()
-     * will be emitted. In case of any kind of error, the signal validationFailed() will
-     * be emitted.
-     */
-    void downloadValidation( const QByteArray& checksumHeader );
+    explicit ComputeChecksum(QObject* parent = 0);
 
     /**
      * By default the checksum type is read from the config file, but can be overridden
      * with this method.
      */
-    void setChecksumType(const QString& type);
+    void setChecksumType(const QByteArray& type);
 
-    QString checksumType() const;
+    QByteArray checksumType() const;
+
+    /**
+     * Computes the checksum for the given file path.
+     *
+     * done() is emitted when the calculation finishes.
+     */
+    void start(const QString& filePath);
 
 signals:
-    void validated(const QByteArray& checksum);
-    void validationFailed( const QString& errMsg );
+    void done(const QByteArray& checksumType, const QByteArray& checksum);
 
 private slots:
-    void slotUploadChecksumCalculated();
-    void slotDownloadChecksumCalculated();
+    void slotCalculationDone();
 
 private:
-    QString       _checksumType;
-    QByteArray    _expectedHash;
-    QByteArray    _checksumHeader;
-
-    QString       _filePath;
+    QByteArray _checksumType;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
+};
+
+/**
+ * Checks whether a file's checksum matches the expected value.
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT ValidateChecksumHeader : public QObject
+{
+    Q_OBJECT
+public:
+    explicit ValidateChecksumHeader(QObject *parent = 0);
+
+    /**
+     * Check a file's actual checksum against the provided checksumHeader
+     *
+     * If no checksum is there, or if a correct checksum is there, the signal validated()
+     * will be emitted. In case of any kind of error, the signal validationFailed() will
+     * be emitted.
+     */
+    void start(const QString& filePath, const QByteArray& checksumHeader);
+
+signals:
+    void validated(const QByteArray& checksumHeader);
+    void validationFailed( const QString& errMsg );
+
+private slots:
+    void slotChecksumCalculated(const QByteArray& checksumType, const QByteArray& checksum);
+
+private:
+    QByteArray _expectedChecksumType;
+    QByteArray _expectedChecksum;
 };
 
 }
