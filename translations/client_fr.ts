@@ -682,7 +682,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation>Ajouter un dossier n&apos;est pas possible car vous synchronisez déjà tous vos fichiers. Si vous désirez synchroniser plusieurs dossier, supprimez d&apos;abord la configuration du dossier racine actuelle.</translation>
+        <translation>Ajouter un dossier n&apos;est pas possible car vous synchronisez déjà tous vos fichiers. Si vous désirez synchroniser plusieurs dossiers, supprimez d&apos;abord la configuration actuelle.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
