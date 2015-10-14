@@ -42,6 +42,7 @@
 #include <QKeySequence>
 #include <QIcon>
 #include <QVariant>
+#include <QToolTip>
 #include <qstringlistmodel.h>
 #include <qpropertyanimation.h>
 
@@ -181,9 +182,15 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
 void AccountSettings::slotFolderActivated( const QModelIndex& indx )
 {
-    if (indx.data(FolderStatusDelegate::AddButton).toBool()
-            && indx.flags() & Qt::ItemIsEnabled) {
-        slotAddFolder();
+    if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
+        if (indx.flags() & Qt::ItemIsEnabled) {
+            slotAddFolder();
+        } else {
+            QToolTip::showText(
+                    QCursor::pos(),
+                    _model->data(indx, Qt::ToolTipRole).toString(),
+                    this);
+        }
         return;
     }
     if (_model->classify(indx) == FolderStatusModel::RootFolder) {
