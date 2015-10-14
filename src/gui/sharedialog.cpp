@@ -143,15 +143,15 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     // Parse capabilities
 
     // If password is enforced then don't allow users to disable it
-    if (_account->capabilities().publicLinkEnforcePassword()) {
+    if (_account->capabilities().sharePublicLinkEnforcePassword()) {
         _ui->checkBox_password->setEnabled(false);
     }
 
     // If expiredate is enforced do not allow disable and set max days
-    if (_account->capabilities().publicLinkEnforceExpireDate()) {
+    if (_account->capabilities().sharePublicLinkEnforceExpireDate()) {
         _ui->checkBox_expire->setEnabled(false);
         _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
-            _account->capabilities().publicLinkExpireDateDays()
+            _account->capabilities().sharePublicLinkExpireDateDays()
             ));
     }
 }
@@ -466,7 +466,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
          * Check the capabilities if the server requires a password for a share
          * Ask for it directly
          */
-        if (_account->capabilities().publicLinkEnforcePassword()) {
+        if (_account->capabilities().sharePublicLinkEnforcePassword()) {
             _pi_link->stopAnimation();
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);

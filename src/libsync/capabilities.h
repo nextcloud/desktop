@@ -32,9 +32,12 @@ class OWNCLOUDSYNC_EXPORT Capabilities {
 public:
     Capabilities(const QVariantMap &capabilities);
 
-    bool publicLinkEnforcePassword() const;
-    bool publicLinkEnforceExpireDate() const;
-    int  publicLinkExpireDateDays() const;
+    bool shareAPI() const;
+    bool sharePublicLink() const;
+    bool sharePublicLinkEnforcePassword() const;
+    bool sharePublicLinkEnforceExpireDate() const;
+    int  sharePublicLinkExpireDateDays() const;
+    bool shareResharing() const;
     QStringList supportedChecksumTypes() const;
 
 private:
