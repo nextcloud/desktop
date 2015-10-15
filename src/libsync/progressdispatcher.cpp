@@ -230,16 +230,44 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
     // can become very pessimistic as the transfered amount per second
     // drops significantly.
     //
-    // So, if we detect a high rate of files per second, we gradually prefer
-    // a file-per-second estimate and assume the remaining transfer will
-    // be done with the highest speed we've seen.
-    quint64 combinedEta = file.estimatedEta + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
-    if (combinedEta < size.estimatedEta) {
-        double filesPerSec = _fileProgress._progressPerSec;
-        // value between 0 (fps==5) and 1 (fps==20)
-        double scale = qBound(0.0, (filesPerSec - 5.0) / 15.0, 1.0);
-        size.estimatedEta = (1.0 - scale) * size.estimatedEta + scale * combinedEta;
-    }
+    // So, if we detect a high rate of files per second or a very low
+    // transfer rate (often drops hugely during a sequence of deletes,
+    // for instance), we gradually prefer an optimistic estimate and
+    // assume the remaining transfer will be done with the highest speed
+    // we've seen.
+
+    // This assumes files and transfers finish as quickly as possible
+    // *but* note that maxPerSecond could be serious underestimates
+    // (if we never got to fully excercise transfer or files/second)
+    quint64 optimisticEta =
+            _fileProgress.remaining()  / _maxFilesPerSecond * 1000
+            + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
+
+    // Compute a value that is 0 when fps is <=L*max and 1 when fps is >=U*max
+    double fps = _fileProgress._progressPerSec;
+    double fpsL = 0.5;
+    double fpsU = 0.8;
+    double nearMaxFps =
+            qBound(0.0,
+                   (fps - fpsL * _maxFilesPerSecond) /
+                   ((fpsU - fpsL) * _maxFilesPerSecond),
+                   1.0);
+
+    // Compute a value that is 0 when transfer is >= U*max and
+    // 1 when transfer is <= L*max
+    double trans = _sizeProgress._progressPerSec;
+    double transU = 0.1;
+    double transL = 0.01;
+    double slowTransfer = 1.0 -
+            qBound(0.0,
+                   (trans - transL * _maxBytesPerSecond) /
+                   ((transU - transL) * _maxBytesPerSecond),
+                   1.0);
+
+    double beOptimistic = nearMaxFps * slowTransfer;
+    size.estimatedEta = (1.0 - beOptimistic) * size.estimatedEta
+                        + beOptimistic * optimisticEta;
+
     return size;
 }
 
