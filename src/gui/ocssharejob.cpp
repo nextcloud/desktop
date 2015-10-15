@@ -23,27 +23,23 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account, QObject* parent)
 : OcsJob(account, parent)
 {
-    setUrl(Account::concatUrlPath(account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares")));
+    setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
 }
 
 OcsShareJob::OcsShareJob(int shareId, AccountPtr account, QObject* parent)
 : OcsJob(account, parent)
 {
-    setUrl(Account::concatUrlPath(account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(shareId)));
+    setPath(QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(shareId));
 }
 
 void OcsShareJob::getShares(const QString &path)
 {
     setVerb("GET");
-    
-    QList<QPair<QString, QString> > getParams;
-    getParams.append(qMakePair(QString::fromLatin1("path"), path));
-    setGetParams(getParams);
 
+    addParam(QString::fromLatin1("path"), path);
     addPassStatusCode(404);
 
     start();
-
 }
 
 void OcsShareJob::deleteShare()
@@ -57,15 +53,12 @@ void OcsShareJob::setExpireDate(const QDate &date)
 {
     setVerb("PUT");
 
-    QList<QPair<QString, QString> > postParams;
-
     if (date.isValid()) {
-        postParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
+        addParam(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd"));
     } else {
-        postParams.append(qMakePair(QString::fromLatin1("expireDate"), QString()));
+        addParam(QString::fromLatin1("expireDate"), QString());
     }
 
-    setPostParams(postParams);
     start();
 }
 
@@ -73,10 +66,8 @@ void OcsShareJob::setPassword(const QString &password)
 {
     setVerb("PUT");
 
-    QList<QPair<QString, QString> > postParams;
-    postParams.append(qMakePair(QString::fromLatin1("password"), password));
+    addParam(QString::fromLatin1("password"), password);
 
-    setPostParams(postParams);
     start();
 }
 
@@ -84,11 +75,9 @@ void OcsShareJob::setPublicUpload(bool publicUpload)
 {
     setVerb("PUT");
 
-    QList<QPair<QString, QString> > postParams;
     const QString value = QString::fromLatin1(publicUpload ? "true" : "false");
-    postParams.append(qMakePair(QString::fromLatin1("publicUpload"), value));
+    addParam(QString::fromLatin1("publicUpload"), value);
 
-    setPostParams(postParams);
     start();
 }
 
@@ -96,19 +85,16 @@ void OcsShareJob::createShare(const QString &path, SHARETYPE shareType, const QS
 {
     setVerb("POST");
 
-    QList<QPair<QString, QString> > postParams;
-    postParams.append(qMakePair(QString::fromLatin1("path"), path));
-    postParams.append(qMakePair(QString::fromLatin1("shareType"), QString::number(static_cast<int>(shareType))));
+    addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("shareType"), QString::number(static_cast<int>(shareType)));
 
     if (!password.isEmpty()) {
-        postParams.append(qMakePair(QString::fromLatin1("shareType"), password));
+        addParam(QString::fromLatin1("shareType"), password);
     }
 
     if (date.isValid()) {
-        postParams.append(qMakePair(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd")));
+        addParam(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd"));
     }
-
-    setPostParams(postParams);
 
     addPassStatusCode(403);
 

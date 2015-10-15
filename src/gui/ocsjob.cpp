@@ -32,19 +32,9 @@ void OcsJob::setVerb(const QByteArray &verb)
     _verb = verb;
 }
 
-void OcsJob::setUrl(const QUrl &url)
+void OcsJob::addParam(const QString &name, const QString &value)
 {
-    _url = url;
-}
-
-void OcsJob::setGetParams(const QList<QPair<QString, QString> >& getParams)
-{
-    _url.setQueryItems(getParams);
-}
-
-void OcsJob::setPostParams(const QList<QPair<QString, QString> >& postParams)
-{
-    _postParams = postParams;
+    _params.append(qMakePair(name, value));
 }
 
 void OcsJob::addPassStatusCode(int code)
@@ -58,24 +48,31 @@ void OcsJob::start()
     req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Url encode the _postParams and put them in a buffer.
-    QByteArray postData;
-    Q_FOREACH(auto tmp2, _postParams) {
-        if (! postData.isEmpty()) {
-            postData.append("&");
-        }
-        postData.append(QUrl::toPercentEncoding(tmp2.first));
-        postData.append("=");
-        postData.append(QUrl::toPercentEncoding(tmp2.second));
-    }
+    QUrl url = Account::concatUrlPath(account()->url(), path());
     QBuffer *buffer = new QBuffer;
-    buffer->setData(postData);
 
-    auto queryItems = _url.queryItems();
+    if (_verb == "GET") {
+        url.setQueryItems(_params);
+    } else if (_verb == "POST" || _verb == "PUT") {
+        // Url encode the _postParams and put them in a buffer.
+        QByteArray postData;
+        Q_FOREACH(auto tmp, _params) {
+            if (!postData.isEmpty()) {
+                postData.append("&");
+            }
+            postData.append(QUrl::toPercentEncoding(tmp.first));
+            postData.append("=");
+            postData.append(QUrl::toPercentEncoding(tmp.second));
+        }
+        buffer->setData(postData);
+    }
+
+    //We want json data
+    auto queryItems = url.queryItems();
     queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    _url.setQueryItems(queryItems);
+    url.setQueryItems(queryItems);
 
-    setReply(davRequest(_verb, _url, req, buffer));
+    setReply(davRequest(_verb, url, req, buffer));
     setupConnections(reply());
     buffer->setParent(reply());
     AbstractNetworkJob::start();
@@ -88,14 +85,20 @@ bool OcsJob::finished()
     bool success;
     QVariantMap json = QtJson::parse(replyData, success).toMap();
     if (!success) {
-        qDebug() << "Could not parse reply to" << _verb << _url << _postParams
+        qDebug() << "Could not parse reply to" 
+                 << _verb 
+                 << Account::concatUrlPath(account()->url(), path()) 
+                 << _params
                  << ":" << replyData;
     }
 
     QString message;
     const int statusCode = getJsonReturnCode(json, message);
     if (!_passStatusCodes.contains(statusCode)) {
-        qDebug() << "Reply to" << _verb << _url << _postParams
+        qDebug() << "Reply to"
+                 << _verb
+                 << Account::concatUrlPath(account()->url(), path())
+                 << _params
                  << "has unexpected status code:" << statusCode << replyData;
     }
 

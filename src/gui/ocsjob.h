@@ -48,18 +48,13 @@ protected:
     void setVerb(const QByteArray& verb);
 
     /**
-     * The url of the OCS endpoint
+     * Add a new parameter to the request.
+     * Depending on the verb this is GET or POST parameter
      *
-     * @param url
+     * @param name The name of the parameter
+     * @param value The value of the parameter
      */
-    void setUrl(const QUrl& url);
-
-    /**
-     * Set the get parameters to the url
-     *
-     * @param getParams list of pairs to add to the url
-     */
-    void setGetParams(const QList<QPair<QString, QString> >& getParams);
+    void addParam(const QString& name, const QString &value);
 
     /**
      * Set the post parameters
@@ -110,8 +105,7 @@ private slots:
 
 private:
     QByteArray _verb;
-    QUrl _url;
-    QList<QPair<QString, QString> > _postParams;
+    QList<QPair<QString, QString> > _params;
     QVector<int> _passStatusCodes;
 };
 
