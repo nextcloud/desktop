@@ -144,7 +144,7 @@ signals:
     void dirtyChanged();
     void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has an undecided item
 
-    friend class SubFolderInfo;
+    friend struct SubFolderInfo;
 };
 
 } // namespace OCC
