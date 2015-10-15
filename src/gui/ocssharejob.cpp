@@ -21,13 +21,13 @@
 namespace OCC {
 
 OcsShareJob::OcsShareJob(AccountPtr account, QObject* parent)
-: OCSJob(account, parent)
+: OcsJob(account, parent)
 {
     setUrl(Account::concatUrlPath(account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares")));
 }
 
 OcsShareJob::OcsShareJob(int shareId, AccountPtr account, QObject* parent)
-: OCSJob(account, parent)
+: OcsJob(account, parent)
 {
     setUrl(Account::concatUrlPath(account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(shareId)));
 }

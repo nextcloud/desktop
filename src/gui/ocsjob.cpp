@@ -20,42 +20,42 @@
 
 namespace OCC {
 
-OCSJob::OCSJob(AccountPtr account, QObject* parent)
+OcsJob::OcsJob(AccountPtr account, QObject* parent)
 : AbstractNetworkJob(account, "", parent)
 {
     _passStatusCodes.append(100);
     setIgnoreCredentialFailure(true);
 }
 
-void OCSJob::setVerb(const QByteArray &verb)
+void OcsJob::setVerb(const QByteArray &verb)
 {
     _verb = verb;
 }
 
-void OCSJob::setUrl(const QUrl &url)
+void OcsJob::setUrl(const QUrl &url)
 {
     _url = url;
 }
 
-void OCSJob::setGetParams(const QList<QPair<QString, QString> >& getParams)
+void OcsJob::setGetParams(const QList<QPair<QString, QString> >& getParams)
 {
     _url.setQueryItems(getParams);
 }
 
-void OCSJob::setPostParams(const QList<QPair<QString, QString> >& postParams)
+void OcsJob::setPostParams(const QList<QPair<QString, QString> >& postParams)
 {
     _postParams = postParams;
 }
 
-void OCSJob::addPassStatusCode(int code)
+void OcsJob::addPassStatusCode(int code)
 {
     _passStatusCodes.append(code);
 }
 
-void OCSJob::start()
+void OcsJob::start()
 {
     QNetworkRequest req;
-    req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Url encode the _postParams and put them in a buffer.
@@ -81,7 +81,7 @@ void OCSJob::start()
     AbstractNetworkJob::start();
 }
 
-bool OCSJob::finished()
+bool OcsJob::finished()
 {
     const QString replyData = reply()->readAll();
 
@@ -103,7 +103,7 @@ bool OCSJob::finished()
     return true;
 }
 
-int OCSJob::getJsonReturnCode(const QVariantMap &json, QString &message)
+int OcsJob::getJsonReturnCode(const QVariantMap &json, QString &message)
 {
     //TODO proper checking
     int code = json.value("ocs").toMap().value("meta").toMap().value("statuscode").toInt();

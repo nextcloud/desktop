@@ -201,7 +201,7 @@ void ShareDialog::setExpireDate(const QDate &date)
 void ShareDialog::slotExpireSet(const QVariantMap &reply)
 {
     QString message;
-    int code = OCSJob::getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     if (code != 100) {
         displayError(code);
     } 

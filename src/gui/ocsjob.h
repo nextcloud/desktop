@@ -27,13 +27,18 @@ namespace OCC {
 /**
  * @brief The OcsShareJob class
  * @ingroup gui
+ *
+ * Base class for jobs that talk to the OCS endpoints on the server.
+ * All the comminication logic is handled in this class.
+ *
+ * All OCS jobs (e.g. sharing) should extend this class.
  */
-class OCSJob : public AbstractNetworkJob {
+class OcsJob : public AbstractNetworkJob {
     Q_OBJECT
 
 protected:
 
-    explicit OCSJob(AccountPtr account, QObject* parent = 0);
+    explicit OcsJob(AccountPtr account, QObject* parent = 0);
 
     /**
      * Set the verb for the job

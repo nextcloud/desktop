@@ -24,8 +24,11 @@ namespace OCC {
 /**
  * @brief The OcsShareJob class
  * @ingroup gui
+ *
+ * Handle talking to the OCS Share API. 
+ * For creation, deletion and modification of shares.
  */
-class OcsShareJob : public OCSJob {
+class OcsShareJob : public OcsJob {
     Q_OBJECT
 public:
 
