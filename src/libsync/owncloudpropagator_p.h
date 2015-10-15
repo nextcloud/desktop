@@ -25,7 +25,14 @@ inline QByteArray parseEtag(const char *header) {
     if (!header)
         return QByteArray();
     QByteArray arr = header;
-    arr.replace("-gzip", ""); // https://github.comowncloud/client/issues/1195
+
+    // Weak E-Tags can appear when gzip compression is on, see #3946
+    if (arr.startsWith("W/"))
+        arr = arr.mid(2);
+
+    // https://github.com/owncloud/client/issues/1195
+    arr.replace("-gzip", "");
+
     if(arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
         arr = arr.mid(1, arr.length() - 2);
     }

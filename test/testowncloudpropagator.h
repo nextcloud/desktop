@@ -11,6 +11,7 @@
 #include <QDebug>
 
 #include "propagatedownload.h"
+#include "owncloudpropagator_p.h"
 
 using namespace OCC;
 namespace OCC {
@@ -62,6 +63,20 @@ private slots:
             }
             QVERIFY( tmpFileName.length() > 0);
             QVERIFY( tmpFileName.length() <= 254);
+        }
+    }
+
+    void testParseEtag()
+    {
+        typedef QPair<const char*, const char*> Test;
+        QList<Test> tests;
+        tests.append(Test("\"abcd\"", "abcd"));
+        tests.append(Test("\"\"", ""));
+        tests.append(Test("\"fii\"-gzip", "fii"));
+        tests.append(Test("W/\"foo\"", "foo"));
+
+        foreach (const auto& test, tests) {
+            QCOMPARE(parseEtag(test.first), test.second);
         }
     }
 };
