@@ -91,6 +91,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(_model, SIGNAL(suggestExpand(QModelIndex)), ui->_folderList, SLOT(expand(QModelIndex)));
     connect(_model, SIGNAL(dirtyChanged()), this, SLOT(refreshSelectiveSyncStatus()));
     refreshSelectiveSyncStatus();
+    connect(_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
+            this, SLOT(refreshSelectiveSyncStatus()));
 
     QAction *resetFolderAction = new QAction(this);
     resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
@@ -517,6 +519,13 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
+    if (_model->_folders.first()._subs.count() == 0) {
+        // Don't show when there is no items in model yet.
+        // It will be called again via rowsInserted()
+        ui->selectiveSyncStatus->setVisible(false);
+        return;
+    }
+
     bool shouldBeVisible = _model->isDirty();
     QStringList undecidedFolder;
     for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
