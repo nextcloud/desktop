@@ -606,6 +606,9 @@ bool AccountSettings::event(QEvent* e)
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
         _quotaInfo.setActive(isVisible());
     }
+    if (e->type() == QEvent::Show) {
+        ui->_folderList->setExpanded(_model->index(0, 0), true);
+    }
     return QWidget::event(e);
 }
 
