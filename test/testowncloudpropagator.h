@@ -76,7 +76,7 @@ private slots:
         tests.append(Test("W/\"foo\"", "foo"));
 
         foreach (const auto& test, tests) {
-            QCOMPARE(parseEtag(test.first), test.second);
+            QCOMPARE(parseEtag(test.first), QByteArray(test.second));
         }
     }
 };
