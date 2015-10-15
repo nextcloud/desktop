@@ -80,6 +80,18 @@ void OcsShareJob::setPassword(const QString &password)
     start();
 }
 
+void OcsShareJob::setPublicUpload(bool publicUpload)
+{
+    setVerb("PUT");
+
+    QList<QPair<QString, QString> > postParams;
+    const QString value = QString::fromLatin1(publicUpload ? "true" : "false");
+    postParams.append(qMakePair(QString::fromLatin1("publicUpload"), value));
+
+    setPostParams(postParams);
+    start();
+}
+
 void OcsShareJob::createShare(const QString &path, SHARETYPE shareType, const QString &password, const QDate &date)
 {
     setVerb("POST");

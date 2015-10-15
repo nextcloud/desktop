@@ -75,6 +75,13 @@ public:
     void setPassword(const QString& password);
 
     /**
+     * Void set the a share to be public upload
+     * 
+     * @param publicUpload Set or remove public upload
+     */
+    void setPublicUpload(bool publicUpload);
+
+    /**
      * Create a new share
      *
      * @param path The path of the file/folder to share

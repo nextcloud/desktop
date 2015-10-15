@@ -33,8 +33,6 @@
 #include <QFileInfo>
 
 namespace {
-    int SHARETYPE_PUBLIC = 3;
-
 //    int PERMISSION_READ = 1;
     int PERMISSION_UPDATE = 2;
     int PERMISSION_CREATE = 4;
@@ -564,23 +562,15 @@ void ShareDialog::setPublicUpload(bool publicUpload)
     _ui->checkBox_editing->setEnabled(false);
     _pi_editing->startAnimation();
 
-    const QUrl url = Account::concatUrlPath(_account->url(), QString("ocs/v1.php/apps/files_sharing/api/v1/shares/%1").arg(_public_share_id));
-
-    QList<QPair<QString, QString> > requestParams;
-    const QString value = QString::fromLatin1(publicUpload ? "true" : "false");
-    requestParams.append(qMakePair(QString::fromLatin1("publicUpload"), value));
-
-    OcsShareJob *job = new OcsShareJob("PUT", url, _account, this);
-    job->setPostParams(requestParams);
+    OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPublicUploadSet(QVariantMap)));
-
-    job->start();
+    job->setPublicUpload(publicUpload);
 }
 
 void ShareDialog::slotPublicUploadSet(const QVariantMap &reply)
 {
     QString message;
-    int code = getJsonReturnCode(reply, message);
+    int code = OcsShareJob::getJsonReturnCode(reply, message);
     if (code == 100) {
         _ui->checkBox_editing->setEnabled(true);
     } else {
