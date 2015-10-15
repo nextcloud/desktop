@@ -19,6 +19,13 @@
 
 namespace OCC {
 
+/**
+ * @brief Job to fetch a thumbnail for a file
+ * @ingroup gui
+ *
+ * Job that allows fetching a preview (of 150x150 for now) of a given file.
+ * Once the job finished the jobFinished signal will be emitted.
+ */
 class ThumbnailJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
@@ -26,11 +33,17 @@ public:
 public slots:
     void start() Q_DECL_OVERRIDE;
 signals:
+    /**
+     * @param statusCode the HTTP status code
+     * @param reply the content of the reply
+     *
+     * Signal that the job is done. If the statusCode is 200 (success) reply
+     * will contain the image data in PNG. If the status code is different the content
+     * of reply is undefined.
+     */
     void jobFinished(int statusCode, QByteArray reply);
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
-private:
-    QUrl _url;
 };
 
 }

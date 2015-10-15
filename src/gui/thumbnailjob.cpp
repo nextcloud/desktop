@@ -19,16 +19,14 @@
 namespace OCC {
 
 ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, "", parent)
+: AbstractNetworkJob(account, QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path, parent)
 {
-    _url = Account::concatUrlPath(account->url(), QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path);
     setIgnoreCredentialFailure(true);
 }
 
 void ThumbnailJob::start()
 {
-    qDebug() << Q_FUNC_INFO;
-    setReply(getRequest(_url));
+    setReply(getRequest(Account::concatUrlPath(account()->url(), path())));
     setupConnections(reply());
     AbstractNetworkJob::start();
 }
