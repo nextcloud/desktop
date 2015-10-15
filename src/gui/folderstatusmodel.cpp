@@ -477,7 +477,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
-    job->setTimeout(5 * 1000);
+    job->setTimeout(60 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
