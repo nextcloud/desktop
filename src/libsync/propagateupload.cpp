@@ -237,6 +237,9 @@ void PropagateUploadFileQNAM::start()
             computeChecksum->setChecksumType(supportedChecksumTypes.first());
         }
     }
+    if (!uploadChecksumEnabled()) {
+        computeChecksum->setChecksumType(QByteArray());
+    }
 
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotStartUpload(QByteArray,QByteArray)));

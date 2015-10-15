@@ -29,6 +29,12 @@ QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& 
 /// Parses a checksum header
 bool parseChecksumHeader(const QByteArray& header, QByteArray* type, QByteArray* checksum);
 
+/// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
+bool uploadChecksumEnabled();
+
+/// Checks OWNCLOUD_DISABLE_CHECKSUM_DOWNLOAD
+bool downloadChecksumEnabled();
+
 /**
  * Computes the checksum of a file.
  * \ingroup libsync

@@ -49,6 +49,18 @@ bool parseChecksumHeader(const QByteArray& header, QByteArray* type, QByteArray*
     return true;
 }
 
+bool uploadChecksumEnabled()
+{
+    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_UPLOAD").isEmpty();
+    return enabled;
+}
+
+bool downloadChecksumEnabled()
+{
+    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_DOWNLOAD").isEmpty();
+    return enabled;
+}
+
 ComputeChecksum::ComputeChecksum(QObject* parent)
     : QObject(parent)
 {
