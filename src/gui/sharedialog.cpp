@@ -242,8 +242,6 @@ void ShareDialog::setPassword(const QString &password)
     _pi_link->startAnimation();
     _pi_password->startAnimation();
     QString path;
-    QList<QPair<QString, QString> > requestParams;
-    QByteArray verb("PUT");
 
     if( _public_share_id > 0 ) {
         OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
