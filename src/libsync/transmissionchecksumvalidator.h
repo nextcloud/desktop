@@ -46,8 +46,7 @@ public:
     explicit ComputeChecksum(QObject* parent = 0);
 
     /**
-     * By default the checksum type is read from the config file, but can be overridden
-     * with this method.
+     * Sets the checksum type to be used. The default is empty.
      */
     void setChecksumType(const QByteArray& type);
 

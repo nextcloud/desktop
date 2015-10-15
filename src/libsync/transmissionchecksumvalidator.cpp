@@ -16,7 +16,6 @@
 #include "transmissionchecksumvalidator.h"
 #include "syncfileitem.h"
 #include "propagatorjobs.h"
-#include "configfile.h"
 #include "account.h"
 
 #include <qtconcurrentrun.h>
@@ -64,9 +63,6 @@ bool downloadChecksumEnabled()
 ComputeChecksum::ComputeChecksum(QObject* parent)
     : QObject(parent)
 {
-    // If the config file specifies a checksum type, use that.
-    ConfigFile cfg;
-    _checksumType = cfg.transmissionChecksum().toLatin1();
 }
 
 void ComputeChecksum::setChecksumType(const QByteArray& type)

@@ -39,7 +39,15 @@ public:
     bool sharePublicLinkEnforceExpireDate() const;
     int  sharePublicLinkExpireDateDays() const;
     bool shareResharing() const;
+
+    /// Returns the checksum types the server explicitly advertises
+    QList<QByteArray> supportedChecksumTypesRaw() const;
+
+    /// Like supportedChecksumTypesRaw(), but includes the type from the config
     QList<QByteArray> supportedChecksumTypes() const;
+
+    /// Returns the checksum type that should be used for new uploads.
+    QByteArray preferredChecksumType() const;
 
 private:
     QVariantMap _capabilities;

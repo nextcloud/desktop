@@ -227,17 +227,9 @@ void PropagateUploadFileQNAM::start()
 
     // Compute a new checksum.
     auto computeChecksum = new ComputeChecksum(this);
-
-    // If the config file does not specify a checksum type but the
-    // server supports it, choose a type based on that.
-    if (computeChecksum->checksumType().isEmpty()) {
-        if (!supportedChecksumTypes.isEmpty()) {
-            // TODO: We might want to prefer some types over others instead
-            // of choosing the first.
-            computeChecksum->setChecksumType(supportedChecksumTypes.first());
-        }
-    }
-    if (!uploadChecksumEnabled()) {
+    if (uploadChecksumEnabled()) {
+        computeChecksum->setChecksumType(_propagator->account()->capabilities().preferredChecksumType());
+    } else {
         computeChecksum->setChecksumType(QByteArray());
     }
 
