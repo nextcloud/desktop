@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Lanzador Rápido de Accesos Director
 StrCpy $UNINSTALLER_FILE_Detail "Escribiendo desinstalador"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Escribiendo claves en el registro del instalador"
 StrCpy $UNINSTALLER_FINISHED_Detail "Terminado"
-StrCpy $UNINSTALL_MESSAGEBOX "Parece que ${APPLICATION_NAME} no está instalado en el directorio '$INSTDIR'.$$ ¿Continuar de todos modos? (No Recomendado)"
+StrCpy $UNINSTALL_MESSAGEBOX "Parece que ${APPLICATION_NAME} no está instalado en el directorio '$INSTDIR'.$$ ¿Continuar de todos modos? (No recomendado)"
 StrCpy $UNINSTALL_ABORT "Desinstalación cancelada por el usuario"
 StrCpy $INIT_NO_QUICK_LAUNCH "Atajo de inicio rápido (N/A)"
 StrCpy $INIT_NO_DESKTOP "Atajo de escritorio (sobreescribe el existente)"
