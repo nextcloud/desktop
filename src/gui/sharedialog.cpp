@@ -184,9 +184,9 @@ void ShareDialog::setExpireDate(const QDate &date)
     }
     _pi_date->startAnimation();
 
-    OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+    OcsShareJob *job = new OcsShareJob(_account, this);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotExpireSet(QVariantMap)));
-    job->setExpireDate(date);
+    job->setExpireDate(_public_share_id, date);
 }
 
 void ShareDialog::slotExpireSet(const QVariantMap &reply)
@@ -235,11 +235,11 @@ void ShareDialog::setPassword(const QString &password)
     QString path;
 
     if( _public_share_id > 0 ) {
-        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+        OcsShareJob *job = new OcsShareJob(_account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
-        job->setPassword(password);
+        job->setPassword(_public_share_id, password);
     } else {
-        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+        OcsShareJob *job = new OcsShareJob(_account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
 
@@ -471,9 +471,9 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
         job->createShare(_sharePath, OcsShareJob::SHARETYPE::LINK);
     } else {
         _pi_link->startAnimation();
-        OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+        OcsShareJob *job = new OcsShareJob(_account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotDeleteShareFetched(QVariantMap)));
-        job->deleteShare();
+        job->deleteShare(_public_share_id);
     }
 }
 
@@ -553,9 +553,9 @@ void ShareDialog::setPublicUpload(bool publicUpload)
     _ui->checkBox_editing->setEnabled(false);
     _pi_editing->startAnimation();
 
-    OcsShareJob *job = new OcsShareJob(_public_share_id, _account, this);
+    OcsShareJob *job = new OcsShareJob(_account, this);
     connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPublicUploadSet(QVariantMap)));
-    job->setPublicUpload(publicUpload);
+    job->setPublicUpload(_public_share_id, publicUpload);
 }
 
 void ShareDialog::slotPublicUploadSet(const QVariantMap &reply)

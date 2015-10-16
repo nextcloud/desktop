@@ -42,6 +42,11 @@ void OcsJob::addPassStatusCode(int code)
     _passStatusCodes.append(code);
 }
 
+void OcsJob::appendPath(int id)
+{
+    setPath(path() + QString("/%1").arg(id));
+}
+
 void OcsJob::start()
 {
     QNetworkRequest req;

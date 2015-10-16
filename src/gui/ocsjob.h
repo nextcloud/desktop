@@ -73,6 +73,14 @@ protected:
      */
     void addPassStatusCode(int code);
 
+    /**
+     * The base path for an OcsJob is always the same. But it could be that case that
+     * certain operations need to append something to the URL.
+     *
+     * This functions appends the common id. so <PATH>/<ID>
+     */
+    void appendPath(int id);
+
 public:
     /**
      * Parse the response and return the status code and the message of the
