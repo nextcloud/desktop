@@ -29,7 +29,7 @@ namespace OCC {
  * @ingroup gui
  *
  * Base class for jobs that talk to the OCS endpoints on the server.
- * All the comminication logic is handled in this class.
+ * All the communication logic is handled in this class.
  *
  * All OCS jobs (e.g. sharing) should extend this class.
  */
@@ -74,10 +74,10 @@ protected:
     void addPassStatusCode(int code);
 
     /**
-     * The base path for an OcsJob is always the same. But it could be that case that
+     * The base path for an OcsJob is always the same. But it could be the case that
      * certain operations need to append something to the URL.
      *
-     * This functions appends the common id. so <PATH>/<ID>
+     * This function appends the common id. so <PATH>/<ID>
      */
     void appendPath(int id);
 

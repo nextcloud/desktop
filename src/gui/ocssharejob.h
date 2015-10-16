@@ -85,7 +85,7 @@ public:
     void setPassword(int shareId, const QString& password);
 
     /**
-     * Void set the a share to be public upload
+     * Void set the share to be public upload
      * 
      * @param publicUpload Set or remove public upload
      */
