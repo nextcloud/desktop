@@ -517,7 +517,9 @@ Veuillez le sélectionner dans la fenêtre des paramètres pour le télécharger
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>Cette synchronisation va supprimer tous les fichiers dans le dossier &apos;%1&apos;.
+Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimés manuellement.
+Êtes-vous sûr de vouloir effectuer cette opération ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1126"/>
