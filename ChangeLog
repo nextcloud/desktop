@@ -1,5 +1,8 @@
 ChangeLog
 =========
+version 2.0.1 (release 2015-09-01)
+  * AccountWizard: fix when the theme specify a override URL (#3699)
+
 version 2.0.0 (release 2015-08-25)
   * Add support for multiple accounts (#3084)
   * Do not sync down new big folders from server without users consent (#3148)
