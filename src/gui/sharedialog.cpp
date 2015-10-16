@@ -32,15 +32,6 @@
 #include <QClipboard>
 #include <QFileInfo>
 
-namespace {
-//    int PERMISSION_READ = 1;
-    int PERMISSION_UPDATE = 2;
-    int PERMISSION_CREATE = 4;
-//    int PERMISSION_DELETE = 8;
-//    int PERMISSION_SHARE = 16;
-//    int PERMISSION_ALL = 31;
-}
-
 namespace OCC {
 
 ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
@@ -348,7 +339,9 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
                  * Only directories can have public upload set
                  * For public links the server sets CREATE and UPDATE permissions.
                  */
-                if (!_isFile && (permissions & PERMISSION_UPDATE) && (permissions & PERMISSION_CREATE)) {
+                if (!_isFile && 
+                       (permissions & static_cast<int>(OcsShareJob::PERMISSION::UPDATE)) && 
+                       (permissions & static_cast<int>(OcsShareJob::PERMISSION::CREATE))) {
                     _ui->checkBox_editing->setChecked(true);
                 }
             }

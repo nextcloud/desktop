@@ -40,6 +40,18 @@ public:
     };
 
     /**
+     * Possible permissions
+     */
+    enum class PERMISSION : int {
+        READ = 1,
+        UPDATE = 2,
+        CREATE = 4,
+        DELETE = 8,
+        SHARE = 16,
+        ALL = 31
+    };
+
+    /**
      * Constructor for new shares or listing of shares
      */
     explicit OcsShareJob(AccountPtr account, QObject *parent = 0);
