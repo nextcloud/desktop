@@ -1179,6 +1179,7 @@ void SyncJournalDb::wipeErrorBlacklistEntry( const QString& file )
         if( ! query.exec() ) {
             sqlFail("Deletion of blacklist item failed.", query);
         }
+        qDebug() <<  query.lastQuery() << file;
     }
 }
 
