@@ -154,6 +154,10 @@ public:
     const Capabilities &capabilities() const;
     void setServerVersion(const QString &version);
     QString serverVersion();
+    int serverVersionInt();
+
+    // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
+    bool rootEtagChangesNotOnlySubFolderEtags();
 
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
