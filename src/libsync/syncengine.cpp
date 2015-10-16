@@ -479,7 +479,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             dir = SyncFileItem::None;
         } else {
             // No need to do anything.
-            if (file->other.instruction == CSYNC_INSTRUCTION_NONE) {
+            if (file->other.instruction == CSYNC_INSTRUCTION_NONE
+                    // Directories with ignored files does not count as 'None'
+                    && (file->type != CSYNC_FTW_TYPE_DIR || !file->has_ignored_files)) {
                 _hasNoneFiles = true;
             }
 
