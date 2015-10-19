@@ -466,6 +466,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex& parent) const
 
 bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
 {
+    if (_accountState->state() != AccountState::Connected) {
+        return false;
+    }
     auto info = infoForIndex(parent);
     if (!info || info->_fetched || info->_fetching)
         return false;
