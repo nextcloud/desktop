@@ -17,30 +17,29 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA               *
  ******************************************************************************/
 
-#include <Dolphin/KOverlayIconPlugin>
+#include <KOverlayIconPlugin>
 #include <KPluginFactory>
-#include <KPluginLoader>
 #include <QtNetwork/QLocalSocket>
 #include <KIOCore/kfileitem.h>
 
 
-
 class OwncloudDolphinPlugin : public KOverlayIconPlugin
 {
+    Q_PLUGIN_METADATA(IID "com.owncloud.ovarlayiconplugin" FILE "ownclouddolphinplugin.json");
     Q_OBJECT
+
     QLocalSocket m_socket;
     typedef QHash<QByteArray, QByteArray> StatusMap;
     StatusMap m_status;
     QByteArray m_line;
 
 public:
-    explicit OwncloudDolphinPlugin(QObject* parent, const QList<QVariant>&) : KOverlayIconPlugin(parent) {
+    explicit OwncloudDolphinPlugin(QObject* parent = 0) : KOverlayIconPlugin(parent) {
         connect(&m_socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
         tryConnect();
     }
 
-    virtual QStringList getOverlays(const KFileItem& item) {
-        auto url = item.url();
+    virtual QStringList getOverlays(const QUrl& url) override {
         if (!url.isLocalFile())
             return QStringList();
         const QByteArray localFile = url.toLocalFile().toUtf8();
@@ -121,8 +120,5 @@ private slots:
         }
     }
 };
-
-K_PLUGIN_FACTORY(OwncloudDolphinPluginFactory, registerPlugin<OwncloudDolphinPlugin>();)
-K_EXPORT_PLUGIN(OwncloudDolphinPluginFactory("ownclouddolhpinplugin"))
 
 #include "ownclouddolphinplugin.moc"

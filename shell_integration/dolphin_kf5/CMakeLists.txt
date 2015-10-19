@@ -13,7 +13,8 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_
 
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS CoreAddons KIO)
 
-find_package(DolphinVcs REQUIRED)
+
+
 set_package_properties(DolphinVcs PROPERTIES
     DESCRIPTION "the Dolphin plugin library"
     URL "http://dolphin.kde.org/"
@@ -31,11 +32,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
 
-add_library(ownclouddolphinplugin MODULE ownclouddolphinplugin.cpp)
-target_link_libraries(ownclouddolphinplugin DolphinVcs Qt5::Network KF5::CoreAddons KF5::KIOCore)
-install(FILES ownclouddolphinplugin.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
-install(TARGETS ownclouddolphinplugin DESTINATION ${KDE_INSTALL_PLUGINDIR})
-
+kcoreaddons_add_plugin(ownclouddolphinplugin INSTALL_NAMESPACE "kf5/overlayicon" JSON ownclouddolphinplugin.json SOURCES ownclouddolphinplugin.cpp)
+target_link_libraries(ownclouddolphinplugin Qt5::Network KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets)
 
 add_library(ownclouddolphinpluginaction MODULE ownclouddolphinpluginaction.cpp)
 target_link_libraries(ownclouddolphinpluginaction Qt5::Network KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets)
