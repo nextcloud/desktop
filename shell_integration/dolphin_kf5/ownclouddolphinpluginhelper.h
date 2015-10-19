@@ -21,8 +21,9 @@
 #include <QObject>
 #include <QBasicTimer>
 #include <QLocalSocket>
+#include "ownclouddolphinpluginhelper_export.h"
 
-class OwncloudDolphinPluginHelper : public QObject {
+class OWNCLOUDDOLPHINPLUGINHELPER_EXPORT OwncloudDolphinPluginHelper : public QObject {
     Q_OBJECT
 public:
     static OwncloudDolphinPluginHelper *instance();

@@ -26,7 +26,7 @@
 
 class OwncloudDolphinPlugin : public KOverlayIconPlugin
 {
-    Q_PLUGIN_METADATA(IID "com.owncloud.ovarlayiconplugin" FILE "ownclouddolphinplugin.json");
+    Q_PLUGIN_METADATA(IID "com.owncloud.ovarlayiconplugin" FILE "ownclouddolphinoverlayplugin.json");
     Q_OBJECT
 
     typedef QHash<QByteArray, QByteArray> StatusMap;
@@ -94,4 +94,4 @@ private:
     }
 };
 
-#include "ownclouddolphinplugin.moc"
+#include "ownclouddolphinoverlayplugin.moc"

@@ -64,4 +64,4 @@ public:
 K_PLUGIN_FACTORY(OwncloudDolphinPluginActionFactory, registerPlugin<OwncloudDolphinPluginAction>();)
 K_EXPORT_PLUGIN(OwncloudDolphinPluginActionFactory("ownclouddolhpinpluginaction"))
 
-#include "ownclouddolphinpluginaction.moc"
+#include "ownclouddolphinactionplugin.moc"
