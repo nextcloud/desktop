@@ -519,18 +519,13 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    if (_model->_folders.first()._subs.count() == 0) {
-        // Don't show when there is no items in model yet.
-        // It will be called again via rowsInserted()
-        ui->selectiveSyncStatus->setVisible(false);
-        return;
-    }
-
     bool shouldBeVisible = _model->isDirty();
     QStringList undecidedFolder;
     for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
-        if (ui->_folderList->isExpanded(_model->index(i)))
+        auto index = _model->index(i);
+        if (ui->_folderList->isExpanded(index) && _model->rowCount(index) > 0) {
             shouldBeVisible = true;
+        }
     }
 
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
