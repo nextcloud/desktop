@@ -159,7 +159,6 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
 void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
@@ -221,6 +220,11 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
             root->setCheckState(0, Qt::Checked);
         } else {
             root->setCheckState(0, Qt::PartiallyChecked);
+        }
+        qint64 size = job ? job->_sizes.value(pathToRemove, -1) : -1;
+        if (size >= 0) {
+            root->setText(1, Utility::octetsToString(size));
+            root->setData(1, Qt::UserRole, size);
         }
     }
 
