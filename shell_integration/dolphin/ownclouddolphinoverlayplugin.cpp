@@ -64,9 +64,13 @@ private:
             return r;
 
         if (status.startsWith("OK"))
-            r << "dialog-ok";
+            r << "ownCloud_ok";
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "view-refresh";
+            r << "owncloud_sync";
+        if (status.startsWith("IGNORE") || status.startsWith("WARN"))
+            r << "owncloud_warn";
+        if (status.startsWith("ERROR"))
+            r << "owncloud_error";
 
         if (status.contains("+SWM"))
             r << "document-share";
