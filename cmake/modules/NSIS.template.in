@@ -419,7 +419,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\Qt5PrintSupport.dll"
    File "${QT_DLL_PATH}\Qt5Qml.dll"
    File "${QT_DLL_PATH}\Qt5Quick.dll"
-   File "${QT_DLL_PATH}\Qt5Sql.dll"
    File "${QT_DLL_PATH}\Qt5WebKit.dll"
    File "${QT_DLL_PATH}\Qt5WebKitWidgets.dll"
    File "${QT_DLL_PATH}\Qt5Widgets.dll"
@@ -447,7 +446,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libxslt-1.dll"
    File "${MING_BIN}\libxml2-2.dll"
    File "${MING_BIN}\zlib1.dll"
-   File "${MING_BIN}\libsqlite3-0.dll"
 
    ;QtKeyChain stuff
    File "${MING_BIN}\libqt5keychain.dll"
