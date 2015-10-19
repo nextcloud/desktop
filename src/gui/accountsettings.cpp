@@ -522,16 +522,21 @@ void AccountSettings::slotLinkActivated(const QString& link)
         const QString alias = li[1];
         if(myFolder.endsWith(QLatin1Char('/'))) myFolder.chop(1);
 
+        // Make sure the folder itself is expanded
         Folder *f = FolderMan::instance()->folder(alias);
         QModelIndex folderIndx = _model->indexForPath(f, QString());
-
         if( !ui->_folderList->isExpanded(folderIndx)) {
             ui->_folderList->setExpanded(folderIndx, true);
-            return;
         }
 
         QModelIndex indx = _model->indexForPath(f, myFolder);
         if( indx.isValid() ) {
+            // make sure all the parents are expanded
+            for (auto i = indx.parent(); i.isValid(); i = i.parent()) {
+                if( !ui->_folderList->isExpanded(i)) {
+                    ui->_folderList->setExpanded(i, true);
+                }
+            }
             ui->_folderList->setSelectionMode(QAbstractItemView::SingleSelection);
             ui->_folderList->setCurrentIndex(indx);
             ui->_folderList->scrollTo(indx);
