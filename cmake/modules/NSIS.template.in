@@ -403,9 +403,6 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qico.dll"
 
-   SetOutPath "$INSTDIR\sqldrivers"
-   File "${SQLITE_DLL_PATH}\qsqlite.dll"
-
    SetOutPath "$INSTDIR"
    ;License & release notes.
    File "@CPACK_RESOURCE_FILE_LICENSE@"
