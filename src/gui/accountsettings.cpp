@@ -126,8 +126,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(ui->signInButton, SIGNAL(clicked()) , this, SLOT(slotSignInAccount()));
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
 
-    // Expand already on single click
-    ui->_folderList->setExpandsOnDoubleClick(false);
     QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
                      this, SLOT(slotFolderListClicked(const QModelIndex&)));
 }
