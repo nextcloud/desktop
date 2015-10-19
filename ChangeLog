@@ -1,5 +1,53 @@
 ChangeLog
 =========
+version 2.0.2 (release 2015-10-xx)
+  * csync_file_stat_s: Save a bit of memory
+  * Shibboleth: Add our base user agent to WebKit
+  * SelectiveSync: Increase folder list timeout to 60
+  * Propagation: Try another sync on 423 Locked #3387
+  * Propagation: Make 423 Locked a soft error #3387
+  * Propagation: Reset upload blacklist if a chunk suceeds
+  * Application: Fix crash on early shutdown #3898
+  * Linux: Don't show settings dialog always when launched twice #3273 #3771 #3485
+  * win32 vio: Add the OPEN_REPARSE_POINTS flag to the CreateFileW call. #3813
+  * AccountSettings: only expand root elements on single click.
+  * AccountSettings: Do not allow to expand the folder list when disconnected.
+  * Use application SHORT name for the name of the MacOSX pkg file (ownBrander).
+  * FolderMan: Fix for removing a syncing folder #3843
+  * ConnectionMethodDialog: Don't be insecure on close #3863
+  * Updater: Ensure folders are not removed #3747
+  * Folder settings: Ensure path is cleaned #3811
+  * Propagator: Simplify sub job finished counting #3844
+  * Share dialog: Hide settings dialog before showing #3783
+  * UI: Only expand 1 level in folder list #3585
+  * UI: Allow folder expanding from button click #3585
+  * UI: Expand folder treeview on single click #3585
+  * GUI: Change tray menu order #3657
+  * GUI: Replace term "sign in" with "Log in" and friends.
+  * SetupPage: Fix crash caused by uninitialized Account object.
+  * Use a themable WebDAV path all over.
+  * Units: Back to the "usual" mix units (JEDEC standard).
+  * csync io: Full UNC path support on Win #3748
+  * Tray: Don't use the tray workaround with the KDE theme #3706, #3765
+  * ShareDialog: Fix folder display #3659
+  * AccountSettings: Restore from legacy only once #3565
+  * SSL Certificate Error Dialog: show account name #3729
+  * Tray notification: Don't show a message about modified folder #3613 
+  * PropagateLocalRemove:  remove entries from the DB even if there was an error.
+  * Settings UI improvements (eg. #3713, #3721, #3619 and others)
+  * Folder: Do not create the sync folder if it does not exist #3692
+  * Shell integratioon: don't show share menu item for top level folders
+  * Tray: Hide while modifying menus #3656 #3672
+  * AddFolder: Improve remote path selection error handling #3573
+  * csync_update: Use excluded_traversal() to improve performance #3638
+  * csync_excluded: Add fast _traversal() function #3638
+  * csync_exclude: Speed up siginificantly #3638
+  * AccountSettings: Adjust quota info design #3644 #3651
+  * Adjust buttons on remove folder/account questions #3654
+
+version 2.0.1 (release 2015-09-01)
+  * AccountWizard: fix when the theme specify a override URL (#3699)
+
 version 2.0.0 (release 2015-08-25)
   * Add support for multiple accounts (#3084)
   * Do not sync down new big folders from server without users consent (#3148)

@@ -36,6 +36,14 @@ namespace {
 namespace OCC
 {
 
+class UserAgentWebPage : public QWebPage {
+ public:
+    UserAgentWebPage(QObject *parent) : QWebPage(parent) {}
+    QString userAgentForUrl(const QUrl &url ) const {
+        return QWebPage::userAgentForUrl(url) + " " + Utility::userAgentString();
+    }
+};
+
 ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     : QWebView(parent)
     , _account(account)
@@ -46,7 +54,7 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     setWindowFlags(Qt::Dialog);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    QWebPage* page = new QWebPage(this);
+    QWebPage* page = new UserAgentWebPage(this);
     connect(page, SIGNAL(loadStarted()),
             this, SLOT(slotLoadStarted()));
     connect(page, SIGNAL(loadFinished(bool)),

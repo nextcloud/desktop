@@ -669,6 +669,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
+        _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
         _propagator->_journal->setUploadInfo(_item->_file, pi);
         _propagator->_journal->commit("Upload info");
         startNextChunk();
