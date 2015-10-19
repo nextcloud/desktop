@@ -61,7 +61,6 @@ signals:
     void openFolderAlias( const QString& );
 
 public slots:
-    void slotFolderActivated( const QModelIndex& );
     void slotOpenOC();
     void slotUpdateQuota( qint64,qint64 );
     void slotAccountStateChanged(int state);

@@ -104,7 +104,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
     addAction(syncNowAction);
 
-    connect(ui->_folderList, SIGNAL(clicked(QModelIndex)), SLOT(slotFolderActivated(QModelIndex)));
+    connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(slotFolderListClicked(const QModelIndex&)));
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
@@ -125,23 +126,11 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     connect(ui->signInButton, SIGNAL(clicked()) , this, SLOT(slotSignInAccount()));
     connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
-
-    QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
-                     this, SLOT(slotFolderListClicked(const QModelIndex&)));
 }
 
 void AccountSettings::doExpand()
 {
     ui->_folderList->expandToDepth(0);
-}
-
-void AccountSettings::slotFolderListClicked( const QModelIndex& indx )
-{
-    if( _model->classify(indx) == FolderStatusModel::RootFolder  &&
-            _accountState && _accountState->state() == AccountState::Connected ) {
-        bool expanded = ! (ui->_folderList->isExpanded(indx));
-        ui->_folderList->setExpanded(indx, expanded);
-    }
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
@@ -180,7 +169,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     menu->exec(tv->mapToGlobal(pos));
 }
 
-void AccountSettings::slotFolderActivated( const QModelIndex& indx )
+void AccountSettings::slotFolderListClicked(const QModelIndex& indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         if (indx.flags() & Qt::ItemIsEnabled) {
@@ -199,6 +188,13 @@ void AccountSettings::slotFolderActivated( const QModelIndex& indx )
         auto pos = tv->mapFromGlobal(QCursor::pos());
         if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx)).contains(pos)) {
             slotCustomContextMenuRequested(pos);
+            return;
+        }
+
+        // Expand root items on single click
+        if(_accountState && _accountState->state() == AccountState::Connected ) {
+            bool expanded = ! (ui->_folderList->isExpanded(indx));
+            ui->_folderList->setExpanded(indx, expanded);
         }
     }
 }
