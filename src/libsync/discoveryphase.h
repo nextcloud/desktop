@@ -87,6 +87,7 @@ public:
 signals:
     void firstDirectoryPermissions(const QString &);
     void etagConcatenation(const QString &);
+    void etag(const QString &);
     void finishedWithResult(const QList<FileStatPointer> &);
     void finishedWithError(int csyncErrnoCode, QString msg);
 private slots:
@@ -97,6 +98,7 @@ private:
     QList<FileStatPointer> _results;
     QString _subPath;
     QString _etagConcatenation;
+    QString _firstEtag;
     AccountPtr _account;
     bool _ignoredFirst;
     QPointer<LsColJob> _lsColJob;
@@ -134,7 +136,8 @@ public slots:
     void slotGetSizeFinishedWithError();
     void slotGetSizeResult(const QVariantMap&);
 signals:
-    void etagConcatenation(QString);
+    void etag(const QString &);
+    void etagConcatenation(const QString &);
 public:
     void setupHooks(DiscoveryJob* discoveryJob, const QString &pathPrefix);
 };

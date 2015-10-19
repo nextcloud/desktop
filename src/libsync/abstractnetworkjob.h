@@ -91,11 +91,12 @@ private slots:
     void slotFinished();
     virtual void slotTimeout();
 
+protected:
+    AccountPtr _account;
 private:
     QNetworkReply* addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
-    AccountPtr _account;
     QString _path;
     QTimer _timer;
     int _redirectCount;

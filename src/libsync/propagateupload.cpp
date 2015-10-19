@@ -513,11 +513,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     if (!env.isEmpty()) {
         parallelChunkUpload = env != "false" && env != "0";
     } else {
-        auto version = _propagator->account()->serverVersion();
-        auto components = version.split('.');
-        int versionNum = (components.value(0).toInt() << 16)
-                       + (components.value(1).toInt() << 8)
-                       + components.value(2).toInt();
+        int versionNum = _propagator->account()->serverVersionInt();
         if (versionNum < 0x080003) {
             // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
             // internal sever errors (#2743, #2938)

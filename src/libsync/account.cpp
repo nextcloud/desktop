@@ -478,9 +478,25 @@ QString Account::serverVersion()
     return _serverVersion;
 }
 
+int Account::serverVersionInt()
+{
+    // FIXME: Use Qt 5.5 QVersionNumber
+    auto components = serverVersion().split('.');
+    return  (components.value(0).toInt() << 16)
+                   + (components.value(1).toInt() << 8)
+                   + components.value(2).toInt();
+}
+
 void Account::setServerVersion(const QString& version)
 {
     _serverVersion = version;
 }
+
+bool Account::rootEtagChangesNotOnlySubFolderEtags()
+{
+    return (serverVersionInt() >= 0x080100);
+}
+
+
 
 } // namespace OCC

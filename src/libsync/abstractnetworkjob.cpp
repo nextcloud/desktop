@@ -44,9 +44,9 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     : QObject(parent)
     , _timedout(false)
     , _followRedirects(false)
+    , _account(account)
     , _ignoreCredentialFailure(false)
     , _reply(0)
-    , _account(account)
     , _path(path)
     , _redirectCount(0)
 {

@@ -676,8 +676,13 @@ void SyncEngine::startSync()
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
-    connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
-
+    qDebug() << "=====Server" << account()->serverVersion()
+             <<  QString("rootEtagChangesNotOnlySubFolderEtags=%1").arg(account()->rootEtagChangesNotOnlySubFolderEtags());
+    if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
+        connect(_discoveryMainThread, SIGNAL(etag(QString)), this, SLOT(slotRootEtagReceived(QString)));
+    } else {
+        connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
+    }
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
