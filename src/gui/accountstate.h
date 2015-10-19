@@ -95,6 +95,14 @@ public:
      */
     QString shortDisplayNameForSettings(int width = 0) const;
 
+    /** Mark the timestamp when the last successful ETag check happened for
+     *  this account.
+     *  The checkConnectivity() method uses the timestamp to save a call to
+     *  the server to validate the connection if the last successful etag job
+     *  is not so lang away.
+     */
+    void tagLastSuccessfullETagRequest();
+
 private:
     void setState(State state);
 
@@ -114,6 +122,7 @@ private:
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
     CredentialFetchMode _credentialsFetchMode;
+    QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
 };
 

@@ -39,6 +39,7 @@ AccountState::AccountState(AccountPtr account)
             SLOT(slotCredentialsFetched(AbstractCredentials*)));
     connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials*)),
             SLOT(slotCredentialsAsked(AbstractCredentials*)));
+    _timeSinceLastETagCheck.invalidate();
 }
 
 AccountState::~AccountState()
@@ -135,6 +136,11 @@ bool AccountState::isConnectedOrTemporarilyUnavailable() const
     return isConnected() || _state == ServiceUnavailable;
 }
 
+void AccountState::tagLastSuccessfullETagRequest()
+{
+    _timeSinceLastETagCheck.restart();
+}
+
 void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
 {
     if (isSignedOut() || _waitingForNewCredentials) {
@@ -145,6 +151,15 @@ void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
         qDebug() << "ConnectionValidator already running, ignoring" << account()->displayName();
         return;
     }
+
+    // IF the account is connected the connection check can be skipped
+    // if the last successful etag check job is not so long ago.
+    if (isConnected() && _timeSinceLastETagCheck.isValid()
+            && _timeSinceLastETagCheck.elapsed() < 30*1000) {
+        qDebug() << "The last ETag check succeeded within the last 30 secs. No connection check needed!";
+        return;
+    }
+
     _credentialsFetchMode = credentialsFetchMode;
     ConnectionValidator * conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
