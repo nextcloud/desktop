@@ -21,6 +21,7 @@ set(client_UI
     ignorelisteditor.ui
     networksettings.ui
     protocolwidget.ui
+    activitywidget.ui
     synclogdialog.ui
     settingsdialog.ui
     sharedialog.ui
@@ -55,6 +56,7 @@ set(client_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    activitywidget.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp

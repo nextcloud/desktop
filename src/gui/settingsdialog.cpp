@@ -22,7 +22,7 @@
 #include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
-#include "protocolwidget.h"
+#include "activitywidget.h"
 #include "accountmanager.h"
 
 #include <QLabel>
@@ -77,11 +77,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _protocolAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-    _actionGroup->addAction(_protocolAction);
-    addActionToToolBar(_protocolAction);
-    ProtocolWidget *protocolWidget = new ProtocolWidget;
-    _ui->stack->addWidget(protocolWidget);
+    _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    _actionGroup->addAction(_activityAction);
+    addActionToToolBar(_activityAction);
+    ActivityWidget *activityWidget = new ActivityWidget;
+    _ui->stack->addWidget(activityWidget);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -95,7 +95,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_protocolAction, protocolWidget);
+    _actionGroupWidgets.insert(_activityAction, activityWidget);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
@@ -178,8 +178,8 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (_protocolAction) {
-        slotSwitchPage(_protocolAction);
+    if (_activityAction) {
+        slotSwitchPage(_activityAction);
     }
 }
 

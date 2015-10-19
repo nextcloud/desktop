@@ -79,7 +79,7 @@ private:
     // Maps the actions from the action group to the toolbar actions
     QHash<QAction*, QAction*> _toolbarAccountActions;
 
-    QAction * _protocolAction;
+    QAction * _activityAction;
     ownCloudGui *_gui;
 };
 
