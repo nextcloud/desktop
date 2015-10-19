@@ -337,6 +337,15 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
             QCoreApplication::translate("Utility", periods[p+1].name, 0, QCoreApplication::UnicodeUTF8, secondPartNum));
 }
 
+QString Utility::fileNameForGuiUse(const QString& fName)
+{
+    if( isMac() ) {
+        QString n(fName);
+        return n.replace(QChar(':'), QChar('/'));
+    }
+    return fName;
+}
+
 bool Utility::hasDarkSystray()
 {
     return hasDarkSystray_private();

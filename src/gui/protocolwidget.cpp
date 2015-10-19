@@ -192,15 +192,6 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
-QString ProtocolWidget::fixupFilename( const QString& name )
-{
-    if( Utility::isMac() ) {
-        QString n(name);
-        return n.replace(QChar(':'), QChar('/'));
-    }
-    return name;
-}
-
 QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
 {
     auto f = FolderMan::instance()->folder(folder);
@@ -214,7 +205,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
 
     columns << timeStr;
-    columns << fixupFilename(item._originalFile);
+    columns << Utility::fileNameForGuiUse(item._originalFile);
     columns << f->shortGuiPath();
 
     // If the error string is set, it's prefered because it is a useful user message.

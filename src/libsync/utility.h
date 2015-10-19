@@ -105,6 +105,8 @@ namespace Utility
     // For Mac and Windows, it returns QString()
     OWNCLOUDSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString& command = QString() );
 
+    OWNCLOUDSYNC_EXPORT QString fileNameForGuiUse(const QString& fName);
+
     class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;
