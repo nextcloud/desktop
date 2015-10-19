@@ -558,7 +558,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
     Q_UNUSED(folder);
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        _actionStatus->setText( tr("Discovering '%1'")
+        _actionStatus->setText( tr("Checking for changes in '%1'")
                                 .arg( progress._currentDiscoveredFolder ));
     } else if (progress.totalSize() == 0 ) {
         quint64 currentFile = progress.currentFile();

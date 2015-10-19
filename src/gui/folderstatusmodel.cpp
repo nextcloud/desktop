@@ -757,7 +757,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         << FolderStatusDelegate::WarningCount;
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
-        pi->_progressString = tr("Discovering '%1'").arg(progress._currentDiscoveredFolder);
+        pi->_progressString = tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);
         emit dataChanged(index(folderIndex), index(folderIndex), roles);
         return;
     }
