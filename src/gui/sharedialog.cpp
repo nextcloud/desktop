@@ -590,10 +590,18 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
 }
 
+#ifdef Q_OS_MAC
+extern void copyToPasteboard(const QString &string);
+#endif
+
 void ShareDialog::slotPushButtonCopyLinkPressed()
 {
+#ifdef Q_OS_MAC
+    copyToPasteboard(_shareUrl);
+#else
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(_shareUrl);
+#endif
 }
 
 void ShareDialog::slotCheckBoxEditingClicked()
