@@ -124,14 +124,14 @@ QIcon Theme::themeIcon( const QString& name, bool sysTray ) const
         flavor = QLatin1String("colored");
     }
 
-    if( QIcon::hasThemeIcon( name )) {
-        // use from theme
-        return QIcon::fromTheme( name );
-    }
-
     QString key = name + "," + flavor;
     QIcon & cached = _iconCache[key];
     if (cached.isNull()) {
+        if(QIcon::hasThemeIcon(name)) {
+            // use from theme
+            return cached = QIcon::fromTheme(name);
+        }
+
         QList<int> sizes;
         sizes <<16 << 22 << 32 << 48 << 64 << 128 << 256;
         foreach (int size, sizes) {
