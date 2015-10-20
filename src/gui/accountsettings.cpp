@@ -476,6 +476,11 @@ void AccountSettings::slotAccountStateChanged(int state)
            serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
         }
 
+        if (state != AccountState::SignedOut && ui->signInButton->hasFocus()) {
+            // The button is about to be hidden, clear the focus so the focus don't go to the
+            // "remove account" button
+            ui->signInButton->clearFocus();
+        }
         ui->signInButton->setVisible(state == AccountState::SignedOut);
         if (state == AccountState::Connected) {
             showConnectionLabel( tr("Connected to %1.").arg(serverWithUser) );
