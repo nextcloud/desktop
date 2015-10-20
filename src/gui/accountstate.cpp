@@ -16,6 +16,7 @@
 #include "account.h"
 #include "creds/abstractcredentials.h"
 #include "logger.h"
+#include "configfile.h"
 
 #include <QDebug>
 #include <QSettings>
@@ -154,8 +155,11 @@ void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
 
     // IF the account is connected the connection check can be skipped
     // if the last successful etag check job is not so long ago.
+    ConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+
     if (isConnected() && _timeSinceLastETagCheck.isValid()
-            && _timeSinceLastETagCheck.elapsed() < 30*1000) {
+            && _timeSinceLastETagCheck.elapsed() < polltime) {
         qDebug() << "The last ETag check succeeded within the last 30 secs. No connection check needed!";
         return;
     }
