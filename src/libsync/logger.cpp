@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QThread>
+#include <qmetaobject.h>
 
 namespace OCC {
 
@@ -40,7 +41,10 @@ static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QSt
 }
 #else
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
-    Logger::instance()->doLog( qFormatLogMessage(type, ctx, message) ) ;
+    auto logger = Logger::instance();
+    if (!logger->isNoop()) {
+        logger->doLog( qFormatLogMessage(type, ctx, message) ) ;
+    }
 }
 #endif
 
@@ -104,6 +108,24 @@ void Logger::log(Log log)
 
     doLog(msg);
 }
+
+/**
+ * Returns true if doLog does nothing and need not to be called
+ */
+bool Logger::isNoop() const
+{
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    return false;
+#else
+    static auto signal = QMetaMethod::fromSignal(&Logger::newLog);
+    if (isSignalConnected(signal)) {
+        return false;
+    }
+    QMutexLocker lock(const_cast<QMutex *>(&_mutex));
+    return !_logstream;
+#endif
+}
+
 
 void Logger::doLog(const QString& msg)
 {

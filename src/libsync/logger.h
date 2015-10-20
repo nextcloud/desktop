@@ -46,6 +46,7 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
   Q_OBJECT
 public:
 
+  bool isNoop() const;
   void log(Log log);
   void doLog(const QString &log);
 
