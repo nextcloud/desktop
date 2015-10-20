@@ -57,20 +57,13 @@ int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
 #else /* HAVE_FNMATCH */
 
 #include <shlwapi.h>
-int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags) {
-    wchar_t *pat = NULL;
-    wchar_t *name = NULL;
+int csync_fnmatch(const char *pattern, const char *name, int flags) {
     BOOL match;
 
-    (void) __flags;
+    (void) flags;
 
-    name = c_utf8_string_to_locale(__name);
-    pat  = c_utf8_string_to_locale(__pattern);
+    match = PathMatchSpecA(name, pattern);
 
-    match = PathMatchSpecW(name, pat);
-
-    c_free_locale_string(pat);
-    c_free_locale_string(name);
     if(match)
         return 0;
     else

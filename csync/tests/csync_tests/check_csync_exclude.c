@@ -48,6 +48,12 @@ static void setup_init(void **state) {
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes));
     assert_int_equal(rc, 0);
 
+    /* and add some unicode stuff */
+    rc = _csync_exclude_add(&(csync->excludes), "*.💩");
+    assert_int_equal(rc, 0);
+    rc = _csync_exclude_add(&(csync->excludes), "пятницы.*");
+    assert_int_equal(rc, 0);
+
     *state = csync;
 }
 
@@ -144,6 +150,16 @@ static void check_csync_excluded(void **state)
     /* Not excluded because the pattern .netscape/cache requires directory. */
     rc = csync_excluded(csync, ".netscape/cache", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    /* Not excluded  */
+    rc = csync_excluded(csync, "unicode/中文.hé", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    /* excluded  */
+    rc = csync_excluded(csync, "unicode/пятницы.txt", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+    rc = csync_excluded(csync, "unicode/中文.💩", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
 
 }
 
