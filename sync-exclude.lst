@@ -2,16 +2,10 @@
 *~
 *.part
 *.crdownload
-
-*.unison*
-*csync_timedif.ctmp*
-.csync_journal.db
-.csync_journal.db.ctmp
-.owncloudsync.log
+*.unison
 
 .*.sw?
 .*.*sw?
-].csync-progressdatabase
 
 ].DS_Store
 ].ds_store
@@ -21,7 +15,6 @@ desktop.ini
 
 *.kate-swp
 
-*_conflict-*
 ]*.~*
 
 ].TemporaryItems
