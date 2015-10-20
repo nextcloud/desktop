@@ -168,7 +168,7 @@ endif()
 
 if(BUILD_LIBRARIES_ONLY)
     #add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
-    #qt5_use_modules(${synclib_NAME}_static Widgets Network Xml)
+    #qt5_use_modules(${synclib_NAME}_static Widgets Network Xml Sql)
 
     #set_target_properties( ${synclib_NAME}_static  PROPERTIES
     #    VERSION ${MIRALL_VERSION}

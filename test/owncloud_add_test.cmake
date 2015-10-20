@@ -14,7 +14,7 @@ macro(owncloud_add_test test_class additional_cpp)
     qt_wrap_cpp(test${OWNCLOUD_TEST_CLASS_LOWERCASE}.h)
 
     add_executable(${OWNCLOUD_TEST_CLASS}Test test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp ${additional_cpp})
-    qt5_use_modules(${OWNCLOUD_TEST_CLASS}Test Test Xml Network Gui Widgets)
+    qt5_use_modules(${OWNCLOUD_TEST_CLASS}Test Test Sql Xml Network Gui Widgets)
 
     target_link_libraries(${OWNCLOUD_TEST_CLASS}Test
         updater
