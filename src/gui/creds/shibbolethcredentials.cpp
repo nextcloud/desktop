@@ -76,7 +76,7 @@ void ShibbolethCredentials::setAccount(Account* account)
 
 void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
 {
-    csync_set_auth_callback (ctx, handleNeonSSLProblems);
+    Q_UNUSED(ctx);
 }
 
 QByteArray ShibbolethCredentials::prepareCookieData() const
@@ -93,7 +93,7 @@ QByteArray ShibbolethCredentials::prepareCookieData() const
 
 void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    csync_set_module_property(ctx, "session_key", prepareCookieData().data());
+    Q_UNUSED(ctx);
 }
 
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
@@ -207,8 +207,6 @@ void ShibbolethCredentials::invalidateToken()
     jar->clearSessionCookies();
     removeShibCookie();
     _shibCookie = QNetworkCookie();
-    // ### access to ctx missing, but might not be required at all
-    //csync_set_module_property(ctx, "session_key", "");
 }
 
 void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& shibCookie)

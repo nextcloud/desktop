@@ -115,39 +115,6 @@ const char* ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
     }
 }
 
-void ClientProxy::setCSyncProxy( const QUrl& url, CSYNC *csync_ctx )
-{
-#ifdef USE_NEON
-    /* Store proxy */
-    QList<QNetworkProxy> proxies = QNetworkProxyFactory::proxyForQuery(QNetworkProxyQuery(url));
-    // We set at least one in Application
-    Q_ASSERT(proxies.count() > 0);
-    if (proxies.count() == 0) {
-        qDebug() << Q_FUNC_INFO << "No proxy!";
-        return;
-    }
-    QNetworkProxy proxy = proxies.first();
-    if (proxy.type() == QNetworkProxy::NoProxy) {
-        qDebug() << "Passing NO proxy to csync for" << url.toString();
-    } else {
-        qDebug() << "Passing" << proxy.hostName() << "of proxy type " << proxy.type()
-                 << " to csync for" << url.toString();
-    }
-
-    csync_set_module_property( csync_ctx, "proxy_type", (void*)(proxyTypeToCStr(proxy.type())));
-    csync_set_module_property( csync_ctx, "proxy_host", proxy.hostName().toUtf8().data());
-    int proxy_port         = proxy.port();
-    csync_set_module_property( csync_ctx, "proxy_port", &proxy_port );
-    csync_set_module_property( csync_ctx, "proxy_user", proxy.user().toUtf8().data());
-    csync_set_module_property( csync_ctx, "proxy_pwd",  proxy.password().toUtf8().data());
-#else
-    Q_UNUSED(url);
-    Q_UNUSED(csync_ctx);
-#endif
-}
-
-
-
 void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot)
 {
     SystemProxyRunnable *runnable = new SystemProxyRunnable(url);

@@ -839,9 +839,7 @@ void Folder::startSync(const QStringList &pathList)
             QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
             return;
         }
-        _clientProxy.setCSyncProxy(_accountState->account()->url(), _csync_ctx);
     } else if (proxyDirty()) {
-        _clientProxy.setCSyncProxy(_accountState->account()->url(), _csync_ctx);
         setProxyDirty(false);
     }
 

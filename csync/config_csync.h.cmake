@@ -24,10 +24,6 @@
 #cmakedefine HAVE_ICONV 1
 #cmakedefine HAVE_ICONV_CONST 1
 
-#ifndef NEON_WITH_LFS
-#cmakedefine NEON_WITH_LFS 1
-#endif
-
 #cmakedefine HAVE___MINGW_ASPRINTF 1
 #cmakedefine HAVE_ASPRINTF 1
 

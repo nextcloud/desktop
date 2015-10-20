@@ -33,41 +33,6 @@ namespace OCC
 namespace
 {
 
-int getauth(const char *prompt,
-            char *buf,
-            size_t len,
-            int echo,
-            int verify,
-            void *userdata)
-{
-    int re = 0;
-    QMutex mutex;
-    // ### safe?
-    TokenCredentials* http_credentials = qobject_cast<TokenCredentials*>(AccountManager::instance()->account()->credentials());
-
-    if (!http_credentials) {
-      qDebug() << "Not a HTTP creds instance!";
-      return -1;
-    }
-
-    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-    QString user = http_credentials->user();
-    QString pwd  = http_credentials->password();
-
-    if( qPrompt == QLatin1String("Enter your username:") ) {
-        // qDebug() << "OOO Username requested!";
-        QMutexLocker locker( &mutex );
-        qstrncpy( buf, user.toUtf8().constData(), len );
-    } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        QMutexLocker locker( &mutex );
-        // qDebug() << "OOO Password requested!";
-        qstrncpy( buf, pwd.toUtf8().constData(), len );
-    } else {
-        re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
-    }
-    return re;
-}
-
 const char authenticationFailedC[] = "owncloud-authentication-failed";
 
 } // ns
@@ -117,12 +82,12 @@ TokenCredentials::TokenCredentials(const QString& user, const QString& password,
 
 void TokenCredentials::syncContextPreInit (CSYNC* ctx)
 {
-    csync_set_auth_callback (ctx, getauth);
+    Q_UNUSED(ctx);
 }
 
 void TokenCredentials::syncContextPreStart (CSYNC* ctx)
 {
-    csync_set_module_property(ctx, "session_key", _token.toUtf8().data());
+    Q_UNUSED(ctx);
 }
 
 bool TokenCredentials::changed(AbstractCredentials* credentials) const

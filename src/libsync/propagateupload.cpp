@@ -31,10 +31,6 @@
 #include <cmath>
 #include <cstring>
 
-#ifdef USE_NEON
-#include "propagator_legacy.h"
-#endif
-
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
 namespace {
 const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel";
@@ -691,15 +687,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
         // Normally Owncloud 6 always puts X-OC-MTime
         qWarning() << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
-#ifdef USE_NEON
-        PropagatorJob *newJob = new UpdateMTimeAndETagJob(_propagator, _item);
-        QObject::connect(newJob, SIGNAL(itemCompleted(SyncFileItem, PropagatorJob)),
-                         this, SLOT(finalize(SyncFileItem)));
-        QMetaObject::invokeMethod(newJob, "start");
-        return;
-#else
         // Well, the mtime was not set
-#endif
+        done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
     }
 
     // performance logging

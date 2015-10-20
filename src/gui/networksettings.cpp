@@ -117,6 +117,21 @@ void NetworkSettings::loadProxySettings()
 
 void NetworkSettings::loadBWLimitSettings()
 {
+#if QT_VERSION < QT_VERSION_CHECK(5,3,3)
+    // QNAM bandwith limiting only works with versions of Qt greater or equal to 5.3.3
+    // (It needs Qt commits 097b641 and b99fa32)
+    _ui->noDownloadLimitRadioButton->setChecked(true);
+    _ui->downloadLimitRadioButton->setEnabled(false);
+    _ui->noDownloadLimitRadioButton->setEnabled(false);
+    _ui->autoDownloadLimitRadioButton->setEnabled(false);
+
+    _ui->noUploadLimitRadioButton->setChecked(true);
+    _ui->uploadLimitRadioButton->setEnabled(false);
+    _ui->noUploadLimitRadioButton->setEnabled(false);
+    _ui->autoUploadLimitRadioButton->setEnabled(false);
+    return;
+#endif
+
     ConfigFile cfgFile;
 
     int useDownloadLimit = cfgFile.useDownloadLimit();

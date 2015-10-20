@@ -30,52 +30,5 @@
 namespace OCC
 {
 
-int handleNeonSSLProblems(const char* prompt,
-                          char* buf,
-                          size_t /*len*/,
-                          int /*echo*/,
-                          int /*verify*/,
-                          void* userdata)
-{
-    int re = 0;
-    const QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-    SyncEngine* engine = reinterpret_cast<SyncEngine*>(userdata);
-
-    if( qPrompt.startsWith( QLatin1String("There are problems with the SSL certificate:"))) {
-        // SSL is requested. If the program came here, the SSL check was done by Qt
-        // It needs to be checked if the  chain is still equal to the one which
-        // was verified by the user.
-        const QRegExp regexp("fingerprint: ([\\w\\d:]+)");
-        bool certOk = false;
-        int pos = 0;
-        // This is the set of certificates which QNAM accepted, so we should accept
-        // them as well
-        QList<QSslCertificate> certs = engine->account()->sslConfiguration().peerCertificateChain();
-
-        while (!certOk && (pos = regexp.indexIn(qPrompt, 1+pos)) != -1) {
-            QString neon_fingerprint = regexp.cap(1);
-
-            foreach( const QSslCertificate& c, certs ) {
-                QString verified_shasum = Utility::formatFingerprint(c.digest(QCryptographicHash::Sha1).toHex());
-                qDebug() << "SSL Fingerprint from neon: " << neon_fingerprint << " compared to verified: " << verified_shasum;
-                if( verified_shasum == neon_fingerprint ) {
-                    certOk = true;
-                    break;
-                }
-            }
-        }
-        // certOk = false;     DEBUG setting, keep disabled!
-        if( !certOk ) { // Problem!
-            qstrcpy( buf, "no" );
-            re = -1;
-        } else {
-            qstrcpy( buf, "yes" ); // Certificate is fine!
-        }
-    } else {
-        qDebug() << "Unknown prompt: <" << prompt << ">";
-        re = -1;
-    }
-    return re;
-}
 
 } // namespace OCC

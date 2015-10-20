@@ -47,9 +47,6 @@
 #include <QElapsedTimer>
 #include <qtextcodec.h>
 
-#ifdef USE_NEON
-extern "C" int owncloud_commit(CSYNC* ctx);
-#endif
 extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 namespace OCC {
@@ -664,11 +661,6 @@ void SyncEngine::startSync()
     csync_set_userdata(_csync_ctx, this);
     _account->credentials()->syncContextPreStart(_csync_ctx);
 
-    // csync_set_auth_callback( _csync_ctx, getauth );
-    //csync_set_log_level( 11 ); don't set the loglevel here, it shall be done by folder.cpp or owncloudcmd.cpp
-    int timeout = OwncloudPropagator::httpTimeout();
-    csync_set_module_property(_csync_ctx, "timeout", &timeout);
-
     _stopWatch.start();
 
     qDebug() << "#### Discovery start #################################################### >>";
@@ -799,12 +791,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         }
     }
 
-    // FIXME: The propagator could create his session in propagator_legacy.cpp
-    // There's no reason to keep csync_owncloud.c around
-    ne_session_s *session = 0;
-    // that call to set property actually is a get which will return the session
-    csync_set_module_property(_csync_ctx, "get_dav_session", &session);
-
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
 #ifndef NDEBUG
@@ -821,7 +807,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _journal->commit("post treewalk");
 
     _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator (_account, session, _localPath, _remoteUrl, _remotePath, _journal, &_thread));
+        new OwncloudPropagator (_account, _localPath, _remoteUrl, _remotePath, _journal));
     connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
@@ -911,11 +897,6 @@ void SyncEngine::finalize()
 {
     _thread.quit();
     _thread.wait();
-
-#ifdef USE_NEON
-    // De-init the neon HTTP(S) connections
-    owncloud_commit(_csync_ctx);
-#endif
 
     csync_commit(_csync_ctx);
 

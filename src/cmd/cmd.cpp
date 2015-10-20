@@ -379,14 +379,10 @@ restart_sync:
     // ignore hidden files or not
     _csync_ctx->ignore_hidden_files = options.ignoreHiddenFiles;
 
-    csync_set_module_property(_csync_ctx, "csync_context", _csync_ctx);
     if( !options.proxy.isNull() ) {
         QString host;
         int port = 0;
         bool ok;
-
-        // Set as default and let overwrite later
-        csync_set_module_property(_csync_ctx, "proxy_type", (void*) "NoProxy");
 
         QStringList pList = options.proxy.split(':');
         if(pList.count() == 3) {
@@ -397,13 +393,6 @@ restart_sync:
 
             port = pList.at(2).toInt(&ok);
 
-            if( !host.isNull() ) {
-                csync_set_module_property(_csync_ctx, "proxy_type", (void*) "HttpProxy");
-                csync_set_module_property(_csync_ctx, "proxy_host", host.toUtf8().data());
-                if( ok && port ) {
-                    csync_set_module_property(_csync_ctx, "proxy_port", (void*) &port);
-                }
-            }
             QNetworkProxyFactory::setUseSystemConfiguration(false);
             QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
         }
@@ -414,7 +403,6 @@ restart_sync:
             url.remove(0, 8);
             url = QString("http%1").arg(url);
         }
-        clientProxy.setCSyncProxy(QUrl(url), _csync_ctx);
     }
 
     // Exclude lists

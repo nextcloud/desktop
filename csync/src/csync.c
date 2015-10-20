@@ -58,12 +58,6 @@
 #include "csync_rename.h"
 #include "c_jhash.h"
 
-
-#ifdef USE_NEON
-// Breaking the abstraction for fun and profit.
-#include "csync_owncloud.h"
-#endif
-
 static int _key_cmp(const void *key, const void *data) {
   uint64_t a;
   csync_file_stat_t *b;
@@ -154,9 +148,6 @@ int csync_init(CSYNC *ctx) {
 
   ctx->local.type = LOCAL_REPLICA;
 
-#ifdef USE_NEON
-  owncloud_init(ctx);
-#endif
   ctx->remote.type = REMOTE_REPLICA;
 
   if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
@@ -215,14 +206,6 @@ int csync_update(CSYNC *ctx) {
   if (!ctx->excludes) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "No exclude file loaded or defined!");
   }
-
-#ifdef USE_NEON
-  /* This is not actually connecting, just setting the info for neon. The legacy propagator can use it.. */
-  if (dav_connect( ctx, ctx->remote.uri ) < 0) {
-      ctx->status_code = CSYNC_STATUS_CONNECT_ERROR;
-      return -1;
-  }
-#endif
 
   /* update detection for local replica */
   csync_gettime(&start);
@@ -646,10 +629,6 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->error_string);
 
-#ifdef USE_NEON
-  owncloud_destroy(ctx);
-#endif
-
 #ifdef WITH_ICONV
   c_close_iconv();
 #endif
@@ -670,21 +649,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
 void csync_clear_exclude_list(CSYNC *ctx)
 {
     csync_exclude_clear(ctx);
-}
-
-int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb) {
-  if (ctx == NULL || cb == NULL) {
-    return -1;
-  }
-
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    ctx->status_code = CSYNC_STATUS_CSYNC_STATUS_ERROR;
-    fprintf(stderr, "This function must be called before initialization.");
-    return -1;
-  }
-  ctx->callbacks.auth_function = cb;
-
-  return 0;
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
@@ -781,14 +745,3 @@ void csync_file_stat_free(csync_file_stat_t *st)
     SAFE_FREE(st);
   }
 }
-
-int csync_set_module_property(CSYNC* ctx, const char* key, void* value)
-{
-#ifdef USE_NEON
-    return owncloud_set_property(ctx, key, value);
-#else
-    (void)ctx, (void)key, (void)value;
-    return 0;
-#endif
-}
-

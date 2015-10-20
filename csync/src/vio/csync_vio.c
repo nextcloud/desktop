@@ -36,9 +36,6 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 
 #include "csync_log.h"
-#if USE_NEON
-#include "csync_owncloud.h"
-#endif
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
   switch(ctx->replica) {
@@ -132,8 +129,5 @@ char *csync_vio_get_status_string(CSYNC *ctx) {
   if(ctx->error_string) {
     return ctx->error_string;
   }
-#ifdef USE_NEON
-  return owncloud_error_string(ctx);
-#endif
   return 0;
 }
