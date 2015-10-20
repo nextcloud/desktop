@@ -264,40 +264,41 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         goto out;
     }
 
-    /* Build a list of path components to check. */
-    c_strlist_t *path_components = c_strlist_new(32);
-    char *path_split = strdup(path);
-    size_t len = strlen(path_split);
-    for (i = len; ; --i) {
-        // read backwards until a path separator is found
-        if (i != 0 && path_split[i-1] != '/') {
-            continue;
-        }
+    c_strlist_t *path_components = NULL;
+    if (check_leading_dirs) {
+        /* Build a list of path components to check. */
+        path_components = c_strlist_new(32);
+        char *path_split = strdup(path);
+        size_t len = strlen(path_split);
+        for (i = len; ; --i) {
+            // read backwards until a path separator is found
+            if (i != 0 && path_split[i-1] != '/') {
+                continue;
+            }
 
-        // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
-        if (path_split[i] != 0) {
-            c_strlist_add_grow(&path_components, path_split + i);
-        }
+            // check 'basename', i.e. for "/foo/bar/fi" we'd check 'fi', 'bar', 'foo'
+            if (path_split[i] != 0) {
+                c_strlist_add_grow(&path_components, path_split + i);
+            }
 
-        if (i == 0 || !check_leading_dirs) {
-            break;
-        }
+            if (i == 0) {
+                break;
+            }
 
-        // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
-        path_split[i-1] = '\0';
-        c_strlist_add_grow(&path_components, path_split);
+            // check 'dirname', i.e. for "/foo/bar/fi" we'd check '/foo/bar', '/foo'
+            path_split[i-1] = '\0';
+            c_strlist_add_grow(&path_components, path_split);
+        }
+        SAFE_FREE(path_split);
     }
-    SAFE_FREE(path_split);
 
     /* Loop over all exclude patterns and evaluate the given path */
     for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
         bool match_dirs_only = false;
-        char *pattern_stored = c_strdup(excludes->vector[i]);
-        char* pattern = pattern_stored;
+        char *pattern = excludes->vector[i];
 
         type = CSYNC_FILE_EXCLUDE_LIST;
-        if (strlen(pattern) < 1) {
-            SAFE_FREE(pattern_stored);
+        if (!pattern[0]) { /* empty pattern */
             continue;
         }
         /* Excludes starting with ']' means it can be cleanup */
@@ -309,6 +310,9 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         }
         /* Check if the pattern applies to pathes only. */
         if (pattern[strlen(pattern)-1] == '/') {
+            if (!check_leading_dirs && filetype == CSYNC_FTW_TYPE_FILE) {
+                continue;
+            }
             match_dirs_only = true;
             pattern[strlen(pattern)-1] = '\0'; /* Cut off the slash */
         }
@@ -326,7 +330,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         }
 
         /* if still not excluded, check each component and leading directory of the path */
-        if (match == CSYNC_NOT_EXCLUDED) {
+        if (match == CSYNC_NOT_EXCLUDED && check_leading_dirs) {
             size_t j = 0;
             if (match_dirs_only && filetype == CSYNC_FTW_TYPE_FILE) {
                 j = 1; // skip the first entry, which is bname
@@ -338,8 +342,16 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
                     break;
                 }
             }
+        } else if (match == CSYNC_NOT_EXCLUDED && !check_leading_dirs) {
+            rc = csync_fnmatch(pattern, bname, 0);
+            if (rc == 0) {
+                match = type;
+            }
         }
-        SAFE_FREE(pattern_stored);
+        if (match_dirs_only) {
+            /* restore the '/' */
+            pattern[strlen(pattern)] = '/';
+        }
     }
     c_strlist_destroy(path_components);
 
