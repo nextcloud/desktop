@@ -56,7 +56,7 @@ public:
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;
-    void askFromUser();
+    void askFromUser() Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
     void persist() Q_DECL_OVERRIDE;
     void invalidateToken() Q_DECL_OVERRIDE;
