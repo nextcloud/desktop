@@ -341,7 +341,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         }
     }
 
-    if (file->file_id && strlen(file->file_id) > 0) {
+    if (file->file_id && file->file_id[0]) {
         item->_fileId = file->file_id;
     }
     if (file->directDownloadUrl) {
@@ -431,9 +431,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     item->_isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
 
-    // The etag is already set in the previous sync phases somewhere. Maybe we should remove it there
-    // and do it here so we have a consistent state about which tree stores information from which source.
-    item->_etag = file->etag;
+    if (file->etag && file->etag[0]) {
+        item->_etag = file->etag;
+    }
     item->_size = file->size;
 
     if (!remote) {

@@ -270,10 +270,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
                   fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
                   (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
-        if( !fs->etag) {
-            st->instruction = CSYNC_INSTRUCTION_EVAL;
-            goto out;
-        }
         if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
             || (ctx->current == LOCAL_REPLICA && (!_csync_mtime_equal(fs->mtime, tmp->modtime)
                                                   // zero size in statedb can happen during migration
@@ -770,31 +766,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       };
     } else {
       flag = CSYNC_FTW_FLAG_NSTAT;
-    }
-
-    if( ctx->current == LOCAL_REPLICA ) {
-        char *etag = NULL;
-        int len = strlen( path );
-        uint64_t h = c_jhash64((uint8_t *) path, len, 0);
-        etag = csync_statedb_get_etag( ctx, h );
-
-        if(_last_db_return_error(ctx)) {
-            ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-            SAFE_FREE(etag);
-            goto error;
-        }
-
-        if( etag ) {
-            SAFE_FREE(fs->etag);
-            fs->etag = etag;
-            fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
-
-            if( c_streq(etag, "")) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database is EMPTY: %s", path);
-            } else {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Uniq ID from Database: %s -> %s", path, fs->etag ? fs->etag : "<NULL>" );
-            }
-        }
     }
 
     previous_fs = ctx->current_fs;

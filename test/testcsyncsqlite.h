@@ -81,16 +81,6 @@ private slots:
         csync_file_stat_free(st);
     }
 
-    void testEtag() {
-        char *etag = csync_statedb_get_etag((CSYNC*)(&_ctx), 7145399680328529363 );
-        QCOMPARE( QString::fromUtf8(etag), QLatin1String("52847f208be09"));
-        SAFE_FREE(etag);
-
-        etag = csync_statedb_get_etag((CSYNC*)(&_ctx), -8148768149813301136);
-        QCOMPARE( QString::fromUtf8(etag), QLatin1String("530d148493894"));
-        SAFE_FREE(etag);
-    }
-
     void cleanupTestCase() {
         SAFE_FREE(_ctx.statedb.file);
         csync_statedb_close((CSYNC*)(&_ctx));

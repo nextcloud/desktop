@@ -416,28 +416,6 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
   return st;
 }
 
-/* Get the etag. */
-char *csync_statedb_get_etag( CSYNC *ctx, uint64_t jHash ) {
-    char *ret = NULL;
-    csync_file_stat_t *fs = NULL;
-
-    if( !ctx ) {
-        return NULL;
-    }
-
-    if( ! csync_get_statedb_exists(ctx)) return ret;
-
-    fs = csync_statedb_get_stat_by_hash(ctx, jHash );
-    if( fs ) {
-        if( fs->etag ) {
-            ret = c_strdup(fs->etag);
-        }
-        csync_file_stat_free(fs);
-    }
-
-    return ret;
-}
-
 #define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM metadata WHERE pathlen>? AND path LIKE(?)"
 
 int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
