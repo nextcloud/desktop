@@ -35,20 +35,20 @@ public:
     /**
      * Support sharetypes
      */
-    enum class SHARETYPE : int {
-        LINK = 3
+    enum class ShareType : int {
+        Link = 3
     };
 
     /**
      * Possible permissions
      */
-    enum class PERMISSION : int {
-        READ = 1,
-        UPDATE = 2,
-        CREATE = 4,
-        DELETE = 8,
-        SHARE = 16,
-        ALL = 31
+    enum class Permission : int {
+        Read = 1,
+        Update = 2,
+        Create = 4,
+        Delete = 8,
+        Share = 16,
+        All = 31
     };
 
     /**
@@ -99,7 +99,7 @@ public:
      * @param password Optionally a password for the share
      * @param date Optionally an expire date for the share
      */
-    void createShare(const QString& path, SHARETYPE shareType, const QString& password = "", const QDate& date = QDate());
+    void createShare(const QString& path, ShareType shareType, const QString& password = "", const QDate& date = QDate());
 };
 
 }

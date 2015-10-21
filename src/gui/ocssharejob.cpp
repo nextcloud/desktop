@@ -79,7 +79,7 @@ void OcsShareJob::setPublicUpload(int shareId, bool publicUpload)
     start();
 }
 
-void OcsShareJob::createShare(const QString &path, SHARETYPE shareType, const QString &password, const QDate &date)
+void OcsShareJob::createShare(const QString &path, ShareType shareType, const QString &password, const QDate &date)
 {
     setVerb("POST");
 

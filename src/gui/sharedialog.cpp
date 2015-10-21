@@ -248,7 +248,7 @@ void ShareDialog::setPassword(const QString &password)
             date = _ui->calendar->date();
         }
 
-        job->createShare(_sharePath, OcsShareJob::SHARETYPE::LINK, password, date);
+        job->createShare(_sharePath, OcsShareJob::ShareType::Link, password, date);
     }
     _passwordJobRunning = true;
 }
@@ -304,7 +304,7 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
     Q_FOREACH(auto share, ShareDialog::_shares) {
         QVariantMap data = share.toMap();
 
-        if (data.value("share_type").toInt() == static_cast<int>(OcsShareJob::SHARETYPE::LINK)) {
+        if (data.value("share_type").toInt() == static_cast<int>(OcsShareJob::ShareType::Link)) {
             _public_share_id = data.value("id").toULongLong();
             _ui->pushButton_copy->show();
 
@@ -340,8 +340,8 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
                  * For public links the server sets CREATE and UPDATE permissions.
                  */
                 if (!_isFile && 
-                       (permissions & static_cast<int>(OcsShareJob::PERMISSION::UPDATE)) && 
-                       (permissions & static_cast<int>(OcsShareJob::PERMISSION::CREATE))) {
+                       (permissions & static_cast<int>(OcsShareJob::Permission::Update)) &&
+                       (permissions & static_cast<int>(OcsShareJob::Permission::Create))) {
                     _ui->checkBox_editing->setChecked(true);
                 }
             }
@@ -468,7 +468,7 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
 
         OcsShareJob *job = new OcsShareJob(_account, this);
         connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
-        job->createShare(_sharePath, OcsShareJob::SHARETYPE::LINK);
+        job->createShare(_sharePath, OcsShareJob::ShareType::Link);
     } else {
         _pi_link->startAnimation();
         OcsShareJob *job = new OcsShareJob(_account, this);
