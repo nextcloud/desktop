@@ -92,18 +92,27 @@ have the following features:
   removed synchronization on an account (see **Remove Sync** below).
 
 The little button with three dots that sits to the right of the sync status bar 
-offers three additional options:
+offers four additional options:
 
 * Open Folder
-* Pause Sync
+* Choose What to Sync
+* Pause Sync / Resume Sync
 * Remove Sync
 
-**Pause Sync** pauses sync operations without making any changes to your account.
+**Open Folder** opens a file explorer window displaying the client-side folder
+that is being synced.
 
-**Remove Sync** suspends synchronization without removing the account, and it 
-removes your folder sync selection. When you're ready to resume synchronization 
-click the **Add Folder Sync Connection** button, and re-select the folders you 
-want to sync.
+**Choose What to Sync** opens the folder sync tree view. From there you can
+choose to sync all or only some of the folders in the folder tree.
+
+**Pause Sync** pauses sync operations for just this folder sync connection
+without making any changes to your account.
+**Resume Sync** resumes sync operations for this folder sync connection.
+
+**Remove Sync** removes this folder sync connection without removing the
+account. If you want to synchronize the folder tree again then click the
+**Add Folder Sync Connection** button, and re-select the folder tree that
+you want to sync.
 
 .. image:: images/client-7.png
    :alt: Extra options for sync operations
@@ -122,12 +131,15 @@ Multi-Account Support
 
 You may now configure multiple ownCloud accounts in your desktop sync client. 
 Simply click the **Add an Account** button on the General tab, and follow the 
-account creation wizard. The new account will appear as a new tab in the settings dialog, where you can adjust its settings at any time.
+account creation wizard. The new account will appear as a new tab in the 
+settings dialog, where you can adjust its settings at any time.
 
 Editing Ignored Files
 ---------------------
 
-The Ignored Files Editor can be opened by clicking on the button in the General tab of the settings dialog. The settings apply to all configured accounts. The :guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
+The Ignored Files Editor can be opened by clicking on the button in the General 
+tab of the settings dialog. The settings apply to all configured accounts. The 
+:guilabel:`Ignored Files Editor` provides a list of  files that are ignored 
 (that is, not synchronized) by the client and server during synchronizations. 
 You may add additional files or directories that you want to exclude from the 
 synchronization process. In addition to using standard characters, the Ignored 
@@ -184,7 +196,8 @@ components of the path being checked.
 
 .. note:: Custom entries are currently not validated for syntactical
    correctness by the editor, so you will not see any warnings for bad
-   syntax. If your synchronization does not work as you expected, check your syntax.
+   syntax. If your synchronization does not work as you expected, check your 
+   syntax.
 
 Each pattern string in the list is preceded by a checkbox. When the check box
 contains a check mark, in addition to ignoring the file or directory component
@@ -197,8 +210,8 @@ this list:
 - The ownCloud Client always excludes files containing characters that cannot
   be synchronized to other file systems.
 
-- Files are removed that cause individual errors three times during a synchronization. 
-  However, the client provides the option of retrying a synchronization three additional 
-  times on files that produce errors.
+- Files are removed that cause individual errors three times during a 
+  synchronization. However, the client provides the option of retrying a 
+  synchronization three additional times on files that produce errors.
 
 For more detailed information see :ref:`ignored-files-label`.

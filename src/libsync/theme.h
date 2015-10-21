@@ -111,10 +111,11 @@ public:
      * Characteristics: bool if more than one sync folder is allowed
      */
     virtual bool singleSyncFolder() const;
+
     /**
-     * When true, there can only be one account.
+     * When true, client works with multiple accounts.
      */
-    virtual bool singleAccount() const;
+    virtual bool multiAccount() const;
 
     /**
     * URL to help file

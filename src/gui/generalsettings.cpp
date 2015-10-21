@@ -173,7 +173,7 @@ void GeneralSettings::slotAccountAddedOrRemoved()
 {
     _ui->addAccountButton->setVisible(
         AccountManager::instance()->accounts().isEmpty()
-            || !Theme::instance()->singleAccount());
+            || Theme::instance()->multiAccount());
 }
 
 
