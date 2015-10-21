@@ -108,7 +108,7 @@ bool Folder::init()
         _csync_ctx = 0;
     } else {
         csync_set_log_callback( csyncLogCatcher );
-        csync_set_log_level( 11 );
+        csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
         Q_ASSERT( _accountState );
         _accountState->account()->credentials()->syncContextPreInit(_csync_ctx);
@@ -844,6 +844,7 @@ void Folder::startSync(const QStringList &pathList)
         _clientProxy.setCSyncProxy(_accountState->account()->url(), _csync_ctx);
         setProxyDirty(false);
     }
+    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
     if (isBusy()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
