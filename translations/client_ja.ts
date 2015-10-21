@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>Stop syncing</source>
-        <translation type="unfinished"/>
+        <translation>同期停止中</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="309"/>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>アカウント削除確認</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="564"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>接続削除</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="165"/>
@@ -220,12 +220,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="176"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>同期削除</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>同期削除確認</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="278"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="164"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 はフォルダーのはずですが、そうではないようです。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="167"/>
@@ -682,7 +682,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
         <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation>既に同期対象のフォルダーの為、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダー同期設定を削除してください。</translation>
+        <translation>既に同期対象のフォルダーのため、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダー同期設定を削除してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
@@ -761,7 +761,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>Waiting...</source>
-        <translation type="unfinished"/>
+        <translation>待機中...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
@@ -771,7 +771,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Preparing to sync...</source>
-        <translation type="unfinished"/>
+        <translation>同期の準備中...</translation>
     </message>
 </context>
 <context>
@@ -1768,7 +1768,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>ディレクトリ &apos;%1&apos;を削除できません;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1988,7 +1988,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
         <source>Username:</source>
-        <translation>ユーザ名:</translation>
+        <translation>ユーザー名:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
@@ -1998,7 +1998,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>プロキシサーバにユーザー名とパスワードが必要です。</translation>
+        <translation>プロキシサーバーにユーザー名とパスワードが必要です。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2432,12 +2432,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>信頼できない証明書</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;i&gt;%1&lt;/i&gt; にセキュアに接続できません:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
