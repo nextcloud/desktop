@@ -416,15 +416,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
   return st;
 }
 
-#define BELOW_PATH_QUERY "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM metadata WHERE pathlen>? AND path LIKE(?)"
-
 int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
     int rc;
     sqlite3_stmt *stmt = NULL;
     int64_t cnt = 0;
-    char *likepath;
-    int asp;
-    int min_path_len;
 
     if( !path ) {
         return -1;
@@ -434,7 +429,12 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         return -1;
     }
 
-    SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, BELOW_PATH_QUERY, -1, &stmt, NULL));
+    /*  Select the entries for anything that starts with  (path+'/')
+     * In other words, anything that is between  path+'/' and path+'0',
+     * (because '0' follows '/' in ascii)
+     */
+    const char *below_path_query = "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM metadata WHERE path > (?||'/') AND path < (?||'0')";
+    SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, below_path_query, -1, &stmt, NULL));
     ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_OK ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Unable to create stmt for below path query.");
@@ -445,15 +445,8 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
       return -1;
     }
 
-    asp = asprintf( &likepath, "%s/%%%%", path);
-    if (asp < 0) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
-        return -1;
-    }
-
-    min_path_len = strlen(path);
-    sqlite3_bind_int(stmt, 1, min_path_len);
-    sqlite3_bind_text(stmt, 2, likepath, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 1, path, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, path, -1, SQLITE_STATIC);
 
     cnt = 0;
 
@@ -496,7 +489,6 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%" PRId64 " entries read below path %s from db.", cnt, path);
     }
     sqlite3_finalize(stmt);
-    SAFE_FREE(likepath);
 
     return 0;
 }

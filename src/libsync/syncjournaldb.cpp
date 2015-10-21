@@ -509,12 +509,12 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
     if( 1 ) {
         SqlQuery query(_db);
-        query.prepare("CREATE INDEX IF NOT EXISTS metadata_pathlen ON metadata(pathlen);");
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_path ON metadata(path);");
         if( !query.exec()) {
-            sqlFail("updateMetadataTableStructure: create index pathlen", query);
+            sqlFail("updateMetadataTableStructure: create index path", query);
             re = false;
         }
-        commitInternal("update database structure: add pathlen index");
+        commitInternal("update database structure: add path index");
 
     }
 
