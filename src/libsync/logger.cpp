@@ -141,12 +141,17 @@ void Logger::doLog(const QString& msg)
 
 void Logger::csyncLog( const QString& message )
 {
+    auto logger = Logger::instance();
+    if (logger->isNoop()) {
+        return;
+    }
+
     Log log;
     log.source = Log::CSync;
     log.timeStamp = QDateTime::currentDateTime();
     log.message = message;
 
-    Logger::instance()->log(log);
+    logger->log(log);
 }
 
 void Logger::mirallLog( const QString& message )
