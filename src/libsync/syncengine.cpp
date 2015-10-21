@@ -298,7 +298,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if( ! file ) return -1;
 
     QTextCodec::ConverterState utf8State;
-    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     Q_ASSERT(codec);
     QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
     QString renameTarget;
