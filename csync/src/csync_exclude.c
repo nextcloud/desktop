@@ -171,29 +171,12 @@ bool csync_is_windows_reserved_word(const char* filename) {
 
 static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const char *path, int filetype, bool check_leading_dirs) {
     size_t i = 0;
-    const char *p = NULL;
     const char *bname = NULL;
     size_t blen = 0;
     char *conflict = NULL;
     int rc = -1;
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
     CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
-
-      for (p = path; *p; p++) {
-        switch (*p) {
-          case '\\':
-          case ':':
-          case '?':
-          case '*':
-          case '"':
-          case '>':
-          case '<':
-          case '|':
-            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
-          default:
-            break;
-        }
-      }
 
     /* split up the path */
     bname = strrchr(path, '/');
@@ -217,7 +200,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         goto out;
     }
 
-  #ifdef _WIN32
+#ifdef _WIN32
     // Windows cannot sync files ending in spaces (#2176). It also cannot
     // distinguish files ending in '.' from files without an ending,
     // as '.' is a separator that is not stored internally, so let's
@@ -231,7 +214,26 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
       match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
       goto out;
     }
-  #endif
+
+    // Filter out characters not allowed in a filename on windows
+    const char *p = NULL;
+    for (p = path; *p; p++) {
+        switch (*p) {
+        case '\\':
+        case ':':
+        case '?':
+        case '*':
+        case '"':
+        case '>':
+        case '<':
+        case '|':
+            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            goto out;
+        default:
+            break;
+        }
+    }
+#endif
 
     rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
     if (rc == 0) {
