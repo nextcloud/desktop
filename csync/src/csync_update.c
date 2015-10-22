@@ -580,7 +580,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   char *d_name = NULL;
   csync_vio_handle_t *dh = NULL;
   csync_vio_file_stat_t *dirent = NULL;
-  csync_vio_file_stat_t *fs = NULL;
   csync_file_stat_t *previous_fs = NULL;
   int read_from_db = 0;
   int rc = 0;
@@ -737,15 +736,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     /* Only for the local replica we have to stat(), for the remote one we have all data already */
     if (ctx->replica == LOCAL_REPLICA) {
-        fs = csync_vio_file_stat_new();
-        res = csync_vio_stat(ctx, filename, fs);
+        res = csync_vio_stat(ctx, filename, dirent);
     } else {
-        fs = dirent;
         res = 0;
     }
 
     if( res == 0) {
-      switch (fs->type) {
+      switch (dirent->type) {
         case CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK:
           flag = CSYNC_FTW_FLAG_SLINK;
           break;
@@ -771,13 +768,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     previous_fs = ctx->current_fs;
 
     /* Call walker function for each file */
-    rc = fn(ctx, filename, fs, flag);
+    rc = fn(ctx, filename, dirent, flag);
     /* this function may update ctx->current and ctx->read_from_db */
-
-    /* Only for the local replica we have to destroy stat(), for the remote one it is a pointer to dirent */
-    if (ctx->replica == LOCAL_REPLICA) {
-        csync_vio_file_stat_destroy(fs);
-    }
 
     if (rc < 0) {
       if (CSYNC_STATUS_IS_OK(ctx->status_code)) {

@@ -157,13 +157,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     return -1;
   }
 
-  buf->name = c_basename(uri);
-
-  if (buf->name == NULL) {
-    csync_vio_file_stat_destroy(buf);
-    c_free_locale_string(wuri);
-    return -1;
-  }
   buf->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   switch(sb.st_mode & S_IFMT) {
@@ -209,9 +202,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
   }
 #endif
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
-
-  buf->device = sb.st_dev;
-  buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
 
   buf->inode = sb.st_ino;
   buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;

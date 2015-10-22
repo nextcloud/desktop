@@ -116,10 +116,31 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   return rc;
 }
 
+
+static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
+{
+    long long int t = filetime->dwHighDateTime;
+    t <<= 32;
+    t += (UINT32)filetime->dwLowDateTime;
+    t -= 116444736000000000LL;
+    if (t < 0)
+    {
+        if (remainder) *remainder = 9999999 - (-t - 1) % 10000000;
+        return -1 - ((-t - 1) / 10000000);
+    }
+    else
+    {
+        if (remainder) *remainder = t % 10000000;
+        return t / 10000000;
+    }
+}
+
 csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dhandle_t *handle = NULL;
   csync_vio_file_stat_t *file_stat = NULL;
+  ULARGE_INTEGER FileIndex;
+  DWORD rem;
 
   handle = (dhandle_t *) dhandle;
 
@@ -148,13 +169,43 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   file_stat->name = c_utf8_from_locale(handle->ffd.cFileName);
 
   file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-  if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-      file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
-  } else {
-      file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-  }
+  if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
+            && handle->ffd.dwReserved0 & IO_REPARSE_TAG_SYMLINK) {
+        file_stat->flags = CSYNC_VIO_FILE_FLAGS_SYMLINK;
+        file_stat->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
+                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
+                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+        file_stat->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+    } else {
+        file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+    }
 
-  return file_stat;
+    file_stat->flags = CSYNC_VIO_FILE_FLAGS_NONE;
+    /* Check for the hidden flag */
+    if( handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ) {
+        file_stat->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+    }
+
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
+
+    file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+
+    file_stat->atime = FileTimeToUnixTime(&handle->ffd.ftLastAccessTime, &rem);
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
+
+    file_stat->mtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
+      /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+
+    file_stat->ctime = FileTimeToUnixTime(&handle->ffd.ftCreationTime, &rem);
+    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
+
+    return file_stat;
 
 err:
   SAFE_FREE(file_stat);
@@ -162,29 +213,16 @@ err:
   return NULL;
 }
 
-static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
-{
-   long long int t = filetime->dwHighDateTime;
-   t <<= 32;
-   t += (UINT32)filetime->dwLowDateTime;
-   t -= 116444736000000000LL;
-   if (t < 0)
-   {
-    if (remainder) *remainder = 9999999 - (-t - 1) % 10000000;
-	return -1 - ((-t - 1) / 10000000);
-    }
-    else
-    {
-	if (remainder) *remainder = t % 10000000;
-	return t / 10000000;
-    }
-}
+
 
 int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
-    HANDLE h, hFind;
-    FILETIME ftCreate, ftAccess, ftWrite;
+    /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
+       But we still need to fetch the file ID.
+       Possible optimisation: only fetch the file id when we need it (for new files)
+      */
+
+    HANDLE h;
     BY_HANDLE_FILE_INFORMATION fileInfo;
-    WIN32_FIND_DATAW FindFileData;
     ULARGE_INTEGER FileIndex;
     mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
@@ -205,47 +243,6 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
         return -1;
     }
 
-    buf->flags = CSYNC_VIO_FILE_FLAGS_NONE;
-    do {
-        // Check first if it is a symlink (code from c_islink)
-        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
-            hFind = FindFirstFileW(wuri, &FindFileData );
-            if (hFind !=  INVALID_HANDLE_VALUE) {
-                if( (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) &&
-                        (FindFileData.dwReserved0 & IO_REPARSE_TAG_SYMLINK) ) {
-                    buf->flags = CSYNC_VIO_FILE_FLAGS_SYMLINK;
-                    buf->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
-                    break;
-                }
-            }
-            FindClose(hFind);
-        }
-        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
-                || fileInfo.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-                || fileInfo.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
-            buf->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
-            break;
-        }
-        if (fileInfo.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-            buf->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
-            break;
-        }
-        // fallthrough:
-        buf->type = CSYNC_VIO_FILE_TYPE_REGULAR;
-        break;
-    } while (0);
-
-    /* Check for the hidden flag */
-    if( fileInfo.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ) {
-        buf->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
-    }
-
-    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
-    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-
-    buf->device = fileInfo.dwVolumeSerialNumber;
-    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DEVICE;
-
     /* Get the Windows file id as an inode replacement. */
     FileIndex.HighPart = fileInfo.nFileIndexHigh;
     FileIndex.LowPart = fileInfo.nFileIndexLow;
@@ -253,28 +250,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
 
-    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
-    buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
-    /* Get the file time with a win32 call rather than through stat. See
-      * http://www.codeproject.com/Articles/1144/Beating-the-Daylight-Savings-Time-bug-and-getting
-      * for deeper explanation.
-      */
-    if( GetFileTime(h, &ftCreate, &ftAccess, &ftWrite) ) {
-        DWORD rem;
-        buf->atime = FileTimeToUnixTime(&ftAccess, &rem);
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
-
-        buf->mtime = FileTimeToUnixTime(&ftWrite, &rem);
-        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-
-        buf->ctime = FileTimeToUnixTime(&ftCreate, &rem);
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-    }
-
     c_free_locale_string(wuri);
     CloseHandle(h);
-
     return 0;
 }

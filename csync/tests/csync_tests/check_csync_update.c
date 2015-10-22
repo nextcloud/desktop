@@ -201,7 +201,6 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
     }
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_INODE;
 
-    fs->device = 0;
 
     fs->size = 157459;
     fs->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
