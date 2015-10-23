@@ -509,7 +509,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     QTimer::singleShot(1000, this, SLOT(slotShowFetchProgress()));
 }
 
-void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
+void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
     Q_ASSERT(job);
@@ -529,25 +529,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     parentInfo->_fetching = false;
     parentInfo->_fetched = true;
 
-    auto list = list_;
-    list.removeFirst(); // remove the parent item
-
     QUrl url = parentInfo->_folder->remoteUrl();
     QString pathToRemove = url.path();
     if (!pathToRemove.endsWith('/'))
         pathToRemove += '/';
-
-    // Drop the folder base path and check for excludes.
-    QMutableListIterator<QString> it(list);
-    while (it.hasNext()) {
-        it.next();
-        it.value().remove(pathToRemove);
-        if (parentInfo->_folder->isFileExcludedRelative(it.value())) {
-            it.remove();
-        }
-    }
-
-    beginInsertRows(idx, 0, list.count() - 1);
 
     QStringList selectiveSyncBlackList;
     if (parentInfo->_checked == Qt::PartiallyChecked) {
@@ -555,20 +540,28 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
     }
     auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
 
-    QVarLengthArray<int> undecidedIndexes;
+    QVarLengthArray<int, 10> undecidedIndexes;
 
-    int i = 0;
-    foreach (QString path, list) {
+    QVector<SubFolderInfo> newSubs;
+    newSubs.reserve(list.size() - 1);
+    for (int i = 1;  // skip the parent item (first in the list)
+            i < list.size(); ++i) {
+        const QString &path = list.at(i);
+        auto relativePath = path.mid(pathToRemove.size());
+        if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
+            continue;
+        }
+
         SubFolderInfo newInfo;
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
-        newInfo._pathIdx << i++;
+        newInfo._pathIdx << newSubs.size();
         auto size = job ? job->_sizes.value(path) : 0;
         newInfo._size = size;
-        newInfo._path = path;
-        newInfo._name = path.split('/', QString::SkipEmptyParts).last();
+        newInfo._path = relativePath;
+        newInfo._name = relativePath.split('/', QString::SkipEmptyParts).last();
 
-        if (path.isEmpty())
+        if (relativePath.isEmpty())
             continue;
 
         if (parentInfo->_checked == Qt::Unchecked) {
@@ -577,25 +570,27 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list_)
             newInfo._checked = Qt::Checked;
         } else {
             foreach(const QString &str , selectiveSyncBlackList) {
-                if (str == path || str == QLatin1String("/")) {
+                if (str == relativePath || str == QLatin1String("/")) {
                     newInfo._checked = Qt::Unchecked;
                     break;
-                } else if (str.startsWith(path)) {
+                } else if (str.startsWith(relativePath)) {
                     newInfo._checked = Qt::PartiallyChecked;
                 }
             }
         }
 
         foreach(const QString &str , selectiveSyncUndecidedList) {
-            if (str == path) {
+            if (str == relativePath) {
                 newInfo._isUndecided = true;
-            } else if (str.startsWith(path)) {
+            } else if (str.startsWith(relativePath)) {
                 undecidedIndexes.append(newInfo._pathIdx.last());
             }
         }
-        parentInfo->_subs.append(newInfo);
+        newSubs.append(newInfo);
     }
 
+    beginInsertRows(idx, 0, newSubs.size() - 1);
+    parentInfo->_subs = std::move(newSubs);
     endInsertRows();
 
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
