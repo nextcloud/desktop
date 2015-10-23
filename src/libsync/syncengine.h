@@ -109,9 +109,6 @@ signals:
 
     void transmissionProgress( const ProgressInfo& progress );
 
-    void csyncStateDbFile( const QString& );
-    void wipeDb();
-
     void finished();
     void started();
 
