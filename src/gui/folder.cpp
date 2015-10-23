@@ -1142,7 +1142,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
                        msg.arg(alias()));
     msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
-    QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::ActionRole);
+    QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::AcceptRole);
     if (msgBox.exec() == -1) {
         *cancel = true;
         return;
