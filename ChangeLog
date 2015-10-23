@@ -6,7 +6,7 @@ version 2.0.2 (release 2015-10-xx)
   * SelectiveSync: Increase folder list timeout to 60
   * Propagation: Try another sync on 423 Locked #3387
   * Propagation: Make 423 Locked a soft error #3387
-  * Propagation: Reset upload blacklist if a chunk suceeds
+  * Propagation: Reset upload blacklist if a chunk succeeds
   * Application: Fix crash on early shutdown #3898
   * Linux: Don't show settings dialog always when launched twice #3273 #3771 #3485
   * win32 vio: Add the OPEN_REPARSE_POINTS flag to the CreateFileW call. #3813
@@ -36,12 +36,12 @@ version 2.0.2 (release 2015-10-xx)
   * PropagateLocalRemove:  remove entries from the DB even if there was an error.
   * Settings UI improvements (eg. #3713, #3721, #3619 and others)
   * Folder: Do not create the sync folder if it does not exist #3692
-  * Shell integratioon: don't show share menu item for top level folders
+  * Shell integration: don't show share menu item for top level folders
   * Tray: Hide while modifying menus #3656 #3672
   * AddFolder: Improve remote path selection error handling #3573
   * csync_update: Use excluded_traversal() to improve performance #3638
   * csync_excluded: Add fast _traversal() function #3638
-  * csync_exclude: Speed up siginificantly #3638
+  * csync_exclude: Speed up significantly #3638
   * AccountSettings: Adjust quota info design #3644 #3651
   * Adjust buttons on remove folder/account questions #3654
 
