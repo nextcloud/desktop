@@ -68,7 +68,6 @@ private:
     void customizeStyle();
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
-    void addActionToToolBar(QAction *action);
     Ui::SettingsDialog * const _ui;
 
     QActionGroup* _actionGroup;
@@ -76,8 +75,6 @@ private:
     QHash<QAction*, QWidget*> _actionGroupWidgets;
 
     QToolBar* _toolBar;
-    // Maps the actions from the action group to the toolbar actions
-    QHash<QAction*, QAction*> _toolbarAccountActions;
 
     QAction * _protocolAction;
     ownCloudGui *_gui;

@@ -44,7 +44,10 @@ namespace {
     "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
     "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
+
+  static const float buttonSizeRatio = 1.618; // golden ratio
 }
+
 
 namespace OCC {
 
@@ -79,19 +82,19 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     // all buttons must have the same size in order to keep a good layout
     _protocolAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     _actionGroup->addAction(_protocolAction);
-    addActionToToolBar(_protocolAction);
+    _toolBar->addAction(_protocolAction);
     ProtocolWidget *protocolWidget = new ProtocolWidget;
     _ui->stack->addWidget(protocolWidget);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
-    addActionToToolBar(generalAction);
+    _toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
-    addActionToToolBar(networkAction);
+    _toolBar->addAction(networkAction);
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
@@ -190,18 +193,10 @@ void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
     auto accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
-                s->shortDisplayNameForSettings(height * 1.618)); // Golden ratio
+                                                s->account()->displayName());
     accountAction->setToolTip(s->account()->displayName());
-
-    QToolButton* accountButton = new QToolButton;
-    accountButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    accountButton->setDefaultAction(accountAction);
-    accountButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    accountButton->setMinimumWidth(height * 1.3);
-
-    QAction* toolbarAction = _toolBar->insertWidget(_toolBar->actions().at(0), accountButton);
-    _toolbarAccountActions.insert(accountAction, toolbarAction);
-
+    accountAction->setIconText(s->shortDisplayNameForSettings(height * buttonSizeRatio));
+    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0 , accountSettings);
     _actionGroup->addAction(accountAction);
@@ -220,8 +215,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
             continue;
         }
         if (as->accountsState() == s) {
-            _toolBar->removeAction(_toolbarAccountActions.value(it.key()));
-            _toolbarAccountActions.remove(it.key());
+            _toolBar->removeAction(it.key());
 
             delete it.key();
             delete it.value();
@@ -263,23 +257,42 @@ QIcon SettingsDialog::createColorAwareIcon(const QString &name)
     return QIcon(QPixmap::fromImage(img));
 }
 
+class ToolButtonAction : public QWidgetAction
+{
+public:
+    explicit ToolButtonAction(const QIcon &icon, const QString &text, QObject* parent)
+            : QWidgetAction(parent)  {
+        setText(text);
+        setIcon(icon);
+    }
+
+
+    QWidget* createWidget(QWidget* parent) Q_DECL_OVERRIDE {
+
+        auto toolbar = qobject_cast<QToolBar*>(parent);
+        if (!toolbar) {
+            // this means we are in the extention menu, no special action here
+            return 0;
+        }
+
+        QToolButton* btn = new QToolButton(parent);
+        btn->setDefaultAction(this);
+        btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+//         btn->setMinimumWidth(qMax<int>(parent->sizeHint().height() * buttonSizeRatio,
+//                                        btn->sizeHint().width()));
+        return btn;
+    }
+};
+
 QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
 {
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = createColorAwareIcon(iconPath);
-    QAction *action = new QAction(coloredIcon, text, this);
+    QAction *action = new ToolButtonAction(coloredIcon, text, this);
     action->setCheckable(true);
     action->setProperty("iconPath", iconPath);
     return action;
-}
-
-void SettingsDialog::addActionToToolBar(QAction *action) {
-    QToolButton* btn = new QToolButton;
-    btn->setDefaultAction(action);
-    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    _toolBar->addWidget(btn);
-    btn->setMinimumWidth(_toolBar->sizeHint().height() * 1.3);
 }
 
 } // namespace OCC
