@@ -28,6 +28,7 @@
 #include "clientproxy.h"
 #include "syncengine.h"
 #include "syncrunfilelog.h"
+#include "socketapi.h"
 #include "theme.h"
 #include "filesystem.h"
 #include "excludedfiles.h"
@@ -771,6 +772,8 @@ void Folder::wipe()
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
+    //Unregister the socket API so it does not keep the .sync_journal file open
+    FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
 
     QFile file(stateDbFile);
@@ -789,6 +792,8 @@ void Folder::wipe()
     QFile::remove( stateDbFile + "-shm" );
     QFile::remove( stateDbFile + "-wal" );
     QFile::remove( stateDbFile + "-journal" );
+
+    FolderMan::instance()->socketApi()->slotRegisterPath(alias());
 }
 
 bool Folder::setIgnoredFiles()
