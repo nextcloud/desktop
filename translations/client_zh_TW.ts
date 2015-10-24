@@ -1522,7 +1522,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="252"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>從伺服器存取被拒絕。為了正確驗證您的存取資訊 &lt;a href=&quot;%1&quot;&gt;請點選這裡&lt;/a&gt; 透過瀏覽器來存取服務</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
@@ -1532,7 +1532,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>建立本地同步資料夾 %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="309"/>
@@ -1552,7 +1552,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="338"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>沒有指定遠端資料夾!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
@@ -1619,7 +1619,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>無法移除與備份此資料夾，因為有其他的程式正在使用其中的資料夾或者檔案。請關閉使用中的資料夾或檔案並重試或者取消設定。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
@@ -1637,7 +1637,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="80"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>忽略資料夾設定資訊</translation>
     </message>
 </context>
 <context>
@@ -1645,7 +1645,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="38"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>一切都準備就緒!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="42"/>
@@ -1655,7 +1655,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>瀏覽器中開啟 %1</translation>
     </message>
 </context>
 <context>
@@ -1671,7 +1671,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="171"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation type="unfinished"/>
+        <translation>不合法的JSON資訊從URL中回傳</translation>
     </message>
 </context>
 <context>
@@ -1699,7 +1699,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagator_legacy.cpp" line="567"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法被下載，因為本地端的檔案名稱已毀損!</translation>
     </message>
 </context>
 <context>
@@ -1707,12 +1707,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="315"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法被下載，因為本地端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="457"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>檔案已從伺服器被刪除</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="506"/>
@@ -1722,12 +1722,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="601"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法存檔，因為本地端的檔案名稱已毀損!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>尋找的過程中檔案已經被更改</translation>
     </message>
 </context>
 <context>
@@ -1735,7 +1735,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="92"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; 重新儲存失敗 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="115"/>
@@ -1758,7 +1758,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>無法建立資料夾 %1</translation>
     </message>
 </context>
 <context>
@@ -1766,17 +1766,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="72"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation type="unfinished"/>
+        <translation>移除時發生錯誤 &apos;%1&apos;: %2;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation type="unfinished"/>
+        <translation>無法移除資料夾 &apos;%1&apos;;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>無法刪除 %1 ，因為本地端的檔案名稱已毀損!</translation>
     </message>
 </context>
 <context>
@@ -1784,7 +1784,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="189"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>檔案 %1 無法更名成 %2，因為本地端的檔案名稱已毀損</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1797,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="115"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 204, 但是接收到的是 &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1805,7 +1805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="72"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 201, 但是接收到的是 &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1813,12 +1813,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="87"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation type="unfinished"/>
+        <translation>這個資料夾不應該被更名，他已經被改回原本的名稱了。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="89"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation type="unfinished"/>
+        <translation>這個資料夾已經被分享，不應該被更名，請改回原本的名稱。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
@@ -1828,7 +1828,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="144"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>從伺服器端回傳錯誤的 HTTP 代碼， 預期是 201, 但是接收到的是 &quot;%1 %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -1860,13 +1860,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="238"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>本地端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="250"/>
         <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>本地端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="558"/>
@@ -1886,7 +1886,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="620"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>本地端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="646"/>
@@ -1954,7 +1954,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="115"/>
         <source>The sync status has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>同步狀態已經被複製到剪貼簿。</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="265"/>
@@ -1971,12 +1971,13 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/protocolwidget.cpp" line="269"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>部份檔案 %n 已經下載。
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="270"/>
         <source>Try to sync these again.</source>
-        <translation type="unfinished"/>
+        <translation>嘗試重新同步。</translation>
     </message>
 </context>
 <context>
@@ -1984,7 +1985,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器要求驗證</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -1994,12 +1995,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="36"/>
         <source>Proxy:</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器:</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>代理伺服器需要使用者帳號以及密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2022,12 +2023,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="395"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>請選擇要同步的內容: 您可以選擇想要同步的遠端子資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="396"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>請選擇要同步的內容: 您可以不要點選不想同步的遠端子資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="402"/>
@@ -2056,12 +2057,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="191"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="229"/>
         <source>No subfolders currently on the server.</source>
-        <translation type="unfinished"/>
+        <translation>目前沒有子資料夾在伺服器上。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="231"/>
         <source>An error occured while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>在讀取子資料夾清單中發生錯誤。</translation>
     </message>
 </context>
 <context>
@@ -2115,7 +2116,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>分享 新文件.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="22"/>
@@ -2131,17 +2132,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="63"/>
         <source>ownCloud Path:</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud 路徑:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="182"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>設定 &amp;password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="196"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>設定 &amp;expiration date</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2151,7 +2152,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>複製 &amp;link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="142"/>
@@ -2176,7 +2177,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="112"/>
         <source>Folder: %2</source>
-        <translation type="unfinished"/>
+        <translation>資料夾: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="116"/>
@@ -2191,12 +2192,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="382"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>這個檔案無法被分享，並沒有分享此檔案的權限。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="528"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>請設定密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="564"/>
@@ -2217,12 +2218,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="639"/>
         <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation type="unfinished"/>
+        <translation>同步的檔案有相同檔名的檔案存在，這個檔案將無法被同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="684"/>
         <source>The file cannot be synced.</source>
-        <translation type="unfinished"/>
+        <translation>這個檔案無法被同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="624"/>
@@ -2238,7 +2239,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="617"/>
         <source>Cannot find a folder to upload to.</source>
-        <translation type="unfinished"/>
+        <translation>無法找到該資料夾上傳。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="651"/>
@@ -2274,17 +2275,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="74"/>
         <source>%1 - Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>%1 - 驗證</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>要求重新驗證</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation type="unfinished"/>
+        <translation>您的認証已經過期了，您必須重新登入才能繼續使用。</translation>
     </message>
 </context>
 <context>
@@ -2293,7 +2294,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="452"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation type="unfinished"/>
+        <translation>與 %1 分享</translation>
     </message>
 </context>
 <context>
@@ -2316,12 +2317,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
         <source>Organization (O):</source>
-        <translation type="unfinished"/>
+        <translation>組織 (O):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="109"/>
         <source>Organizational Unit (OU):</source>
-        <translation type="unfinished"/>
+        <translation>組織部門 (OU):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="110"/>
@@ -2397,7 +2398,8 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>這個連線已經使用 %1 bit %2 加密。
+</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="219"/>
@@ -2413,7 +2415,8 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="196"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>這個連線沒有經過加密，是不安全的。
+</translation>
     </message>
 </context>
 <context>
@@ -2431,12 +2434,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>不信任的憑證</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>無法安全的連線到 &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
@@ -2486,7 +2489,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>到期日: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
@@ -2504,7 +2507,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="104"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 讀取歷程檔案失敗，歷程檔案已經損毀。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="107"/>
@@ -2539,7 +2542,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 無法在代理伺服器認證。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="128"/>
@@ -2574,27 +2577,27 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>掛載的資料夾暫時無法在伺服器上使用</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>開啟資料夾時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>讀取資料夾時發生錯誤。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="996"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>拒絕此操作，您沒有新增母資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1003"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="152"/>
@@ -2614,32 +2617,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="395"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱含有非法的字元符號導致無法跨平台同步。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync 存取失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="100"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 讀取或創建歷程檔案時失敗，請確定您在此本地資料夾有讀寫的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync 試圖建立一個已經存在的資料夾。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>這個服務暫時無法使用。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="175"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>發生內部錯誤，錯誤代碼 %1。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="230"/>
@@ -2654,32 +2657,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="392"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>檔案被列在忽略清單。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱太長了。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="401"/>
         <source>File is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>這個檔案被忽略了，因為他是隱藏檔。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="407"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>狀態失敗。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="429"/>
         <source>Filename encoding is not valid</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱編碼是無效的</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="561"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>無效的字元，請您重新命名 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="631"/>
@@ -2700,23 +2703,23 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="990"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1023"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>拒絕上傳此檔案，此檔案在伺服器是唯讀檔，復原中</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1040"/>
         <location filename="../src/libsync/syncengine.cpp" line="1060"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>不允許刪除，復原中</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1073"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>本地端檔案和共享資料夾已被刪除。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1128"/>
@@ -2726,7 +2729,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1137"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>不允許移動，因為 %1 是唯讀的</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1138"/>
@@ -2752,7 +2755,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="284"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;版本 %1. 如欲得知更多資訊，請到此拜訪 &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="288"/>
@@ -2771,7 +2774,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>校驗碼異常。</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
@@ -2804,14 +2807,14 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>用瀏覽器開啟</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="350"/>
         <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <location filename="../src/gui/owncloudgui.cpp" line="526"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>登入...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="354"/>
@@ -2883,17 +2886,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="247"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>從 %1 斷線</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>已從帳號離線:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
-        <translation type="unfinished"/>
+        <translation>帳號 %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
@@ -2976,7 +2979,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>選擇要同步的項目</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="147"/>
