@@ -164,14 +164,15 @@ void SocketApi::slotReadSocket()
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
-        QString line = QString::fromUtf8(socket->readLine()).trimmed();
-        QString command = line.split(":").first();
+        QString line = QString::fromUtf8(socket->readLine());
+        line.chop(1); // remove the '\n'
+        QString command = line.split(":").value(0);
         QString function = QString(QLatin1String("command_")).append(command);
 
         QString functionWithArguments = function + QLatin1String("(QString,QIODevice*)");
         int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
 
-        QString argument = line.remove(0, command.length()+1).trimmed();
+        QString argument = line.remove(0, command.length()+1);
         if(indexOfMethod != -1) {
             QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QIODevice*, socket));
         } else {
