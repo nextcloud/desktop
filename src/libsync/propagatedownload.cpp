@@ -517,7 +517,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qDebug() << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
         _tmpFile.remove();
-        done(SyncFileItem::NormalError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
+        done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
         return;
     }
 
