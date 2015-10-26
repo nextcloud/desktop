@@ -317,7 +317,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
             qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
         }
-        if( file.startsWith(QChar('.')) ) {
+
+        QStringRef fileRef(&file);
+        int slashPos = file.lastIndexOf(QLatin1Char('/'));
+        if( slashPos > -1 ) {
+            fileRef = fileRef.mid(slashPos+1);
+        }
+        if( fileRef.startsWith(QChar('.')) ) {
             file_stat->flags = CSYNC_VIO_FILE_FLAGS_HIDDEN;
         }
         //qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
