@@ -156,14 +156,14 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotOpenCurrentFolder()));
 
-    ac = menu->addAction(tr("Choose What to Sync"));
+    ac = menu->addAction(tr("Choose what to sync"));
     ac->setEnabled(folderConnected);
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
 
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotEnableCurrentFolder()));
 
-    ac = menu->addAction(tr("Remove sync"));
+    ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotRemoveCurrentFolder()));
     menu->exec(tv->mapToGlobal(pos));
 }
@@ -277,13 +277,13 @@ void AccountSettings::slotRemoveCurrentFolder()
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
             QMessageBox messageBox(QMessageBox::Question,
-                                   tr("Confirm Sync Removal"),
+                                   tr("Confirm Folder Sync Connection Removal"),
                                    tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
                                       "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(alias),
                                    QMessageBox::NoButton,
                                    this);
             QPushButton* yesButton =
-                    messageBox.addButton(tr("Stop syncing"), QMessageBox::YesRole);
+                    messageBox.addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
             messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
             messageBox.exec();

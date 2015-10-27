@@ -51,8 +51,8 @@ Where:
 * ``Connected to <ownCloud instance> as <user>``: Indicates the ownCloud server
   which the client is syncing with and the user account on that server.
 
-* ``Add Folder...``: Provides the ability to add another folder to the sync
-  (see ``Adding a folder``).
+* ``Add Folder Sync Connection...``: Provides the ability to add another folder to the sync
+  (see ``Adding a folder sync connection``).
 * ``Pause/Resume``: Will pause the current sync or prevent the client from
   starting a new sync.  Resume will resume the sync process.
 * ``Remove``: Will remove the selected folder from being synced.  This is used,
@@ -74,11 +74,11 @@ Where:
 .. image:: images/settings_account.png
    :scale: 50 %
 
-Adding a Folder
-^^^^^^^^^^^^^^^
+Adding a Folder Sync Connection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Adding a new sync is initiated by clicking ``Add Folder...`` in the ``Account``
-settings.
+Adding a new sync is initiated by clicking ``Add Folder Sync Connection`` in
+the ``Account`` settings.
 
 ..note:: To add a folder, you must not already sync a folder that contains this
         folder. By default, the wizard sets up the root folder of the ownCloud
