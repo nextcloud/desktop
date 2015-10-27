@@ -66,11 +66,11 @@ private:
         if (status.startsWith("OK"))
             r << "ownCloud_ok";
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "owncloud_sync";
+            r << "ownCloud_sync";
         if (status.startsWith("IGNORE") || status.startsWith("WARN"))
-            r << "owncloud_warn";
+            r << "ownCloud_warn";
         if (status.startsWith("ERROR"))
-            r << "owncloud_error";
+            r << "ownCloud_error";
 
         if (status.contains("+SWM"))
             r << "document-share";
