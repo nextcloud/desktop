@@ -41,7 +41,6 @@ public:
                     SyncProgressOverallPercent,
                     SyncProgressOverallString,
                     SyncProgressItemString,
-                    AddProgressSpace,
                     WarningCount,
                     SyncRunning,
 

@@ -212,8 +212,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         } else {
             return Theme::instance()->folderOfflineIcon();
         }
-    case FolderStatusDelegate::AddProgressSpace:
-        return !progress.isNull();
     case FolderStatusDelegate::SyncProgressItemString:
         return progress._progressString;
     case FolderStatusDelegate::WarningCount:
@@ -658,7 +656,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
     for (int i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == folder) {
             emit dataChanged(index(i), index(i),
-                             QVector<int>() << FolderStatusDelegate::AddProgressSpace);
+                             QVector<int>() << FolderStatusDelegate::FolderStatus);
         }
     }
 }
@@ -751,8 +749,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     auto *pi = &_folders[folderIndex]._progress;
 
     QVector<int> roles;
-    roles << FolderStatusDelegate::AddProgressSpace << FolderStatusDelegate::SyncProgressItemString
-        << FolderStatusDelegate::WarningCount;
+    roles << FolderStatusDelegate::SyncProgressItemString << FolderStatusDelegate::WarningCount;
 
     if (!progress._currentDiscoveredFolder.isEmpty()) {
         pi->_progressString = tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);

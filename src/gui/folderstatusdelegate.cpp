@@ -79,12 +79,6 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
         h += aliasMargin*2 + errMsgs.count()*fm.height();
     }
 
-    if( qvariant_cast<bool>(index.data(AddProgressSpace)) ) {
-        int margin = fm.height()/4;
-        h += (5 * margin); // All the margins
-        h += 2* fm.boundingRect(tr("File")).height();
-    }
-
     return QSize( 0, h);
 }
 
@@ -221,20 +215,23 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->setFont(aliasFont);
     painter->drawText(aliasRect, elidedAlias);
 
-    painter->setFont(subFont);
-    QString elidedRemotePathText;
+    const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
+    if(!showProgess) {
+        painter->setFont(subFont);
+        QString elidedRemotePathText;
 
-    if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
-        elidedRemotePathText = subFm.elidedText(tr("Syncing selected files in your account with"),
-                                                Qt::ElideRight, remotePathRect.width());
-    } else {
-        elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
-                                                Qt::ElideMiddle, remotePathRect.width());
+        if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
+            elidedRemotePathText = subFm.elidedText(tr("Syncing selected files in your account with"),
+                                                    Qt::ElideRight, remotePathRect.width());
+        } else {
+            elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
+                                                    Qt::ElideMiddle, remotePathRect.width());
+        }
+        painter->drawText(remotePathRect, elidedRemotePathText);
+
+        QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
+        painter->drawText(localPathRect, elidedPathText);
     }
-    painter->drawText(remotePathRect, elidedRemotePathText);
-
-    QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
-    painter->drawText(localPathRect, elidedPathText);
 
     // paint an error overlay if there is an error string
 
@@ -270,7 +267,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     h += aliasMargin;
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
-    if( !overallString.isEmpty() || !itemString.isEmpty()) {
+    if (showProgess) {
         int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
         int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4); ;
         int overallWidth = option.rect.width()-aliasMargin-nextToIcon;
@@ -283,7 +280,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Overall Progress Bar.
         QRect pBRect;
-        pBRect.setTop( h );
+        pBRect.setTop( remotePathRect.top() );
         pBRect.setLeft( nextToIcon );
         pBRect.setHeight(barHeight);
         pBRect.setWidth( overallWidth - progressTextWidth - 2 * margin );
