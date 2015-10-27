@@ -703,14 +703,14 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
 {
+    if (!fullPath.startsWith(path())) {
+        // Mark paths we're not responsible for as excluded...
+        return true;
+    }
+
     QString myFullPath = fullPath;
     if (myFullPath.endsWith(QLatin1Char('/'))) {
         myFullPath.chop(1);
-    }
-
-    if (!myFullPath.startsWith(path())) {
-        // Mark paths we're not responsible for as excluded...
-        return true;
     }
 
     QString relativePath = myFullPath.mid(path().size());

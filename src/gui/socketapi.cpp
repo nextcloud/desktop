@@ -542,8 +542,8 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
     QString fileNameSlash = fileName;
 
-    if( fileName != QLatin1String("/") && !fileName.isEmpty() ) {
-        file = folder->path() + fileName;
+    if(fileName != QLatin1String("/") && !fileName.isEmpty()) {
+        file += fileName;
     }
 
     if( fileName.endsWith(QLatin1Char('/')) ) {
@@ -576,7 +576,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     // Is it excluded?
-    if( folder->isFileExcludedAbsolute(file) ) {
+    if( folder->isFileExcludedRelative(fileName) ) {
         return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
     }
 
@@ -591,7 +591,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     SyncJournalFileRecord rec = dbFileRecord_capi(folder, fileName );
 
     if (folder->estimateState(fileName, type, &status)) {
-        qDebug() << Q_FUNC_INFO << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
+        qDebug() << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
     } else if (fileName == "") {
         // sync folder itself
         switch (folder->syncResult().status()) {
@@ -621,7 +621,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         if (rec.isValid()) {
             status.set(SyncFileStatus::STATUS_SYNC);
         } else {
-            qDebug() << Q_FUNC_INFO << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
+            qDebug() << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
             status.set(SyncFileStatus::STATUS_NEW);
         }
     } else if (type == CSYNC_FTW_TYPE_FILE) {
@@ -636,7 +636,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
                 }
             }
         } else {
-            qDebug() << Q_FUNC_INFO << "Could not determine state for file" << fileName << "will set STATUS_NEW";
+            qDebug() << "Could not determine state for file" << fileName << "will set STATUS_NEW";
             status.set(SyncFileStatus::STATUS_NEW);
         }
     }
