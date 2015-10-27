@@ -161,7 +161,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
 
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
-    ac->setEnabled(folderConnected);
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotEnableCurrentFolder()));
 
     ac = menu->addAction(tr("Remove sync"));
