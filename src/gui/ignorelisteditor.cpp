@@ -110,6 +110,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
         QMessageBox::warning(this, tr("Could not open file"),
                              tr("Cannot write changes to '%1'.").arg(ignoreFile));
     }
+    ignores.close(); //close the file before reloading stuff.
 
     FolderMan * folderMan = FolderMan::instance();
 
