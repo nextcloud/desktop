@@ -60,6 +60,8 @@ private slots:
         record._remotePerm = "744";
         record._mode = -17;
         record._fileSize = 213089055;
+        record._transmissionChecksum = "mychecksum";
+        record._transmissionChecksumType = "MD5";
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
@@ -68,6 +70,31 @@ private slots:
         QVERIFY(_db.deleteFileRecord("foo"));
         record = _db.getFileRecord("foo");
         QVERIFY(!record.isValid());
+    }
+
+    void testFileRecordChecksum()
+    {
+        // Try with and without a checksum
+        {
+            SyncJournalFileRecord record;
+            record._path = "foo-checksum";
+            record._remotePerm = "744";
+            record._transmissionChecksum = "mychecksum";
+            record._transmissionChecksumType = "MD5";
+            QVERIFY(_db.setFileRecord(record));
+
+            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");
+            QVERIFY(storedRecord == record);
+        }
+        {
+            SyncJournalFileRecord record;
+            record._path = "foo-nochecksum";
+            record._remotePerm = "744";
+            QVERIFY(_db.setFileRecord(record));
+
+            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-nochecksum");
+            QVERIFY(storedRecord == record);
+        }
     }
 
     void testDownloadInfo()

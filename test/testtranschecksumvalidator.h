@@ -128,7 +128,7 @@ using namespace OCC;
         _successDown = false;
 
         ValidateChecksumHeader *vali = new ValidateChecksumHeader(this);
-        connect(vali, SIGNAL(validated(QByteArray)), this, SLOT(slotDownValidated()));
+        connect(vali, SIGNAL(validated(QByteArray,QByteArray)), this, SLOT(slotDownValidated()));
         connect(vali, SIGNAL(validationFailed(QString)), this, SLOT(slotDownError(QString)));
         vali->start(_testfile, adler);
 

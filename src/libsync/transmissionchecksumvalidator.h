@@ -92,7 +92,7 @@ public:
     void start(const QString& filePath, const QByteArray& checksumHeader);
 
 signals:
-    void validated(const QByteArray& checksumHeader);
+    void validated(const QByteArray& checksumType, const QByteArray& checksum);
     void validationFailed( const QString& errMsg );
 
 private slots:

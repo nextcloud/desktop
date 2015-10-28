@@ -157,7 +157,8 @@ public:
     quint64              _inode;
     QByteArray           _fileId;
     QByteArray           _remotePerm;
-    QByteArray           _checksumHeader;
+    QByteArray           _transmissionChecksum;
+    QByteArray           _transmissionChecksumType;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
 

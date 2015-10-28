@@ -353,8 +353,8 @@ void PropagateDownloadFileQNAM::start()
             _tmpFile.close();
 
             // Unfortunately we lost the checksum header, if any...
-            QByteArray checksumHeader;
-            downloadFinished(checksumHeader);
+            QByteArray noChecksumData;
+            downloadFinished(noChecksumData, noChecksumData);
             return;
         }
     }
@@ -535,8 +535,10 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // will also emit the validated() signal to continue the flow in slot downloadFinished()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
-    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(downloadFinished(QByteArray)));
-    connect(validator, SIGNAL(validationFailed(QString)), this, SLOT(slotChecksumFail(QString)));
+    connect(validator, SIGNAL(validated(QByteArray,QByteArray)),
+            SLOT(downloadFinished(QByteArray,QByteArray)));
+    connect(validator, SIGNAL(validationFailed(QString)),
+            SLOT(slotChecksumFail(QString)));
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
     if (!downloadChecksumEnabled()) {
         checksumHeader.clear();
@@ -618,10 +620,11 @@ static void handleRecallFile(const QString &fn)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& checksumHeader)
+void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& checksumType, const QByteArray& checksum)
 {
-    if (!checksumHeader.isEmpty()) {
-        _item->_checksumHeader = checksumHeader;
+    if (!checksumType.isEmpty()) {
+        _item->_transmissionChecksum = checksum;
+        _item->_transmissionChecksumType = checksumType;
     }
 
     QString fn = _propagator->getFilePath(_item->_file);

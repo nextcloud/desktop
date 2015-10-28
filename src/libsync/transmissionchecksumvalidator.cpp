@@ -119,7 +119,7 @@ void ValidateChecksumHeader::start(const QString& filePath, const QByteArray& ch
 {
     // If the incoming header is empty no validation can happen. Just continue.
     if( checksumHeader.isEmpty() ) {
-        emit validated(QByteArray());
+        emit validated(QByteArray(), QByteArray());
         return;
     }
 
@@ -148,7 +148,7 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray& checksumTy
         emit validationFailed(tr("The downloaded file does not match the checksum, it will be resumed."));
         return;
     }
-    emit validated(makeChecksumHeader(checksumType, checksum));
+    emit validated(checksumType, checksum);
 }
 
 }

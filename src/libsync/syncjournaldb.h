@@ -42,7 +42,9 @@ public:
     bool setFileRecord( const SyncJournalFileRecord& record );
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
-    bool updateFileRecordChecksumHeader(const QString& filename, const QByteArray& checksumHeader);
+    bool updateFileRecordChecksumHeader(const QString& filename,
+                                        const QByteArray& transmisisonChecksum,
+                                        const QByteArray& transmissionChecksumType);
     bool exists();
     void walCheckpoint();
 
@@ -154,13 +156,18 @@ private:
     // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
     void forceRemoteDiscoveryNextSyncLocked();
 
+    // Returns the integer id of the checksum type
+    //
+    // Returns 0 on failure and for empty checksum types.
+    int mapChecksumType(const QByteArray& checksumType);
+
     SqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
-    QScopedPointer<SqlQuery> _setFileRecordChecksumHeaderQuery;
+    QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
     QScopedPointer<SqlQuery> _setDownloadInfoQuery;
     QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;
@@ -172,6 +179,8 @@ private:
     QScopedPointer<SqlQuery> _getErrorBlacklistQuery;
     QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
     QScopedPointer<SqlQuery> _getSelectiveSyncListQuery;
+    QScopedPointer<SqlQuery> _getChecksumTypeIdQuery;
+    QScopedPointer<SqlQuery> _insertChecksumTypeQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing
