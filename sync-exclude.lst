@@ -1,21 +1,17 @@
-*.filepart
 *~
-*.part
-*.crdownload
-*.unison
-
-.*.sw?
-.*.*sw?
-
+~$*
+.~lock.*
+~*.tmp
+]*.~*
+]Icon\r*
 ].DS_Store
 ].ds_store
 ._*
 ]Thumbs.db
 desktop.ini
 
-*.kate-swp
-
-]*.~*
+.*.sw?
+.*.*sw?
 
 ].TemporaryItems
 ].Trashes
@@ -25,12 +21,11 @@ desktop.ini
 
 .htaccess
 
-]Icon\r*
+*.part
+*.filepart
+*.crdownload
 
-~$*
-.~lock.*
-~*.tmp
-
+*.kate-swp
 *.gnucash.tmp-*
 
 .synkron.*
@@ -38,3 +33,4 @@ desktop.ini
 .symform
 .symform-store
 .fuse_hidden*
+*.unison
