@@ -65,14 +65,14 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
-QList<QByteArray> Capabilities::supportedChecksumTypesRaw() const
+QList<QByteArray> Capabilities::supportedChecksumTypesAdvertised() const
 {
     return QList<QByteArray>();
 }
 
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
-    auto list = supportedChecksumTypesRaw();
+    auto list = supportedChecksumTypesAdvertised();
     QByteArray cfgType = ConfigFile().transmissionChecksum().toLatin1();
     if (!cfgType.isEmpty()) {
         list.prepend(cfgType);

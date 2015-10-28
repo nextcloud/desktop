@@ -213,6 +213,10 @@ void PropagateUploadFileQNAM::start()
 
     // If we already have a checksum header and the checksum type is supported
     // by the server, we keep that - otherwise recompute.
+    //
+    // Note: Currently we *always* recompute because we usually only upload
+    // files that have changed and thus have a new checksum. But if an earlier
+    // phase computed a checksum, this is where we would make use of it.
     if (!_item->_transmissionChecksumType.isEmpty()) {
         if (supportedChecksumTypes.contains(_item->_transmissionChecksumType)) {
             // TODO: We could validate the old checksum and thereby determine whether

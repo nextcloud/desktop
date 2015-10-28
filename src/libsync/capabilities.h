@@ -41,7 +41,7 @@ public:
     bool shareResharing() const;
 
     /// Returns the checksum types the server explicitly advertises
-    QList<QByteArray> supportedChecksumTypesRaw() const;
+    QList<QByteArray> supportedChecksumTypesAdvertised() const;
 
     /// Like supportedChecksumTypesRaw(), but includes the type from the config
     QList<QByteArray> supportedChecksumTypes() const;
