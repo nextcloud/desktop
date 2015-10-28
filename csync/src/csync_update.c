@@ -747,7 +747,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
      */
 #ifndef _WIN32
     if( d_name[0] == '.' ) {
-        fs->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+        dirent->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
     }
 #endif
 
