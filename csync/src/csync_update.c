@@ -683,8 +683,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     /* skip "." and ".." */
-    if (d_name[0] == '.' && (d_name[1] == '\0'
-          || (d_name[1] == '.' && d_name[2] == '\0'))) {
+    if ( (d_name[0] == '.' && d_name[1] == '\0')
+          || (d_name[0] == '.' && d_name[1] == '.' && d_name[2] == '\0')) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       continue;
@@ -740,6 +740,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     } else {
         res = 0;
     }
+
+    /* for non windows platforms, detect if the filename starts with a .
+     * and if so, it's a hidden file. For windows, the hidden state is
+     * discovered within the vio local stat function.
+     */
+#ifndef _WIN32
+    if( d_name[0] == '.' ) {
+        fs->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+    }
+#endif
 
     if( res == 0) {
       switch (dirent->type) {

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="227"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>目的地的檔案大小或修改時間產生異常</translation>
     </message>
 </context>
 <context>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>在你的電腦中選擇一個本地資料夾用來同步</translation>
+        <translation>在您的電腦中選擇一個本地資料夾用來同步</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -73,22 +73,22 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Remove the account configuration from the client</source>
-        <translation type="unfinished"/>
+        <translation>將此帳號的設定資訊從程式刪除</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Remove Account</source>
-        <translation type="unfinished"/>
+        <translation>移除帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="97"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>儲存空間容量: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="167"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>未標示的資料夾將會從這台電腦被 &lt;b&gt;刪除&lt;/b&gt; 而且不會再被同步到這台電腦 </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="211"/>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="230"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;無法建立本地資料夾 &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="283"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="310"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;你真的要重設資料夾 &lt;i&gt;%1&lt;/i&gt; 且重新建置此程式的資料庫?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; 這個功能是被設計用來維護時使用的，沒有檔案會被刪除，但可能會有大量的資料傳輸，依照檔案大小的不同，可能會耗時數分鐘至數小時，請詢問系統管理員之後再決定使用這個選項。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="391"/>
@@ -165,17 +165,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>從 %1 登出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>沒有從 %2 連線到 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation type="unfinished"/>
+        <translation>有部份的資料夾因為容量太大沒有辦法同步: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="536"/>
@@ -185,12 +185,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="563"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>確認移除帳號</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="564"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;您確定要中斷此帳號 &lt;i&gt;%1&lt;/i&gt; 的連線?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;此操作 &lt;b&gt;不會&lt;/b&gt; 刪除任何的檔案。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -220,32 +220,32 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="176"/>
         <source>Remove sync</source>
-        <translation type="unfinished"/>
+        <translation>移除同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="277"/>
         <source>Confirm Sync Removal</source>
-        <translation type="unfinished"/>
+        <translation>確定移除同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="278"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;您確定要停止同步資料夾 &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; 此操作 &lt;b&gt;不會&lt;/b&gt; 刪除任何檔案&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) 中的 %2 正在使用， 有些資料夾，包括網路掛載或分享資料夾，可能有不同的限制。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>已使用 %2 中的 %1%</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>目前無法查詢儲存空間使用資訊。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="488"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="97"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>已經離線</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="99"/>
@@ -273,12 +273,12 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Service unavailable</source>
-        <translation type="unfinished"/>
+        <translation>服務無法使用</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="103"/>
         <source>Network error</source>
-        <translation type="unfinished"/>
+        <translation>網路異常</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="105"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>未知的帳號狀態</translation>
     </message>
 </context>
 <context>
@@ -301,7 +301,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器需要SSL的客戶端憑證</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -367,7 +367,7 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="118"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>請將伺服器端更新到最新版並重新啟動客戶端</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="143"/>
@@ -382,7 +382,7 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="186"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>提供的憑證不正確</translation>
     </message>
 </context>
 <context>
@@ -406,7 +406,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="107"/>
         <source>Unable to create csync-context</source>
-        <translation type="unfinished"/>
+        <translation>無法建立csync-context</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="161"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="164"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>資料夾不存在, %1 必須是資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="167"/>
@@ -432,7 +432,7 @@
         <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 和 %2 其他的檔案已被移除。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="510"/>
@@ -466,7 +466,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation type="unfinished"/>
+        <translation>%1 已經更名為 %2 而 %3 的其他檔案也已經更名。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="531"/>
@@ -477,7 +477,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation type="unfinished"/>
+        <translation>%1 已經移動到 %2 而 %3 的其他檔案也已經移動。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="538"/>
@@ -488,12 +488,12 @@
         <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 和 %2 的其他檔案因為錯誤無法被同步。請從紀錄檔觀看細節。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>%1 因為錯誤無法被同步。請從紀錄檔觀看細節。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="553"/>
@@ -509,14 +509,17 @@
         <location filename="../src/gui/folder.cpp" line="1102"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>一個大於 %1 MB 的資料夾已經新增至: %2.
+如果您想要下載它的話，請至設定中選取。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1115"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation type="unfinished"/>
+        <translation>這個動作會移除所有在同步資料夾 &apos;%1&apos; 內檔案。 
+原因可能是這個資料夾已經被修改過或是所有檔案之前已經手動已除。
+您確定要執行這項動作?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1119"/>
@@ -554,7 +557,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="882"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(備份 %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1091"/>
@@ -584,7 +587,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1108"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation type="unfinished"/>
+        <translation>最新一次的同步已經成功，但是有部份檔案有問題</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1111"/>
@@ -609,12 +612,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1131"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>沒有選擇有效的資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>所選的路徑並非資料夾!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1146"/>
@@ -2008,7 +2011,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="381"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>未標示的資料夾將會從這台電腦被 &lt;b&gt;刪除&lt;/b&gt; 而且不會再被同步到這台電腦 </translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="395"/>
