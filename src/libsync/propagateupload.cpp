@@ -563,7 +563,7 @@ void PropagateUploadFileQNAM::slotPutFinished()
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
         qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         _propagator->_anotherSyncNeeded = true;
-        done(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
+        abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
         return;
     }
 #endif
