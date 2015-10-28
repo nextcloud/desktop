@@ -321,7 +321,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap
         QStringRef fileRef(&file);
         int slashPos = file.lastIndexOf(QLatin1Char('/'));
         if( slashPos > -1 ) {
-            fileRef = fileRef.mid(slashPos+1);
+            fileRef = file.midRef(slashPos+1);
         }
         if( fileRef.startsWith(QChar('.')) ) {
             file_stat->flags = CSYNC_VIO_FILE_FLAGS_HIDDEN;
