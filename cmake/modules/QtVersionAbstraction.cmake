@@ -31,7 +31,9 @@ if( Qt5Core_FOUND )
 
 else( Qt5Core_FOUND )
     if(WIN32 OR APPLE)
+    if (NOT BUILD_WITH_QT4)
 	message(FATAL_ERROR "Qt 5 not found, but application depends on Qt5 on Windows and Mac OS X")
+    endif ()
     endif(WIN32 OR APPLE)
 endif( Qt5Core_FOUND )
 

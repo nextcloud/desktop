@@ -77,9 +77,6 @@ enum csync_replica_e {
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
-struct csync_owncloud_ctx_s; // csync_owncloud.c
-
-
 /**
  * @brief csync public structure
  */
@@ -169,9 +166,6 @@ struct csync_s {
   bool db_is_empty;
 
   bool ignore_hidden_files;
-
-  struct csync_owncloud_ctx_s *owncloud_context;
-
 };
 
 

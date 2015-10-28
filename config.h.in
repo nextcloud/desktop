@@ -23,8 +23,4 @@
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine SHAREDIR "@SHAREDIR@"
 
-#ifndef NEON_WITH_LFS
-#cmakedefine NEON_WITH_LFS "@NEON_WITH_LFS@"
-#endif
-
 #endif

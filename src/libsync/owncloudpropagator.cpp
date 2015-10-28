@@ -22,9 +22,6 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
-#ifdef USE_NEON
-#include "propagator_legacy.h"
-#endif
 #include "configfile.h"
 #include "utility.h"
 #include "account.h"
@@ -193,11 +190,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
                 downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
             downloadItem->_direction = SyncFileItem::Down;
-#ifdef USE_NEON
-            newJob = new PropagateDownloadFileLegacy(_propagator, downloadItem);
-#else
             newJob = new PropagateDownloadFileQNAM(_propagator, downloadItem);
-#endif
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
@@ -256,15 +249,6 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 // Should we set the mtime?
                 return 0;
             }
-#ifdef USE_NEON
-            if (useLegacyJobs()) {
-                if (item->_direction != SyncFileItem::Up) {
-                    return new PropagateDownloadFileLegacy(this, item);
-                } else {
-                    return new PropagateUploadFileLegacy(this, item);
-                }
-            } else
-#endif
             {
                 if (item->_direction != SyncFileItem::Up) {
                     return new PropagateDownloadFileQNAM(this, item);
@@ -386,7 +370,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished()));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
 
-    qDebug() << (useLegacyJobs() ? "Using legacy libneon/HTTP sequential code path" : "Using QNAM/HTTP parallel code path");
+    qDebug() << "Using QNAM/HTTP parallel code path";
 
     QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
 }
@@ -404,51 +388,6 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
         }
     }
     return re;
-}
-
-/**
- * Return true if we should use the legacy jobs.
- * Some features are not supported by QNAM and therefore we still use the legacy jobs
- * for this case.
- */
-bool OwncloudPropagator::useLegacyJobs()
-{
-#ifdef USE_NEON
-    // Allow an environement variable for debugging
-    QByteArray env = qgetenv("OWNCLOUD_USE_LEGACY_JOBS");
-    if (env=="true" || env =="1") {
-        qDebug() << "Force Legacy Propagator ACTIVATED";
-        return true;
-    }
-
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
-        // QNAM bandwith limiting only works with versions of Qt greater or equal to 5.3.3
-        // (It needs Qt commits 097b641 and b99fa32)
-#if QT_VERSION >= QT_VERSION_CHECK(5,3,3)
-        return false;
-#elif QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-        env = qgetenv("OWNCLOUD_NEW_BANDWIDTH_LIMITING");
-        if (env=="true" || env =="1") {
-            qDebug() << "New Bandwidth Limiting Code ACTIVATED";
-            return false;
-        }
-
-        // Do a runtime check.
-        // (Poor man's version comparison)
-        const char *v = qVersion(); // "x.y.z";
-        if (QLatin1String(v) >= QLatin1String("5.3.3")) {
-            return false;
-        } else {
-            qDebug() << "Use legacy jobs because qt version is only" << v << "while 5.3.3 is needed";
-            return true;
-        }
-#else
-        qDebug() << "Use legacy jobs because of Qt4";
-        return true;
-#endif
-    }
-#endif // USE_NEON
-    return false;
 }
 
 int OwncloudPropagator::httpTimeout()

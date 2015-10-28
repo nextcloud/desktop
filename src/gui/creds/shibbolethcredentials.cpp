@@ -73,29 +73,6 @@ void ShibbolethCredentials::setAccount(Account* account)
     }
 }
 
-
-void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
-{
-    csync_set_auth_callback (ctx, handleNeonSSLProblems);
-}
-
-QByteArray ShibbolethCredentials::prepareCookieData() const
-{
-    QString cookiesAsString;
-    QList<QNetworkCookie> cookies = accountCookies(_account);
-
-    foreach(const QNetworkCookie &cookie, cookies) {
-        cookiesAsString  += cookie.toRawForm(QNetworkCookie::NameAndValueOnly) + QLatin1String("; ");
-    }
-
-    return cookiesAsString.toLatin1();
-}
-
-void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
-{
-    csync_set_module_property(ctx, "session_key", prepareCookieData().data());
-}
-
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
 {
     ShibbolethCredentials* other(qobject_cast< ShibbolethCredentials* >(credentials));
@@ -207,8 +184,6 @@ void ShibbolethCredentials::invalidateToken()
     jar->clearSessionCookies();
     removeShibCookie();
     _shibCookie = QNetworkCookie();
-    // ### access to ctx missing, but might not be required at all
-    //csync_set_module_property(ctx, "session_key", "");
 }
 
 void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& shibCookie)

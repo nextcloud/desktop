@@ -32,7 +32,3 @@ SET(QT_MOC_EXECUTABLE       ${MINGW_PREFIX}-moc)
 SET(QT_RCC_EXECUTABLE       ${MINGW_PREFIX}-rcc)
 SET(QT_UIC_EXECUTABLE       ${MINGW_PREFIX}-uic)
 SET(QT_LRELEASE_EXECUTABLE  ${MINGW_PREFIX}-lrelease)
-
-# neon config
-SET(NEON_CONFIG_EXECUTABLE  ${CMAKE_FIND_ROOT_PATH}/bin/neon-config)
-# /usr/i686-w64-mingw32/sys-root/mingw/bin/neon-config

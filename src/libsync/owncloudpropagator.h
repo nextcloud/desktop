@@ -30,11 +30,6 @@
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
 
-struct hbf_transfer_s;
-struct ne_session_s;
-struct ne_decompress_s;
-typedef struct ne_prop_result_set_s ne_prop_result_set;
-
 namespace OCC {
 
 /** Free disk space threshold below which syncs will abort and not even start.
@@ -127,7 +122,6 @@ signals:
 
 /*
  * Abstract class to propagate a single item
- * (Only used for neon job)
  */
 class PropagateItemJob : public PropagatorJob {
     Q_OBJECT
@@ -260,14 +254,8 @@ class OwncloudPropagator : public QObject {
 
     PropagateItemJob *createJob(const SyncFileItemPtr& item);
     QScopedPointer<PropagateDirectory> _rootJob;
-    bool useLegacyJobs();
 
 public:
-    /* 'const' because they are accessed by the thread */
-
-    QThread* _neonThread;
-    ne_session_s * const _session;
-
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteDir; // path to the root of the remote. ends with '/'  (include WebDAV path)
     const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
@@ -277,12 +265,10 @@ public:
 
 
 public:
-    OwncloudPropagator(AccountPtr account, ne_session_s *session, const QString &localDir,
+    OwncloudPropagator(AccountPtr account, const QString &localDir,
                        const QString &remoteDir, const QString &remoteFolder,
-                       SyncJournalDb *progressDb, QThread *neonThread)
-            : _neonThread(neonThread)
-            , _session(session)
-            , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
+                       SyncJournalDb *progressDb)
+            : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
             , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
             , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
@@ -368,11 +354,6 @@ signals:
     void itemCompleted(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
     void finished();
-    /**
-     * Called when we detect that the total number of bytes changes (because a download or upload
-     * turns out to be bigger or smaller than what was initially computed in the update phase
-     */
-    void adjustTotalTransmissionSize( qint64 adjust );
 
 private:
 

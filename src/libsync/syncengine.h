@@ -122,7 +122,6 @@ private slots:
     void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
-    void slotAdjustTotalTransmissionSize(qint64 change);
     void slotDiscoveryJobFinished(int updateResult);
     void slotCleanPollsJobAborted(const QString &error);
 

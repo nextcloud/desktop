@@ -40,7 +40,6 @@ public:
     static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);
 
 public slots:
-    void setCSyncProxy( const QUrl& url, CSYNC *csync_ctx );
     void setupQtProxyFromConfig();
 
 private:

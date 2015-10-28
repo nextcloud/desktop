@@ -7,7 +7,6 @@ include_directories(
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
   ${CMOCKA_INCLUDE_DIR}
-  ${HTTPBF_PUBLIC_INCLUDE_DIRS}
 )
 
 include_directories(${CHECK_INCLUDE_DIRS})
@@ -53,10 +52,6 @@ add_cmocka_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGE
 
 # encoding
 add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.c ${TEST_TARGET_LIBRARIES})
-
-# httpbf
-set(TEST_HTTPBF_LIBRARIES ${TEST_TARGET_LIBRARIES} ${NEON_LIBRARIES})
-add_cmocka_test(check_httpbf httpbf_tests/hbf_send_test.c ${TEST_HTTPBF_LIBRARIES} )
 
 if(UNIT_TESTING)
     INSTALL( FILES "${CMOCKA_LIBRARIES}" DESTINATION ${CMAKE_INSTALL_LIBDIR})

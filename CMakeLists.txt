@@ -133,13 +133,9 @@ endif()
 #endif()
 
 
-set(USE_NEON TRUE)
 if(HAVE_QT5)
-  message(STATUS "Using Qt ${Qt5Core_VERSION_MAJOR}.${Qt5Core_VERSION_MINOR}.x")
   if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
     if (${Qt5Core_VERSION_MINOR} EQUAL "4" OR ${Qt5Core_VERSION_MINOR} GREATER 4)
-      message(STATUS "We do not require Neon in this setup, compile without!")
-      set(USE_NEON FALSE)
     else()
       message(STATUS "If possible compile me with Qt 5.4 or higher.")
     endif()
@@ -148,9 +144,6 @@ else()
   message(STATUS "If possible compile me with Qt 5.4 or higher.")
 endif()
 
-if (USE_NEON)
-  find_package(Neon REQUIRED)
-endif(USE_NEON)
 find_package(OpenSSL 1.0.0 REQUIRED)
 
 if(NOT TOKEN_AUTH_ONLY)

@@ -41,8 +41,6 @@ public:
      */
     virtual void setAccount(Account* account);
 
-    virtual void syncContextPreInit(CSYNC* ctx) = 0;
-    virtual void syncContextPreStart(CSYNC* ctx) = 0;
     virtual bool changed(AbstractCredentials* credentials) const = 0;
     virtual QString authType() const = 0;
     virtual QString user() const = 0;

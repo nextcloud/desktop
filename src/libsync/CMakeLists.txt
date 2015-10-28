@@ -7,7 +7,6 @@ configure_file( version.h.in "${CMAKE_CURRENT_BINARY_DIR}/version.h" )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # csync is required.
 include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_SOURCE_DIR}/csync/src/httpbf/src
                     ${CMAKE_BINARY_DIR}/csync
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
@@ -73,13 +72,6 @@ set(libsync_SRCS
     ../3rdparty/certificates/p12topem.cpp
 )
 
-if(USE_NEON)
-    list(APPEND libsync_SRCS
-        propagator_legacy.cpp
-    )
-    add_definitions(-DUSE_NEON)
-endif(USE_NEON)
-
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
     account.h
@@ -123,15 +115,6 @@ endif()
 if(INOTIFY_FOUND)
     include_directories(${INOTIFY_INCLUDE_DIR})
     link_directories(${INOTIFY_LIBRARY_DIR})
-endif()
-
-if(NEON_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${NEON_LIBRARIES} httpbf)
-    include_directories(${NEON_INCLUDE_DIRS})
-
-    if(NEON_WITH_LFS)
-        add_definitions(-DNE_LFS)
-    endif()
 endif()
 
 if(ZLIB_FOUND)

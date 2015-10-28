@@ -21,13 +21,6 @@
 namespace OCC
 {
 
-OWNCLOUDSYNC_EXPORT int handleNeonSSLProblems(const char* prompt,
-                          char* buf,
-                          size_t len,
-                          int echo,
-                          int verify,
-                          void* userdata);
-
 } // namespace OCC
 
 #endif

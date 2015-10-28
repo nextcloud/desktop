@@ -17,12 +17,6 @@
 namespace OCC
 {
 
-void DummyCredentials::syncContextPreInit(CSYNC*)
-{}
-
-void DummyCredentials::syncContextPreStart(CSYNC*)
-{}
-
 bool DummyCredentials::changed(AbstractCredentials* credentials) const
 {
     DummyCredentials* dummy(dynamic_cast< DummyCredentials* >(credentials));

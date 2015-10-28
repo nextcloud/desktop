@@ -519,19 +519,6 @@ int csync_set_iconv_codec(const char *from);
 #endif
 
 /**
- * @brief Set a property to module
- *
- * @param ctx           The csync context.
- *
- * @param key           The property key
- *
- * @param value         An opaque pointer to the data.
- *
- * @return              0 on success, less than 0 if an error occured.
- */
-int csync_set_module_property(CSYNC *ctx, const char *key, void *value);
-
-/**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.
  *
  * @param ctx           The csync context.

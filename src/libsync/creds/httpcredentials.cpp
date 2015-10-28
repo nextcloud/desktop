@@ -35,44 +35,6 @@ using namespace QKeychain;
 namespace OCC
 {
 
-int getauth(const char *prompt,
-            char *buf,
-            size_t len,
-            int echo,
-            int verify,
-            void *userdata)
-{
-    int re = 0;
-
-    // ### safe?  Not really.  If the wizard is run in the main thread, the caccount could change during the sync.
-    SyncEngine* engine = reinterpret_cast<SyncEngine*>(userdata);
-    HttpCredentials* http_credentials = qobject_cast<HttpCredentials*>(engine->account()->credentials());
-
-    if (!http_credentials) {
-      qDebug() << "Not a HTTP creds instance!";
-      return -1;
-    }
-
-    QString qPrompt = QString::fromLatin1( prompt ).trimmed();
-    QString user = http_credentials->user();
-    QString pwd  = http_credentials->password();
-
-    if( qPrompt == QLatin1String("Enter your username:") ) {
-        // qDebug() << "OOO Username requested!";
-        qstrncpy( buf, user.toUtf8().constData(), len );
-    } else if( qPrompt == QLatin1String("Enter your password:") ) {
-        // qDebug() << "OOO Password requested!";
-        qstrncpy( buf, pwd.toUtf8().constData(), len );
-    } else {
-        if( http_credentials->sslIsTrusted() ) {
-            qstrcpy( buf, "yes" ); // Certificate is fine!
-        } else {
-            re = handleNeonSSLProblems(prompt, buf, len, echo, verify, userdata);
-        }
-    }
-    return re;
-}
-
 namespace
 {
 const char userC[] = "user";
@@ -93,35 +55,6 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
       _certificatePath(certificatePath),
       _certificatePasswd(certificatePasswd)
 {
-}
-
-void HttpCredentials::syncContextPreInit (CSYNC* ctx)
-{
-    csync_set_auth_callback (ctx, getauth);
-    // create a SSL client certificate configuration in CSYNC* ctx
-    struct csync_client_certs_s clientCerts;
-    clientCerts.certificatePath = strdup(_certificatePath.toStdString().c_str());
-    clientCerts.certificatePasswd = strdup(_certificatePasswd.toStdString().c_str());
-    csync_set_module_property(ctx, "SSLClientCerts", &clientCerts);
-    free(clientCerts.certificatePath);
-    free(clientCerts.certificatePasswd);
-}
-
-void HttpCredentials::syncContextPreStart (CSYNC* ctx)
-{
-    QList<QNetworkCookie> cookies(_account->lastAuthCookies());
-    QString cookiesAsString;
-
-    // Stuff cookies inside csync, then we can avoid the intermediate HTTP 401 reply
-    // when https://github.com/owncloud/core/pull/4042 is merged.
-    foreach(QNetworkCookie c, cookies) {
-        cookiesAsString += c.name();
-        cookiesAsString += '=';
-        cookiesAsString += c.value();
-        cookiesAsString += "; ";
-    }
-
-    csync_set_module_property(ctx, "session_key", cookiesAsString.toLatin1().data());
 }
 
 bool HttpCredentials::changed(AbstractCredentials* credentials) const

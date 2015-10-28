@@ -64,13 +64,6 @@ public:
      */
     void adjustTotalsForFile(const SyncFileItem & item);
 
-    /**
-     * Adjust the total size by some value.
-     *
-     * Deprecated. Used only in the legacy propagator.
-     */
-    void adjustTotalSize(qint64 change);
-
     quint64 totalFiles() const;
     quint64 completedFiles() const;
 
