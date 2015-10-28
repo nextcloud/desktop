@@ -1,6 +1,12 @@
 ChangeLog
 =========
-version 2.0.2 (release 2015-10-xx)
+version 2.1 (release 2015-yy-zz)
+ * We removed the old libneon-based propagator.
+   It was already disabled on OS X and Windows and only used on
+   Linux when building with Qt < 5.4 and having bandwidth limiting enabled.
+   So now you need Qt 5.4 on Linux if you want bandwidth limiting.
+
+version 2.0.2 (release 2015-10-22)
   * csync_file_stat_s: Save a bit of memory
   * Shibboleth: Add our base user agent to WebKit
   * SelectiveSync: Increase folder list timeout to 60
