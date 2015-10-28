@@ -471,7 +471,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // the file system in the DB, this is to avoid spurious upload on the next sync
             item->_modtime = file->other.modtime;
 
-            _journal->setFileRecord(SyncJournalFileRecord(*item, _localPath + item->_file));
+            _journal->updateFileRecordMetadata(SyncJournalFileRecord(*item, _localPath + item->_file));
             item->_should_update_metadata = false;
         }
         if (item->_isDirectory && file->should_update_metadata) {

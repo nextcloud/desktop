@@ -246,7 +246,7 @@ void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, co
             || checksum != _item->_transmissionChecksum) {
         _item->_transmissionChecksum = checksum;
         _item->_transmissionChecksumType = checksumType;
-        _propagator->_journal->updateFileRecordChecksumHeader(
+        _propagator->_journal->updateFileRecordChecksum(
                 _item->_file, checksum, checksumType);
     }
 
