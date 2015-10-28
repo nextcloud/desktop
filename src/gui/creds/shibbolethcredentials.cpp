@@ -73,29 +73,6 @@ void ShibbolethCredentials::setAccount(Account* account)
     }
 }
 
-
-void ShibbolethCredentials::syncContextPreInit(CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
-QByteArray ShibbolethCredentials::prepareCookieData() const
-{
-    QString cookiesAsString;
-    QList<QNetworkCookie> cookies = accountCookies(_account);
-
-    foreach(const QNetworkCookie &cookie, cookies) {
-        cookiesAsString  += cookie.toRawForm(QNetworkCookie::NameAndValueOnly) + QLatin1String("; ");
-    }
-
-    return cookiesAsString.toLatin1();
-}
-
-void ShibbolethCredentials::syncContextPreStart (CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
 bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
 {
     ShibbolethCredentials* other(qobject_cast< ShibbolethCredentials* >(credentials));

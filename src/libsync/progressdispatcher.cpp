@@ -149,11 +149,6 @@ void ProgressInfo::adjustTotalsForFile(const SyncFileItem &item)
     }
 }
 
-void ProgressInfo::adjustTotalSize(qint64 change)
-{
-    _sizeProgress._total += change;
-}
-
 quint64 ProgressInfo::totalFiles() const
 {
     return _fileProgress._total;

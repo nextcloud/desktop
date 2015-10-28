@@ -48,8 +48,6 @@ public:
     ShibbolethCredentials(const QNetworkCookie &cookie);
 
     void setAccount(Account* account) Q_DECL_OVERRIDE;
-    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
-    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
     bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
     QString authType() const Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;

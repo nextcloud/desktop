@@ -659,7 +659,6 @@ void SyncEngine::startSync()
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
 
     csync_set_userdata(_csync_ctx, this);
-    _account->credentials()->syncContextPreStart(_csync_ctx);
 
     _stopWatch.start();
 
@@ -812,7 +811,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
-    connect(_propagator.data(), SIGNAL(adjustTotalTransmissionSize(qint64)), this, SLOT(slotAdjustTotalTransmissionSize(qint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
 
     // apply the network limits to the propagator
@@ -916,11 +914,6 @@ void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
     emit transmissionProgress(*_progressInfo);
 }
 
-
-void SyncEngine::slotAdjustTotalTransmissionSize(qint64 change)
-{
-    _progressInfo->adjustTotalSize(change);
-}
 
 /* Given a path on the remote, give the path as it is when the rename is done */
 QString SyncEngine::adjustRenamedPath(const QString& original)

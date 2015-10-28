@@ -40,8 +40,6 @@ public:
     TokenCredentials();
     TokenCredentials(const QString& user, const QString& password, const QString &token);
 
-    void syncContextPreInit(CSYNC* ctx) Q_DECL_OVERRIDE;
-    void syncContextPreStart(CSYNC* ctx) Q_DECL_OVERRIDE;
     bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;

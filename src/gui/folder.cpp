@@ -111,7 +111,6 @@ bool Folder::init()
         csync_set_log_level( 11 );
 
         Q_ASSERT( _accountState );
-        _accountState->account()->credentials()->syncContextPreInit(_csync_ctx);
 
         if( csync_init( _csync_ctx ) < 0 ) {
             qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);

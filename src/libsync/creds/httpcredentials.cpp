@@ -57,16 +57,6 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
 {
 }
 
-void HttpCredentials::syncContextPreInit (CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
-void HttpCredentials::syncContextPreStart (CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
 bool HttpCredentials::changed(AbstractCredentials* credentials) const
 {
     HttpCredentials* other(qobject_cast< HttpCredentials* >(credentials));

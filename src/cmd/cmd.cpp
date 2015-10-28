@@ -369,7 +369,6 @@ restart_sync:
     csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
-    cred->syncContextPreInit(_csync_ctx);
 
     if( csync_init( _csync_ctx ) < 0 ) {
         qFatal("Could not initialize csync!");
@@ -440,8 +439,6 @@ restart_sync:
         qFatal("Cannot load system exclude list or list supplied via --exclude");
         return EXIT_FAILURE;
     }
-
-    cred->syncContextPreStart(_csync_ctx);
 
     Cmd cmd;
     SyncJournalDb db(options.source_dir);

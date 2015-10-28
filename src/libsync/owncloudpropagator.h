@@ -354,11 +354,6 @@ signals:
     void itemCompleted(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
     void finished();
-    /**
-     * Called when we detect that the total number of bytes changes (because a download or upload
-     * turns out to be bigger or smaller than what was initially computed in the update phase
-     */
-    void adjustTotalTransmissionSize( qint64 adjust );
 
 private:
 

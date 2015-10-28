@@ -80,16 +80,6 @@ TokenCredentials::TokenCredentials(const QString& user, const QString& password,
 {
 }
 
-void TokenCredentials::syncContextPreInit (CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
-void TokenCredentials::syncContextPreStart (CSYNC* ctx)
-{
-    Q_UNUSED(ctx);
-}
-
 bool TokenCredentials::changed(AbstractCredentials* credentials) const
 {
     TokenCredentials* other(dynamic_cast< TokenCredentials* >(credentials));
