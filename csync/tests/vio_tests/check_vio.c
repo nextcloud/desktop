@@ -73,15 +73,6 @@ static void setup_dir(void **state) {
     assert_int_equal(rc, 0);
 }
 
-static void setup_file(void **state) {
-    int rc;
-
-    setup_dir(state);
-
-    rc = system("echo \"This is a test\" > /tmp/csync_test/file.txt");
-    assert_int_equal(rc, 0);
-}
-
 static void teardown(void **state) {
     CSYNC *csync = *state;
     int rc;
