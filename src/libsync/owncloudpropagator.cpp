@@ -293,14 +293,14 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
     /* Check and log the transmission checksum type */
     ConfigFile cfg;
-    const QString checksumType = cfg.transmissionChecksum().toUpper();
+    const QString checksumType = cfg.transmissionChecksum();
 
     /* if the checksum type is empty, it is not sent. No error */
     if( !checksumType.isEmpty() ) {
-        if( checksumType == checkSumAdlerUpperC ||
+        if( checksumType == checkSumAdlerC ||
                 checksumType == checkSumMD5C    ||
                 checksumType == checkSumSHA1C ) {
-            qDebug() << "Client sends and expects transmission checksum type" << checksumType;
+            qDebug() << "Client sends transmission checksum type" << checksumType;
         } else {
             qWarning() << "Unknown transmission checksum type from config" << checksumType;
         }
