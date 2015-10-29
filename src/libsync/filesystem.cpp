@@ -111,6 +111,38 @@ void FileSystem::setFileHidden(const QString& filename, bool hidden)
 #endif
 }
 
+static QFile::Permissions getDefaultWritePermissions()
+{
+    QFile::Permissions result = QFile::WriteUser;
+#ifndef Q_OS_WIN
+    __mode_t mask = umask(0);
+    umask(mask);
+    if (!(mask & S_IWGRP)) {
+        result |= QFile::WriteGroup;
+    }
+    if (!(mask & S_IWOTH)) {
+        result |= QFile::WriteOther;
+    }
+#endif
+    return result;
+}
+
+void FileSystem::setFileReadOnly(const QString& filename, bool readonly)
+{
+    QFile file(filename);
+    QFile::Permissions permissions = file.permissions();
+
+    QFile::Permissions allWritePermissions =
+            QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther | QFile::WriteOwner;
+    static QFile::Permissions defaultWritePermissions = getDefaultWritePermissions();
+
+    permissions &= ~allWritePermissions;
+    if (!readonly) {
+        permissions |= defaultWritePermissions;
+    }
+    file.setPermissions(permissions);
+}
+
 time_t FileSystem::getModTime(const QString &filename)
 {
     csync_vio_file_stat_t* stat = csync_vio_file_stat_new();

@@ -22,6 +22,7 @@
 #include "creds/abstractcredentials.h"
 #include "syncfilestatus.h"
 #include "csync_private.h"
+#include "filesystem.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -459,16 +460,31 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         if (remote && item->_should_update_metadata && !item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
             // Update the database now already:  New fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
-            // They should have been a conflict because they both were new, or both
-            // had their local mtime or remote etag modified, but the size and mtime
-            // is the same on the server.  This typically happens when the database is removed.
-            // Nothing will be done for those files, but we still need to update the database.
+
+            // In case of "resolved conflict": there should have been a conflict because they
+            // both were new, or both had their local mtime or remote etag modified, but the
+            // size and mtime is the same on the server.  This typically happens when the
+            // database is removed. Nothing will be done for those files, but we still need
+            // to update the database.
+
+            // This metadata update *could* be a propagation job of its own, but since it's
+            // quick to do and we don't want to create a potentially large number of
+            // mini-jobs later on, we just update metadata right now.
+
+            QString filePath = _localPath + item->_file;
 
             // Even if the mtime is different on the server, we always want to keep the mtime from
             // the file system in the DB, this is to avoid spurious upload on the next sync
             item->_modtime = file->other.modtime;
 
-            _journal->updateFileRecordMetadata(SyncJournalFileRecord(*item, _localPath + item->_file));
+            // If the 'W' remote permission changed, update the local filesystem
+            SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
+            if (prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
+                const bool isReadOnly = !item->_remotePerm.contains('W');
+                FileSystem::setFileReadOnly(filePath, isReadOnly);
+            }
+
+            _journal->updateFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
             item->_should_update_metadata = false;
         }
         if (item->_isDirectory && file->should_update_metadata) {

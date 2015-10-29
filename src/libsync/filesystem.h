@@ -47,6 +47,14 @@ bool fileEquals(const QString &fn1, const QString &fn2);
  */
 void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
 
+/**
+ * @brief Marks the file as read-only.
+ *
+ * On linux this either revokes all 'w' permissions or restores permissions
+ * according to the umask.
+ */
+void OWNCLOUDSYNC_EXPORT setFileReadOnly(const QString& filename, bool readonly);
+
 /** convert a "normal" windows path into a path that can be 32k chars long. */
 QString OWNCLOUDSYNC_EXPORT longWinPath( const QString& inpath );
 

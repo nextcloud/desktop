@@ -678,6 +678,10 @@ void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& checksumType,
         }
     }
 
+    // Apply the remote permissions
+    FileSystem::setFileReadOnly(_tmpFile.fileName(),
+                                 !_item->_remotePerm.contains('W'));
+
     QString error;
     _propagator->addTouchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
