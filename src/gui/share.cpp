@@ -227,7 +227,7 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
 
     QList<QSharedPointer<Share>> shares;
 
-    Q_FOREACH(auto share, tmpShares) {
+    foreach(const auto &share, tmpShares) {
         auto data = share.toMap();
 
         auto shareType = data.value("share_type").toInt();
