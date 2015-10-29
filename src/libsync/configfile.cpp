@@ -588,11 +588,7 @@ void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
 bool ConfigFile::monoIcons() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    bool deflt = false;
-    if( Utility::isMac() ) {
-        deflt = true;
-    }
-    return settings.value(QLatin1String(monoIconsC), deflt).toBool();
+    return settings.value(QLatin1String(monoIconsC), false).toBool();
 }
 
 void ConfigFile::setMonoIcons(bool useMonoIcons)
