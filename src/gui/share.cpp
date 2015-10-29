@@ -31,17 +31,17 @@ Share::Share(AccountPtr account, const QString& id, const QString& path, int sha
 
 }
 
-const QString Share::getId()
+QString Share::getId() const
 {
     return _id;
 }
 
-int Share::getShareType()
+int Share::getShareType() const
 {
     return _shareType;
 }
 
-int Share::getPermissions()
+int Share::getPermissions() const
 {
     return _permissions;
 }
@@ -64,17 +64,17 @@ void Share::slotDeleted(const QVariantMap &reply)
     emit shareDeleted();
 }
 
-const QUrl LinkShare::getLink()
+QUrl LinkShare::getLink() const
 {
     return _url;
 }
 
-const QDate LinkShare::getExpireDate()
+QDate LinkShare::getExpireDate() const
 {
     return _expireDate;
 }
 
-bool LinkShare::isPasswordSet()
+bool LinkShare::isPasswordSet() const
 {
     return _passwordSet;
 }
@@ -254,12 +254,11 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
 
 LinkShare *ShareManager::parseLinkShare(const QVariantMap &data) {
     QUrl url;
-    const QString versionString = _account->serverVersion();
 
     // From ownCloud server 8.2 the url field is always set for public shares
     if (data.contains("url")) {
         url = QUrl(data.value("url").toString());
-    } else if (versionString.contains('.') && versionString.split('.')[0].toInt() >= 8) {
+    } else if (_account->serverVersionInt() >= (8 << 16)) {
         // From ownCloud server version 8 on, a different share link scheme is used.
         url = QUrl(Account::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString());
     } else {

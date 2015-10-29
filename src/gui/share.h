@@ -31,7 +31,7 @@ class Share : public QObject {
 public:
 
     /*
-     * Constructor for link shares
+     * Constructor for shares
      */
     explicit Share(AccountPtr account,
                    const QString& id,
@@ -43,17 +43,17 @@ public:
     /*
      * Get the id
      */
-    const QString getId();
+    QString getId() const;
 
     /*
      * Get the shareType
      */
-    int getShareType();
+    int getShareType() const;
 
     /*
      * Get permissions
      */
-    int getPermissions();
+    int getPermissions() const;
 
     /*
      * Set the permissions of a share
@@ -110,7 +110,7 @@ public:
     /*
      * Get the share link
      */
-    const QUrl getLink();
+    QUrl getLink() const;
 
     /*
      * Get the publicUpload status of this share
@@ -137,12 +137,12 @@ public:
     /*
      * Is the password set?
      */
-    bool isPasswordSet();
+    bool isPasswordSet() const;
 
     /*
      * Get the expiration date
      */
-    const QDate getExpireDate();
+    QDate getExpireDate() const;
 
     /*
      * Set the expiration date
