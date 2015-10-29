@@ -109,7 +109,7 @@ signals:
      * This is needed so we can update the share objects properly
      *
      * @param reply The reply
-     * @param value To what did we set a varialble (if we set any).
+     * @param value To what did we set a variable (if we set any).
      */
     void shareJobFinished(QVariantMap reply, QVariant value);
 

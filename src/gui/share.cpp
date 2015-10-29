@@ -190,7 +190,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
 
     /*
      * Before we had decent sharing capabilities on the server a 403 "generally"
-     * ment that a share was password protected
+     * meant that a share was password protected
      */
     if (code == 403) {
         emit linkShareRequiresPassword();

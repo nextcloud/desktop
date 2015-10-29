@@ -67,7 +67,7 @@ public:
      * Deletes a share
      *
      * On success the shareDeleted signal is emitted
-     * In case of a server rror the serverError signal is emitted.
+     * In case of a server error the serverError signal is emitted.
      */
     void deleteShare();
 
