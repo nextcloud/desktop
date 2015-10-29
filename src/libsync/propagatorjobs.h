@@ -32,7 +32,6 @@ static const char checkSumHeaderC[] = "OC-Checksum";
 static const char checkSumMD5C[] = "MD5";
 static const char checkSumSHA1C[] = "SHA1";
 static const char checkSumAdlerC[] = "Adler32";
-static const char checkSumAdlerUpperC[] = "ADLER32";
 
 /**
  * @brief Declaration of the other propagation jobs

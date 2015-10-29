@@ -206,6 +206,8 @@ bool SyncJournalDb::checkConnect()
                          "md5 VARCHAR(32)," /* This is the etag.  Called md5 for compatibility */
                         // updateDatabaseStructure() will add a fileid column
                         // updateDatabaseStructure() will add a remotePerm column
+                        // updateDatabaseStructure() will add a transmissionChecksum column
+                        // updateDatabaseStructure() will add a transmissionChecksumTypeId column
                          "PRIMARY KEY(phash)"
                          ");");
 
@@ -271,6 +273,14 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table selectivesync", createQuery);
     }
 
+    // create the checksumtype table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS checksumtype("
+                               "id INTEGER PRIMARY KEY,"
+                               "name TEXT UNIQUE"
+                               ");");
+    if (!createQuery.exec()) {
+        return sqlFail("Create table version", createQuery);
+    }
 
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
@@ -346,13 +356,30 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
-    _getFileRecordQuery->prepare("SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM "
-                                 "metadata WHERE phash=?1" );
+    _getFileRecordQuery->prepare(
+            "SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize,"
+            "  ignoredChildrenRemote, transmissionChecksum, checksumtype.name"
+            " FROM metadata"
+            "  LEFT JOIN checksumtype ON metadata.transmissionChecksumTypeId == checksumtype.id"
+            " WHERE phash=?1" );
 
     _setFileRecordQuery.reset(new SqlQuery(_db) );
     _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote) "
-                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14);" );
+                                 "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, transmissionChecksum, transmissionChecksumTypeId) "
+                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);" );
+
+    _setFileRecordChecksumQuery.reset(new SqlQuery(_db) );
+    _setFileRecordChecksumQuery->prepare(
+            "UPDATE metadata"
+            " SET transmissionChecksum = ?2, transmissionChecksumTypeId = ?3"
+            " WHERE phash == ?1;");
+
+    _setFileRecordMetadataQuery.reset(new SqlQuery(_db) );
+    _setFileRecordMetadataQuery->prepare(
+            "UPDATE metadata"
+            " SET inode=?2, mode=?3, modtime=?4, type=?5, md5=?6, fileid=?7,"
+            "  remotePerm=?8, filesize=?9, ignoredChildrenRemote=?10"
+            " WHERE phash == ?1;");
 
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
@@ -402,6 +429,12 @@ bool SyncJournalDb::checkConnect()
 
     _getSelectiveSyncListQuery.reset(new SqlQuery(_db));
     _getSelectiveSyncListQuery->prepare("SELECT path FROM selectivesync WHERE type=?1");
+
+    _getChecksumTypeIdQuery.reset(new SqlQuery(_db));
+    _getChecksumTypeIdQuery->prepare("SELECT id FROM checksumtype WHERE name=?1");
+
+    _insertChecksumTypeQuery.reset(new SqlQuery(_db));
+    _insertChecksumTypeQuery->prepare("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)");
 
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
@@ -527,6 +560,27 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal("update database structure: add ignoredChildrenRemote col");
     }
+
+    if( columns.indexOf(QLatin1String("transmissionChecksum")) == -1 ) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN transmissionChecksum TEXT;");
+        if( !query.exec()) {
+            sqlFail("updateMetadataTableStructure: add transmissionChecksum column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add transmissionChecksum col");
+    }
+    if( columns.indexOf(QLatin1String("transmissionChecksumTypeId")) == -1 ) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN transmissionChecksumTypeId INTEGER;");
+        if( !query.exec()) {
+            sqlFail("updateMetadataTableStructure: add transmissionChecksumTypeId column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add transmissionChecksumTypeId col");
+    }
+
+
     return re;
 }
 
@@ -627,6 +681,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         if( fileId.isEmpty() ) fileId = "";
         QString remotePerm (record._remotePerm);
         if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
+        int checksumTypeId = mapChecksumType(record._transmissionChecksumType);
         _setFileRecordQuery->reset();
         _setFileRecordQuery->bindValue(1, QString::number(phash));
         _setFileRecordQuery->bindValue(2, plen);
@@ -642,6 +697,8 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         _setFileRecordQuery->bindValue(12, remotePerm );
         _setFileRecordQuery->bindValue(13, record._fileSize );
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1:0);
+        _setFileRecordQuery->bindValue(15, record._transmissionChecksum );
+        _setFileRecordQuery->bindValue(16, checksumTypeId );
 
         if( !_setFileRecordQuery->exec() ) {
             qWarning() << "Error SQL statement setFileRecord: " << _setFileRecordQuery->lastQuery() <<  " :"
@@ -652,7 +709,8 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
                  << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
-                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0);
+                 << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0)
+                 << record._transmissionChecksum << record._transmissionChecksumType << checksumTypeId;
 
         _setFileRecordQuery->reset();
         return true;
@@ -732,6 +790,10 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._remotePerm = _getFileRecordQuery->baValue(9);
             rec._fileSize   = _getFileRecordQuery->int64Value(10);
             rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
+            rec._transmissionChecksum = _getFileRecordQuery->baValue(12);
+            if( !_getFileRecordQuery->nullValue(13) ) {
+                rec._transmissionChecksumType = _getFileRecordQuery->baValue(13);
+            }
         } else {
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename;
@@ -818,6 +880,86 @@ int SyncJournalDb::getFileRecordCount()
     }
 
     return 0;
+}
+
+bool SyncJournalDb::updateFileRecordChecksum(const QString& filename,
+                                             const QByteArray& transmisisonChecksum,
+                                             const QByteArray& transmissionChecksumType)
+{
+    QMutexLocker locker(&_mutex);
+
+    qlonglong phash = getPHash(filename);
+    if( !checkConnect() ) {
+        qDebug() << "Failed to connect database.";
+        return false;
+    }
+
+    int checksumTypeId = mapChecksumType(transmissionChecksumType);
+    auto & query = _setFileRecordChecksumQuery;
+
+    query->reset();
+    query->bindValue(1, QString::number(phash));
+    query->bindValue(2, transmisisonChecksum);
+    query->bindValue(3, checksumTypeId);
+
+    if( !query->exec() ) {
+        qWarning() << "Error SQL statement setFileRecordChecksumQuery: "
+                   << query->lastQuery() <<  " :"
+                   << query->error();
+        return false;
+    }
+
+    qDebug() << query->lastQuery() << phash << transmisisonChecksum
+             << transmissionChecksumType << checksumTypeId;
+
+    query->reset();
+    return true;
+}
+
+bool SyncJournalDb::updateFileRecordMetadata(const SyncJournalFileRecord& record)
+{
+    QMutexLocker locker(&_mutex);
+
+    qlonglong phash = getPHash(record._path);
+    QString etag( record._etag );
+    if( etag.isEmpty() ) etag = "";
+    QString fileId( record._fileId);
+    if( fileId.isEmpty() ) fileId = "";
+    QString remotePerm (record._remotePerm);
+    if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
+
+    if( !checkConnect() ) {
+        qDebug() << "Failed to connect database.";
+        return false;
+    }
+
+    auto & query = _setFileRecordMetadataQuery;
+
+    query->reset();
+    query->bindValue(1, QString::number(phash));
+    query->bindValue(2, record._inode);
+    query->bindValue(3, record._mode);
+    query->bindValue(4, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
+    query->bindValue(5, QString::number(record._type));
+    query->bindValue(6, etag);
+    query->bindValue(7, fileId);
+    query->bindValue(8, remotePerm);
+    query->bindValue(9, record._fileSize);
+    query->bindValue(10, record._serverHasIgnoredFiles ? 1 : 0);
+
+    if( !query->exec() ) {
+        qWarning() << "Error SQL statement setFileRecordMetadataQuery: "
+                   << query->lastQuery() <<  " :"
+                   << query->error();
+        return false;
+    }
+
+    qDebug() << query->lastQuery() << record._path << record._inode << record._mode << record._modtime
+             << record._type << etag << fileId << remotePerm << record._fileSize
+             << record._serverHasIgnoredFiles;
+
+    query->reset();
+    return true;
 }
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo * res)
@@ -1387,6 +1529,39 @@ void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
     } else {
         qDebug() << "Cleared" << deleteRemoteFolderEtagsQuery.numRowsAffected() << "folder ETags";
     }
+}
+
+int SyncJournalDb::mapChecksumType(const QByteArray& checksumType)
+{
+    if (checksumType.isEmpty()) {
+        return 0;
+    }
+
+    // Ensure the checksum type is in the db
+    _insertChecksumTypeQuery->reset();
+    _insertChecksumTypeQuery->bindValue(1, checksumType);
+    if( !_insertChecksumTypeQuery->exec() ) {
+        qWarning() << "Error SQL statement insertChecksumType: "
+                   << _insertChecksumTypeQuery->lastQuery() <<  " :"
+                   << _insertChecksumTypeQuery->error();
+        return 0;
+    }
+
+    // Retrieve the id
+    _getChecksumTypeIdQuery->reset();
+    _getChecksumTypeIdQuery->bindValue(1, checksumType);
+    if( !_getChecksumTypeIdQuery->exec() ) {
+        qWarning() << "Error SQL statement getChecksumTypeId: "
+                   << _getChecksumTypeIdQuery->lastQuery() <<  " :"
+                   << _getChecksumTypeIdQuery->error();
+        return 0;
+    }
+
+    if( !_getChecksumTypeIdQuery->next() ) {
+        qDebug() << "No checksum type mapping found for" << checksumType;
+        return 0;
+    }
+    return _getChecksumTypeIdQuery->intValue(0);
 }
 
 

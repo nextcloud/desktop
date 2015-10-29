@@ -47,6 +47,8 @@ public:
     QByteArray _remotePerm;
     int        _mode;
     bool       _serverHasIgnoredFiles;
+    QByteArray _transmissionChecksum;
+    QByteArray _transmissionChecksumType;
 };
 
 bool OWNCLOUDSYNC_EXPORT

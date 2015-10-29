@@ -205,30 +205,48 @@ void PropagateUploadFileQNAM::start()
 
     _stopWatch.start();
 
-    // do whatever is needed to add a checksum to the http upload request.
-    // in any case, the validator will emit signal startUpload to let the flow
-    // continue in slotStartUpload here.
-    TransmissionChecksumValidator *validator = new TransmissionChecksumValidator(filePath, this);
+    auto supportedChecksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
 
-    // If the config file does not specify a checksum type but the
-    // server supports it choose a type based on that.
-    if (validator->checksumType().isEmpty()) {
-        QStringList checksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
-        if (!checksumTypes.isEmpty()) {
-            // TODO: We might want to prefer some types over others instead
-            // of choosing the first.
-            validator->setChecksumType(checksumTypes.first());
+    // If we already have a checksum header and the checksum type is supported
+    // by the server, we keep that - otherwise recompute.
+    //
+    // Note: Currently we *always* recompute because we usually only upload
+    // files that have changed and thus have a new checksum. But if an earlier
+    // phase computed a checksum, this is where we would make use of it.
+    if (!_item->_transmissionChecksumType.isEmpty()) {
+        if (supportedChecksumTypes.contains(_item->_transmissionChecksumType)) {
+            // TODO: We could validate the old checksum and thereby determine whether
+            // an upload is necessary or not.
+            slotStartUpload(_item->_transmissionChecksumType, _item->_transmissionChecksum);
+            return;
         }
     }
 
-    connect(validator, SIGNAL(validated(QByteArray)), this, SLOT(slotStartUpload(QByteArray)));
-    validator->uploadValidation();
+    // Compute a new checksum.
+    auto computeChecksum = new ComputeChecksum(this);
+    if (uploadChecksumEnabled()) {
+        computeChecksum->setChecksumType(_propagator->account()->capabilities().preferredChecksumType());
+    } else {
+        computeChecksum->setChecksumType(QByteArray());
+    }
+
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            SLOT(slotStartUpload(QByteArray,QByteArray)));
+    computeChecksum->start(filePath);
 }
 
-void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksum)
+void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, const QByteArray& checksum)
 {
+    // Store the computed checksum in the database, if different
+    if (checksumType != _item->_transmissionChecksumType
+            || checksum != _item->_transmissionChecksum) {
+        _item->_transmissionChecksum = checksum;
+        _item->_transmissionChecksumType = checksumType;
+        _propagator->_journal->updateFileRecordChecksum(
+                _item->_file, checksum, checksumType);
+    }
+
     const QString fullFilePath = _propagator->getFilePath(_item->_file);
-    _item->_checksum = checksum;
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -458,6 +476,7 @@ void PropagateUploadFileQNAM::startNextChunk()
     UploadDevice *device = new UploadDevice(&_propagator->_bandwidthManager);
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
+    bool isFinalChunk = false;
     if (_chunkCount > 1) {
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
@@ -474,15 +493,16 @@ void PropagateUploadFileQNAM::startNextChunk()
             if( currentChunkSize == 0 ) { // if the last chunk pretends to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
             }
-            if( !_item->_checksum.isEmpty() ) {
-                headers[checkSumHeaderC] = _item->_checksum;
-            }
+            isFinalChunk = true;
         }
     } else {
-        // checksum if its only one chunk
-        if( !_item->_checksum.isEmpty() ) {
-            headers[checkSumHeaderC] = _item->_checksum;
-        }
+        // if there's only one chunk, it's the final one
+        isFinalChunk = true;
+    }
+
+    if (isFinalChunk && !_item->_transmissionChecksumType.isEmpty()) {
+        headers[checkSumHeaderC] = makeChecksumHeader(
+                _item->_transmissionChecksumType, _item->_transmissionChecksum);
     }
 
     if (! device->prepareAndOpen(_propagator->getFilePath(_item->_file), chunkStart, currentChunkSize)) {

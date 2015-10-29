@@ -13,6 +13,8 @@
 
 #include "capabilities.h"
 
+#include "configfile.h"
+
 #include <QVariantMap>
 
 namespace OCC {
@@ -63,9 +65,28 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
-QStringList Capabilities::supportedChecksumTypes() const
+QList<QByteArray> Capabilities::supportedChecksumTypesAdvertised() const
 {
-    return QStringList();
+    return QList<QByteArray>();
+}
+
+QList<QByteArray> Capabilities::supportedChecksumTypes() const
+{
+    auto list = supportedChecksumTypesAdvertised();
+    QByteArray cfgType = ConfigFile().transmissionChecksum().toLatin1();
+    if (!cfgType.isEmpty()) {
+        list.prepend(cfgType);
+    }
+    return list;
+}
+
+QByteArray Capabilities::preferredChecksumType() const
+{
+    auto list = supportedChecksumTypes();
+    if (list.isEmpty()) {
+        return QByteArray();
+    }
+    return list.first();
 }
 
 }

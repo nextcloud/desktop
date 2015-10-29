@@ -117,7 +117,7 @@ public:
 private slots:
     void slotGetFinished();
     void abort() Q_DECL_OVERRIDE;
-    void downloadFinished();
+    void downloadFinished(const QByteArray& checksumType, const QByteArray& checksum);
     void slotDownloadProgress(qint64,qint64);
     void slotChecksumFail( const QString& errMsg );
 
