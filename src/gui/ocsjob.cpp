@@ -108,6 +108,7 @@ bool OcsJob::finished()
     }
 
     emit jobFinished(json);
+    deleteLater();
     return true;
 }
 
