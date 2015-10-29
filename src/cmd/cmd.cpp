@@ -158,14 +158,14 @@ void help()
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
-    exit(1);
+    exit(0);
 
 }
 
 void showVersion() {
     const char *binaryName = APPLICATION_EXECUTABLE "cmd";
     std::cout << binaryName << " version " << qPrintable(Theme::instance()->version()) << std::endl;
-    exit(1);
+    exit(0);
 }
 
 void parseOptions( const QStringList& app_args, CmdOptions *options )
