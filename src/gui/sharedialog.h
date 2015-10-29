@@ -19,6 +19,10 @@
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QVariantMap>
+#include <QSharedPointer>
+#include <QList>
+
+#include "share.h"
 
 namespace OCC {
 
@@ -45,11 +49,12 @@ public:
     void getShares();
 
 private slots:
-    void slotSharesFetched(const QVariantMap &reply);
-    void slotCreateShareFetched(const QVariantMap &reply);
-    void slotDeleteShareFetched(const QVariantMap &reply);
-    void slotPasswordSet(const QVariantMap &reply);
-    void slotExpireSet(const QVariantMap &reply);
+    void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
+    void slotCreateShareFetched(const QSharedPointer<LinkShare> share);
+    void slotCreateShareRequiresPassword();
+    void slotDeleteShareFetched();
+    void slotPasswordSet();
+    void slotExpireSet();
     void slotCalendarClicked(const QDate &date);
     void slotCheckBoxShareLinkClicked();
     void slotCheckBoxPasswordClicked();
@@ -59,7 +64,7 @@ private slots:
     void slotPushButtonCopyLinkPressed();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
     void slotCheckBoxEditingClicked();
-    void slotPublicUploadSet(const QVariantMap &reply);
+    void slotPublicUploadSet();
 
     void done( int r );
 private:
@@ -83,8 +88,6 @@ private:
 #endif
 
     bool _passwordJobRunning;
-    QList<QVariant> _shares;
-    qulonglong _public_share_id;
     void setPassword(const QString &password);
     void setExpireDate(const QDate &date);
 
@@ -92,6 +95,9 @@ private:
     QProgressIndicator *_pi_password;
     QProgressIndicator *_pi_date;
     QProgressIndicator *_pi_editing;
+
+    QSharedPointer<ShareManager> _manager;
+    QSharedPointer<LinkShare> _share;
 
     bool _resharingAllowed;
     bool _isFile;

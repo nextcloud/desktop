@@ -42,9 +42,9 @@ void OcsJob::addPassStatusCode(int code)
     _passStatusCodes.append(code);
 }
 
-void OcsJob::appendPath(int id)
+void OcsJob::appendPath(const QString &id)
 {
-    setPath(path() + QString("/%1").arg(id));
+    setPath(path() + "/" + id);
 }
 
 void OcsJob::start()

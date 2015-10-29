@@ -24,6 +24,7 @@ OcsShareJob::OcsShareJob(AccountPtr account, QObject* parent)
 : OcsJob(account, parent)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
+    connect(this, SIGNAL(jobFinished(QVariantMap)), this, SLOT(jobDone(QVariantMap)));
 }
 
 void OcsShareJob::getShares(const QString &path)
@@ -36,7 +37,7 @@ void OcsShareJob::getShares(const QString &path)
     start();
 }
 
-void OcsShareJob::deleteShare(int shareId)
+void OcsShareJob::deleteShare(const QString &shareId)
 {
     appendPath(shareId);
     setVerb("DELETE");
@@ -44,7 +45,7 @@ void OcsShareJob::deleteShare(int shareId)
     start();
 }
 
-void OcsShareJob::setExpireDate(int shareId, const QDate &date)
+void OcsShareJob::setExpireDate(const QString &shareId, const QDate &date)
 {
     appendPath(shareId);
     setVerb("PUT");
@@ -54,27 +55,30 @@ void OcsShareJob::setExpireDate(int shareId, const QDate &date)
     } else {
         addParam(QString::fromLatin1("expireDate"), QString());
     }
+    _value = date;
 
     start();
 }
 
-void OcsShareJob::setPassword(int shareId, const QString &password)
+void OcsShareJob::setPassword(const QString &shareId, const QString &password)
 {
     appendPath(shareId);
     setVerb("PUT");
 
     addParam(QString::fromLatin1("password"), password);
+    _value = password;
 
     start();
 }
 
-void OcsShareJob::setPublicUpload(int shareId, bool publicUpload)
+void OcsShareJob::setPublicUpload(const QString &shareId, bool publicUpload)
 {
     appendPath(shareId);
     setVerb("PUT");
 
     const QString value = QString::fromLatin1(publicUpload ? "true" : "false");
     addParam(QString::fromLatin1("publicUpload"), value);
+    _value = publicUpload;
 
     start();
 }
@@ -97,6 +101,11 @@ void OcsShareJob::createShare(const QString &path, ShareType shareType, const QS
     addPassStatusCode(403);
 
     start();
+}
+
+void OcsShareJob::jobDone(QVariantMap reply)
+{
+    emit shareJobFinished(reply, _value);
 }
 
 }

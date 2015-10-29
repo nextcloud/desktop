@@ -79,7 +79,7 @@ protected:
      *
      * This function appends the common id. so <PATH>/<ID>
      */
-    void appendPath(int id);
+    void appendPath(const QString &id);
 
 public:
     /**
