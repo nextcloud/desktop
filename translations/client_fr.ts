@@ -2155,7 +2155,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
         <source>Share link</source>
-        <translation>Partage par lien</translation>
+        <translation>Partager par lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="125"/>
@@ -2211,7 +2211,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/sharedialog.cpp" line="564"/>
         <location filename="../src/gui/sharedialog.cpp" line="565"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Partage par lien</translation>
+        <translation>&amp;Partager par lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="583"/>
