@@ -447,7 +447,7 @@ restart_sync:
     }
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
-    QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
+    QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.

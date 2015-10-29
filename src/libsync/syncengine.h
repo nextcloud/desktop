@@ -109,7 +109,7 @@ signals:
 
     void transmissionProgress( const ProgressInfo& progress );
 
-    void finished();
+    void finished(bool success);
     void started();
 
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
@@ -144,7 +144,7 @@ private:
     void deleteStaleErrorBlacklistEntries();
 
     // cleanup and emit the finished signal
-    void finalize();
+    void finalize(bool success);
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
 

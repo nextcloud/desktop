@@ -887,7 +887,7 @@ void Folder::startSync(const QStringList &pathList)
               this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
 
     connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(finished()), SLOT(slotSyncFinished()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
 
@@ -959,7 +959,7 @@ void Folder::slotCsyncUnavailable()
     _csyncUnavail = true;
 }
 
-void Folder::slotSyncFinished()
+void Folder::slotSyncFinished(bool success)
 {
     qDebug() << " - client version" << qPrintable(Theme::instance()->version())
              <<  " Qt" << qVersion()
@@ -1017,7 +1017,7 @@ void Folder::slotSyncFinished()
         qDebug() << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
-    if (_syncResult.status() == SyncResult::Success) {
+    if (_syncResult.status() == SyncResult::Success && success) {
         // Clear the white list as all the folders that should be on that list are sync-ed
         journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
     }
