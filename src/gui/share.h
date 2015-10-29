@@ -82,8 +82,11 @@ protected:
     int _shareType;
     int _permissions;
 
+protected slots:
+    void slotOcsError(int statusCode, const QString &message);
+
 private slots:
-    void slotDeleted(const QVariantMap &reply);
+    void slotDeleted();
 
 };
 
@@ -156,9 +159,9 @@ signals:
     void passwordSet();
 
 private slots:
-    void slotPasswordSet(const QVariantMap &reply, const QVariant &value);
-    void slotPublicUploadSet(const QVariantMap &reply, const QVariant &value);
-    void slotExpireDateSet(const QVariantMap &reply, const QVariant &value);
+    void slotPasswordSet(const QVariantMap&, const QVariant &value);
+    void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
+    void slotExpireDateSet(const QVariantMap&, const QVariant &value);
 
 private:
     bool _passwordSet;
@@ -208,6 +211,7 @@ signals:
 private slots:
     void slotSharesFetched(const QVariantMap &reply);
     void slotLinkShareCreated(const QVariantMap &reply);
+    void slotOcsError(int statusCode, const QString &message);
 
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QVariantMap &data);

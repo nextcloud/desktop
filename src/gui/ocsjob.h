@@ -108,6 +108,15 @@ signals:
      */
     void jobFinished(QVariantMap reply);
 
+    /**
+     * The status code was not one of the expected (passing)
+     * status code for this command
+     *
+     * @param statusCode The actual status code
+     * @param message The message provided by the server
+     */
+    void ocsError(int statusCode, const QString &message);
+
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 

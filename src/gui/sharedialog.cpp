@@ -175,9 +175,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
      */
     _manager = new ShareManager(_account, this);
 
-    connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), this, SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
-    connect(_manager, SIGNAL(linkShareCreated(const QSharedPointer<LinkShare>)), this, SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-    connect(_manager, SIGNAL(linkShareRequiresPassword()), this, SLOT(slotCreateShareRequiresPassword()));
+    connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
+    connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
+    connect(_manager, SIGNAL(linkShareRequiresPassword()), SLOT(slotCreateShareRequiresPassword()));
+    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
 }
 
 void ShareDialog::done( int r ) {
@@ -320,10 +321,11 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
             _ui->pushButton_copy->setEnabled(true);
 
             // Connect all shares signals to gui slots
-            connect(_share.data(), SIGNAL(expireDateSet()), this, SLOT(slotExpireSet()));
-            connect(_share.data(), SIGNAL(publicUploadSet()), this, SLOT(slotPublicUploadSet()));
-            connect(_share.data(), SIGNAL(passwordSet()), this, SLOT(slotPasswordSet()));
-            connect(_share.data(), SIGNAL(shareDeleted()), this, SLOT(slotDeleteShareFetched()));
+            connect(_share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
+            connect(_share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
+            connect(_share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
+            connect(_share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
+            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
 
             break;
         }
@@ -543,6 +545,13 @@ void ShareDialog::setShareCheckBoxTitle(bool haveShares)
         _ui->checkBox_shareLink->setText( noSharesTitle );
     }
 
+}
+
+void ShareDialog::displayError(int code, const QString &message)
+{
+    const QString arg = QString("%1, %2").arg(code).arg(message);
+    const QString errMsg = tr("OCS API error code: %1").arg(arg);
+    displayError(errMsg);
 }
 
 void ShareDialog::displayError(const QString& errMsg)

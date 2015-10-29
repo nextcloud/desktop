@@ -48,19 +48,19 @@ int Share::getPermissions() const
 void Share::deleteShare()
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotDeleted(QVariantMap)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotDeleted()));
+    connect(job, SIGNAL(ocsError(int, const QString &)), SLOT(slotOcsError(int, const QString &)));
     job->deleteShare(getId());
 }
 
-void Share::slotDeleted(const QVariantMap &reply)
+void Share::slotDeleted()
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        //emit error!
-    }
-
     emit shareDeleted();
+}
+
+void Share::slotOcsError(int statusCode, const QString &message)
+{
+    emit serverError(statusCode, message);   
 }
 
 QUrl LinkShare::getLink() const
@@ -103,21 +103,13 @@ bool LinkShare::getPublicUpload()
 void LinkShare::setPublicUpload(bool publicUpload)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), this, SLOT(slotPublicUploadSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPublicUploadSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPublicUpload(getId(), publicUpload);
 }
 
-void LinkShare::slotPublicUploadSet(const QVariantMap &reply, const QVariant &value)
+void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
 {
-    qDebug() << Q_FUNC_INFO << reply;
-    qDebug() << Q_FUNC_INFO << value;
-
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        //emit error
-    }
-
     //TODO FIX permission with names
     if (value.toBool()) {
         _permissions = 7;
@@ -131,18 +123,13 @@ void LinkShare::slotPublicUploadSet(const QVariantMap &reply, const QVariant &va
 void LinkShare::setPassword(const QString &password)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), this, SLOT(slotPasswordSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPasswordSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPassword(getId(), password);
 }
 
-void LinkShare::slotPasswordSet(const QVariantMap &reply, const QVariant &value)
+void LinkShare::slotPasswordSet(const QVariantMap&, const QVariant &value)
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        //emit error
-    }
-
     _passwordSet = value.toString() == "";
     emit passwordSet();
 }
@@ -150,18 +137,13 @@ void LinkShare::slotPasswordSet(const QVariantMap &reply, const QVariant &value)
 void LinkShare::setExpireDate(const QDate &date)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), this, SLOT(slotExpireDateSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotExpireDateSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setExpireDate(getId(), date);
 }
 
-void LinkShare::slotExpireDateSet(const QVariantMap &reply, const QVariant &value)
+void LinkShare::slotExpireDateSet(const QVariantMap&, const QVariant &value)
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        //emit error
-    }
-
     _expireDate = value.toDate();
     emit expireDateSet();
 }
@@ -177,7 +159,8 @@ void ShareManager::createLinkShare(const QString &path,
                                    const QString &password)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotLinkShareCreated(QVariantMap)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotLinkShareCreated(QVariantMap)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->createShare(path, OcsShareJob::ShareType::Link, password);
 }
 
@@ -193,9 +176,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
     if (code == 403) {
         emit linkShareRequiresPassword();
         return;
-    } else if (code != 100) {
-        //emit error
-    }
+    } 
 
     //Parse share
     auto data = reply.value("ocs").toMap().value("data").toMap();
@@ -207,18 +188,13 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
 void ShareManager::fetchShares(const QString &path)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotSharesFetched(QVariantMap)));
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotSharesFetched(QVariantMap)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->getShares(path);
 }
 
 void ShareManager::slotSharesFetched(const QVariantMap &reply)
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100 && code != 404) {
-        //emit error!
-    }
-
     auto tmpShares = reply.value("ocs").toMap().value("data").toList();
     const QString versionString = _account->serverVersion();
     qDebug() << Q_FUNC_INFO << versionString << "Fetched" << tmpShares.count() << "shares";
@@ -278,6 +254,11 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
                                                    data.value("share_with").isValid(),
                                                    url,
                                                    expireDate));
+}
+
+void ShareManager::slotOcsError(int statusCode, const QString &message)
+{
+    emit serverError(statusCode, message);   
 }
 
 }

@@ -105,9 +105,10 @@ bool OcsJob::finished()
                  << Account::concatUrlPath(account()->url(), path())
                  << _params
                  << "has unexpected status code:" << statusCode << replyData;
+        emit ocsError(statusCode, message);
+    } else {
+        emit jobFinished(json);
     }
-
-    emit jobFinished(json);
     deleteLater();
     return true;
 }
