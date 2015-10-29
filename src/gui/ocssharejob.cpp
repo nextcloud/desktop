@@ -91,7 +91,7 @@ void OcsShareJob::createShare(const QString &path, ShareType shareType, const QS
     addParam(QString::fromLatin1("shareType"), QString::number(static_cast<int>(shareType)));
 
     if (!password.isEmpty()) {
-        addParam(QString::fromLatin1("shareType"), password);
+        addParam(QString::fromLatin1("password"), password);
     }
 
     if (date.isValid()) {

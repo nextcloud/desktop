@@ -194,6 +194,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
      */
     if (code == 403) {
         emit linkShareRequiresPassword();
+        return;
     } else if (code != 100) {
         //emit error
     }

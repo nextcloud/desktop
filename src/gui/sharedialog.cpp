@@ -223,20 +223,18 @@ void ShareDialog::slotPasswordChanged(const QString& newText)
 
 void ShareDialog::setPassword(const QString &password)
 {
-    if( _passwordJobRunning ) {
-        // This happens because the entry field and the button both trigger this slot.
-        return;
-    }
     _pi_link->startAnimation();
     _pi_password->startAnimation();
-    QString path;
+
+    _ui->checkBox_password->setEnabled(false);
+    _ui->lineEdit_password->setEnabled(false);
 
     if( !_share.isNull() ) {
         _share->setPassword(password);
     } else {
+        _ui->checkBox_shareLink->setEnabled(false);
         _manager->createLinkShare(_sharePath, password);
     }
-    _passwordJobRunning = true;
 }
 
 void ShareDialog::slotPasswordSet()
@@ -248,7 +246,6 @@ void ShareDialog::slotPasswordSet()
      */
     getShares();
 
-    _passwordJobRunning = false;
     _pi_password->stopAnimation();
 }
 
@@ -281,7 +278,9 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
+            _ui->checkBox_password->setEnabled(true);
             if (_share->isPasswordSet()) {
+                _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
                 _ui->lineEdit_password->setPlaceholderText("********");
                 _ui->lineEdit_password->show();
@@ -293,6 +292,7 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
                 _ui->pushButton_setPassword->hide();
             }
 
+            _ui->checkBox_expire->setEnabled(true);
             if (_share->getExpireDate().isValid()) {
                 _ui->calendar->setDate(_share->getExpireDate());
                 _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
@@ -307,8 +307,13 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
              * Only directories can have public upload set
              * For public links the server sets CREATE and UPDATE permissions.
              */
-            if (!_isFile && _share->getPublicUpload()) {
-                _ui->checkBox_editing->setChecked(true);
+            if (!_isFile) {
+                _ui->checkBox_editing->setEnabled(true);
+                if (_share->getPublicUpload()) {
+                    _ui->checkBox_editing->setChecked(true);
+                } else {
+                    _ui->checkBox_editing->setChecked(false);
+                }
             }
 
             setShareLink(_share->getLink().toString());
@@ -410,6 +415,8 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+            _ui->checkBox_expire->setEnabled(false);
+            _ui->checkBox_editing->setEnabled(false);
             _ui->lineEdit_password->setFocus();
             _ui->pushButton_copy->hide();
             _ui->widget_shareLink->show();
@@ -418,19 +425,29 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
             return;
         }
 
+        _ui->checkBox_shareLink->setEnabled(false);
         _manager->createLinkShare(_sharePath);
     } else {
-        _pi_link->startAnimation();
-        _share->deleteShare();
+
+        if (!_share.isNull()) {
+            // We have a share so delete it
+            _pi_link->startAnimation();
+            _share->deleteShare();
+        } else {
+            // No share object so we are deleting while a password is required
+            _ui->widget_shareLink->hide();
+        }
+
+        
     }
 }
 
 void ShareDialog::slotCreateShareFetched(const QSharedPointer<LinkShare> share)
 {
     _pi_link->stopAnimation();
+    _pi_password->stopAnimation();
 
     _share = share;
-    _ui->pushButton_copy->show();
     getShares();
 }
 
@@ -443,6 +460,8 @@ void ShareDialog::slotCreateShareRequiresPassword()
     _ui->lineEdit_password->setFocus();
     _ui->pushButton_copy->hide();
     _ui->widget_shareLink->show();
+    _ui->checkBox_expire->setEnabled(false);
+    _ui->checkBox_editing->setEnabled(false);
 
     slotCheckBoxPasswordClicked();
 }
@@ -455,7 +474,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
         _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
         _ui->lineEdit_password->setFocus();
     } else {
-        ShareDialog::setPassword(QString());
+        setPassword(QString());
         _ui->lineEdit_password->setPlaceholderText(QString());
         _pi_password->startAnimation();
         _ui->lineEdit_password->hide();
