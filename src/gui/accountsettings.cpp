@@ -455,7 +455,15 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         ui->quotaProgressBar->setToolTip(toolTip);
     } else {
         ui->quotaProgressBar->setVisible(false);
-        ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
+        ui->quotaInfoLabel->setToolTip(QString());
+
+        /* -1 means not computed; -2 means unknown; -3 means unlimited  (#3940)*/
+        if (total == 0 || total == -1) {
+            ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
+        } else {
+            QString usedStr = Utility::octetsToString(used);
+            ui->quotaInfoLabel->setText(tr("%1 in use").arg(usedStr));
+        }
     }
 }
 
