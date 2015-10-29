@@ -37,8 +37,7 @@ public:
                    const QString& id,
                    const QString& path,
                    int shareType,
-                   int permissions,
-                   QObject *parent = NULL);
+                   int permissions);
 
     /*
      * Get the id
@@ -104,8 +103,7 @@ public:
                        int permissions,
                        bool passwordSet,
                        const QUrl& url,
-                       const QDate& expireDate,
-                       QObject *parent = NULL);
+                       const QDate& expireDate);
 
     /*
      * Get the share link
@@ -202,9 +200,9 @@ public:
     void fetchShares(const QString& path);
 
 signals:
-    void linkShareCreated(const QSharedPointer<LinkShare> share);
+    void linkShareCreated(const QSharedPointer<LinkShare> &share);
     void linkShareRequiresPassword();
-    void sharesFetched(QList<QSharedPointer<Share>>);
+    void sharesFetched(const QList<QSharedPointer<Share>> &shares);
     void serverError(int code, const QString &message);
 
 private slots:
@@ -212,7 +210,7 @@ private slots:
     void slotLinkShareCreated(const QVariantMap &reply);
 
 private:
-    LinkShare *parseLinkShare(const QVariantMap &data);
+    QSharedPointer<LinkShare> parseLinkShare(const QVariantMap &data);
 
     AccountPtr _account;
 };

@@ -96,7 +96,7 @@ private:
     QProgressIndicator *_pi_date;
     QProgressIndicator *_pi_editing;
 
-    QSharedPointer<ShareManager> _manager;
+    ShareManager *_manager;
     QSharedPointer<LinkShare> _share;
 
     bool _resharingAllowed;

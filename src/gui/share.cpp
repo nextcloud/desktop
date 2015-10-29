@@ -20,9 +20,8 @@
 namespace OCC {
 
 Share::Share(AccountPtr account, const QString& id, const QString& path, int shareType,
-             int permissions, QObject *parent)
-: QObject(parent),
-  _account(account),
+             int permissions)
+: _account(account),
   _id(id),
   _path(path),
   _shareType(shareType),
@@ -86,9 +85,8 @@ LinkShare::LinkShare(AccountPtr account,
                      int permissions,
                      bool passwordSet,
                      const QUrl& url,
-                     const QDate& expireDate,
-                     QObject *parent)
-: Share(account, id, path, shareType, permissions, parent),
+                     const QDate& expireDate)
+: Share(account, id, path, shareType, permissions),
   _passwordSet(passwordSet),
   _expireDate(expireDate),
   _url(url)
@@ -232,17 +230,16 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
 
         auto shareType = data.value("share_type").toInt();
 
-        Share *newShare = NULL;
+        QSharedPointer<Share> newShare;
 
         if (shareType == OcsShareJob::ShareType::Link) {
             newShare = parseLinkShare(data);
         } else {
-            newShare = new Share(_account,
-                                 data.value("id").toString(),
-                                 data.value("path").toString(),
-                                 shareType,
-                                 data.value("permissions").toInt(),
-                                 this);
+            newShare = QSharedPointer<Share>(new Share(_account,
+                                                       data.value("id").toString(),
+                                                       data.value("path").toString(),
+                                                       shareType,
+                                                       data.value("permissions").toInt()));
         }
 
         shares.append(QSharedPointer<Share>(newShare));    
@@ -252,7 +249,7 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
     emit sharesFetched(shares);
 }
 
-LinkShare *ShareManager::parseLinkShare(const QVariantMap &data) {
+QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) {
     QUrl url;
 
     // From ownCloud server 8.2 the url field is always set for public shares
@@ -273,15 +270,14 @@ LinkShare *ShareManager::parseLinkShare(const QVariantMap &data) {
        expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
 
-    return new LinkShare(_account,
-                         data.value("id").toString(),
-                         data.value("path").toString(),
-                         data.value("share_type").toInt(),
-                         data.value("permissions").toInt(),
-                         data.value("share_with").isValid(),
-                         url,
-                         expireDate,
-                         this);
+    return QSharedPointer<LinkShare>(new LinkShare(_account,
+                                                   data.value("id").toString(),
+                                                   data.value("path").toString(),
+                                                   data.value("share_type").toInt(),
+                                                   data.value("permissions").toInt(),
+                                                   data.value("share_with").isValid(),
+                                                   url,
+                                                   expireDate));
 }
 
 }

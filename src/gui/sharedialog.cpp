@@ -173,11 +173,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     /*
      * Create the share manager and connect it properly
      */
-    _manager = QSharedPointer<ShareManager>(new ShareManager(_account, this));
+    _manager = new ShareManager(_account, this);
 
-    connect(_manager.data(), SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), this, SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
-    connect(_manager.data(), SIGNAL(linkShareCreated(const QSharedPointer<LinkShare>)), this, SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-    connect(_manager.data(), SIGNAL(linkShareRequiresPassword()), this, SLOT(slotCreateShareRequiresPassword()));
+    connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), this, SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
+    connect(_manager, SIGNAL(linkShareCreated(const QSharedPointer<LinkShare>)), this, SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
+    connect(_manager, SIGNAL(linkShareRequiresPassword()), this, SLOT(slotCreateShareRequiresPassword()));
 }
 
 void ShareDialog::done( int r ) {
