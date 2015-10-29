@@ -108,12 +108,16 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
         const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item)
 {
     SyncJournalErrorBlacklistRecord entry;
-    if (item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
+    bool mayBlacklist =
+            item._errorMayBeBlacklisted  // explicitly flagged for blacklisting
+            || (item._httpErrorCode != 0 // or non-local error
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
-        || item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx
+                && item._httpErrorCode / 100 != 5 // In this configuration, never blacklist error 5xx
 #endif
-            ) {
-        qDebug() << "This error is not blacklisted " << item._httpErrorCode;
+               );
+
+    if (!mayBlacklist) {
+        qDebug() << "This error is not blacklisted " << item._httpErrorCode << item._errorMayBeBlacklisted;
         return entry;
     }
 
@@ -126,7 +130,7 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     entry._lastTryEtag = item._etag;
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
-    entry._ignoreDuration = qMin(qMax(minBlacklistTime, old._ignoreDuration * 5), maxBlacklistTime);
+    entry._ignoreDuration = qBound(minBlacklistTime, old._ignoreDuration * 5, maxBlacklistTime);
     entry._file = item._file;
 
     if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {

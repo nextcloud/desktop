@@ -359,6 +359,7 @@ void PropagateDownloadFileQNAM::start()
     // If there's not enough space to fully download this file, stop.
     const auto diskSpaceResult = _propagator->diskSpaceCheck();
     if (diskSpaceResult == OwncloudPropagator::DiskSpaceFailure) {
+        _item->_errorMayBeBlacklisted = true;
         done(SyncFileItem::NormalError,
              tr("The download would reduce free disk space below %1").arg(
                  Utility::octetsToString(freeSpaceLimit())));
