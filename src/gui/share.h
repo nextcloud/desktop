@@ -113,6 +113,11 @@ public:
     const QUrl getLink();
 
     /*
+     * Get the publicUpload status of this share
+     */
+    bool getPublicUpload();
+
+    /*
      * Set a share to be public upload
      * This function can only be called on link shares
      *

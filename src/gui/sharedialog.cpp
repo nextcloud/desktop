@@ -307,10 +307,8 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
              * Only directories can have public upload set
              * For public links the server sets CREATE and UPDATE permissions.
              */
-            if (!_isFile && 
-                (_share->getPermissions() & static_cast<int>(OcsShareJob::Permission::Update)) &&
-                (_share->getPermissions() & static_cast<int>(OcsShareJob::Permission::Create))) {
-                    _ui->checkBox_editing->setChecked(true);
+            if (!_isFile && _share->getPublicUpload()) {
+                _ui->checkBox_editing->setChecked(true);
             }
 
             setShareLink(_share->getLink().toString());

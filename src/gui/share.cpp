@@ -96,6 +96,12 @@ LinkShare::LinkShare(AccountPtr account,
 
 }
 
+bool LinkShare::getPublicUpload()
+{
+    return ((_permissions & OcsShareJob::Permission::Update) &&
+            (_permissions & OcsShareJob::Permission::Create));
+}
+
 void LinkShare::setPublicUpload(bool publicUpload)
 {
     OcsShareJob *job = new OcsShareJob(_account, this);
