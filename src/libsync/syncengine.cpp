@@ -698,7 +698,7 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotRootEtagReceived(QString e) {
+void SyncEngine::slotRootEtagReceived(const QString &e) {
     if (_remoteRootEtag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << e;
         _remoteRootEtag = e;

@@ -94,7 +94,7 @@ signals:
 
     // During update, before reconcile
     void rootEtag(QString);
-    void folderDiscovered(bool local, QString folderUrl);
+    void folderDiscovered(bool local, const QString &folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
@@ -118,7 +118,7 @@ signals:
     void newBigFolder(const QString &folder);
 
 private slots:
-    void slotRootEtagReceived(QString);
+    void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
