@@ -30,14 +30,37 @@ class Share : public QObject {
 
 public:
 
+    /**
+     * Possible share types
+     */
+    enum ShareType {
+        TypeUser   = 0,
+        TypeGroup  = 1,
+        TypeLink   = 3,
+        TypeRemote = 6,
+    };
+    Q_DECLARE_FLAGS(ShareTypes, ShareType)
+
+    /**
+     * Possible permissions
+     */
+    enum Permission {
+        PermissionRead   =  1,
+        PermissionUpdate =  2,
+        PermissionCreate =  4,
+        PermissionDelete =  8,
+        PermissionShare  = 16
+    };
+    Q_DECLARE_FLAGS(Permissions, Permission)
+
     /*
      * Constructor for shares
      */
     explicit Share(AccountPtr account,
                    const QString& id,
                    const QString& path,
-                   int shareType,
-                   int permissions);
+                   ShareType shareType,
+                   Permissions permissions);
 
     /*
      * Get the id
@@ -47,12 +70,12 @@ public:
     /*
      * Get the shareType
      */
-    int getShareType() const;
+    ShareType getShareType() const;
 
     /*
      * Get permissions
      */
-    int getPermissions() const;
+    Permissions getPermissions() const;
 
     /*
      * Set the permissions of a share
@@ -79,8 +102,8 @@ protected:
     AccountPtr _account;
     QString _id;
     QString _path;
-    int _shareType;
-    int _permissions;
+    ShareType _shareType;
+    Permissions _permissions;
 
 protected slots:
     void slotOcsError(int statusCode, const QString &message);
@@ -102,8 +125,7 @@ public:
     explicit LinkShare(AccountPtr account,
                        const QString& id,
                        const QString& path,
-                       int shareType,
-                       int permissions,
+                       Permissions permissions,
                        bool passwordSet,
                        const QUrl& url,
                        const QDate& expireDate);
@@ -168,6 +190,7 @@ private:
     QDate _expireDate;
     QUrl _url;
 };
+Q_DECLARE_OPERATORS_FOR_FLAGS(Share::Permissions)
 
 /**
  * The share manager allows for creating, retrieving and deletion

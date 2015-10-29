@@ -15,6 +15,7 @@
 #define OCSSHAREJOB_H
 
 #include "ocsjob.h"
+#include "share.h"
 #include <QVector>
 #include <QList>
 #include <QPair>
@@ -31,25 +32,6 @@ namespace OCC {
 class OcsShareJob : public OcsJob {
     Q_OBJECT
 public:
-
-    /**
-     * Support sharetypes
-     */
-    enum ShareType : int {
-        Link = 3
-    };
-
-    /**
-     * Possible permissions
-     */
-    enum Permission : int {
-        Read = 1,
-        Update = 2,
-        Create = 4,
-        Delete = 8,
-        Share = 16,
-        All = 31
-    };
 
     /**
      * Constructor for new shares or listing of shares
@@ -99,7 +81,7 @@ public:
      * @param password Optionally a password for the share
      * @param date Optionally an expire date for the share
      */
-    void createShare(const QString& path, ShareType shareType, const QString& password = "", const QDate& date = QDate());
+    void createShare(const QString& path, Share::ShareType shareType, const QString& password = "", const QDate& date = QDate());
 
 signals:
     /**

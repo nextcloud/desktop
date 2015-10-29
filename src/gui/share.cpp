@@ -19,8 +19,11 @@
 
 namespace OCC {
 
-Share::Share(AccountPtr account, const QString& id, const QString& path, int shareType,
-             int permissions)
+Share::Share(AccountPtr account, 
+             const QString& id, 
+             const QString& path, 
+             ShareType shareType,
+             Permissions permissions)
 : _account(account),
   _id(id),
   _path(path),
@@ -35,12 +38,12 @@ QString Share::getId() const
     return _id;
 }
 
-int Share::getShareType() const
+Share::ShareType Share::getShareType() const
 {
     return _shareType;
 }
 
-int Share::getPermissions() const
+Share::Permissions Share::getPermissions() const
 {
     return _permissions;
 }
@@ -81,12 +84,11 @@ bool LinkShare::isPasswordSet() const
 LinkShare::LinkShare(AccountPtr account,
                      const QString& id,
                      const QString& path,
-                     int shareType,
-                     int permissions,
+                     Permissions permissions,
                      bool passwordSet,
                      const QUrl& url,
                      const QDate& expireDate)
-: Share(account, id, path, shareType, permissions),
+: Share(account, id, path, Share::TypeLink, permissions),
   _passwordSet(passwordSet),
   _expireDate(expireDate),
   _url(url)
@@ -96,8 +98,8 @@ LinkShare::LinkShare(AccountPtr account,
 
 bool LinkShare::getPublicUpload()
 {
-    return ((_permissions & OcsShareJob::Permission::Update) &&
-            (_permissions & OcsShareJob::Permission::Create));
+    return ((_permissions & PermissionUpdate) &&
+            (_permissions & PermissionCreate));
 }
 
 void LinkShare::setPublicUpload(bool publicUpload)
@@ -112,9 +114,9 @@ void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
 {
     //TODO FIX permission with names
     if (value.toBool()) {
-        _permissions = 7;
+        _permissions = PermissionRead | PermissionUpdate | PermissionCreate;
     } else {
-        _permissions = 1;
+        _permissions = PermissionRead;
     }
 
     emit publicUploadSet();
@@ -161,7 +163,7 @@ void ShareManager::createLinkShare(const QString &path,
     OcsShareJob *job = new OcsShareJob(_account, this);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotLinkShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
-    job->createShare(path, OcsShareJob::ShareType::Link, password);
+    job->createShare(path, Share::TypeLink, password);
 }
 
 void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
@@ -208,14 +210,14 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
 
         QSharedPointer<Share> newShare;
 
-        if (shareType == OcsShareJob::ShareType::Link) {
+        if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
         } else {
             newShare = QSharedPointer<Share>(new Share(_account,
                                                        data.value("id").toString(),
                                                        data.value("path").toString(),
-                                                       shareType,
-                                                       data.value("permissions").toInt()));
+                                                       (Share::ShareType)shareType,
+                                                       (Share::Permissions)data.value("permissions").toInt()));
         }
 
         shares.append(QSharedPointer<Share>(newShare));    
@@ -249,8 +251,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
                                                    data.value("id").toString(),
                                                    data.value("path").toString(),
-                                                   data.value("share_type").toInt(),
-                                                   data.value("permissions").toInt(),
+                                                   (Share::Permissions)data.value("permissions").toInt(),
                                                    data.value("share_with").isValid(),
                                                    url,
                                                    expireDate));

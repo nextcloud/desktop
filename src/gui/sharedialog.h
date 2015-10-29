@@ -22,8 +22,6 @@
 #include <QSharedPointer>
 #include <QList>
 
-#include "share.h"
-
 namespace OCC {
 
 namespace Ui {
@@ -33,6 +31,9 @@ class ShareDialog;
 class AbstractCredentials;
 class QuotaInfo;
 class SyncResult;
+class LinkShare;
+class Share;
+class ShareManager;
 
 /**
  * @brief The ShareDialog class

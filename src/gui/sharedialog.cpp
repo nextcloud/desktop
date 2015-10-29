@@ -23,7 +23,6 @@
 #include "configfile.h"
 #include "capabilities.h"
 
-#include "ocssharejob.h"
 #include "thumbnailjob.h"
 #include "share.h"
 
@@ -272,7 +271,7 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 
     Q_FOREACH(auto share, shares) {
 
-        if (share->getShareType() == static_cast<int>(OcsShareJob::ShareType::Link)) {
+        if (share->getShareType() == Share::TypeLink) {
             _share = qSharedPointerDynamicCast<LinkShare>(share);
             _ui->pushButton_copy->show();
 
