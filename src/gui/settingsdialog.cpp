@@ -24,6 +24,7 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
+#include "protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -80,8 +81,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
     addActionToToolBar(_activityAction);
+
+    // FIXME: Put this QTabWidget into its own class to be used here.
+    QTabWidget *tabs = new QTabWidget(this);
+    tabs->addTab(new ProtocolWidget, tr("Sync Protocol"));
     ActivityWidget *activityWidget = new ActivityWidget;
-    _ui->stack->addWidget(activityWidget);
+    tabs->addTab(activityWidget, tr("Server Activity"));
+    _ui->stack->addWidget(tabs);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -95,7 +101,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_activityAction, activityWidget);
+    _actionGroupWidgets.insert(_activityAction, tabs);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 

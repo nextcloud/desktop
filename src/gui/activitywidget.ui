@@ -6,31 +6,62 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>515</height>
+    <width>672</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Sync Activity</string>
+   <item row="0" column="1">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="tabShape">
+      <enum>QTabWidget::Rounded</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QDialogButtonBox" name="_dialogButtonBox">
-        <property name="standardButtons">
-         <set>QDialogButtonBox::NoButton</set>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QListView" name="_activityList"/>
-      </item>
-     </layout>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideMiddle</enum>
+     </property>
+     <widget class="QWidget" name="protocolTab">
+      <attribute name="title">
+       <string>Sync Protocol</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QListView" name="_activityList"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QDialogButtonBox" name="_dialogButtonBox">
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="serverActivityTab">
+      <attribute name="title">
+       <string>Server Activity</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="ignoresTab">
+      <attribute name="title">
+       <string>Ignored Files</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="issuesTab">
+      <attribute name="title">
+       <string>Issues</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Blacklist</string>
+      </attribute>
+     </widget>
     </widget>
    </item>
   </layout>
