@@ -553,29 +553,29 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "Calling into main thread...";
+        qDebug() << discoveryJob << url << "Calling into main thread...";
 
-        DiscoveryDirectoryResult *directoryResult = new DiscoveryDirectoryResult();
+        QScopedPointer<DiscoveryDirectoryResult> directoryResult(new DiscoveryDirectoryResult());
         directoryResult->code = EIO;
 
         discoveryJob->_vioMutex.lock();
         const QString qurl = QString::fromUtf8(url);
-        emit discoveryJob->doOpendirSignal(qurl, directoryResult);
+        emit discoveryJob->doOpendirSignal(qurl, directoryResult.data());
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
 
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "...Returned from main thread";
+        qDebug() << discoveryJob << url << "...Returned from main thread";
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
-            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
+            qDebug() << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );
             return NULL;
         }
 
-        return (csync_vio_handle_t*) directoryResult;
+        return directoryResult.take();
     }
     return NULL;
 }
