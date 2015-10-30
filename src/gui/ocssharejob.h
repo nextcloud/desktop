@@ -15,6 +15,7 @@
 #define OCSSHAREJOB_H
 
 #include "ocsjob.h"
+#include "share.h"
 #include <QVector>
 #include <QList>
 #include <QPair>
@@ -33,25 +34,6 @@ class OcsShareJob : public OcsJob {
 public:
 
     /**
-     * Support sharetypes
-     */
-    enum class ShareType : int {
-        Link = 3
-    };
-
-    /**
-     * Possible permissions
-     */
-    enum class Permission : int {
-        Read = 1,
-        Update = 2,
-        Create = 4,
-        Delete = 8,
-        Share = 16,
-        All = 31
-    };
-
-    /**
      * Constructor for new shares or listing of shares
      */
     explicit OcsShareJob(AccountPtr account, QObject *parent = 0);
@@ -66,7 +48,7 @@ public:
     /**
      * Delete the current Share
      */
-    void deleteShare(int shareId);
+    void deleteShare(const QString &shareId);
 
     /**
      * Set the expiration date of a share
@@ -74,7 +56,7 @@ public:
      * @param date The expire date, if this date is invalid the expire date
      * will be removed
      */
-    void setExpireDate(int shareId, const QDate& date);
+    void setExpireDate(const QString &shareId, const QDate& date);
 
     /**
      * Set the password of a share
@@ -82,14 +64,14 @@ public:
      * @param password The password of the share, if the password is empty the
      * share will be removed
      */
-    void setPassword(int shareId, const QString& password);
+    void setPassword(const QString &shareId, const QString& password);
 
     /**
      * Void set the share to be public upload
      * 
      * @param publicUpload Set or remove public upload
      */
-    void setPublicUpload(int shareId, bool publicUpload);
+    void setPublicUpload(const QString &shareId, bool publicUpload);
 
     /**
      * Create a new share
@@ -99,7 +81,25 @@ public:
      * @param password Optionally a password for the share
      * @param date Optionally an expire date for the share
      */
-    void createShare(const QString& path, ShareType shareType, const QString& password = "", const QDate& date = QDate());
+    void createShare(const QString& path, Share::ShareType shareType, const QString& password = "", const QDate& date = QDate());
+
+signals:
+    /**
+     * Result of the OCS request
+     * The value parameter is only set if this was a put request.
+     * e.g. if we set the password to 'foo' the QVariant will hold a QString with 'foo'.
+     * This is needed so we can update the share objects properly
+     *
+     * @param reply The reply
+     * @param value To what did we set a variable (if we set any).
+     */
+    void shareJobFinished(QVariantMap reply, QVariant value);
+
+private slots:
+    void jobDone(QVariantMap reply);
+
+private:
+    QVariant _value;
 };
 
 }

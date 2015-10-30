@@ -79,7 +79,7 @@ protected:
      *
      * This function appends the common id. so <PATH>/<ID>
      */
-    void appendPath(int id);
+    void appendPath(const QString &id);
 
 public:
     /**
@@ -107,6 +107,15 @@ signals:
      * @param reply the reply
      */
     void jobFinished(QVariantMap reply);
+
+    /**
+     * The status code was not one of the expected (passing)
+     * status code for this command
+     *
+     * @param statusCode The actual status code
+     * @param message The message provided by the server
+     */
+    void ocsError(int statusCode, const QString &message);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

@@ -58,6 +58,7 @@ set(client_SRCS
     protocolwidget.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
+    share.cpp
     sharedialog.cpp
     socketapi.cpp
     sslbutton.cpp
