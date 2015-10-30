@@ -666,7 +666,7 @@ void SyncEngine::startSync()
 
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
-    connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
+    connect(this, SIGNAL(finished(bool)), _discoveryMainThread, SLOT(deleteLater()));
     qDebug() << "=====Server" << account()->serverVersion()
              <<  QString("rootEtagChangesNotOnlySubFolderEtags=%1").arg(account()->rootEtagChangesNotOnlySubFolderEtags());
     if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
