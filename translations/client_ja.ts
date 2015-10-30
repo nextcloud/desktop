@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="448"/>
         <source>%1 of %2 in use</source>
-        <translation>%2 の %1 を使用</translation>
+        <translation>%2 のうち %1 を使用中</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="453"/>
@@ -1033,7 +1033,7 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>共通除外設定</translation>
+        <translation>全体的な除外設定</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1043,7 +1043,7 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>パターンでファイルを除外</translation>
+        <translation>パターンによって除外するファイル</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1058,7 +1058,7 @@ Account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
         <source>Allow Deletion</source>
-        <translation>削除許可</translation>
+        <translation>削除を許可</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
@@ -1366,7 +1366,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation>更新を確認</translation>
+        <translation>アップデートを確認</translation>
     </message>
 </context>
 <context>
@@ -2349,7 +2349,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="118"/>
         <source>Issuer:</source>
-        <translation>発行者: %1</translation>
+        <translation>発行者: </translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="119"/>
@@ -2400,7 +2400,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
-        <translation>この接続は、%1 を使って、%2 bit で暗号化されています。
+        <translation>この接続は、%1 の %2 bit を使って暗号化されています。
 </translation>
     </message>
     <message>
