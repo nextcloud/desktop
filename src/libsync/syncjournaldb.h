@@ -166,6 +166,8 @@ private:
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
+
+    // NOTE! when adding a query, don't forget to reset it in SyncJournalDb::close
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
