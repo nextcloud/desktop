@@ -83,22 +83,46 @@ void OcsShareJob::setPublicUpload(const QString &shareId, bool publicUpload)
     start();
 }
 
-void OcsShareJob::createShare(const QString &path, Share::ShareType shareType, const QString &password, const QDate &date)
+void OcsShareJob::setPermissions(const QString &shareId, 
+                                 const Share::Permissions permissions)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+
+    addParam(QString::fromLatin1("permissions"), QString::number(permissions));
+    _value = (int)permissions;
+
+    start();
+}
+
+void OcsShareJob::createLinkShare(const QString &path, 
+                                  const QString &password)
 {
     setVerb("POST");
 
     addParam(QString::fromLatin1("path"), path);
-    addParam(QString::fromLatin1("shareType"), QString::number(static_cast<int>(shareType)));
+    addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
 
     if (!password.isEmpty()) {
         addParam(QString::fromLatin1("password"), password);
     }
 
-    if (date.isValid()) {
-        addParam(QString::fromLatin1("expireDate"), date.toString("yyyy-MM-dd"));
-    }
-
     addPassStatusCode(403);
+
+    start();
+}
+
+void OcsShareJob::createShare(const QString& path, 
+                              const Share::ShareType shareType,
+                              const QString& shareWith,
+                              const Share::Permissions permissions)
+{
+    setVerb("POST");
+
+    addParam(QString::fromLatin1("path"), path);
+    addParam(QString::fromLatin1("shareType"), QString::number(shareType));
+    addParam(QString::fromLatin1("shareWith"), shareWith);
+    addParam(QString::fromLatin1("permissions"), QString::number(permissions));
 
     start();
 }

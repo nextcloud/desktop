@@ -22,13 +22,15 @@ namespace OCC {
 Share::Share(AccountPtr account, 
              const QString& id, 
              const QString& path, 
-             ShareType shareType,
-             Permissions permissions)
+             const ShareType shareType,
+             const Permissions permissions,
+             const QString shareWith)
 : _account(account),
   _id(id),
   _path(path),
   _shareType(shareType),
-  _permissions(permissions)
+  _permissions(permissions),
+  _shareWith(shareWith)
 {
 
 }
@@ -41,6 +43,20 @@ QString Share::getId() const
 Share::ShareType Share::getShareType() const
 {
     return _shareType;
+}
+
+void Share::setPermissions(Permissions permissions)
+{
+    OcsShareJob *job = new OcsShareJob(_account, this);
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPermissionsSet(QVariantMap, QVariant)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
+    job->setPermissions(getId(), permissions);
+}
+
+void Share::slotPermissionsSet(const QVariantMap &, const QVariant &value)
+{
+    _permissions = (Permissions)value.toInt();
+    emit permissionsSet();
 }
 
 Share::Permissions Share::getPermissions() const
@@ -112,7 +128,6 @@ void LinkShare::setPublicUpload(bool publicUpload)
 
 void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
 {
-    //TODO FIX permission with names
     if (value.toBool()) {
         _permissions = PermissionRead | PermissionUpdate | PermissionCreate;
     } else {
@@ -163,7 +178,7 @@ void ShareManager::createLinkShare(const QString &path,
     OcsShareJob *job = new OcsShareJob(_account, this);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotLinkShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
-    job->createShare(path, Share::TypeLink, password);
+    job->createLinkShare(path, password);
 }
 
 void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
@@ -185,6 +200,26 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
     QSharedPointer<LinkShare> share(parseLinkShare(data));
 
     emit linkShareCreated(share);
+}
+
+void ShareManager::createShare(const QString& path,
+                               const Share::ShareType shareType,
+                               const QString shareWith,
+                               const Share::Permissions permissions)
+{
+    OcsShareJob *job = new OcsShareJob(_account, this);
+    connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotShareCreated(QVariantMap)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
+    job->createShare(path, shareType, shareWith, permissions);
+}
+
+void ShareManager::slotShareCreated(const QVariantMap &reply)
+{
+    //Parse share
+    auto data = reply.value("ocs").toMap().value("data").toMap();
+    QSharedPointer<Share> share(parseShare(data));
+
+    emit shareCreated(share);
 }
 
 void ShareManager::fetchShares(const QString &path)
@@ -213,11 +248,7 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
         } else {
-            newShare = QSharedPointer<Share>(new Share(_account,
-                                                       data.value("id").toString(),
-                                                       data.value("path").toString(),
-                                                       (Share::ShareType)shareType,
-                                                       (Share::Permissions)data.value("permissions").toInt()));
+            newShare = parseShare(data);
         }
 
         shares.append(QSharedPointer<Share>(newShare));    
@@ -255,6 +286,16 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
                                                    data.value("share_with").isValid(),
                                                    url,
                                                    expireDate));
+}
+
+QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data) {
+
+    return QSharedPointer<Share>(new Share(_account,
+                                           data.value("id").toString(),
+                                           data.value("path").toString(),
+                                           (Share::ShareType)data.value("share_type").toInt(),
+                                           (Share::Permissions)data.value("permissions").toInt(),
+                                           data.value("share_with").toString()));
 }
 
 void ShareManager::slotOcsError(int statusCode, const QString &message)

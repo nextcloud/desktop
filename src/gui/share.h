@@ -59,8 +59,9 @@ public:
     explicit Share(AccountPtr account,
                    const QString& id,
                    const QString& path,
-                   ShareType shareType,
-                   Permissions permissions);
+                   const ShareType shareType,
+                   const Permissions permissions,
+                   const QString shareWith = "");
 
     /*
      * Get the id
@@ -73,6 +74,11 @@ public:
     ShareType getShareType() const;
 
     /*
+     * Get the shareWith
+     */
+    QString getShareWith() const;
+
+    /*
      * Get permissions
      */
     Permissions getPermissions() const;
@@ -83,7 +89,7 @@ public:
      * On success the permissionsSet signal is emitted
      * In case of a server error the serverError signal is emitted.
      */
-    void setPermissions(int permissions);
+    void setPermissions(Permissions permissions);
 
     /**
      * Deletes a share
@@ -104,12 +110,14 @@ protected:
     QString _path;
     ShareType _shareType;
     Permissions _permissions;
+    QString _shareWith;
 
 protected slots:
     void slotOcsError(int statusCode, const QString &message);
 
 private slots:
     void slotDeleted();
+    void slotPermissionsSet(const QVariantMap &, const QVariant &value);
 
 };
 
@@ -125,7 +133,7 @@ public:
     explicit LinkShare(AccountPtr account,
                        const QString& id,
                        const QString& path,
-                       Permissions permissions,
+                       const Permissions permissions,
                        bool passwordSet,
                        const QUrl& url,
                        const QDate& expireDate);
@@ -216,6 +224,21 @@ public:
                          const QString& password="");
 
     /**
+     * Tell the manager to create a new share
+     *
+     * @param path The path of the share relative to the user folder on the server
+     * @param shareType The type of share (TypeUser, TypeGroup, TypeRemote)
+     * @param Permissions The share permissions
+     *
+     * On success the signal shareCreated is emitted
+     * In case of a server error the serverError signal is emitted
+     */
+    void createShare(const QString& path,
+                     const Share::ShareType shareType,
+                     const QString shareWith,
+                     const Share::Permissions permissions);
+
+    /**
      * Fetch all the shares for path
      *
      * @param path The path to get the shares for relative to the users folder on the server
@@ -226,6 +249,7 @@ public:
     void fetchShares(const QString& path);
 
 signals:
+    void shareCreated(const QSharedPointer<Share> &share);
     void linkShareCreated(const QSharedPointer<LinkShare> &share);
     void linkShareRequiresPassword();
     void sharesFetched(const QList<QSharedPointer<Share>> &shares);
@@ -234,10 +258,12 @@ signals:
 private slots:
     void slotSharesFetched(const QVariantMap &reply);
     void slotLinkShareCreated(const QVariantMap &reply);
+    void slotShareCreated(const QVariantMap &reply);
     void slotOcsError(int statusCode, const QString &message);
 
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QVariantMap &data);
+    QSharedPointer<Share> parseShare(const QVariantMap &data);
 
     AccountPtr _account;
 };

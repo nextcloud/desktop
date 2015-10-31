@@ -74,14 +74,34 @@ public:
     void setPublicUpload(const QString &shareId, bool publicUpload);
 
     /**
+     * Set the permissions
+     *
+     * @param permissions
+     */
+    void setPermissions(const QString &shareId, 
+                        const Share::Permissions permissions);
+
+    /**
+     * Create a new link share
+     *
+     * @param path The path of the file/folder to share
+     * @param password Optionally a password for the share
+     */
+    void createLinkShare(const QString& path, 
+                         const QString& password = "");
+
+    /**
      * Create a new share
      *
      * @param path The path of the file/folder to share
      * @param shareType The type of share (user/group/link/federated)
-     * @param password Optionally a password for the share
-     * @param date Optionally an expire date for the share
+     * @param shareWith The uid/gid/federated id to share with
+     * @param permissions The permissions the share will have
      */
-    void createShare(const QString& path, Share::ShareType shareType, const QString& password = "", const QDate& date = QDate());
+    void createShare(const QString& path, 
+                     const Share::ShareType shareType,
+                     const QString& shareWith = "",
+                     const Share::Permissions permissions = Share::PermissionRead);
 
 signals:
     /**
