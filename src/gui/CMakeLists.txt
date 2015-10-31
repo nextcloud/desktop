@@ -23,6 +23,8 @@ set(client_UI
     protocolwidget.ui
     settingsdialog.ui
     sharedialog.ui
+    shareusergroupdialog.ui
+    sharedialogshare.ui
     sslerrordialog.ui
     owncloudsetuppage.ui
     addcertificatedialog.ui
@@ -60,6 +62,7 @@ set(client_SRCS
     settingsdialog.cpp
     share.cpp
     sharedialog.cpp
+    shareusergroupdialog.cpp
     socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp

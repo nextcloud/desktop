@@ -55,6 +55,7 @@ public slots:
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
+    void shareUserGroupCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotNewConnection();
@@ -74,6 +75,7 @@ private:
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevice* socket);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket);
     Q_INVOKABLE void command_SHARE(const QString& localFile, QIODevice* socket);
+    Q_INVOKABLE void command_SHARE_USER_GROUP(const QString& localFile, QIODevice* socket);
 
     Q_INVOKABLE void command_VERSION(const QString& argument, QIODevice* socket);
 

@@ -174,6 +174,8 @@ Application::Application(int &argc, char **argv) :
 
     connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString, bool)),
             _gui, SLOT(slotShowShareDialog(QString, QString, bool)));
+    connect(FolderMan::instance()->socketApi(), SIGNAL(shareUserGroupCommandReceived(QString, QString, bool)),
+            _gui, SLOT(slotShowShareUserGroupDialog(QString, QString, bool)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
