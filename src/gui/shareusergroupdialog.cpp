@@ -25,12 +25,14 @@
 
 #include "thumbnailjob.h"
 #include "share.h"
+#include "sharee.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QFileIconProvider>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QCompleter>
 
 namespace OCC {
 
@@ -50,8 +52,14 @@ ShareUserGroupDialog::ShareUserGroupDialog(AccountPtr account, const QString &sh
     //Is this a file or folder?
     _isFile = QFileInfo(localPath).isFile();
 
+    _ui->searchPushButton->setEnabled(false);
+    _ui->shareeView->hide();
+    _ui->searchMorePushButton->hide();
+    _ui->sharePushButton->hide();
+
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
+    connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
 }
 
 void ShareUserGroupDialog::done( int r ) {
@@ -63,6 +71,54 @@ void ShareUserGroupDialog::done( int r ) {
 ShareUserGroupDialog::~ShareUserGroupDialog()
 {
     delete _ui;
+}
+
+void ShareUserGroupDialog::on_shareeLineEdit_textEdited(const QString &text)
+{
+    if (text == "") {
+        _ui->searchPushButton->setEnabled(false);
+    } else {
+        _ui->searchPushButton->setEnabled(true);
+    }
+}
+
+void ShareUserGroupDialog::on_searchPushButton_clicked()
+{
+    ShareeModel *model = new ShareeModel(_account,
+                                         _ui->shareeLineEdit->text(),
+                                         _isFile ? QLatin1String("file") : QLatin1String("folder"),
+                                         _ui->shareeView);
+    _ui->shareeView->setModel(model);
+
+    _ui->shareeView->show();
+    _ui->searchMorePushButton->show();
+    _ui->sharePushButton->show();
+    _ui->sharePushButton->setEnabled(false);
+}
+
+void ShareUserGroupDialog::on_searchMorePushButton_clicked()
+{
+    //TODO IMPLEMENT
+}
+
+void ShareUserGroupDialog::on_shareeView_activated()
+{
+    _ui->sharePushButton->setEnabled(true);
+}
+
+void ShareUserGroupDialog::on_sharePushButton_clicked()
+{
+    const QModelIndex index = _ui->shareeView->currentIndex();
+
+    auto model = _ui->shareeView->model();
+
+    const QModelIndex shareWithIndex = model->index(index.row(), 2);
+    const QModelIndex typeIndex = model->index(index.row(), 1);
+
+    QString shareWith = model->data(shareWithIndex, Qt::DisplayRole).toString();
+    int type = model->data(typeIndex, Qt::DisplayRole).toInt();
+
+    _manager->createShare(_sharePath, (Share::ShareType)type, shareWith, Share::PermissionRead);
 }
 
 void ShareUserGroupDialog::getShares()

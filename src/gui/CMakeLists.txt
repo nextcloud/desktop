@@ -54,6 +54,7 @@ set(client_SRCS
     networksettings.cpp
     ocsjob.cpp
     ocssharejob.cpp
+    ocsshareejob.cpp
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
@@ -63,6 +64,7 @@ set(client_SRCS
     share.cpp
     sharedialog.cpp
     shareusergroupdialog.cpp
+    sharee.cpp
     socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp

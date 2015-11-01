@@ -74,11 +74,20 @@ public:
                                   bool resharingAllowed,
                                   QWidget *parent = 0);
     ~ShareUserGroupDialog();
+
+public slots:
     void getShares();
 
 private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
     void done( int r );
+
+
+    void on_shareeLineEdit_textEdited(const QString &text);
+    void on_searchPushButton_clicked();
+    void on_searchMorePushButton_clicked();
+    void on_sharePushButton_clicked();
+    void on_shareeView_activated();
 
 private:
     Ui::ShareUserGroupDialog *_ui;
