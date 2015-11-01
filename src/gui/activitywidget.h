@@ -21,12 +21,15 @@
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
+#include "account.h"
 
 #include "ui_activitywidget.h"
 
 class QPushButton;
 
 namespace OCC {
+
+class Account;
 
 namespace Ui {
   class ActivityWidget;
@@ -38,6 +41,28 @@ class Application;
  * @ingroup gui
  */
 
+class Activity
+{
+public:
+    qlonglong _id;
+    QString   _subject;
+    QString   _message;
+    QString   _file;
+    QUrl      _link;
+    QDateTime _dateTime;
+};
+
+class ActivityList:public QList<Activity>
+{
+    // explicit ActivityList();
+public:
+    void setAccountName( const QString& name );
+    QString accountName() const;
+
+private:
+    QString _accountName;
+};
+
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -47,6 +72,10 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
+    void addActivities( const ActivityList& activities );
+private:
+
+    QMap<QString, ActivityList> _activityLists;
 };
 
 /**
@@ -62,10 +91,15 @@ public:
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
+    void slotAddAccount( AccountStatePtr s );
     void slotOpenFile();
 
 protected slots:
     void copyToClipboard();
+    void slotRefresh();
+
+private slots:
+    void slotActivitiesReceived(const QVariantMap& json);
 
 protected:
 
@@ -76,6 +110,9 @@ private:
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
     QPushButton *_copyBtn;
+    QTimer _timer;
+
+    ActivityListModel *_model;
 };
 
 }

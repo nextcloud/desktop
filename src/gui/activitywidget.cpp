@@ -27,12 +27,27 @@
 #include "folder.h"
 #include "openfilemanager.h"
 #include "owncloudpropagator.h"
+#include "account.h"
+#include "accountstate.h"
+#include "accountmanager.h"
 
 #include "ui_activitywidget.h"
 
 #include <climits>
 
 namespace OCC {
+
+void ActivityList::setAccountName( const QString& name )
+{
+    _accountName = name;
+}
+
+QString ActivityList::accountName() const
+{
+    return _accountName;
+}
+
+// ========================================================================
 
 ActivityListModel::ActivityListModel(QWidget *parent)
     :QAbstractListModel(parent)
@@ -62,7 +77,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
 int ActivityListModel::rowCount(const QModelIndex&) const
 {
-    return 4;
+    int cnt = 0;
+    foreach(ActivityList al, _activityLists) {
+        cnt += al.count();
+    }
+    return cnt;
+}
+
+void ActivityListModel::addActivities( const ActivityList& activities )
+{
+    bool found = false;
+
+    // build up a time list here.
+
 }
 
 /* ==================================================================== */
@@ -78,15 +105,60 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _ui->_activityList->setMinimumWidth(400);
 #endif
 
-    _ui->_activityList->setModel(new ActivityListModel(this));
-
-    connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
+    _model = new ActivityListModel(this);
+    _ui->_activityList->setModel(_model);
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(false);
     connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
+
+    connect( &_timer, SIGNAL(timeout()), this, SLOT(slotRefresh()));
+
+    _timer.start(10000);
 }
+
+void ActivityWidget::slotRefresh()
+{
+    foreach (auto ai , AccountManager::instance()->accounts()) {
+        if( ai->isConnected() ) {
+            slotAddAccount(ai);
+        }
+    }
+}
+
+void ActivityWidget::slotAddAccount( AccountStatePtr s )
+{
+    if( s && s->state() == AccountState::Connected ) {
+        // start a new fetch job for this account
+
+        JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
+        QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
+        job->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(s));
+        job->start();
+
+    }
+}
+
+void ActivityWidget::slotActivitiesReceived(const QVariantMap& json)
+{
+    auto activities = json.value("ocs").toMap().value("data").toList();
+    qDebug() << "*** activities" << activities;
+
+    ActivityList list;
+    AccountStatePtr ai = qvariant_cast<AccountStatePtr>(sender()->property("AccountStatePtr"));
+
+    list.setAccountName( ai->account()->displayName());
+    foreach( auto activ, activities ) {
+        Activity a;
+        a._id = activ.toMap().value("id").toLongLong();
+        a._subject = activ.toMap().value("subject").toString();
+        list.append(a);
+    }
+
+   _model->addActivities(list);
+}
+
 
 ActivityWidget::~ActivityWidget()
 {
