@@ -85,8 +85,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     // FIXME: Put this QTabWidget into its own class to be used here.
     QTabWidget *tabs = new QTabWidget(this);
     tabs->addTab(new ProtocolWidget, tr("Sync Protocol"));
-    ActivityWidget *activityWidget = new ActivityWidget;
-    tabs->addTab(activityWidget, tr("Server Activity"));
+    _activityWidget = new ActivityWidget;
+    tabs->addTab(_activityWidget, tr("Server Activity"));
     _ui->stack->addWidget(tabs);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
@@ -213,6 +213,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
+
+
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
