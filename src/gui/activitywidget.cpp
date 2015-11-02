@@ -92,8 +92,10 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 
     QMap<AccountStatePtr, ActivityList>::const_iterator i = _activityLists.begin();
     while (i != _activityLists.end()) {
-        if( i.value().count() == 0 &&
-                ! _currentlyFetching.contains(i.key())) {
+        AccountStatePtr ast = i.key();
+        ActivityList activities = i.value();
+        if( ast->isConnected() && activities.count() == 0 &&
+                ! _currentlyFetching.contains(ast) ) {
             return true;
         }
         ++i;
