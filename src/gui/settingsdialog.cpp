@@ -83,11 +83,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     addActionToToolBar(_activityAction);
 
     // FIXME: Put this QTabWidget into its own class to be used here.
-    QTabWidget *tabs = new QTabWidget(this);
-    tabs->addTab(new ProtocolWidget, tr("Sync Protocol"));
     _activityWidget = new ActivityWidget;
-    tabs->addTab(_activityWidget, tr("Server Activity"));
-    _ui->stack->addWidget(tabs);
+    _activityWidget->setParent(this);
+    _ui->stack->addWidget(_activityWidget);
+    _activityWidget->tabWidget()->addTab(new ProtocolWidget(this), tr("Sync Protocol"));
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -101,7 +100,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_activityAction, tabs);
+    _actionGroupWidgets.insert(_activityAction, _activityWidget);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
