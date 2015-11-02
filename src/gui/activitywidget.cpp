@@ -145,6 +145,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
     _activityLists[ai] = list;
 
     // if all activity lists were received, assemble the whole list
+    // otherwise wait until the others are finished
     bool allAreHere = true;
     foreach( ActivityList list, _activityLists.values() ) {
         if( list.count() == 0 ) {
@@ -152,6 +153,8 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
             break;
         }
     }
+
+    // FIXME: Be more efficient,
     if( allAreHere ) {
         combineActivityLists();
     }
@@ -188,6 +191,14 @@ void ActivityListModel::fetchMore(const QModelIndex &)
             startFetchJob(asp);
         }
     }
+}
+
+void ActivityListModel::slotRefreshActivity(AccountStatePtr ast)
+{
+    if(ast && _activityLists.contains(ast)) {
+        _activityLists[ast].clear();
+    }
+    startFetchJob(ast);
 }
 
 /* ==================================================================== */

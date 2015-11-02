@@ -88,6 +88,9 @@ public:
     bool canFetchMore(const QModelIndex& ) const;
     void fetchMore(const QModelIndex&);
 
+public slots:
+    void slotRefreshActivity(AccountStatePtr ast);
+
 private slots:
     void slotActivitiesReceived(const QVariantMap& json);
 
