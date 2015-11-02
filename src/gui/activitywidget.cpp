@@ -52,11 +52,12 @@ QString ActivityList::accountName() const
 ActivityListModel::ActivityListModel(QWidget *parent)
     :QAbstractListModel(parent)
 {
-
 }
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
+    Activity a;
+
     if (!index.isValid())
         return QVariant();
 
@@ -65,10 +66,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::ToolTipRole:
+        return QVariant();
     case Qt::DisplayRole:
-        return tr("%1 (%2)").arg("IM an item");
+        a = _finalList.at(index.row());
+        return tr("Account %1 at %2: %3").arg(a._accName).arg(a._dateTime.toString(Qt::SystemLocaleShortDate)).arg(a._subject);
+        break;
     case Qt::DecorationRole:
-        return QFileIconProvider().icon(QFileIconProvider::Folder);
+        // return QFileIconProvider().icon(QFileIconProvider::Folder);
+        return QVariant();
         break;
     }
     return QVariant();
@@ -77,19 +82,106 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
 int ActivityListModel::rowCount(const QModelIndex&) const
 {
-    int cnt = 0;
-    foreach(ActivityList al, _activityLists) {
-        cnt += al.count();
-    }
-    return cnt;
+    return _finalList.count();
 }
 
-void ActivityListModel::addActivities( const ActivityList& activities )
+// current strategy: Fetch 100 items per Account
+bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 {
-    bool found = false;
+    if( _activityLists.count() == 0 ) return true;
 
-    // build up a time list here.
+    QMap<AccountStatePtr, ActivityList>::const_iterator i = _activityLists.begin();
+    while (i != _activityLists.end()) {
+        if( i.value().count() == 0 &&
+                ! _currentlyFetching.contains(i.key())) {
+            return true;
+        }
+        ++i;
+    }
 
+    return false;
+}
+
+void ActivityListModel::startFetchJob(AccountStatePtr s)
+{
+    JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
+    QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
+    job->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(s));
+    _currentlyFetching.insert(s);
+    job->start();
+
+
+}
+
+void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
+{
+    auto activities = json.value("ocs").toMap().value("data").toList();
+    qDebug() << "*** activities" << activities;
+
+    ActivityList list;
+    AccountStatePtr ai = qvariant_cast<AccountStatePtr>(sender()->property("AccountStatePtr"));
+    _currentlyFetching.remove(ai);
+    list.setAccountName( ai->account()->displayName());
+    foreach( auto activ, activities ) {
+        auto json = activ.toMap();
+
+        Activity a;
+        a._accName  = ai->account()->displayName();
+        a._id       = json.value("id").toLongLong();
+        a._subject  = json.value("subject").toString();
+        a._message  = json.value("message").toString();
+        a._file     = json.value("file").toString();
+        a._link     = json.value("link").toUrl();
+        a._dateTime = json.value("date").toDateTime();
+        list.append(a);
+    }
+
+    _activityLists[ai] = list;
+
+    // if all activity lists were received, assemble the whole list
+    bool allAreHere = true;
+    foreach( ActivityList list, _activityLists.values() ) {
+        if( list.count() == 0 ) {
+            allAreHere = false;
+            break;
+        }
+    }
+    if( allAreHere ) {
+        combineActivityLists();
+    }
+}
+
+
+void ActivityListModel::combineActivityLists()
+{
+    ActivityList resultList;
+
+    foreach( ActivityList list, _activityLists.values() ) {
+        resultList.append(list);
+    }
+
+    std::sort( resultList.begin(), resultList.end() );
+
+    beginInsertRows(QModelIndex(), 0, resultList.count()-1);
+    _finalList = resultList;
+    endInsertRows();
+}
+
+void ActivityListModel::fetchMore(const QModelIndex &)
+{
+    QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
+
+    foreach (AccountStatePtr asp, accounts) {
+
+        // if the account is not yet managed, add an empty list.
+        if( !_activityLists.contains(asp) ) {
+            _activityLists[asp] = ActivityList();
+        }
+        ActivityList activities = _activityLists[asp];
+        if( activities.count() == 0 ) {
+            startFetchJob(asp);
+        }
+    }
 }
 
 /* ==================================================================== */
@@ -112,53 +204,7 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(false);
     connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
-
-    connect( &_timer, SIGNAL(timeout()), this, SLOT(slotRefresh()));
-
-    _timer.start(10000);
 }
-
-void ActivityWidget::slotRefresh()
-{
-    foreach (auto ai , AccountManager::instance()->accounts()) {
-        if( ai->isConnected() ) {
-            slotAddAccount(ai);
-        }
-    }
-}
-
-void ActivityWidget::slotAddAccount( AccountStatePtr s )
-{
-    if( s && s->state() == AccountState::Connected ) {
-        // start a new fetch job for this account
-
-        JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-        QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
-        job->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(s));
-        job->start();
-
-    }
-}
-
-void ActivityWidget::slotActivitiesReceived(const QVariantMap& json)
-{
-    auto activities = json.value("ocs").toMap().value("data").toList();
-    qDebug() << "*** activities" << activities;
-
-    ActivityList list;
-    AccountStatePtr ai = qvariant_cast<AccountStatePtr>(sender()->property("AccountStatePtr"));
-
-    list.setAccountName( ai->account()->displayName());
-    foreach( auto activ, activities ) {
-        Activity a;
-        a._id = activ.toMap().value("id").toLongLong();
-        a._subject = activ.toMap().value("subject").toString();
-        list.append(a);
-    }
-
-   _model->addActivities(list);
-}
-
 
 ActivityWidget::~ActivityWidget()
 {

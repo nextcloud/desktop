@@ -50,6 +50,17 @@ public:
     QString   _file;
     QUrl      _link;
     QDateTime _dateTime;
+    QString   _accName;
+
+    /**
+     * @brief Sort operator to sort the list youngest first.
+     * @param val
+     * @return
+     */
+    bool operator<( const Activity& val ) const {
+        return _dateTime.toMSecsSinceEpoch() > val._dateTime.toMSecsSinceEpoch();
+    }
+
 };
 
 class ActivityList:public QList<Activity>
@@ -63,6 +74,8 @@ private:
     QString _accountName;
 };
 
+
+
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -72,10 +85,19 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
-    void addActivities( const ActivityList& activities );
-private:
+    bool canFetchMore(const QModelIndex& ) const;
+    void fetchMore(const QModelIndex&);
 
-    QMap<QString, ActivityList> _activityLists;
+private slots:
+    void slotActivitiesReceived(const QVariantMap& json);
+
+private:
+    void startFetchJob(AccountStatePtr s);
+    void combineActivityLists();
+
+    QMap<AccountStatePtr, ActivityList> _activityLists;
+    ActivityList _finalList;
+    QSet<AccountStatePtr> _currentlyFetching;
 };
 
 /**
@@ -90,16 +112,14 @@ public:
     ~ActivityWidget();
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
+    // FIXME: Move the tab widget to its own widget that is used in settingsdialog.
+    QTabWidget *tabWidget() { return _ui->_tabWidget; }
+
 public slots:
-    void slotAddAccount( AccountStatePtr s );
     void slotOpenFile();
 
 protected slots:
     void copyToClipboard();
-    void slotRefresh();
-
-private slots:
-    void slotActivitiesReceived(const QVariantMap& json);
 
 protected:
 
@@ -110,7 +130,6 @@ private:
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
     QPushButton *_copyBtn;
-    QTimer _timer;
 
     ActivityListModel *_model;
 };
