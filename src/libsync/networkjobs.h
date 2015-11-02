@@ -209,12 +209,26 @@ class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+
+    /**
+     * @brief addQueryParams - add more parameters to the ocs call
+     * @param params: list pairs of strings containing the parameter name and the value.
+     *
+     * All parameters from the passed list are appended to the query. Note
+     * that the format=json parameter is added automatically and does not
+     * need to be set this way.
+     *
+     * This function needs to be called before start() obviously.
+     */
+    void addQueryParams(QList< QPair<QString,QString> > params);
 public slots:
     void start() Q_DECL_OVERRIDE;
 protected:
     bool finished() Q_DECL_OVERRIDE;
 signals:
     void jsonRecieved(const QVariantMap &json);
+private:
+    QList< QPair<QString,QString> > _additionalParams;
 };
 
 } // namespace OCC
