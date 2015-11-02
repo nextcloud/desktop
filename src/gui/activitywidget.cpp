@@ -109,10 +109,14 @@ void ActivityListModel::startFetchJob(AccountStatePtr s)
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
     QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(s));
+
+    QList< QPair<QString,QString> > params;
+    params.append(qMakePair(QLatin1String("page"), QLatin1String("0")));
+    params.append(qMakePair(QLatin1String("pagesize"), QLatin1String("100")));
+    job->addQueryParams(params);
+
     _currentlyFetching.insert(s);
     job->start();
-
-
 }
 
 void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
