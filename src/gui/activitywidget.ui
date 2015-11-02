@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="1">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="_tabWidget">
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
@@ -27,7 +27,7 @@
      </property>
      <widget class="QWidget" name="protocolTab">
       <attribute name="title">
-       <string>Sync Protocol</string>
+       <string>Server Activity</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
@@ -41,26 +41,6 @@
         </widget>
        </item>
       </layout>
-     </widget>
-     <widget class="QWidget" name="serverActivityTab">
-      <attribute name="title">
-       <string>Server Activity</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="ignoresTab">
-      <attribute name="title">
-       <string>Ignored Files</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="issuesTab">
-      <attribute name="title">
-       <string>Issues</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Blacklist</string>
-      </attribute>
      </widget>
     </widget>
    </item>
