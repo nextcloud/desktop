@@ -56,8 +56,10 @@ struct CmdOptions {
     bool useNetrc;
     bool interactive;
     bool ignoreHiddenFiles;
+    bool nonShib;
     QString exclude;
     QString unsyncedfolders;
+    QString davPath;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -155,6 +157,8 @@ void help()
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --nonshib, -ns         Use Non Shibboleth WebDAV authentication" << std::endl;
+    std::cout << "  --davpath, -dp [path]  Custom themed dav path, overrides --nonshib" << std::endl;
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
@@ -222,6 +226,10 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
                 options->exclude = it.next();
         } else if( option == "--unsyncedfolders" && !it.peekNext().startsWith("-") ) {
             options->unsyncedfolders = it.next();
+        } else if( option == "--nonshib" || option == "-ns") {
+            options->nonShib = true;
+        } else if( (option == "--davpath" || option == "-dp") && !it.peekNext().startsWith("-") ) {
+            options->davPath = it.next();
         } else {
             help();
         }
@@ -268,6 +276,7 @@ int main(int argc, char **argv) {
     options.useNetrc = false;
     options.interactive = true;
     options.ignoreHiddenFiles = true;
+    options.nonShib = false;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
@@ -282,6 +291,15 @@ int main(int argc, char **argv) {
     if(!options.target_url.endsWith("/")) {
         options.target_url.append("/");
     }
+   
+    if( options.nonShib ) {
+        account->setNonShib(true);
+    }
+
+    if(!options.davPath.isEmpty()) {
+        account->setDavPath( options.davPath );
+    }
+ 
     if( !options.target_url.contains( account->davPath() )) {
         options.target_url.append(account->davPath());
     }
