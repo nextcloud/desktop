@@ -64,7 +64,8 @@ public:
     };
 
     SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
-         _serverHasIgnoredFiles(false), _hasBlacklistEntry(false), _status(NoStatus),
+         _serverHasIgnoredFiles(false), _hasBlacklistEntry(false),
+         _errorMayBeBlacklisted(false), _status(NoStatus),
         _isRestoration(false), _should_update_metadata(false),
         _httpErrorCode(0), _requestDuration(0), _affectedItems(1),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
@@ -137,6 +138,13 @@ public:
     /// without the status being FileIgnored.
     bool                 _hasBlacklistEntry BITFIELD(1);
 
+    /** If true and NormalError, this error may be blacklisted
+     *
+     * Note that non-local errors (httpErrorCode!=0) may also be
+     * blacklisted independently of this flag.
+     */
+    bool                 _errorMayBeBlacklisted BITFIELD(1);
+
     // Variables useful to report to the user
     Status               _status BITFIELD(4);
     bool                 _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
@@ -157,7 +165,8 @@ public:
     quint64              _inode;
     QByteArray           _fileId;
     QByteArray           _remotePerm;
-    QByteArray           _checksum;
+    QByteArray           _transmissionChecksum;
+    QByteArray           _transmissionChecksumType;
     QString              _directDownloadUrl;
     QString              _directDownloadCookies;
 

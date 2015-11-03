@@ -35,7 +35,9 @@ SyncJournalFileRecord::SyncJournalFileRecord()
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
       _type(item._type), _etag(item._etag), _fileId(item._fileId), _fileSize(item._size),
-      _remotePerm(item._remotePerm), _mode(0), _serverHasIgnoredFiles(item._serverHasIgnoredFiles)
+      _remotePerm(item._remotePerm), _mode(0), _serverHasIgnoredFiles(item._serverHasIgnoredFiles),
+      _transmissionChecksum(item._transmissionChecksum),
+      _transmissionChecksumType(item._transmissionChecksumType)
 {
     // use the "old" inode coming with the item for the case where the
     // filesystem stat fails. That can happen if the the file was removed
@@ -108,12 +110,16 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
         const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item)
 {
     SyncJournalErrorBlacklistRecord entry;
-    if (item._httpErrorCode == 0  // Do not blacklist local errors. (#1985)
+    bool mayBlacklist =
+            item._errorMayBeBlacklisted  // explicitly flagged for blacklisting
+            || (item._httpErrorCode != 0 // or non-local error
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
-        || item._httpErrorCode / 100 == 5 // In this configuration, never blacklist error 5xx
+                && item._httpErrorCode / 100 != 5 // In this configuration, never blacklist error 5xx
 #endif
-            ) {
-        qDebug() << "This error is not blacklisted " << item._httpErrorCode;
+               );
+
+    if (!mayBlacklist) {
+        qDebug() << "This error is not blacklisted " << item._httpErrorCode << item._errorMayBeBlacklisted;
         return entry;
     }
 
@@ -126,7 +132,7 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     entry._lastTryEtag = item._etag;
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
-    entry._ignoreDuration = qMin(qMax(minBlacklistTime, old._ignoreDuration * 5), maxBlacklistTime);
+    entry._ignoreDuration = qBound(minBlacklistTime, old._ignoreDuration * 5, maxBlacklistTime);
     entry._file = item._file;
 
     if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
@@ -150,9 +156,12 @@ bool operator==(const SyncJournalFileRecord & lhs,
             && lhs._type == rhs._type
             && lhs._etag == rhs._etag
             && lhs._fileId == rhs._fileId
+            && lhs._fileSize == rhs._fileSize
             && lhs._remotePerm == rhs._remotePerm
             && lhs._mode == rhs._mode
-            && lhs._fileSize == rhs._fileSize;
+            && lhs._serverHasIgnoredFiles == rhs._serverHasIgnoredFiles
+            && lhs._transmissionChecksum == rhs._transmissionChecksum
+            && lhs._transmissionChecksumType == rhs._transmissionChecksumType;
 }
 
 }

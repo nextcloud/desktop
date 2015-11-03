@@ -22,6 +22,7 @@
 
 #include <QFileIconProvider>
 #include <QVarLengthArray>
+#include <set>
 
 Q_DECLARE_METATYPE(QPersistentModelIndex)
 
@@ -546,10 +547,16 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         selectiveSyncBlackList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
     }
     auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
-
     QVarLengthArray<int, 10> undecidedIndexes;
-
     QVector<SubFolderInfo> newSubs;
+
+    std::set<QString> selectiveSyncUndecidedSet; // not QSet because it's not sorted
+    foreach (const QString &str, selectiveSyncUndecidedList) {
+        if (str.startsWith(parentInfo->_path) || parentInfo->_path == QLatin1String("/")) {
+            selectiveSyncUndecidedSet.insert(str);
+        }
+    }
+
     newSubs.reserve(list.size() - 1);
     for (int i = 1;  // skip the parent item (first in the list)
             i < list.size(); ++i) {
@@ -586,11 +593,19 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
             }
         }
 
-        foreach(const QString &str , selectiveSyncUndecidedList) {
-            if (str == relativePath) {
+        auto it = selectiveSyncUndecidedSet.lower_bound(relativePath);
+        if (it != selectiveSyncUndecidedSet.end()) {
+            if (*it == relativePath) {
                 newInfo._isUndecided = true;
-            } else if (str.startsWith(relativePath)) {
+                selectiveSyncUndecidedSet.erase(it);
+            } else if ((*it).startsWith(relativePath)) {
                 undecidedIndexes.append(newInfo._pathIdx.last());
+
+                // Remove all the items from the selectiveSyncUndecidedSet that starts with this path
+                QString relativePathNext = relativePath;
+                relativePathNext[relativePathNext.length()-1].unicode()++;
+                auto it2 = selectiveSyncUndecidedSet.lower_bound(relativePathNext);
+                selectiveSyncUndecidedSet.erase(it, it2);
             }
         }
         newSubs.append(newInfo);
@@ -602,6 +617,16 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
         suggestExpand(idx.child(*it, 0));
+    }
+
+    /* Try to remove the the undecided lists the items that are not on the server. */
+    auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
+            [&](const QString &s) { return selectiveSyncUndecidedSet.count(s); } );
+    if (it != selectiveSyncUndecidedList.end()) {
+        selectiveSyncUndecidedList.erase(it, selectiveSyncUndecidedList.end());
+        parentInfo->_folder->journalDb()->setSelectiveSyncList(
+                            SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
+        emit dirtyChanged();
     }
 }
 

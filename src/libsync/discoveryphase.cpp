@@ -207,7 +207,7 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
 
 
 
-DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(AccountPtr account, const QString &path, QObject *parent)
+DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false)
 {
 }
@@ -237,7 +237,7 @@ void DiscoverySingleDirectoryJob::abort()
     }
 }
 
-static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
+static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> &map)
 {
     csync_vio_file_stat_t* file_stat = csync_vio_file_stat_new();
 
@@ -289,7 +289,7 @@ static csync_vio_file_stat_t* propertyMapToFileStat(QMap<QString,QString> map)
     return file_stat;
 }
 
-void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file,QMap<QString,QString> map)
+void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, const QMap<QString,QString> &map)
 {
     //qDebug() << Q_FUNC_INFO << _subPath << file << map.count() << map.keys() << _account->davPath() << _lsColJob->reply()->request().url().path();
     if (!_ignoredFirst) {
@@ -392,7 +392,7 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
-void DiscoveryMainThread::doOpendirSlot(QString subPath, DiscoveryDirectoryResult *r)
+void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirectoryResult *r)
 {
     QString fullPath = _pathPrefix;
     if (!_pathPrefix.endsWith('/')) {
@@ -445,7 +445,7 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPoint
     _discoveryJob->_vioMutex.unlock();
 }
 
-void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, QString msg)
+void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
 {
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
@@ -461,7 +461,7 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
     _discoveryJob->_vioMutex.unlock();
 }
 
-void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(QString p)
+void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &p)
 {
     // Should be thread safe since the sync thread is blocked
     if (!_discoveryJob->_csync_ctx->remote.root_perms) {
@@ -553,29 +553,29 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "Calling into main thread...";
+        qDebug() << discoveryJob << url << "Calling into main thread...";
 
-        DiscoveryDirectoryResult *directoryResult = new DiscoveryDirectoryResult();
+        QScopedPointer<DiscoveryDirectoryResult> directoryResult(new DiscoveryDirectoryResult());
         directoryResult->code = EIO;
 
         discoveryJob->_vioMutex.lock();
         const QString qurl = QString::fromUtf8(url);
-        emit discoveryJob->doOpendirSignal(qurl, directoryResult);
+        emit discoveryJob->doOpendirSignal(qurl, directoryResult.data());
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
 
-        qDebug() << Q_FUNC_INFO << discoveryJob << url << "...Returned from main thread";
+        qDebug() << discoveryJob << url << "...Returned from main thread";
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
-            qDebug() << Q_FUNC_INFO << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
+            qDebug() << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );
             return NULL;
         }
 
-        return (csync_vio_handle_t*) directoryResult;
+        return directoryResult.take();
     }
     return NULL;
 }

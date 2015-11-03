@@ -427,6 +427,7 @@ void Application::showVersion()
     stream << _theme->appName().toLatin1().constData()
            << QLatin1String(" version ")
            << _theme->version().toLatin1().constData() << endl;
+    stream << "Using Qt " << qVersion() << endl;
 
     displayHelpText(helpText);
 }

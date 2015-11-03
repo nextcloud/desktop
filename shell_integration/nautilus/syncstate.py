@@ -2,6 +2,10 @@
 #
 # Copyright (C) by Klaas Freitag <freitag@owncloud.com>
 #
+# This program is the core of OwnCloud integration to Nautilus
+# It will be installed on /usr/share/nautilus-python/extensions/ with the paquet owncloud-client-nautilus
+# (https://github.com/owncloud/client/edit/master/shell_integration/nautilus/syncstate.py)
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -18,7 +22,9 @@ import socket
 
 from gi.repository import GObject, Nautilus
 
-# do not touch the following line.
+print("Initializing owncloud-client-nautilus extension")
+
+# Do not touch the following line.
 appname = 'ownCloud'
 
 def get_local_path(url):
@@ -38,7 +44,6 @@ def get_runtime_dir():
         return fallback
 
 
-
 class SocketConnect(GObject.GObject):
     def __init__(self):
         GObject.GObject.__init__(self)
@@ -48,8 +53,8 @@ class SocketConnect(GObject.GObject):
         self._sock = None
         self._listeners = [self._update_registered_paths]
         self._remainder = ''
-        self.nautilusVFSFile_table = {} # not needed in this object actually but shared 
-                                        # all over the other objects.
+        self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
+                                         # all over the other objects.
 
         # returns true when one should try again!
         if self._connectToSocketServer():
@@ -77,38 +82,38 @@ class SocketConnect(GObject.GObject):
     def _connectToSocketServer(self):
         try:
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            postfix = "/"+appname+"/socket"
-            sock_file = get_runtime_dir()+postfix
+            postfix = "/" + appname + "/socket"  # Should use os.path.join instead
+            sock_file = get_runtime_dir() + postfix
             print ("Socket: " + sock_file + " <=> " + postfix)
             if sock_file != postfix:
                 try:
-                    print("Socket File: "+sock_file)
+                    print("Socket File: " + sock_file)
                     self._sock.connect(sock_file)
                     self.connected = True
-                    print("Setting connected to %r" % self.connected )
+                    print("Setting connected to %r." % self.connected )
                     self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                    print("Socket watch id: "+str(self._watch_id))
-                    return False # don't run again
+                    print("Socket watch id: " + str(self._watch_id))
+                    return False  # Don't run again
                 except Exception as e:
-                    print("Could not connect to unix socket." + str(e))
+                    print("Could not connect to unix socket. " + str(e))
             else:
-                print("Sock-File not valid: "+sock_file)
-        except Exception as e:
-            print("Connect could not be established, try again later ")
+                print("Sock-File not valid: " + sock_file)
+        except Exception as e:  # Bad habbit
+            print("Connect could not be established, try again later.")
             self._sock.close()
 
-        return True # run again, if enabled via timeout_add()
+        return True  # Run again, if enabled via timeout_add()
 
-    # notify is the raw answer from the socket
+    # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
         data = source.recv(1024)
-        # prepend the remaining data from last call
+        # Prepend the remaining data from last call
         if len(self._remainder) > 0:
-            data = self._remainder+data
+            data = self._remainder + data
             self._remainder = ''
 
         if len(data) > 0:
-            # remember the remainder for next round
+            # Remember the remainder for next round
             lastNL = data.rfind('\n');
             if lastNL > -1 and lastNL < len(data):
                 self._remainder = data[lastNL+1:]
@@ -119,10 +124,10 @@ class SocketConnect(GObject.GObject):
         else:
             return False
 
-        return True # run again
+        return True  # Run again
 
     def _handle_server_response(self, line):
-        print("Server response: "+line)
+        print("Server response: " + line)
         parts = line.split(':')
         action = parts[0]
         args = parts[1:]
@@ -151,32 +156,33 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def get_file_items(self, window, files):
         if len(files) != 1:
             return
-        file=files[0]
-        items=[]
+        file = files[0]
+        items = []
 
-        # internal or external file?!
+        # Internal or external file?!
         syncedFile = False
         for reg_path in socketConnect.registered_paths:
-            topLevelFolder=False
+            topLevelFolder = False
             filename = get_local_path(file.get_uri())
-            #check if its a folder (ends with an /), if yes add a "/" otherwise it will not find the entry in the table
-            if os.path.isdir(filename+"/"):
-                filename=filename+"/"
-                #check if toplevel folder, we need to ignore those as they cannot be shared
+            # Check if its a folder (ends with an /), if yes add a "/"
+            # otherwise it will not find the entry in the table
+            if os.path.isdir(filename + "/"):
+                filename += "/"
+                # Check if toplevel folder, we need to ignore those as they cannot be shared
                 if filename.count("/") < (reg_path.count("/")+2):
                     topLevelFolder=True                
-            # only show the menu extension if the file is synced and the sync
+            # Only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
             # ignore top level folders
             if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
                 syncedFile = True
 
-        # if it is neither in a synced folder or is a directory
-        if (not syncedFile):
+        # If it is neither in a synced folder or is a directory
+        if not syncedFile:
             return items
 
-        # create an menu item
-        labelStr = "Share with "+appname+"..."
+        # Create an menu item
+        labelStr = "Share with " + appname + "..."
         item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr,
                 tip='Share file %s through ownCloud' % file.get_name())
         item.connect("activate", self.menu_share, file)
@@ -187,8 +193,8 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
     def menu_share(self, menu, file):
         filename = get_local_path(file.get_uri())
-        print("Share file "+filename)
-        socketConnect.sendCommand("SHARE:"+filename+"\n")
+        print("Share file " + filename)
+        socketConnect.sendCommand("SHARE:" + filename + "\n")
 
 
 class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
@@ -205,7 +211,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             return None
 
     def askForOverlay(self, file):
-        # print("Asking for overlay for "+file)
+        # print("Asking for overlay for "+file)  # For debug only
         if os.path.isdir(file):
             folderStatus = socketConnect.sendCommand("RETRIEVE_FOLDER_STATUS:"+file+"\n");
 
@@ -240,8 +246,8 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                     'NOP'       : appname +'_error'
                   }
 
-        # file = args[0]
-        # print "Action for " + file + ": "+args[0]
+        # file = args[0]  # For debug only
+        # print("Action for " + file + ": " + args[0])  # For debug only
         if action == 'STATUS':
             newState = args[0]
             emblem = Emblems[newState]
@@ -253,7 +259,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
                         item.add_emblem(emblem)
-                        # print "Setting emblem on " + args[1]+ "<>"+emblem+"<>"
+                        # print("Setting emblem on " + args[1] + "<>" + emblem + "<>")  # For debug only
                         socketConnect.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
 
         elif action == 'UPDATE_VIEW':
@@ -278,9 +284,9 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             if filename.startswith(reg_path):
                 socketConnect.nautilusVFSFile_table[filename] = {'item': item, 'state':''}
 
-                # item.add_string_attribute('share_state', "share state")
+                # item.add_string_attribute('share_state', "share state")  # ?
                 self.askForOverlay(filename)
                 break
             else:
-                # print("Not in scope:"+filename)
+                # print("Not in scope:" + filename)  # For debug only
                 pass

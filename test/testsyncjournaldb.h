@@ -60,14 +60,61 @@ private slots:
         record._remotePerm = "744";
         record._mode = -17;
         record._fileSize = 213089055;
+        record._transmissionChecksum = "mychecksum";
+        record._transmissionChecksumType = "MD5";
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
+        // Update checksum
+        record._transmissionChecksum = "newchecksum";
+        record._transmissionChecksumType = "Adler32";
+        _db.updateFileRecordChecksum("foo", record._transmissionChecksum, record._transmissionChecksumType);
+        storedRecord = _db.getFileRecord("foo");
+        QVERIFY(storedRecord == record);
+
+        // Update metadata
+        record._inode = 12345;
+        record._modtime = dropMsecs(QDateTime::currentDateTime().addDays(1));
+        record._type = 7;
+        record._etag = "789FFF";
+        record._fileId = "efg";
+        record._remotePerm = "777";
+        record._mode = 12;
+        record._fileSize = 289055;
+        _db.updateFileRecordMetadata(record);
+        storedRecord = _db.getFileRecord("foo");
+        QVERIFY(storedRecord == record);
+
         QVERIFY(_db.deleteFileRecord("foo"));
         record = _db.getFileRecord("foo");
         QVERIFY(!record.isValid());
+    }
+
+    void testFileRecordChecksum()
+    {
+        // Try with and without a checksum
+        {
+            SyncJournalFileRecord record;
+            record._path = "foo-checksum";
+            record._remotePerm = "744";
+            record._transmissionChecksum = "mychecksum";
+            record._transmissionChecksumType = "MD5";
+            QVERIFY(_db.setFileRecord(record));
+
+            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");
+            QVERIFY(storedRecord == record);
+        }
+        {
+            SyncJournalFileRecord record;
+            record._path = "foo-nochecksum";
+            record._remotePerm = "744";
+            QVERIFY(_db.setFileRecord(record));
+
+            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-nochecksum");
+            QVERIFY(storedRecord == record);
+        }
     }
 
     void testDownloadInfo()

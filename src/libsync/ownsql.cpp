@@ -138,6 +138,7 @@ void SqlDatabase::close()
         SQLITE_DO(sqlite3_close(_db) );
         if (_errId != SQLITE_OK) {
             qWarning() << "ERROR When closing DB" << _error;
+            Q_ASSERT(!"SQLite Close Error");
         }
         _db = 0;
     }
@@ -211,6 +212,7 @@ int SqlQuery::prepare( const QString& sql)
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
+            Q_ASSERT(!"SQLITE Prepare error");
         }
     }
     return _errId;
@@ -314,6 +316,11 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
         qDebug() << Q_FUNC_INFO << "ERROR" << value.toString() << res;
     }
     Q_ASSERT( res == SQLITE_OK );
+}
+
+bool SqlQuery::nullValue(int index)
+{
+    return sqlite3_column_type(_stmt, index) == SQLITE_NULL;
 }
 
 QString SqlQuery::stringValue(int index)

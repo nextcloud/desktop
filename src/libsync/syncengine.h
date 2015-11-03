@@ -94,7 +94,7 @@ signals:
 
     // During update, before reconcile
     void rootEtag(QString);
-    void folderDiscovered(bool local, QString folderUrl);
+    void folderDiscovered(bool local, const QString &folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem&);
@@ -109,7 +109,7 @@ signals:
 
     void transmissionProgress( const ProgressInfo& progress );
 
-    void finished();
+    void finished(bool success);
     void started();
 
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
@@ -118,7 +118,7 @@ signals:
     void newBigFolder(const QString &folder);
 
 private slots:
-    void slotRootEtagReceived(QString);
+    void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
     void slotFinished();
     void slotProgress(const SyncFileItem& item, quint64 curent);
@@ -144,7 +144,7 @@ private:
     void deleteStaleErrorBlacklistEntries();
 
     // cleanup and emit the finished signal
-    void finalize();
+    void finalize(bool success);
 
     static bool _syncRunning; //true when one sync is running somewhere (for debugging)
 

@@ -23,8 +23,8 @@
 #include "configfile.h"
 #include "capabilities.h"
 
-#include "ocssharejob.h"
 #include "thumbnailjob.h"
+#include "share.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -41,7 +41,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _sharePath(sharePath),
     _localPath(localPath),
     _passwordJobRunning(false),
-    _public_share_id(0),
+    _manager(NULL),
+    _share(NULL),
     _resharingAllowed(resharingAllowed)
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -90,7 +91,6 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->hide();
 
-    _ui->calendar->setDate(QDate::currentDate().addDays(1));
     _ui->calendar->setEnabled(false);
 
     QFileInfo f_info(_localPath);
@@ -168,6 +168,16 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
             _ui->checkBox_editing->setEnabled(false);
         }
     }
+
+    /*
+     * Create the share manager and connect it properly
+     */
+    _manager = new ShareManager(_account, this);
+
+    connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
+    connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
+    connect(_manager, SIGNAL(linkShareRequiresPassword()), SLOT(slotCreateShareRequiresPassword()));
+    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
 }
 
 void ShareDialog::done( int r ) {
@@ -178,25 +188,12 @@ void ShareDialog::done( int r ) {
 
 void ShareDialog::setExpireDate(const QDate &date)
 {
-    if( _public_share_id == 0 ) {
-        // no public share so far.
-        return;
-    }
     _pi_date->startAnimation();
-
-    OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotExpireSet(QVariantMap)));
-    job->setExpireDate(_public_share_id, date);
+    _share->setExpireDate(date);
 }
 
-void ShareDialog::slotExpireSet(const QVariantMap &reply)
+void ShareDialog::slotExpireSet()
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        displayError(code);
-    } 
-
     _pi_date->stopAnimation();
 }
 
@@ -226,56 +223,35 @@ void ShareDialog::slotPasswordChanged(const QString& newText)
 
 void ShareDialog::setPassword(const QString &password)
 {
-    if( _passwordJobRunning ) {
-        // This happens because the entry field and the button both trigger this slot.
-        return;
-    }
     _pi_link->startAnimation();
     _pi_password->startAnimation();
-    QString path;
 
-    if( _public_share_id > 0 ) {
-        OcsShareJob *job = new OcsShareJob(_account, this);
-        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
-        job->setPassword(_public_share_id, password);
+    _ui->checkBox_password->setEnabled(false);
+    _ui->lineEdit_password->setEnabled(false);
+
+    if( !_share.isNull() ) {
+        _share->setPassword(password);
     } else {
-        OcsShareJob *job = new OcsShareJob(_account, this);
-        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPasswordSet(QVariantMap)));
-        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
-
-        QDate date;
-        if( _ui->checkBox_expire->isChecked() ) {
-            date = _ui->calendar->date();
-        }
-
-        job->createShare(_sharePath, OcsShareJob::ShareType::Link, password, date);
+        _ui->checkBox_shareLink->setEnabled(false);
+        _manager->createLinkShare(_sharePath, password);
     }
-    _passwordJobRunning = true;
 }
 
-void ShareDialog::slotPasswordSet(const QVariantMap &reply)
+void ShareDialog::slotPasswordSet()
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        displayError(code);
-    }
     /*
-         * When setting/deleting a password from a share the old share is
-         * deleted and a new one is created. So we need to refetch the shares
-         * at this point.
-         */
+     * When setting/deleting a password from a share the old share is
+     * deleted and a new one is created. So we need to refetch the shares
+     * at this point.
+     */
     getShares();
 
-    _passwordJobRunning = false;
     _pi_password->stopAnimation();
 }
 
 void ShareDialog::getShares()
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotSharesFetched(QVariantMap)));
-    job->getShares(_sharePath);
+    _manager->fetchShares(_sharePath);
 
     if (QFileInfo(_localPath).isFile()) {
         ThumbnailJob *job2 = new ThumbnailJob(_sharePath, _account, this);
@@ -284,34 +260,27 @@ void ShareDialog::getShares()
     }
 }
 
-void ShareDialog::slotSharesFetched(const QVariantMap &reply)
+void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100 && code != 404) {
-        displayError(code);
-    }
-
-    ShareDialog::_shares = reply.value("ocs").toMap().value("data").toList();
     const QString versionString = _account->serverVersion();
-
-    qDebug() << Q_FUNC_INFO << versionString << "Fetched" << ShareDialog::_shares.count() << "shares";
+    qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
 
     //Show link checkbox now
     _ui->checkBox_shareLink->setEnabled(true);
     _pi_link->stopAnimation();
 
-    Q_FOREACH(auto share, ShareDialog::_shares) {
-        QVariantMap data = share.toMap();
+    Q_FOREACH(auto share, shares) {
 
-        if (data.value("share_type").toInt() == static_cast<int>(OcsShareJob::ShareType::Link)) {
-            _public_share_id = data.value("id").toULongLong();
+        if (share->getShareType() == Share::TypeLink) {
+            _share = qSharedPointerDynamicCast<LinkShare>(share);
             _ui->pushButton_copy->show();
 
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
-            if (data.value("share_with").isValid()) {
+            _ui->checkBox_password->setEnabled(true);
+            if (_share->isPasswordSet()) {
+                _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
                 _ui->lineEdit_password->setPlaceholderText("********");
                 _ui->lineEdit_password->show();
@@ -323,8 +292,9 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
                 _ui->pushButton_setPassword->hide();
             }
 
-            if (data.value("expiration").isValid()) {
-                _ui->calendar->setDate(QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00"));
+            _ui->checkBox_expire->setEnabled(true);
+            if (_share->getExpireDate().isValid()) {
+                _ui->calendar->setDate(_share->getExpireDate());
                 _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
                 _ui->calendar->setEnabled(true);
                 _ui->checkBox_expire->setChecked(true);
@@ -333,38 +303,33 @@ void ShareDialog::slotSharesFetched(const QVariantMap &reply)
                 _ui->checkBox_expire->setChecked(false);
             }
 
-            if (data.value("permissions").isValid()) {
-                int permissions = data.value("permissions").toInt();
-                /*
-                 * Only directories can have public upload set
-                 * For public links the server sets CREATE and UPDATE permissions.
-                 */
-                if (!_isFile && 
-                       (permissions & static_cast<int>(OcsShareJob::Permission::Update)) &&
-                       (permissions & static_cast<int>(OcsShareJob::Permission::Create))) {
+            /*
+             * Only directories can have public upload set
+             * For public links the server sets CREATE and UPDATE permissions.
+             */
+            if (!_isFile) {
+                _ui->checkBox_editing->setEnabled(true);
+                if (_share->getPublicUpload()) {
                     _ui->checkBox_editing->setChecked(true);
+                } else {
+                    _ui->checkBox_editing->setChecked(false);
                 }
             }
 
-            QString url;
-            // From ownCloud server 8.2 the url field is always set for public shares
-            if (data.contains("url")) {
-                url = data.value("url").toString();
-            } else if (versionString.contains('.') && versionString.split('.')[0].toInt() >= 8) {
-                // From ownCloud server version 8 on, a different share link scheme is used.
-                url = Account::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString();
-            } else {
-                QList<QPair<QString, QString>> queryArgs;
-                queryArgs.append(qMakePair(QString("service"), QString("files")));
-                queryArgs.append(qMakePair(QString("t"), data.value("token").toString()));
-                url = Account::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString();
-            }
-            setShareLink(url);
-
+            setShareLink(_share->getLink().toString());
             _ui->pushButton_copy->setEnabled(true);
+
+            // Connect all shares signals to gui slots
+            connect(_share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
+            connect(_share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
+            connect(_share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
+            connect(_share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
+            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
+
+            break;
         }
     }
-    if( _shares.count()>0 ) {
+    if( !_share.isNull() ) {
         setShareCheckBoxTitle(true);
     } else {
         // If there are no shares yet, check the checkbox to create a link automatically.
@@ -416,15 +381,9 @@ void ShareDialog::setShareLink( const QString& url )
 
 }
 
-void ShareDialog::slotDeleteShareFetched(const QVariantMap &reply)
+void ShareDialog::slotDeleteShareFetched()
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code != 100) {
-        displayError(code);
-    }
-
-    _public_share_id = 0;
+    _share.clear();
     _pi_link->stopAnimation();
     _ui->lineEdit_password->clear();
     _ui->_labelShareLink->clear();
@@ -440,7 +399,6 @@ void ShareDialog::slotDeleteShareFetched(const QVariantMap &reply)
     _shareUrl.clear();
 
     setShareCheckBoxTitle(false);
-
 }
 
 void ShareDialog::slotCheckBoxShareLinkClicked()
@@ -458,6 +416,8 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+            _ui->checkBox_expire->setEnabled(false);
+            _ui->checkBox_editing->setEnabled(false);
             _ui->lineEdit_password->setFocus();
             _ui->pushButton_copy->hide();
             _ui->widget_shareLink->show();
@@ -466,42 +426,45 @@ void ShareDialog::slotCheckBoxShareLinkClicked()
             return;
         }
 
-        OcsShareJob *job = new OcsShareJob(_account, this);
-        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotCreateShareFetched(QVariantMap)));
-        job->createShare(_sharePath, OcsShareJob::ShareType::Link);
+        _ui->checkBox_shareLink->setEnabled(false);
+        _manager->createLinkShare(_sharePath);
     } else {
-        _pi_link->startAnimation();
-        OcsShareJob *job = new OcsShareJob(_account, this);
-        connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotDeleteShareFetched(QVariantMap)));
-        job->deleteShare(_public_share_id);
+
+        if (!_share.isNull()) {
+            // We have a share so delete it
+            _pi_link->startAnimation();
+            _share->deleteShare();
+        } else {
+            // No share object so we are deleting while a password is required
+            _ui->widget_shareLink->hide();
+        }
+
+        
     }
 }
 
-void ShareDialog::slotCreateShareFetched(const QVariantMap &reply)
+void ShareDialog::slotCreateShareFetched(const QSharedPointer<LinkShare> share)
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
     _pi_link->stopAnimation();
+    _pi_password->stopAnimation();
 
-    if (code == 403) {
-        // there needs to be a password
-        _ui->checkBox_password->setChecked(true);
-        _ui->checkBox_password->setEnabled(false);
-        _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
-        _ui->lineEdit_password->setFocus();
-        _ui->pushButton_copy->hide();
-        _ui->widget_shareLink->show();
-
-        slotCheckBoxPasswordClicked();
-        return;
-    } else if (code != 100) {
-        displayError(code);
-        return;
-    }
-
-    _public_share_id = reply.value("ocs").toMap().values("data")[0].toMap().value("id").toULongLong();
-    _ui->pushButton_copy->show();
+    _share = share;
     getShares();
+}
+
+void ShareDialog::slotCreateShareRequiresPassword()
+{
+    // there needs to be a password
+    _ui->checkBox_password->setChecked(true);
+    _ui->checkBox_password->setEnabled(false);
+    _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+    _ui->lineEdit_password->setFocus();
+    _ui->pushButton_copy->hide();
+    _ui->widget_shareLink->show();
+    _ui->checkBox_expire->setEnabled(false);
+    _ui->checkBox_editing->setEnabled(false);
+
+    slotCheckBoxPasswordClicked();
 }
 
 void ShareDialog::slotCheckBoxPasswordClicked()
@@ -512,7 +475,7 @@ void ShareDialog::slotCheckBoxPasswordClicked()
         _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
         _ui->lineEdit_password->setFocus();
     } else {
-        ShareDialog::setPassword(QString());
+        setPassword(QString());
         _ui->lineEdit_password->setPlaceholderText(QString());
         _pi_password->startAnimation();
         _ui->lineEdit_password->hide();
@@ -532,7 +495,7 @@ void ShareDialog::slotCheckBoxExpireClicked()
     }
     else
     {
-        ShareDialog::setExpireDate(QDate());
+        setExpireDate(QDate());
         _ui->calendar->setEnabled(false);
     }
 }
@@ -561,23 +524,13 @@ void ShareDialog::setPublicUpload(bool publicUpload)
     _ui->checkBox_editing->setEnabled(false);
     _pi_editing->startAnimation();
 
-    OcsShareJob *job = new OcsShareJob(_account, this);
-    connect(job, SIGNAL(jobFinished(QVariantMap)), this, SLOT(slotPublicUploadSet(QVariantMap)));
-    job->setPublicUpload(_public_share_id, publicUpload);
+    _share->setPublicUpload(publicUpload);
 }
 
-void ShareDialog::slotPublicUploadSet(const QVariantMap &reply)
+void ShareDialog::slotPublicUploadSet()
 {
-    QString message;
-    int code = OcsShareJob::getJsonReturnCode(reply, message);
-    if (code == 100) {
-        _ui->checkBox_editing->setEnabled(true);
-    } else {
-        qDebug() << Q_FUNC_INFO << reply;
-        displayError(code);
-    }
-
     _pi_editing->stopAnimation();
+    _ui->checkBox_editing->setEnabled(true);
 }
 
 void ShareDialog::setShareCheckBoxTitle(bool haveShares)
@@ -593,6 +546,13 @@ void ShareDialog::setShareCheckBoxTitle(bool haveShares)
 
 }
 
+void ShareDialog::displayError(int code, const QString &message)
+{
+    const QString arg = QString("%1, %2").arg(code).arg(message);
+    const QString errMsg = tr("OCS API error code: %1").arg(arg);
+    displayError(errMsg);
+}
+
 void ShareDialog::displayError(const QString& errMsg)
 {
     _ui->errorLabel->setText( errMsg );
@@ -604,120 +564,6 @@ void ShareDialog::displayError(int code)
     const QString errMsg = tr("OCS API error code: %1").arg(code);
     displayError(errMsg);
 }
-
-#if 0
-void ShareDialog::displayInfo( const QString& msg )
-{
-    _ui->label_sharePath->setText(msg);
-}
-
-/*
- * This code is disabled for now as we do not have answers for all the questions involved
- * here, see https://github.com/owncloud/client/issues/2732
- */
-bool ShareDialog::uploadExternalFile()
-{
-    bool re = false;
-    const QString folderName = QString("ownCloud"); // FIXME: get a proper folder name
-
-    Folder *folder = 0;
-    Folder::Map folders = FolderMan::instance()->map();
-    if( folders.isEmpty() ) {
-        displayInfo(tr("There is no sync folder configured."));
-        return false;
-    }
-    if( folders.contains( Theme::instance()->appNameGUI()) ) {
-        folder = folders.value(Theme::instance()->appNameGUI());
-    }
-    if( !folder ) {
-        folder = folders.value( folders.keys().at(0));
-    }
-    FolderMan::instance()->folder(folderName);
-    if( ! folder ) {
-        qDebug() << "Folder not defined: " << folderName;
-        displayInfo(tr("Cannot find a folder to upload to."));
-        return false;
-    }
-
-    QFileInfo fi(_localPath);
-    if( fi.isDir() ) {
-        // we can not do this for directories yet.
-        displayInfo(tr("Sharing of external directories is not yet working."));
-        return false;
-    }
-    _sharePath = folder->remotePath()+QLatin1Char('/')+fi.fileName();
-    _folderAlias = folderName;
-
-    // connect the finish signal of the folder before the file to upload
-    // is copied to the sync folder.
-    connect( folder, SIGNAL(syncFinished(SyncResult)), this, SLOT(slotNextSyncFinished(SyncResult)) );
-
-    // copy the file
-    _expectedSyncFile = folder->path()+fi.fileName();
-
-    QFileInfo target(_expectedSyncFile);
-    if( target.exists() ) {
-        _ui->label_sharePath->setText(tr("A sync file with the same name exists. "
-                                         "The file cannot be registered to sync."));
-        // TODO: Add a file comparison here. If the existing file is still the same
-        // as the file-to-copy we can share it.
-        _sharePath.clear();
-    } else {
-        _uploadFails = 0;
-        _ui->pi_share->startAnimation();
-        QFile file( _localPath);
-        if( file.copy(_expectedSyncFile) ) {
-            // copying succeeded.
-            re = true;
-            displayInfo(tr("Waiting to upload..."));
-        } else {
-            displayInfo(tr("Unable to register in sync space."));
-        }
-    }
-    return re;
-}
-
-void ShareDialog::slotNextSyncFinished( const SyncResult& result )
-{
-    // FIXME: Check for state!
-    SyncFileItemVector itemVector = result.syncFileItemVector();
-    SyncFileItem targetItem;
-    Folder *folder = FolderMan::instance()->folder(_folderAlias);
-    const QString folderPath = folder->path();
-
-    _ui->pi_share->stopAnimation();
-
-    foreach( SyncFileItem item, itemVector ) {
-        const QString fullSyncedFile = folderPath + item._file;
-        if( item._direction == SyncFileItem::Up &&
-                fullSyncedFile == _expectedSyncFile) {
-            // found the item!
-            targetItem = item;
-            continue;
-        }
-    }
-
-    if( targetItem.isEmpty() ) {
-        // The item was not in this sync run. Lets wait for the next one. FIXME
-        _uploadFails ++;
-        if( _uploadFails > 2 ) {
-            // stop the upload job
-            displayInfo(tr("The file cannot be synced."));
-        }
-    } else {
-        // it's there and the sync was successful.
-        // The server should be able to generate a share link now.
-        // Enable the sharing link
-        if( targetItem._status == SyncFileItem::Success ) {
-            _ui->checkBox_shareLink->setEnabled(true);
-            _ui->label_sharePath->setText(tr("%1 path: %2").arg(Theme::instance()->appNameGUI()).arg(_sharePath));
-        } else {
-            displayInfo(tr("Sync of registered file was not successful yet."));
-        }
-    }
-    _expectedSyncFile.clear();
-}
-#endif
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
 {

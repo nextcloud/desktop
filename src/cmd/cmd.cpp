@@ -60,6 +60,7 @@ struct CmdOptions {
     QString exclude;
     QString unsyncedfolders;
     QString davPath;
+    int restartTimes;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -157,19 +158,20 @@ void help()
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
-    std::cout << "  --nonshib, -ns         Use Non Shibboleth WebDAV authentication" << std::endl;
-    std::cout << "  --davpath, -dp [path]  Custom themed dav path, overrides --nonshib" << std::endl;
+    std::cout << "  --nonshib              Use Non Shibboleth WebDAV authentication" << std::endl;
+    std::cout << "  --davpath [path]       Custom themed dav path, overrides --nonshib" << std::endl;
+    std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "" << std::endl;
-    exit(1);
+    exit(0);
 
 }
 
 void showVersion() {
     const char *binaryName = APPLICATION_EXECUTABLE "cmd";
     std::cout << binaryName << " version " << qPrintable(Theme::instance()->version()) << std::endl;
-    exit(1);
+    exit(0);
 }
 
 void parseOptions( const QStringList& app_args, CmdOptions *options )
@@ -226,10 +228,12 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
                 options->exclude = it.next();
         } else if( option == "--unsyncedfolders" && !it.peekNext().startsWith("-") ) {
             options->unsyncedfolders = it.next();
-        } else if( option == "--nonshib" || option == "-ns") {
+        } else if( option == "--nonshib" ) {
             options->nonShib = true;
-        } else if( (option == "--davpath" || option == "-dp") && !it.peekNext().startsWith("-") ) {
+        } else if( option == "--davpath" && !it.peekNext().startsWith("-") ) {
             options->davPath = it.next();
+        } else if( option == "--max-sync-retries" && !it.peekNext().startsWith("-") ) {
+            options->restartTimes = it.next().toInt();
         } else {
             help();
         }
@@ -277,6 +281,7 @@ int main(int argc, char **argv) {
     options.interactive = true;
     options.ignoreHiddenFiles = true;
     options.nonShib = false;
+    options.restartTimes = 3;
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
@@ -374,6 +379,7 @@ int main(int argc, char **argv) {
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
+    int restartCount = 0;
 restart_sync:
 
     CSYNC *_csync_ctx;
@@ -465,7 +471,7 @@ restart_sync:
     }
 
     SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
-    QObject::connect(&engine, SIGNAL(finished()), &app, SLOT(quit()));
+    QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.
@@ -476,8 +482,12 @@ restart_sync:
     csync_destroy(_csync_ctx);
 
     if (engine.isAnotherSyncNeeded()) {
-        qDebug() << "Restarting Sync, because another sync is needed";
-        goto restart_sync;
+        if (restartCount < options.restartTimes) {
+            restartCount++;
+            qDebug() << "Restarting Sync, because another sync is needed" << restartCount;
+            goto restart_sync;
+        }
+        qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
     }
 
     return 0;

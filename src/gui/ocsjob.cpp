@@ -42,9 +42,9 @@ void OcsJob::addPassStatusCode(int code)
     _passStatusCodes.append(code);
 }
 
-void OcsJob::appendPath(int id)
+void OcsJob::appendPath(const QString &id)
 {
-    setPath(path() + QString("/%1").arg(id));
+    setPath(path() + QLatin1Char('/') + id);
 }
 
 void OcsJob::start()
@@ -105,9 +105,11 @@ bool OcsJob::finished()
                  << Account::concatUrlPath(account()->url(), path())
                  << _params
                  << "has unexpected status code:" << statusCode << replyData;
+        emit ocsError(statusCode, message);
+    } else {
+        emit jobFinished(json);
     }
-
-    emit jobFinished(json);
+    deleteLater();
     return true;
 }
 

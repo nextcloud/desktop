@@ -468,7 +468,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // the file system in the DB, this is to avoid spurious upload on the next sync
             item->_modtime = file->other.modtime;
 
-            _journal->setFileRecord(SyncJournalFileRecord(*item, _localPath + item->_file));
+            _journal->updateFileRecordMetadata(SyncJournalFileRecord(*item, _localPath + item->_file));
             item->_should_update_metadata = false;
         }
         if (item->_isDirectory && file->should_update_metadata) {
@@ -572,7 +572,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state) {
     } else {
         emit csyncError(errStr);
     }
-    finalize();
+    finalize(false);
 }
 
 void SyncEngine::startSync()
@@ -598,7 +598,7 @@ void SyncEngine::startSync()
     if (!QDir(_localPath).exists()) {
         // No _tr, it should only occur in non-mirall
         emit csyncError("Unable to find local sync folder.");
-        finalize();
+        finalize(false);
         return;
     }
 
@@ -612,7 +612,7 @@ void SyncEngine::startSync()
             emit csyncError(tr("Only %1 are available, need at least %2 to start").arg(
                                 Utility::octetsToString(freeBytes),
                                 Utility::octetsToString(minFree)));
-            finalize();
+            finalize(false);
             return;
         }
     } else {
@@ -643,7 +643,7 @@ void SyncEngine::startSync()
     if( fileRecordCount == -1 ) {
         qDebug() << "No way to create a sync journal!";
         emit csyncError(tr("Unable to initialize a sync journal."));
-        finalize();
+        finalize(false);
         return;
         // database creation error!
     }
@@ -666,7 +666,7 @@ void SyncEngine::startSync()
 
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
-    connect(this, SIGNAL(finished()), _discoveryMainThread, SLOT(deleteLater()));
+    connect(this, SIGNAL(finished(bool)), _discoveryMainThread, SLOT(deleteLater()));
     qDebug() << "=====Server" << account()->serverVersion()
              <<  QString("rootEtagChangesNotOnlySubFolderEtags=%1").arg(account()->rootEtagChangesNotOnlySubFolderEtags());
     if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
@@ -698,7 +698,7 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotRootEtagReceived(QString e) {
+void SyncEngine::slotRootEtagReceived(const QString &e) {
     if (_remoteRootEtag.isEmpty()) {
         qDebug() << Q_FUNC_INFO << e;
         _remoteRootEtag = e;
@@ -721,7 +721,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!_journal->isConnected()) {
         qDebug() << "Bailing out, DB failure";
         emit csyncError(tr("Cannot open the sync journal"));
-        finalize();
+        finalize(false);
         return;
     } else {
         // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
@@ -785,7 +785,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         emit aboutToRemoveAllFiles(_syncedItems.first()->_direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
-            finalize();
+            finalize(false);
             return;
         }
     }
@@ -833,7 +833,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)
 {
     csyncError(error);
-    finalize();
+    finalize(false);
 }
 
 void SyncEngine::setNetworkLimits(int upload, int download)
@@ -888,10 +888,10 @@ void SyncEngine::slotFinished()
 
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
-    finalize();
+    finalize(true); // FIXME: should it be true if there was errors?
 }
 
-void SyncEngine::finalize()
+void SyncEngine::finalize(bool success)
 {
     _thread.quit();
     _thread.wait();
@@ -902,7 +902,7 @@ void SyncEngine::finalize()
     _stopWatch.stop();
 
     _syncRunning = false;
-    emit finished();
+    emit finished(success);
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();

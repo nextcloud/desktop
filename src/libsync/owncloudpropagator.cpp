@@ -87,11 +87,11 @@ int OwncloudPropagator::maximumActiveJob()
     return max;
 }
 
-/** Updates or creates a blacklist entry for the given item.
+/** Updates, creates or removes a blacklist entry for the given item.
  *
  * Returns whether the file is in the blacklist now.
  */
-static bool blacklist(SyncJournalDb* journal, const SyncFileItem& item)
+static bool blacklistCheck(SyncJournalDb* journal, const SyncFileItem& item)
 {
     SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
     SyncJournalErrorBlacklistRecord newEntry = SyncJournalErrorBlacklistRecord::update(oldEntry, item);
@@ -132,7 +132,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // do not blacklist in case of soft error or fatal error.
         break;
     case SyncFileItem::NormalError:
-        if (blacklist(_propagator->_journal, *_item) && _item->_hasBlacklistEntry) {
+        if (blacklistCheck(_propagator->_journal, *_item) && _item->_hasBlacklistEntry) {
             // do not error if the item was, and continues to be, blacklisted
             status = SyncFileItem::FileIgnored;
             _item->_errorString.prepend(tr("Continue blacklisting:") + " ");
@@ -277,14 +277,14 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
     /* Check and log the transmission checksum type */
     ConfigFile cfg;
-    const QString checksumType = cfg.transmissionChecksum().toUpper();
+    const QString checksumType = cfg.transmissionChecksum();
 
     /* if the checksum type is empty, it is not sent. No error */
     if( !checksumType.isEmpty() ) {
-        if( checksumType == checkSumAdlerUpperC ||
+        if( checksumType == checkSumAdlerC ||
                 checksumType == checkSumMD5C    ||
                 checksumType == checkSumSHA1C ) {
-            qDebug() << "Client sends and expects transmission checksum type" << checksumType;
+            qDebug() << "Client sends transmission checksum type" << checksumType;
         } else {
             qWarning() << "Unknown transmission checksum type from config" << checksumType;
         }
