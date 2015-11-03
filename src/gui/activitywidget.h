@@ -97,6 +97,7 @@ private slots:
 private:
     void startFetchJob(AccountStatePtr s);
     void combineActivityLists();
+    QString timeSpanFromNow(const QDateTime& dt) const;
 
     QMap<AccountStatePtr, ActivityList> _activityLists;
     ActivityList _finalList;

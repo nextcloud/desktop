@@ -30,6 +30,7 @@
 #include "account.h"
 #include "accountstate.h"
 #include "accountmanager.h"
+#include "activityitemdelegate.h"
 
 #include "ui_activitywidget.h"
 
@@ -61,6 +62,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
+    a = _finalList.at(index.row());
+
     if (role == Qt::EditRole)
         return QVariant();
 
@@ -68,16 +71,55 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case Qt::ToolTipRole:
         return QVariant();
     case Qt::DisplayRole:
-        a = _finalList.at(index.row());
-        return tr("Account %1 at %2: %3").arg(a._accName).arg(a._dateTime.toString(Qt::SystemLocaleShortDate)).arg(a._subject);
+        // return tr("Account %1 at %2: %3").arg(a._accName).arg(a._dateTime.toString(Qt::SystemLocaleShortDate)).arg(a._subject);
         break;
     case Qt::DecorationRole:
-        // return QFileIconProvider().icon(QFileIconProvider::Folder);
         return QVariant();
         break;
+    case ActivityItemDelegate::ActionIconRole:
+        return QVariant(); // FIXME once the action can be quantified, display on Icon
+        break;
+    case ActivityItemDelegate::UserIconRole:
+        return QIcon(QLatin1String(":/client/resources/account.png"));
+        break;
+    case ActivityItemDelegate::ActionTextRole:
+        return a._subject;
+        break;
+    case ActivityItemDelegate::PathRole:
+            return a._file;
+        break;
+    case ActivityItemDelegate::LinkRole:
+            return a._link;
+        break;
+    case ActivityItemDelegate::AccountRole:
+            return a._accName;
+        break;
+    case ActivityItemDelegate::PointInTimeRole:
+        return timeSpanFromNow(a._dateTime);
+
     }
     return QVariant();
 
+}
+
+QString ActivityListModel::timeSpanFromNow(const QDateTime& dt) const
+{
+    QDateTime now = QDateTime::currentDateTime();
+
+    if( dt.daysTo(now)>0 ) {
+        return tr("%1 day(s) ago").arg(dt.daysTo(now));
+    } else {
+        qint64 secs = dt.secsTo(now);
+
+        if( floor(secs / 3600.0) > 0 ) {
+            int hours = floor(secs/3600.0);
+            return( tr("%1 hour(s) ago").arg(hours));
+        } else {
+            int minutes = qRound(secs/60.0);
+            return( tr("%1 minute(s) ago").arg(minutes));
+        }
+    }
+    return tr("Some time ago");
 }
 
 int ActivityListModel::rowCount(const QModelIndex&) const
@@ -215,6 +257,9 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 #endif
 
     _model = new ActivityListModel(this);
+    ActivityItemDelegate *delegate = new ActivityItemDelegate;
+    delegate->setParent(this);
+    _ui->_activityList->setItemDelegate(delegate);
     _ui->_activityList->setModel(_model);
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);

@@ -57,6 +57,7 @@ set(client_SRCS
     owncloudsetupwizard.cpp
     protocolwidget.cpp
     activitywidget.cpp
+    activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     sharedialog.cpp
