@@ -42,6 +42,12 @@ Other command line switches supported by ``owncloudcmd`` include the following:
 ``--unsyncedfolders [file]`` 
       File containing list of folders to not sync
 
+``--nonshib``
+      Uses Non Shibboleth WebDAV Authentication
+
+``--davpath [path]``
+      Overrides the WebDAV Path with ``path``
+
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~
 
