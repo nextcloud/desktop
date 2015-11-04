@@ -3,7 +3,8 @@ Installing the Desktop Synchronization Client
 =============================================
 
 You can download the  latest version of the ownCloud Desktop Synchronization 
-Client from the `ownCloud Website <https://owncloud.org/install/#desktop>`_. 
+Client from the `ownCloud download page 
+<https://owncloud.org/install/#desktop>`_. 
 There are clients for Linux, Mac OS X, and Microsoft Windows.
 
 Installation on Mac OS X and Windows is the same as for any software 
@@ -20,6 +21,9 @@ will display a notification when an update is available.
 
 Linux users must also have a password manager enabled, such as GNOME Keyring or
 KWallet, so that the sync client can login automatically.
+
+You will also find links to source code archives and older versions on the 
+download page.
 
 Installation Wizard
 -------------------
