@@ -72,33 +72,43 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
+        <source>Enter your credentials to connect to the server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="76"/>
+        <source>Sign in</source>
+        <translation>ログイン</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.ui" line="89"/>
         <source>Remove the account configuration from the client</source>
         <translation>クライアントからアカウント設定を削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="76"/>
+        <location filename="../src/gui/accountsettings.ui" line="92"/>
         <source>Remove Account</source>
         <translation>アカウント削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="97"/>
+        <location filename="../src/gui/accountsettings.ui" line="113"/>
         <source>Storage space: ...</source>
         <translation>ストレージ空き容量: ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="167"/>
+        <location filename="../src/gui/accountsettings.ui" line="183"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>チェックしていないフォルダーはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピューターと同期されなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="211"/>
+        <location filename="../src/gui/accountsettings.ui" line="230"/>
         <source>Apply</source>
         <translation>適用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.ui" line="198"/>
-        <location filename="../src/gui/accountsettings.cpp" line="284"/>
-        <location filename="../src/gui/accountsettings.cpp" line="571"/>
+        <location filename="../src/gui/accountsettings.ui" line="217"/>
+        <location filename="../src/gui/accountsettings.cpp" line="289"/>
+        <location filename="../src/gui/accountsettings.cpp" line="646"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -108,147 +118,147 @@
         <translation>&lt;server&gt; に &lt;user&gt; で接続中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="115"/>
+        <location filename="../src/gui/accountsettings.cpp" line="121"/>
         <source>No account configured.</source>
         <translation>アカウントが未設定です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="229"/>
+        <location filename="../src/gui/accountsettings.cpp" line="161"/>
+        <source>Choose what to sync</source>
+        <translation>同期フォルダーを選択</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="168"/>
+        <source>Remove folder sync connection</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="234"/>
         <source>Folder creation failed</source>
         <translation>フォルダーの作成に失敗しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="230"/>
+        <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;ローカルフォルダー &lt;i&gt;%1&lt;/i&gt; を作成できません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="283"/>
-        <source>Stop syncing</source>
-        <translation>同期停止中</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="282"/>
+        <source>Confirm Folder Sync Connection Removal</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="309"/>
+        <location filename="../src/gui/accountsettings.cpp" line="288"/>
+        <source>Remove Folder Sync Connection</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="314"/>
         <source>Confirm Folder Reset</source>
         <translation>フォルダーのリセットを確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="315"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;本当にフォルダー &lt;i&gt;%1&lt;/i&gt; をリセットしてクライアントのデータベースを再構築しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt;この機能は保守目的のためだけにデザインされています。ファイルは削除されませんが、完了するまでにデータ通信が明らかに増大し、数分、あるいはフォルダーのサイズによっては数時間かかります。このオプションは管理者に指示された場合にのみ使用してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="391"/>
+        <location filename="../src/gui/accountsettings.cpp" line="396"/>
         <source>Sync Running</source>
         <translation>同期を実行中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="397"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>同期作業を実行中です。&lt;br/&gt;終了しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="472"/>
+        <location filename="../src/gui/accountsettings.cpp" line="465"/>
+        <source>%1 in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="485"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>&lt;i&gt;%2&lt;/i&gt; の %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="476"/>
+        <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>Connected to %1.</source>
         <translation>%1 に接続</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="478"/>
+        <location filename="../src/gui/accountsettings.cpp" line="497"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>サーバー %1 は一時的に利用できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="480"/>
+        <location filename="../src/gui/accountsettings.cpp" line="499"/>
         <source>Signed out from %1.</source>
         <translation>%1 からサインアウトしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="482"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>No connection to %1 at %2.</source>
         <translation>%2 の %1 への接続がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="535"/>
-        <source>There are new folders that were not synchronized because they are too big: %1</source>
-        <translation>転送容量が大きいため、同期されていない新しいフォルダーがあります: %1</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="605"/>
+        <source>There are new folders that were not synchronized because they are too big: </source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="536"/>
-        <source>, </source>
-        <translation>, </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="638"/>
         <source>Confirm Account Removal</source>
         <translation>アカウント削除確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="639"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt; アカウント &lt;i&gt;%1&lt;/i&gt; を本当に削除しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; これによりファイルが一切削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="570"/>
+        <location filename="../src/gui/accountsettings.cpp" line="645"/>
         <source>Remove connection</source>
         <translation>接続削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="165"/>
+        <location filename="../src/gui/accountsettings.cpp" line="158"/>
         <source>Open folder</source>
         <translation>フォルダーを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="168"/>
-        <source>Choose What to Sync</source>
-        <translation>同期フォルダーを選択</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="172"/>
+        <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Resume sync</source>
         <translation>再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="172"/>
+        <location filename="../src/gui/accountsettings.cpp" line="165"/>
         <source>Pause sync</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="176"/>
-        <source>Remove sync</source>
-        <translation>同期削除</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="277"/>
-        <source>Confirm Sync Removal</source>
-        <translation>同期削除確認</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="278"/>
+        <location filename="../src/gui/accountsettings.cpp" line="283"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;フォルダー&lt;i&gt;%1&lt;/i&gt;の同期を本当に止めますか？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注:&lt;/b&gt; これによりファイルが一切削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2 の %1(%3%) 利用中。外部ネットワークストレージや共有フォルダーを含むフォルダーがある場合は、容量の上限値が異なる可能性があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="448"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>%1 of %2 in use</source>
         <translation>%2 のうち %1 を使用中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="462"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>現在、利用できるストレージ利用状況はありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="488"/>
+        <location filename="../src/gui/accountsettings.cpp" line="507"/>
         <source>No %1 connection configured.</source>
         <translation>%1 の接続は設定されていません。</translation>
     </message>
@@ -256,39 +266,49 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="95"/>
+        <location filename="../src/gui/accountstate.cpp" line="99"/>
         <source>Signed out</source>
         <translation>サインアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="97"/>
+        <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Disconnected</source>
         <translation>切断しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="99"/>
+        <location filename="../src/gui/accountstate.cpp" line="103"/>
         <source>Connected</source>
         <translation>接続しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="101"/>
+        <location filename="../src/gui/accountstate.cpp" line="105"/>
         <source>Service unavailable</source>
         <translation>サービスが利用できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="103"/>
+        <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Network error</source>
         <translation>ネットワークエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="105"/>
+        <location filename="../src/gui/accountstate.cpp" line="109"/>
         <source>Configuration error</source>
         <translation>設定エラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="107"/>
+        <location filename="../src/gui/accountstate.cpp" line="111"/>
         <source>Unknown account state</source>
         <translation>不明なアカウント状態</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountstate.cpp" line="245"/>
+        <source>Reauthentication required</source>
+        <translation>再認証が必要</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountstate.cpp" line="245"/>
+        <source>You need to re-login to continue using the account %1.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -370,17 +390,17 @@
         <translation>サーバーを最新にアップデートして、クライアントを再起動してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="143"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="135"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>認証エラー: ユーザー名またはパスワードが間違っています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="155"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="147"/>
         <source>timeout</source>
         <translation>タイムアウト</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="186"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="178"/>
         <source>The provided credentials are not correct</source>
         <translation>入力された資格情報が正しくありません</translation>
     </message>
@@ -396,7 +416,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="524"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="537"/>
         <source>Aborted by the user</source>
         <translation>ユーザーによって中止されました</translation>
     </message>
@@ -404,7 +424,7 @@
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="107"/>
+        <location filename="../src/gui/folder.cpp" line="108"/>
         <source>Unable to create csync-context</source>
         <translation>csync-context を作成できません</translation>
     </message>
@@ -501,19 +521,19 @@
         <translation>同期アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="845"/>
+        <location filename="../src/gui/folder.cpp" line="870"/>
         <source>Could not read system exclude file</source>
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1102"/>
+        <location filename="../src/gui/folder.cpp" line="1127"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>新しい %1 MB以上のフォルダーが追加されました: %2
 ダウンロードしたい場合は、設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1115"/>
+        <location filename="../src/gui/folder.cpp" line="1140"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -522,17 +542,17 @@ Are you sure you want to perform this operation?</source>
 本当にこの操作を実行しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1119"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1121"/>
+        <location filename="../src/gui/folder.cpp" line="1146"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1122"/>
+        <location filename="../src/gui/folder.cpp" line="1147"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
@@ -540,112 +560,112 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="275"/>
+        <location filename="../src/gui/folderman.cpp" line="270"/>
         <source>Could not reset folder state</source>
         <translation>フォルダーの状態をリセットできませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="276"/>
+        <location filename="../src/gui/folderman.cpp" line="271"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>古い同期ジャーナル  &apos;%1&apos; が見つかりましたが、削除できませんでした。それを現在使用しているアプリケーションが存在しないか確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="877"/>
+        <location filename="../src/gui/folderman.cpp" line="865"/>
         <source> (backup)</source>
         <translation>(バックアップ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="882"/>
+        <location filename="../src/gui/folderman.cpp" line="870"/>
         <source> (backup %1)</source>
         <translation>(%1をバックアップ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1091"/>
+        <location filename="../src/gui/folderman.cpp" line="1079"/>
         <source>Undefined State.</source>
         <translation>未定義の状態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1094"/>
-        <source>Waits to start syncing.</source>
-        <translation>同期開始を待機中</translation>
+        <location filename="../src/gui/folderman.cpp" line="1082"/>
+        <source>Waiting to start syncing.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1097"/>
+        <location filename="../src/gui/folderman.cpp" line="1085"/>
         <source>Preparing for sync.</source>
         <translation>同期の準備中。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1100"/>
+        <location filename="../src/gui/folderman.cpp" line="1088"/>
         <source>Sync is running.</source>
         <translation>同期を実行中です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1103"/>
+        <location filename="../src/gui/folderman.cpp" line="1091"/>
         <source>Last Sync was successful.</source>
         <translation>最後の同期は成功しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1108"/>
+        <location filename="../src/gui/folderman.cpp" line="1096"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>最新の同期は成功しました。しかし、一部のファイルに問題がありました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1111"/>
+        <location filename="../src/gui/folderman.cpp" line="1099"/>
         <source>Setup Error.</source>
         <translation>設定エラー。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1114"/>
+        <location filename="../src/gui/folderman.cpp" line="1102"/>
         <source>User Abort.</source>
         <translation>ユーザーによる中止。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1117"/>
+        <location filename="../src/gui/folderman.cpp" line="1105"/>
         <source>Sync is paused.</source>
         <translation>同期を一時停止しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1123"/>
+        <location filename="../src/gui/folderman.cpp" line="1111"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同期を一時停止)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1131"/>
+        <location filename="../src/gui/folderman.cpp" line="1119"/>
         <source>No valid folder selected!</source>
         <translation>有効なフォルダーが選択されていません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1142"/>
+        <location filename="../src/gui/folderman.cpp" line="1130"/>
         <source>The selected path is not a folder!</source>
         <translation>指定のパスは、フォルダーではありません！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1146"/>
+        <location filename="../src/gui/folderman.cpp" line="1134"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>選択されたフォルダーに書き込み権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1149"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 はすでに同期フォルダーとして利用されています。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1166"/>
+        <location filename="../src/gui/folderman.cpp" line="1154"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 にはすでに同期フォルダーとして利用されてるフォルダを含んでいます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1173"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 はシンボリックリンクです。リンク先のフォルダにはすでに同期フォルダーとして利用されているフォルダーを含みます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1180"/>
+        <location filename="../src/gui/folderman.cpp" line="1168"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 には同期フォルダーとして利用されているフォルダーがあります。他のフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1186"/>
+        <location filename="../src/gui/folderman.cpp" line="1174"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>ローカルフォルダー %1 には同期フォルダーとして利用されているフォルダーがあります。他のフォルダーを選択してください！</translation>
     </message>
@@ -658,18 +678,17 @@ Are you sure you want to perform this operation?</source>
         <translation>同期フォルダーを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="85"/>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="274"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="271"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="224"/>
         <source>Syncing selected files in your account with</source>
         <translation>アカウントの指定ファイルは同期済み</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
         <source>Remote path: %1</source>
         <translation>リモートパス: %1</translation>
     </message>
@@ -677,101 +696,106 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusModel</name>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="121"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="122"/>
         <source>You need to be connected to add a folder</source>
         <translation>フォルダーを追加するためには、接続している必要があります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="126"/>
-        <source>Adding folder is disabled because your are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation>既に同期対象のフォルダーのため、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダー同期設定を削除してください。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="131"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>このボタンをクリックして同期フォルダーを追加してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="141"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="161"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>サーバーからフォルダーのリスト取得時にエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="182"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="192"/>
         <source>Signed out</source>
         <translation>サインアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="727"/>
-        <source>Discovering &apos;%1&apos;</source>
-        <translation> &apos;%1&apos;を検索中</translation>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
+        <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="787"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
+        <source>Fetching folder list from server...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
+        <source>Checking for changes in &apos;%1&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
         <source>Syncing %1</source>
         <translation>同期中 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="792"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="854"/>
         <source>download %1/s</source>
         <translation>ダウンロード %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="856"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="800"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="862"/>
         <source>upload %1/s</source>
         <translation>アップロード %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="802"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="807"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="869"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%4 中 %3 完了)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="811"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="827"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%2 のうち %1 , ファイル%4個のうち%3個
 残り時間 %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
         <source>file %1 of %2</source>
         <translation>%1 / %2 ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
         <source>Waiting...</source>
         <translation>待機中...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="934"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>%n 他のフォルダーの完了待ち...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="940"/>
         <source>Preparing to sync...</source>
         <translation>同期の準備中...</translation>
     </message>
@@ -780,9 +804,13 @@ Total time left %5</source>
     <name>OCC::FolderWizard</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="562"/>
+        <source>Add Folder Sync Connection</source>
+        <translation>同期フォルダーを追加</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
-        <source>Add Folder</source>
-        <translation>フォルダーを追加</translation>
+        <source>Add Sync Connection</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -953,59 +981,51 @@ Total time left %5</source>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="61"/>
+        <location filename="../src/gui/generalsettings.ui" line="109"/>
         <source>Ask confirmation before downloading folders larger than</source>
         <translation>次の容量より大きい場合は、ダウンロード前に確認する</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="81"/>
+        <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>MB</source>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="109"/>
+        <location filename="../src/gui/generalsettings.ui" line="159"/>
         <source>Show crash reporter</source>
         <translation>クラッシュ報告を表示</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="118"/>
+        <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Edit Ignored Files</source>
         <translation>除外ファイルリストを編集</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="142"/>
+        <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Add an Account</source>
         <translation>アカウントを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="167"/>
-        <location filename="../src/gui/generalsettings.ui" line="173"/>
+        <location filename="../src/gui/generalsettings.ui" line="171"/>
+        <location filename="../src/gui/generalsettings.ui" line="177"/>
         <source>About</source>
         <translation>バージョン情報</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="183"/>
+        <location filename="../src/gui/generalsettings.ui" line="187"/>
         <source>Updates</source>
         <translation>アップデート</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="208"/>
+        <location filename="../src/gui/generalsettings.ui" line="212"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>再起動してアップデート(&amp;R)</translation>
     </message>
 </context>
 <context>
-    <name>OCC::HttpCredentials</name>
-    <message>
-        <location filename="../src/libsync/creds/httpcredentials.cpp" line="290"/>
-        <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>鍵情報の読み込みに失敗しました。エラー： &apos;%1&apos;</translation>
-    </message>
-</context>
-<context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="32"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="34"/>
         <source>Please enter %1 password:
 
 User: %2
@@ -1018,7 +1038,12 @@ Account: %3
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="41"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
+        <source>Reading from keychain failed with error: &apos;%1&apos;</source>
+        <translation>鍵情報の読み込みに失敗しました。エラー： &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
         <source>Enter Password</source>
         <translation>パスワードを入力してください</translation>
     </message>
@@ -1066,7 +1091,7 @@ Account: %3
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="39"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="40"/>
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
@@ -1075,27 +1100,27 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 パターンによってディレクトリを削除から除外する場合は，パターンに含まれた項目も削除されます。例えばメタデータファイルに有用です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="109"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="110"/>
         <source>Could not open file</source>
         <translation>ファイルが開けませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="110"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>&apos;%1&apos;を更新できません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="138"/>
         <source>Add Ignore Pattern</source>
         <translation>除外するファイルパターンを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="135"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>Add a new ignore pattern:</source>
         <translation>除外するファイルパターンを新しく追加:</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="45"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="46"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
         <translation>このエントリーは、システム &apos;%1&apos; から提供されています。この画面では変更できません。</translation>
     </message>
@@ -1156,12 +1181,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="163"/>
+        <location filename="../src/libsync/logger.cpp" line="190"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="164"/>
+        <location filename="../src/libsync/logger.cpp" line="191"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;ファイル &apos;%1&apos;&lt;br/&gt;を書き込み用で開けませんでした。&lt;br/&gt;&lt;br/&gt;ログ出力を&lt;b&gt;保存できません&lt;/b&gt;でした！&lt;/nobr&gt;</translation>
     </message>
@@ -1263,7 +1288,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
-        <location filename="../src/gui/networksettings.ui" line="295"/>
+        <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
         <translation>無制限</translation>
     </message>
@@ -1309,6 +1334,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <source>SOCKS5 proxy</source>
         <translation>SOCKS5プロキシ</translation>
     </message>
+    <message>
+        <location filename="../src/gui/networksettings.cpp" line="128"/>
+        <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::OCUpdater</name>
@@ -1329,11 +1359,6 @@ for additional privileges during the process.</source>
         <translation>バージョン %1 をダウンロードしています。しばらくお待ちください...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
-        <source>Version %1 available. Restart application to start the update.</source>
-        <translation>バージョン %1 が利用可能です。アプリケーションを再起動してアップデートを開始してください。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>アップデートをダウンロードできませんでした。手動でアップデートするには、&lt;a href=&apos;%1&apos;&gt;ここ&lt;/a&gt; をクリックしてください。 </translation>
@@ -1344,9 +1369,14 @@ for additional privileges during the process.</source>
         <translation>アップデートを確認できませんでした。</translation>
     </message>
     <message>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
+        <source>%1 version %2 available. Restart application to start the update.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
-        <source>New version %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>新しいバージョン %1 が利用可能です。インストールするには、システムのアップデートツールを利用してください。</translation>
+        <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1662,7 +1692,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="114"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="110"/>
         <source>Connection Timeout</source>
         <translation>接続タイムアウト</translation>
     </message>
@@ -1670,37 +1700,9 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="171"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="167"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>不正なJSONがポーリングURLから返りました</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::PropagateDownloadFileLegacy</name>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="435"/>
-        <source>Sync was aborted by user.</source>
-        <translation>同期はユーザーによって中止されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="488"/>
-        <source>No E-Tag received from server, check Proxy/Gateway</source>
-        <translation>サーバーからE-Tagを受信できません。プロキシ/ゲートウェイを確認してください。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="494"/>
-        <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>同期再開時に違う E-Tagを受信しました。次回リトライします。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="516"/>
-        <source>Server returned wrong content-range</source>
-        <translation>サーバーが間違ったcontent-rangeを返しました</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="567"/>
-        <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
 </context>
 <context>
@@ -1711,22 +1713,32 @@ It is not advisable to use it.</source>
         <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="457"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
+        <source>The download would reduce free disk space below %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
+        <source>Free space on disk is less than %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
         <source>File was deleted from server</source>
         <translation>ファイルはサーバーから削除されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="506"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="531"/>
         <source>The file could not be downloaded completely.</source>
         <translation>このファイルのダウンロードは完了しませんでした</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="601"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>%1 はローカルファイル名が衝突しているため保存できません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="676"/>
         <source>File has changed since discovery</source>
         <translation>ファイルは発見以降に変更されました</translation>
     </message>
@@ -1734,17 +1746,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="92"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="115"/>
         <source>; Restoration Failed: %1</source>
         <translation>; 復元に失敗: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="115"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="138"/>
         <source>Continue blacklisting:</source>
         <translation>ブラックリストの続き:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="211"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="230"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>ファイルまたはフォルダーが読み込み専用の共有から削除されましたが、復元に失敗しました: %1</translation>
     </message>
@@ -1771,8 +1783,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
-        <source>Could not remove folder &apos;%1&apos;;</source>
-        <translation>ディレクトリ &apos;%1&apos;を削除できません;</translation>
+        <source>Could not remove folder &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1833,66 +1845,52 @@ It is not advisable to use it.</source>
     </message>
 </context>
 <context>
-    <name>OCC::PropagateUploadFileLegacy</name>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="243"/>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="302"/>
-        <source>Local file changed during sync, syncing once it arrived completely</source>
-        <translation>同期中にローカルファイルが変更されました。完了してからもう一度同期してください。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="246"/>
-        <source>Sync was aborted by user.</source>
-        <translation>同期はユーザーによって中止されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagator_legacy.cpp" line="252"/>
-        <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。ファイルは復元され、あなたの編集は競合するファイル内にあります。</translation>
-    </message>
-</context>
-<context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="226"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="205"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="262"/>
         <source>File Removed</source>
         <translation>ファイルを削除しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="238"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="274"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="250"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="286"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="665"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="558"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="592"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>5.4.2 以下のQt でHTTP 接続リセットが強制終了されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="566"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="600"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。ファイルは復元され、あなたの編集は競合するファイル内にあります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="597"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Poll URL missing</source>
         <translation>ポーリングURLがありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="620"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="654"/>
         <source>The local file was removed during sync.</source>
         <translation>ローカルファイルを同期中に削除します。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="646"/>
-        <source>The server did not acknowledge the last chunk. (No e-tag were present)</source>
-        <translation>サーバーは最終チャンクを認識しません。(e-tag が存在しません)</translation>
+        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2018,22 +2016,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="381"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="402"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
         <translation>チェックしていないフォルダーはローカルファイルシステムから &lt;b&gt;削除&lt;/b&gt;され､このコンピューターと同期されなくなります。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="395"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="416"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
         <translation>同期対象の選択: 同期したいリモートのサブフォルダーを選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="396"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="417"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
         <translation>同期対象の選択: 同期したくないリモートのサブフォルダーは、同期対象から外せます。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="402"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="423"/>
         <source>Choose What to Sync</source>
         <translation>同期フォルダーを選択</translation>
     </message>
@@ -2056,13 +2054,13 @@ It is not advisable to use it.</source>
         <translation>サイズ</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="191"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="229"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="207"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="250"/>
         <source>No subfolders currently on the server.</source>
         <translation>現在サーバーにサブフォルダーはありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="231"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="252"/>
         <source>An error occured while loading the list of sub folders.</source>
         <translation>サーバーからフォルダーのリスト取得時にエラーが発生しました。</translation>
     </message>
@@ -2075,17 +2073,17 @@ It is not advisable to use it.</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="80"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="84"/>
         <source>Activity</source>
         <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="86"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="90"/>
         <source>General</source>
         <translation>一般</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="92"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="96"/>
         <source>Network</source>
         <translation>ネットワーク</translation>
     </message>
@@ -2122,7 +2120,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="22"/>
-        <location filename="../src/gui/sharedialog.ui" line="234"/>
+        <location filename="../src/gui/sharedialog.ui" line="258"/>
         <source>TextLabel</source>
         <translation>テキストラベル</translation>
     </message>
@@ -2137,14 +2135,19 @@ It is not advisable to use it.</source>
         <translation>OwnCloudのパス:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="182"/>
+        <location filename="../src/gui/sharedialog.ui" line="116"/>
         <source>Set &amp;password </source>
         <translation>パスワードを設定(&amp;P)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="196"/>
+        <location filename="../src/gui/sharedialog.ui" line="130"/>
         <source>Set &amp;expiration date</source>
         <translation>有効期限を設定(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="214"/>
+        <source>Allow editing</source>
+        <translation>編集を許可</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2152,122 +2155,78 @@ It is not advisable to use it.</source>
         <translation>URLで共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="125"/>
+        <location filename="../src/gui/sharedialog.ui" line="203"/>
         <source>Copy &amp;link</source>
         <translation>&amp;linkをコピー</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="142"/>
+        <location filename="../src/gui/sharedialog.ui" line="154"/>
         <source>Set password</source>
         <translation>パスワードを設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="692"/>
-        <source>%1 path: %2</source>
-        <translation>%1 のパス: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="120"/>
         <source>%1 Sharing</source>
         <translation>%1 を共有中</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="98"/>
+        <location filename="../src/gui/sharedialog.cpp" line="103"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="112"/>
+        <location filename="../src/gui/sharedialog.cpp" line="117"/>
         <source>Folder: %2</source>
         <translation>フォルダー: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="116"/>
+        <location filename="../src/gui/sharedialog.cpp" line="121"/>
         <source>P&amp;assword protect</source>
         <translation>パスワード保護(&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="221"/>
+        <location filename="../src/gui/sharedialog.cpp" line="214"/>
         <source>Password Protected</source>
         <translation>パスワード保護</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="382"/>
+        <location filename="../src/gui/sharedialog.cpp" line="338"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>再共有権限がない共有ため、このファイルは共有できません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="528"/>
+        <location filename="../src/gui/sharedialog.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>パスワードを入力してください</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
-        <location filename="../src/gui/sharedialog.cpp" line="565"/>
+        <location filename="../src/gui/sharedialog.cpp" line="538"/>
+        <location filename="../src/gui/sharedialog.cpp" line="539"/>
         <source>&amp;Share link</source>
         <translation>リンク共有(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="583"/>
+        <location filename="../src/gui/sharedialog.cpp" line="552"/>
+        <location filename="../src/gui/sharedialog.cpp" line="564"/>
         <source>OCS API error code: %1</source>
         <translation>OCS APIエラーコード: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="605"/>
-        <source>There is no sync folder configured.</source>
-        <translation>同期フォルダーが設定されていません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="639"/>
-        <source>A sync file with the same name exists. The file cannot be registered to sync.</source>
-        <translation>同じ名前の同期ファイルがあります。このファイルは同期対象にできません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="684"/>
-        <source>The file cannot be synced.</source>
-        <translation>このファイルは同期されません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="624"/>
-        <source>Sharing of external directories is not yet working.</source>
-        <translation>外部ディレクトリの共有はまだ動作していません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="473"/>
-        <location filename="../src/gui/sharedialog.cpp" line="506"/>
+        <location filename="../src/gui/sharedialog.cpp" line="418"/>
+        <location filename="../src/gui/sharedialog.cpp" line="460"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>共有するにはパスワードが必要(&amp;A)</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="617"/>
-        <source>Cannot find a folder to upload to.</source>
-        <translation>アップロード先のフォルダーが見つかりません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="651"/>
-        <source>Waiting to upload...</source>
-        <translation>アップロード待ち...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="653"/>
-        <source>Unable to register in sync space.</source>
-        <translation>同期スペースの登録ができません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="694"/>
-        <source>Sync of registered file was not successful yet.</source>
-        <translation>登録ファイルの同期はまだ成功していません</translation>
     </message>
 </context>
 <context>
     <name>OCC::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="291"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="224"/>
         <source>Login Error</source>
         <translation>ログインエラー</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="291"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="224"/>
         <source>You must sign in as user %1</source>
         <translation>ユーザー %1 としてログインする必要があります</translation>
     </message>
@@ -2293,7 +2252,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="452"/>
+        <location filename="../src/gui/socketapi.cpp" line="447"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>%1 と共有</translation>
@@ -2502,244 +2461,249 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="97"/>
+        <location filename="../src/libsync/syncengine.cpp" line="94"/>
         <source>Success.</source>
         <translation>成功。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="104"/>
+        <location filename="../src/libsync/syncengine.cpp" line="101"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
         <translation>CSyncはジャーナルファイルの読み込みに失敗しました。ジャーナルファイルが破損しています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="107"/>
+        <location filename="../src/libsync/syncengine.cpp" line="104"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;csync 用の %1 プラグインをロードできませんでした。&lt;br/&gt;インストール状態を確認してください！&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="110"/>
+        <location filename="../src/libsync/syncengine.cpp" line="107"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>CSyncは内部ツリーの処理中にエラーに遭遇しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="113"/>
+        <location filename="../src/libsync/syncengine.cpp" line="110"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSyncで使用するメモリの確保に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="116"/>
+        <location filename="../src/libsync/syncengine.cpp" line="113"/>
         <source>CSync fatal parameter error.</source>
         <translation>CSyncの致命的なパラメータエラーです。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="119"/>
+        <location filename="../src/libsync/syncengine.cpp" line="116"/>
         <source>CSync processing step update failed.</source>
         <translation>CSyncの処理ステップの更新に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="119"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSyncの処理ステップの調停に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="125"/>
+        <location filename="../src/libsync/syncengine.cpp" line="122"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSyncはそのプロキシで認証できませんでした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSyncはプロキシもしくはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="131"/>
+        <location filename="../src/libsync/syncengine.cpp" line="128"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSyncは %1 サーバーでの認証に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="134"/>
+        <location filename="../src/libsync/syncengine.cpp" line="131"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSyncはネットワークへの接続に失敗しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="137"/>
+        <location filename="../src/libsync/syncengine.cpp" line="134"/>
         <source>A network connection timeout happened.</source>
         <translation>ネットワーク接続のタイムアウトが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="140"/>
+        <location filename="../src/libsync/syncengine.cpp" line="137"/>
         <source>A HTTP transmission error happened.</source>
         <translation>HTTPの伝送エラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="143"/>
-        <source>CSync failed due to not handled permission deniend.</source>
-        <translation>CSyncは対応できないパーミッション拒否が原因で失敗しました。</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="164"/>
+        <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>The mounted folder is temporarily not available on the server</source>
         <translation>サーバー上のマウント済フォルダーが一時的に利用できません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="167"/>
+        <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>An error occurred while opening a folder</source>
         <translation>フォルダーを開く際にエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>Error while reading folder.</source>
         <translation>フォルダーの読み込みエラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="996"/>
+        <location filename="../src/libsync/syncengine.cpp" line="984"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>親フォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1003"/>
+        <location filename="../src/libsync/syncengine.cpp" line="991"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="152"/>
+        <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: %1 サーバーには利用可能な空き領域がありません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="155"/>
+        <location filename="../src/libsync/syncengine.cpp" line="152"/>
         <source>CSync unspecified error.</source>
         <translation>CSyncの未指定のエラーです。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="158"/>
+        <location filename="../src/libsync/syncengine.cpp" line="155"/>
         <source>Aborted by the user</source>
         <translation>ユーザーによって中止されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="395"/>
+        <location filename="../src/libsync/syncengine.cpp" line="392"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
         <translation>異なるプラットフォームOS間で利用できない不正な文字コードがファイル名に含まれているため、同期できません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="146"/>
+        <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to access</source>
         <translation>CSync は接続できませんでした</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="100"/>
+        <location filename="../src/libsync/syncengine.cpp" line="97"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
         <translation>CSyncはジャーナルファイルの読み込みや作成に失敗しました。ローカルの同期フォルダーに読み書きの権限があるか確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="149"/>
+        <location filename="../src/libsync/syncengine.cpp" line="140"/>
+        <source>CSync failed due to unhandled permission denied.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="146"/>
         <source>CSync tried to create a folder that already exists.</source>
         <translation>CSyncはすでに存在するフォルダーを作成しようとしました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="158"/>
         <source>The service is temporarily unavailable</source>
         <translation>サーバーは一時的に利用できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="172"/>
         <source>An internal error number %1 occurred.</source>
         <translation>内部エラー番号 %1 が発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="230"/>
+        <location filename="../src/libsync/syncengine.cpp" line="227"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation>このアイテムは以前にエラーが発生したため同期しません: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="386"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>同期機能はシンボリックリンクをサポートしていません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="392"/>
+        <location filename="../src/libsync/syncengine.cpp" line="389"/>
         <source>File is listed on the ignore list.</source>
         <translation>ファイルは除外リストに登録されています。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="398"/>
+        <location filename="../src/libsync/syncengine.cpp" line="395"/>
         <source>Filename is too long.</source>
         <translation>ファイル名が長すぎます</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="401"/>
+        <location filename="../src/libsync/syncengine.cpp" line="398"/>
         <source>File is ignored because it&apos;s hidden.</source>
         <translation>隠しファイルのため無視されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="407"/>
+        <location filename="../src/libsync/syncengine.cpp" line="404"/>
         <source>Stat failed.</source>
         <translation>情報取得エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="429"/>
+        <location filename="../src/libsync/syncengine.cpp" line="426"/>
         <source>Filename encoding is not valid</source>
         <translation>ファイル名のエンコーディングが無効です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="561"/>
+        <location filename="../src/libsync/syncengine.cpp" line="558"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>無効な文字です、&quot;%1&quot; を変更してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="631"/>
+        <location filename="../src/libsync/syncengine.cpp" line="612"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="645"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>同期ジャーナルの初期化ができません。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="718"/>
+        <location filename="../src/libsync/syncengine.cpp" line="723"/>
         <source>Cannot open the sync journal</source>
         <translation>同期ジャーナルを開くことができません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="965"/>
-        <location filename="../src/libsync/syncengine.cpp" line="972"/>
+        <location filename="../src/libsync/syncengine.cpp" line="953"/>
+        <location filename="../src/libsync/syncengine.cpp" line="960"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;同期対象先&quot; ブラックリストにより無視されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="990"/>
+        <location filename="../src/libsync/syncengine.cpp" line="978"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1011"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバーでは読み取り専用となっているため、このファイルをアップロードすることはできません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1040"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1048"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除できないので復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1061"/>
         <source>Local files and share folder removed.</source>
         <translation>ローカルファイルと共有フォルダーを削除しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1116"/>
         <source>Move not allowed, item restored</source>
         <translation>移動できないので項目を復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1137"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1125"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 は読み取り専用のため移動できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>the destination</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1126"/>
         <source>the source</source>
         <translation>移動元</translation>
     </message>
@@ -2771,15 +2735,19 @@ It is not advisable to use it.</source>
     </message>
 </context>
 <context>
-    <name>OCC::TransmissionChecksumValidator</name>
+    <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="111"/>
-        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="133"/>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="128"/>
         <source>The checksum header is malformed.</source>
         <translation>ヘッダーのチェックサムが異常です。</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
+        <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>ダウンロードしたファイルがチェックサムエラーです。再ダウンロードします。</translation>
     </message>
@@ -2836,6 +2804,11 @@ It is not advisable to use it.</source>
         <translation>最近変更されたファイル</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
+        <source>Checking for changes in &apos;%1&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Managed Folders:</source>
         <translation>管理フォルダー:</translation>
@@ -2849,16 +2822,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Open %1 in browser</source>
         <translation>%1をブラウザーで開く</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
-        <source>Log out everywhere</source>
-        <translation>全サーバーからログアウト</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
-        <source>Log in everywhere...</source>
-        <translation>全サーバーにログイン...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="513"/>
@@ -2901,6 +2864,16 @@ It is not advisable to use it.</source>
         <translation>アカウント %1: %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="449"/>
+        <source>Log out of all accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="457"/>
+        <source>Log in to all accounts...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
@@ -2910,11 +2883,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="549"/>
         <source>No items synced recently</source>
         <translation>最近同期されたアイテムはありません。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="561"/>
-        <source>Discovering &apos;%1&apos;</source>
-        <translation> &apos;%1&apos;を検索中</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="566"/>
@@ -3173,42 +3141,42 @@ It is not advisable to use it.</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="306"/>
+        <location filename="../src/libsync/utility.cpp" line="303"/>
         <source>%Ln year(s)</source>
         <translation>%Ln年</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="307"/>
+        <location filename="../src/libsync/utility.cpp" line="304"/>
         <source>%Ln month(s)</source>
         <translation>%Lnヶ月</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="308"/>
+        <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln day(s)</source>
         <translation>%Ln日</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="309"/>
+        <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln hour(s)</source>
         <translation>%Ln時間</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="310"/>
+        <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln minute(s)</source>
         <translation>%Ln分</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="311"/>
+        <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln second(s)</source>
         <translation>%Ln秒</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="321"/>
+        <location filename="../src/libsync/utility.cpp" line="318"/>
         <source>0 seconds</source>
         <translation>0秒</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="336"/>
+        <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
