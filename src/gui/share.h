@@ -15,6 +15,7 @@
 #define SHARE_H
 
 #include "accountfwd.h"
+#include "sharee.h"
 
 #include <QObject>
 #include <QDate>
@@ -37,7 +38,7 @@ public:
         TypeUser   = 0,
         TypeGroup  = 1,
         TypeLink   = 3,
-        TypeRemote = 6,
+        TypeRemote = 6
     };
     Q_DECLARE_FLAGS(ShareTypes, ShareType)
 
@@ -61,7 +62,7 @@ public:
                    const QString& path,
                    const ShareType shareType,
                    const Permissions permissions,
-                   const QString shareWith = "");
+                   const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
 
     /*
      * Get the id
@@ -76,7 +77,7 @@ public:
     /*
      * Get the shareWith
      */
-    QString getShareWith() const;
+    QSharedPointer<Sharee> getShareWith() const;
 
     /*
      * Get permissions
@@ -110,7 +111,7 @@ protected:
     QString _path;
     ShareType _shareType;
     Permissions _permissions;
-    QString _shareWith;
+    QSharedPointer<Sharee> _shareWith;
 
 protected slots:
     void slotOcsError(int statusCode, const QString &message);

@@ -11,9 +11,12 @@
  * for more details.
  */
 
+#ifndef SHAREE_H
+#define SHAREE_H
+
 #include <QObject>
 #include <QFlags>
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 #include <QModelIndex>
 #include <QVariant>
 #include <QSharedPointer>
@@ -23,7 +26,7 @@
 
 namespace OCC {
 
-class Sharee : public QObject {
+class Sharee {
 public:
     
     enum Type {
@@ -37,10 +40,10 @@ public:
                     const QString displayName,
                     const Type type);
     
+    QString format() const;
     QString shareWith() const;
     QString displayName() const;
     Type type() const;
-
     
 private:
     QString _shareWith;
@@ -48,7 +51,7 @@ private:
     Type _type;
 };
 
-class ShareeModel : public QAbstractTableModel {
+class ShareeModel : public QAbstractListModel {
     Q_OBJECT
 public:
     explicit ShareeModel(AccountPtr account,
@@ -56,17 +59,21 @@ public:
                          const QString type,
                          QObject *parent = 0);
 
+    void fetch();
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole);
 
-    QSharedPointer<Sharee> parseSharee(const QVariantMap &data);
+    QSharedPointer<Sharee> getSharee(int at);
+
+signals:
+    void shareesReady();
 
 private slots:
     void shareesFetched(const QVariantMap &reply);
 
 private:
+    QSharedPointer<Sharee> parseSharee(const QVariantMap &data);
+
     AccountPtr _account;
     QString _search;
     QString _type;
@@ -75,3 +82,5 @@ private:
 };
 
 }
+
+#endif  //SHAREE_H

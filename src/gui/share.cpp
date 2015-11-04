@@ -24,7 +24,7 @@ Share::Share(AccountPtr account,
              const QString& path, 
              const ShareType shareType,
              const Permissions permissions,
-             const QString shareWith)
+             const QSharedPointer<Sharee> shareWith)
 : _account(account),
   _id(id),
   _path(path),
@@ -43,6 +43,11 @@ QString Share::getId() const
 Share::ShareType Share::getShareType() const
 {
     return _shareType;
+}
+
+QSharedPointer<Sharee> Share::getShareWith() const
+{
+    return _shareWith;
 }
 
 void Share::setPermissions(Permissions permissions)
@@ -288,14 +293,18 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
                                                    expireDate));
 }
 
-QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data) {
-
+QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data)
+{
+    QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
+                                             data.value("share_with_displayname").toString(),
+                                             (Sharee::Type)data.value("share_type").toInt()));
+    
     return QSharedPointer<Share>(new Share(_account,
                                            data.value("id").toString(),
                                            data.value("path").toString(),
                                            (Share::ShareType)data.value("share_type").toInt(),
                                            (Share::Permissions)data.value("permissions").toInt(),
-                                           data.value("share_with").toString()));
+                                           sharee));
 }
 
 void ShareManager::slotOcsError(int statusCode, const QString &message)

@@ -24,7 +24,20 @@ Sharee::Sharee(const QString shareWith,
   _type(type)
 {
 }
-    
+
+QString Sharee::format() const
+{
+    QString formatted = _displayName;
+
+    if (_type == Type::Group) {
+        formatted += QLatin1String(" (group)");
+    } else if (_type == Type::Federated) {
+        formatted += QLatin1String(" (remote)");
+    }
+
+    return formatted;
+}
+
 QString Sharee::shareWith() const
 {
     return _shareWith;
@@ -40,15 +53,19 @@ Sharee::Type Sharee::type() const
     return _type;
 }
 
-
 ShareeModel::ShareeModel(AccountPtr account,
                          const QString search,
                          const QString type,
                          QObject *parent)
-: QAbstractTableModel(parent),
+: QAbstractListModel(parent),
   _account(account),
   _search(search),
   _type(type)
+{
+
+}
+
+void ShareeModel::fetch()
 {
     OcsShareeJob *job = new OcsShareeJob(_account, this);
     connect(job, SIGNAL(shareeJobFinished(QVariantMap)), SLOT(shareesFetched(QVariantMap)));
@@ -66,17 +83,17 @@ void ShareeModel::shareesFetched(const QVariantMap &reply)
      */
     auto exact = data.value("exact").toMap();
     {
-        auto user = exact.value("user").toMap();
-        if (user.size() > 0) {
-            newSharees.append(parseSharee(user));
+        auto users = exact.value("users").toList();
+        foreach(auto user, users) {
+            newSharees.append(parseSharee(user.toMap()));
         }
-        auto group = exact.value("group").toMap();
-        if (group.size() > 0) {
-            newSharees.append(parseSharee(group));
+        auto groups = exact.value("groups").toList();
+        foreach(auto group, groups) {
+            newSharees.append(parseSharee(group.toMap()));
         }
-        auto remote = exact.value("remote").toMap();
-        if (remote.size() > 0) {
-            newSharees.append(parseSharee(remote));
+        auto remotes = exact.value("remotes").toList();
+        foreach(auto remote, remotes) {
+            newSharees.append(parseSharee(remote.toMap()));
         }
     }
 
@@ -102,6 +119,8 @@ void ShareeModel::shareesFetched(const QVariantMap &reply)
     beginInsertRows(QModelIndex(), _sharees.size(), newSharees.size());
     _sharees += newSharees;
     endInsertRows();
+
+    shareesReady();
 }
 
 QSharedPointer<Sharee> ShareeModel::parseSharee(const QVariantMap &data)
@@ -118,42 +137,25 @@ int ShareeModel::rowCount(const QModelIndex &) const
     return _sharees.size();
 }
 
-int ShareeModel::columnCount(const QModelIndex &) const
-{
-    return 3;
-}
-
 QVariant ShareeModel::data(const QModelIndex &index, int role) const
 {
-    if (role == Qt::DisplayRole) {
-        auto sharee = _sharees.at(index.row());
+    if (index.row() < 0 || index.row() > _sharees.size()) {
+        return QVariant();
+    }
 
-        switch(index.column()) {
-            case 0:
-                return sharee->displayName();
-            case 1:
-                return sharee->type();
-            case 2:
-                return sharee->shareWith();
-        }
+    if (role == Qt::DisplayRole || role == Qt::EditRole) {
+        return _sharees.at(index.row())->format();
     } 
     
     return QVariant();
 }
 
-QVariant ShareeModel::headerData(int section, Qt::Orientation orientation, int role)
-{
-    qDebug() << Q_FUNC_INFO << section << orientation << role;
-    if (orientation == Qt::Horizontal) {
-        switch(section) {
-            case 0:
-                return "Name";
-            case 1:
-                return "Type";
-            case 2:
-                return "Id";
-        }
+QSharedPointer<Sharee> ShareeModel::getSharee(int at) {
+    if (at < 0 || at > _sharees.size()) {
+        return QSharedPointer<Sharee>(NULL);
     }
+
+    return _sharees.at(at);
 }
 
 }

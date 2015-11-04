@@ -22,6 +22,9 @@
 #include <QSharedPointer>
 #include <QList>
 
+
+class QCompleter;
+
 namespace OCC {
 
 namespace Ui {
@@ -34,6 +37,7 @@ class QuotaInfo;
 class SyncResult;
 class Share;
 class ShareManager;
+class ShareeModel;
 
 class ShareDialogShare : public QWidget
 {
@@ -83,11 +87,11 @@ private slots:
     void done( int r );
 
 
-    void on_shareeLineEdit_textEdited(const QString &text);
+    void on_shareeLineEdit_textChanged(const QString &text);
     void on_searchPushButton_clicked();
-    void on_searchMorePushButton_clicked();
-    void on_sharePushButton_clicked();
-    void on_shareeView_activated();
+
+    void slotUpdateCompletion();
+    void slotCompleterActivated(const QModelIndex & index);
 
 private:
     Ui::ShareUserGroupDialog *_ui;
@@ -95,11 +99,13 @@ private:
     QString _sharePath;
     QString _localPath;
 
+    QCompleter *_completer;
+    ShareeModel *_completerModel;
+
     bool _resharingAllowed;
     bool _isFile;
 
     ShareManager *_manager;
-    QList<ShareDialogShare*> _shares;
 };
 
 }

@@ -52,14 +52,16 @@ ShareUserGroupDialog::ShareUserGroupDialog(AccountPtr account, const QString &sh
     //Is this a file or folder?
     _isFile = QFileInfo(localPath).isFile();
 
+    _completer = new QCompleter(this);
+    _ui->shareeLineEdit->setCompleter(_completer);
+
     _ui->searchPushButton->setEnabled(false);
-    _ui->shareeView->hide();
-    _ui->searchMorePushButton->hide();
-    _ui->sharePushButton->hide();
 
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
+    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
+    connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
 }
 
 void ShareUserGroupDialog::done( int r ) {
@@ -73,7 +75,7 @@ ShareUserGroupDialog::~ShareUserGroupDialog()
     delete _ui;
 }
 
-void ShareUserGroupDialog::on_shareeLineEdit_textEdited(const QString &text)
+void ShareUserGroupDialog::on_shareeLineEdit_textChanged(const QString &text)
 {
     if (text == "") {
         _ui->searchPushButton->setEnabled(false);
@@ -84,41 +86,18 @@ void ShareUserGroupDialog::on_shareeLineEdit_textEdited(const QString &text)
 
 void ShareUserGroupDialog::on_searchPushButton_clicked()
 {
-    ShareeModel *model = new ShareeModel(_account,
-                                         _ui->shareeLineEdit->text(),
-                                         _isFile ? QLatin1String("file") : QLatin1String("folder"),
-                                         _ui->shareeView);
-    _ui->shareeView->setModel(model);
-
-    _ui->shareeView->show();
-    _ui->searchMorePushButton->show();
-    _ui->sharePushButton->show();
-    _ui->sharePushButton->setEnabled(false);
+    _completerModel = new ShareeModel(_account,
+                                      _ui->shareeLineEdit->text(),
+                                      _isFile ? QLatin1String("file") : QLatin1String("folder"),
+                                      _completer);
+    connect(_completerModel, SIGNAL(shareesReady()), SLOT(slotUpdateCompletion()));
+    _completerModel->fetch();
 }
 
-void ShareUserGroupDialog::on_searchMorePushButton_clicked()
-{
-    //TODO IMPLEMENT
-}
-
-void ShareUserGroupDialog::on_shareeView_activated()
-{
-    _ui->sharePushButton->setEnabled(true);
-}
-
-void ShareUserGroupDialog::on_sharePushButton_clicked()
-{
-    const QModelIndex index = _ui->shareeView->currentIndex();
-
-    auto model = _ui->shareeView->model();
-
-    const QModelIndex shareWithIndex = model->index(index.row(), 2);
-    const QModelIndex typeIndex = model->index(index.row(), 1);
-
-    QString shareWith = model->data(shareWithIndex, Qt::DisplayRole).toString();
-    int type = model->data(typeIndex, Qt::DisplayRole).toInt();
-
-    _manager->createShare(_sharePath, (Share::ShareType)type, shareWith, Share::PermissionRead);
+void ShareUserGroupDialog::slotUpdateCompletion() {
+    _completer->setModel(_completerModel);
+    _ui->shareeLineEdit->setCompleter(_completer);
+    _completer->complete();
 }
 
 void ShareUserGroupDialog::getShares()
@@ -131,7 +110,10 @@ void ShareUserGroupDialog::slotSharesFetched(const QList<QSharedPointer<Share>> 
     const QString versionString = _account->serverVersion();
     qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
 
-    // TODO clear old shares
+    QLayoutItem *child;
+    while ((child = _ui->sharesLayout->takeAt(0)) != 0) {
+        delete child;
+    }
 
     foreach(const auto &share, shares) {
 
@@ -142,9 +124,20 @@ void ShareUserGroupDialog::slotSharesFetched(const QList<QSharedPointer<Share>> 
         ShareDialogShare *s = new ShareDialogShare(share, this);
         _ui->sharesLayout->addWidget(s);
     }
+    _ui->sharesLayout->invalidate();
+}
 
-    // Add all new shares to share list
+void ShareUserGroupDialog::slotCompleterActivated(const QModelIndex & index) {
+    auto sharee = _completerModel->getSharee(index.row());
 
+    if (sharee.isNull()) {
+        return;
+    }
+
+    _manager->createShare(_sharePath, 
+                          (Share::ShareType)sharee->type(),
+                          sharee->shareWith(),
+                          Share::PermissionRead);
 }
 
 ShareDialogShare::ShareDialogShare(QSharedPointer<Share> share,
@@ -154,6 +147,8 @@ ShareDialogShare::ShareDialogShare(QSharedPointer<Share> share,
   _share(share)
 {
     _ui->setupUi(this);
+
+    _ui->sharedWith->setText(share->getShareWith()->format());
 
     if (share->getPermissions() & Share::PermissionUpdate) {
         _ui->permissionUpdate->setCheckState(Qt::Checked);
