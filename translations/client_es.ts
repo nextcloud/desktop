@@ -2825,7 +2825,7 @@ No se recomienda usarla.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="451"/>
         <location filename="../src/gui/owncloudgui.cpp" line="528"/>
         <source>Log out</source>
-        <translation>Salir</translation>
+        <translation>Cerrar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="387"/>
