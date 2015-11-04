@@ -34,3 +34,4 @@ desktop.ini
 .symform-store
 .fuse_hidden*
 *.unison
+.nfs*
