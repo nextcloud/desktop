@@ -204,6 +204,10 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
+
+    if (result.status() == SyncResult::NotYetStarted) {
+        _settingsDialog->slotRefreshActivity( folder->accountState() );
+    }
 }
 
 void ownCloudGui::slotFoldersChanged()

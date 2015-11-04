@@ -132,9 +132,9 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 {
     if( _activityLists.count() == 0 ) return true;
 
-    QMap<AccountStatePtr, ActivityList>::const_iterator i = _activityLists.begin();
+    QMap<AccountState*, ActivityList>::const_iterator i = _activityLists.begin();
     while (i != _activityLists.end()) {
-        AccountStatePtr ast = i.key();
+        AccountState *ast = i.key();
         ActivityList activities = i.value();
         if( ast->isConnected() && activities.count() == 0 &&
                 ! _currentlyFetching.contains(ast) ) {
@@ -146,11 +146,11 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
     return false;
 }
 
-void ActivityListModel::startFetchJob(AccountStatePtr s)
+void ActivityListModel::startFetchJob(AccountState* s)
 {
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
     QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
-    job->setProperty("AccountStatePtr", QVariant::fromValue<AccountStatePtr>(s));
+    job->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(s));
 
     QList< QPair<QString,QString> > params;
     params.append(qMakePair(QLatin1String("page"), QLatin1String("0")));
@@ -167,7 +167,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
     qDebug() << "*** activities" << activities;
 
     ActivityList list;
-    AccountStatePtr ai = qvariant_cast<AccountStatePtr>(sender()->property("AccountStatePtr"));
+    AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
     _currentlyFetching.remove(ai);
     list.setAccountName( ai->account()->displayName());
     foreach( auto activ, activities ) {
@@ -225,18 +225,19 @@ void ActivityListModel::fetchMore(const QModelIndex &)
     foreach (AccountStatePtr asp, accounts) {
 
         // if the account is not yet managed, add an empty list.
-        if( !_activityLists.contains(asp) ) {
-            _activityLists[asp] = ActivityList();
+        if( !_activityLists.contains(asp.data()) ) {
+            _activityLists[asp.data()] = ActivityList();
         }
-        ActivityList activities = _activityLists[asp];
+        ActivityList activities = _activityLists[asp.data()];
         if( activities.count() == 0 ) {
-            startFetchJob(asp);
+            startFetchJob(asp.data());
         }
     }
 }
 
-void ActivityListModel::slotRefreshActivity(AccountStatePtr ast)
+void ActivityListModel::slotRefreshActivity(AccountState *ast)
 {
+    qDebug() << "**** Refreshing" << ast->account()->displayName();
     if(ast && _activityLists.contains(ast)) {
         _activityLists[ast].clear();
     }
@@ -272,6 +273,11 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 ActivityWidget::~ActivityWidget()
 {
     delete _ui;
+}
+
+void ActivityWidget::slotRefresh(AccountState *ptr)
+{
+    _model->slotRefreshActivity(ptr);
 }
 
 void ActivityWidget::copyToClipboard()

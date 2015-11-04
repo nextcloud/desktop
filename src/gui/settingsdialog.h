@@ -18,6 +18,7 @@
 #include <QStyledItemDelegate>
 
 #include "progressdispatcher.h"
+#include "owncloudgui.h"
 
 class QAction;
 class QActionGroup;
@@ -55,6 +56,7 @@ public slots:
     void showFirstPage();
     void showActivityPage();
     void slotSwitchPage(QAction *action);
+    void slotRefreshActivity(AccountState *accountState );
 
 protected:
     void reject() Q_DECL_OVERRIDE;

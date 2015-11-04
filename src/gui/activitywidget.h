@@ -30,6 +30,7 @@ class QPushButton;
 namespace OCC {
 
 class Account;
+class AccountStatusPtr;
 
 namespace Ui {
   class ActivityWidget;
@@ -89,19 +90,19 @@ public:
     void fetchMore(const QModelIndex&);
 
 public slots:
-    void slotRefreshActivity(AccountStatePtr ast);
+    void slotRefreshActivity(AccountState* ast);
 
 private slots:
     void slotActivitiesReceived(const QVariantMap& json);
 
 private:
-    void startFetchJob(AccountStatePtr s);
+    void startFetchJob(AccountState* s);
     void combineActivityLists();
     QString timeSpanFromNow(const QDateTime& dt) const;
 
-    QMap<AccountStatePtr, ActivityList> _activityLists;
+    QMap<AccountState*, ActivityList> _activityLists;
     ActivityList _finalList;
-    QSet<AccountStatePtr> _currentlyFetching;
+    QSet<AccountState*> _currentlyFetching;
 };
 
 /**
@@ -121,6 +122,7 @@ public:
 
 public slots:
     void slotOpenFile();
+    void slotRefresh(AccountState* ptr);
 
 protected slots:
     void copyToClipboard();

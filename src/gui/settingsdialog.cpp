@@ -237,7 +237,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
 
 void SettingsDialog::customizeStyle()
 {
-    QString highlightColor(palette().highlight().color().name());
+    QString  highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
@@ -284,6 +284,14 @@ void SettingsDialog::addActionToToolBar(QAction *action) {
     btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     _toolBar->addWidget(btn);
     btn->setMinimumWidth(_toolBar->sizeHint().height() * 1.3);
+}
+
+void SettingsDialog::slotRefreshActivity( AccountState* accountState )
+{
+    if (accountState) {
+        qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
+        _activityWidget->slotRefresh(accountState);
+    }
 }
 
 } // namespace OCC
