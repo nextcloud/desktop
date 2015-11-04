@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Sign in</source>
-        <translation type="unfinished"/>
+        <translation>Inicia la sessió</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="89"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="161"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Trieu què sincronitzar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Es requereix nova acreditació</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
@@ -1039,7 +1039,7 @@ Compte: %3
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>La lectura de la cadena de claus ha fallat amb l&apos;error: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
@@ -2144,7 +2144,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="214"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Permetre edició</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2746,7 +2746,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer descarregat no concorda amb la suma de verificació. Es reintentarà.</translation>
     </message>
 </context>
 <context>

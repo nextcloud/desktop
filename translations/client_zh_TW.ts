@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Sign in</source>
-        <translation type="unfinished"/>
+        <translation>登入</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="89"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="161"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>選擇要同步的項目</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>要求重新驗證</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
@@ -804,7 +804,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="562"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>新增資料夾同步功能的連線</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
@@ -1039,7 +1039,7 @@ Account: %3
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>從授權碼讀取資料時失敗，錯誤: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
@@ -1848,7 +1848,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="205"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>檔案名稱含有不合法的字元</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="262"/>
@@ -2145,7 +2145,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="214"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>允許編輯</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2737,7 +2737,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="128"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>校驗碼異常。</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>

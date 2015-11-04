@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Sign in</source>
-        <translation type="unfinished"/>
+        <translation>Είσοδος</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="89"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="161"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Επιλέξτε τι θα συγχρονιστεί</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται επανάληψη πιστοποίησης</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
@@ -806,7 +806,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="562"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Προσθήκη Σύνδεσης Συγχρονισμού Φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
@@ -1041,7 +1041,7 @@ Account: %3
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Η ανάγνωση από την κλειδοθήκη απέτυχε με σφάλμα: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
@@ -1852,7 +1852,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="205"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="262"/>
@@ -2154,7 +2154,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="214"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Επιτρέπεται η επεξεργασία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2746,7 +2746,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="128"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Η κεφαλίδα του αθροίσματος ελέγχου δεν είναι σωστά διαμορφωμένη.</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
@@ -2756,7 +2756,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο που μεταφορτώθηκε δεν επαληθεύει το άθροισμα ελέγχου, θα συγχρονιστεί πάλι.</translation>
     </message>
 </context>
 <context>

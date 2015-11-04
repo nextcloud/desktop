@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Sign in</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;identifier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="89"/>
@@ -125,7 +125,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="161"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Choisir le contenu à synchroniser</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>Reauthentication required</source>
-        <translation type="unfinished"/>
+        <translation>Nouvelle authentification nécessaire</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
@@ -805,7 +805,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="562"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter une synchronisation de dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
@@ -1040,7 +1040,7 @@ Compte : %3
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de l&apos;accès au trousseau : &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
@@ -1851,7 +1851,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="205"/>
         <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
+        <translation>Le nom de fichier contient au moins un caractère non valide</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="262"/>
@@ -2153,7 +2153,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="214"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Permettre la modification</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="77"/>
@@ -2745,7 +2745,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="128"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
@@ -2755,7 +2755,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier téléchargé ne correspond pas à la somme de contrôle, il va être téléchargé à nouveau.</translation>
     </message>
 </context>
 <context>
