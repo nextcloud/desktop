@@ -29,7 +29,7 @@
 namespace OCC {
 
 QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem & option ,
-                                     const QModelIndex & index) const
+                                     const QModelIndex & /* index */) const
 {
     QFont font = option.font;
 
@@ -41,7 +41,7 @@ QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem & option ,
 
     // calc height
 
-    int h = iconHeight;          // normal text height
+    int h = iconHeight;          // lets display the icon
     h += 2*margin;               // two times margin
 
     return QSize( 0, h);
@@ -81,17 +81,16 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     actionIconRect.setLeft( option.rect.left() + margin );
     actionIconRect.setWidth( iconWidth );
     actionIconRect.setHeight( iconHeight );
-    actionIconRect.setTop( actionIconRect.top() + margin ); // (iconRect.height()-iconsize.height())/2);
-
+    actionIconRect.setTop( actionIconRect.top() + margin );
     userIconRect.setLeft( actionIconRect.right() + margin );
     userIconRect.setWidth( iconWidth );
     userIconRect.setHeight( iconHeight );
-    userIconRect.setTop( actionIconRect.top() ); // (iconRect.height()-iconsize.height())/2);
+    userIconRect.setTop( actionIconRect.top() );
 
     int textTopOffset = qRound( (iconHeight - fm.height())/ 2.0 );
     // time rect
     QRect timeBox;
-    int timeBoxWidth = fm.boundingRect(QLatin1String("a few minutes ago")).width(); // FIXME.
+    int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
     timeBox.setTop( actionIconRect.top()+textTopOffset);
     timeBox.setLeft( option.rect.right() - timeBoxWidth- margin );
     timeBox.setWidth( timeBoxWidth);
@@ -111,7 +110,12 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
     painter->drawText(actionTextBox, elidedAction);
 
-    const QString elidedTime = fm.elidedText(timeText, Qt::ElideRight, timeBox.width());
+    int atPos = accountRole.indexOf(QLatin1Char('@'));
+    if( atPos > -1 )  {
+        accountRole.remove(0, atPos+1);
+    }
+    const QString timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
+    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
     painter->drawText(timeBox, elidedTime);
     painter->restore();
 
