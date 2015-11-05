@@ -38,6 +38,8 @@ QT_PLUGINS = [
     'imageformats/libqgif.dylib',
     'imageformats/libqico.dylib',
     'imageformats/libqjpeg.dylib',
+    'bearer/libqcorewlanbearer.dylib',
+    'bearer/libqgenericbearer.dylib'
     'imageformats/libqsvg.dylib',
     'imageformats/libqmng.dylib',
 ]
