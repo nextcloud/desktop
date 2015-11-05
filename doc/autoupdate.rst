@@ -89,7 +89,7 @@ To prevent automatic updates and disallow manual overrides:
 
 1. Edit this Registry key:
 
-	HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud
+    ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 

@@ -22,7 +22,7 @@
 #include <QList>
 #include <QSharedPointer>
 #include <QUrl>
-#include <QVariant>
+#include <QVariantMap>
 
 namespace OCC {
 

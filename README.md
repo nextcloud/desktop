@@ -4,7 +4,7 @@
 |-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | client-build-matrix               | [![Build Status](https://ci.owncloud.org/job/client-build-matrix-linux/badge/icon)](https://ci.owncloud.org/job/client-build-matrix-linux/)                       |
 | client-test-matrix-linux-no-build | [![Build Status](https://ci.owncloud.org/buildStatus/icon?job=client-test-matrix-linux-no-build)](https://ci.owncloud.org/job/client-test-matrix-linux-no-build/) |
-    
+| coverity_scan | [![Build Status](https://img.shields.io/coverity/scan/2482.svg)](https://scan.coverity.com/projects/owncloud-mirall)
 
 ## Introduction
 
