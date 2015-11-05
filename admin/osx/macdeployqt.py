@@ -144,6 +144,10 @@ def FindFramework(path):
   search_pathes = FRAMEWORK_SEARCH_PATH
   search_pathes.insert(0, QueryQMake('QT_INSTALL_LIBS'))
   for search_path in search_pathes:
+    # The following two lines are needed for a custom built Qt from version 5.5 on, possibly not for the one from the Qt SDK.
+    # Looks like the upstream macdeployqt also had an issue there https://bugreports.qt.io/browse/QTBUG-47868
+    if path.find( "\@rpath/"):
+      path = path.replace("@rpath/", "")
     abs_path = os.path.join(search_path, path)
     if os.path.exists(abs_path):
       return abs_path
