@@ -11,8 +11,8 @@
  * for more details.
  */
 
-#ifndef SHAREDIALOG_UG_H
-#define SHAREDIALOG_UG_H
+#ifndef SHAREUSERGROUPWIDGET_H
+#define SHAREUSERGROUPWIDGET_H
 
 #include "accountfwd.h"
 #include "QProgressIndicator.h"
@@ -28,8 +28,8 @@ class QCompleter;
 namespace OCC {
 
 namespace Ui {
-class ShareUserGroupDialog;
-class ShareDialogShare;
+class ShareUserGroupWidget;
+class ShareWidget;
 }
 
 class AbstractCredentials;
@@ -39,16 +39,16 @@ class Share;
 class ShareManager;
 class ShareeModel;
 
-class ShareDialogShare : public QWidget
+class ShareWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ShareDialogShare(QSharedPointer<Share> Share, QWidget *parent = 0);
-    ~ShareDialogShare();
+    explicit ShareWidget(QSharedPointer<Share> Share, QWidget *parent = 0);
+    ~ShareWidget();
 
 signals:
-    void shareDeleted(ShareDialogShare *share);
+    void shareDeleted(ShareWidget *share);
 
 private slots:
     void on_deleteShareButton_clicked();
@@ -58,7 +58,7 @@ private slots:
     void slotPermissionsSet();
 
 private:
-    Ui::ShareDialogShare *_ui;
+    Ui::ShareWidget *_ui;
     QSharedPointer<Share> _share;
 };
 
@@ -67,25 +67,23 @@ private:
  * @brief The ShareDialog (user/group) class
  * @ingroup gui
  */
-class ShareUserGroupDialog : public QDialog
+class ShareUserGroupWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ShareUserGroupDialog(AccountPtr account, 
+    explicit ShareUserGroupWidget(AccountPtr account, 
                                   const QString &sharePath,
                                   const QString &localPath,
                                   bool resharingAllowed,
                                   QWidget *parent = 0);
-    ~ShareUserGroupDialog();
+    ~ShareUserGroupWidget();
 
 public slots:
     void getShares();
 
 private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
-    void done( int r );
-
 
     void on_shareeLineEdit_textChanged(const QString &text);
     void on_searchPushButton_clicked();
@@ -94,7 +92,7 @@ private slots:
     void slotCompleterActivated(const QModelIndex & index);
 
 private:
-    Ui::ShareUserGroupDialog *_ui;
+    Ui::ShareUserGroupWidget *_ui;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
@@ -110,4 +108,4 @@ private:
 
 }
 
-#endif // SHAREDIALOG_UG_H
+#endif // SHAREUSERGROUPWIDGET_H

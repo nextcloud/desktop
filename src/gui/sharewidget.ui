@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OCC::ShareDialogShare</class>
- <widget class="QWidget" name="OCC::ShareDialogShare">
+ <class>OCC::ShareWidget</class>
+ <widget class="QWidget" name="OCC::ShareWidget">
   <property name="enabled">
    <bool>true</bool>
   </property>

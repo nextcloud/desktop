@@ -11,9 +11,9 @@
  * for more details.
  */
 
-#include "shareusergroupdialog.h"
-#include "ui_shareusergroupdialog.h"
-#include "ui_sharedialogshare.h"
+#include "shareusergroupwidget.h"
+#include "ui_shareusergroupwidget.h"
+#include "ui_sharewidget.h"
 #include "account.h"
 #include "json.h"
 #include "folderman.h"
@@ -36,9 +36,9 @@
 
 namespace OCC {
 
-ShareUserGroupDialog::ShareUserGroupDialog(AccountPtr account, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
-   QDialog(parent),
-    _ui(new Ui::ShareUserGroupDialog),
+ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
+   QWidget(parent),
+    _ui(new Ui::ShareUserGroupWidget),
     _account(account),
     _sharePath(sharePath),
     _localPath(localPath),
@@ -64,18 +64,12 @@ ShareUserGroupDialog::ShareUserGroupDialog(AccountPtr account, const QString &sh
     connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
 }
 
-void ShareUserGroupDialog::done( int r ) {
-    ConfigFile cfg;
-    cfg.saveGeometry(this);
-    QDialog::done(r);
-}
-
-ShareUserGroupDialog::~ShareUserGroupDialog()
+ShareUserGroupWidget::~ShareUserGroupWidget()
 {
     delete _ui;
 }
 
-void ShareUserGroupDialog::on_shareeLineEdit_textChanged(const QString &text)
+void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &text)
 {
     if (text == "") {
         _ui->searchPushButton->setEnabled(false);
@@ -84,7 +78,7 @@ void ShareUserGroupDialog::on_shareeLineEdit_textChanged(const QString &text)
     }
 }
 
-void ShareUserGroupDialog::on_searchPushButton_clicked()
+void ShareUserGroupWidget::on_searchPushButton_clicked()
 {
     _completerModel = new ShareeModel(_account,
                                       _ui->shareeLineEdit->text(),
@@ -94,18 +88,18 @@ void ShareUserGroupDialog::on_searchPushButton_clicked()
     _completerModel->fetch();
 }
 
-void ShareUserGroupDialog::slotUpdateCompletion() {
+void ShareUserGroupWidget::slotUpdateCompletion() {
     _completer->setModel(_completerModel);
     _ui->shareeLineEdit->setCompleter(_completer);
     _completer->complete();
 }
 
-void ShareUserGroupDialog::getShares()
+void ShareUserGroupWidget::getShares()
 {
     _manager->fetchShares(_sharePath);
 }
 
-void ShareUserGroupDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
+void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
     const QString versionString = _account->serverVersion();
     qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
@@ -121,13 +115,13 @@ void ShareUserGroupDialog::slotSharesFetched(const QList<QSharedPointer<Share>> 
             continue;
         }
 
-        ShareDialogShare *s = new ShareDialogShare(share, this);
+        ShareWidget *s = new ShareWidget(share, this);
         _ui->sharesLayout->addWidget(s);
     }
     _ui->sharesLayout->invalidate();
 }
 
-void ShareUserGroupDialog::slotCompleterActivated(const QModelIndex & index) {
+void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index) {
     auto sharee = _completerModel->getSharee(index.row());
 
     if (sharee.isNull()) {
@@ -140,10 +134,10 @@ void ShareUserGroupDialog::slotCompleterActivated(const QModelIndex & index) {
                           Share::PermissionRead);
 }
 
-ShareDialogShare::ShareDialogShare(QSharedPointer<Share> share,
+ShareWidget::ShareWidget(QSharedPointer<Share> share,
                                    QWidget *parent) :
   QWidget(parent),
-  _ui(new Ui::ShareDialogShare),
+  _ui(new Ui::ShareWidget),
   _share(share)
 {
     _ui->setupUi(this);
@@ -172,18 +166,18 @@ ShareDialogShare::ShareDialogShare(QSharedPointer<Share> share,
     connect(share.data(), SIGNAL(shareDeleted()), SLOT(slotShareDeleted()));
 }
 
-void ShareDialogShare::on_deleteShareButton_clicked()
+void ShareWidget::on_deleteShareButton_clicked()
 {
     setEnabled(false);
     _share->deleteShare();
 }
 
-ShareDialogShare::~ShareDialogShare()
+ShareWidget::~ShareWidget()
 {
     delete _ui;
 }
 
-void ShareDialogShare::slotPermissionsChanged()
+void ShareWidget::slotPermissionsChanged()
 {
     setEnabled(false);
     
@@ -208,12 +202,12 @@ void ShareDialogShare::slotPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareDialogShare::slotShareDeleted()
+void ShareWidget::slotShareDeleted()
 {
     deleteLater();
 }
 
-void ShareDialogShare::slotPermissionsSet()
+void ShareWidget::slotPermissionsSet()
 {
     setEnabled(true);
 }

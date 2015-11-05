@@ -77,7 +77,6 @@ public slots:
     void slotOpenPath(const QString& path);
     void slotAccountStateChanged();
     void slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed);
-    void slotShowShareUserGroupDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotDisplayIdle();

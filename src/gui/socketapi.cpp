@@ -404,51 +404,6 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
     }
 }
 
-void SocketApi::command_SHARE_USER_GROUP(const QString& localFile, QIODevice* socket)
-{
-    if (!socket) {
-        qDebug() << Q_FUNC_INFO << "No valid socket object.";
-        return;
-    }
-
-    qDebug() << Q_FUNC_INFO << localFile;
-
-    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
-    if (!shareFolder) {
-        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(localFile);
-        // files that are not within a sync folder are not synced.
-        sendMessage(socket, message);
-    } else if (!shareFolder->accountState()->isConnected()) {
-        const QString message = QLatin1String("SHARE:NOTCONNECTED:")+QDir::toNativeSeparators(localFile);
-        // if the folder isn't connected, don't open the share dialog
-        sendMessage(socket, message);
-    } else {
-        const QString folderForPath = shareFolder->path();
-        const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
-
-        // Can't share root folder
-        if (QDir::cleanPath(remotePath) == "/") {
-           const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
-            sendMessage(socket, message);
-            return;
-        }
-
-        SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFile);
-
-        bool allowReshare = true; // lets assume the good
-        if( rec.isValid() ) {
-            // check the permission: Is resharing allowed?
-            if( !rec._remotePerm.contains('R') ) {
-                allowReshare = false;
-            }
-        }
-        const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
-        sendMessage(socket, message);
-
-        emit shareUserGroupCommandReceived(remotePath, localFile, allowReshare);
-    }
-}
-
 void SocketApi::command_VERSION(const QString&, QIODevice* socket)
 {
     sendMessage(socket, QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));

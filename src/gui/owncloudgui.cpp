@@ -20,7 +20,6 @@
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
-#include "shareusergroupdialog.h"
 #if defined(Q_OS_MAC)
 #    include "settingsdialogmac.h"
 #    include "macwindow.h" // qtmacgoodies
@@ -780,27 +779,6 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     w->setAttribute( Qt::WA_DeleteOnClose, true );
     raiseDialog(w);
 }
-
-void ownCloudGui::slotShowShareUserGroupDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed)
-{
-    const auto folder = FolderMan::instance()->folderForPath(localPath);
-    if (!folder) {
-        qDebug() << "Could not open share dialog for" << localPath << "no responsible folder found";
-        return;
-    }
-
-    // For https://github.com/owncloud/client/issues/3783
-    _settingsDialog->hide();
-
-    const auto accountState = folder->accountState();
-
-    qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
-    ShareUserGroupDialog *w = new ShareUserGroupDialog(accountState->account(), sharePath, localPath, resharingAllowed);
-    w->getShares();
-    w->setAttribute( Qt::WA_DeleteOnClose, true );
-    raiseDialog(w);
-}
-
 
 
 } // end namespace
