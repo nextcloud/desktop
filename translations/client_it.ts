@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Enter your credentials to connect to the server</source>
-        <translation type="unfinished"/>
+        <translation>Digita le tue credenziali per connetterti al server</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi connessione di sincronizzazione cartelle</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Conferma rimozione connessione di sincronizzazione cartelle</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Rimuovi connessione di sincronizzazione cartelle</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="314"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 in uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="485"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Ci sono nuove cartelle che non sono state sincronizzate poiché sono troppo grandi:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="638"/>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Devi effettuare nuovamente l&apos;accesso per continuare a utilizzare l&apos;account %1.</translation>
     </message>
 </context>
 <context>
@@ -587,7 +587,7 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1082"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>In attesa di iniziare la sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1085"/>
@@ -723,17 +723,17 @@ Sei sicuro di voler eseguire questa operazione?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;aggiunta di una cartella è disabilitata perché stai già sincronizzando tutti i tuoi file. Se desideri sincronizzare più cartelle, rimuovi la cartella radice attualmente configurata.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Recupero dell&apos;elenco delle cartelle dal server...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Controllo delle modifiche in &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
@@ -810,7 +810,7 @@ Totale tempo rimanente %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi connessione di sincronizzazione</translation>
     </message>
 </context>
 <context>
@@ -1337,7 +1337,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Qt &gt;= 5.4 richieste per utilizzare il limite di banda</translation>
     </message>
 </context>
 <context>
@@ -1371,12 +1371,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>La versione %2 di %1 è disponibile. Riavvia l&apos;applicazione per iniziare l&apos;aggiornamento.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nuova versione %2 di %1 disponibile. Utilizza lo strumento di aggiornamento di sistema per installarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1716,12 +1716,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Lo scaricamento ridurrà lo spazio libero su disco al di sotto di %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Lo spazio libero su disco è inferiore a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
@@ -1785,7 +1785,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere la cartella &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1891,7 +1891,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="680"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Il server non ha riconosciuto l&apos;ultimo pezzo. (Non era presente alcun e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2591,7 +2591,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Problema di CSync a causa di un permesso negato non gestito.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2651,7 +2651,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="612"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Sono disponibili solo %1, servono almeno %2 per iniziare</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="645"/>
@@ -2747,7 +2747,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;intestazione di controllo conteneva un tipo di codice di controllo &apos;%1&apos; sconosciuto</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
@@ -2809,7 +2809,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Controlla le modifiche in &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
@@ -2869,12 +2869,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Disconnetti tutti gli account</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Accedi a tutti gli account...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>

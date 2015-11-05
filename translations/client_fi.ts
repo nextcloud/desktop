@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Poista kansion synkronointiyhteys</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista kansion synkronointiyhteyden poisto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Poista kansion synkronointiyhteys</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="314"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 käytössä</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="485"/>
@@ -726,7 +726,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Haetaan kansioluetteloa palvelimelta...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
@@ -808,7 +808,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Lisää synkronointiyhteys</translation>
     </message>
 </context>
 <context>
@@ -1333,7 +1333,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Qt &gt;= 5.4 vaaditaan kaistanrajoituksen käyttöä varten</translation>
     </message>
 </context>
 <context>
@@ -1367,12 +1367,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1-versio %2 saatavilla. Käynnistä sovellus uudelleen aloittaaksesi päivityksen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1-versio %2 on saatavilla. Käytä järjestelmän päivitystyökalua asentaaksesi sen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1712,12 +1712,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Lataaminen laskisi vapaan levytilan määrän alle rajan %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Levyllä on vapaata tilaa vähemmän kuin %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
@@ -1781,7 +1781,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ei voitu poistaa kansiota &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -3168,7 +3168,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
         <source>0 seconds</source>
-        <translation type="unfinished"/>
+        <translation>0 sekuntia</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="333"/>

@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Enter your credentials to connect to the server</source>
-        <translation type="unfinished"/>
+        <translation>Entrez vos informations d&apos;identification pour vous connecter au serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer une synchronisation de dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmer une suppression de synchronisation de dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer une Synchronisation de Dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="314"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 utilisés</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="485"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Certains dossiers n&apos;ont pas été synchronisés en raison de leur taille trop importante :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="638"/>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Vous devez vous identifier à nouveau pour continuer d&apos;utiliser le compte %1.</translation>
     </message>
 </context>
 <context>
@@ -587,7 +587,7 @@ Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimé
     <message>
         <location filename="../src/gui/folderman.cpp" line="1082"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Début de synchronisation en attente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1085"/>
@@ -733,7 +733,7 @@ Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimé
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Recherche de modifications dans &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
@@ -810,7 +810,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter une Synchronisation</translation>
     </message>
 </context>
 <context>
@@ -1717,12 +1717,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Le téléchargement réduirait l&apos;espace libre à moins de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Il y a moins de %1 d&apos;espace libre sur le disque</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
@@ -1786,7 +1786,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de supprimer le répertoire &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -2654,7 +2654,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="612"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Seulement %1 disponibles, nécessite au moins %2 pour commencer</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="645"/>
@@ -2812,7 +2812,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Recherche de modifications dans &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
@@ -2872,12 +2872,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Se déconnecter de tous les comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Se connecter à tous les comptes...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>

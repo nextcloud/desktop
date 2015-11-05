@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Enter your credentials to connect to the server</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte přihlašovací údaje pro připojení k serveru</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Odstranit připojení synchronizace adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdit odstranění připojení synchronizace adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Odstranit připojení synchronizace adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="314"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 používaný</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="485"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Jsou dostupné nové adresáře, které nebyly synchronizovány z důvodu jejich nadměrné velikosti:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="638"/>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Je třeba abyste se znovu přihlásili pro další používání účtu %1.</translation>
     </message>
 </context>
 <context>
@@ -587,7 +587,7 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1082"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Čeká na spuštění synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1085"/>
@@ -723,17 +723,17 @@ Opravdu chcete provést tuto akci?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Přidání adresáře je vypnuto, protože již synchronizujete všechny své soubory. Pokud chcete synchronizovat pouze některé adresáře, odstraňte aktuálně nastavený kořenový adresář.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Načítání seznamu adresářů ze serveru...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrola změn v &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
@@ -810,7 +810,7 @@ Celkový zbývající čas %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Přidat synchronizační připojení</translation>
     </message>
 </context>
 <context>
@@ -1337,7 +1337,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Pro možnost omezení ryhclosti připojení je vyžadován Qt &gt;= 5.4 </translation>
     </message>
 </context>
 <context>
@@ -1372,12 +1372,12 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná %1 verze %2. Restartujte aplikaci pro spuštění aktualizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupná nová %1 verze %2. Pro instalaci prosím použijte systémového správce aktualizací.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1717,12 +1717,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Stažení by snížilo velikost volného místa na disku pod %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Volné místo na disku je méně než %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
@@ -1786,7 +1786,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nezdařilo se odstranění adresáře &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1892,7 +1892,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="680"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Server nepotvrdil poslední část dat. (Nebyl nalezen e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2594,7 +2594,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>CSync selhalo z důvodu nezpracovaného zamítnutí oprávnění.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2654,7 +2654,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="612"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Je dostupných pouze %1, pro spuštění je potřeba alespoň %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="645"/>
@@ -2750,7 +2750,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Hlavička kontrolního součtu obsahovala neznámý typ součtu &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
@@ -2812,7 +2812,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrola změn v &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
@@ -2872,12 +2872,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Odhlásit ze všech účtů</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Přihlásit ke všem účtům...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>

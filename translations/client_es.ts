@@ -733,7 +733,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Buscando cambios en &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
@@ -2808,7 +2808,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Buscando cambios en &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
