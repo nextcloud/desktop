@@ -91,7 +91,6 @@ void ShareUserGroupWidget::on_searchPushButton_clicked()
 
 void ShareUserGroupWidget::slotUpdateCompletion() {
     _completer->setModel(_completerModel);
-    _ui->shareeLineEdit->setCompleter(_completer);
     _completer->complete();
 }
 
@@ -143,6 +142,9 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index) {
                           (Share::ShareType)sharee->type(),
                           sharee->shareWith(),
                           Share::PermissionRead);
+
+    _completer->setModel(NULL);
+    _ui->shareeLineEdit->setText(QString());
 }
 
 ShareWidget::ShareWidget(QSharedPointer<Share> share,
