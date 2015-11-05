@@ -108,7 +108,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     //FIXME
     QLayoutItem *child;
     while ((child = _ui->sharesLayout->takeAt(0)) != 0) {
-        delete child;
+        delete child->widget();
     }
 
     _sharees.clear();
