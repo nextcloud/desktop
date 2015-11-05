@@ -48,6 +48,8 @@ public:
     explicit ShareWidget(QSharedPointer<Share> Share, QWidget *parent = 0);
     ~ShareWidget();
 
+    QSharedPointer<Share> share() const;
+
 signals:
     void shareDeleted(ShareWidget *share);
 
