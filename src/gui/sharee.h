@@ -57,6 +57,7 @@ public:
     explicit ShareeModel(AccountPtr account,
                          const QString search,
                          const QString type,
+                         const QVector<QSharedPointer<Sharee>> &shareeBlacklist,
                          QObject *parent = 0);
 
     void fetch();
@@ -79,6 +80,7 @@ private:
     QString _type;
 
     QVector<QSharedPointer<Sharee>> _sharees;
+    QVector<QSharedPointer<Sharee>> _shareeBlacklist;
 };
 
 }

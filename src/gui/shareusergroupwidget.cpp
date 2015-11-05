@@ -83,6 +83,7 @@ void ShareUserGroupWidget::on_searchPushButton_clicked()
     _completerModel = new ShareeModel(_account,
                                       _ui->shareeLineEdit->text(),
                                       _isFile ? QLatin1String("file") : QLatin1String("folder"),
+                                      _sharees,
                                       _completer);
     connect(_completerModel, SIGNAL(shareesReady()), SLOT(slotUpdateCompletion()));
     _completerModel->fetch();
@@ -104,10 +105,13 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     const QString versionString = _account->serverVersion();
     qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
 
+    //FIXME
     QLayoutItem *child;
     while ((child = _ui->sharesLayout->takeAt(0)) != 0) {
         delete child;
     }
+
+    _sharees.clear();
 
     foreach(const auto &share, shares) {
 
@@ -117,7 +121,14 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
         ShareWidget *s = new ShareWidget(share, this);
         _ui->sharesLayout->addWidget(s);
+
+        _sharees.append(share->getShareWith());
     }
+    
+    // Add the current user to _sharees since we can't share with ourself
+    QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
+    _sharees.append(currentUser);
+
     _ui->sharesLayout->invalidate();
 }
 

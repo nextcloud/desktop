@@ -21,7 +21,7 @@
 #include <QVariantMap>
 #include <QSharedPointer>
 #include <QList>
-
+#include <QVector>
 
 class QCompleter;
 
@@ -36,6 +36,7 @@ class AbstractCredentials;
 class QuotaInfo;
 class SyncResult;
 class Share;
+class Sharee;
 class ShareManager;
 class ShareeModel;
 
@@ -104,6 +105,7 @@ private:
     bool _isFile;
 
     ShareManager *_manager;
+    QVector<QSharedPointer<Sharee>> _sharees;
 };
 
 }

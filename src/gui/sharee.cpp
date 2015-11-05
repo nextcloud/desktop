@@ -56,11 +56,13 @@ Sharee::Type Sharee::type() const
 ShareeModel::ShareeModel(AccountPtr account,
                          const QString search,
                          const QString type,
+                         const QVector<QSharedPointer<Sharee>> &shareeBlacklist,
                          QObject *parent)
 : QAbstractListModel(parent),
   _account(account),
   _search(search),
-  _type(type)
+  _type(type),
+  _shareeBlacklist(shareeBlacklist)
 {
 
 }
@@ -116,8 +118,25 @@ void ShareeModel::shareesFetched(const QVariantMap &reply)
         }
     }
 
-    beginInsertRows(QModelIndex(), _sharees.size(), newSharees.size());
-    _sharees += newSharees;
+    // Filter sharees that we have already shared with
+    QVector<QSharedPointer<Sharee>> filteredSharees;
+    foreach(const auto &sharee, newSharees) {
+        bool found = false;
+        foreach(const auto &blacklistSharee, _shareeBlacklist) {
+            if (sharee->type() == blacklistSharee->type() &&
+                sharee->shareWith() == blacklistSharee->shareWith()) {
+                found = true;
+                break;
+            }
+        }
+
+        if (found == false) {
+            filteredSharees.append(sharee);
+        }
+    }
+    
+    beginInsertRows(QModelIndex(), _sharees.size(), filteredSharees.size());
+    _sharees += filteredSharees;
     endInsertRows();
 
     shareesReady();
