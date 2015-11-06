@@ -27,6 +27,7 @@
 #include "folder.h"
 #include "openfilemanager.h"
 #include "owncloudpropagator.h"
+#include "activityitemdelegate.h"
 
 #include "ui_protocolwidget.h"
 
@@ -65,7 +66,6 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 #if defined(Q_OS_MAC)
     _ui->_treeWidget->setMinimumWidth(400);
 #endif
-
     connect(this, SIGNAL(guiLog(QString,QString)), Logger::instance(), SIGNAL(guiLog(QString,QString)));
 
     _retrySyncBtn = _ui->_dialogButtonBox->addButton(tr("Retry Sync"), QDialogButtonBox::ActionRole);
@@ -76,6 +76,15 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(false);
     connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
+
+    _issueItemView = new QTreeWidget(this);
+    header.removeLast();
+    _issueItemView->setHeaderLabels( header );
+    _issueItemView->setColumnWidth(1, 180);
+    _issueItemView->setColumnCount(4);
+    _issueItemView->setRootIsDecorated(false);
+    _issueItemView->setTextElideMode(Qt::ElideMiddle);
+    _issueItemView->header()->setObjectName("ActivityErrorListHeader");
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -233,6 +242,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
         twitem->setData(0, IgnoredIndicatorRole, true);
     }
 
+    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(1, item._file);
@@ -286,7 +296,11 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 
     QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, item);
     if(line) {
-        _ui->_treeWidget->insertTopLevelItem(0, line);
+       if( item.hasErrorStatus() ) {
+            _issueItemView->insertTopLevelItem(0, line);
+        } else {
+            _ui->_treeWidget->insertTopLevelItem(0, line);
+        }
         if (!_copyBtn->isEnabled()) {
             _copyBtn->setEnabled(true);
         }

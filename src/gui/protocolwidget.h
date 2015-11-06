@@ -45,6 +45,8 @@ public:
     ~ProtocolWidget();
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
+    QTreeWidget *issueWidget() { return _issueItemView; }
+
 public slots:
     void slotProgressInfo( const QString& folder, const ProgressInfo& progress );
     void slotItemCompleted( const QString& folder, const SyncFileItem& item, const PropagatorJob& job);
@@ -72,6 +74,7 @@ private:
 
     const int IgnoredIndicatorRole;
     Ui::ProtocolWidget *_ui;
+    QTreeWidget *_issueItemView;
     QPushButton *_retrySyncBtn;
     QPushButton *_copyBtn;
 };

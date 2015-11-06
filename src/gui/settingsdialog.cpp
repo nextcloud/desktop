@@ -86,7 +86,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _activityWidget = new ActivityWidget;
     _activityWidget->setParent(this);
     _ui->stack->addWidget(_activityWidget);
-    _activityWidget->tabWidget()->addTab(new ProtocolWidget(this), tr("Sync Protocol"));
+    _activityWidget->tabWidget()->setTabIcon(0, Theme::instance()->applicationIcon());
+
+    ProtocolWidget *pw = new ProtocolWidget(this);
+    _activityWidget->tabWidget()->addTab(pw, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
+    _activityWidget->tabWidget()->addTab(pw->issueWidget(), Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
