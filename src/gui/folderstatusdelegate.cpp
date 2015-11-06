@@ -28,6 +28,10 @@
 
 namespace OCC {
 
+FolderStatusDelegate::FolderStatusDelegate() : QStyledItemDelegate() {
+    m_moreIcon = QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/more.png")));
+}
+
 QString FolderStatusDelegate::addFolderText()
 {
     return tr("Add Folder Sync Connection");
@@ -324,13 +328,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     {
         QStyleOptionToolButton btnOpt;
-        btnOpt.text = QLatin1String("...");
+        //btnOpt.text = QLatin1String("...");
         btnOpt.state = option.state;
         btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonRect(option.rect);
+        btnOpt.icon = m_moreIcon;
+        btnOpt.iconSize = btnOpt.rect.size();
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
     }
 }
