@@ -39,6 +39,11 @@ public:
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                       const QModelIndex& index ) Q_DECL_OVERRIDE;
 
+    static int rowHeight();
+    static int iconHeight();
+private:
+    static int _margin;
+    static int _iconHeight;
 };
 
 } // namespace OCC

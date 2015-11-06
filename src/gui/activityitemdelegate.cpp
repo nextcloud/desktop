@@ -28,23 +28,41 @@
 
 namespace OCC {
 
+int ActivityItemDelegate::_iconHeight = 0;
+int ActivityItemDelegate::_margin = 0;
+
+int ActivityItemDelegate::iconHeight()
+{
+    if( _iconHeight == 0 ) {
+        QStyleOptionViewItem option;
+        QFont font = option.font;
+
+        QFontMetrics fm(font);
+
+        _iconHeight = qRound(fm.height() / 5.0 * 8.0);
+    }
+    return _iconHeight;
+}
+
+int ActivityItemDelegate::rowHeight()
+{
+    if( _margin == 0 ) {
+    QStyleOptionViewItem opt;
+
+    QFont f = opt.font;
+    QFontMetrics fm(f);
+
+    _margin = fm.height()/4;
+    }
+    return iconHeight() + 2 * _margin;
+}
+
 QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                      const QModelIndex & /* index */) const
 {
     QFont font = option.font;
 
-    QFontMetrics fm(font);
-    int iconHeight = qRound(fm.height() / 5.0 * 8.0);
-    int margin = fm.height()/4;
-
-    // TODO: set a different height for the day-line
-
-    // calc height
-
-    int h = iconHeight;          // lets display the icon
-    h += 2*margin;               // two times margin
-
-    return QSize( 0, h);
+    return QSize( 0, rowHeight() );
 }
 
 void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
