@@ -23,6 +23,9 @@ set(client_UI
     protocolwidget.ui
     settingsdialog.ui
     sharedialog.ui
+    sharelinkwidget.ui
+    shareusergroupwidget.ui
+    sharewidget.ui
     sslerrordialog.ui
     owncloudsetuppage.ui
     addcertificatedialog.ui
@@ -52,6 +55,7 @@ set(client_SRCS
     networksettings.cpp
     ocsjob.cpp
     ocssharejob.cpp
+    ocsshareejob.cpp
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
@@ -60,6 +64,9 @@ set(client_SRCS
     settingsdialog.cpp
     share.cpp
     sharedialog.cpp
+    sharelinkwidget.cpp
+    shareusergroupwidget.cpp
+    sharee.cpp
     socketapi.cpp
     sslbutton.cpp
     sslerrordialog.cpp
