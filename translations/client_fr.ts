@@ -587,7 +587,7 @@ Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimé
     <message>
         <location filename="../src/gui/folderman.cpp" line="1082"/>
         <source>Waiting to start syncing.</source>
-        <translation>Début de synchronisation en attente.</translation>
+        <translation>En attente de synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1085"/>
