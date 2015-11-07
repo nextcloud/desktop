@@ -670,22 +670,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="271"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
         <source>File</source>
         <translation>Фајл</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="224"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>Удаљена путања: %1</translation>
     </message>
@@ -2115,108 +2115,177 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
-        <source>Share NewDocument.odt</source>
-        <translation>Подели NewDocument.odt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="22"/>
-        <location filename="../src/gui/sharedialog.ui" line="258"/>
+        <location filename="../src/gui/sharedialog.ui" line="60"/>
         <source>TextLabel</source>
         <translation>Текст ознака</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="41"/>
+        <location filename="../src/gui/sharedialog.ui" line="34"/>
         <source>share label</source>
         <translation>ознака дељења</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="63"/>
+        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>ownCloud Path:</source>
         <translation>оунКлауд путања:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="116"/>
-        <source>Set &amp;password </source>
-        <translation>Постави &amp;лозинку</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="130"/>
-        <source>Set &amp;expiration date</source>
-        <translation>Датум &amp;истека</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="214"/>
-        <source>Allow editing</source>
-        <translation>Дозволи уређивање</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="77"/>
-        <source>Share link</source>
-        <translation>Веза дељења</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="203"/>
-        <source>Copy &amp;link</source>
-        <translation>Копирај &amp;везу</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="154"/>
-        <source>Set password</source>
-        <translation>Постави лозинку</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="76"/>
         <source>%1 Sharing</source>
         <translation>%1 дељење</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="103"/>
+        <location filename="../src/gui/sharedialog.cpp" line="59"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="117"/>
+        <location filename="../src/gui/sharedialog.cpp" line="73"/>
         <source>Folder: %2</source>
         <translation>Фасцикла: %2</translation>
     </message>
+</context>
+<context>
+    <name>OCC::ShareLinkWidget</name>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="121"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
+        <source>Share NewDocument.odt</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
+        <source>Share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <source>Set &amp;password </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <source>Set &amp;expiration date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <source>Copy &amp;link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
+        <source>Allow editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation>&amp;Заштићено лозинком</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="214"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation>Заштићено лозинком</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="338"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Фајл се не може делити јер је подељен без дозволе за поновно дељење.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="475"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
+        <source>Public sh&amp;aring requires a password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="538"/>
-        <location filename="../src/gui/sharedialog.cpp" line="539"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Веза дељења</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="552"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation>ОЦС АПИ код грешке: %1</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareUserGroupWidget</name>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
+        <source>Share NewDocument.odt</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <location filename="../src/gui/sharedialog.cpp" line="460"/>
-        <source>Public sh&amp;aring requires a password</source>
-        <translation>Јавно дељење з&amp;хтева лозинку</translation>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
+        <source>Search</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
+        <source>Shares</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareWidget</name>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="17"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="23"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="32"/>
+        <source>Permissions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="39"/>
+        <source>Update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="46"/>
+        <source>Create</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="53"/>
+        <location filename="../src/gui/sharewidget.ui" line="69"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="60"/>
+        <source>Share</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

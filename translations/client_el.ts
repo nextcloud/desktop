@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="73"/>
         <source>Enter your credentials to connect to the server</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε τα στοιχεία σας για να συνδεθείτε στο server</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="168"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="282"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση αφαίρεσης σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Αφαίρεση σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="314"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="465"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 σε χρήση</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="485"/>
@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Υπάρχουν νέοι φάκελοι που δεν συγχρονίστηκαν καθώς είναι πολύ μεγάλοι:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="638"/>
@@ -308,7 +308,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="245"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Θα πρέπει να συνδεθείτε ξανά για να συνεχίσετε να χρησιμοποιείτε το λογαριασμό %1</translation>
     </message>
 </context>
 <context>
@@ -587,7 +587,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1082"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1085"/>
@@ -673,22 +673,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="33"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Προσθήκη Σύνδεσης Συγχρονισμού Φακέλου</translation>
+        <translation>Προσθήκη σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="271"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
         <source>File</source>
         <translation>Αρχείο</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="224"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Syncing selected files in your account with</source>
         <translation>Συγχρονισμός επιλεγμένων αρχείων στο λογαριασμό σας με</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="227"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
         <source>Remote path: %1</source>
         <translation>Απομακρυσμένη διαδρομή: %1</translation>
     </message>
@@ -723,17 +723,17 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Η επιλογή προσθήκης φακέλου δεν είναι διαθέσιμη καθώς συγχρονίζονται ήδη όλα τα αρχεία. Για να επιλέξετε συγχρονισμό φακέλων, αφαιρέστε τον αρχικό φάκελο που έχει ρυθμιστεί.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη λίστας φακέλων από το διακομιστή...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος αλλαγών στο &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
@@ -811,7 +811,7 @@ Total time left %5</source>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Προσθήκη Σύνδεσης Συγχρονισμού</translation>
     </message>
 </context>
 <context>
@@ -1338,7 +1338,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται έκδοση Qt 5.4 ή νεώτερη, για να χρησιμοποιηθεί το όριο bandwidth</translation>
     </message>
 </context>
 <context>
@@ -1373,12 +1373,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Είναι διαθέσιμη η έκδοση %1 %2. Επανεκκινήστε την εφαρμογή για να ξεκινήσει η αναβάθμιση.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Είναι διαθέσιμη η έκδοση %1 %2. Χρησιμοποιήστε το εργαλείο αναβάθμισης του συστήματός σας για να την εγκαταστήσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1718,12 +1718,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Η λήψη θα μειώσει το διαθέσιμο χώρο στο δίσκο κάτω από %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Ο διαθέσιμος χώρος στο δίσκο είναι λιγότερος από %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
@@ -1787,7 +1787,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία διαγραφής του φακέλου &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
@@ -1893,7 +1893,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="680"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής δεν αναγνώρισε το τελευταίο τμήμα. (Δεν υπήρχε e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2121,108 +2121,177 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="14"/>
-        <source>Share NewDocument.odt</source>
-        <translation>Διαμοιρασμός NewDocument.odt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="22"/>
-        <location filename="../src/gui/sharedialog.ui" line="258"/>
+        <location filename="../src/gui/sharedialog.ui" line="60"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="41"/>
+        <location filename="../src/gui/sharedialog.ui" line="34"/>
         <source>share label</source>
         <translation>Διαμοιρασμός ετικέτας</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="63"/>
+        <location filename="../src/gui/sharedialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="53"/>
         <source>ownCloud Path:</source>
         <translation>Διαδρομή ownCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="116"/>
-        <source>Set &amp;password </source>
-        <translation>Ορισμός &amp;κωδικού πρόσβασης</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="130"/>
-        <source>Set &amp;expiration date</source>
-        <translation>Ορισμός &amp;ημερομηνίας λήξης</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="214"/>
-        <source>Allow editing</source>
-        <translation>Επιτρέπεται η επεξεργασία</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="77"/>
-        <source>Share link</source>
-        <translation>Διαμοιρασμός συνδέσμου</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="203"/>
-        <source>Copy &amp;link</source>
-        <translation>Αντιγραφή &amp;συνδέσμου</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="154"/>
-        <source>Set password</source>
-        <translation>Ορισμός κωδικού πρόσβασης</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="120"/>
+        <location filename="../src/gui/sharedialog.cpp" line="76"/>
         <source>%1 Sharing</source>
         <translation>%1 Διαμοιράστηκε</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="103"/>
+        <location filename="../src/gui/sharedialog.cpp" line="59"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="117"/>
+        <location filename="../src/gui/sharedialog.cpp" line="73"/>
         <source>Folder: %2</source>
         <translation>Φάκελος: %2</translation>
     </message>
+</context>
+<context>
+    <name>OCC::ShareLinkWidget</name>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="121"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
+        <source>Share NewDocument.odt</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
+        <source>Share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <source>Set &amp;password </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <source>Set &amp;expiration date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <source>Set password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <source>Copy &amp;link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
+        <source>Allow editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation>Π&amp;ροστασία με κωδικό</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="214"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation>Προστατευμένο με κωδικό πρόσβασης</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="338"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="475"/>
-        <source>Please Set Password</source>
-        <translation>Παρακαλούμε ορίστε Κωδικό</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="538"/>
-        <location filename="../src/gui/sharedialog.cpp" line="539"/>
-        <source>&amp;Share link</source>
-        <translation>Δ&amp;ιαμοιρασμός συνδέσμου</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="552"/>
-        <location filename="../src/gui/sharedialog.cpp" line="564"/>
-        <source>OCS API error code: %1</source>
-        <translation>OCS API κωδικός λάθους: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <location filename="../src/gui/sharedialog.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation>Ο δημόσιος &amp;διαμοιρασμός απαιτεί κωδικό πρόσβασης</translation>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
+        <source>Please Set Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
+        <source>&amp;Share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
+        <source>OCS API error code: %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareUserGroupWidget</name>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
+        <source>Share NewDocument.odt</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
+        <source>Search</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
+        <source>Shares</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareWidget</name>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="17"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="23"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="32"/>
+        <source>Permissions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="39"/>
+        <source>Update</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="46"/>
+        <source>Create</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="53"/>
+        <location filename="../src/gui/sharewidget.ui" line="69"/>
+        <source>Delete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharewidget.ui" line="60"/>
+        <source>Share</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2595,7 +2664,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Το CSync απέτυχε λόγω κατάστασης &quot;permission denied&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2655,7 +2724,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="612"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="645"/>
@@ -2751,7 +2820,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Το checksum header περιέχει άγνωστο τύπο checksum &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
@@ -2813,7 +2882,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="561"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Έλεγχος αλλαγών στο &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="331"/>
@@ -2873,12 +2942,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="449"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Έξοδος από όλους τους λογαριασμούς</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="457"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Είσοδος σε όλους τους λογαριασμούς</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="532"/>
