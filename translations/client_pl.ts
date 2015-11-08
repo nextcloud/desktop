@@ -2145,17 +2145,17 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Etykieta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
@@ -2170,17 +2170,17 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Ustaw hasło</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj &amp;link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Pozwól na edycję</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
@@ -2190,7 +2190,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Zabezpieczone hasłem</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
@@ -2206,7 +2206,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Proszę podać hasło</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
@@ -2226,17 +2226,17 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Wyszukaj</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Udziały</translation>
     </message>
 </context>
 <context>
@@ -2244,38 +2244,38 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Etykieta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
         <source>Permissions</source>
-        <translation type="unfinished"/>
+        <translation>Uprawnienia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizuj</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>Utwórz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Udostępnij</translation>
     </message>
 </context>
 <context>

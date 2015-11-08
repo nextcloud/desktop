@@ -2154,80 +2154,80 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať linku</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Štítok</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť &amp;heslo </translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť dátum &amp;expirácie</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Nastaviť heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať  &amp;odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Povoliť úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Ch&amp;rániť heslom</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Chránené heslom</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Tento súbor nemožno zdieľať, lebo bol vyzdieľaný bez možnosti ďalšieho zdieľania.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Verejné z&amp;dieľanie vyžaduje heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Prosím nastavte si heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zdieľať odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS API chybový kód: %1</translation>
     </message>
 </context>
 <context>
@@ -2235,17 +2235,17 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Hľadať</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie</translation>
     </message>
 </context>
 <context>
@@ -2253,12 +2253,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Štítok</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
@@ -2268,23 +2268,23 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizovať</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>Vytvoriť</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Zmazať</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať</translation>
     </message>
 </context>
 <context>

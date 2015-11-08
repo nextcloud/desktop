@@ -2154,80 +2154,80 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Share NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>URLで共有</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>テキストラベル</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>パスワードを設定(&amp;P)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>有効期限を設定(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを設定</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;linkをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>編集を許可</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>パスワード保護(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>パスワード保護</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>再共有権限がない共有ため、このファイルは共有できません。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>共有するにはパスワードが必要(&amp;A)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを入力してください</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>リンク共有(&amp;S)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS APIエラーコード: %1</translation>
     </message>
 </context>
 <context>
@@ -2235,17 +2235,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Share NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>共有</translation>
     </message>
 </context>
 <context>
@@ -2253,38 +2253,38 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>テキストラベル</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
         <source>Permissions</source>
-        <translation type="unfinished"/>
+        <translation>許可</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>アップデート</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>作成</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>共有</translation>
     </message>
 </context>
 <context>

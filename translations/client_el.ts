@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="227"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation>Το αρχείο προορισμού έχει μη αναμενόμενο μέγεθος ή χρόνο τροποποίησης</translation>
+        <translation>Το αρχείο προορισμού έχει μη αναμενόμενο μέγεθος ή ημερομηνία τροποποίησης</translation>
     </message>
 </context>
 <context>
@@ -2133,7 +2133,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Παράθυρο διαλόγου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
@@ -2161,80 +2161,80 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός συνδέσμου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Ορισμός &amp;κωδικού πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Ορισμός &amp;ημερομηνίας λήξης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Ορισμός κωδικού πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή &amp;συνδέσμου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Επιτρέπεται η επεξεργασία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Π&amp;ροστασία με κωδικό</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Προστατευμένο με κωδικό πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο δεν μπορεί να διαμοιραστεί γιατί διαμοιράστηκε χωρίς δικαιώματα διαμοιρασμού.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>Ο δημόσιος &amp;διαμοιρασμός απαιτεί κωδικό πρόσβασης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλούμε ορίστε Κωδικό</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>Δ&amp;ιαμοιρασμός συνδέσμου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>OCS API κωδικός λάθους: %1</translation>
     </message>
 </context>
 <context>
@@ -2242,17 +2242,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιρασμός NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Αναζήτηση</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Κοινόχρηστοι φάκελοι</translation>
     </message>
 </context>
 <context>
@@ -2260,38 +2260,38 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Φόρμα</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
         <source>Permissions</source>
-        <translation type="unfinished"/>
+        <translation>Δικαιώματα</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>Ενημέρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>Δημιουργία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Διαμοιράστε</translation>
     </message>
 </context>
 <context>

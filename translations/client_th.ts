@@ -2153,80 +2153,80 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>แชร์ NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>แชร์ลิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>ป้ายข้อความ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>ตั้ง &amp;รหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>ตั้ง &amp;วันหมดอายุ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>ตั้งรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>คัดลอก &amp;ลิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>อนุญาตให้แก้ไข</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านป้องกัน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>รหัสผ่านถูกป้องกันแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;แชร์ลิงค์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>รหัสข้อผิดพลาด OCS API: %1</translation>
     </message>
 </context>
 <context>
@@ -2234,17 +2234,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>แชร์ NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>ค้นหา</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>แชร์</translation>
     </message>
 </context>
 <context>
@@ -2252,38 +2252,38 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>แบบฟอร์ม</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>ป้ายข้อความ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
         <source>Permissions</source>
-        <translation type="unfinished"/>
+        <translation>สิทธิ์การเข้าใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>อัพเดท</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>สร้าง</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>ลบ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>แชร์</translation>
     </message>
 </context>
 <context>

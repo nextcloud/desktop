@@ -2129,7 +2129,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Finestra</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="53"/>
@@ -2157,80 +2157,80 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Condividi NuovoDocumento.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Condividi collegamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtichettaTesto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Imposta &amp;password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Imposta data di scad&amp;enza</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>imposta la password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Copy &amp;link</source>
-        <translation type="unfinished"/>
+        <translation>Copia co&amp;llegamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="175"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Consenti la modifica</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>Proteggi con p&amp;assword</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="173"/>
         <source>Password Protected</source>
-        <translation type="unfinished"/>
+        <translation>Protetta da password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="290"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Il file non può essere condiviso poiché è stato condiviso senza il permesso di condivisione.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>La condivisione pubblic&amp;a richiede una password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="427"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>imposta la password</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="490"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="491"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>Condividi colle&amp;gamento</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="516"/>
         <source>OCS API error code: %1</source>
-        <translation type="unfinished"/>
+        <translation>Codice di errore API OCS: %1</translation>
     </message>
 </context>
 <context>
@@ -2238,17 +2238,17 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Condividi NuovoDocumento.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
         <source>Search</source>
-        <translation type="unfinished"/>
+        <translation>Cerca</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Condivisioni</translation>
     </message>
 </context>
 <context>
@@ -2256,38 +2256,38 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="23"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtichettaTesto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="32"/>
         <source>Permissions</source>
-        <translation type="unfinished"/>
+        <translation>Permessi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="39"/>
         <source>Update</source>
-        <translation type="unfinished"/>
+        <translation>Aggiorna</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="46"/>
         <source>Create</source>
-        <translation type="unfinished"/>
+        <translation>Crea</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="53"/>
         <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Elimina</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="60"/>
         <source>Share</source>
-        <translation type="unfinished"/>
+        <translation>Condividi</translation>
     </message>
 </context>
 <context>
