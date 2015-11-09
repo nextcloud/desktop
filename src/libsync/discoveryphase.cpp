@@ -278,7 +278,7 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
                 // see _csync_detect_update()
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
             } else if (v.length() < int(sizeof(file_stat->remotePerm))) {
-                strncpy(file_stat->remotePerm, v.constData(), sizeof(file_stat->remotePerm));
+                strcpy(file_stat->remotePerm, v.constData());
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
             } else {
                 qWarning() << "permissions too large" << v;
