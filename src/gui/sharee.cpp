@@ -165,6 +165,9 @@ QVariant ShareeModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         return _sharees.at(index.row())->format();
     } 
+    if (role == Qt::UserRole) {
+        return QVariant::fromValue(_sharees.at(index.row()));
+    }
     
     return QVariant();
 }

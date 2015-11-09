@@ -32,6 +32,7 @@
 #include <QFileIconProvider>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QAbstractProxyModel>
 #include <QCompleter>
 
 namespace OCC {
@@ -140,9 +141,11 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     _ui->labelShares->setVisible(!shares.empty());
 }
 
-void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index) {
-    auto sharee = _completerModel->getSharee(index.row());
-
+void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
+{
+    // The index is an index from the QCompletion model which is itelf a proxy
+    // model proxying the _completerModel
+    auto sharee = qvariant_cast<QSharedPointer<Sharee>>(index.data(Qt::UserRole));
     if (sharee.isNull()) {
         return;
     }
