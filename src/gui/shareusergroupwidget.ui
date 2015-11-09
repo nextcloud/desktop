@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
-    <height>271</height>
+    <width>457</width>
+    <height>188</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,19 +20,26 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="shareeLineEdit"/>
+      <widget class="QLineEdit" name="shareeLineEdit">
+       <property name="placeholderText">
+        <string>Share with users, groups or remote users ...</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="searchPushButton">
        <property name="text">
         <string>Search</string>
        </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelShares">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -43,19 +50,6 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="sharesLayout"/>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

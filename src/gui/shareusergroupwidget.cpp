@@ -60,7 +60,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
-    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
+//    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
     connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
 }
 
@@ -90,14 +90,12 @@ void ShareUserGroupWidget::on_searchPushButton_clicked()
         QWidget *w = _ui->sharesLayout->itemAt(i)->widget();
 
         if (w != NULL) {
-            const QSharedPointer<Sharee> x = dynamic_cast<ShareWidget *>(w)->share()->getShareWith();
+            const QSharedPointer<Sharee> x = static_cast<ShareWidget *>(w)->share()->getShareWith();
             sharees.append(x);
         }
     }
 
-
     _sharees.append(currentUser);
-
 
     _completerModel = new ShareeModel(_account,
                                       _ui->shareeLineEdit->text(),
@@ -106,10 +104,11 @@ void ShareUserGroupWidget::on_searchPushButton_clicked()
                                       _completer);
     connect(_completerModel, SIGNAL(shareesReady()), SLOT(slotUpdateCompletion()));
     _completerModel->fetch();
+    _completer->setModel(_completerModel);
 }
 
-void ShareUserGroupWidget::slotUpdateCompletion() {
-    _completer->setModel(_completerModel);
+void ShareUserGroupWidget::slotUpdateCompletion()
+{
     _completer->complete();
 }
 
@@ -137,6 +136,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         ShareWidget *s = new ShareWidget(share, this);
         _ui->sharesLayout->addWidget(s);
     }
+
+    _ui->labelShares->setVisible(!shares.empty());
 }
 
 void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index) {
