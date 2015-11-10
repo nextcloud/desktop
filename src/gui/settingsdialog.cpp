@@ -171,15 +171,9 @@ void SettingsDialog::slotSwitchPage(QAction *action)
 
 void SettingsDialog::showFirstPage()
 {
-    Q_FOREACH(QAction *action, _toolBar->actions()) {
-        if (QWidgetAction *wa = qobject_cast<QWidgetAction*>(action)) {
-            if (QToolButton *qtb = qobject_cast<QToolButton*>(wa->defaultWidget())) {
-                if (QAction *a2 = qtb->defaultAction()) {
-                    a2->trigger();
-                    break;
-                }
-            }
-        }
+    QList<QAction*> actions = _toolBar->actions();
+    if (!actions.empty()) {
+        actions.first()->trigger();
     }
 }
 
