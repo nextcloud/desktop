@@ -78,6 +78,18 @@ void OwncloudHttpCredsPage::initializePage()
         if (!user.isEmpty()) {
             _ui.leUsername->setText(user);
         }
+    } else {
+        QUrl url = ocWizard->account()->url();
+
+        const QString user = url.userName();
+        const QString password = url.password();
+
+        if(!user.isEmpty()) {
+            _ui.leUsername->setText(user);
+        }
+        if(!password.isEmpty()) {
+            _ui.lePassword->setText(password);
+        }
     }
     _ui.leUsername->setFocus();
 }
