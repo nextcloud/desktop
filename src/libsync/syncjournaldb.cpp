@@ -374,13 +374,6 @@ bool SyncJournalDb::checkConnect()
             " SET transmissionChecksum = ?2, transmissionChecksumTypeId = ?3"
             " WHERE phash == ?1;");
 
-    _setFileRecordMetadataQuery.reset(new SqlQuery(_db) );
-    _setFileRecordMetadataQuery->prepare(
-            "UPDATE metadata"
-            " SET inode=?2, mode=?3, modtime=?4, type=?5, md5=?6, fileid=?7,"
-            "  remotePerm=?8, filesize=?9, ignoredChildrenRemote=?10"
-            " WHERE phash == ?1;");
-
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
                                     "downloadinfo WHERE path=?1" );
@@ -458,7 +451,6 @@ void SyncJournalDb::close()
     _getFileRecordQuery.reset(0);
     _setFileRecordQuery.reset(0);
     _setFileRecordChecksumQuery.reset(0);
-    _setFileRecordMetadataQuery.reset(0);
     _getDownloadInfoQuery.reset(0);
     _setDownloadInfoQuery.reset(0);
     _deleteDownloadInfoQuery.reset(0);
@@ -920,50 +912,26 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString& filename,
     return true;
 }
 
-bool SyncJournalDb::updateFileRecordMetadata(const SyncJournalFileRecord& record)
+bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord& record)
 {
-    QMutexLocker locker(&_mutex);
+    SyncJournalFileRecord existing = getFileRecord(record._path);
 
-    qlonglong phash = getPHash(record._path);
-    QString etag( record._etag );
-    if( etag.isEmpty() ) etag = "";
-    QString fileId( record._fileId);
-    if( fileId.isEmpty() ) fileId = "";
-    QString remotePerm (record._remotePerm);
-    if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
-
-    if( !checkConnect() ) {
-        qDebug() << "Failed to connect database.";
-        return false;
+    // If there's no existing record, just insert the new one.
+    if (existing._path.isEmpty()) {
+        return setFileRecord(record);
     }
 
-    auto & query = _setFileRecordMetadataQuery;
-
-    query->reset();
-    query->bindValue(1, QString::number(phash));
-    query->bindValue(2, record._inode);
-    query->bindValue(3, record._mode);
-    query->bindValue(4, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
-    query->bindValue(5, QString::number(record._type));
-    query->bindValue(6, etag);
-    query->bindValue(7, fileId);
-    query->bindValue(8, remotePerm);
-    query->bindValue(9, record._fileSize);
-    query->bindValue(10, record._serverHasIgnoredFiles ? 1 : 0);
-
-    if( !query->exec() ) {
-        qWarning() << "Error SQL statement setFileRecordMetadataQuery: "
-                   << query->lastQuery() <<  " :"
-                   << query->error();
-        return false;
-    }
-
-    qDebug() << query->lastQuery() << record._path << record._inode << record._mode << record._modtime
-             << record._type << etag << fileId << remotePerm << record._fileSize
-             << record._serverHasIgnoredFiles;
-
-    query->reset();
-    return true;
+    // Update the metadata on the existing record.
+    existing._inode = record._inode;
+    existing._mode = record._mode;
+    existing._modtime = record._modtime;
+    existing._type = record._type;
+    existing._etag = record._etag;
+    existing._fileId = record._fileId;
+    existing._remotePerm = record._remotePerm;
+    existing._fileSize = record._fileSize;
+    existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
+    return setFileRecord(existing);
 }
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo * res)

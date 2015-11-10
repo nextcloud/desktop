@@ -484,7 +484,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
                 FileSystem::setFileReadOnly(filePath, isReadOnly);
             }
 
-            _journal->updateFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
+            _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
             item->_should_update_metadata = false;
         }
         if (item->_isDirectory && file->should_update_metadata) {

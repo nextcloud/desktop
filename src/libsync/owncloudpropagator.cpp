@@ -634,7 +634,7 @@ void PropagateDirectory::finalize()
                 }
             }
             SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
-            _propagator->_journal->setFileRecord(record);
+            _propagator->_journal->setFileRecordMetadata(record);
         }
     }
     _state = Finished;

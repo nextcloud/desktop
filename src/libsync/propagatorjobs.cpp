@@ -200,6 +200,8 @@ void PropagateLocalRename::start()
         }
     }
 
+    SyncJournalFileRecord oldRecord =
+            _propagator->_journal->getFileRecord(_item->_originalFile);
     _propagator->_journal->deleteFileRecord(_item->_originalFile);
 
     // store the rename file name in the item.
@@ -207,6 +209,8 @@ void PropagateLocalRename::start()
 
     SyncJournalFileRecord record(*_item, targetFile);
     record._path = _item->_renameTarget;
+    record._transmissionChecksum = oldRecord._transmissionChecksum;
+    record._transmissionChecksumType = oldRecord._transmissionChecksumType;
 
     if (!_item->_isDirectory) { // Directories are saved at the end
         _propagator->_journal->setFileRecord(record);

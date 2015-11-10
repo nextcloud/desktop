@@ -40,12 +40,15 @@ public:
     virtual ~SyncJournalDb();
     SyncJournalFileRecord getFileRecord( const QString& filename );
     bool setFileRecord( const SyncJournalFileRecord& record );
+
+    /// Like setFileRecord, but preserves checksums
+    bool setFileRecordMetadata( const SyncJournalFileRecord& record );
+
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool updateFileRecordChecksum(const QString& filename,
                                   const QByteArray& transmisisonChecksum,
                                   const QByteArray& transmissionChecksumType);
-    bool updateFileRecordMetadata(const SyncJournalFileRecord& record);
     bool exists();
     void walCheckpoint();
 
@@ -171,7 +174,6 @@ private:
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
-    QScopedPointer<SqlQuery> _setFileRecordMetadataQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
     QScopedPointer<SqlQuery> _setDownloadInfoQuery;
     QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;

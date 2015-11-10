@@ -152,9 +152,14 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
 void PropagateRemoteMove::finalize()
 {
+    SyncJournalFileRecord oldRecord =
+            _propagator->_journal->getFileRecord(_item->_originalFile);
     _propagator->_journal->deleteFileRecord(_item->_originalFile);
+
     SyncJournalFileRecord record(*_item, _propagator->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
+    record._transmissionChecksum = oldRecord._transmissionChecksum;
+    record._transmissionChecksumType = oldRecord._transmissionChecksumType;
 
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("Remote Rename");

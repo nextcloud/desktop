@@ -83,7 +83,7 @@ private slots:
         record._remotePerm = "777";
         record._mode = 12;
         record._fileSize = 289055;
-        _db.updateFileRecordMetadata(record);
+        _db.setFileRecordMetadata(record);
         storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
