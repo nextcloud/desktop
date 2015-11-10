@@ -26,6 +26,7 @@
 #include "ui_activitywidget.h"
 
 class QPushButton;
+class QProgressIndicator;
 
 namespace OCC {
 
@@ -129,6 +130,7 @@ public slots:
 signals:
     void guiLog(const QString&, const QString&);
     void copyToClipboard();
+    void rowsInserted();
 
 private:
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
@@ -158,6 +160,7 @@ private:
     QTabWidget *_tab;
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
+    QProgressIndicator *_progressIndicator;
 
 };
 

@@ -32,6 +32,7 @@
 #include "accountmanager.h"
 #include "activityitemdelegate.h"
 #include "protocolwidget.h"
+#include "QProgressIndicator.h"
 
 #include "ui_activitywidget.h"
 
@@ -270,6 +271,8 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     connect(_copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
+
+    connect(_model, SIGNAL(rowsInserted(QModelIndex,int,int)), SIGNAL(rowsInserted()));
 }
 
 ActivityWidget::~ActivityWidget()
@@ -351,24 +354,32 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
 
+
     _protocolWidget = new ProtocolWidget(this);
     _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
     connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
 
     // Add the not-synced list into the tab
     QWidget *w = new QWidget;
-    QVBoxLayout *vbox = new QVBoxLayout(this);
-    vbox->addWidget(new QLabel(tr("List of ignored or errornous files"), this));
-    vbox->addWidget(_protocolWidget->issueWidget());
+    QVBoxLayout *vbox2 = new QVBoxLayout(this);
+    vbox2->addWidget(new QLabel(tr("List of ignored or errornous files"), this));
+    vbox2->addWidget(_protocolWidget->issueWidget());
     QDialogButtonBox *dlgButtonBox = new QDialogButtonBox(this);
-    vbox->addWidget(dlgButtonBox);
+    vbox2->addWidget(dlgButtonBox);
     QPushButton *_copyBtn = dlgButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(true);
     connect(_copyBtn, SIGNAL(clicked()), this, SLOT(slotCopyToClipboard()));
 
-    w->setLayout(vbox);
+    w->setLayout(vbox2);
     _tab->addTab(w, Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
+
+    // Add a progress indicator to spin if the acitivity list is updated.
+    _progressIndicator = new QProgressIndicator(this);
+    _tab->setCornerWidget(_progressIndicator);
+
+    // connect a model signal to stop the animation.
+    connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
 }
 
 void ActivitySettings::slotCopyToClipboard()
@@ -399,6 +410,7 @@ void ActivitySettings::slotCopyToClipboard()
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
+    _progressIndicator->startAnimation();
     _activityWidget->slotRefresh(ptr);
 }
 
