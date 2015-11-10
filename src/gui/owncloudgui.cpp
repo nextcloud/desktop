@@ -150,7 +150,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 {
     // if account is set up, start the configuration wizard.
     if( !AccountManager::instance()->accounts().isEmpty() ) {
-        if (_settingsDialog.isNull() || !_settingsDialog->isVisible()) {
+        if (_settingsDialog.isNull() || QApplication::activeWindow() != _settingsDialog) {
             slotShowSettings();
         } else {
             _settingsDialog->close();
