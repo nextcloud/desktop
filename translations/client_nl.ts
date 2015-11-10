@@ -717,7 +717,7 @@ Weet je zeker dat je door wilt gaan?</translation>
         <translation>Fout bij ophalen mappenlijst van de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="192"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="193"/>
         <source>Signed out</source>
         <translation>Afgemeld</translation>
     </message>
@@ -732,71 +732,71 @@ Weet je zeker dat je door wilt gaan?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="789"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Controleren op wijzigingen in &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="849"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="854"/>
         <source>Syncing %1</source>
         <translation>Synchroniseren %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="854"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="859"/>
         <source>download %1/s</source>
         <translation>download %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="856"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="861"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="862"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="867"/>
         <source>upload %1/s</source>
         <translation>upload %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="869"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="869"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 van %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <translation>%1 van %2, file %3 van %4
 Totaal resterende tijd %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
         <source>file %1 of %2</source>
         <translation>bestand %1 van %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="932"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="937"/>
         <source>Waiting...</source>
         <translation>Aan het wachten...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="934"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="939"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Wacht op %n andere map...</numerusform><numerusform>Wacht op %n andere mappen...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="940"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="945"/>
         <source>Preparing to sync...</source>
         <translation>Voorbereiden op sync...</translation>
     </message>
@@ -2243,12 +2243,17 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Delen NewDocument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="28"/>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="25"/>
+        <source>Share with users, groups or remote users ...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="32"/>
         <source>Search</source>
         <translation>Zoeken</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="40"/>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="47"/>
         <source>Shares</source>
         <translation>Gedeeld</translation>
     </message>
@@ -2261,33 +2266,32 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="23"/>
+        <location filename="../src/gui/sharewidget.ui" line="37"/>
         <source>TextLabel</source>
         <translation>Tekstlabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="32"/>
+        <location filename="../src/gui/sharewidget.ui" line="56"/>
         <source>Permissions</source>
         <translation>Rechten</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="39"/>
+        <location filename="../src/gui/sharewidget.ui" line="76"/>
         <source>Update</source>
         <translation>Bijwerken</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="46"/>
+        <location filename="../src/gui/sharewidget.ui" line="69"/>
         <source>Create</source>
         <translation>Aanmaken</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="53"/>
-        <location filename="../src/gui/sharewidget.ui" line="69"/>
+        <location filename="../src/gui/sharewidget.ui" line="62"/>
         <source>Delete</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="60"/>
+        <location filename="../src/gui/sharewidget.ui" line="83"/>
         <source>Share</source>
         <translation>Deel</translation>
     </message>
