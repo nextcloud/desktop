@@ -664,9 +664,8 @@ void CleanupPollsJob::start()
 
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
-    SyncFileItemPtr item(new SyncFileItem);
-    item->_file = info._file;
-    item->_modtime = info._modtime;
+    SyncFileItemPtr item(new SyncFileItem(
+            _journal->getFileRecord(info._file).toSyncFileItem()));
     PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
     job->start();

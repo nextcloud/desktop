@@ -85,6 +85,24 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
 }
 
+SyncFileItem SyncJournalFileRecord::toSyncFileItem()
+{
+    SyncFileItem item;
+    item._file = _path;
+    item._inode = _inode;
+    item._modtime = Utility::qDateTimeToTime_t(_modtime);
+    item._type = static_cast<SyncFileItem::Type>(_type);
+    item._etag = _etag;
+    item._fileId = _fileId;
+    item._size = _fileSize;
+    item._remotePerm = _remotePerm;
+    // item has no _mode
+    item._serverHasIgnoredFiles = _serverHasIgnoredFiles;
+    item._transmissionChecksum = _transmissionChecksum;
+    item._transmissionChecksumType = _transmissionChecksumType;
+    return item;
+}
+
 static time_t getMinBlacklistTime()
 {
     return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
