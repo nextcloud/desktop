@@ -85,6 +85,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>);
+Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>)
 
 #endif  //SHAREE_H
