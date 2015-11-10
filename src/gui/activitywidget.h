@@ -31,6 +31,7 @@ namespace OCC {
 
 class Account;
 class AccountStatusPtr;
+class ProtocolWidget;
 
 namespace Ui {
   class ActivityWidget;
@@ -89,6 +90,8 @@ public:
     bool canFetchMore(const QModelIndex& ) const;
     void fetchMore(const QModelIndex&);
 
+    ActivityList activityList() { return _finalList; }
+
 public slots:
     void slotRefreshActivity(AccountState* ast);
 
@@ -109,6 +112,7 @@ private:
  * @brief The ActivityWidget class
  * @ingroup gui
  */
+
 class ActivityWidget : public QWidget
 {
     Q_OBJECT
@@ -116,21 +120,15 @@ public:
     explicit ActivityWidget(QWidget *parent = 0);
     ~ActivityWidget();
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
-
-    // FIXME: Move the tab widget to its own widget that is used in settingsdialog.
-    QTabWidget *tabWidget() { return _ui->_tabWidget; }
+    void storeActivityList(QTextStream &ts);
 
 public slots:
     void slotOpenFile();
     void slotRefresh(AccountState* ptr);
 
-protected slots:
-    void copyToClipboard();
-
-protected:
-
 signals:
     void guiLog(const QString&, const QString&);
+    void copyToClipboard();
 
 private:
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
@@ -138,6 +136,29 @@ private:
     QPushButton *_copyBtn;
 
     ActivityListModel *_model;
+};
+
+
+class ActivitySettings : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit ActivitySettings(QWidget *parent = 0);
+    ~ActivitySettings();
+    QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
+
+public slots:
+    void slotRefresh( AccountState* ptr );
+    void slotCopyToClipboard();
+
+signals:
+    void guiLog(const QString&, const QString&);
+
+private:
+    QTabWidget *_tab;
+    ActivityWidget *_activityWidget;
+    ProtocolWidget *_protocolWidget;
+
 };
 
 }

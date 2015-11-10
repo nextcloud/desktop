@@ -36,7 +36,7 @@ class AccountSettings;
 class Application;
 class FolderMan;
 class ownCloudGui;
-class ActivityWidget;
+class ActivitySettings;
 
 /**
  * @brief The SettingsDialog class
@@ -82,7 +82,7 @@ private:
     // Maps the actions from the action group to the toolbar actions
     QHash<QAction*, QAction*> _toolbarAccountActions;
 
-    ActivityWidget *_activityWidget;
+    ActivitySettings *_activitySettings;
 
     QAction * _activityAction;
     ownCloudGui *_gui;

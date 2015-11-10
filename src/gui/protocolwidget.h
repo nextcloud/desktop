@@ -46,22 +46,20 @@ public:
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
     QTreeWidget *issueWidget() { return _issueItemView; }
+    void storeSyncActivity(QTextStream& ts);
+    void storeSyncIssues(QTextStream& ts);
 
 public slots:
     void slotProgressInfo( const QString& folder, const ProgressInfo& progress );
     void slotItemCompleted( const QString& folder, const SyncFileItem& item, const PropagatorJob& job);
     void slotOpenFile( QTreeWidgetItem* item, int );
 
-protected slots:
-    void copyToClipboard();
-    void slotRetrySync();
-
 protected:
     void showEvent(QShowEvent *);
     void hideEvent(QHideEvent *);
 
 signals:
-    void guiLog(const QString&, const QString&);
+    void copyToClipboard();
 
 private:
     void setSyncResultStatus(const SyncResult& result );
@@ -75,8 +73,6 @@ private:
     const int IgnoredIndicatorRole;
     Ui::ProtocolWidget *_ui;
     QTreeWidget *_issueItemView;
-    QPushButton *_retrySyncBtn;
-    QPushButton *_copyBtn;
 };
 
 }

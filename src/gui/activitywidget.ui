@@ -6,46 +6,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>672</width>
-    <height>640</height>
+    <width>693</width>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="1">
-    <widget class="QTabWidget" name="_tabWidget">
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="_headerLabel">
+     <property name="text">
+      <string>TextLabel</string>
      </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <property name="elideMode">
-      <enum>Qt::ElideMiddle</enum>
-     </property>
-     <widget class="QWidget" name="protocolTab">
-      <attribute name="title">
-       <string>Server Activity</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QListView" name="_activityList"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QDialogButtonBox" name="_dialogButtonBox">
-         <property name="standardButtons">
-          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListView" name="_activityList"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="_dialogButtonBox"/>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>_activityList</tabstop>
+  <tabstop>_dialogButtonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

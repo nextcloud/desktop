@@ -31,6 +31,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "activityitemdelegate.h"
+#include "protocolwidget.h"
 
 #include "ui_activitywidget.h"
 
@@ -264,10 +265,11 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
+    _ui->_headerLabel->setText(tr("Server Activities"));
+
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
-    _copyBtn->setEnabled(false);
-    connect(_copyBtn, SIGNAL(clicked()), SLOT(copyToClipboard()));
+    connect(_copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
 }
 
 ActivityWidget::~ActivityWidget()
@@ -280,38 +282,6 @@ void ActivityWidget::slotRefresh(AccountState *ptr)
     _model->slotRefreshActivity(ptr);
 }
 
-void ActivityWidget::copyToClipboard()
-{
-    QString text;
-    QTextStream ts(&text);
-#if 0
-    int topLevelItems = _ui->_activityList->topLevelItemCount();
-    for (int i = 0; i < topLevelItems; i++) {
-        QTreeWidgetItem *child = _ui->_activityList->topLevelItem(i);
-        ts << left
-                // time stamp
-            << qSetFieldWidth(10)
-            << child->data(0,Qt::DisplayRole).toString()
-                // file name
-            << qSetFieldWidth(64)
-            << child->data(1,Qt::DisplayRole).toString()
-                // folder
-            << qSetFieldWidth(30)
-            << child->data(2, Qt::DisplayRole).toString()
-                // action
-            << qSetFieldWidth(15)
-            << child->data(3, Qt::DisplayRole).toString()
-                // size
-            << qSetFieldWidth(10)
-            << child->data(4, Qt::DisplayRole).toString()
-            << qSetFieldWidth(0)
-            << endl;
-    }
-#endif
-    QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), tr("The sync status has been copied to the clipboard."));
-}
-
 // FIXME: Reused from protocol widget. Move over to utilities.
 QString ActivityWidget::timeString(QDateTime dt, QLocale::FormatType format) const
 {
@@ -320,6 +290,33 @@ QString ActivityWidget::timeString(QDateTime dt, QLocale::FormatType format) con
     static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
     dtFormat.replace(re, "\\1:mm:ss");
     return loc.toString(dt, dtFormat);
+}
+
+void ActivityWidget::storeActivityList( QTextStream& ts )
+{
+    ActivityList activities = _model->activityList();
+
+    foreach( Activity activity, activities ) {
+        ts << left
+              // account name
+           << qSetFieldWidth(30)
+           << activity._accName
+              // date and time
+           << qSetFieldWidth(34)
+           << activity._dateTime.toString()
+              // subject
+           << qSetFieldWidth(10)
+           << activity._subject
+              // file
+           << qSetFieldWidth(30)
+           << activity._file
+              // message (mostly empty)
+           << qSetFieldWidth(55)
+           << activity._message
+              //
+           << qSetFieldWidth(0)
+           << endl;
+    }
 }
 
 void ActivityWidget::slotOpenFile( )
@@ -339,5 +336,76 @@ void ActivityWidget::slotOpenFile( )
     }
 #endif
 }
+
+
+ActivitySettings::ActivitySettings(QWidget *parent)
+    :QWidget(parent)
+{
+    QHBoxLayout *hbox = new QHBoxLayout(this);
+    setLayout(hbox);
+
+    // create a tab widget for the three activity views
+    _tab = new QTabWidget(this);
+    hbox->addWidget(_tab);
+    _activityWidget = new ActivityWidget(this);
+    _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
+    connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
+
+    _protocolWidget = new ProtocolWidget(this);
+    _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
+    connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
+
+    // Add the not-synced list into the tab
+    QWidget *w = new QWidget;
+    QVBoxLayout *vbox = new QVBoxLayout(this);
+    vbox->addWidget(new QLabel(tr("List of ignored or errornous files"), this));
+    vbox->addWidget(_protocolWidget->issueWidget());
+    QDialogButtonBox *dlgButtonBox = new QDialogButtonBox(this);
+    vbox->addWidget(dlgButtonBox);
+    QPushButton *_copyBtn = dlgButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
+    _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
+    _copyBtn->setEnabled(true);
+    connect(_copyBtn, SIGNAL(clicked()), this, SLOT(slotCopyToClipboard()));
+
+    w->setLayout(vbox);
+    _tab->addTab(w, Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
+}
+
+void ActivitySettings::slotCopyToClipboard()
+{
+    QString text;
+    QTextStream ts(&text);
+
+    int idx = _tab->currentIndex();
+    QString theSubject;
+
+    if( idx == 0 ) {
+        // the activity widget
+        _activityWidget->storeActivityList(ts);
+        theSubject = tr("server activity list");
+    } else if(idx == 1 ) {
+        // the protocol widget
+        _protocolWidget->storeSyncActivity(ts);
+        theSubject = tr("sync activity list");
+    } else if(idx == 2 ) {
+        // issues Widget
+        theSubject = tr("not syned items list");
+       _protocolWidget->storeSyncIssues(ts);
+    }
+
+    QApplication::clipboard()->setText(text);
+    emit guiLog(tr("Copied to clipboard"), tr("The %1 has been copied to the clipboard.").arg(theSubject));
+}
+
+void ActivitySettings::slotRefresh( AccountState* ptr )
+{
+    _activityWidget->slotRefresh(ptr);
+}
+
+ActivitySettings::~ActivitySettings()
+{
+
+}
+
 
 }

@@ -81,16 +81,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
     addActionToToolBar(_activityAction);
+    _activitySettings = new ActivitySettings;
+    _ui->stack->addWidget(_activitySettings);
+    connect( _activitySettings, SIGNAL(guiLog(QString,QString)), _gui,
+             SLOT(slotShowOptionalTrayMessage(QString,QString)) );
 
-    // FIXME: Put this QTabWidget into its own class to be used here.
-    _activityWidget = new ActivityWidget;
-    _activityWidget->setParent(this);
-    _ui->stack->addWidget(_activityWidget);
-    _activityWidget->tabWidget()->setTabIcon(0, Theme::instance()->applicationIcon());
-
-    ProtocolWidget *pw = new ProtocolWidget(this);
-    _activityWidget->tabWidget()->addTab(pw, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-    _activityWidget->tabWidget()->addTab(pw->issueWidget(), Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
+    // Add the protocol widget
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -104,7 +100,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_activityAction, _activityWidget);
+    _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
@@ -294,7 +290,7 @@ void SettingsDialog::slotRefreshActivity( AccountState* accountState )
 {
     if (accountState) {
         qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
-        _activityWidget->slotRefresh(accountState);
+        _activitySettings->slotRefresh(accountState);
     }
 }
 
