@@ -54,7 +54,6 @@ public:
     QByteArray _fileId;
     qint64     _fileSize;
     QByteArray _remotePerm;
-    int        _mode;
     bool       _serverHasIgnoredFiles;
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;

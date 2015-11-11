@@ -467,7 +467,7 @@ SqlQuery* SocketApi::getSqlQuery( Folder *folder )
 
     /* No valid sql query object yet for this folder */
     int rc;
-    const QString sql("SELECT inode, mode, modtime, type, md5, fileid, remotePerm FROM "
+    const QString sql("SELECT inode, modtime, type, md5, fileid, remotePerm FROM "
                       "metadata WHERE phash=?1");
     QString dbFileName = folder->journalDb()->databaseFilePath();
 
@@ -521,12 +521,11 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
         if (query->next()) {
             rec._path    = fileName;
             rec._inode   = query->int64Value(0);
-            rec._mode    = query->intValue(1);
-            rec._modtime = Utility::qDateTimeFromTime_t( query->int64Value(2));
-            rec._type    = query->intValue(3);
-            rec._etag    = query->baValue(4);
-            rec._fileId  = query->baValue(5);
-            rec._remotePerm = query->baValue(6);
+            rec._modtime = Utility::qDateTimeFromTime_t( query->int64Value(1));
+            rec._type    = query->intValue(2);
+            rec._etag    = query->baValue(3);
+            rec._fileId  = query->baValue(4);
+            rec._remotePerm = query->baValue(5);
         }
         query->reset();
     }

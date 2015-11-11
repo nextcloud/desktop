@@ -685,7 +685,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         _setFileRecordQuery->bindValue(4, record._inode );
         _setFileRecordQuery->bindValue(5, 0 ); // uid Not used
         _setFileRecordQuery->bindValue(6, 0 ); // gid Not used
-        _setFileRecordQuery->bindValue(7, record._mode );
+        _setFileRecordQuery->bindValue(7, 0 ); // mode Not used
         _setFileRecordQuery->bindValue(8, QString::number(Utility::qDateTimeToTime_t(record._modtime)));
         _setFileRecordQuery->bindValue(9, QString::number(record._type) );
         _setFileRecordQuery->bindValue(10, etag );
@@ -703,7 +703,6 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         }
 
         qDebug() <<  _setFileRecordQuery->lastQuery() << phash << plen << record._path << record._inode
-                 << record._mode
                  << QString::number(Utility::qDateTimeToTime_t(record._modtime)) << QString::number(record._type)
                  << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0)
                  << record._transmissionChecksum << record._transmissionChecksumType << checksumTypeId;
@@ -778,7 +777,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             rec._inode   = _getFileRecordQuery->intValue(1);
             //rec._uid     = _getFileRecordQuery->value(2).toInt(&ok); Not Used
             //rec._gid     = _getFileRecordQuery->value(3).toInt(&ok); Not Used
-            rec._mode    = _getFileRecordQuery->intValue(4);
+            //rec._mode    = _getFileRecordQuery->intValue(4);
             rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->int64Value(5));
             rec._type    = _getFileRecordQuery->intValue(6);
             rec._etag    = _getFileRecordQuery->baValue(7);
@@ -923,7 +922,6 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord& record)
 
     // Update the metadata on the existing record.
     existing._inode = record._inode;
-    existing._mode = record._mode;
     existing._modtime = record._modtime;
     existing._type = record._type;
     existing._etag = record._etag;

@@ -28,14 +28,14 @@
 namespace OCC {
 
 SyncJournalFileRecord::SyncJournalFileRecord()
-    :_inode(0), _type(0), _fileSize(0), _mode(0), _serverHasIgnoredFiles(false)
+    :_inode(0), _type(0), _fileSize(0), _serverHasIgnoredFiles(false)
 {
 }
 
 SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QString &localFileName)
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
       _type(item._type), _etag(item._etag), _fileId(item._fileId), _fileSize(item._size),
-      _remotePerm(item._remotePerm), _mode(0), _serverHasIgnoredFiles(item._serverHasIgnoredFiles),
+      _remotePerm(item._remotePerm), _serverHasIgnoredFiles(item._serverHasIgnoredFiles),
       _transmissionChecksum(item._transmissionChecksum),
       _transmissionChecksumType(item._transmissionChecksumType)
 {
@@ -96,7 +96,6 @@ SyncFileItem SyncJournalFileRecord::toSyncFileItem()
     item._fileId = _fileId;
     item._size = _fileSize;
     item._remotePerm = _remotePerm;
-    // item has no _mode
     item._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     item._transmissionChecksum = _transmissionChecksum;
     item._transmissionChecksumType = _transmissionChecksumType;
@@ -176,7 +175,6 @@ bool operator==(const SyncJournalFileRecord & lhs,
             && lhs._fileId == rhs._fileId
             && lhs._fileSize == rhs._fileSize
             && lhs._remotePerm == rhs._remotePerm
-            && lhs._mode == rhs._mode
             && lhs._serverHasIgnoredFiles == rhs._serverHasIgnoredFiles
             && lhs._transmissionChecksum == rhs._transmissionChecksum
             && lhs._transmissionChecksumType == rhs._transmissionChecksumType;
