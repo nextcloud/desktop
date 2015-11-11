@@ -29,7 +29,7 @@ class OcsShareeJob : public OcsJob {
     Q_OBJECT
 public:
 
-    explicit OcsShareeJob(AccountPtr account, QObject *parent = 0);
+    explicit OcsShareeJob(AccountPtr account);
 
     /**
      * Get a list of sharees

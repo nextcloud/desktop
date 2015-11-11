@@ -69,7 +69,7 @@ ShareeModel::ShareeModel(AccountPtr account,
 
 void ShareeModel::fetch()
 {
-    OcsShareeJob *job = new OcsShareeJob(_account, this);
+    OcsShareeJob *job = new OcsShareeJob(_account);
     connect(job, SIGNAL(shareeJobFinished(QVariantMap)), SLOT(shareesFetched(QVariantMap)));
     job->getSharees(_search, _type, 1, 50);
 }

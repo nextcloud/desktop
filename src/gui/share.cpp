@@ -52,7 +52,7 @@ QSharedPointer<Sharee> Share::getShareWith() const
 
 void Share::setPermissions(Permissions permissions)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPermissionsSet(QVariantMap, QVariant)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPermissions(getId(), permissions);
@@ -71,7 +71,7 @@ Share::Permissions Share::getPermissions() const
 
 void Share::deleteShare()
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotDeleted()));
     connect(job, SIGNAL(ocsError(int, const QString &)), SLOT(slotOcsError(int, const QString &)));
     job->deleteShare(getId());
@@ -125,7 +125,7 @@ bool LinkShare::getPublicUpload()
 
 void LinkShare::setPublicUpload(bool publicUpload)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPublicUploadSet(QVariantMap, QVariant)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPublicUpload(getId(), publicUpload);
@@ -144,7 +144,7 @@ void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
 
 void LinkShare::setPassword(const QString &password)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPasswordSet(QVariantMap, QVariant)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPassword(getId(), password);
@@ -158,7 +158,7 @@ void LinkShare::slotPasswordSet(const QVariantMap&, const QVariant &value)
 
 void LinkShare::setExpireDate(const QDate &date)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotExpireDateSet(QVariantMap, QVariant)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setExpireDate(getId(), date);
@@ -180,7 +180,7 @@ ShareManager::ShareManager(AccountPtr account, QObject *parent)
 void ShareManager::createLinkShare(const QString &path,
                                    const QString &password)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotLinkShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->createLinkShare(path, password);
@@ -212,7 +212,7 @@ void ShareManager::createShare(const QString& path,
                                const QString shareWith,
                                const Share::Permissions permissions)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->createShare(path, shareType, shareWith, permissions);
@@ -229,7 +229,7 @@ void ShareManager::slotShareCreated(const QVariantMap &reply)
 
 void ShareManager::fetchShares(const QString &path)
 {
-    OcsShareJob *job = new OcsShareJob(_account, this);
+    OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotSharesFetched(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->getShares(path);

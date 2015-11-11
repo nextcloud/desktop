@@ -20,8 +20,8 @@
 
 namespace OCC {
 
-OcsJob::OcsJob(AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, "", parent)
+OcsJob::OcsJob(AccountPtr account)
+: AbstractNetworkJob(account, "")
 {
     _passStatusCodes.append(100);
     setIgnoreCredentialFailure(true);
@@ -109,7 +109,6 @@ bool OcsJob::finished()
     } else {
         emit jobFinished(json);
     }
-    deleteLater();
     return true;
 }
 

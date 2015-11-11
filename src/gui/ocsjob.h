@@ -38,7 +38,7 @@ class OcsJob : public AbstractNetworkJob {
 
 protected:
 
-    explicit OcsJob(AccountPtr account, QObject* parent = 0);
+    explicit OcsJob(AccountPtr account);
 
     /**
      * Set the verb for the job

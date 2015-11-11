@@ -36,7 +36,7 @@ public:
     /**
      * Constructor for new shares or listing of shares
      */
-    explicit OcsShareJob(AccountPtr account, QObject *parent = 0);
+    explicit OcsShareJob(AccountPtr account);
 
     /**
      * Get all the shares

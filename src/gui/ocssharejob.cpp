@@ -20,8 +20,8 @@
 
 namespace OCC {
 
-OcsShareJob::OcsShareJob(AccountPtr account, QObject* parent)
-: OcsJob(account, parent)
+OcsShareJob::OcsShareJob(AccountPtr account)
+: OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
     connect(this, SIGNAL(jobFinished(QVariantMap)), this, SLOT(jobDone(QVariantMap)));
