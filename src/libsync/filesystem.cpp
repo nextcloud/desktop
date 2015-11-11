@@ -115,7 +115,7 @@ static QFile::Permissions getDefaultWritePermissions()
 {
     QFile::Permissions result = QFile::WriteUser;
 #ifndef Q_OS_WIN
-    __mode_t mask = umask(0);
+    mode_t mask = umask(0);
     umask(mask);
     if (!(mask & S_IWGRP)) {
         result |= QFile::WriteGroup;
