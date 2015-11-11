@@ -286,7 +286,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             foreach(Folder* folder, map.values()) {
                 qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
                 QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
-                allStatusStrings += tr("Folder %1: %2").arg(folder->alias(), folderMessage);
+                allStatusStrings += tr("Folder %1: %2").arg(folder->aliasGui(), folderMessage);
             }
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
@@ -329,13 +329,6 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             firstFolder = false;
             menu->addSeparator();
             menu->addAction(tr("Managed Folders:"))->setDisabled(true);
-        }
-
-        // If there can only be a single sync folder, showing the alias is
-        // unnecessary.
-        QString folderName = folder->alias();
-        if (singleSyncFolder) {
-            folderName = Theme::instance()->appNameGUI();
         }
 
         QAction *action = new QAction( tr("Open folder '%1'").arg(folder->path()), this );
