@@ -87,7 +87,7 @@ static void check_csync_exclude_load(void **state)
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes) );
     assert_int_equal(rc, 0);
 
-    assert_string_equal(csync->excludes->vector[0], "*.filepart");
+    assert_string_equal(csync->excludes->vector[0], "*~");
     assert_int_not_equal(csync->excludes->count, 0);
 }
 
