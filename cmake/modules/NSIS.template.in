@@ -40,6 +40,7 @@
 !define QT_DLL_PATH "${MING_BIN}"
 !define ACCESSIBLE_DLL_PATH "${MING_LIB}/qt5/plugins/accessible"
 !define SQLITE_DLL_PATH "${MING_LIB}/qt5/plugins/sqldrivers"
+!define BEARER_DLL_PATH "${MING_LIB}/qt5/plugins/bearer"
 !define IMAGEFORMATS_DLL_PATH "${MING_LIB}/qt5/plugins/imageformats"
 !define PLATFORMS_DLL_PATH "${MING_LIB}/qt5/plugins/platforms"
 
@@ -405,6 +406,10 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    SetOutPath "$INSTDIR\sqldrivers"
    File "${SQLITE_DLL_PATH}\qsqlite.dll"
+
+   SetOutPath "$INSTDIR\bearer"
+   File "${BEARER_DLL_PATH}\qgenericbearer.dll"
+   File "${BEARER_DLL_PATH}\qnativewifibearer.dll"
 
    SetOutPath "$INSTDIR"
    ;License & release notes.
