@@ -59,10 +59,10 @@ private slots:
 
     void testIsSelect() {
         SqlQuery q(_db);
-        q.prepare("SELECT foo FROM bar;");
+        q.prepare("SELECT id FROM addresses;");
         QVERIFY( q.isSelect() );
 
-        q.prepare("UPDATE bla SET foo = 1;");
+        q.prepare("UPDATE addresses SET id = 1;");
         QVERIFY( !q.isSelect());
     }
 
