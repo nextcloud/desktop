@@ -69,7 +69,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->lineEdit_password, SIGNAL(textChanged(QString)), this, SLOT(slotPasswordChanged(QString)));
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
-    connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotCalendarClicked(QDate)));
+    connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotExpireDateChanged(QDate)));
     connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotCheckBoxEditingClicked()));
 
     //Disable checkbox
@@ -156,9 +156,11 @@ void ShareLinkWidget::slotExpireSet()
     _pi_date->stopAnimation();
 }
 
-void ShareLinkWidget::slotCalendarClicked(const QDate &date)
+void ShareLinkWidget::slotExpireDateChanged(const QDate &date)
 {
-    setExpireDate(date);
+    if (_ui->checkBox_expire->isChecked()) {
+        setExpireDate(date);
+    }
 }
 
 ShareLinkWidget::~ShareLinkWidget()
@@ -246,9 +248,9 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             }
 
             _ui->checkBox_expire->setEnabled(true);
+            _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
             if (_share->getExpireDate().isValid()) {
                 _ui->calendar->setDate(_share->getExpireDate());
-                _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
                 _ui->calendar->setEnabled(true);
                 _ui->checkBox_expire->setChecked(true);
             } else {

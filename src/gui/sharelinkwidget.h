@@ -60,7 +60,7 @@ private slots:
     void slotDeleteShareFetched();
     void slotPasswordSet();
     void slotExpireSet();
-    void slotCalendarClicked(const QDate &date);
+    void slotExpireDateChanged(const QDate &date);
     void slotCheckBoxShareLinkClicked();
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
