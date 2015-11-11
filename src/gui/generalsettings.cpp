@@ -22,7 +22,6 @@
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
 #include "synclogdialog.h"
-#include "protocolwidget.h"
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
@@ -71,8 +70,6 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
 
-    _protocolWidget = new ProtocolWidget;
-
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
      */
@@ -88,7 +85,6 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
     connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
-    connect(_ui->openSyncLog, SIGNAL(clicked()), SLOT(slotOpenSyncLog()));
 
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountAddedOrRemoved()));
@@ -154,20 +150,6 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
-}
-
-void GeneralSettings::slotOpenSyncLog()
-{
-    // the protocolwidget is connected to the ProgressDispatcher ot collect
-    // notifications also in case the logwindow is not visible. It is passed
-    // here to the LogDialog constructor which is not destroyed once created
-    // except in the destructor here.
-    if (_syncLogDialog.isNull()) {
-        _syncLogDialog = new SyncLogDialog(0, _protocolWidget);
-        _syncLogDialog->open();
-    } else {
-        ownCloudGui::raiseDialog(_syncLogDialog);
-    }
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()

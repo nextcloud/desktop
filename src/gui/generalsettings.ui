@@ -161,13 +161,6 @@
       <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QPushButton" name="openSyncLog">
-          <property name="text">
-           <string>&amp;Open Synclog</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -276,7 +269,6 @@
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
   <tabstop>crashreporterCheckBox</tabstop>
-  <tabstop>openSyncLog</tabstop>
   <tabstop>restartButton</tabstop>
  </tabstops>
  <resources/>
