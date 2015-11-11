@@ -552,6 +552,16 @@ void ownCloudGui::slotRebuildRecentMenus()
     _recentActionsMenu->addAction(_actionRecent);
 }
 
+/// Returns true if the completion of a given item should show up in the
+/// 'Recent Activity' menu
+static bool shouldShowInRecentsMenu(const SyncFileItem& item)
+{
+    return
+        !Progress::isIgnoredKind(item._status)
+     && item._instruction != CSYNC_INSTRUCTION_EVAL
+     && item._instruction != CSYNC_INSTRUCTION_NONE;
+}
+
 
 void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& progress)
 {
@@ -577,7 +587,8 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
 
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 
-    if (!progress._lastCompletedItem.isEmpty() && !Progress::isIgnoredKind(progress._lastCompletedItem._status)) {
+    if (!progress._lastCompletedItem.isEmpty()
+            && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
 
         if (Progress::isWarningKind(progress._lastCompletedItem._status)) {
             // display a warn icon if warnings happened.
