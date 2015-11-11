@@ -24,6 +24,7 @@
 #include <QVector>
 
 class QCompleter;
+class QModelIndex;
 
 namespace OCC {
 
