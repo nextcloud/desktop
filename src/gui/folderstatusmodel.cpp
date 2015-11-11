@@ -925,7 +925,10 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     if (folderIndex < 0) { return; }
 
     SyncResult::Status state = f->syncResult().status();
-    if (state == SyncResult::NotYetStarted) {
+    if (f->syncPaused()) {
+        // Reset progress info.
+        _folders[folderIndex]._progress = SubFolderInfo::Progress();
+    } else if (state == SyncResult::NotYetStarted) {
         FolderMan* folderMan = FolderMan::instance();
         int pos = folderMan->scheduleQueue().indexOf(f);
         if (folderMan->currentSyncFolder()

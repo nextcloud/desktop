@@ -427,14 +427,13 @@ void FolderMan::slotSetFolderPaused( Folder *f, bool paused )
         return;
     }
 
-    slotScheduleSync(f);
-
+    f->setSyncPaused(paused);
     if (!paused) {
         _disabledFolders.remove(f);
+        slotScheduleSync(f);
     } else {
         _disabledFolders.insert(f);
     }
-    f->setSyncPaused(paused);
     emit folderSyncStateChange(f);
 }
 
@@ -681,15 +680,22 @@ void FolderMan::slotStartScheduledFolderSync()
         return;
     }
 
-    // Try to start the top scheduled sync.
-    Folder *f = _scheduleQueue.dequeue();
+    // Find the first folder in the queue that can be synced.
+    Folder* f = nullptr;
+    while( !_scheduleQueue.isEmpty() ) {
+        f = _scheduleQueue.dequeue();
+        Q_ASSERT(f);
+
+        if( f->canSync() ) {
+            break;
+        }
+    }
+
     emit scheduleQueueChanged();
-    Q_ASSERT(f);
 
     // Start syncing this folder!
-    if(f->canSync()) {
+    if( f ) {
         _currentSyncFolder = f;
-
         f->startSync( QStringList() );
     }
 }
