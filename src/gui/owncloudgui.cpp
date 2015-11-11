@@ -383,9 +383,7 @@ void ownCloudGui::setupContextMenu()
             _tray->hide();
         }
         _contextMenu->clear();
-        _recentActionsMenu->clear();
-        _recentActionsMenu->addAction(tr("None."));
-        _recentActionsMenu->addAction(_actionRecent);
+        slotRebuildRecentMenus();
     } else {
         _contextMenu.reset(new QMenu());
         _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
