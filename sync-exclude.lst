@@ -20,6 +20,7 @@ desktop.ini
 .apdisk
 
 .htaccess
+.directory
 
 *.part
 *.filepart
