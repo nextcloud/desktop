@@ -565,6 +565,81 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
+ProppatchJob::ProppatchJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+
+}
+
+void ProppatchJob::start()
+{
+    if (_properties.isEmpty()) {
+        qWarning() << "Proppatch with no properties!";
+    }
+    QNetworkRequest req;
+
+    QByteArray propStr;
+    QMapIterator<QByteArray, QByteArray> it(_properties);
+    while (it.hasNext()) {
+        it.next();
+        QByteArray keyName = it.key();
+        QByteArray keyNs;
+        if (keyName.contains(':')) {
+            int colIdx = keyName.lastIndexOf(":");
+            keyNs = keyName.left(colIdx);
+            keyName = keyName.mid(colIdx+1);
+        }
+
+        propStr += "    <" + keyName;
+        if (!keyNs.isEmpty()) {
+            propStr += " xmlns=\"" + keyNs + "\" ";
+        }
+        propStr += ">";
+        propStr += it.value();
+        propStr += "</" + keyName + ">\n";
+    }
+    QByteArray xml = "<?xml version=\"1.0\" ?>\n"
+                     "<d:propertyupdate xmlns:d=\"DAV:\">\n"
+                     "  <d:set><d:prop>\n"
+                     + propStr +
+                     "  </d:prop></d:set>\n"
+                     "</d:propertyupdate>\n";
+
+    QBuffer *buf = new QBuffer(this);
+    buf->setData(xml);
+    buf->open(QIODevice::ReadOnly);
+    setReply(davRequest("PROPPATCH", path(), req, buf));
+    buf->setParent(reply());
+    setupConnections(reply());
+    AbstractNetworkJob::start();
+}
+
+void ProppatchJob::setProperties(QMap<QByteArray, QByteArray> properties)
+{
+    _properties = properties;
+}
+
+QMap<QByteArray, QByteArray> ProppatchJob::properties() const
+{
+    return _properties;
+}
+
+bool ProppatchJob::finished()
+{
+    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    if (http_result_code == 207) {
+        emit success();
+    } else {
+        qDebug() << "PROPPATCH request *not* successful, http result code is" << http_result_code
+                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
+        emit finishedWithError();
+    }
+    return true;
+}
+
+/*********************************************************************************************/
+
 EntityExistsJob::EntityExistsJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
