@@ -59,6 +59,11 @@ public:
     QList<AccountStatePtr> accounts() { return _accounts; }
 
     /**
+     * Return the account state pointer for an account identified by its display name
+     */
+    AccountStatePtr account(const QString& name);
+
+    /**
      * Delete the AccountState
      */
     void deleteAccount(AccountState *account);

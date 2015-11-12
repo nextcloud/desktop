@@ -215,6 +215,16 @@ AccountPtr AccountManager::load(QSettings& settings)
     return acc;
 }
 
+AccountStatePtr AccountManager::account(const QString& name)
+{
+    foreach (const auto& acc, _accounts) {
+        if (acc->account()->displayName() == name) {
+            return acc;
+        }
+    }
+    return AccountStatePtr();
+}
+
 AccountState *AccountManager::addAccount(const AccountPtr& newAccount)
 {
     auto id = newAccount->id();
