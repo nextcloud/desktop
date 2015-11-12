@@ -45,7 +45,6 @@ private slots:
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void slotOpenAccountWizard();
-    void slotOpenSyncLog();
     void slotAccountAddedOrRemoved();
 
 

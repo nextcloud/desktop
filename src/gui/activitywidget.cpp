@@ -239,11 +239,32 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 
 void ActivityListModel::slotRefreshActivity(AccountState *ast)
 {
-    qDebug() << "**** Refreshing" << ast->account()->displayName();
     if(ast && _activityLists.contains(ast)) {
+        qDebug() << "**** Refreshing Activity list for" << ast->account()->displayName();
         _activityLists[ast].clear();
     }
     startFetchJob(ast);
+}
+
+void ActivityListModel::slotRemoveAccount(AccountState *ast )
+{
+    if( _activityLists.contains(ast) ) {
+        int i = 0;
+        const QString accountToRemove = ast->account()->displayName();
+
+        QMutableListIterator<Activity> it(_finalList);
+
+        while (it.hasNext()) {
+            Activity activity = it.next();
+            if( activity._accName == accountToRemove ) {
+                beginRemoveRows(QModelIndex(), i, i+1);
+                it.remove();
+                endRemoveRows();
+            }
+        }
+        _activityLists.remove(ast);
+        _currentlyFetching.remove(ast);
+    }
 }
 
 /* ==================================================================== */
@@ -283,6 +304,11 @@ ActivityWidget::~ActivityWidget()
 void ActivityWidget::slotRefresh(AccountState *ptr)
 {
     _model->slotRefreshActivity(ptr);
+}
+
+void ActivityWidget::slotRemoveAccount( AccountState *ptr )
+{
+    _model->slotRemoveAccount(ptr);
 }
 
 // FIXME: Reused from protocol widget. Move over to utilities.
@@ -406,6 +432,11 @@ void ActivitySettings::slotCopyToClipboard()
 
     QApplication::clipboard()->setText(text);
     emit guiLog(tr("Copied to clipboard"), tr("The %1 has been copied to the clipboard.").arg(theSubject));
+}
+
+void ActivitySettings::slotRemoveAccount( AccountState *ptr )
+{
+    _activityWidget->slotRemoveAccount(ptr);
 }
 
 void ActivitySettings::slotRefresh( AccountState* ptr )

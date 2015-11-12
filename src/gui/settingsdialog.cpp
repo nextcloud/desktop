@@ -213,7 +213,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
 
-
+    slotRefreshActivity(s);
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
@@ -233,6 +233,8 @@ void SettingsDialog::accountRemoved(AccountState *s)
             break;
         }
     }
+
+    _activitySettings->slotRemoveAccount(s);
 }
 
 void SettingsDialog::customizeStyle()

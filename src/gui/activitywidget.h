@@ -95,6 +95,7 @@ public:
 
 public slots:
     void slotRefreshActivity(AccountState* ast);
+    void slotRemoveAccount( AccountState *ast );
 
 private slots:
     void slotActivitiesReceived(const QVariantMap& json);
@@ -126,6 +127,7 @@ public:
 public slots:
     void slotOpenFile();
     void slotRefresh(AccountState* ptr);
+    void slotRemoveAccount( AccountState *ptr );
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -151,6 +153,8 @@ public:
 
 public slots:
     void slotRefresh( AccountState* ptr );
+    void slotRemoveAccount( AccountState *ptr );
+
     void slotCopyToClipboard();
 
 signals:
