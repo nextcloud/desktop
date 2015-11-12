@@ -65,17 +65,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     a = _finalList.at(index.row());
+    AccountStatePtr ast = AccountManager::instance()->account(a._accName);
 
     if (role == Qt::EditRole)
         return QVariant();
 
     switch (role) {
     case Qt::ToolTipRole:
-        return QVariant();
-    case Qt::DisplayRole:
-        // return tr("Account %1 at %2: %3").arg(a._accName).arg(a._dateTime.toString(Qt::SystemLocaleShortDate)).arg(a._subject);
-        break;
-    case Qt::DecorationRole:
         return QVariant();
         break;
     case ActivityItemDelegate::ActionIconRole:
@@ -88,16 +84,22 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._subject;
         break;
     case ActivityItemDelegate::PathRole:
-            return a._file;
+        return a._file;
         break;
     case ActivityItemDelegate::LinkRole:
-            return a._link;
+        return a._link;
         break;
     case ActivityItemDelegate::AccountRole:
-            return a._accName;
+        return a._accName;
         break;
     case ActivityItemDelegate::PointInTimeRole:
         return timeSpanFromNow(a._dateTime);
+        break;
+    case ActivityItemDelegate::AccountConnectedRole:
+        return (ast && ast->isConnected());
+        break;
+    default:
+        return QVariant();
 
     }
     return QVariant();
@@ -137,8 +139,11 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
     QMap<AccountState*, ActivityList>::const_iterator i = _activityLists.begin();
     while (i != _activityLists.end()) {
         AccountState *ast = i.key();
+        if( !ast->isConnected() ) {
+            return false;
+        }
         ActivityList activities = i.value();
-        if( ast->isConnected() && activities.count() == 0 &&
+        if( activities.count() == 0 &&
                 ! _currentlyFetching.contains(ast) ) {
             return true;
         }
@@ -150,6 +155,9 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 
 void ActivityListModel::startFetchJob(AccountState* s)
 {
+    if( !s->isConnected() ) {
+        return;
+    }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
     QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(s));

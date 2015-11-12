@@ -89,6 +89,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString remoteLink    = qvariant_cast<QString>(index.data(LinkRole));
     QString timeText      = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole   = qvariant_cast<QString>(index.data(AccountRole));
+    bool    accountOnline = qvariant_cast<bool>   (index.data(AccountConnectedRole));
 
     QRect actionIconRect = option.rect;
     QRect userIconRect   = option.rect;
@@ -132,8 +133,16 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if( atPos > -1 )  {
         accountRole.remove(0, atPos+1);
     }
-    const QString timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
+
+    QString timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
+    if( !accountOnline ) {
+        QPalette p = option.palette;
+        painter->setBrush(p.brush(QPalette::Inactive, QPalette::WindowText));
+        timeStr.append(" ");
+        timeStr.append(tr("(disconnected)"));
+    }
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
+
     painter->drawText(timeBox, elidedTime);
     painter->restore();
 

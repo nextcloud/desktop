@@ -33,7 +33,9 @@ public:
                     ActionTextRole,
                     PathRole,
                     LinkRole,
-                    PointInTimeRole };
+                    PointInTimeRole,
+                    AccountConnectedRole };
+
     void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
     bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
@@ -41,6 +43,7 @@ public:
 
     static int rowHeight();
     static int iconHeight();
+
 private:
     static int _margin;
     static int _iconHeight;
