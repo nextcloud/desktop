@@ -75,11 +75,6 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QFontMetrics fm( font );
     int margin = fm.height()/4;
 
-    // awesome to detect the timeline entry
-    // if (index.data(Timeline).toBool()) {
-    //        return;
-    // }
-
     painter->save();
 
     QIcon actionIcon      = qvariant_cast<QIcon>(index.data(ActionIconRole));
@@ -137,7 +132,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
     if( !accountOnline ) {
         QPalette p = option.palette;
-        painter->setBrush(p.brush(QPalette::Inactive, QPalette::WindowText));
+        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
         timeStr.append(" ");
         timeStr.append(tr("(disconnected)"));
     }
