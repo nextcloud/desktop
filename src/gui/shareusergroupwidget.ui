@@ -39,16 +39,6 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="labelShares">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string>Shares</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QVBoxLayout" name="sharesLayout"/>
    </item>
   </layout>
