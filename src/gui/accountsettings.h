@@ -76,8 +76,10 @@ protected slots:
     void slotOpenCurrentFolder();
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
-    void slotSignInAccount();
     void slotDeleteAccount();
+    void slotToggleSignInState();
+    void slotOpenAccountWizard();
+    void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint&);
     void slotFolderListClicked( const QModelIndex& indx );
@@ -88,6 +90,7 @@ private:
     void showConnectionLabel(const QString& message,
                              QStringList errors = QStringList());
     bool event(QEvent*) Q_DECL_OVERRIDE;
+    void createAccountToolbox();
 
     Ui::AccountSettings *ui;
 
@@ -96,6 +99,8 @@ private:
     bool _wasDisabledBefore;
     AccountState *_accountState;
     QuotaInfo _quotaInfo;
+    QAction *_toggleSignInOutAction;
+    QAction *_addAccountAction;
 };
 
 } // namespace OCC
