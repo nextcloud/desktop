@@ -34,6 +34,7 @@
 #include <QFileInfo>
 #include <QAbstractProxyModel>
 #include <QCompleter>
+#include <QPropertyAnimation>
 
 namespace OCC {
 
@@ -205,7 +206,6 @@ void ShareWidget::on_permissionToggleButton_clicked()
     } else {
         _ui->permissionToggleButton->setText("More");
     }
-
 }
 
 ShareWidget::~ShareWidget()
@@ -257,9 +257,22 @@ void ShareWidget::slotPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareWidget::slotShareDeleted()
+void ShareWidget::slotDeleteAnimationFinished()
 {
     deleteLater();
+}
+
+void ShareWidget::slotShareDeleted()
+{
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "maximumHeight", this);
+
+    animation->setDuration(500);
+    animation->setStartValue(height());
+    animation->setEndValue(0);
+
+    connect(animation, SIGNAL(finished()), SLOT(slotDeleteAnimationFinished()));
+
+    animation->start();
 }
 
 void ShareWidget::slotPermissionsSet()

@@ -59,6 +59,7 @@ private slots:
     void slotPermissionsChanged();
     void slotEditPermissionsChanged();
     void on_permissionToggleButton_clicked();
+    void slotDeleteAnimationFinished();
 
     void slotShareDeleted();
     void slotPermissionsSet();
