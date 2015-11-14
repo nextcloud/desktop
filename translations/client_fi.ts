@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="259"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation type="unfinished"/>
+        <translation>Kohdetiedostolla on odottamaton koko tai muokkausaika</translation>
     </message>
 </context>
 <context>
@@ -585,7 +585,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1088"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Odotetaan synkronoinnin aloitusta.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1091"/>
@@ -1093,7 +1093,9 @@ Tili: %3
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Kaavaa vastaavat tiedostot ja kansiot jätetään synkronoimatta.
+
+Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistamisen. Tämä on hyödyllistä metatietojen osalta.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="110"/>
