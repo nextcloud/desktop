@@ -40,8 +40,10 @@ namespace Ui {
 class Application;
 
 /**
- * @brief The ActivityListModel
+ * @brief Activity Structure
  * @ingroup gui
+ *
+ * contains all the information describing a single activity.
  */
 
 class Activity
@@ -66,6 +68,12 @@ public:
 
 };
 
+/**
+ * @brief The ActivityList
+ * @ingroup gui
+ *
+ * A QList based list of Activities
+ */
 class ActivityList:public QList<Activity>
 {
     // explicit ActivityList();
@@ -78,7 +86,12 @@ private:
 };
 
 
-
+/**
+ * @brief The ActivityListModel
+ * @ingroup gui
+ *
+ * Simple list model to provide the list view with data.
+ */
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -113,6 +126,9 @@ private:
 /**
  * @brief The ActivityWidget class
  * @ingroup gui
+ *
+ * The list widget to display the activities, contained in the
+ * subsequent ActivitySettings widget.
  */
 
 class ActivityWidget : public QWidget
@@ -143,6 +159,13 @@ private:
 };
 
 
+/**
+ * @brief The ActivitySettings class
+ * @ingroup gui
+ *
+ * Implements a tab for the settings dialog, displaying the three activity
+ * lists.
+ */
 class ActivitySettings : public QWidget
 {
     Q_OBJECT

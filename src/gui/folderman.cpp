@@ -837,6 +837,7 @@ QStringList FolderMan::findFileInLocalFolders( const QString& relPath )
     foreach(Folder* folder, this->map().values()) {
         QString path = folder->cleanPath();
         QString remRelPath;
+        // cut off the remote path from the server path.
         remRelPath = relPath.mid(folder->remotePath().length());
         path += remRelPath;
 

@@ -50,7 +50,7 @@ QString ActivityList::accountName() const
     return _accountName;
 }
 
-// ========================================================================
+/* ==================================================================== */
 
 ActivityListModel::ActivityListModel(QWidget *parent)
     :QAbstractListModel(parent)
@@ -374,6 +374,7 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     }
 }
 
+/* ==================================================================== */
 
 ActivitySettings::ActivitySettings(QWidget *parent)
     :QWidget(parent)
