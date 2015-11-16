@@ -34,6 +34,8 @@
 #include <QFileInfo>
 #include <QAbstractProxyModel>
 #include <QCompleter>
+#include <qscrollarea.h>
+#include <qlayout.h>
 #include <QPropertyAnimation>
 
 namespace OCC {
@@ -77,6 +79,8 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     connect(&_completionTimer, SIGNAL(timeout()), this, SLOT(on_searchPushButton_clicked()));
     _completionTimer.setSingleShot(true);
     _completionTimer.setInterval(600);
+
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
 }
 
 ShareUserGroupWidget::~ShareUserGroupWidget()
@@ -113,11 +117,8 @@ void ShareUserGroupWidget::on_searchPushButton_clicked()
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
     blacklist << currentUser;
 
-    for(int i = 0; i < _ui->sharesLayout->count(); i++) {
-        QWidget *w = _ui->sharesLayout->itemAt(i)->widget();
-        if (auto sw = qobject_cast<ShareWidget *>(w)) {
-            blacklist << sw->share()->getShareWith();
-        }
+    foreach (auto sw, _ui->scrollArea->findChildren<ShareWidget*>()) {
+        blacklist << sw->share()->getShareWith();
     }
 
     _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist);
@@ -131,13 +132,14 @@ void ShareUserGroupWidget::getShares()
 
 void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
-    /*
-     * Delete all current widgets
-     */
-    QLayoutItem *child;
-    while ((child = _ui->sharesLayout->takeAt(0)) != 0) {
-        delete child->widget();
-    }
+    QScrollArea *scrollArea = _ui->scrollArea;
+
+
+    auto newViewPort = new QWidget(scrollArea);
+    auto layout = new QVBoxLayout(newViewPort);
+
+    QSize minimumSize = newViewPort->sizeHint();
+    int x = 0;
 
     foreach(const auto &share, shares) {
         // We don't handle link shares
@@ -145,9 +147,20 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
             continue;
         }
 
-        ShareWidget *s = new ShareWidget(share, this);
-        _ui->sharesLayout->addWidget(s);
+        ShareWidget *s = new ShareWidget(share, _ui->scrollArea);
+        layout->addWidget(s);
+
+        x++;
+        if (x <= 3) {
+            minimumSize = newViewPort->sizeHint();
+        }
     }
+
+    minimumSize.rwidth() += layout->spacing();
+    minimumSize.rheight() += layout->spacing();
+    scrollArea->setMinimumSize(minimumSize);
+    scrollArea->setVisible(!shares.isEmpty());
+    scrollArea->setWidget(newViewPort);
 }
 
 void ShareUserGroupWidget::slotShareesReady()

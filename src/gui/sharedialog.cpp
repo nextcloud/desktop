@@ -89,6 +89,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     }
 
     _linkWidget = new ShareLinkWidget(account, sharePath, localPath, resharingAllowed, autoShare, this);
+    _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
     _ui->shareWidgetsLayout->addWidget(_linkWidget);
 }
 
