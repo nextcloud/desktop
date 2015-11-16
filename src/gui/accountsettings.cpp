@@ -135,19 +135,19 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 void AccountSettings::createAccountToolbox()
 {
     QMenu *menu = new QMenu();
-    _toggleSignInOutAction = new QAction(tr("Sign Out"), this);
-    connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
-    menu->addAction(_toggleSignInOutAction);
-
-    QAction *action = new QAction(tr("Remove Account"), this);
-    menu->addAction(action);
-    connect( action, SIGNAL(triggered(bool)), SLOT(slotDeleteAccount()));
-
-    _addAccountAction = new QAction(tr("Add new Account..."), this);
+    _addAccountAction = new QAction(tr("Add new"), this);
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
 
-    ui->_accountToolbox->setText(tr("Account"));
+    _toggleSignInOutAction = new QAction(tr("Sign out"), this);
+    connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
+    menu->addAction(_toggleSignInOutAction);
+
+    QAction *action = new QAction(tr("Remove"), this);
+    menu->addAction(action);
+    connect( action, SIGNAL(triggered(bool)), SLOT(slotDeleteAccount()));
+
+    ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
 
