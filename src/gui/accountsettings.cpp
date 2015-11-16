@@ -83,6 +83,9 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 #else
     ui->_folderList->setMinimumWidth( 300 );
 #endif
+    createAccountToolbox();
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
+            SLOT(slotAccountAdded(AccountState*)));
     connect(ui->_folderList, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(slotCustomContextMenuRequested(QPoint)));
 
@@ -126,8 +129,46 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect( &_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
             this, SLOT(slotUpdateQuota(qint64,qint64)));
 
-    connect(ui->signInButton, SIGNAL(clicked()) , this, SLOT(slotSignInAccount()));
-    connect(ui->deleteButton, SIGNAL(clicked()) , this, SLOT(slotDeleteAccount()));
+}
+
+
+void AccountSettings::createAccountToolbox()
+{
+    QMenu *menu = new QMenu();
+    _addAccountAction = new QAction(tr("Add new"), this);
+    menu->addAction(_addAccountAction);
+    connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
+
+    _toggleSignInOutAction = new QAction(tr("Sign out"), this);
+    connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
+    menu->addAction(_toggleSignInOutAction);
+
+    QAction *action = new QAction(tr("Remove"), this);
+    menu->addAction(action);
+    connect( action, SIGNAL(triggered(bool)), SLOT(slotDeleteAccount()));
+
+    ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
+    ui->_accountToolbox->setMenu(menu);
+    ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
+
+    // Expand already on single click
+    ui->_folderList->setExpandsOnDoubleClick(false);
+    QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
+                     this, SLOT(slotFolderListClicked(const QModelIndex&)));
+}
+
+void AccountSettings::slotOpenAccountWizard()
+{
+    if (QSystemTrayIcon::isSystemTrayAvailable()) {
+        topLevelWidget()->close();
+    }
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
+}
+
+void AccountSettings::slotToggleSignInState()
+{
+    bool signedInState = _accountState->isSignedOut();
+    _accountState->setSignedOut( !signedInState );
 }
 
 void AccountSettings::doExpand()
@@ -485,12 +526,6 @@ void AccountSettings::slotAccountStateChanged(int state)
            serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
         }
 
-        if (state != AccountState::SignedOut && ui->signInButton->hasFocus()) {
-            // The button is about to be hidden, clear the focus so the focus don't go to the
-            // "remove account" button
-            ui->signInButton->clearFocus();
-        }
-        ui->signInButton->setVisible(state == AccountState::SignedOut);
         if (state == AccountState::Connected) {
             showConnectionLabel( tr("Connected to %1.").arg(serverWithUser) );
         } else if (state == AccountState::ServiceUnavailable) {
@@ -516,6 +551,15 @@ void AccountSettings::slotAccountStateChanged(int state)
         for (i = 0; i < _model->rowCount(); ++i) {
             if (ui->_folderList->isExpanded(_model->index(i)))
                 ui->_folderList->setExpanded(_model->index(i), false);
+        }
+    }
+    /* set the correct label for the Account toolbox button */
+    if( _accountState ) {
+        bool isConnected = _accountState->isConnected();
+        if( isConnected ) {
+            _toggleSignInOutAction->setText(tr("Sign out"));
+        } else {
+            _toggleSignInOutAction->setText(tr("Sign in"));
         }
     }
 }
@@ -624,9 +668,14 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 }
 
-void AccountSettings::slotSignInAccount()
+void AccountSettings::slotAccountAdded(AccountState*)
 {
-    _accountState->setSignedOut(false);
+    // if the theme is limited to single account, the button must hide if
+    // there is already one account.
+    if( AccountManager::instance()->accounts().size() > 1 &&
+            !Theme::instance()->multiAccount() ) {
+        _addAccountAction->setVisible(false);
+    }
 }
 
 void AccountSettings::slotDeleteAccount()
@@ -657,6 +706,9 @@ void AccountSettings::slotDeleteAccount()
 
     // if there is no more account, show the wizard.
     if( manager->accounts().isEmpty() ) {
+        // allow to add a new account if there is non any more. Always think
+        // about single account theming!
+        _addAccountAction->setVisible(true);
         OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
     }
 

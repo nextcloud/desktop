@@ -83,13 +83,6 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     _ui->monoIconsCheckBox->setVisible(QDir(themeDir).exists());
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
-    connect(_ui->addAccountButton, SIGNAL(clicked()), SLOT(slotOpenAccountWizard()));
-
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
-            SLOT(slotAccountAddedOrRemoved()));
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
-            SLOT(slotAccountAddedOrRemoved()));
-    slotAccountAddedOrRemoved();
 }
 
 GeneralSettings::~GeneralSettings()
@@ -168,13 +161,5 @@ void GeneralSettings::slotOpenAccountWizard()
     }
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
-
-void GeneralSettings::slotAccountAddedOrRemoved()
-{
-    _ui->addAccountButton->setVisible(
-        AccountManager::instance()->accounts().isEmpty()
-            || Theme::instance()->multiAccount());
-}
-
 
 } // namespace OCC
