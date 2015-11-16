@@ -72,6 +72,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     switch (role) {
+    case ActivityItemDelegate::PathRole:
     case Qt::ToolTipRole:
         list = FolderMan::instance()->findFileInLocalFolders(a._file);
         if( list.count() > 0 ) {
@@ -88,9 +89,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         break;
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
-        break;
-    case ActivityItemDelegate::PathRole:
-        return a._file;
         break;
     case ActivityItemDelegate::LinkRole:
         return a._link;
@@ -308,6 +306,9 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     connect(_copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
 
     connect(_model, SIGNAL(rowsInserted(QModelIndex,int,int)), SIGNAL(rowsInserted()));
+
+    connect( _ui->_activityList, SIGNAL(activated(QModelIndex)), this,
+             SLOT(slotOpenFile(QModelIndex)));
 }
 
 ActivityWidget::~ActivityWidget()
@@ -362,22 +363,15 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
     }
 }
 
-void ActivityWidget::slotOpenFile( )
+void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
-    // FIXME make work at all.
-#if 0
-    QString folderName = item->data(2, Qt::UserRole).toString();
-    QString fileName = item->text(1);
+    if( indx.isValid() ) {
+        QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
-    Folder *folder = FolderMan::instance()->folder(folderName);
-    if (folder) {
-        // folder->path() always comes back with trailing path
-        QString fullPath = folder->path() + fileName;
-        if (QFile(fullPath).exists()) {
+        if (QFile::exists(fullPath)) {
             showInFileManager(fullPath);
         }
     }
-#endif
 }
 
 

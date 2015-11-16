@@ -125,7 +125,7 @@ public:
     void storeActivityList(QTextStream &ts);
 
 public slots:
-    void slotOpenFile();
+    void slotOpenFile(QModelIndex indx);
     void slotRefresh(AccountState* ptr);
     void slotRemoveAccount( AccountState *ptr );
 

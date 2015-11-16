@@ -81,6 +81,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QIcon userIcon        = qvariant_cast<QIcon>(index.data(UserIconRole));
     QString actionText    = qvariant_cast<QString>(index.data(ActionTextRole));
     QString pathText      = qvariant_cast<QString>(index.data(PathRole));
+
     QString remoteLink    = qvariant_cast<QString>(index.data(LinkRole));
     QString timeText      = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole   = qvariant_cast<QString>(index.data(AccountRole));
