@@ -23,14 +23,14 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
-         <string>Launch on System Startup</string>
+         <string>&amp;Launch on System Startup</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="desktopNotificationsCheckBox">
         <property name="text">
-         <string>Show Desktop Notifications</string>
+         <string>Show &amp;Desktop Notifications</string>
         </property>
        </widget>
       </item>
@@ -40,7 +40,7 @@
          <string>For System Tray</string>
         </property>
         <property name="text">
-         <string>Use Monochrome Icons</string>
+         <string>Use &amp;Monochrome Icons</string>
         </property>
        </widget>
       </item>
@@ -58,7 +58,7 @@
         <item>
          <widget class="QPushButton" name="ignoredFilesButton">
           <property name="text">
-           <string>Edit Ignored Files</string>
+           <string>Edit &amp;Ignored Files</string>
           </property>
          </widget>
         </item>
@@ -77,12 +77,36 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="addAccountButton">
+          <property name="text">
+           <string>&amp;Add an Account</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QCheckBox" name="newFolderLimitCheckBox">
           <property name="text">
-           <string>Ask confirmation before downloading folders larger than</string>
+           <string>Ask &amp;confirmation before downloading folders larger than</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -122,19 +146,32 @@
        </layout>
       </item>
       <item row="2" column="0">
+       <widget class="QCheckBox" name="crashreporterCheckBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>S&amp;how crash reporter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QCheckBox" name="crashreporterCheckBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="text">
-           <string>Show crash reporter</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </item>

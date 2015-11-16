@@ -588,12 +588,19 @@ bool EntityExistsJob::finished()
 JsonApiJob::JsonApiJob(const AccountPtr &account, const QString& path, QObject* parent): AbstractNetworkJob(account, path, parent)
 { }
 
+void JsonApiJob::addQueryParams(QList< QPair<QString,QString> > params)
+{
+    _additionalParams = params;
+}
+
 void JsonApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Account::concatUrlPath(account()->url(), path());
-    url.setQueryItems(QList<QPair<QString, QString> >() << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
+    QList<QPair<QString, QString> > params = _additionalParams;
+    params << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"));
+    url.setQueryItems(params);
     setReply(davRequest("GET", url, req));
     setupConnections(reply());
     AbstractNetworkJob::start();

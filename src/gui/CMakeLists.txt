@@ -21,6 +21,8 @@ set(client_UI
     ignorelisteditor.ui
     networksettings.ui
     protocolwidget.ui
+    activitywidget.ui
+    synclogdialog.ui
     settingsdialog.ui
     sharedialog.ui
     sharelinkwidget.ui
@@ -60,6 +62,8 @@ set(client_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    activitywidget.cpp
+    activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
     share.cpp
@@ -79,6 +83,7 @@ set(client_SRCS
     authenticationdialog.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
+    synclogdialog.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp

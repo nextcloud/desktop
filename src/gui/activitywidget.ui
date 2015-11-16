@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OCC::ActivityWidget</class>
+ <widget class="QWidget" name="OCC::ActivityWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>693</width>
+    <height>556</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="_headerLabel">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListView" name="_activityList"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="_dialogButtonBox"/>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>_activityList</tabstop>
+  <tabstop>_dialogButtonBox</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

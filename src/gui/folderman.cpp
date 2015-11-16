@@ -824,6 +824,24 @@ Folder *FolderMan::folderForPath(const QString &path)
     return 0;
 }
 
+QStringList FolderMan::findFileInLocalFolders( const QString& relPath )
+{
+    QStringList re;
+
+    foreach(Folder* folder, this->map().values()) {
+        QString path = folder->cleanPath();
+        QString remRelPath;
+        // cut off the remote path from the server path.
+        remRelPath = relPath.mid(folder->remotePath().length());
+        path += remRelPath;
+
+        if( QFile::exists(path) ) {
+            re.append( path );
+        }
+    }
+    return re;
+}
+
 void FolderMan::slotRemoveFolder( Folder *f )
 {
     if( !f ) {

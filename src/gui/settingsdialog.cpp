@@ -22,8 +22,9 @@
 #include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
-#include "protocolwidget.h"
+#include "activitywidget.h"
 #include "accountmanager.h"
+#include "protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -81,11 +82,13 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     // Note: all the actions have a '\n' because the account name is in two lines and
     // all buttons must have the same size in order to keep a good layout
-    _protocolAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-    _actionGroup->addAction(_protocolAction);
-    _toolBar->addAction(_protocolAction);
-    ProtocolWidget *protocolWidget = new ProtocolWidget;
-    _ui->stack->addWidget(protocolWidget);
+    _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    _actionGroup->addAction(_activityAction);
+    addActionToToolBar(_activityAction);
+    _activitySettings = new ActivitySettings;
+    _ui->stack->addWidget(_activitySettings);
+    connect( _activitySettings, SIGNAL(guiLog(QString,QString)), _gui,
+             SLOT(slotShowOptionalTrayMessage(QString,QString)) );
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -99,7 +102,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_protocolAction, protocolWidget);
+    _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
@@ -179,8 +182,8 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (_protocolAction) {
-        slotSwitchPage(_protocolAction);
+    if (_activityAction) {
+        slotSwitchPage(_activityAction);
     }
 }
 
@@ -200,6 +203,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
+
+    slotRefreshActivity(s);
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
@@ -218,11 +223,13 @@ void SettingsDialog::accountRemoved(AccountState *s)
             break;
         }
     }
+
+    _activitySettings->slotRemoveAccount(s);
 }
 
 void SettingsDialog::customizeStyle()
 {
-    QString highlightColor(palette().highlight().color().name());
+    QString  highlightColor(palette().highlight().color().name());
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
@@ -288,6 +295,23 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     action->setCheckable(true);
     action->setProperty("iconPath", iconPath);
     return action;
+}
+
+void SettingsDialog::addActionToToolBar(QAction *action) {
+    QToolButton* btn = new QToolButton;
+    btn->setDefaultAction(action);
+    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    _toolBar->addWidget(btn);
+    btn->setMinimumWidth(_toolBar->sizeHint().height() * 1.3);
+}
+
+void SettingsDialog::slotRefreshActivity( AccountState* accountState )
+{
+    if (accountState) {
+        qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
+        _activitySettings->slotRefresh(accountState);
+    }
 }
 
 } // namespace OCC

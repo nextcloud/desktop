@@ -18,6 +18,7 @@
 #include <QStyledItemDelegate>
 
 #include "progressdispatcher.h"
+#include "owncloudgui.h"
 
 class QAction;
 class QActionGroup;
@@ -35,6 +36,7 @@ class AccountSettings;
 class Application;
 class FolderMan;
 class ownCloudGui;
+class ActivitySettings;
 
 /**
  * @brief The SettingsDialog class
@@ -54,6 +56,7 @@ public slots:
     void showFirstPage();
     void showActivityPage();
     void slotSwitchPage(QAction *action);
+    void slotRefreshActivity(AccountState *accountState );
 
 protected:
     void reject() Q_DECL_OVERRIDE;
@@ -66,6 +69,8 @@ private slots:
 
 private:
     void customizeStyle();
+    void addActionToToolBar(QAction* action);
+
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     Ui::SettingsDialog * const _ui;
@@ -76,7 +81,9 @@ private:
 
     QToolBar* _toolBar;
 
-    QAction * _protocolAction;
+    ActivitySettings *_activitySettings;
+
+    QAction * _activityAction;
     ownCloudGui *_gui;
 };
 
