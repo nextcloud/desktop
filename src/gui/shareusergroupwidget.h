@@ -57,13 +57,19 @@ signals:
 private slots:
     void on_deleteShareButton_clicked();
     void slotPermissionsChanged();
+    void slotEditPermissionsChanged();
+    void on_permissionToggleButton_clicked();
+    void slotDeleteAnimationFinished();
 
     void slotShareDeleted();
     void slotPermissionsSet();
 
 private:
+    void displayPermissions();
+
     Ui::ShareWidget *_ui;
     QSharedPointer<Share> _share;
+    bool _showDetailedPermissions;
 };
 
 
