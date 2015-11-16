@@ -107,6 +107,16 @@ namespace Utility
 
     OWNCLOUDSYNC_EXPORT QString fileNameForGuiUse(const QString& fName);
 
+    /**
+     * @brief timeAgoInWords - human readable time span
+     *
+     * Use this to get a string that describes the timespan between the first and
+     * the second timestamp in a human readable and understandable form.
+     *
+     * If the second parameter is ommitted, the current time is used.
+     */
+    OWNCLOUDSYNC_EXPORT QString timeAgoInWords(const QDateTime& dt, const QDateTime& from = QDateTime() );
+
     class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
         QHash<QString, quint64> _lapTimes;

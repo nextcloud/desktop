@@ -96,7 +96,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._accName;
         break;
     case ActivityItemDelegate::PointInTimeRole:
-        return timeSpanFromNow(a._dateTime);
+        return Utility::timeAgoInWords(a._dateTime);
         break;
     case ActivityItemDelegate::AccountConnectedRole:
         return (ast && ast->isConnected());
@@ -107,26 +107,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     }
     return QVariant();
 
-}
-
-QString ActivityListModel::timeSpanFromNow(const QDateTime& dt) const
-{
-    QDateTime now = QDateTime::currentDateTime();
-
-    if( dt.daysTo(now)>0 ) {
-        return tr("%1 day(s) ago").arg(dt.daysTo(now));
-    } else {
-        qint64 secs = dt.secsTo(now);
-
-        if( floor(secs / 3600.0) > 0 ) {
-            int hours = floor(secs/3600.0);
-            return( tr("%1 hour(s) ago").arg(hours));
-        } else {
-            int minutes = qRound(secs/60.0);
-            return( tr("%1 minute(s) ago").arg(minutes));
-        }
-    }
-    return tr("Some time ago");
 }
 
 int ActivityListModel::rowCount(const QModelIndex&) const
