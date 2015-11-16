@@ -73,13 +73,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case ActivityItemDelegate::PathRole:
-    case Qt::ToolTipRole:
         list = FolderMan::instance()->findFileInLocalFolders(a._file);
         if( list.count() > 0 ) {
             return QVariant(list.at(0));
         }
         return QVariant();
-
         break;
     case ActivityItemDelegate::ActionIconRole:
         return QVariant(); // FIXME once the action can be quantified, display on Icon
@@ -87,6 +85,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::UserIconRole:
         return QIcon(QLatin1String(":/client/resources/account.png"));
         break;
+    case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
         break;
