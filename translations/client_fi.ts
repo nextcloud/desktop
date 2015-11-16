@@ -1547,7 +1547,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="261"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Todennettuun webdav-pyyntöön saatiin virheellinen vastaus</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="252"/>
@@ -1739,7 +1739,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="676"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto on muuttunut löytymisen jälkeen</translation>
     </message>
 </context>
 <context>
@@ -1835,7 +1835,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto nimettiin uudelleen, mutta se on osa &quot;vain luku&quot;-jakoa. Alkuperäinen tiedosto palautettiin.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="144"/>
@@ -2718,7 +2718,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="628"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Vain %1 on käytettävissä, käynnistymiseen tarvitaan %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="661"/>
@@ -2739,7 +2739,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="994"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ei sallittu, koska oikeutesi eivät riitä alikansioiden lisäämiseen kyseiseen kansioon</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1027"/>
@@ -2921,7 +2921,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Katkaistu yhteys tileihin:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
@@ -2931,12 +2931,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="440"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu ulos kaikista tileistä</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="448"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu kaikille tileille...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
@@ -3198,7 +3198,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="125"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 kt</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="128"/>
