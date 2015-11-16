@@ -53,22 +53,14 @@ Sharee::Type Sharee::type() const
     return _type;
 }
 
-ShareeModel::ShareeModel(AccountPtr account,
-                         const QString search,
-                         const QString type,
-                         const QVector<QSharedPointer<Sharee>> &shareeBlacklist,
-                         QObject *parent)
-: QAbstractListModel(parent),
-  _account(account),
-  _search(search),
-  _type(type),
-  _shareeBlacklist(shareeBlacklist)
-{
+ShareeModel::ShareeModel(const AccountPtr &account, const QString &type, QObject *parent)
+    : QAbstractListModel(parent), _account(account), _type(type)
+{ }
 
-}
-
-void ShareeModel::fetch()
+void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
 {
+    _search = search;
+    _shareeBlacklist = blacklist;
     OcsShareeJob *job = new OcsShareeJob(_account);
     connect(job, SIGNAL(shareeJobFinished(QVariantMap)), SLOT(shareesFetched(QVariantMap)));
     job->getSharees(_search, _type, 1, 50);
@@ -134,11 +126,8 @@ void ShareeModel::shareesFetched(const QVariantMap &reply)
             filteredSharees.append(sharee);
         }
     }
-    
-    beginInsertRows(QModelIndex(), _sharees.size(), filteredSharees.size());
-    _sharees += filteredSharees;
-    endInsertRows();
 
+    setNewSharees(filteredSharees);
     shareesReady();
 }
 
@@ -150,6 +139,41 @@ QSharedPointer<Sharee> ShareeModel::parseSharee(const QVariantMap &data)
 
     return QSharedPointer<Sharee>(new Sharee(shareWith, shareWith, type));
 }
+
+/* Set the new sharee
+
+    Do that while preserving the model index so the selection stays
+*/
+void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>>& newSharees)
+{
+    layoutAboutToBeChanged();
+    const auto persistent = persistentIndexList();
+    QVector<QSharedPointer<Sharee>> oldPersistantSharee;
+    oldPersistantSharee.reserve(persistent.size());
+
+    std::transform(persistent.begin(), persistent.end(), std::back_inserter(oldPersistantSharee),
+                   [](const QModelIndex &idx) { return idx.data(Qt::UserRole).value<QSharedPointer<Sharee>>(); });
+
+    _sharees = newSharees;
+
+    QModelIndexList newPersistant;
+    newPersistant.reserve(persistent.size());
+    foreach(const QSharedPointer<Sharee> &sharee, oldPersistantSharee) {
+        auto it = std::find_if(_sharees.constBegin(), _sharees.constEnd(),
+                               [&sharee](const QSharedPointer<Sharee> &s2) {
+                                    return s2->format() == sharee->format() && s2->displayName() == sharee->format();
+                               });
+        if (it == _sharees.constEnd()) {
+            newPersistant << QModelIndex();
+        } else {
+            newPersistant << index(it - _sharees.constBegin());
+        }
+    }
+
+    changePersistentIndexList(persistent, newPersistant);
+    layoutChanged();
+}
+
 
 int ShareeModel::rowCount(const QModelIndex &) const
 {

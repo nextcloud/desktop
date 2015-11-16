@@ -36,10 +36,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getSharees(const QString search,
-                    const QString itemType,
-                    int page = 1,
-                    int perPage = 50);
+    void getSharees(const QString& search, const QString& itemType, int page = 1, int perPage = 50);
 signals:
     /**
      * Result of the OCS request

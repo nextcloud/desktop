@@ -44,23 +44,21 @@ public:
     QString shareWith() const;
     QString displayName() const;
     Type type() const;
-    
+
 private:
     QString _shareWith;
     QString _displayName;
     Type _type;
 };
 
+
 class ShareeModel : public QAbstractListModel {
     Q_OBJECT
 public:
-    explicit ShareeModel(AccountPtr account,
-                         const QString search,
-                         const QString type,
-                         const QVector<QSharedPointer<Sharee>> &shareeBlacklist,
-                         QObject *parent = 0);
+    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = 0);
 
-    void fetch();
+    typedef QVector<QSharedPointer<Sharee>> ShareeSet; // FIXME: make it a QSet<Sharee> when Sharee can be compared
+    void fetch(const QString &search, const ShareeSet &blacklist);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
 
@@ -74,6 +72,7 @@ private slots:
 
 private:
     QSharedPointer<Sharee> parseSharee(const QVariantMap &data);
+    void setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees);
 
     AccountPtr _account;
     QString _search;

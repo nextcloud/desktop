@@ -22,6 +22,7 @@
 #include <QSharedPointer>
 #include <QList>
 #include <QVector>
+#include <QTimer>
 
 class QCompleter;
 class QModelIndex;
@@ -97,9 +98,10 @@ private slots:
 
     void on_shareeLineEdit_textChanged(const QString &text);
     void on_searchPushButton_clicked();
+    void slotLineEditTextEdited(const QString &text);
 
-    void slotUpdateCompletion();
     void slotCompleterActivated(const QModelIndex & index);
+    void slotShareesReady();
 
 private:
     Ui::ShareUserGroupWidget *_ui;
@@ -109,12 +111,12 @@ private:
 
     QCompleter *_completer;
     ShareeModel *_completerModel;
+    QTimer _completionTimer;
 
     bool _resharingAllowed;
     bool _isFile;
 
     ShareManager *_manager;
-    QVector<QSharedPointer<Sharee>> _sharees;
 };
 
 }

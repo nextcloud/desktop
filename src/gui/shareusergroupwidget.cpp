@@ -55,6 +55,12 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _isFile = QFileInfo(localPath).isFile();
 
     _completer = new QCompleter(this);
+    _completerModel = new ShareeModel(_account,
+                                      _isFile ? QLatin1String("file") : QLatin1String("folder"),
+                                      _completer);
+    connect(_completerModel, SIGNAL(shareesReady()), this, SLOT(slotShareesReady()));
+
+    _completer->setModel(_completerModel);
     _ui->shareeLineEdit->setCompleter(_completer);
 
     _ui->searchPushButton->setEnabled(false);
@@ -65,6 +71,12 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
 //    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
     connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
 
+    // Queued connection so this signal is recieved after textChanged
+    connect(_ui->shareeLineEdit, SIGNAL(textEdited(QString)),
+            this, SLOT(slotLineEditTextEdited(QString)), Qt::QueuedConnection);
+    connect(&_completionTimer, SIGNAL(timeout()), this, SLOT(on_searchPushButton_clicked()));
+    _completionTimer.setSingleShot(true);
+    _completionTimer.setInterval(600);
 }
 
 ShareUserGroupWidget::~ShareUserGroupWidget()
@@ -74,6 +86,7 @@ ShareUserGroupWidget::~ShareUserGroupWidget()
 
 void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &text)
 {
+    _completionTimer.stop();
     if (text == "") {
         _ui->searchPushButton->setEnabled(false);
     } else {
@@ -81,38 +94,34 @@ void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &text)
     }
 }
 
+void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
+{
+    // First textChanged is called first and we stopped the timer when the text is changed, programatically or not
+    // Then we restart the timer here if the user touched a key
+    if (!text.isEmpty()) {
+        _completionTimer.start();
+    }
+}
+
+
 void ShareUserGroupWidget::on_searchPushButton_clicked()
 {
-     QVector<QSharedPointer<Sharee>> sharees;
+    _completionTimer.stop();
+    ShareeModel::ShareeSet blacklist;
 
     // Add the current user to _sharees since we can't share with ourself
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
-    sharees.append(currentUser);
+    blacklist << currentUser;
 
     for(int i = 0; i < _ui->sharesLayout->count(); i++) {
         QWidget *w = _ui->sharesLayout->itemAt(i)->widget();
-
-        if (w != NULL) {
-            const QSharedPointer<Sharee> x = static_cast<ShareWidget *>(w)->share()->getShareWith();
-            sharees.append(x);
+        if (auto sw = qobject_cast<ShareWidget *>(w)) {
+            blacklist << sw->share()->getShareWith();
         }
     }
 
-    _sharees.append(currentUser);
+    _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist);
 
-    _completerModel = new ShareeModel(_account,
-                                      _ui->shareeLineEdit->text(),
-                                      _isFile ? QLatin1String("file") : QLatin1String("folder"),
-                                      sharees,
-                                      _completer);
-    connect(_completerModel, SIGNAL(shareesReady()), SLOT(slotUpdateCompletion()));
-    _completerModel->fetch();
-    _completer->setModel(_completerModel);
-}
-
-void ShareUserGroupWidget::slotUpdateCompletion()
-{
-    _completer->complete();
 }
 
 void ShareUserGroupWidget::getShares()
@@ -141,6 +150,11 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     }
 }
 
+void ShareUserGroupWidget::slotShareesReady()
+{
+    _completer->complete();
+}
+
 void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
 {
     // The index is an index from the QCompletion model which is itelf a proxy
@@ -150,12 +164,11 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
         return;
     }
 
-    _manager->createShare(_sharePath, 
+    _manager->createShare(_sharePath,
                           (Share::ShareType)sharee->type(),
                           sharee->shareWith(),
                           Share::PermissionRead);
 
-    _completer->setModel(NULL);
     _ui->shareeLineEdit->setText(QString());
 }
 

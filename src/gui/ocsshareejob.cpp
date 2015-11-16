@@ -23,8 +23,8 @@ OcsShareeJob::OcsShareeJob(AccountPtr account)
 
 }
 
-void OcsShareeJob::getSharees(const QString search,
-                              const QString itemType,
+void OcsShareeJob::getSharees(const QString &search,
+                              const QString &itemType,
                               int page,
                               int perPage)
 {
