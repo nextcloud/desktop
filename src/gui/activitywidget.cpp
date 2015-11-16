@@ -66,13 +66,19 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     a = _finalList.at(index.row());
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
+    QStringList list;
 
     if (role == Qt::EditRole)
         return QVariant();
 
     switch (role) {
     case Qt::ToolTipRole:
+        list = FolderMan::instance()->findFileInLocalFolders(a._file);
+        if( list.count() > 0 ) {
+            return QVariant(list.at(0));
+        }
         return QVariant();
+
         break;
     case ActivityItemDelegate::ActionIconRole:
         return QVariant(); // FIXME once the action can be quantified, display on Icon
