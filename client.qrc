@@ -21,5 +21,6 @@
         <file>resources/lock-https@2x.png</file>
         <file>resources/account.png</file>
         <file>resources/more.png</file>
+        <file>resources/delete.png</file>
     </qresource>
 </RCC>

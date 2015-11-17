@@ -205,6 +205,9 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
 
     connect(share.data(), SIGNAL(permissionsSet()), SLOT(slotPermissionsSet()));
     connect(share.data(), SIGNAL(shareDeleted()), SLOT(slotShareDeleted()));
+
+    _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
+                                                     QIcon(QLatin1String(":/client/resources/delete.png"))));
 }
 
 void ShareWidget::on_deleteShareButton_clicked()
