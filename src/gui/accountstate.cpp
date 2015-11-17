@@ -142,7 +142,7 @@ void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
     }
 
     if (_connectionValidator) {
-        qDebug() << "ConnectionValidator already running, ignoring";
+        qDebug() << "ConnectionValidator already running, ignoring" << account()->displayName();
         return;
     }
     _credentialsFetchMode = credentialsFetchMode;
