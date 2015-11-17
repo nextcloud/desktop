@@ -76,7 +76,6 @@ public:
  */
 class ActivityList:public QList<Activity>
 {
-    // explicit ActivityList();
 public:
     void setAccountName( const QString& name );
     QString accountName() const;

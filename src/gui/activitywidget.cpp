@@ -204,13 +204,14 @@ void ActivityListModel::fetchMore(const QModelIndex &)
     QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
 
     foreach (AccountStatePtr asp, accounts) {
-
+        bool newItem = false;
         // if the account is not yet managed, add an empty list.
         if( !_activityLists.contains(asp.data()) ) {
             _activityLists[asp.data()] = ActivityList();
+            newItem = true;
         }
         ActivityList activities = _activityLists[asp.data()];
-        if( activities.count() == 0 ) {
+        if( newItem ) {
             startFetchJob(asp.data());
         }
     }
@@ -220,7 +221,7 @@ void ActivityListModel::slotRefreshActivity(AccountState *ast)
 {
     if(ast && _activityLists.contains(ast)) {
         qDebug() << "**** Refreshing Activity list for" << ast->account()->displayName();
-        _activityLists[ast].clear();
+        _activityLists.remove(ast);
     }
     startFetchJob(ast);
 }
