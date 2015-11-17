@@ -18,6 +18,7 @@
 #include <QSslConfiguration>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
+#include <QNetworkConfiguration>
 
 #include "cookiejar.h"
 #include "accessmanager.h"
@@ -39,6 +40,8 @@ AccessManager::AccessManager(QObject* parent)
     proxy.setHostName(" ");
     setProxy(proxy);
 #endif
+    // Atempt to workaround for https://github.com/owncloud/client/issues/3969
+    setConfiguration(QNetworkConfiguration());
     setCookieJar(new CookieJar);
 }
 
