@@ -46,6 +46,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    closeButton->setDefault(false); // Because people press enter in the dialog and we don't want to close for that
 
     // Set icon
     QFileInfo f_info(_localPath);

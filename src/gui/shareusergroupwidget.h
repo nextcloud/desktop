@@ -97,7 +97,7 @@ private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
 
     void on_shareeLineEdit_textChanged(const QString &text);
-    void on_searchPushButton_clicked();
+    void searchForSharees();
     void slotLineEditTextEdited(const QString &text);
 
     void slotCompleterActivated(const QModelIndex & index);

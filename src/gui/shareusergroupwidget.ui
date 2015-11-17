@@ -14,29 +14,12 @@
    <string>Share NewDocument.odt</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
-   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLineEdit" name="shareeLineEdit">
-       <property name="placeholderText">
-        <string>Share with users, groups or remote users ...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="searchPushButton">
-       <property name="text">
-        <string>Search</string>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QLineEdit" name="shareeLineEdit">
+     <property name="placeholderText">
+      <string>Share with users, groups or remote users ...</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
@@ -61,7 +44,7 @@
         <x>0</x>
         <y>0</y>
         <width>441</width>
-        <height>124</height>
+        <height>128</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3"/>

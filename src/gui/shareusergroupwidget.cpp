@@ -65,8 +65,6 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _completer->setModel(_completerModel);
     _ui->shareeLineEdit->setCompleter(_completer);
 
-    _ui->searchPushButton->setEnabled(false);
-
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
@@ -76,7 +74,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     // Queued connection so this signal is recieved after textChanged
     connect(_ui->shareeLineEdit, SIGNAL(textEdited(QString)),
             this, SLOT(slotLineEditTextEdited(QString)), Qt::QueuedConnection);
-    connect(&_completionTimer, SIGNAL(timeout()), this, SLOT(on_searchPushButton_clicked()));
+    connect(&_completionTimer, SIGNAL(timeout()), this, SLOT(searchForSharees()));
     _completionTimer.setSingleShot(true);
     _completionTimer.setInterval(600);
 
@@ -88,14 +86,9 @@ ShareUserGroupWidget::~ShareUserGroupWidget()
     delete _ui;
 }
 
-void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &text)
+void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &)
 {
     _completionTimer.stop();
-    if (text == "") {
-        _ui->searchPushButton->setEnabled(false);
-    } else {
-        _ui->searchPushButton->setEnabled(true);
-    }
 }
 
 void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
@@ -108,7 +101,7 @@ void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
 }
 
 
-void ShareUserGroupWidget::on_searchPushButton_clicked()
+void ShareUserGroupWidget::searchForSharees()
 {
     _completionTimer.stop();
     ShareeModel::ShareeSet blacklist;
