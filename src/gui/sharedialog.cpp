@@ -83,9 +83,16 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
         _userGroupWidget = new ShareUserGroupWidget(account, sharePath, localPath, resharingAllowed, this);
         _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
 
+
         QFrame *hline = new QFrame(this);
         hline->setFrameShape(QFrame::HLine);
+        QPalette p = palette();
+        // Make the line softer:
+        p.setColor(QPalette::Foreground, QColor::fromRgba((p.color(QPalette::Foreground).rgba() & 0x00ffffff) | 0x50000000));
+        hline->setPalette(p);
         _ui->shareWidgetsLayout->addWidget(hline);
+
+
         autoShare = false;
     }
 
