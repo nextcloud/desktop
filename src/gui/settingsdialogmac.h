@@ -17,6 +17,7 @@
 
 #include "progressdispatcher.h"
 #include "macpreferenceswindow.h"
+#include "owncloudgui.h"
 
 class QStandardItemModel;
 class QListWidgetItem;
@@ -30,6 +31,7 @@ class FolderMan;
 class ownCloudGui;
 class Folder;
 class AccountState;
+class ActivitySettings;
 
 /**
  * @brief The SettingsDialogMac class
@@ -44,15 +46,16 @@ public:
 
 public slots:
     void showActivityPage();
+    void slotRefreshActivity(AccountState *accountState );
 
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
-
 private:
     void closeEvent(QCloseEvent *event);
 
-    ProtocolWidget  *_protocolWidget; // this is actually the activityPage
+    ProtocolWidget  *_protocolWidget;
+    ActivitySettings *_activitySettings;
     ownCloudGui     *_gui;
 
     int _protocolIdx;
