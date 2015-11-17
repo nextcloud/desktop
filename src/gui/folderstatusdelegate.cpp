@@ -29,7 +29,7 @@
 namespace OCC {
 
 FolderStatusDelegate::FolderStatusDelegate() : QStyledItemDelegate() {
-    m_moreIcon = QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/more.png")));
+    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.png"));
 }
 
 QString FolderStatusDelegate::addFolderText()

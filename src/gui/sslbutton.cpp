@@ -186,13 +186,12 @@ void SslButton::updateAccountState(AccountState *accountState)
 
     AccountPtr account = _accountState->account();
     if (account->url().scheme() == QLatin1String("https")) {
-        QPixmap pm(Theme::hidpiFileName(":/client/resources/lock-https.png"));
-        setIcon(QIcon(pm));
+        setIcon(QIcon(QLatin1String(":/client/resources/lock-https.png")));
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
         setMenu(_menu);
     } else {
-        setIcon(QIcon(QPixmap(Theme::hidpiFileName(":/client/resources/lock-http.png"))));
+        setIcon(QIcon(QLatin1String(":/client/resources/lock-http.png")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
         setMenu(0);
     }
