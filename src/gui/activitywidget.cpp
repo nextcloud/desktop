@@ -418,8 +418,10 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
-    _progressIndicator->startAnimation();
-    _activityWidget->slotRefresh(ptr);
+    if( ptr && ptr->isConnected() ) {
+        _progressIndicator->startAnimation();
+        _activityWidget->slotRefresh(ptr);
+    }
 }
 
 ActivitySettings::~ActivitySettings()
