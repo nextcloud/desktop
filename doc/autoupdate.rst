@@ -11,8 +11,8 @@ the Updater will check for updates and notify you when a new version is
 available.
 
 .. note:: Because of various technical issues, desktop sync clients older than 
-   1.7 will not be allowed to connect and sync with the ownCloud 8.1 server. It is 
-   highly recommended to keep your client updated.
+   1.7 will not be allowed to connect and sync with the ownCloud 8.1+ server. It 
+   is highly recommended to keep your client updated.
 
 Basic Workflow
 --------------
