@@ -101,8 +101,8 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
-    bool canFetchMore(const QModelIndex& ) const;
-    void fetchMore(const QModelIndex&);
+    bool canFetchMore(const QModelIndex& ) const Q_DECL_OVERRIDE;
+    void fetchMore(const QModelIndex&) Q_DECL_OVERRIDE;
 
     ActivityList activityList() { return _finalList; }
 
