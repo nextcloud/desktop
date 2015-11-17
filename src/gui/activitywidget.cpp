@@ -151,6 +151,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);
+    qDebug() << "Start fetching activities for " << s->account()->displayName();
     job->start();
 }
 
@@ -179,20 +180,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
 
     _activityLists[ai] = list;
 
-    // if all activity lists were received, assemble the whole list
-    // otherwise wait until the others are finished
-    bool allAreHere = true;
-    foreach( ActivityList list, _activityLists.values() ) {
-        if( list.count() == 0 ) {
-            allAreHere = false;
-            break;
-        }
-    }
-
-    // FIXME: Be more efficient,
-    if( allAreHere ) {
-        combineActivityLists();
-    }
+    combineActivityLists();
 }
 
 
