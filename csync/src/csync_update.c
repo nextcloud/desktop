@@ -573,6 +573,26 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
     return true;
 }
 
+/* set the current item to an ignored state.
+ * If the item is set to ignored, the update phase continues, ie. its not a hard error */
+static bool mark_current_item_ignored( CSYNC *ctx, csync_file_stat_t *previous_fs, CSYNC_STATUS status )
+{
+    if(!ctx) {
+        return false;
+    }
+
+    if (ctx->current_fs) {
+        ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+        ctx->current_fs->error_status = status;
+        /* If a directory has ignored files, put the flag on the parent directory as well */
+        if( previous_fs ) {
+            previous_fs->has_ignored_files = true;
+        }
+        return true;
+    }
+    return false;
+}
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -625,13 +645,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
-          if (ctx->current_fs) {
-              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_PERMISSION_DENIED;
-              /* If a directory has ignored files, put the flag on the parent directory as well */
-              if( previous_fs ) {
-                  previous_fs->has_ignored_files = true;
-              }
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Permission denied.");
+          if (mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_PERMISSION_DENIED)) {
               goto done;
           }
       } else if(errno == ENOENT) {
@@ -644,13 +659,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       // A file or directory should be ignored and sync must continue. See #3490
       else if(errno == ERRNO_FORBIDDEN) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Directory access Forbidden (File Firewall?)");
-          if (ctx->current_fs) {
-              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_FORBIDDEN;
-              /* If a directory has ignored files, put the flag on the parent directory as well */
-              if( previous_fs ) {
-                  previous_fs->has_ignored_files = true;
-              }
+          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_FORBIDDEN) ) {
               goto done;
           }
           /* if current_fs is not defined here, better throw an error */
@@ -661,13 +670,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       // 503 as request to ignore the folder. See #3113 #2884.
       else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
-          if (ctx->current_fs) {
-              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_STORAGE_UNAVAILABLE;
-              /* If a directory has ignored files, put the flag on the parent directory as well */
-              if( previous_fs ) {
-                  previous_fs->has_ignored_files = true;
-              }
+          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_STORAGE_UNAVAILABLE ) ) {
               goto done;
           }
           /* if current_fs is not defined here, better throw an error */
