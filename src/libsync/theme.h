@@ -227,6 +227,7 @@ public:
      * it has a trailing slash, for example "remote.php/webdav/".
      */
     virtual QString webDavPath() const;
+    virtual QString webDavPathNonShib() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

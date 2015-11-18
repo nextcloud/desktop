@@ -56,8 +56,10 @@ struct CmdOptions {
     bool useNetrc;
     bool interactive;
     bool ignoreHiddenFiles;
+    bool nonShib;
     QString exclude;
     QString unsyncedfolders;
+    QString davPath;
     int restartTimes;
 };
 
@@ -156,6 +158,8 @@ void help()
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
+    std::cout << "  --nonshib              Use Non Shibboleth WebDAV authentication" << std::endl;
+    std::cout << "  --davpath [path]       Custom themed dav path, overrides --nonshib" << std::endl;
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
@@ -224,6 +228,10 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
                 options->exclude = it.next();
         } else if( option == "--unsyncedfolders" && !it.peekNext().startsWith("-") ) {
             options->unsyncedfolders = it.next();
+        } else if( option == "--nonshib" ) {
+            options->nonShib = true;
+        } else if( option == "--davpath" && !it.peekNext().startsWith("-") ) {
+            options->davPath = it.next();
         } else if( option == "--max-sync-retries" && !it.peekNext().startsWith("-") ) {
             options->restartTimes = it.next().toInt();
         } else {
@@ -272,6 +280,7 @@ int main(int argc, char **argv) {
     options.useNetrc = false;
     options.interactive = true;
     options.ignoreHiddenFiles = true;
+    options.nonShib = false;
     options.restartTimes = 3;
     ClientProxy clientProxy;
 
@@ -287,6 +296,15 @@ int main(int argc, char **argv) {
     if(!options.target_url.endsWith("/")) {
         options.target_url.append("/");
     }
+   
+    if( options.nonShib ) {
+        account->setNonShib(true);
+    }
+
+    if(!options.davPath.isEmpty()) {
+        account->setDavPath( options.davPath );
+    }
+ 
     if( !options.target_url.contains( account->davPath() )) {
         options.target_url.append(account->davPath());
     }
