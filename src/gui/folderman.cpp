@@ -542,7 +542,7 @@ void FolderMan::slotRunOneEtagJob()
             }
         }
         if (_currentEtagJob.isNull()) {
-            qDebug() << "No more remote ETag check jobs to schedule.";
+            //qDebug() << "No more remote ETag check jobs to schedule.";
 
             /* now it might be a good time to check for restarting... */
             if( _currentSyncFolder == NULL && _appRestartRequired ) {

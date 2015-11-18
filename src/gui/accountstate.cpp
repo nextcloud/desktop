@@ -160,7 +160,7 @@ void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
 
     if (isConnected() && _timeSinceLastETagCheck.isValid()
             && _timeSinceLastETagCheck.elapsed() < polltime) {
-        qDebug() << "The last ETag check succeeded within the last 30 secs. No connection check needed!";
+        //qDebug() << account()->displayName() << "The last ETag check succeeded within the last " << polltime/1000 << " secs. No connection check needed!";
         return;
     }
 

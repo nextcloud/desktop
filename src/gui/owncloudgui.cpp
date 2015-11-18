@@ -288,7 +288,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 #else
             QStringList allStatusStrings;
             foreach(Folder* folder, map.values()) {
-                qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
+                //qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
                 QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
                 allStatusStrings += tr("Folder %1: %2").arg(folder->aliasGui(), folderMessage);
             }
