@@ -418,10 +418,21 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
-    if( ptr && ptr->isConnected() ) {
+    if( ptr && ptr->isConnected() && isVisible()) {
         _progressIndicator->startAnimation();
         _activityWidget->slotRefresh(ptr);
     }
+}
+
+bool ActivitySettings::event(QEvent* e)
+{
+    if (e->type() == QEvent::Show) {
+        AccountManager *am = AccountManager::instance();
+        foreach (AccountStatePtr a, am->accounts()) {
+            slotRefresh(a.data());
+        }
+    }
+    return QWidget::event(e);
 }
 
 ActivitySettings::~ActivitySettings()

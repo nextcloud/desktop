@@ -182,6 +182,8 @@ signals:
     void guiLog(const QString&, const QString&);
 
 private:
+    bool event(QEvent* e) Q_DECL_OVERRIDE;
+
     QTabWidget *_tab;
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
