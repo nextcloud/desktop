@@ -161,6 +161,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         errStr = tr("The mounted folder is temporarily not available on the server");
         break;
+    case CSYNC_STATUS_FORBIDDEN:
+        errStr = tr("Access is forbidden");
+        break;
     case CSYNC_STATUS_OPENDIR_ERROR:
         errStr = tr("An error occurred while opening a folder");
         break;
@@ -409,6 +412,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         item->_errorString = QLatin1String("Directory temporarily not available on server.");
+        item->_status = SyncFileItem::SoftError;
+        _temporarilyUnavailablePaths.insert(item->_file);
+        break;
+    case CSYNC_STATUS_FORBIDDEN:
+        item->_errorString = QLatin1String("Access forbidden.");
         item->_status = SyncFileItem::SoftError;
         _temporarilyUnavailablePaths.insert(item->_file);
         break;
