@@ -374,6 +374,7 @@ void Folder::etagRetreived(const QString& etag)
 void Folder::etagRetreivedFromSyncEngine(const QString& etag)
 {
     qDebug() << "Root etag from during sync:" << etag;
+    accountState()->tagLastSuccessfullETagRequest();
     _lastEtag = etag;
 }
 
