@@ -182,6 +182,10 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
 
     _activityLists[ai] = list;
 
+    if( statusCode == 999 ) {
+        emit accountWithoutActivityApp(ai);
+    }
+
     combineActivityLists();
 }
 
@@ -269,7 +273,10 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
-    _ui->_headerLabel->setText(tr("Server Activities"));
+    showLabels();
+
+    connect(_model, SIGNAL(accountWithoutActivityApp(AccountState*)),
+            this, SLOT(slotAccountWithoutActivityApp(AccountState*)));
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
@@ -294,6 +301,30 @@ void ActivityWidget::slotRefresh(AccountState *ptr)
 void ActivityWidget::slotRemoveAccount( AccountState *ptr )
 {
     _model->slotRemoveAccount(ptr);
+}
+
+void ActivityWidget::showLabels()
+{
+    QString t = tr("Server Activities");
+    _ui->_headerLabel->setTextFormat(Qt::RichText);
+    _ui->_headerLabel->setText(t);
+
+    t.clear();
+    QSetIterator<QString> i(_accountsWithoutActivities);
+    while (i.hasNext() ) {
+        t.append( tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
+    }
+    _ui->_bottomLabel->setTextFormat(Qt::RichText);
+    _ui->_bottomLabel->setText(t);
+}
+
+void ActivityWidget::slotAccountWithoutActivityApp(AccountState *ast)
+{
+    if( ast && ast->account() ) {
+        _accountsWithoutActivities.insert(ast->account()->displayName());
+    }
+
+    showLabels();
 }
 
 // FIXME: Reused from protocol widget. Move over to utilities.

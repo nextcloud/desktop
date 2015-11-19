@@ -112,6 +112,9 @@ public slots:
 private slots:
     void slotActivitiesReceived(const QVariantMap& json, int statusCode);
 
+signals:
+    void accountWithoutActivityApp(AccountState* ast);
+
 private:
     void startFetchJob(AccountState* s);
     void combineActivityLists();
@@ -142,6 +145,7 @@ public slots:
     void slotOpenFile(QModelIndex indx);
     void slotRefresh(AccountState* ptr);
     void slotRemoveAccount( AccountState *ptr );
+    void slotAccountWithoutActivityApp(AccountState *ast);
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -149,9 +153,12 @@ signals:
     void rowsInserted();
 
 private:
+    void showLabels();
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
     QPushButton *_copyBtn;
+
+    QSet<QString> _accountsWithoutActivities;
 
     ActivityListModel *_model;
 };
