@@ -99,7 +99,7 @@ public:
      *  this account.
      *  The checkConnectivity() method uses the timestamp to save a call to
      *  the server to validate the connection if the last successful etag job
-     *  is not so lang away.
+     *  was not so long ago.
      */
     void tagLastSuccessfullETagRequest();
 
