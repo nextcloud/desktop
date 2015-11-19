@@ -34,14 +34,14 @@ public:
 
     /**
      * Possible share types
+     * Need to be in sync with Sharee::Type
      */
     enum ShareType {
-        TypeUser   = 0,
-        TypeGroup  = 1,
+        TypeUser   = Sharee::User,
+        TypeGroup  = Sharee::Group,
         TypeLink   = 3,
-        TypeRemote = 6
+        TypeRemote = Sharee::Federated
     };
-    Q_DECLARE_FLAGS(ShareTypes, ShareType)
 
     /**
      * Possible permissions

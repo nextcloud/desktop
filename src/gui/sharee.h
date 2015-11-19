@@ -29,17 +29,17 @@ namespace OCC {
 class Sharee {
 public:
     
+    // Keep in sync with Share::ShareType
     enum Type {
         User = 0,
         Group = 1,
         Federated = 6
     };
-    Q_DECLARE_FLAGS(Types, Type)
 
     explicit Sharee(const QString shareWith,
                     const QString displayName,
                     const Type type);
-    
+
     QString format() const;
     QString shareWith() const;
     QString displayName() const;
