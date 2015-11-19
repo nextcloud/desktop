@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>474</width>
-    <height>108</height>
+    <width>468</width>
+    <height>92</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>Permissions</string>
+        <string/>
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">

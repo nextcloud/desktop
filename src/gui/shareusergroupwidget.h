@@ -54,6 +54,7 @@ public:
 
 signals:
     void shareDeleted(ShareWidget *share);
+    void resizeRequested();
 
 private slots:
     void on_deleteShareButton_clicked();
@@ -102,6 +103,7 @@ private slots:
 
     void slotCompleterActivated(const QModelIndex & index);
     void slotShareesReady();
+    void slotAdjustScrollWidgetSize();
 
 private:
     Ui::ShareUserGroupWidget *_ui;

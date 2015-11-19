@@ -141,11 +141,14 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         ShareWidget *s = new ShareWidget(share, _ui->scrollArea);
+        connect(s, SIGNAL(resizeRequested()), this, SLOT(slotAdjustScrollWidgetSize()));
         layout->addWidget(s);
 
         x++;
         if (x <= 3) {
             minimumSize = newViewPort->sizeHint();
+        } else {
+            minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
         }
     }
 
@@ -155,6 +158,19 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setWidget(newViewPort);
 }
+
+void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
+{
+    QScrollArea *scrollArea = _ui->scrollArea;
+    if (scrollArea->findChildren<ShareWidget*>().count() <= 3) {
+        auto minimumSize = scrollArea->widget()->sizeHint();
+        auto spacing = scrollArea->widget()->layout()->spacing();
+        minimumSize.rwidth() += spacing;
+        minimumSize.rheight() += spacing;
+        scrollArea->setMinimumSize(minimumSize);
+    }
+}
+
 
 void ShareUserGroupWidget::slotShareesReady()
 {
@@ -226,6 +242,7 @@ void ShareWidget::on_permissionToggleButton_clicked()
     } else {
         _ui->permissionToggleButton->setText("More");
     }
+    emit resizeRequested();
 }
 
 ShareWidget::~ShareWidget()
@@ -279,6 +296,7 @@ void ShareWidget::slotPermissionsChanged()
 
 void ShareWidget::slotDeleteAnimationFinished()
 {
+    resizeRequested();
     deleteLater();
 }
 
@@ -291,6 +309,7 @@ void ShareWidget::slotShareDeleted()
     animation->setEndValue(0);
 
     connect(animation, SIGNAL(finished()), SLOT(slotDeleteAnimationFinished()));
+    connect(animation, SIGNAL(valueChanged(QVariant)), this, SIGNAL(resizeRequested()));
 
     animation->start();
 }
