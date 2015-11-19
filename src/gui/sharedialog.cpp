@@ -76,6 +76,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
+    if (!account->capabilities().shareAPI()) {
+        _ui->shareWidgetsLayout->addWidget(new QLabel(tr("The server does not allow sharing")));
+        return;
+    }
+
     bool autoShare = true;
 
     // We only do user/group sharing from 8.2.0
@@ -120,7 +125,9 @@ void ShareDialog::getShares()
         job->start();
     }
 
-    _linkWidget->getShares();
+    if (_linkWidget) {
+        _linkWidget->getShares();
+    }
     if (_userGroupWidget != NULL) {
         _userGroupWidget->getShares();
     }
