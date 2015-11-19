@@ -170,10 +170,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
         return;
     }
 
-    _manager->createShare(_sharePath,
-                          (Share::ShareType)sharee->type(),
-                          sharee->shareWith(),
-                          Share::PermissionRead);
+    _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
+                          sharee->shareWith(), Share::PermissionDefault);
 
     _ui->shareeLineEdit->setText(QString());
 }

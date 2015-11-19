@@ -51,7 +51,8 @@ public:
         PermissionUpdate =  2,
         PermissionCreate =  4,
         PermissionDelete =  8,
-        PermissionShare  = 16
+        PermissionShare  = 16,
+        PermissionDefault = 1 << 30
     };
     Q_DECLARE_FLAGS(Permissions, Permission)
 
@@ -62,7 +63,7 @@ public:
                    const QString& id,
                    const QString& path,
                    const ShareType shareType,
-                   const Permissions permissions,
+                   const Permissions permissions = PermissionDefault,
                    const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
 
     /*
