@@ -110,7 +110,7 @@ public slots:
     void slotRemoveAccount( AccountState *ast );
 
 private slots:
-    void slotActivitiesReceived(const QVariantMap& json);
+    void slotActivitiesReceived(const QVariantMap& json, int statusCode);
 
 private:
     void startFetchJob(AccountState* s);

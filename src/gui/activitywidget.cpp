@@ -142,7 +142,8 @@ void ActivityListModel::startFetchJob(AccountState* s)
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-    QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
+    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)),
+                     this, SLOT(slotActivitiesReceived(QVariantMap, int)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(s));
 
     QList< QPair<QString,QString> > params;
@@ -155,7 +156,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->start();
 }
 
-void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
+void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int statusCode)
 {
     auto activities = json.value("ocs").toMap().value("data").toList();
     qDebug() << "*** activities" << activities;
@@ -164,6 +165,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
     AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
     _currentlyFetching.remove(ai);
     list.setAccountName( ai->account()->displayName());
+
     foreach( auto activ, activities ) {
         auto json = activ.toMap();
 

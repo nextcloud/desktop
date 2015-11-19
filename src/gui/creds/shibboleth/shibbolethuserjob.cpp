@@ -22,11 +22,14 @@ ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
     : JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
 {
     setIgnoreCredentialFailure(true);
-    connect(this, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotJsonRecieved(QVariantMap)));
+    connect(this, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotJsonReceived(QVariantMap, int)));
 }
 
-void ShibbolethUserJob::slotJsonRecieved(const QVariantMap &json)
+void ShibbolethUserJob::slotJsonReceived(const QVariantMap &json, int statusCode)
 {
+    if( statusCode != 100 ) {
+        qWarning() << "JSON Api call resulted in status code != 100";
+    }
     QString user =  json.value("ocs").toMap().value("data").toMap().value("id").toString();
     //qDebug() << "cloud/user: " << json << "->" << user;
     emit userFetched(user);

@@ -199,7 +199,7 @@ private slots:
  * To be used like this:
  * \code
  * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
- * connect(job, SIGNAL(jsonRecieved(QVariantMap)), ...)
+ * connect(job, SIGNAL(jsonReceived(QVariantMap)), ...)
  * The received QVariantMap is empty in case of error or otherwise is a map as parsed by QtJson
  * \encode
  *
@@ -221,12 +221,20 @@ public:
      * This function needs to be called before start() obviously.
      */
     void addQueryParams(QList< QPair<QString,QString> > params);
+
 public slots:
     void start() Q_DECL_OVERRIDE;
 protected:
     bool finished() Q_DECL_OVERRIDE;
 signals:
-    void jsonRecieved(const QVariantMap &json);
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the raw json string
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void jsonReceived(const QVariantMap &json, int statusCode);
+
 private:
     QList< QPair<QString,QString> > _additionalParams;
 };

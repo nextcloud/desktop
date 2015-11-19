@@ -608,23 +608,40 @@ void JsonApiJob::start()
 
 bool JsonApiJob::finished()
 {
+    int statusCode = 0;
+
     if (reply()->error() != QNetworkReply::NoError) {
         qWarning() << "Network error: " << path() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        emit jsonRecieved(QVariantMap());
+        emit jsonReceived(QVariantMap(), statusCode);
         return true;
     }
 
-    bool success = false;
     QString jsonStr = QString::fromUtf8(reply()->readAll());
+    if( jsonStr.contains( "<?xml version=\"1.0\"?>") ) {
+        QRegExp rex("<statuscode>(\\d+)</statuscode>");
+        if( jsonStr.contains(rex) ) {
+            // this is a error message coming back from ocs.
+            statusCode = rex.cap(1).toInt();
+        }
+
+    } else {
+        QRegExp rex("\"statuscode\":(\\d+),");
+        // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
+        if( jsonStr.contains(rex) ) {
+            statusCode = rex.cap(1).toInt();
+        }
+    }
+
+    bool success = false;
     QVariantMap json = QtJson::parse(jsonStr, success).toMap();
     // empty or invalid response
     if (!success || json.isEmpty()) {
         qWarning() << "invalid JSON!" << jsonStr;
-        emit jsonRecieved(QVariantMap());
+        emit jsonReceived(QVariantMap(), statusCode);
         return true;
     }
 
-    emit jsonRecieved(json);
+    emit jsonReceived(json, statusCode);
     return true;
 }
 
