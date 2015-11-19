@@ -135,7 +135,7 @@ class ActivityWidget : public QWidget
 public:
     explicit ActivityWidget(QWidget *parent = 0);
     ~ActivityWidget();
-    QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
+    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
 
 public slots:
@@ -170,7 +170,7 @@ class ActivitySettings : public QWidget
 public:
     explicit ActivitySettings(QWidget *parent = 0);
     ~ActivitySettings();
-    QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
+    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
     void slotRefresh( AccountState* ptr );
