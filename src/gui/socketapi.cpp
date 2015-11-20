@@ -378,12 +378,23 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         // if the folder isn't connected, don't open the share dialog
         sendMessage(socket, message);
     } else {
+        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
+        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+
+        // Verify the file is on the server (to our knowledge of course)
+        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+            const QString message = QLatin1String("SHARE:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
+            sendMessage(socket, message);
+            return;
+        }
+
         const QString folderForPath = shareFolder->path();
         const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
 
         // Can't share root folder
         if (QDir::cleanPath(remotePath) == "/") {
-           const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
+            const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
             return;
         }
