@@ -88,6 +88,13 @@ public:
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
 
+    /**
+     * Minimum age, in milisecond, of a file that can be uploaded.
+     * Files more recent than that are not going to be uploaeded as they are considered
+     * too young and possibly still changing
+     */
+    static qint64 minimumFileAgeForUpload; // in ms
+
 signals:
     void csyncError( const QString& );
     void csyncUnavailable();

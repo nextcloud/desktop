@@ -54,6 +54,8 @@ namespace OCC {
 
 bool SyncEngine::_syncRunning = false;
 
+qint64 SyncEngine::minimumFileAgeForUpload = 2000;
+
 SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
                        const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)

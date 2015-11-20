@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "filesystem.h"
+#include <syncengine.h>
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -39,16 +40,6 @@
 namespace OCC {
 
 FolderMan* FolderMan::_instance = 0;
-
-/**
- * The minimum time between a sync being requested and it
- * being executed in milliseconds.
- *
- * This delay must be large enough to ensure fileIsStillChanging()
- * in the upload propagator doesn't decide to skip the file because
- * the modification was too recent.
- */
-static qint64 msBetweenRequestAndSync = 2000;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
@@ -652,7 +643,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
 
     // A minimum of delay here is essential as the sync will not upload
     // files that were changed too recently.
-    msDelay = qMax(msBetweenRequestAndSync, msDelay);
+    msDelay = qMax(SyncEngine::minimumFileAgeForUpload, msDelay);
 
     qDebug() << "Scheduling a sync in" << (msDelay/1000) << "seconds";
     _startScheduledSyncTimer.start(msDelay);

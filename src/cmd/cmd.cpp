@@ -296,7 +296,7 @@ int main(int argc, char **argv) {
     if(!options.target_url.endsWith("/")) {
         options.target_url.append("/");
     }
-   
+
     if( options.nonShib ) {
         account->setNonShib(true);
     }
@@ -304,7 +304,7 @@ int main(int argc, char **argv) {
     if(!options.davPath.isEmpty()) {
         account->setDavPath( options.davPath );
     }
- 
+
     if( !options.target_url.contains( account->davPath() )) {
         options.target_url.append(account->davPath());
     }
@@ -378,6 +378,9 @@ int main(int argc, char **argv) {
     account->setUrl(url);
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
+
+    // much lower age than the default since this utility is usually made to be run right after a change in the tests
+    SyncEngine::minimumFileAgeForUpload = 0;
 
     int restartCount = 0;
 restart_sync:

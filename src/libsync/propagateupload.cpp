@@ -23,6 +23,7 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "transmissionchecksumvalidator.h"
+#include "syncengine.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -53,7 +54,7 @@ static bool fileIsStillChanging(const SyncFileItem & item)
     const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
     const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTime());
 
-    return msSinceMod < 2000
+    return msSinceMod < SyncEngine::minimumFileAgeForUpload
             // if the mtime is too much in the future we *do* upload the file
             && msSinceMod > -10000;
 }
