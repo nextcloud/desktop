@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="138"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Přidat nový</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
@@ -327,70 +327,70 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 na %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
         <source>(disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>(odpojeno)</translation>
     </message>
 </context>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <location filename="../src/gui/activitywidget.cpp" line="390"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="362"/>
+        <location filename="../src/gui/activitywidget.cpp" line="395"/>
         <source>Sync Protocol</source>
         <translation>Protokol synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="368"/>
+        <location filename="../src/gui/activitywidget.cpp" line="401"/>
         <source>List of ignored or errornous files</source>
-        <translation type="unfinished"/>
+        <translation>Seznam ignorovaných nebo poškozených souborů</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="372"/>
+        <location filename="../src/gui/activitywidget.cpp" line="405"/>
         <source>Copy</source>
         <translation>Kopie</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="373"/>
+        <location filename="../src/gui/activitywidget.cpp" line="406"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopírovat záznam aktivity do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="378"/>
-        <source>Not Synced</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="399"/>
-        <source>server activity list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="403"/>
-        <source>sync activity list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="406"/>
-        <source>not syned items list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <source>Not Synced</source>
+        <translation>Nesesynchronizováno</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="432"/>
+        <source>server activity list</source>
+        <translation>výpis aktivit serveru</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="436"/>
+        <source>sync activity list</source>
+        <translation>výpis aktivit synchronizace</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="439"/>
+        <source>not syned items list</source>
+        <translation>výpis nesesynchronizovaných položek</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>Copied to clipboard</source>
         <translation>Zkopírováno do schránky</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>%1 byl zkopírován do schránky.</translation>
     </message>
 </context>
 <context>
@@ -402,23 +402,29 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
+        <location filename="../src/gui/activitywidget.ui" line="30"/>
         <source>TextLabel</source>
         <translation>Textový popisek</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="270"/>
+        <location filename="../src/gui/activitywidget.cpp" line="308"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Aktivity serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="272"/>
+        <location filename="../src/gui/activitywidget.cpp" line="281"/>
         <source>Copy</source>
         <translation>Kopie</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="273"/>
+        <location filename="../src/gui/activitywidget.cpp" line="282"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopírovat záznam aktivity do schránky.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="315"/>
+        <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -850,13 +856,13 @@ Opravdu chcete provést tuto akci?</translation>
         <location filename="../src/gui/folderstatusmodel.cpp" line="830"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="858"/>
@@ -868,7 +874,7 @@ Opravdu chcete provést tuto akci?</translation>
         <location filename="../src/gui/folderstatusmodel.cpp" line="860"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
@@ -1107,32 +1113,32 @@ Celkový zbývající čas %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Spustit při startu systému</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazovat &amp;upozornění na ploše</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Používat čer&amp;nobílé ikony</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Upravit &amp;ignorované soubory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Potvrzovat stahování adresářů větších než</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Z&amp;obrazit hlášení o pádech</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -2064,7 +2070,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="69"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Místní protokol synchronizace</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="71"/>
@@ -2273,6 +2279,11 @@ Nedoporučuje se jí používat.</translation>
         <source>Folder: %2</source>
         <translation>Adresář: %2</translation>
     </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="80"/>
+        <source>The server does not allow sharing</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::ShareLinkWidget</name>
@@ -2381,19 +2392,14 @@ Nedoporučuje se jí používat.</translation>
         <translation>Textový popisek</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="57"/>
-        <source>Permissions</source>
-        <translation>Práva</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharewidget.ui" line="63"/>
         <source>Can Share</source>
-        <translation type="unfinished"/>
+        <translation>Lze sdílet</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="70"/>
         <source>Can Edit</source>
-        <translation type="unfinished"/>
+        <translation>Lze upravovat</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="98"/>
@@ -2408,7 +2414,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="84"/>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Změnit</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="91"/>
@@ -2801,7 +2807,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Přístup je zakázán</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="176"/>
@@ -2916,7 +2922,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Log synchronizace</translation>
     </message>
 </context>
 <context>
@@ -3329,27 +3335,27 @@ Nedoporučuje se jí používat.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="444"/>
         <source>%1 day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Včera</numerusform><numerusform>Před %1 dny</numerusform><numerusform>Před %1 dny</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="450"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Před hodinou</numerusform><numerusform>Před %1 hodinami</numerusform><numerusform>Před %1 hodinami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="454"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Méně než před minutou</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="456"/>
         <source>%1 minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Před minutou</numerusform><numerusform>Před %1 minutami</numerusform><numerusform>Před %1 minutami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="459"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Před nějakým časem</translation>
     </message>
 </context>
 <context>

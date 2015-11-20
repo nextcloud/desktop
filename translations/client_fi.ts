@@ -338,57 +338,57 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <location filename="../src/gui/activitywidget.cpp" line="390"/>
         <source>Server Activity</source>
         <translation>Palvelimen toimet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="362"/>
+        <location filename="../src/gui/activitywidget.cpp" line="395"/>
         <source>Sync Protocol</source>
         <translation>Synkronointiprotokolla</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="368"/>
+        <location filename="../src/gui/activitywidget.cpp" line="401"/>
         <source>List of ignored or errornous files</source>
         <translation>Luettelo ohitetuista tai virheellisistä tiedostoista</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="372"/>
+        <location filename="../src/gui/activitywidget.cpp" line="405"/>
         <source>Copy</source>
         <translation>Kopioi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="373"/>
+        <location filename="../src/gui/activitywidget.cpp" line="406"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopioi toimilista leikepöydälle.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="378"/>
+        <location filename="../src/gui/activitywidget.cpp" line="411"/>
         <source>Not Synced</source>
         <translation>Ei synkronoitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="399"/>
+        <location filename="../src/gui/activitywidget.cpp" line="432"/>
         <source>server activity list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="403"/>
+        <location filename="../src/gui/activitywidget.cpp" line="436"/>
         <source>sync activity list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="406"/>
+        <location filename="../src/gui/activitywidget.cpp" line="439"/>
         <source>not syned items list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>Copied to clipboard</source>
         <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>The %1 has been copied to the clipboard.</source>
         <translation>%1 on kopioitu leikepöydälle.</translation>
     </message>
@@ -402,23 +402,29 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
+        <location filename="../src/gui/activitywidget.ui" line="30"/>
         <source>TextLabel</source>
         <translation>TekstiLeima</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="270"/>
+        <location filename="../src/gui/activitywidget.cpp" line="308"/>
         <source>Server Activities</source>
         <translation>Palvelimen toimet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="272"/>
+        <location filename="../src/gui/activitywidget.cpp" line="281"/>
         <source>Copy</source>
         <translation>Kopioi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="273"/>
+        <location filename="../src/gui/activitywidget.cpp" line="282"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopioi toimilista leikepöydälle.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="315"/>
+        <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -848,13 +854,13 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="830"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="858"/>
@@ -866,7 +872,7 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="860"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>, </translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
@@ -924,7 +930,7 @@ Aikaa jäljellä yhteensä %5</translation>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Odotetaan %n muuta kansiota...</numerusform><numerusform>Odotetaan %n muuta kansiota...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="955"/>
@@ -2264,6 +2270,11 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <source>Folder: %2</source>
         <translation>Kansio: %2</translation>
     </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="80"/>
+        <source>The server does not allow sharing</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::ShareLinkWidget</name>
@@ -2370,11 +2381,6 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/sharewidget.ui" line="37"/>
         <source>TextLabel</source>
         <translation>TekstiLeima</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharewidget.ui" line="57"/>
-        <source>Permissions</source>
-        <translation>Oikeudet</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="63"/>
@@ -2792,7 +2798,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Pääsy estetty</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="176"/>

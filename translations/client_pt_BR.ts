@@ -338,57 +338,57 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="357"/>
+        <location filename="../src/gui/activitywidget.cpp" line="390"/>
         <source>Server Activity</source>
         <translation>Atividade do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="362"/>
+        <location filename="../src/gui/activitywidget.cpp" line="395"/>
         <source>Sync Protocol</source>
         <translation>Protocolo de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="368"/>
+        <location filename="../src/gui/activitywidget.cpp" line="401"/>
         <source>List of ignored or errornous files</source>
         <translation>Lista de arquivos ignorados ou errôneos</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="372"/>
+        <location filename="../src/gui/activitywidget.cpp" line="405"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="373"/>
+        <location filename="../src/gui/activitywidget.cpp" line="406"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copiar a lista de atividades para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="378"/>
+        <location filename="../src/gui/activitywidget.cpp" line="411"/>
         <source>Not Synced</source>
         <translation>Não Sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="399"/>
+        <location filename="../src/gui/activitywidget.cpp" line="432"/>
         <source>server activity list</source>
         <translation>lista de atividades do servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="403"/>
+        <location filename="../src/gui/activitywidget.cpp" line="436"/>
         <source>sync activity list</source>
         <translation>lista de atividades de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="406"/>
+        <location filename="../src/gui/activitywidget.cpp" line="439"/>
         <source>not syned items list</source>
         <translation>lista de itens não sincronizados</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>Copied to clipboard</source>
         <translation>Copiado para área de transferência</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="411"/>
+        <location filename="../src/gui/activitywidget.cpp" line="444"/>
         <source>The %1 has been copied to the clipboard.</source>
         <translation>O %1 foi copiado para a área de transferência.</translation>
     </message>
@@ -402,23 +402,29 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
+        <location filename="../src/gui/activitywidget.ui" line="30"/>
         <source>TextLabel</source>
         <translation>RótuloTexto</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="270"/>
+        <location filename="../src/gui/activitywidget.cpp" line="308"/>
         <source>Server Activities</source>
         <translation>Atividades do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="272"/>
+        <location filename="../src/gui/activitywidget.cpp" line="281"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="273"/>
+        <location filename="../src/gui/activitywidget.cpp" line="282"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copiar a lista de atividades para a área de transferência.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="315"/>
+        <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -850,13 +856,13 @@ Tem certeza de que deseja executar esta operação?</translation>
         <location filename="../src/gui/folderstatusmodel.cpp" line="830"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="858"/>
@@ -868,7 +874,7 @@ Tem certeza de que deseja executar esta operação?</translation>
         <location filename="../src/gui/folderstatusmodel.cpp" line="860"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
         <source>, </source>
-        <translation type="unfinished"/>
+        <translation>,</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
@@ -2270,6 +2276,11 @@ It is not advisable to use it.</source>
         <source>Folder: %2</source>
         <translation>Pasta: %2</translation>
     </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="80"/>
+        <source>The server does not allow sharing</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::ShareLinkWidget</name>
@@ -2376,11 +2387,6 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharewidget.ui" line="37"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharewidget.ui" line="57"/>
-        <source>Permissions</source>
-        <translation>Permissões</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="63"/>
@@ -2798,7 +2804,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Acesso proibido</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="176"/>
@@ -3326,12 +3332,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="444"/>
         <source>%1 day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dia(s) atráz</numerusform><numerusform>%1 dia(s) atráz</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="450"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation type="unfinished"><numerusform>%1 hora(s) atráz</numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="454"/>
