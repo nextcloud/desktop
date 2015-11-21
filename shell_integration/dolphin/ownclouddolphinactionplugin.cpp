@@ -54,7 +54,7 @@ public:
         auto act = new QAction(parentWidget);
         act->setText(helper->shareActionString());
         connect(act, &QAction::triggered, this, [localFile, helper] {
-            helper->sendCommand("SHARE:"+localFile.toUtf8()+"\n");
+            helper->sendCommand(QByteArray("SHARE:"+localFile.toUtf8()+"\n"));
         } );
         return { act };
     }
