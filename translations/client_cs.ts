@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="315"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Účet %1 nemá zapnuté aktivity.</translation>
     </message>
 </context>
 <context>
@@ -2282,7 +2282,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="80"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>Sdílení je na serveru zakázáno</translation>
     </message>
 </context>
 <context>
