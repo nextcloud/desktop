@@ -452,6 +452,7 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
     if( ptr && ptr->isConnected() && isVisible()) {
+        qDebug() << "Refreshing Activity list for " << ptr->account()->displayName();
         _progressIndicator->startAnimation();
         _activityWidget->slotRefresh(ptr);
     }

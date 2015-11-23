@@ -142,7 +142,6 @@ void SettingsDialogMac::accountRemoved(AccountState *s)
 void SettingsDialogMac::slotRefreshActivity( AccountState* accountState )
 {
     if (accountState) {
-        qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
         _activitySettings->slotRefresh(accountState);
     }
 }

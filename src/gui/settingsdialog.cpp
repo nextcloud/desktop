@@ -309,7 +309,6 @@ void SettingsDialog::addActionToToolBar(QAction *action) {
 void SettingsDialog::slotRefreshActivity( AccountState* accountState )
 {
     if (accountState) {
-        qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
         _activitySettings->slotRefresh(accountState);
     }
 }
