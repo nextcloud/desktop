@@ -197,7 +197,7 @@ struct csync_file_stat_s {
   char *directDownloadCookies;
   char remotePerm[REMOTE_PERM_BUF_SIZE+1];
 
-  char *checksum;
+  const char *checksum;
   uint32_t checksumTypeId;
 
   CSYNC_STATUS error_status;

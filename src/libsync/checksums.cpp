@@ -160,26 +160,35 @@ CSyncChecksumHook::CSyncChecksumHook(SyncJournalDb *journal)
 {
 }
 
-bool CSyncChecksumHook::hook(const char* path, uint32_t checksumTypeId, const char* checksum, void *this_obj)
+const char* CSyncChecksumHook::hook(const char* path, uint32_t checksumTypeId, void *this_obj)
 {
     CSyncChecksumHook* checksumHook = static_cast<CSyncChecksumHook*>(this_obj);
-    return checksumHook->check(QString::fromUtf8(path), checksumTypeId, QByteArray(checksum));
+    QByteArray checksum = checksumHook->compute(QString::fromUtf8(path), checksumTypeId);
+    if (checksum.isNull()) {
+        return NULL;
+    }
+
+    char* result = (char*)malloc(checksum.size() + 1);
+    memcpy(result, checksum.constData(), checksum.size());
+    result[checksum.size()] = 0;
+    return result;
 }
 
-bool CSyncChecksumHook::check(const QString& path, int checksumTypeId, const QByteArray& checksum)
+QByteArray CSyncChecksumHook::compute(const QString& path, int checksumTypeId)
 {
     QByteArray checksumType = _journal->getChecksumType(checksumTypeId);
     if (checksumType.isEmpty()) {
         qDebug() << "Checksum type" << checksumTypeId << "not found";
-        return false;
+        return QByteArray();
     }
 
-    QByteArray newChecksum = ComputeChecksum::computeNow(path, checksumType);
-    if (newChecksum.isNull()) {
+    QByteArray checksum = ComputeChecksum::computeNow(path, checksumType);
+    if (checksum.isNull()) {
         qDebug() << "Failed to compute checksum" << checksumType << "for" << path;
-        return false;
+        return QByteArray();
     }
-    return newChecksum == checksum;
+
+    return checksum;
 }
 
 

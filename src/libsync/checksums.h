@@ -121,15 +121,15 @@ public:
     explicit CSyncChecksumHook(SyncJournalDb* journal);
 
     /**
-     * Returns true if the checksum for \a path is the same as the one provided.
+     * Returns the checksum value for \a path for the given \a checksumTypeId.
      *
-     * Called from csync, where a instance of CSyncChecksumHook
-     * has to be set as userdata.
+     * Called from csync, where a instance of CSyncChecksumHook has
+     * to be set as userdata.
+     * The return value will be owned by csync.
      */
-    static bool hook(const char* path, uint32_t checksumTypeId, const char* checksum,
-                     void* this_obj);
+    static const char* hook(const char* path, uint32_t checksumTypeId, void* this_obj);
 
-    bool check(const QString& path, int checksumTypeId, const QByteArray& checksum);
+    QByteArray compute(const QString& path, int checksumTypeId);
 
 private:
     SyncJournalDb* _journal;

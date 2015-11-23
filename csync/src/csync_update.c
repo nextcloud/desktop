@@ -280,11 +280,15 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                  || (tmp->size != 0 && fs->size != tmp->size))) {
 
             if (fs->size == tmp->size && tmp->checksumTypeId) {
-                bool checksumIdentical = false;
                 if (ctx->callbacks.checksum_hook) {
-                    checksumIdentical = ctx->callbacks.checksum_hook(
-                                file, tmp->checksumTypeId, tmp->checksum,
+                    st->checksum = ctx->callbacks.checksum_hook(
+                                file, tmp->checksumTypeId,
                                 ctx->callbacks.checksum_userdata);
+                }
+                bool checksumIdentical = false;
+                if (st->checksum) {
+                    st->checksumTypeId = tmp->checksumTypeId;
+                    checksumIdentical = strncmp(st->checksum, tmp->checksum, 1000) == 0;
                 }
                 if (checksumIdentical) {
                     st->instruction = CSYNC_INSTRUCTION_NONE;

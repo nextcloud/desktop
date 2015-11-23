@@ -375,6 +375,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_serverHasIgnoredFiles    = (file->has_ignored_files > 0);
     }
 
+    // Sometimes the discovery computes checksums for local files
+    if (!remote && file->checksum && file->checksumTypeId) {
+        item->_contentChecksum = QByteArray(file->checksum);
+        item->_contentChecksumType = _journal->getChecksumType(file->checksumTypeId);
+    }
+
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
     if (!renameTarget.isEmpty()) {
