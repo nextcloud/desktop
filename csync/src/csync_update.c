@@ -277,22 +277,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         if (ctx->current == LOCAL_REPLICA &&
                 (!_csync_mtime_equal(fs->mtime, tmp->modtime)
                  // zero size in statedb can happen during migration
-                 || (tmp->size != 0 && fs->size != tmp->size)
-#if 0
-                 /* Comparison of the local inode is disabled because people reported problems
-                  * on windows with flacky inode values, see github bug #779
-                  *
-                  * The inode needs to be observed because:
-                  * $>  echo a > a.txt ; echo b > b.txt
-                  * both files have the same mtime
-                  * sync them.
-                  * $> rm a.txt && mv b.txt a.txt
-                  * makes b.txt appearing as a.txt yet a sync is not performed because
-                  * both have the same modtime as mv does not change that.
-                  */
-                 || fs->inode != tmp->inode
-#endif
-                 )) {
+                 || (tmp->size != 0 && fs->size != tmp->size))) {
 
             if (fs->size == tmp->size && tmp->checksumTypeId) {
                 bool checksumIdentical = false;
