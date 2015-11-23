@@ -183,6 +183,9 @@ private:
     // measure the performance of checksum calc and upload
     Utility::StopWatch _stopWatch;
 
+    QByteArray _transmissionChecksum;
+    QByteArray _transmissionChecksumType;
+
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
@@ -195,7 +198,8 @@ private slots:
     void startNextChunk();
     void finalize(const SyncFileItem&);
     void slotJobDestroyed(QObject *job);
-    void slotStartUpload(const QByteArray& checksumType, const QByteArray& checksum);
+    void slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum);
+    void slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum);
 
 private:
     void startPollJob(const QString& path);

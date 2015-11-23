@@ -37,6 +37,7 @@
 #include "syncfilestatus.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
+#include "transmissionchecksumvalidator.h"
 
 class QProcess;
 
@@ -215,6 +216,9 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
+
+    /// Hook for computing checksums from csync_update
+    CSyncChecksumHook _checksum_hook;
 
     bool _anotherSyncNeeded;
 };

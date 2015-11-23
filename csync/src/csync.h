@@ -301,6 +301,12 @@ typedef void (*csync_vio_closedir_hook) (csync_vio_handle_t *dhhandle,
 typedef int (*csync_vio_stat_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
 
+/* compute the checksum of the given \a checksumTypeId for \a path
+ * and return true if it's the same as \a checksum */
+typedef bool (*csync_checksum_hook) (const char *path,
+                                     uint32_t checksumTypeId, const char *checksum,
+                                     void *userdata);
+
 /**
  * @brief Allocate a csync context.
  *

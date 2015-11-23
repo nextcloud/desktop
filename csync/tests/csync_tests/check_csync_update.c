@@ -41,6 +41,12 @@ static void statedb_create_metadata_table(sqlite3 *db)
                           "modtime INTEGER(8),"
                           "type INTEGER,"
                           "md5 VARCHAR(32),"
+                          "fileid VARCHAR(128),"
+                          "remotePerm VARCHAR(128),"
+                          "filesize BIGINT,"
+                          "ignoredChildrenRemote INT,"
+                          "contentChecksum TEXT,"
+                          "contentChecksumTypeId INTEGER,"
                           "PRIMARY KEY(phash));";
 
         rc = sqlite3_exec(db, sql, NULL, NULL, NULL);

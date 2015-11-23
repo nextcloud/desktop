@@ -47,8 +47,8 @@ public:
     bool deleteFileRecord( const QString& filename, bool recursively = false );
     int getFileRecordCount();
     bool updateFileRecordChecksum(const QString& filename,
-                                  const QByteArray& transmisisonChecksum,
-                                  const QByteArray& transmissionChecksumType);
+                                  const QByteArray& contentChecksum,
+                                  const QByteArray& contentChecksumType);
     bool exists();
     void walCheckpoint();
 
@@ -146,6 +146,11 @@ public:
      */
     bool isConnected();
 
+    /**
+     * Returns the checksum type for an id.
+     */
+    QByteArray getChecksumType(int checksumTypeId);
+
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
@@ -186,6 +191,7 @@ private:
     QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
     QScopedPointer<SqlQuery> _getSelectiveSyncListQuery;
     QScopedPointer<SqlQuery> _getChecksumTypeIdQuery;
+    QScopedPointer<SqlQuery> _getChecksumTypeQuery;
     QScopedPointer<SqlQuery> _insertChecksumTypeQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.

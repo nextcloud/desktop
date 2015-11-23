@@ -59,17 +59,17 @@ private slots:
         record._fileId = "abcd";
         record._remotePerm = "744";
         record._fileSize = 213089055;
-        record._transmissionChecksum = "mychecksum";
-        record._transmissionChecksumType = "MD5";
+        record._contentChecksum = "mychecksum";
+        record._contentChecksumType = "MD5";
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
         // Update checksum
-        record._transmissionChecksum = "newchecksum";
-        record._transmissionChecksumType = "Adler32";
-        _db.updateFileRecordChecksum("foo", record._transmissionChecksum, record._transmissionChecksumType);
+        record._contentChecksum = "newchecksum";
+        record._contentChecksumType = "Adler32";
+        _db.updateFileRecordChecksum("foo", record._contentChecksum, record._contentChecksumType);
         storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
@@ -97,8 +97,8 @@ private slots:
             SyncJournalFileRecord record;
             record._path = "foo-checksum";
             record._remotePerm = "744";
-            record._transmissionChecksum = "mychecksum";
-            record._transmissionChecksumType = "MD5";
+            record._contentChecksum = "mychecksum";
+            record._contentChecksumType = "MD5";
             QVERIFY(_db.setFileRecord(record));
 
             SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");

@@ -270,25 +270,43 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
                   fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
                   (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
-        if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
-            || (ctx->current == LOCAL_REPLICA && (!_csync_mtime_equal(fs->mtime, tmp->modtime)
-                                                  // zero size in statedb can happen during migration
-                                                  || (tmp->size != 0 && fs->size != tmp->size)
+        if (ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag)) {
+            st->instruction = CSYNC_INSTRUCTION_EVAL;
+            goto out;
+        }
+        if (ctx->current == LOCAL_REPLICA &&
+                (!_csync_mtime_equal(fs->mtime, tmp->modtime)
+                 // zero size in statedb can happen during migration
+                 || (tmp->size != 0 && fs->size != tmp->size)
 #if 0
-                                                  || fs->inode != tmp->inode
+                 /* Comparison of the local inode is disabled because people reported problems
+                  * on windows with flacky inode values, see github bug #779
+                  *
+                  * The inode needs to be observed because:
+                  * $>  echo a > a.txt ; echo b > b.txt
+                  * both files have the same mtime
+                  * sync them.
+                  * $> rm a.txt && mv b.txt a.txt
+                  * makes b.txt appearing as a.txt yet a sync is not performed because
+                  * both have the same modtime as mv does not change that.
+                  */
+                 || fs->inode != tmp->inode
 #endif
-                                                  ))) {
-            /* Comparison of the local inode is disabled because people reported problems
-             * on windows with flacky inode values, see github bug #779
-             *
-             * The inode needs to be observed because:
-             * $>  echo a > a.txt ; echo b > b.txt
-             * both files have the same mtime
-             * sync them.
-             * $> rm a.txt && mv b.txt a.txt
-             * makes b.txt appearing as a.txt yet a sync is not performed because
-             * both have the same modtime as mv does not change that.
-             */
+                 )) {
+
+            if (fs->size == tmp->size && tmp->checksumTypeId) {
+                bool checksumIdentical = false;
+                if (ctx->callbacks.checksum_hook) {
+                    checksumIdentical = ctx->callbacks.checksum_hook(
+                                file, tmp->checksumTypeId, tmp->checksum,
+                                ctx->callbacks.checksum_userdata);
+                }
+                if (checksumIdentical) {
+                    st->instruction = CSYNC_INSTRUCTION_NONE;
+                    st->should_update_metadata = true;
+                    goto out;
+                }
+            }
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }

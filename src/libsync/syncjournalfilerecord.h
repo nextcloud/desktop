@@ -55,8 +55,8 @@ public:
     qint64     _fileSize;
     QByteArray _remotePerm;
     bool       _serverHasIgnoredFiles;
-    QByteArray _transmissionChecksum;
-    QByteArray _transmissionChecksumType;
+    QByteArray _contentChecksum;
+    QByteArray _contentChecksumType;
 };
 
 bool OWNCLOUDSYNC_EXPORT

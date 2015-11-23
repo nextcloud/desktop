@@ -742,6 +742,7 @@ void csync_file_stat_free(csync_file_stat_t *st)
     SAFE_FREE(st->directDownloadCookies);
     SAFE_FREE(st->etag);
     SAFE_FREE(st->destpath);
+    SAFE_FREE(st->checksum);
     SAFE_FREE(st);
   }
 }

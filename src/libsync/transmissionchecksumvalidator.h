@@ -23,6 +23,8 @@
 
 namespace OCC {
 
+class SyncJournalDb;
+
 /// Creates a checksum header from type and value.
 QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& checksum);
 
@@ -58,6 +60,11 @@ public:
      * done() is emitted when the calculation finishes.
      */
     void start(const QString& filePath);
+
+    /**
+     * Computes the checksum synchronously.
+     */
+    static QByteArray computeNow(const QString& filePath, const QByteArray& checksumType);
 
 signals:
     void done(const QByteArray& checksumType, const QByteArray& checksum);
@@ -101,6 +108,31 @@ private slots:
 private:
     QByteArray _expectedChecksumType;
     QByteArray _expectedChecksum;
+};
+
+/**
+ * Hooks checksum computations into csync.
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT CSyncChecksumHook : public QObject
+{
+    Q_OBJECT
+public:
+    explicit CSyncChecksumHook(SyncJournalDb* journal);
+
+    /**
+     * Returns true if the checksum for \a path is the same as the one provided.
+     *
+     * Called from csync, where a instance of CSyncChecksumHook
+     * has to be set as userdata.
+     */
+    static bool hook(const char* path, uint32_t checksumTypeId, const char* checksum,
+                     void* this_obj);
+
+    bool check(const QString& path, int checksumTypeId, const QByteArray& checksum);
+
+private:
+    SyncJournalDb* _journal;
 };
 
 }
