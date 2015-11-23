@@ -109,6 +109,9 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = _propagator->_localDir +  _item->_file;
+
+    qDebug() << filename;
+
     if( _propagator->localFileNameClash(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash")
              .arg(QDir::toNativeSeparators(filename)));
