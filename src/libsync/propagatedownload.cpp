@@ -671,8 +671,8 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 
     // Apply the remote permissions
-    FileSystem::setFileReadOnly(_tmpFile.fileName(),
-                                 !_item->_remotePerm.contains('W'));
+    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
+                                    !_item->_remotePerm.contains('W'));
 
     QString error;
     _propagator->addTouchedFile(fn);

@@ -493,7 +493,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
             if (prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
                 const bool isReadOnly = !item->_remotePerm.contains('W');
-                FileSystem::setFileReadOnly(filePath, isReadOnly);
+                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
 
             _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));

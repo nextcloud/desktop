@@ -143,6 +143,19 @@ void FileSystem::setFileReadOnly(const QString& filename, bool readonly)
     file.setPermissions(permissions);
 }
 
+
+void FileSystem::setFileReadOnlyWeak(const QString& filename, bool readonly)
+{
+    QFile file(filename);
+    QFile::Permissions permissions = file.permissions();
+
+    if (!readonly && (permissions & QFile::WriteOwner)) {
+        return; // already writable enough
+    }
+
+    setFileReadOnly(filename, readonly);
+}
+
 time_t FileSystem::getModTime(const QString &filename)
 {
     csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
