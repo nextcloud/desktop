@@ -23,6 +23,10 @@
 
 namespace OCC {
 
+// Make sure the timeout for this job is less than how often we get called
+// This makes sure we get tried often enough without "ConnectionValidator already running"
+static qint64 timeoutToUseMsec = qMax(qint64(1000), ConnectionValidator::defaultCallingIntervalMsec() - 5*1000);
+
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent),
       _account(account),
@@ -99,6 +103,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
+    checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
     connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
@@ -165,6 +170,7 @@ void ConnectionValidator::checkAuthentication()
     // continue in slotAuthCheck here :-)
     qDebug() << "# Check whether authenticated propfind works.";
     PropfindJob *job = new PropfindJob(_account, "/", this);
+    job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
     connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
