@@ -81,6 +81,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->hide();
 
+    _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
     _ui->calendar->setEnabled(false);
 
     _ui->checkBox_password->setText(tr("P&assword protect"));
