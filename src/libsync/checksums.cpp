@@ -13,7 +13,7 @@
  */
 #include "config.h"
 #include "filesystem.h"
-#include "transmissionchecksumvalidator.h"
+#include "checksums.h"
 #include "syncfileitem.h"
 #include "propagatorjobs.h"
 #include "account.h"

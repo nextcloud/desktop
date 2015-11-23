@@ -11,7 +11,7 @@
 #include <QDir>
 #include <QString>
 
-#include "transmissionchecksumvalidator.h"
+#include "checksums.h"
 #include "networkjobs.h"
 #include "utility.h"
 #include "filesystem.h"
@@ -24,7 +24,7 @@
 
 using namespace OCC;
 
-    class TestTransChecksumValidator : public QObject
+    class TestChecksumValidator : public QObject
     {
         Q_OBJECT
 

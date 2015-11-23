@@ -37,7 +37,7 @@ owncloud_add_test(ConcatUrl "")
 
 owncloud_add_test(XmlParse "")
 owncloud_add_test(FileSystem "")
-owncloud_add_test(TransChecksumValidator "")
+owncloud_add_test(ChecksumValidator "")
 
 owncloud_add_test(ExcludedFiles "")
 

@@ -22,7 +22,7 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "transmissionchecksumvalidator.h"
+#include "checksums.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
