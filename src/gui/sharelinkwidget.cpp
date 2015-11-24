@@ -221,8 +221,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     const QString versionString = _account->serverVersion();
     qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
 
-    //Show link checkbox now
-    _ui->checkBox_shareLink->setEnabled(true);
+    //Show link checkbox now if capabilities allow it
+    _ui->checkBox_shareLink->setEnabled(_account->capabilities().sharePublicLink());
     _pi_link->stopAnimation();
 
     Q_FOREACH(auto share, shares) {
@@ -292,7 +292,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         if( !_resharingAllowed ) {
             displayError(tr("The file can not be shared because it was shared without sharing permission."));
             _ui->checkBox_shareLink->setEnabled(false);
-        } else if (_autoShare) {
+        } else if (_autoShare && _ui->checkBox_shareLink->isEnabled()) {
             _ui->checkBox_shareLink->setChecked(true);
             slotCheckBoxShareLinkClicked();
         }
