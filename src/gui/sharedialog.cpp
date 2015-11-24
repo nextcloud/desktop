@@ -71,9 +71,17 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     ocDir.replace(QRegExp("^/*"), "");
     ocDir.replace(QRegExp("/*$"), "");
+
+    // Laying this out is complex because sharePath
+    // may be in use or not.
+    _ui->gridLayout->removeWidget(_ui->label_sharePath);
+    _ui->gridLayout->removeWidget(_ui->label_name);
     if( ocDir.isEmpty() ) {
+        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 2, 1);
         _ui->label_sharePath->setText(QString());
     } else {
+        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 1, 1);
+        _ui->gridLayout->addWidget(_ui->label_sharePath, 1, 1, 1, 1);
         _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
     }
 
