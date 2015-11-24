@@ -815,17 +815,20 @@ Folder *FolderMan::folderForPath(const QString &path)
     return 0;
 }
 
-QStringList FolderMan::findFileInLocalFolders( const QString& relPath )
+QStringList FolderMan::findFileInLocalFolders( const QString& relPath, const AccountPtr acc )
 {
     QStringList re;
 
     foreach(Folder* folder, this->map().values()) {
+        if (acc != 0 && folder->accountState()->account() != acc) {
+            continue;
+        }
         QString path = folder->cleanPath();
         QString remRelPath;
         // cut off the remote path from the server path.
         remRelPath = relPath.mid(folder->remotePath().length());
+        path += "/";
         path += remRelPath;
-
         if( QFile::exists(path) ) {
             re.append( path );
         }

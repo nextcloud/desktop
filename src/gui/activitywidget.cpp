@@ -73,7 +73,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case ActivityItemDelegate::PathRole:
-        list = FolderMan::instance()->findFileInLocalFolders(a._file);
+        list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
+        if( list.count() > 0 ) {
+            return QVariant(list.at(0));
+        }
+        // File does not exist anymore? Let's try to open its path
+        list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a._file).path(), ast->account());
         if( list.count() > 0 ) {
             return QVariant(list.at(0));
         }
@@ -366,6 +371,7 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
+    qDebug() << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if( indx.isValid() ) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
