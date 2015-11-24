@@ -699,6 +699,12 @@ void PropagateUploadFileQNAM::slotPutFinished()
             return;
         }
 
+        // Deletes an existing blacklist entry on successful chunk upload
+        if (_item->_hasBlacklistEntry) {
+            _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
+            _item->_hasBlacklistEntry = false;
+        }
+
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
@@ -709,7 +715,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
-        _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
         _propagator->_journal->setUploadInfo(_item->_file, pi);
         _propagator->_journal->commit("Upload info");
         startNextChunk();
