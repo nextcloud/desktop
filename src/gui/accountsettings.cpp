@@ -606,12 +606,6 @@ AccountSettings::~AccountSettings()
 void AccountSettings::refreshSelectiveSyncStatus()
 {
     bool shouldBeVisible = _model->isDirty();
-    for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
-        auto index = _model->index(i);
-        if (ui->_folderList->isExpanded(index) && _model->rowCount(index) > 0) {
-            shouldBeVisible = true;
-        }
-    }
 
     QString msg;
     int cnt = 0;
