@@ -63,6 +63,9 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     connect(_completerModel, SIGNAL(shareesReady()), this, SLOT(slotShareesReady()));
 
     _completer->setModel(_completerModel);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
+    _completer->setFilterMode(Qt::MatchContains);
+#endif
     _ui->shareeLineEdit->setCompleter(_completer);
 
     _manager = new ShareManager(_account, this);
