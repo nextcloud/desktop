@@ -109,8 +109,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
     addAction(syncNowAction);
 
-    // Expand already on single click
-    ui->_folderList->setExpandsOnDoubleClick(false);
     connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
             this, SLOT(slotFolderListClicked(const QModelIndex&)));
 
