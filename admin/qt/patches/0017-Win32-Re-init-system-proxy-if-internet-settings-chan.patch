@@ -1,0 +1,152 @@
+From ae9d3f4c6c1a732788cd1f24c6a928cee16c3991 Mon Sep 17 00:00:00 2001
+From: Daniel Molkentin <daniel@molkentin.de>
+Date: Tue, 27 Jan 2015 16:58:32 +0100
+Subject: [PATCH] Win32: Re-init system proxy if internet settings change
+
+Because Proxy Auto Configuration performs DNS lookups,
+the proxy settings are being cached. For long-running
+programs this means that once users switch e.g. from or
+to company networks with a proxy, they instantly will
+lose connectivity because we cache the old setting.
+
+To remedy this, we monitor the Registry (locations
+courtesy of Chromium's platform support) for changes
+in its settings, and requery for the current proxy in
+that case.
+
+Task-number: QTBUG-3470
+Task-number: QTBUG-29990
+Change-Id: Id25a51387bcd232c5f879cea0371038986d0e2de
+Reviewed-by: Oliver Wolff <oliver.wolff@theqtcompany.com>
+---
+ src/network/kernel/qnetworkproxy_win.cpp | 86 +++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 2 deletions(-)
+
+diff --git a/src/network/kernel/qnetworkproxy_win.cpp b/src/network/kernel/qnetworkproxy_win.cpp
+index da2c020..f7741ce 100644
+--- a/src/network/kernel/qnetworkproxy_win.cpp
++++ b/src/network/kernel/qnetworkproxy_win.cpp
+@@ -345,12 +345,66 @@ static QList<QNetworkProxy> parseServerList(const QNetworkProxyQuery &query, con
+     return removeDuplicateProxies(result);
+ }
+
++#if !defined(Q_OS_WINCE) && !defined(Q_OS_WINRT)
++namespace {
++class QRegistryWatcher {
++public:
++    void addLocation(HKEY hive, const QString& path)
++    {
++        HKEY openedKey;
++        if (RegOpenKeyEx(hive, reinterpret_cast<const wchar_t*>(path.utf16()), 0, KEY_READ, &openedKey) != ERROR_SUCCESS)
++            return;
++
++        const DWORD filter = REG_NOTIFY_CHANGE_NAME | REG_NOTIFY_CHANGE_ATTRIBUTES |
++                REG_NOTIFY_CHANGE_LAST_SET | REG_NOTIFY_CHANGE_SECURITY;
++
++        // Watch the registry key for a change of value.
++        HANDLE handle = CreateEvent(NULL, true, false, NULL);
++        if (RegNotifyChangeKeyValue(openedKey, true, filter, handle, true) != ERROR_SUCCESS) {
++            CloseHandle(handle);
++            return;
++        }
++        m_watchEvents.append(handle);
++        m_registryHandles.append(openedKey);
++    }
++
++    bool hasChanged() const {
++        return !isEmpty() &&
++               WaitForMultipleObjects(m_watchEvents.size(), m_watchEvents.data(), false, 0) < WAIT_OBJECT_0 + m_watchEvents.size();
++    }
++
++    bool isEmpty() const {
++        return m_watchEvents.isEmpty();
++    }
++
++    void clear() {
++        foreach (HANDLE event, m_watchEvents)
++            CloseHandle(event);
++        foreach (HKEY key, m_registryHandles)
++            RegCloseKey(key);
++
++        m_watchEvents.clear();
++        m_registryHandles.clear();
++    }
++
++    ~QRegistryWatcher() {
++        clear();
++    }
++
++private:
++    QVector<HANDLE> m_watchEvents;
++    QVector<HKEY> m_registryHandles;
++};
++} // namespace
++#endif // !defined(Q_OS_WINCE) && !defined(Q_OS_WINRT)
++
+ class QWindowsSystemProxy
+ {
+ public:
+     QWindowsSystemProxy();
+     ~QWindowsSystemProxy();
+     void init();
++    void reset();
+
+     QMutex mutex;
+
+@@ -361,7 +415,9 @@ public:
+     QStringList proxyServerList;
+     QStringList proxyBypass;
+     QList<QNetworkProxy> defaultResult;
+-
++#if !defined(Q_OS_WINCE) && !defined(Q_OS_WINRT)
++    QRegistryWatcher proxySettingsWatcher;
++#endif
+     bool initialized;
+     bool functional;
+     bool isAutoConfig;
+@@ -381,16 +437,42 @@ QWindowsSystemProxy::~QWindowsSystemProxy()
+         ptrWinHttpCloseHandle(hHttpSession);
+ }
+
++void QWindowsSystemProxy::reset()
++{
++    autoConfigUrl.clear();
++    proxyServerList.clear();
++    proxyBypass.clear();
++    defaultResult.clear();
++    defaultResult << QNetworkProxy::NoProxy;
++    functional = false;
++    isAutoConfig = false;
++}
++
+ void QWindowsSystemProxy::init()
+ {
+-    if (initialized)
++    bool proxySettingsChanged = false;
++#if !defined(Q_OS_WINCE) && !defined(Q_OS_WINRT)
++    proxySettingsChanged = proxySettingsWatcher.hasChanged();
++#endif
++
++    if (initialized && !proxySettingsChanged)
+         return;
+     initialized = true;
+
++    reset();
++
+ #ifdef Q_OS_WINCE
+     // Windows CE does not have any of the following API
+     return;
+ #else
++
++#if !defined(Q_OS_WINCE) && !defined(Q_OS_WINRT)
++    proxySettingsWatcher.clear(); // needs reset to trigger a new detection
++    proxySettingsWatcher.addLocation(HKEY_CURRENT_USER,  QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings"));
++    proxySettingsWatcher.addLocation(HKEY_LOCAL_MACHINE, QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings"));
++    proxySettingsWatcher.addLocation(HKEY_LOCAL_MACHINE, QStringLiteral("Software\\Policies\\Microsoft\\Windows\\CurrentVersion\\Internet Settings"));
++#endif
++
+     // load the winhttp.dll library
+     QSystemLibrary lib(L"winhttp");
+     if (!lib.load())
+--
+1.9.1

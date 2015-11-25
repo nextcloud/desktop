@@ -18,17 +18,20 @@ purpose is outlined in each patches' front matter.
 ### Part of Qt v5.4.2 and later
 * 0004-Cocoa-Fix-systray-SVG-icons.patch
 * 0005-OSX-Fix-disapearing-tray-icon.patch
-  (TODO: actual patch slighly differs)
 * 0007-QNAM-Fix-upload-corruptions-when-server-closes-conne.patch
-  (TODO: Actual patch on build machine spans over two commit but is identical)
+* 0018-Windows-Do-not-crash-if-SSL-context-is-gone-after-ro.patch
+
+### Part of Qt v5.5.0 and later
+* 0017-Win32-Re-init-system-proxy-if-internet-settings-chan.patch
 
 ### Part of Qt v5.5.1 and later
+* 0007-X-Network-Fix-up-previous-corruption-patch.patch
 * 0008-QNAM-Fix-reply-deadlocks-on-server-closing-connectio.patch
-  (TODO: actual patch has different name)
 * 0014-Fix-SNI-for-TlsV1_0OrLater-TlsV1_1OrLater-and-TlsV1_.patch
 
 ### Upstreamed but not in any release yet (as of 2015-11-16)
 * 0009-QNAM-Assign-proper-channel-before-sslErrors-emission.patch
+* 0010-Don-t-let-closed-http-sockets-pass-as-valid-connecti.patch
 * 0011-Make-sure-to-report-correct-NetworkAccessibility.patch
 * 0012-Make-sure-networkAccessibilityChanged-is-emitted.patch
 * 0013-Make-UnknownAccessibility-not-block-requests.patch
