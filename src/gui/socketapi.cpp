@@ -435,6 +435,17 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
         const QString message = QLatin1String("SHARE_STATUS:NOP:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
     } else {
+        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
+        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+
+        // Verify the file is on the server (to our knowledge of course)
+        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+            const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
+            sendMessage(socket, message);
+            return;
+        }
+
         const Capabilities capabilities = shareFolder->accountState()->account()->capabilities();
 
         if (!capabilities.shareAPI()) {
