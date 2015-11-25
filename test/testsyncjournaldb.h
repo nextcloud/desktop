@@ -99,9 +99,20 @@ private slots:
             record._remotePerm = "744";
             record._contentChecksum = "mychecksum";
             record._contentChecksumType = "MD5";
+            record._modtime = QDateTime::currentDateTime();
             QVERIFY(_db.setFileRecord(record));
 
             SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");
+            QVERIFY(storedRecord._path == record._path);
+            QVERIFY(storedRecord._remotePerm == record._remotePerm);
+            QVERIFY(storedRecord._contentChecksum == record._contentChecksum);
+            QVERIFY(storedRecord._contentChecksumType == record._contentChecksumType);
+
+            // qDebug()<< "OOOOO " << storedRecord._modtime.toTime_t() << record._modtime.toTime_t();
+
+            // Attention: compare time_t types here, as QDateTime seem to maintain
+            // milliseconds internally, which disappear in sqlite. Go for full seconds here.
+            QVERIFY(storedRecord._modtime.toTime_t() == record._modtime.toTime_t());
             QVERIFY(storedRecord == record);
         }
         {
