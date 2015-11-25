@@ -174,7 +174,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
             # Only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
             # ignore top level folders
-            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
+            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'].startswith('OK'):
                 syncedFile = True
 
         # If it is neither in a synced folder or is a directory
