@@ -149,13 +149,18 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     entry._lastTryEtag = item._etag;
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
-    entry._ignoreDuration = qBound(minBlacklistTime, old._ignoreDuration * 5, maxBlacklistTime);
+    entry._ignoreDuration = old._ignoreDuration * 5;
     entry._file = item._file;
 
-    if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
+    if (item._httpErrorCode == 403 && item._errorString.contains("firewall", Qt::CaseInsensitive)) {
+        qDebug() << "Firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+        entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
+
+    } else if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
         qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
         entry._ignoreDuration = maxBlacklistTime;
     }
+    entry._ignoreDuration = qBound(minBlacklistTime, entry._ignoreDuration, maxBlacklistTime);
 
     qDebug() << "blacklisting " << item._file
              << " for " << entry._ignoreDuration
