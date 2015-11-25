@@ -301,6 +301,11 @@ void ShareWidget::slotDeleteAnimationFinished()
 {
     resizeRequested();
     deleteLater();
+
+    // There is a painting bug where a small line of this widget isn't
+    // properly cleared. This explicit repaint() call makes sure any trace of
+    // the share widget is removed once it's destroyed. #4189
+    connect(this, SIGNAL(destroyed(QObject*)), parentWidget(), SLOT(repaint()));
 }
 
 void ShareWidget::slotShareDeleted()
