@@ -152,11 +152,11 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     entry._ignoreDuration = old._ignoreDuration * 5;
     entry._file = item._file;
 
-    if (item._httpErrorCode == 403 && item._errorString.contains("firewall", Qt::CaseInsensitive)) {
-        qDebug() << "Firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+    if( item._httpErrorCode == 403 ) {
+        qDebug() << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
         entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
 
-    } else if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
+    } else if( item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
         qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
         entry._ignoreDuration = maxBlacklistTime;
     }
