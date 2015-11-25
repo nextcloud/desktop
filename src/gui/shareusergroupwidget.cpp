@@ -225,6 +225,9 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
 
+    QIcon icon(QLatin1String(":/client/resources/more.png"));
+    _ui->permissionToolButton->setIcon(icon);
+
     // Set the permissions checkboxes
     displayPermissions();
 
