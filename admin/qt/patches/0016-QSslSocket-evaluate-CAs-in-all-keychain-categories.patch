@@ -1,6 +1,6 @@
-From ff10adae4d0e0c1158a2ec582154ce00fbcf10e8 Mon Sep 17 00:00:00 2001
-From: Daniel Molkentin <daniel@molkentin.de>
-Date: Mon, 16 Nov 2015 15:06:15 +0100
+From 6b9366e7748857f14d5b0f92ced70c08ab5235b7 Mon Sep 17 00:00:00 2001
+From: Daniel Molkentin <danimo@owncloud.com>
+Date: Wed, 25 Nov 2015 12:37:27 +0100
 Subject: [PATCH 2/2] QSslSocket: evaluate CAs in all keychain categories
 
 This will make sure that certs in the domainUser (login),
@@ -20,17 +20,12 @@ it will be accepted.
 Task-number: QTBUG-32898
 Change-Id: Ia23083d5af74388eeee31ba07239735cbbe64368
 Reviewed-by: Markus Goetz (Woboq GmbH) <markus@woboq.com>
-
-Conflicts:
-	src/network/ssl/qsslsocket_mac.cpp
-	src/network/ssl/qsslsocket_openssl.cpp
-	src/network/ssl/ssl.pri
 ---
  src/network/ssl/qsslsocket.cpp            |   4 +
- src/network/ssl/qsslsocket_mac_shared.cpp | 149 ++++++++++++++++++++++++++++++
+ src/network/ssl/qsslsocket_mac_shared.cpp | 148 ++++++++++++++++++++++++++++++
  src/network/ssl/qsslsocket_openssl.cpp    |  30 +-----
  src/network/ssl/ssl.pri                   |   4 +-
- 4 files changed, 159 insertions(+), 28 deletions(-)
+ 4 files changed, 158 insertions(+), 28 deletions(-)
  create mode 100644 src/network/ssl/qsslsocket_mac_shared.cpp
 
 diff --git a/src/network/ssl/qsslsocket.cpp b/src/network/ssl/qsslsocket.cpp
@@ -40,7 +35,7 @@ index 8887f47..6347c20 100644
 @@ -1446,6 +1446,10 @@ QList<QSslCertificate> QSslSocket::defaultCaCertificates()
      returned by defaultCaCertificates(). You can replace that database
      with your own with setDefaultCaCertificates().
-
+ 
 +    \note: On OS X, only certificates that are either trusted for all
 +    purposes or trusted for the purpose of SSL in the keychain will be
 +    returned.
@@ -50,10 +45,10 @@ index 8887f47..6347c20 100644
  QList<QSslCertificate> QSslSocket::systemCaCertificates()
 diff --git a/src/network/ssl/qsslsocket_mac_shared.cpp b/src/network/ssl/qsslsocket_mac_shared.cpp
 new file mode 100644
-index 0000000..b9ffd51
+index 0000000..60fea4c
 --- /dev/null
 +++ b/src/network/ssl/qsslsocket_mac_shared.cpp
-@@ -0,0 +1,149 @@
+@@ -0,0 +1,148 @@
 +/****************************************************************************
 +**
 +** Copyright (C) 2015 The Qt Company Ltd.
@@ -91,7 +86,6 @@ index 0000000..b9ffd51
 +//#define QSSLSOCKET_DEBUG
 +//#define QT_DECRYPT_SSL_TRAFFIC
 +
-+#include "qssl_p.h"
 +#include "qsslsocket.h"
 +
 +#ifndef QT_NO_OPENSSL
@@ -163,7 +157,7 @@ index 0000000..b9ffd51
 +            }
 +        }
 +    } else {
-+        qCWarning(lcSsl, "Error receiving trust for a CA certificate");
++        qWarning("Error receiving trust for a CA certificate");
 +    }
 +    return false;
 +}
@@ -190,7 +184,7 @@ index 0000000..b9ffd51
 +                QCFType<CFDataRef> derData = SecCertificateCopyData(cfCert);
 +                if (::isCaCertificateTrusted(cfCert, dom)) {
 +                    if (derData == NULL) {
-+                        qCWarning(lcSsl, "Error retrieving a CA certificate from the system store");
++                        qWarning("Error retrieving a CA certificate from the system store");
 +                    } else {
 +                        systemCerts << QSslCertificate(QByteArray::fromCFData(derData), QSsl::Der);
 +                    }
@@ -204,13 +198,13 @@ index 0000000..b9ffd51
 +
 +QT_END_NAMESPACE
 diff --git a/src/network/ssl/qsslsocket_openssl.cpp b/src/network/ssl/qsslsocket_openssl.cpp
-index 9d13301..7415e32 100644
+index 7d0fe00..7415e32 100644
 --- a/src/network/ssl/qsslsocket_openssl.cpp
 +++ b/src/network/ssl/qsslsocket_openssl.cpp
 @@ -71,14 +71,6 @@
-
+ 
  #include <string.h>
-
+ 
 -#ifdef Q_OS_DARWIN
 -#  include <private/qcore_mac_p.h>
 -#endif
@@ -220,12 +214,12 @@ index 9d13301..7415e32 100644
 -#endif
 -
  QT_BEGIN_NAMESPACE
-
+ 
  #if defined(Q_OS_WIN)
 @@ -616,6 +608,7 @@ void QSslSocketPrivate::resetDefaultCiphers()
      setDefaultCiphers(defaultCiphers);
  }
-
+ 
 +#ifndef Q_OS_DARWIN // Apple implementation in qsslsocket_mac_shared.cpp
  QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
  {
@@ -246,7 +240,7 @@ index 9d13301..7415e32 100644
 -            SecCertificateRef cfCert = (SecCertificateRef)CFArrayGetValueAtIndex(cfCerts, i);
 -            QCFType<CFDataRef> derData = SecCertificateCopyData(cfCert);
 -            if (derData == NULL) {
--                qCWarning(lcSsl, "error retrieving a CA certificate from the system store");
+-                qWarning("error retrieving a CA certificate from the system store");
 -            } else {
 -                systemCerts << QSslCertificate(QByteArray::fromCFData(derData), QSsl::Der);
 -            }
@@ -258,11 +252,11 @@ index 9d13301..7415e32 100644
          HCERTSTORE hSystemStore;
  #if defined(Q_OS_WINCE)
 @@ -719,6 +694,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
-
+ 
      return systemCerts;
  }
 +#endif // Q_OS_DARWIN
-
+ 
  void QSslSocketBackendPrivate::startClientEncryption()
  {
 diff --git a/src/network/ssl/ssl.pri b/src/network/ssl/ssl.pri
@@ -272,13 +266,14 @@ index 384e149..9546f18 100644
 @@ -45,7 +45,9 @@ contains(QT_CONFIG, openssl) | contains(QT_CONFIG, openssl-linked) {
                 ssl/qsslsocket_openssl.cpp \
                 ssl/qsslsocket_openssl_symbols.cpp
-
+ 
 -android:!android-no-sdk: SOURCES += ssl/qsslsocket_openssl_android.cpp
 +    darwin:SOURCES += ssl/qsslsocket_mac_shared.cpp
 +
 +    android:!android-no-sdk: SOURCES += ssl/qsslsocket_openssl_android.cpp
-
+ 
      # Add optional SSL libs
      # Static linking of OpenSSL with msvc:
---
+-- 
 1.9.1
+
