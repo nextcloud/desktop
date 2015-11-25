@@ -259,8 +259,8 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
                         item.add_emblem(emblem)
-                        # print("Setting emblem on " + args[1] + "<>" + emblem + "<>")  # For debug only
-                        socketConnect.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
+                        # print("Setting emblem on " + filename + "<>" + emblem + "<>")  # For debug only
+                        socketConnect.nautilusVFSFile_table[filename] = {'item': item, 'state':newState}
 
         elif action == 'UPDATE_VIEW':
             # Search all items underneath this path and invalidate them
