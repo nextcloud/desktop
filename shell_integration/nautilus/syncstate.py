@@ -169,7 +169,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
             if os.path.isdir(filename + "/"):
                 filename += "/"
                 # Check if toplevel folder, we need to ignore those as they cannot be shared
-                if filename.count("/") < (reg_path.count("/")+2):
+                if filename == reg_path:
                     topLevelFolder=True                
             # Only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
