@@ -1,0 +1,38 @@
+From 0d3c8feeeb3c49d01bcfbca63b672e20ab29aa9f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Klitzing?= <aklitzing@gmail.com>
+Date: Thu, 30 Jul 2015 10:08:36 +0200
+Subject: [PATCH] Fix SNI for TlsV1_0OrLater, TlsV1_1OrLater and TlsV1_2OrLater
+
+Since SslV3, SslV2 and UnknownProtocol do not support it we can
+invert the IF clause here.
+
+Change-Id: I42e942337d01f3a8c97885b268bffa568e40d335
+Task-number: QTBUG-47528
+Reviewed-by: Mikkel Krautz <mikkel@krautz.dk>
+Reviewed-by: Richard J. Moore <rich@kde.org>
+---
+ src/network/ssl/qsslsocket_openssl.cpp | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/src/network/ssl/qsslsocket_openssl.cpp b/src/network/ssl/qsslsocket_openssl.cpp
+index 049666b..bc1df81 100644
+--- a/src/network/ssl/qsslsocket_openssl.cpp
++++ b/src/network/ssl/qsslsocket_openssl.cpp
+@@ -377,12 +377,9 @@ bool QSslSocketBackendPrivate::initSslContext()
+         return false;
+     }
+
+-    if ((configuration.protocol == QSsl::TlsV1SslV3 ||
+-        configuration.protocol == QSsl::TlsV1_0 ||
+-        configuration.protocol == QSsl::TlsV1_1 ||
+-        configuration.protocol == QSsl::TlsV1_2 ||
+-        configuration.protocol == QSsl::SecureProtocols ||
+-        configuration.protocol == QSsl::AnyProtocol) &&
++    if (configuration.protocol != QSsl::SslV2 &&
++        configuration.protocol != QSsl::SslV3 &&
++        configuration.protocol != QSsl::UnknownProtocol &&
+         mode == QSslSocket::SslClientMode && q_SSLeay() >= 0x00090806fL) {
+         // Set server hostname on TLS extension. RFC4366 section 3.1 requires it in ACE format.
+         QString tlsHostName = verificationPeerName.isEmpty() ? q->peerName() : verificationPeerName;
+--
+1.9.1

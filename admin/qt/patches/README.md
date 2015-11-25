@@ -24,14 +24,19 @@ purpose is outlined in each patches' front matter.
 ### Part of Qt v5.5.1 and later
 * 0008-QNAM-Fix-reply-deadlocks-on-server-closing-connectio.patch
   (TODO: actual patch has different name)
+* 0014-Fix-SNI-for-TlsV1_0OrLater-TlsV1_1OrLater-and-TlsV1_.patch
 
 ### Upstreamed but not in any release yet (as of 2015-11-16)
 * 0009-QNAM-Assign-proper-channel-before-sslErrors-emission.patch
 * 0011-Make-sure-to-report-correct-NetworkAccessibility.patch
 * 0012-Make-sure-networkAccessibilityChanged-is-emitted.patch
 * 0013-Make-UnknownAccessibility-not-block-requests.patch
+* 0015-Remove-legacy-platform-code-in-QSslSocket-for-OS-X-1.patch
+* 0016-Fix-possible-crash-when-passing-an-invalid-PAC-URL.patch
 
 ### Not submitted to be part of any release:
-0005-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
+* 0005-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
+This is only needed if you intent to harvest debugging symbols
+for breakpad.
 
 
