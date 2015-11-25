@@ -66,7 +66,7 @@ our %config;
                   assertLocalDirs assertLocalAndRemoteDir glob_put put_to_dir
                   putToDirLWP localDir remoteDir localCleanup createLocalFile md5OfFile
                   remoteCleanup server initLocalDir initRemoteDir moveRemoteFile
-                  printInfo remoteFileId createShare removeShare assert
+                  printInfo remoteFileProp remoteFileId createShare removeShare assert
                   configValue testDirUrl getToFileLWP getToFileCurl);
 
 sub server
@@ -679,27 +679,37 @@ sub printInfo($)
   $infoCnt++;
 }
 
-sub remoteFileId($$)
+sub remoteFileProp($$)
 {
   my ($fromDir, $file) = @_;
   my $fromUrl = testDirUrl() . $fromDir;
-  my $id;
+  my $result;
 
   if( my $r = $d->propfind( -url => $fromUrl, -depth => 1 ) ) {
     if ( $r->is_collection ) {
       # print "Collection\n";
 
       foreach my $res ( $r->get_resourcelist->get_resources() ) {
-	my $filename = $res->get_property("rel_uri");
-	# print "OOOOOOOOOOOOOO $filename " . $res->get_property('id') . "\n";
-	if( $file eq $filename || $filename eq $file . "/" ) {
-	  $id = $res->get_property('id') || "";
-	}
+        my $filename = $res->get_property("rel_uri");
+        # print "OOOOOOOOOOOOOO $filename " . $res->get_property('id') . "\n";
+        if( $file eq $filename || $filename eq $file . "/" ) {
+          $result = $res;
+        }
       }
     } else {
       # print "OOOOOOOOOOOOOOOOOOO " . $r->get_property("rel_uri");
-      $id = $r->get_property('id') || "";
+      $result = $r;
     }
+  }
+  return $result;
+}
+
+sub remoteFileId($$)
+{
+  my ($fromDir, $file) = @_;
+  my $id;
+  if( my $res = remoteFileProp($fromDir, $file) ) {
+    $id = $res->get_property('id') || "";
   }
   print "## ID of $file: $id\n";
   return $id;
