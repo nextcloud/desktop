@@ -16,9 +16,10 @@ purpose is outlined in each patches' front matter.
 * 0003-Fix-crash-if-PAC-script-retrieval-returns-a-null-CFD.patch
 
 ### Part of Qt v5.4.2 and later
-* 0004-OSX-Fix-disapearing-tray-icon.patch
+* 0004-Cocoa-Fix-systray-SVG-icons.patch
+* 0005-OSX-Fix-disapearing-tray-icon.patch
   (TODO: actual patch slighly differs)
-* 0006-QNAM-Fix-upload-corruptions-when-server-closes-conne.patch
+* 0007-QNAM-Fix-upload-corruptions-when-server-closes-conne.patch
   (TODO: Actual patch on build machine spans over two commit but is identical)
 
 ### Part of Qt v5.5.1 and later
@@ -35,7 +36,7 @@ purpose is outlined in each patches' front matter.
 * 0016-Fix-possible-crash-when-passing-an-invalid-PAC-URL.patch
 
 ### Not submitted to be part of any release:
-* 0005-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
+* 0006-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
 This is only needed if you intent to harvest debugging symbols
 for breakpad.
 
