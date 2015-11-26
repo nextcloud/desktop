@@ -206,7 +206,7 @@ To build the most up to date version of the client:
 
 3. Configure the client build::
 
-    cmake -DCMAKE_BUILD_TYPE="Debug" ..
+    cmake -DCMAKE_BUILD_TYPE="Debug" ../client
 
   ..note:: You must use absolute paths for the ``include`` and ``library``
            directories.
