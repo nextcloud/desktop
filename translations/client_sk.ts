@@ -2386,34 +2386,34 @@ Nie je vhodné ju používať.</translation>
         <translation>Štítok</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="63"/>
-        <source>Can Share</source>
+        <location filename="../src/gui/sharewidget.ui" line="66"/>
+        <source>can edit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="70"/>
-        <source>Can Edit</source>
+        <location filename="../src/gui/sharewidget.ui" line="73"/>
+        <source>can share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="98"/>
-        <source>More</source>
-        <translation>Viac</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharewidget.ui" line="77"/>
-        <source>Create</source>
-        <translation>Vytvoriť</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharewidget.ui" line="84"/>
-        <source>Change</source>
+        <location filename="../src/gui/sharewidget.ui" line="80"/>
+        <source>...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="91"/>
-        <source>Delete</source>
-        <translation>Zmazať</translation>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
+        <source>create</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <source>change</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <source>delete</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
