@@ -404,7 +404,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     // Add the not-synced list into the tab
     QWidget *w = new QWidget;
     QVBoxLayout *vbox2 = new QVBoxLayout(w);
-    vbox2->addWidget(new QLabel(tr("List of ignored or errornous files"), this));
+    vbox2->addWidget(new QLabel(tr("List of ignored or erroneous files"), this));
     vbox2->addWidget(_protocolWidget->issueWidget());
     QDialogButtonBox *dlgButtonBox = new QDialogButtonBox(this);
     vbox2->addWidget(dlgButtonBox);
