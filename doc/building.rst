@@ -196,6 +196,7 @@ To build the most up to date version of the client:
 1. Clone the latest versions of the client from Git_ as follows::
 
     git clone git://github.com/owncloud/client.git
+    cd client
     git submodule init
     git submodule update
 
@@ -206,7 +207,7 @@ To build the most up to date version of the client:
 
 3. Configure the client build::
 
-    cmake -DCMAKE_BUILD_TYPE="Debug" ../client
+    cmake -DCMAKE_BUILD_TYPE="Debug" ..
 
   ..note:: You must use absolute paths for the ``include`` and ``library``
            directories.
