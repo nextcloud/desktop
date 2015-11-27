@@ -349,7 +349,7 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
+        <source>List of ignored or erroneous files</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2385,12 +2385,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>pot editar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>pot compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
@@ -2400,17 +2400,17 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>crea</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>cambi</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>elimina</translation>
     </message>
 </context>
 <context>

@@ -349,8 +349,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
-        <translation>Elenco dei file ignorati o errati</translation>
+        <source>List of ignored or erroneous files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
@@ -2391,32 +2391,32 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>può modificare</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>può condividere</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>crea</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>cambia</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>elimina</translation>
     </message>
 </context>
 <context>

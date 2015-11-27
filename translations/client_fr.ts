@@ -141,7 +141,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Remove folder sync connection</source>
-        <translation>Supprimer une synchronisation de dossier</translation>
+        <translation>Supprimer la synchronisation du dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Voulez-vous vraiment arrêter de synchroniser le dossier &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt;Aucun fichier ne sera supprimé.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Voulez-vous vraiment arrêter de synchroniser le dossier &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; Aucun fichier ne sera supprimé.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="488"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
         <source>%1 on %2</source>
-        <translation>%1 à %2</translation>
+        <translation>%1 sur %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
+        <source>List of ignored or erroneous files</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="445"/>
         <source>not syned items list</source>
-        <translation type="unfinished"/>
+        <translation>liste des éléments non synchronisés</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Le compte %1 n&apos;a aucune activité activée.</translation>
     </message>
 </context>
 <context>
@@ -856,7 +856,7 @@ Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimé
         <location filename="../src/gui/folderstatusmodel.cpp" line="830"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
@@ -2394,32 +2394,32 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>peut modifier</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>peut partager</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>création</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>modification</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>suppression</translation>
     </message>
 </context>
 <context>

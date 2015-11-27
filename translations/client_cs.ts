@@ -349,8 +349,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
-        <translation>Seznam ignorovaných nebo poškozených souborů</translation>
+        <source>List of ignored or erroneous files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
@@ -2394,32 +2394,32 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>lze upravovat</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>může sdílet</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>vytvořit</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>změnit</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>smazat</translation>
     </message>
 </context>
 <context>

@@ -349,7 +349,7 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
+        <source>List of ignored or erroneous files</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2393,32 +2393,32 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>kan wijzigen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>kan delen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>creëer</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>wijzig</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>verwijderen</translation>
     </message>
 </context>
 <context>

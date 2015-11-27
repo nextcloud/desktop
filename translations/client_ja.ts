@@ -349,8 +349,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
-        <translation>無視またはエラーになったファイルのリスト</translation>
+        <source>List of ignored or erroneous files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
@@ -1486,7 +1486,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>%1 の新しいアップデートのインストール準備ができました。アップデートのインストール中、追加の権限が必要ば場合があります。</translation>
+        <translation>%1 の新しいアップデートのインストール準備ができました。アップデートのインストール中、追加の権限が必要な場合があります。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="141"/>
@@ -2388,32 +2388,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>編集を許可</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>共有可</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>作成</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>削除</translation>
     </message>
 </context>
 <context>

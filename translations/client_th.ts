@@ -349,8 +349,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
-        <source>List of ignored or errornous files</source>
-        <translation>รายชื่อของไฟล์ละเลยหรือผิดพลาด</translation>
+        <source>List of ignored or erroneous files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;บัญชี %1 ไม่มีกิจกรรมที่เปิดใช้งาน</translation>
     </message>
 </context>
 <context>
@@ -1118,17 +1118,17 @@ Total time left 12 minutes&quot;</extracomment>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>แสดงและแจ้งเตือนบนเดสก์ทอป</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ไอคอนขาวดำ</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>แก้ไขและละเว้นการแก้ไขไฟล์</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -2275,7 +2275,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="91"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์ไม่อนุญาตให้แชร์</translation>
     </message>
 </context>
 <context>
@@ -2369,7 +2369,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users, groups or remote users ...</source>
-        <translation type="unfinished"/>
+        <translation>แชร์กับผู้ใช้ กลุ่มหรือรีโมตยูสเซอร์ ...</translation>
     </message>
 </context>
 <context>
@@ -2387,32 +2387,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="66"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>สามารถแก้ไข</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="73"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>สามารถแชร์ได้</translation>
     </message>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>สร้าง</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>เปลี่ยนแปลง</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>ลบ</translation>
     </message>
 </context>
 <context>
@@ -2798,7 +2798,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>ถูกปฏิเสธการเข้าถึง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="179"/>
@@ -3346,7 +3346,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="459"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>บางเวลาที่ผ่านมา</translation>
     </message>
 </context>
 <context>
