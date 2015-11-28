@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="407"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>無視またはエラーになったファイルのリスト</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="411"/>
