@@ -150,11 +150,6 @@ void AccountSettings::createAccountToolbox()
     ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
-
-    // Expand already on single click
-    ui->_folderList->setExpandsOnDoubleClick(false);
-    QObject::connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
-                     this, SLOT(slotFolderListClicked(const QModelIndex&)));
 }
 
 void AccountSettings::slotOpenAccountWizard()
@@ -606,12 +601,6 @@ AccountSettings::~AccountSettings()
 void AccountSettings::refreshSelectiveSyncStatus()
 {
     bool shouldBeVisible = _model->isDirty();
-    for (int i = 0; !shouldBeVisible && i < _model->rowCount(); ++i) {
-        auto index = _model->index(i);
-        if (ui->_folderList->isExpanded(index) && _model->rowCount(index) > 0) {
-            shouldBeVisible = true;
-        }
-    }
 
     QString msg;
     int cnt = 0;

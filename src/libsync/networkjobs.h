@@ -128,6 +128,43 @@ private:
 };
 
 /**
+ * @brief Send a Proppatch request
+ *
+ * Setting the desired properties with setProperties() is mandatory.
+ *
+ * WARNING: Untested!
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT ProppatchJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit ProppatchJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    void start() Q_DECL_OVERRIDE;
+
+    /**
+     * Used to specify which properties shall be set.
+     *
+     * The property keys can
+     *  - contain no colon: they refer to a property in the DAV: namespace
+     *  - contain a colon: and thus specify an explicit namespace,
+     *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
+     */
+    void setProperties(QMap<QByteArray, QByteArray> properties);
+    QMap<QByteArray, QByteArray> properties() const;
+
+signals:
+    void success();
+    void finishedWithError();
+
+private slots:
+    virtual bool finished() Q_DECL_OVERRIDE;
+
+private:
+    QMap<QByteArray, QByteArray> _properties;
+};
+
+/**
  * @brief The MkColJob class
  * @ingroup libsync
  */
@@ -199,7 +236,7 @@ private slots:
  * To be used like this:
  * \code
  * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
- * connect(job, SIGNAL(jsonRecieved(QVariantMap)), ...)
+ * connect(job, SIGNAL(jsonReceived(QVariantMap)), ...)
  * The received QVariantMap is empty in case of error or otherwise is a map as parsed by QtJson
  * \encode
  *
@@ -221,12 +258,20 @@ public:
      * This function needs to be called before start() obviously.
      */
     void addQueryParams(QList< QPair<QString,QString> > params);
+
 public slots:
     void start() Q_DECL_OVERRIDE;
 protected:
     bool finished() Q_DECL_OVERRIDE;
 signals:
-    void jsonRecieved(const QVariantMap &json);
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the raw json string
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void jsonReceived(const QVariantMap &json, int statusCode);
+
 private:
     QList< QPair<QString,QString> > _additionalParams;
 };

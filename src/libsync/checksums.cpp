@@ -13,7 +13,7 @@
  */
 #include "config.h"
 #include "filesystem.h"
-#include "transmissionchecksumvalidator.h"
+#include "checksums.h"
 #include "syncfileitem.h"
 #include "propagatorjobs.h"
 #include "account.h"
@@ -77,36 +77,40 @@ QByteArray ComputeChecksum::checksumType() const
 
 void ComputeChecksum::start(const QString& filePath)
 {
-    const QString csType = checksumType();
-
     // Calculate the checksum in a different thread first.
     connect( &_watcher, SIGNAL(finished()),
              this, SLOT(slotCalculationDone()),
              Qt::UniqueConnection );
-    if( csType == checkSumMD5C ) {
-        _watcher.setFuture(QtConcurrent::run(FileSystem::calcMd5, filePath));
+    _watcher.setFuture(QtConcurrent::run(ComputeChecksum::computeNow, filePath, checksumType()));
+}
 
-    } else if( csType == checkSumSHA1C ) {
-        _watcher.setFuture(QtConcurrent::run( FileSystem::calcSha1, filePath));
+QByteArray ComputeChecksum::computeNow(const QString& filePath, const QByteArray& checksumType)
+{
+    if( checksumType == checkSumMD5C ) {
+        return FileSystem::calcMd5(filePath);
+    } else if( checksumType == checkSumSHA1C ) {
+        return FileSystem::calcSha1(filePath);
     }
 #ifdef ZLIB_FOUND
-    else if( csType == checkSumAdlerC) {
-        _watcher.setFuture(QtConcurrent::run(FileSystem::calcAdler32, filePath));
+    else if( checksumType == checkSumAdlerC) {
+        return FileSystem::calcAdler32(filePath);
     }
 #endif
-    else {
-        // for an unknown checksum or no checksum, we're done right now
-        if( !csType.isEmpty() ) {
-            qDebug() << "Unknown checksum type:" << csType;
-        }
-        emit done(QByteArray(), QByteArray());
+    // for an unknown checksum or no checksum, we're done right now
+    if( !checksumType.isEmpty() ) {
+        qDebug() << "Unknown checksum type:" << checksumType;
     }
+    return QByteArray();
 }
 
 void ComputeChecksum::slotCalculationDone()
 {
     QByteArray checksum = _watcher.future().result();
-    emit done(_checksumType, checksum);
+    if (!checksum.isNull()) {
+        emit done(_checksumType, checksum);
+    } else {
+        emit done(QByteArray(), QByteArray());
+    }
 }
 
 
@@ -150,5 +154,42 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray& checksumTy
     }
     emit validated(checksumType, checksum);
 }
+
+CSyncChecksumHook::CSyncChecksumHook(SyncJournalDb *journal)
+    : _journal(journal)
+{
+}
+
+const char* CSyncChecksumHook::hook(const char* path, uint32_t checksumTypeId, void *this_obj)
+{
+    CSyncChecksumHook* checksumHook = static_cast<CSyncChecksumHook*>(this_obj);
+    QByteArray checksum = checksumHook->compute(QString::fromUtf8(path), checksumTypeId);
+    if (checksum.isNull()) {
+        return NULL;
+    }
+
+    char* result = (char*)malloc(checksum.size() + 1);
+    memcpy(result, checksum.constData(), checksum.size());
+    result[checksum.size()] = 0;
+    return result;
+}
+
+QByteArray CSyncChecksumHook::compute(const QString& path, int checksumTypeId)
+{
+    QByteArray checksumType = _journal->getChecksumType(checksumTypeId);
+    if (checksumType.isEmpty()) {
+        qDebug() << "Checksum type" << checksumTypeId << "not found";
+        return QByteArray();
+    }
+
+    QByteArray checksum = ComputeChecksum::computeNow(path, checksumType);
+    if (checksum.isNull()) {
+        qDebug() << "Failed to compute checksum" << checksumType << "for" << path;
+        return QByteArray();
+    }
+
+    return checksum;
+}
+
 
 }

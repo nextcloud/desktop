@@ -62,7 +62,7 @@ set(libsync_SRCS
     theme.cpp
     utility.cpp
     ownsql.cpp
-    transmissionchecksumvalidator.cpp
+    checksums.cpp
     excludedfiles.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp

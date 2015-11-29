@@ -55,6 +55,17 @@ void OWNCLOUDSYNC_EXPORT setFileHidden(const QString& filename, bool hidden);
  */
 void OWNCLOUDSYNC_EXPORT setFileReadOnly(const QString& filename, bool readonly);
 
+/**
+ * @brief Marks the file as read-only.
+ *
+ * It's like setFileReadOnly(), but weaker: if readonly is false and the user
+ * already has write permissions, no change to the permissions is made.
+ *
+ * This means that it will preserve explicitly set rw-r--r-- permissions even
+ * when the umask is 0002. (setFileReadOnly() would adjust to rw-rw-r--)
+ */
+void OWNCLOUDSYNC_EXPORT setFileReadOnlyWeak(const QString& filename, bool readonly);
+
 /** convert a "normal" windows path into a path that can be 32k chars long. */
 QString OWNCLOUDSYNC_EXPORT longWinPath( const QString& inpath );
 

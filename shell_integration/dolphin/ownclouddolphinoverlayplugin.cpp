@@ -48,7 +48,7 @@ public:
             return QStringList();
         const QByteArray localFile = url.toLocalFile().toUtf8();
 
-        helper->sendCommand("RETRIEVE_FILE_STATUS:" + localFile + "\n");
+        helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n"));
 
         StatusMap::iterator it = m_status.find(localFile);
         if (it != m_status.constEnd()) {

@@ -270,25 +270,32 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
                   fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
                   (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
-        if((ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag ))
-            || (ctx->current == LOCAL_REPLICA && (!_csync_mtime_equal(fs->mtime, tmp->modtime)
-                                                  // zero size in statedb can happen during migration
-                                                  || (tmp->size != 0 && fs->size != tmp->size)
-#if 0
-                                                  || fs->inode != tmp->inode
-#endif
-                                                  ))) {
-            /* Comparison of the local inode is disabled because people reported problems
-             * on windows with flacky inode values, see github bug #779
-             *
-             * The inode needs to be observed because:
-             * $>  echo a > a.txt ; echo b > b.txt
-             * both files have the same mtime
-             * sync them.
-             * $> rm a.txt && mv b.txt a.txt
-             * makes b.txt appearing as a.txt yet a sync is not performed because
-             * both have the same modtime as mv does not change that.
-             */
+        if (ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag)) {
+            st->instruction = CSYNC_INSTRUCTION_EVAL;
+            goto out;
+        }
+        if (ctx->current == LOCAL_REPLICA &&
+                (!_csync_mtime_equal(fs->mtime, tmp->modtime)
+                 // zero size in statedb can happen during migration
+                 || (tmp->size != 0 && fs->size != tmp->size))) {
+
+            if (fs->size == tmp->size && tmp->checksumTypeId) {
+                if (ctx->callbacks.checksum_hook) {
+                    st->checksum = ctx->callbacks.checksum_hook(
+                                file, tmp->checksumTypeId,
+                                ctx->callbacks.checksum_userdata);
+                }
+                bool checksumIdentical = false;
+                if (st->checksum) {
+                    st->checksumTypeId = tmp->checksumTypeId;
+                    checksumIdentical = strncmp(st->checksum, tmp->checksum, 1000) == 0;
+                }
+                if (checksumIdentical) {
+                    st->instruction = CSYNC_INSTRUCTION_NONE;
+                    st->should_update_metadata = true;
+                    goto out;
+                }
+            }
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
@@ -573,6 +580,26 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
     return true;
 }
 
+/* set the current item to an ignored state.
+ * If the item is set to ignored, the update phase continues, ie. its not a hard error */
+static bool mark_current_item_ignored( CSYNC *ctx, csync_file_stat_t *previous_fs, CSYNC_STATUS status )
+{
+    if(!ctx) {
+        return false;
+    }
+
+    if (ctx->current_fs) {
+        ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+        ctx->current_fs->error_status = status;
+        /* If a directory has ignored files, put the flag on the parent directory as well */
+        if( previous_fs ) {
+            previous_fs->has_ignored_files = true;
+        }
+        return true;
+    }
+    return false;
+}
+
 /* File tree walker */
 int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     unsigned int depth) {
@@ -625,13 +652,8 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
-          if (ctx->current_fs) {
-              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_PERMISSION_DENIED;
-              /* If a directory has ignored files, put the flag on the parent directory as well */
-              if( previous_fs ) {
-                  previous_fs->has_ignored_files = true;
-              }
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Permission denied.");
+          if (mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_PERMISSION_DENIED)) {
               goto done;
           }
       } else if(errno == ENOENT) {
@@ -640,19 +662,22 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
           }
       }
+      // 403 Forbidden can be sent by the server if the file firewall is active.
+      // A file or directory should be ignored and sync must continue. See #3490
+      else if(errno == ERRNO_FORBIDDEN) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Directory access Forbidden (File Firewall?)");
+          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_FORBIDDEN) ) {
+              goto done;
+          }
+          /* if current_fs is not defined here, better throw an error */
+      }
       // The server usually replies with the custom "503 Storage not available"
       // if some path is temporarily unavailable. But in some cases a standard 503
       // is returned too. Thus we can't distinguish the two and will treat any
       // 503 as request to ignore the folder. See #3113 #2884.
       else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
-          if (ctx->current_fs) {
-              ctx->current_fs->instruction = CSYNC_INSTRUCTION_IGNORE;
-              ctx->current_fs->error_status = CSYNC_STATUS_STORAGE_UNAVAILABLE;
-              /* If a directory has ignored files, put the flag on the parent directory as well */
-              if( previous_fs ) {
-                  previous_fs->has_ignored_files = true;
-              }
+          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_STORAGE_UNAVAILABLE ) ) {
               goto done;
           }
           /* if current_fs is not defined here, better throw an error */

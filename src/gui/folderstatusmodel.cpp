@@ -139,6 +139,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::ToolTipRole:
         case Qt::DisplayRole:
+            //: Example text: "File.txt (23KB)"
             return tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
         case Qt::CheckStateRole:
             return x._checked;
@@ -823,12 +824,14 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             estimatedUpBw += progress.fileProgress(citm._item).estimatedBandwidth;
             //qDebug() << "UP" << citm._item._file << progress.fileProgress(citm._item).estimatedBandwidth;
         }
+        auto fileName = QFileInfo(citm._item._file).fileName();
         if (allFilenames.length() > 0) {
-            allFilenames.append(", ");
+            //: Build a list of file names
+            allFilenames.append(tr(", '%1'").arg(fileName));
+        } else {
+            //: Argument is a file name
+            allFilenames.append(tr("'%1'").arg(fileName));
         }
-        allFilenames.append('\'');
-        allFilenames.append(QFileInfo(citm._item._file).fileName());
-        allFilenames.append('\'');
     }
     //qDebug() << "Syncing bandwidth" << estimatedDownBw << estimatedUpBw;
     if (curItemProgress == -1) {
@@ -851,19 +854,22 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                     Utility::durationToDescriptiveString(progress.fileProgress(curItem).estimatedEta),
                     Utility::octetsToString(estimatedBw) );
             */
+            //: Example text: "Syncing 'foo.txt', 'bar.txt'"
             fileProgressString = tr("Syncing %1").arg(allFilenames);
             if (estimatedDownBw > 0) {
-                fileProgressString.append(", ");
+                fileProgressString.append(tr(", "));
 // ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
 #ifdef Q_OS_WIN
+                //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #else
                 fileProgressString.append(trUtf8("\u2193" " %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #endif
             }
             if (estimatedUpBw > 0) {
-                fileProgressString.append(", ");
+                fileProgressString.append(tr(", "));
  #ifdef Q_OS_WIN
+                //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #else
                 fileProgressString.append(trUtf8("\u2191" " %1/s").arg(Utility::octetsToString(estimatedUpBw)));
@@ -891,6 +897,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     if (totalSize > 0) {
         QString s1 = Utility::octetsToString( completedSize );
         QString s2 = Utility::octetsToString( totalSize );
+        //: Example text: "12 MB of 345 MB, file 6 of 7\nTotal time left 12 minutes"
         overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
             .arg(s1, s2)
             .arg(currentFile).arg(totalFileCount)

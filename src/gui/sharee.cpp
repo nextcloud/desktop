@@ -137,7 +137,7 @@ QSharedPointer<Sharee> ShareeModel::parseSharee(const QVariantMap &data)
     const QString shareWith = data.value("value").toMap().value("shareWith").toString();
     Sharee::Type type = (Sharee::Type)data.value("value").toMap().value("shareType").toInt();
 
-    return QSharedPointer<Sharee>(new Sharee(shareWith, shareWith, type));
+    return QSharedPointer<Sharee>(new Sharee(shareWith, displayName, type));
 }
 
 /* Set the new sharee

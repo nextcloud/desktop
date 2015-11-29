@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "filesystem.h"
+#include <syncengine.h>
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -39,16 +40,6 @@
 namespace OCC {
 
 FolderMan* FolderMan::_instance = 0;
-
-/**
- * The minimum time between a sync being requested and it
- * being executed in milliseconds.
- *
- * This delay must be large enough to ensure fileIsStillChanging()
- * in the upload propagator doesn't decide to skip the file because
- * the modification was too recent.
- */
-static qint64 msBetweenRequestAndSync = 2000;
 
 FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
@@ -542,7 +533,7 @@ void FolderMan::slotRunOneEtagJob()
             }
         }
         if (_currentEtagJob.isNull()) {
-            qDebug() << "No more remote ETag check jobs to schedule.";
+            //qDebug() << "No more remote ETag check jobs to schedule.";
 
             /* now it might be a good time to check for restarting... */
             if( _currentSyncFolder == NULL && _appRestartRequired ) {
@@ -652,7 +643,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
 
     // A minimum of delay here is essential as the sync will not upload
     // files that were changed too recently.
-    msDelay = qMax(msBetweenRequestAndSync, msDelay);
+    msDelay = qMax(SyncEngine::minimumFileAgeForUpload, msDelay);
 
     qDebug() << "Scheduling a sync in" << (msDelay/1000) << "seconds";
     _startScheduledSyncTimer.start(msDelay);
@@ -824,17 +815,20 @@ Folder *FolderMan::folderForPath(const QString &path)
     return 0;
 }
 
-QStringList FolderMan::findFileInLocalFolders( const QString& relPath )
+QStringList FolderMan::findFileInLocalFolders( const QString& relPath, const AccountPtr acc )
 {
     QStringList re;
 
     foreach(Folder* folder, this->map().values()) {
+        if (acc != 0 && folder->accountState()->account() != acc) {
+            continue;
+        }
         QString path = folder->cleanPath();
         QString remRelPath;
         // cut off the remote path from the server path.
         remRelPath = relPath.mid(folder->remotePath().length());
+        path += "/";
         path += remRelPath;
-
         if( QFile::exists(path) ) {
             re.append( path );
         }

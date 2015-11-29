@@ -36,8 +36,8 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
     : _path(item._file), _modtime(Utility::qDateTimeFromTime_t(item._modtime)),
       _type(item._type), _etag(item._etag), _fileId(item._fileId), _fileSize(item._size),
       _remotePerm(item._remotePerm), _serverHasIgnoredFiles(item._serverHasIgnoredFiles),
-      _transmissionChecksum(item._transmissionChecksum),
-      _transmissionChecksumType(item._transmissionChecksumType)
+      _contentChecksum(item._contentChecksum),
+      _contentChecksumType(item._contentChecksumType)
 {
     // use the "old" inode coming with the item for the case where the
     // filesystem stat fails. That can happen if the the file was removed
@@ -97,8 +97,8 @@ SyncFileItem SyncJournalFileRecord::toSyncFileItem()
     item._size = _fileSize;
     item._remotePerm = _remotePerm;
     item._serverHasIgnoredFiles = _serverHasIgnoredFiles;
-    item._transmissionChecksum = _transmissionChecksum;
-    item._transmissionChecksumType = _transmissionChecksumType;
+    item._contentChecksum = _contentChecksum;
+    item._contentChecksumType = _contentChecksumType;
     return item;
 }
 
@@ -149,13 +149,18 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     entry._lastTryEtag = item._etag;
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
-    entry._ignoreDuration = qBound(minBlacklistTime, old._ignoreDuration * 5, maxBlacklistTime);
+    entry._ignoreDuration = old._ignoreDuration * 5;
     entry._file = item._file;
 
-    if( item._httpErrorCode == 403 || item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
+    if( item._httpErrorCode == 403 ) {
+        qDebug() << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+        entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
+
+    } else if( item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
         qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
         entry._ignoreDuration = maxBlacklistTime;
     }
+    entry._ignoreDuration = qBound(minBlacklistTime, entry._ignoreDuration, maxBlacklistTime);
 
     qDebug() << "blacklisting " << item._file
              << " for " << entry._ignoreDuration
@@ -169,15 +174,15 @@ bool operator==(const SyncJournalFileRecord & lhs,
 {
     return     lhs._path == rhs._path
             && lhs._inode == rhs._inode
-            && lhs._modtime == rhs._modtime
+            && lhs._modtime.toTime_t() == rhs._modtime.toTime_t()
             && lhs._type == rhs._type
             && lhs._etag == rhs._etag
             && lhs._fileId == rhs._fileId
             && lhs._fileSize == rhs._fileSize
             && lhs._remotePerm == rhs._remotePerm
             && lhs._serverHasIgnoredFiles == rhs._serverHasIgnoredFiles
-            && lhs._transmissionChecksum == rhs._transmissionChecksum
-            && lhs._transmissionChecksumType == rhs._transmissionChecksumType;
+            && lhs._contentChecksum == rhs._contentChecksum
+            && lhs._contentChecksumType == rhs._contentChecksumType;
 }
 
 }

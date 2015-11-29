@@ -412,5 +412,10 @@ QString Theme::webDavPath() const
     return QLatin1String("remote.php/webdav/");
 }
 
+QString Theme::webDavPathNonShib() const
+{
+    return QLatin1String("remote.php/nonshib-webdav/");
+}
+
 } // end namespace client
 

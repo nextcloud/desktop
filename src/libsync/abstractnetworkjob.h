@@ -57,6 +57,8 @@ public:
     QByteArray responseTimestamp();
     quint64 duration();
 
+    qint64 timeoutMsec() { return _timer.interval(); }
+
 public slots:
     void setTimeout(qint64 msec);
     void resetTimeout();

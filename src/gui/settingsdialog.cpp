@@ -217,9 +217,13 @@ void SettingsDialog::accountRemoved(AccountState *s)
         if (as->accountsState() == s) {
             _toolBar->removeAction(it.key());
 
-            delete it.key();
-            delete it.value();
+            it.key()->deleteLater();
+            it.value()->deleteLater();
             _actionGroupWidgets.erase(it);
+
+            if (_ui->stack->currentWidget() == it.value()) {
+                showFirstPage();
+            }
             break;
         }
     }
@@ -309,7 +313,6 @@ void SettingsDialog::addActionToToolBar(QAction *action) {
 void SettingsDialog::slotRefreshActivity( AccountState* accountState )
 {
     if (accountState) {
-        qDebug() << "Refreshing Activity list for " << accountState->account()->displayName();
         _activitySettings->slotRefresh(accountState);
     }
 }

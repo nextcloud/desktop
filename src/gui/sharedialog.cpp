@@ -46,7 +46,10 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
-    closeButton->setDefault(false); // Because people press enter in the dialog and we don't want to close for that
+
+    // Because people press enter in the dialog and we don't want to close for that
+    closeButton->setDefault(false);
+    closeButton->setAutoDefault(false);
 
     // Set icon
     QFileInfo f_info(_localPath);
@@ -68,13 +71,26 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     ocDir.replace(QRegExp("^/*"), "");
     ocDir.replace(QRegExp("/*$"), "");
+
+    // Laying this out is complex because sharePath
+    // may be in use or not.
+    _ui->gridLayout->removeWidget(_ui->label_sharePath);
+    _ui->gridLayout->removeWidget(_ui->label_name);
     if( ocDir.isEmpty() ) {
+        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 2, 1);
         _ui->label_sharePath->setText(QString());
     } else {
+        _ui->gridLayout->addWidget(_ui->label_name, 0, 1, 1, 1);
+        _ui->gridLayout->addWidget(_ui->label_sharePath, 1, 1, 1, 1);
         _ui->label_sharePath->setText(tr("Folder: %2").arg(ocDir));
     }
 
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
+
+    if (!account->capabilities().shareAPI()) {
+        _ui->shareWidgetsLayout->addWidget(new QLabel(tr("The server does not allow sharing")));
+        return;
+    }
 
     bool autoShare = true;
 
@@ -120,7 +136,9 @@ void ShareDialog::getShares()
         job->start();
     }
 
-    _linkWidget->getShares();
+    if (_linkWidget) {
+        _linkWidget->getShares();
+    }
     if (_userGroupWidget != NULL) {
         _userGroupWidget->getShares();
     }

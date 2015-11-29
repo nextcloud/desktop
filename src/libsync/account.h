@@ -67,6 +67,7 @@ public:
      */
     QString davPath() const;
     void setDavPath(const QString&s) { _davPath = s; }
+    void setNonShib(bool nonShib);
 
     static AccountPtr create();
     ~Account();

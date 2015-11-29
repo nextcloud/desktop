@@ -22,7 +22,8 @@
 #include "utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "transmissionchecksumvalidator.h"
+#include "checksums.h"
+#include "syncengine.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -53,7 +54,7 @@ static bool fileIsStillChanging(const SyncFileItem & item)
     const QDateTime modtime = Utility::qDateTimeFromTime_t(item._modtime);
     const qint64 msSinceMod = modtime.msecsTo(QDateTime::currentDateTime());
 
-    return msSinceMod < 2000
+    return msSinceMod < SyncEngine::minimumFileAgeForUpload
             // if the mtime is too much in the future we *do* upload the file
             && msSinceMod > -10000;
 }
@@ -215,24 +216,46 @@ void PropagateUploadFileQNAM::start()
 
     _stopWatch.start();
 
-    auto supportedChecksumTypes = _propagator->account()->capabilities().supportedChecksumTypes();
-
-    // If we already have a checksum header and the checksum type is supported
-    // by the server, we keep that - otherwise recompute.
-    //
-    // Note: Currently we *always* recompute because we usually only upload
-    // files that have changed and thus have a new checksum. But if an earlier
-    // phase computed a checksum, this is where we would make use of it.
-    if (!_item->_transmissionChecksumType.isEmpty()) {
-        if (supportedChecksumTypes.contains(_item->_transmissionChecksumType)) {
-            // TODO: We could validate the old checksum and thereby determine whether
-            // an upload is necessary or not.
-            slotStartUpload(_item->_transmissionChecksumType, _item->_transmissionChecksum);
-            return;
-        }
+    QByteArray contentChecksumType;
+    // We currently only do content checksums for the particular .eml case
+    // This should be done more generally in the future!
+    if (filePath.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive)) {
+        contentChecksumType = "MD5";
     }
 
-    // Compute a new checksum.
+    // Maybe the discovery already computed the checksum?
+    if (_item->_contentChecksumType == contentChecksumType
+            && !_item->_contentChecksum.isEmpty()) {
+        slotComputeTransmissionChecksum(contentChecksumType, _item->_contentChecksum);
+        return;
+    }
+
+    // Compute the content checksum.
+    auto computeChecksum = new ComputeChecksum(this);
+    computeChecksum->setChecksumType(contentChecksumType);
+
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            SLOT(slotComputeTransmissionChecksum(QByteArray,QByteArray)));
+    computeChecksum->start(filePath);
+}
+
+void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum)
+{
+    _item->_contentChecksum = contentChecksum;
+    _item->_contentChecksumType = contentChecksumType;
+
+    _stopWatch.addLapTime(QLatin1String("ContentChecksum"));
+    _stopWatch.start();
+
+    // Reuse the content checksum as the transmission checksum if possible
+    const auto supportedTransmissionChecksums =
+            _propagator->account()->capabilities().supportedChecksumTypes();
+    if (supportedTransmissionChecksums.contains(contentChecksumType)) {
+        slotStartUpload(contentChecksumType, contentChecksum);
+        return;
+    }
+
+    // Compute the transmission checksum.
     auto computeChecksum = new ComputeChecksum(this);
     if (uploadChecksumEnabled()) {
         computeChecksum->setChecksumType(_propagator->account()->capabilities().preferredChecksumType());
@@ -242,19 +265,14 @@ void PropagateUploadFileQNAM::start()
 
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotStartUpload(QByteArray,QByteArray)));
+    const QString filePath = _propagator->getFilePath(_item->_file);
     computeChecksum->start(filePath);
 }
 
-void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, const QByteArray& checksum)
+void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum)
 {
-    // Store the computed checksum in the database, if different
-    if (checksumType != _item->_transmissionChecksumType
-            || checksum != _item->_transmissionChecksum) {
-        _item->_transmissionChecksum = checksum;
-        _item->_transmissionChecksumType = checksumType;
-        _propagator->_journal->updateFileRecordChecksum(
-                _item->_file, checksum, checksumType);
-    }
+    _transmissionChecksum = transmissionChecksum;
+    _transmissionChecksumType = transmissionChecksumType;
 
     const QString fullFilePath = _propagator->getFilePath(_item->_file);
 
@@ -262,7 +280,7 @@ void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& checksumType, co
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
-    _stopWatch.addLapTime(QLatin1String("Checksum"));
+    _stopWatch.addLapTime(QLatin1String("TransmissionChecksum"));
 
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFileQNAM::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -510,9 +528,9 @@ void PropagateUploadFileQNAM::startNextChunk()
         isFinalChunk = true;
     }
 
-    if (isFinalChunk && !_item->_transmissionChecksumType.isEmpty()) {
+    if (isFinalChunk && !_transmissionChecksumType.isEmpty()) {
         headers[checkSumHeaderC] = makeChecksumHeader(
-                _item->_transmissionChecksumType, _item->_transmissionChecksum);
+                _transmissionChecksumType, _transmissionChecksum);
     }
 
     if (! device->prepareAndOpen(_propagator->getFilePath(_item->_file), chunkStart, currentChunkSize)) {
@@ -681,6 +699,12 @@ void PropagateUploadFileQNAM::slotPutFinished()
             return;
         }
 
+        // Deletes an existing blacklist entry on successful chunk upload
+        if (_item->_hasBlacklistEntry) {
+            _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
+            _item->_hasBlacklistEntry = false;
+        }
+
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
@@ -691,7 +715,6 @@ void PropagateUploadFileQNAM::slotPutFinished()
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
-        _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
         _propagator->_journal->setUploadInfo(_item->_file, pi);
         _propagator->_journal->commit("Upload info");
         startNextChunk();
@@ -723,7 +746,10 @@ void PropagateUploadFileQNAM::slotPutFinished()
 
     // performance logging
     _item->_requestDuration = _stopWatch.stop();
-    qDebug() << "*==* duration UPLOAD" << _item->_size << _stopWatch.durationOfLap(QLatin1String("Checksum")) << _item->_requestDuration;
+    qDebug() << "*==* duration UPLOAD" << _item->_size
+             << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
+             << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
+             << _item->_requestDuration;
 
     finalize(*_item);
 }

@@ -73,7 +73,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case ActivityItemDelegate::PathRole:
-        list = FolderMan::instance()->findFileInLocalFolders(a._file);
+        list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
+        if( list.count() > 0 ) {
+            return QVariant(list.at(0));
+        }
+        // File does not exist anymore? Let's try to open its path
+        list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a._file).path(), ast->account());
         if( list.count() > 0 ) {
             return QVariant(list.at(0));
         }
@@ -142,12 +147,13 @@ void ActivityListModel::startFetchJob(AccountState* s)
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-    QObject::connect(job, SIGNAL(jsonRecieved(QVariantMap)), this, SLOT(slotActivitiesReceived(QVariantMap)));
+    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)),
+                     this, SLOT(slotActivitiesReceived(QVariantMap, int)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(s));
 
     QList< QPair<QString,QString> > params;
-    params.append(qMakePair(QLatin1String("page"), QLatin1String("0")));
-    params.append(qMakePair(QLatin1String("pagesize"), QLatin1String("100")));
+    params.append(qMakePair(QString::fromLatin1("page"),     QString::fromLatin1("0")));
+    params.append(qMakePair(QString::fromLatin1("pagesize"), QString::fromLatin1("100")));
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);
@@ -155,7 +161,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->start();
 }
 
-void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
+void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int statusCode)
 {
     auto activities = json.value("ocs").toMap().value("data").toList();
     qDebug() << "*** activities" << activities;
@@ -164,6 +170,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
     AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
     _currentlyFetching.remove(ai);
     list.setAccountName( ai->account()->displayName());
+
     foreach( auto activ, activities ) {
         auto json = activ.toMap();
 
@@ -179,6 +186,10 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json)
     }
 
     _activityLists[ai] = list;
+
+    if( statusCode == 999 ) {
+        emit accountWithoutActivityApp(ai);
+    }
 
     combineActivityLists();
 }
@@ -267,7 +278,10 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
-    _ui->_headerLabel->setText(tr("Server Activities"));
+    showLabels();
+
+    connect(_model, SIGNAL(accountWithoutActivityApp(AccountState*)),
+            this, SLOT(slotAccountWithoutActivityApp(AccountState*)));
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
@@ -292,6 +306,30 @@ void ActivityWidget::slotRefresh(AccountState *ptr)
 void ActivityWidget::slotRemoveAccount( AccountState *ptr )
 {
     _model->slotRemoveAccount(ptr);
+}
+
+void ActivityWidget::showLabels()
+{
+    QString t = tr("Server Activities");
+    _ui->_headerLabel->setTextFormat(Qt::RichText);
+    _ui->_headerLabel->setText(t);
+
+    t.clear();
+    QSetIterator<QString> i(_accountsWithoutActivities);
+    while (i.hasNext() ) {
+        t.append( tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
+    }
+    _ui->_bottomLabel->setTextFormat(Qt::RichText);
+    _ui->_bottomLabel->setText(t);
+}
+
+void ActivityWidget::slotAccountWithoutActivityApp(AccountState *ast)
+{
+    if( ast && ast->account() ) {
+        _accountsWithoutActivities.insert(ast->account()->displayName());
+    }
+
+    showLabels();
 }
 
 // FIXME: Reused from protocol widget. Move over to utilities.
@@ -333,6 +371,7 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
+    qDebug() << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if( indx.isValid() ) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
@@ -364,8 +403,8 @@ ActivitySettings::ActivitySettings(QWidget *parent)
 
     // Add the not-synced list into the tab
     QWidget *w = new QWidget;
-    QVBoxLayout *vbox2 = new QVBoxLayout(this);
-    vbox2->addWidget(new QLabel(tr("List of ignored or errornous files"), this));
+    QVBoxLayout *vbox2 = new QVBoxLayout(w);
+    vbox2->addWidget(new QLabel(tr("List of ignored or erroneous files"), this));
     vbox2->addWidget(_protocolWidget->issueWidget());
     QDialogButtonBox *dlgButtonBox = new QDialogButtonBox(this);
     vbox2->addWidget(dlgButtonBox);
@@ -418,10 +457,22 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
-    if( ptr && ptr->isConnected() ) {
+    if( ptr && ptr->isConnected() && isVisible()) {
+        qDebug() << "Refreshing Activity list for " << ptr->account()->displayName();
         _progressIndicator->startAnimation();
         _activityWidget->slotRefresh(ptr);
     }
+}
+
+bool ActivitySettings::event(QEvent* e)
+{
+    if (e->type() == QEvent::Show) {
+        AccountManager *am = AccountManager::instance();
+        foreach (AccountStatePtr a, am->accounts()) {
+            slotRefresh(a.data());
+        }
+    }
+    return QWidget::event(e);
 }
 
 ActivitySettings::~ActivitySettings()

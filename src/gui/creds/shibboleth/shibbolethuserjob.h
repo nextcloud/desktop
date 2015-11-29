@@ -33,7 +33,7 @@ signals:
     void userFetched(const QString &user);
 
 private slots:
-    void slotJsonRecieved(const QVariantMap &);
+    void slotJsonReceived(const QVariantMap &, int statusCode);
 };
 
 

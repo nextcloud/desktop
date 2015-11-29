@@ -2,7 +2,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="259"/>
+        <location filename="../src/libsync/filesystem.cpp" line="272"/>
         <source>The destination file has an unexpected size or modification time</source>
         <translation>Kohdetiedostolla on odottamaton koko tai muokkausaika</translation>
     </message>
@@ -71,14 +71,14 @@
         <translation>Lomake</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="562"/>
+        <location filename="../src/gui/accountsettings.cpp" line="557"/>
         <source>Sign in</source>
         <translation>Kirjaudu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -97,8 +97,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
-        <location filename="../src/gui/accountsettings.cpp" line="330"/>
-        <location filename="../src/gui/accountsettings.cpp" line="695"/>
+        <location filename="../src/gui/accountsettings.cpp" line="325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
@@ -115,161 +115,161 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="138"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Lisää uusi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
-        <location filename="../src/gui/accountsettings.cpp" line="560"/>
+        <location filename="../src/gui/accountsettings.cpp" line="555"/>
         <source>Sign out</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu ulos</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Poista</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Tili</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="202"/>
+        <location filename="../src/gui/accountsettings.cpp" line="197"/>
         <source>Choose what to sync</source>
         <translation>Valitse synkronoitavat tiedot</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="209"/>
+        <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Remove folder sync connection</source>
         <translation>Poista kansion synkronointiyhteys</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="275"/>
+        <location filename="../src/gui/accountsettings.cpp" line="270"/>
         <source>Folder creation failed</source>
         <translation>Kansion luominen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="271"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Paikallisen kansion &lt;i&gt;%1&lt;/i&gt; luominen epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="323"/>
+        <location filename="../src/gui/accountsettings.cpp" line="318"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Vahvista kansion synkronointiyhteyden poisto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="329"/>
+        <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Poista kansion synkronointiyhteys</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="355"/>
+        <location filename="../src/gui/accountsettings.cpp" line="350"/>
         <source>Confirm Folder Reset</source>
         <translation>Vahvista kansion alustus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="356"/>
+        <location filename="../src/gui/accountsettings.cpp" line="351"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="437"/>
+        <location filename="../src/gui/accountsettings.cpp" line="432"/>
         <source>Sync Running</source>
         <translation>Synkronointi meneillään</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="438"/>
+        <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Synkronointioperaatio on meneillään.&lt;br/&gt;Haluatko keskeyttää sen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="506"/>
+        <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>%1 in use</source>
         <translation>%1 käytössä</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="526"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 käyttäjänä &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="530"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>Connected to %1.</source>
         <translation>Yhteys muodostettu kohteeseen %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="532"/>
+        <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Palvelin %1 ei ole juuri nyt saatavilla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="534"/>
+        <location filename="../src/gui/accountsettings.cpp" line="529"/>
         <source>Signed out from %1.</source>
         <translation>Kirjauduttu ulos kohteesta %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
         <source>No connection to %1 at %2.</source>
         <translation>Ei yhteyttä kohteeseen %1 osoitteessa %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="649"/>
+        <location filename="../src/gui/accountsettings.cpp" line="638"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Havaittiin uusia kansioita, joita ei synkronoitu niiden suuren koon vuoksi:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="687"/>
+        <location filename="../src/gui/accountsettings.cpp" line="676"/>
         <source>Confirm Account Removal</source>
         <translation>Vahvista tilin poistaminen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="688"/>
+        <location filename="../src/gui/accountsettings.cpp" line="677"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Haluatko varmasti poistaa tilin &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Huomio:&lt;/b&gt; Tämä toimenpide &lt;b&gt;ei&lt;/b&gt; poista mitään tiedostoja.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="694"/>
+        <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>Remove connection</source>
         <translation>Poista yhteys</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="199"/>
+        <location filename="../src/gui/accountsettings.cpp" line="194"/>
         <source>Open folder</source>
         <translation>Avaa kansio</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="206"/>
+        <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <source>Resume sync</source>
         <translation>Palauta synkronointi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="206"/>
+        <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <source>Pause sync</source>
         <translation>Keskeytä synkronointi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Haluatko varmasti lopettaa kansion &lt;i&gt;%1&lt;/i&gt; synkronoinnin?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Huomio:&lt;/b&gt; Tämä toimenpide &lt;b&gt;ei&lt;/b&gt; poista mitään tiedostoja.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="493"/>
+        <location filename="../src/gui/accountsettings.cpp" line="488"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1/%2 (%3 %) käytössä. Jotkin kansiot, mukaan lukien verkkojaot ja jaetut kansiot, voivat sisältää eri rajoitukset.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="489"/>
         <source>%1 of %2 in use</source>
         <translation>%1/%2 käytössä</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="498"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Tallennustilan käyttötietoja ei ole juuri nyt saatavilla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="542"/>
+        <location filename="../src/gui/accountsettings.cpp" line="537"/>
         <source>No %1 connection configured.</source>
         <translation>%1-yhteyttä ei ole määritelty.</translation>
     </message>
@@ -277,47 +277,47 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="99"/>
+        <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Signed out</source>
         <translation>Kirjauduttu ulos</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="101"/>
+        <location filename="../src/gui/accountstate.cpp" line="103"/>
         <source>Disconnected</source>
         <translation>Yhteys katkaistu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="103"/>
+        <location filename="../src/gui/accountstate.cpp" line="105"/>
         <source>Connected</source>
         <translation>Yhdistetty</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="105"/>
+        <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Service unavailable</source>
         <translation>Palvelu ei ole käytettävissä</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="107"/>
+        <location filename="../src/gui/accountstate.cpp" line="109"/>
         <source>Network error</source>
         <translation>Verkkovirhe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="109"/>
+        <location filename="../src/gui/accountstate.cpp" line="111"/>
         <source>Configuration error</source>
         <translation>Asetusvirhe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="111"/>
+        <location filename="../src/gui/accountstate.cpp" line="113"/>
         <source>Unknown account state</source>
         <translation>Tuntematon tilin tila</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="245"/>
+        <location filename="../src/gui/accountstate.cpp" line="264"/>
         <source>Reauthentication required</source>
         <translation>Tunnistaudu uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="245"/>
+        <location filename="../src/gui/accountstate.cpp" line="264"/>
         <source>You need to re-login to continue using the account %1.</source>
         <translation>Kirjaudu uudelleen, jotta voit jatkaa tilin %1 käyttämistä.</translation>
     </message>
@@ -332,65 +332,65 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
         <source>(disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>(yhteys katkaistu)</translation>
     </message>
 </context>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="368"/>
+        <location filename="../src/gui/activitywidget.cpp" line="396"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen toimet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="373"/>
+        <location filename="../src/gui/activitywidget.cpp" line="401"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointiprotokolla</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="379"/>
-        <source>List of ignored or errornous files</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/activitywidget.cpp" line="407"/>
+        <source>List of ignored or erroneous files</source>
+        <translation>Luettelo ohitettavista tai virheellisistä tiedostoista</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="383"/>
+        <location filename="../src/gui/activitywidget.cpp" line="411"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="384"/>
+        <location filename="../src/gui/activitywidget.cpp" line="412"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi toimilista leikepöydälle.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="389"/>
+        <location filename="../src/gui/activitywidget.cpp" line="417"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>Ei synkronoitu</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="410"/>
+        <location filename="../src/gui/activitywidget.cpp" line="438"/>
         <source>server activity list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="442"/>
         <source>sync activity list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="417"/>
+        <location filename="../src/gui/activitywidget.cpp" line="445"/>
         <source>not syned items list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="422"/>
+        <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioitu leikepöydälle</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="422"/>
+        <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>%1 on kopioitu leikepöydälle.</translation>
     </message>
 </context>
 <context>
@@ -398,27 +398,33 @@
     <message>
         <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Lomake</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
+        <location filename="../src/gui/activitywidget.ui" line="30"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TekstiLeima</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="281"/>
+        <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen toimet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="283"/>
+        <location filename="../src/gui/activitywidget.cpp" line="286"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="284"/>
+        <location filename="../src/gui/activitywidget.cpp" line="287"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi toimilista leikepöydälle.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="320"/>
+        <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
+        <translation>&lt;br/&gt;Tilillä %1 ei ole toimia käytössä.</translation>
     </message>
 </context>
 <context>
@@ -485,32 +491,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="61"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="65"/>
         <source>No ownCloud account configured</source>
         <translation>ownCloud-tiliä ei ole määritelty</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="117"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="126"/>
         <source>The configured server for this client is too old</source>
         <translation>Määritelty palvelin on ohjelmistoversioltaan liian vanha tälle asiakasohjelmistolle</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="118"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="127"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Päivitä uusimpaan palvelinversioon ja käynnistä asiakasohjelmisto uudelleen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="135"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Tunnistautumisvirhe: käyttäjätunnus tai salasana on väärin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="156"/>
         <source>timeout</source>
         <translation>aikakatkaisu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="178"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="188"/>
         <source>The provided credentials are not correct</source>
         <translation>Annetut tilitiedot eivät ole oikein</translation>
     </message>
@@ -526,7 +532,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="537"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="539"/>
         <source>Aborted by the user</source>
         <translation>Keskeytetty käyttäjän toimesta</translation>
     </message>
@@ -554,113 +560,113 @@
         <translation>%1 ei ole luettavissa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="406"/>
+        <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ja %2 muuta tiedostoa on poistettu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="510"/>
+        <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 on poistettu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ja %2 muuta tiedostoa on ladattu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="517"/>
+        <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 on ladattu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 ja %2 muuta tiedostoa on päivitetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 on päivitetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="531"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 on nimetty uudeelleen muotoon %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="538"/>
+        <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 on siirretty kohteeseen %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="543"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>Kohdetta %1 ja %2 muuta tiedostoa ei voi synkronoida virheiden vuoksi. Katso tarkemmat tiedot lokista.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="545"/>
+        <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>Kohdetta %1 ei voi synkronoida virheen vuoksi. Katso tarkemmat tiedot lokista.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="553"/>
+        <location filename="../src/gui/folder.cpp" line="558"/>
         <source>Sync Activity</source>
         <translation>Synkronointiaktiviteetti</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="870"/>
+        <location filename="../src/gui/folder.cpp" line="875"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1127"/>
+        <location filename="../src/gui/folder.cpp" line="1132"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Uusi kansio, joka on suurempi kuin %1 Mt, on lisätty: %2.
 Siirry asetuksiin valitaksesi sen, jos haluat ladata kyseisen kansion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1140"/>
+        <location filename="../src/gui/folder.cpp" line="1145"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1149"/>
         <source>Remove All Files?</source>
         <translation>Poistetaanko kaikki tiedostot?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1146"/>
+        <location filename="../src/gui/folder.cpp" line="1151"/>
         <source>Remove all files</source>
         <translation>Poista kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1147"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>Keep files</source>
         <translation>Säilytä tiedostot</translation>
     </message>
@@ -668,112 +674,112 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="270"/>
+        <location filename="../src/gui/folderman.cpp" line="261"/>
         <source>Could not reset folder state</source>
         <translation>Kansion tilaa ei voitu alustaa</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="271"/>
+        <location filename="../src/gui/folderman.cpp" line="262"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="889"/>
+        <location filename="../src/gui/folderman.cpp" line="883"/>
         <source> (backup)</source>
         <translation> (varmuuskopio)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="894"/>
+        <location filename="../src/gui/folderman.cpp" line="888"/>
         <source> (backup %1)</source>
         <translation> (varmuuskopio %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1103"/>
+        <location filename="../src/gui/folderman.cpp" line="1097"/>
         <source>Undefined State.</source>
         <translation>Määrittelemätön tila.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1106"/>
+        <location filename="../src/gui/folderman.cpp" line="1100"/>
         <source>Waiting to start syncing.</source>
         <translation>Odotetaan synkronoinnin aloitusta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1103"/>
         <source>Preparing for sync.</source>
         <translation>Valmistellaan synkronointia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1112"/>
+        <location filename="../src/gui/folderman.cpp" line="1106"/>
         <source>Sync is running.</source>
         <translation>Synkronointi on meneillään.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1115"/>
+        <location filename="../src/gui/folderman.cpp" line="1109"/>
         <source>Last Sync was successful.</source>
         <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1114"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Viimeisin synkronointi onnistui, mutta yksittäisten tiedostojen kanssa ilmeni varoituksia.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1123"/>
+        <location filename="../src/gui/folderman.cpp" line="1117"/>
         <source>Setup Error.</source>
         <translation>Asetusvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1126"/>
+        <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>User Abort.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1129"/>
+        <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Sync is paused.</source>
         <translation>Synkronointi on keskeytetty.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1135"/>
+        <location filename="../src/gui/folderman.cpp" line="1129"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synkronointi on keskeytetty)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1143"/>
+        <location filename="../src/gui/folderman.cpp" line="1137"/>
         <source>No valid folder selected!</source>
         <translation>Kelvollista kansiota ei ole valittu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1154"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>The selected path is not a folder!</source>
         <translation>Valittu polku ei ole kansio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1152"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Sinulla ei ole kirjoitusoikeutta valittuun kansioon!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1173"/>
+        <location filename="../src/gui/folderman.cpp" line="1167"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen kansio %1 on jo käytössä kansion synkronointiyhteydessä. Valitse toinen kansio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1172"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen kansio %1 sisältää kansion, jota käytetään kansion synkronointiyhteydessä. Valitse toinen kansio!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1185"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1192"/>
+        <location filename="../src/gui/folderman.cpp" line="1186"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1198"/>
+        <location filename="../src/gui/folderman.cpp" line="1192"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -814,96 +820,120 @@ Are you sure you want to perform this operation?</source>
         <translation>Napsauta valitaksesi synkronoitavan kansion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="142"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="143"/>
         <source>%1 (%2)</source>
+        <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
         <translation>%1 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="161"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
         <source>Error while loading the list of folders from the server.</source>
         <translation>Virhe ladatessa kansiolistausta palvelimelta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="193"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="194"/>
         <source>Signed out</source>
         <translation>Kirjauduttu ulos</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="127"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Kansion lisääminen on poistettu käytöstä, koska synkronoit jo kaikki tiedostot. Jos haluat synkronoida useita kansioita, poista nykyisen juurikansion synkronointiyhteys.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="163"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="164"/>
         <source>Fetching folder list from server...</source>
         <translation>Haetaan kansioluetteloa palvelimelta...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="794"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="795"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="854"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="830"/>
+        <source>, &apos;%1&apos;</source>
+        <extracomment>Build a list of file names</extracomment>
+        <translation>, &apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="833"/>
+        <source>&apos;%1&apos;</source>
+        <extracomment>Argument is a file name</extracomment>
+        <translation>&apos;%1&apos;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="858"/>
         <source>Syncing %1</source>
+        <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Synkronoidaan %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="859"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="860"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <source>, </source>
+        <translation>, </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="864"/>
         <source>download %1/s</source>
+        <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="861"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="866"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="867"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
         <source>upload %1/s</source>
+        <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="869"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="875"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3/%4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
+        <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7
+Total time left 12 minutes&quot;</extracomment>
         <translation>%1/%2, tiedosto %3/%4
 Aikaa jäljellä yhteensä %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
         <source>file %1 of %2</source>
         <translation>tiedosto %1/%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="940"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>Waiting...</source>
         <translation>Odotetaan...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="942"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Odotetaan %n muuta kansiota...</numerusform><numerusform>Odotetaan %n muuta kansiota...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="948"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="955"/>
         <source>Preparing to sync...</source>
         <translation>Valmistaudutaan synkronointiin...</translation>
     </message>
@@ -1081,32 +1111,32 @@ Aikaa jäljellä yhteensä %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Käynnistä järjestelmän käynnistyessä</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Näytä työpöytäilmoitukset</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Käytä &amp;mustavalkoisia kuvakkeita</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Muokkaa &amp;ohitettavia tiedostoja</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Kysy &amp;vahvistus, ennen kuin ladataan kansiot suurempia kuin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>N&amp;äytä kaatumisraportoija</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -1532,7 +1562,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="147"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varoitus:&lt;/strong&gt; Paikallinen kansio ei ole tyhjä. Valitse jatkotoimenpide!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="246"/>
@@ -1796,7 +1826,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="110"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
         <source>Connection Timeout</source>
         <translation>Yhteys aikakatkaistiin</translation>
     </message>
@@ -1804,7 +1834,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="167"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="168"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"/>
     </message>
@@ -1817,32 +1847,32 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>The download would reduce free disk space below %1</source>
         <translation>Lataaminen laskisi vapaan levytilan määrän alle rajan %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="372"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Free space on disk is less than %1</source>
         <translation>Levyllä on vapaata tilaa vähemmän kuin %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="482"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="479"/>
         <source>File was deleted from server</source>
         <translation>Tiedosto poistettiin palvelimelta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="531"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="528"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Tiedostoa ei voitu ladata täysin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="636"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="628"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="676"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="668"/>
         <source>File has changed since discovery</source>
         <translation>Tiedosto on muuttunut löytymisen jälkeen</translation>
     </message>
@@ -1868,12 +1898,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="145"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="148"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="151"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
         <source>could not create folder %1</source>
         <translation>kansiota %1 ei voitu luoda</translation>
     </message>
@@ -1891,7 +1921,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Ei voitu poistaa kansiota &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="113"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation type="unfinished"/>
     </message>
@@ -1899,7 +1929,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="189"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="192"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation type="unfinished"/>
     </message>
@@ -1951,48 +1981,48 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="205"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="206"/>
         <source>File name contains at least one invalid character</source>
         <translation>Tiedoston nimi sisältää ainakin yhden virheellisen merkin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="262"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
         <source>File Removed</source>
         <translation>Tiedosto poistettu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="274"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="286"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="665"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="304"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
         <source>Local file changed during sync.</source>
         <translation>Paikallinen tiedosto muuttui synkronoinnin aikana.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="592"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="610"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="600"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="618"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="654"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="672"/>
         <source>The local file was removed during sync.</source>
         <translation>Paikallinen tiedosto poistettiin synkronoinnin aikana.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="698"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation type="unfinished"/>
     </message>
@@ -2007,7 +2037,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="20"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TekstiLeima</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="54"/>
@@ -2037,7 +2067,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="69"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen synkronointiprotokolla</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="71"/>
@@ -2183,22 +2213,22 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::SettingsDialogMac</name>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="68"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="69"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="80"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="73"/>
         <source>Activity</source>
         <translation>Toimet</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="84"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="87"/>
         <source>General</source>
         <translation>Yleiset</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="88"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="91"/>
         <source>Network</source>
         <translation>Verkko</translation>
     </message>
@@ -2206,12 +2236,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::ShareDialog</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="60"/>
+        <location filename="../src/gui/sharedialog.ui" line="54"/>
         <source>TextLabel</source>
         <translation>TekstiLeima</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="34"/>
+        <location filename="../src/gui/sharedialog.ui" line="28"/>
         <source>share label</source>
         <translation type="unfinished"/>
     </message>
@@ -2221,24 +2251,29 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="53"/>
+        <location filename="../src/gui/sharedialog.ui" line="47"/>
         <source>ownCloud Path:</source>
         <translation>ownCloud-polku:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="76"/>
+        <location filename="../src/gui/sharedialog.cpp" line="88"/>
         <source>%1 Sharing</source>
         <translation>%1 - Jakaminen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="59"/>
+        <location filename="../src/gui/sharedialog.cpp" line="63"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="73"/>
+        <location filename="../src/gui/sharedialog.cpp" line="85"/>
         <source>Folder: %2</source>
         <translation>Kansio: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="91"/>
+        <source>The server does not allow sharing</source>
+        <translation>Palvelin ei salli jakamista</translation>
     </message>
 </context>
 <context>
@@ -2284,40 +2319,40 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Salli muokkaus</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="86"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="87"/>
         <source>P&amp;assword protect</source>
         <translation>&amp;Suojaa salasanalla</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="176"/>
         <source>Password Protected</source>
         <translation>Salasanasuojattu</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="292"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="372"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="373"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>&amp;Julkinen jakaminen vaatii salasanan</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="429"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="430"/>
         <source>Please Set Password</source>
         <translation>Aseta salasana</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="492"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="493"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
         <source>&amp;Share link</source>
         <translation>&amp;Jaa linkki</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>OCS API error code: %1</source>
         <translation>OCS API -virhekoodi: %1</translation>
     </message>
@@ -2330,14 +2365,9 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Jaa UusiAsiakirja.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="25"/>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users, groups or remote users ...</source>
         <translation>Jaa käyttäjien, ryhmien tai etäkäyttäjien kanssa...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="32"/>
-        <source>Search</source>
-        <translation>Etsi</translation>
     </message>
 </context>
 <context>
@@ -2353,39 +2383,34 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>TekstiLeima</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="57"/>
-        <source>Permissions</source>
-        <translation>Oikeudet</translation>
+        <location filename="../src/gui/sharewidget.ui" line="66"/>
+        <source>can edit</source>
+        <translation>voi muokata</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="63"/>
-        <source>Can Share</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/sharewidget.ui" line="73"/>
+        <source>can share</source>
+        <translation>jaa</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="70"/>
-        <source>Can Edit</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/sharewidget.ui" line="80"/>
+        <source>...</source>
+        <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="98"/>
-        <source>More</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
+        <source>create</source>
+        <translation>luo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="77"/>
-        <source>Create</source>
-        <translation>Luo</translation>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <source>change</source>
+        <translation>muuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharewidget.ui" line="84"/>
-        <source>Change</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/sharewidget.ui" line="91"/>
-        <source>Delete</source>
-        <translation>Poista</translation>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <source>delete</source>
+        <translation>poista</translation>
     </message>
 </context>
 <context>
@@ -2526,24 +2551,24 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="192"/>
+        <location filename="../src/gui/sslbutton.cpp" line="191"/>
         <source>This connection is encrypted using %1 bit %2.
 </source>
         <translation>Yhteys on salattu, käytössä %1-bittinen %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="219"/>
+        <location filename="../src/gui/sslbutton.cpp" line="218"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="230"/>
+        <location filename="../src/gui/sslbutton.cpp" line="229"/>
         <source>Certificate information:</source>
         <translation>Varmenteen tiedot:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="196"/>
+        <location filename="../src/gui/sslbutton.cpp" line="195"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
         <translation>Yhteys EI OLE turvallinen, koska sitä ei ole salattu.
@@ -2631,249 +2656,254 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="95"/>
+        <location filename="../src/libsync/syncengine.cpp" line="98"/>
         <source>Success.</source>
         <translation>Onnistui.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="102"/>
+        <location filename="../src/libsync/syncengine.cpp" line="105"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="105"/>
+        <location filename="../src/libsync/syncengine.cpp" line="108"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1-liitännäistä csyncia varten ei voitu ladata.&lt;br/&gt;Varmista asennuksen toimivuus!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="108"/>
+        <location filename="../src/libsync/syncengine.cpp" line="111"/>
         <source>CSync got an error while processing internal trees.</source>
         <translation>Csync-synkronointipalvelussa tapahtui virhe sisäisten puurakenteiden prosessoinnissa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="114"/>
         <source>CSync failed to reserve memory.</source>
         <translation>CSync ei onnistunut varaamaan muistia.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="114"/>
+        <location filename="../src/libsync/syncengine.cpp" line="117"/>
         <source>CSync fatal parameter error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="120"/>
         <source>CSync processing step update failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="120"/>
+        <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>CSync processing step reconcile failed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="123"/>
+        <location filename="../src/libsync/syncengine.cpp" line="126"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="126"/>
+        <location filename="../src/libsync/syncengine.cpp" line="129"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="132"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="135"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync ei onnistunut yhdistämään verkkoon.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="135"/>
+        <location filename="../src/libsync/syncengine.cpp" line="138"/>
         <source>A network connection timeout happened.</source>
         <translation>Tapahtui verkon aikakatkaisu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="141"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Tapahtui HTTP-välitysvirhe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="162"/>
+        <location filename="../src/libsync/syncengine.cpp" line="165"/>
         <source>The mounted folder is temporarily not available on the server</source>
         <translation>Liitetty kansio on väliaikaisesti pois käytöstä tällä palvelimella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="171"/>
         <source>An error occurred while opening a folder</source>
         <translation>Kansiota avatessa tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="174"/>
         <source>Error while reading folder.</source>
         <translation>Kansiota lukiessa tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1000"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Ei sallittu, koska käyttöoikeutesi eivät riitä ylätason kansion lisäämiseen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1007"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ei sallittu, koska käyttöoikeutesi eivät riitä tiedostojen lisäämiseen kyseiseen kansioon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="150"/>
+        <location filename="../src/libsync/syncengine.cpp" line="153"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: %1-palvelimella ei ole tilaa vapaana.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="156"/>
         <source>CSync unspecified error.</source>
         <translation>CSync - määrittämätön virhe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="159"/>
         <source>Aborted by the user</source>
         <translation>Keskeytetty käyttäjän toimesta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="393"/>
+        <location filename="../src/libsync/syncengine.cpp" line="405"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
         <translation>Tiedoston nimi sisältää virheellisiä merkkejä, joita ei voi synkronoida alustariippumattomasti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="144"/>
+        <location filename="../src/libsync/syncengine.cpp" line="147"/>
         <source>CSync failed to access</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="98"/>
+        <location filename="../src/libsync/syncengine.cpp" line="101"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync failed due to unhandled permission denied.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="147"/>
+        <location filename="../src/libsync/syncengine.cpp" line="150"/>
         <source>CSync tried to create a folder that already exists.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="162"/>
         <source>The service is temporarily unavailable</source>
         <translation>Palvelu ei ole juuri nyt käytettävissä</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="173"/>
+        <location filename="../src/libsync/syncengine.cpp" line="168"/>
+        <source>Access is forbidden</source>
+        <translation>Pääsy estetty</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="179"/>
         <source>An internal error number %1 occurred.</source>
         <translation>Sisäinen virhe, numero %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="228"/>
+        <location filename="../src/libsync/syncengine.cpp" line="234"/>
         <source>The item is not synced because of previous errors: %1</source>
         <translation>Kohdetta ei synkronoitu aiempien virheiden vuoksi: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="387"/>
+        <location filename="../src/libsync/syncengine.cpp" line="399"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Symboliset linkit eivät ole tuettuja synkronoinnissa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="390"/>
+        <location filename="../src/libsync/syncengine.cpp" line="402"/>
         <source>File is listed on the ignore list.</source>
         <translation>Tiedosto on ohituslistalla.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="396"/>
+        <location filename="../src/libsync/syncengine.cpp" line="408"/>
         <source>Filename is too long.</source>
         <translation>Tiedoston nimi on liian pitkä.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="399"/>
+        <location filename="../src/libsync/syncengine.cpp" line="411"/>
         <source>File is ignored because it&apos;s hidden.</source>
         <translation>Tiedosto ohitetaan, koska se on piilotettu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="405"/>
+        <location filename="../src/libsync/syncengine.cpp" line="417"/>
         <source>Stat failed.</source>
         <translation>Stat epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="427"/>
+        <location filename="../src/libsync/syncengine.cpp" line="444"/>
         <source>Filename encoding is not valid</source>
         <translation>Tiedostonimen merkistökoodaus ei ole kelvollista</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="574"/>
+        <location filename="../src/libsync/syncengine.cpp" line="599"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Virheellisiä merkkejä, anna uusi nimi kohteelle &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="628"/>
+        <location filename="../src/libsync/syncengine.cpp" line="653"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <translation>Vain %1 on käytettävissä, käynnistymiseen tarvitaan %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="661"/>
+        <location filename="../src/libsync/syncengine.cpp" line="686"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="739"/>
+        <location filename="../src/libsync/syncengine.cpp" line="768"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="969"/>
-        <location filename="../src/libsync/syncengine.cpp" line="976"/>
+        <location filename="../src/libsync/syncengine.cpp" line="998"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="994"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ei sallittu, koska oikeutesi eivät riitä alikansioiden lisäämiseen kyseiseen kansioon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1027"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1044"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Poistaminen ei ole sallittua, palautetaan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
         <source>Local files and share folder removed.</source>
         <translation>Paikalliset tiedostot ja jakokansio poistettu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Move not allowed, item restored</source>
         <translation>Siirtäminen ei ole sallittua, kohde palautettu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Siirto ei ole sallittu, koska %1 on &quot;vain luku&quot;-tilassa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1142"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
         <source>the destination</source>
         <translation>kohde</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1142"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
         <source>the source</source>
         <translation>lähde</translation>
     </message>
@@ -2883,7 +2913,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointiloki</translation>
     </message>
 </context>
 <context>
@@ -2915,17 +2945,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="128"/>
+        <location filename="../src/libsync/checksums.cpp" line="132"/>
         <source>The checksum header is malformed.</source>
         <translation>Tarkistesumman otsake on muodostettu väärin.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="143"/>
+        <location filename="../src/libsync/checksums.cpp" line="147"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/transmissionchecksumvalidator.cpp" line="148"/>
+        <location filename="../src/libsync/checksums.cpp" line="152"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation type="unfinished"/>
     </message>
@@ -3112,7 +3142,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jos tämä kohta on valittu, paikallisen kansion olemassa oleva sisältö poistetaan ja sisältö synkronoidaan palvelimelta.&lt;/p&gt;&lt;p&gt;Älä valitse tätä, jos tarkoituksesi on lähettää paikallisen kansion sisältö palvelimelle.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
@@ -3296,27 +3326,27 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="444"/>
         <source>%1 day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 pv sitten</numerusform><numerusform>%1 pv sitten</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="450"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 t sitten</numerusform><numerusform>%1 t sitten</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="454"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Alle minuutti sitten</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="456"/>
         <source>%1 minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 min sitten</numerusform><numerusform>%1 min sitten</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="459"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Jokin aika sitten</translation>
     </message>
 </context>
 <context>

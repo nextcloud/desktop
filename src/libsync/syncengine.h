@@ -37,6 +37,7 @@
 #include "syncfilestatus.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
+#include "checksums.h"
 
 class QProcess;
 
@@ -87,6 +88,13 @@ public:
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
+
+    /**
+     * Minimum age, in milisecond, of a file that can be uploaded.
+     * Files more recent than that are not going to be uploaeded as they are considered
+     * too young and possibly still changing
+     */
+    static qint64 minimumFileAgeForUpload; // in ms
 
 signals:
     void csyncError( const QString& );
@@ -208,6 +216,9 @@ private:
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
+
+    /// Hook for computing checksums from csync_update
+    CSyncChecksumHook _checksum_hook;
 
     bool _anotherSyncNeeded;
 };

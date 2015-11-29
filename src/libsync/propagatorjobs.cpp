@@ -109,6 +109,9 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = _propagator->_localDir +  _item->_file;
+
+    qDebug() << filename;
+
     if( _propagator->localFileNameClash(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash")
              .arg(QDir::toNativeSeparators(filename)));
@@ -209,8 +212,8 @@ void PropagateLocalRename::start()
 
     SyncJournalFileRecord record(*_item, targetFile);
     record._path = _item->_renameTarget;
-    record._transmissionChecksum = oldRecord._transmissionChecksum;
-    record._transmissionChecksumType = oldRecord._transmissionChecksumType;
+    record._contentChecksum = oldRecord._contentChecksum;
+    record._contentChecksumType = oldRecord._contentChecksumType;
 
     if (!_item->_isDirectory) { // Directories are saved at the end
         _propagator->_journal->setFileRecord(record);

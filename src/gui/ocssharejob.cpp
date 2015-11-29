@@ -122,7 +122,9 @@ void OcsShareJob::createShare(const QString& path,
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("shareType"), QString::number(shareType));
     addParam(QString::fromLatin1("shareWith"), shareWith);
-    addParam(QString::fromLatin1("permissions"), QString::number(permissions));
+    if (!(permissions & Share::PermissionDefault)) {
+        addParam(QString::fromLatin1("permissions"), QString::number(permissions));
+    }
 
     start();
 }

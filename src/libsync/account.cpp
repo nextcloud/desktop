@@ -497,6 +497,15 @@ bool Account::rootEtagChangesNotOnlySubFolderEtags()
     return (serverVersionInt() >= 0x080100);
 }
 
+void Account::setNonShib(bool nonShib)
+{
+    if( nonShib ) {
+        _davPath = Theme::instance()->webDavPathNonShib();
+    } else {
+        _davPath = Theme::instance()->webDavPath();
+    } 
+}
+
 
 
 } // namespace OCC

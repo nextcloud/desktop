@@ -421,6 +421,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.error_status = cur->error_status;
       trav.should_update_metadata = cur->should_update_metadata;
       trav.has_ignored_files = cur->has_ignored_files;
+      trav.checksum = cur->checksum;
+      trav.checksumTypeId = cur->checksumTypeId;
 
       if( other_node ) {
           csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
@@ -742,6 +744,7 @@ void csync_file_stat_free(csync_file_stat_t *st)
     SAFE_FREE(st->directDownloadCookies);
     SAFE_FREE(st->etag);
     SAFE_FREE(st->destpath);
+    SAFE_FREE(st->checksum);
     SAFE_FREE(st);
   }
 }

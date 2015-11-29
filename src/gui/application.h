@@ -20,6 +20,7 @@
 #include <QQueue>
 #include <QTimer>
 #include <QElapsedTimer>
+#include <QNetworkConfigurationManager>
 
 #include "qtsingleapplication.h"
 
@@ -87,6 +88,7 @@ protected slots:
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);
     void slotCrash();
+    void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
 
 private:
     void setHelp();
@@ -111,6 +113,7 @@ private:
 
     ClientProxy _proxy;
 
+    QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
 
 #if defined(WITH_CRASHREPORTER)

@@ -169,12 +169,12 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
             if os.path.isdir(filename + "/"):
                 filename += "/"
                 # Check if toplevel folder, we need to ignore those as they cannot be shared
-                if filename.count("/") < (reg_path.count("/")+2):
+                if filename == reg_path:
                     topLevelFolder=True                
             # Only show the menu extension if the file is synced and the sync
             # status is ok. Not for ignored files etc.
             # ignore top level folders
-            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'] == 'OK':
+            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'].startswith('OK'):
                 syncedFile = True
 
         # If it is neither in a synced folder or is a directory
@@ -259,8 +259,8 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
                         item.add_emblem(emblem)
-                        # print("Setting emblem on " + args[1] + "<>" + emblem + "<>")  # For debug only
-                        socketConnect.nautilusVFSFile_table[args[1]] = {'item': item, 'state':newState}
+                        # print("Setting emblem on " + filename + "<>" + emblem + "<>")  # For debug only
+                        socketConnect.nautilusVFSFile_table[filename] = {'item': item, 'state':newState}
 
         elif action == 'UPDATE_VIEW':
             # Search all items underneath this path and invalidate them

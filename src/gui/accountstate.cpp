@@ -16,6 +16,7 @@
 #include "account.h"
 #include "creds/abstractcredentials.h"
 #include "logger.h"
+#include "configfile.h"
 
 #include <QDebug>
 #include <QSettings>
@@ -39,6 +40,7 @@ AccountState::AccountState(AccountPtr account)
             SLOT(slotCredentialsFetched(AbstractCredentials*)));
     connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials*)),
             SLOT(slotCredentialsAsked(AbstractCredentials*)));
+    _timeSinceLastETagCheck.invalidate();
 }
 
 AccountState::~AccountState()
@@ -135,6 +137,11 @@ bool AccountState::isConnectedOrTemporarilyUnavailable() const
     return isConnected() || _state == ServiceUnavailable;
 }
 
+void AccountState::tagLastSuccessfullETagRequest()
+{
+    _timeSinceLastETagCheck.restart();
+}
+
 void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
 {
     if (isSignedOut() || _waitingForNewCredentials) {
@@ -145,6 +152,18 @@ void AccountState::checkConnectivity(CredentialFetchMode credentialsFetchMode)
         qDebug() << "ConnectionValidator already running, ignoring" << account()->displayName();
         return;
     }
+
+    // IF the account is connected the connection check can be skipped
+    // if the last successful etag check job is not so long ago.
+    ConfigFile cfg;
+    int polltime = cfg.remotePollInterval();
+
+    if (isConnected() && _timeSinceLastETagCheck.isValid()
+            && _timeSinceLastETagCheck.elapsed() < polltime) {
+        //qDebug() << account()->displayName() << "The last ETag check succeeded within the last " << polltime/1000 << " secs. No connection check needed!";
+        return;
+    }
+
     _credentialsFetchMode = credentialsFetchMode;
     ConnectionValidator * conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;

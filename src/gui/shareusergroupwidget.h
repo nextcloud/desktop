@@ -24,6 +24,7 @@
 #include <QVector>
 #include <QTimer>
 
+class QAction;
 class QCompleter;
 class QModelIndex;
 
@@ -47,30 +48,33 @@ class ShareWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareWidget(QSharedPointer<Share> Share, QWidget *parent = 0);
+    explicit ShareWidget(QSharedPointer<Share> Share, bool isFile, QWidget *parent = 0);
     ~ShareWidget();
 
     QSharedPointer<Share> share() const;
 
 signals:
     void shareDeleted(ShareWidget *share);
+    void resizeRequested();
 
 private slots:
     void on_deleteShareButton_clicked();
     void slotPermissionsChanged();
     void slotEditPermissionsChanged();
-    void on_permissionToggleButton_clicked();
     void slotDeleteAnimationFinished();
 
     void slotShareDeleted();
     void slotPermissionsSet();
-
 private:
     void displayPermissions();
 
     Ui::ShareWidget *_ui;
     QSharedPointer<Share> _share;
-    bool _showDetailedPermissions;
+    bool _isFile;
+
+    QAction *_permissionCreate;
+    QAction *_permissionUpdate;
+    QAction *_permissionDelete;
 };
 
 
@@ -102,6 +106,7 @@ private slots:
 
     void slotCompleterActivated(const QModelIndex & index);
     void slotShareesReady();
+    void slotAdjustScrollWidgetSize();
 
 private:
     Ui::ShareUserGroupWidget *_ui;

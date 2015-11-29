@@ -226,6 +226,8 @@ int csync_statedb_close(CSYNC *ctx) {
   return rc;
 }
 
+#define METADATA_COLUMNS "phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId"
+
 // This funciton parses a line from the metadata table into the given csync_file_stat
 // structure which it is also allocating.
 // Note that this function calls laso sqlite3_step to actually get the info from db and
@@ -286,6 +288,11 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             if(column_count > 13) {
                 (*st)->has_ignored_files = sqlite3_column_int(stmt, 13);
             }
+            if(column_count > 15 && sqlite3_column_int(stmt, 15)) {
+                (*st)->checksum = c_strdup( (char*) sqlite3_column_text(stmt, 14));
+                (*st)->checksumTypeId = sqlite3_column_int(stmt, 15);
+            }
+
         }
     } else {
         if( rc != SQLITE_DONE ) {
@@ -307,7 +314,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   }
 
   if( ctx->statedb.by_hash_stmt == NULL ) {
-      const char *hash_query = "SELECT * FROM metadata WHERE phash=?1";
+      const char *hash_query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE phash=?1";
 
       SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, hash_query, strlen(hash_query), &ctx->statedb.by_hash_stmt, NULL));
       ctx->statedb.lastReturnValue = rc;
@@ -350,7 +357,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     }
 
     if( ctx->statedb.by_fileid_stmt == NULL ) {
-        const char *query = "SELECT * FROM metadata WHERE fileid=?1";
+        const char *query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE fileid=?1";
 
         SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, query, strlen(query), &ctx->statedb.by_fileid_stmt, NULL));
         ctx->statedb.lastReturnValue = rc;
@@ -390,7 +397,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
   }
 
   if( ctx->statedb.by_inode_stmt == NULL ) {
-      const char *inode_query = "SELECT * FROM metadata WHERE inode=?1";
+      const char *inode_query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE inode=?1";
 
       SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, inode_query, strlen(inode_query), &ctx->statedb.by_inode_stmt, NULL));
       ctx->statedb.lastReturnValue = rc;
@@ -433,7 +440,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
      * In other words, anything that is between  path+'/' and path+'0',
      * (because '0' follows '/' in ascii)
      */
-    const char *below_path_query = "SELECT phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote FROM metadata WHERE path > (?||'/') AND path < (?||'0')";
+    const char *below_path_query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE path > (?||'/') AND path < (?||'0')";
     SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, below_path_query, -1, &stmt, NULL));
     ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_OK ) {

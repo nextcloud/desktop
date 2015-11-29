@@ -365,11 +365,16 @@ void Folder::etagRetreived(const QString& etag)
         _lastEtag = etag;
         emit scheduleToSync(this);
     }
+
+    if( _accountState ) {
+        _accountState->tagLastSuccessfullETagRequest();
+    }
 }
 
 void Folder::etagRetreivedFromSyncEngine(const QString& etag)
 {
     qDebug() << "Root etag from during sync:" << etag;
+    accountState()->tagLastSuccessfullETagRequest();
     _lastEtag = etag;
 }
 

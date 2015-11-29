@@ -54,6 +54,8 @@ namespace OCC {
 
 bool SyncEngine::_syncRunning = false;
 
+qint64 SyncEngine::minimumFileAgeForUpload = 2000;
+
 SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
                        const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)
@@ -69,6 +71,7 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
   , _uploadLimit(0)
   , _downloadLimit(0)
   , _newBigFolderSizeLimit(-1)
+  , _checksum_hook(journal)
   , _anotherSyncNeeded(false)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
@@ -160,6 +163,9 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         break;
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         errStr = tr("The mounted folder is temporarily not available on the server");
+        break;
+    case CSYNC_STATUS_FORBIDDEN:
+        errStr = tr("Access is forbidden");
         break;
     case CSYNC_STATUS_OPENDIR_ERROR:
         errStr = tr("An error occurred while opening a folder");
@@ -369,6 +375,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_serverHasIgnoredFiles    = (file->has_ignored_files > 0);
     }
 
+    // Sometimes the discovery computes checksums for local files
+    if (!remote && file->checksum && file->checksumTypeId) {
+        item->_contentChecksum = QByteArray(file->checksum);
+        item->_contentChecksumType = _journal->getChecksumType(file->checksumTypeId);
+    }
+
     // record the seen files to be able to clean the journal later
     _seenFiles.insert(item->_file);
     if (!renameTarget.isEmpty()) {
@@ -409,6 +421,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
         item->_errorString = QLatin1String("Directory temporarily not available on server.");
+        item->_status = SyncFileItem::SoftError;
+        _temporarilyUnavailablePaths.insert(item->_file);
+        break;
+    case CSYNC_STATUS_FORBIDDEN:
+        item->_errorString = QLatin1String("Access forbidden.");
         item->_status = SyncFileItem::SoftError;
         _temporarilyUnavailablePaths.insert(item->_file);
         break;
@@ -456,10 +473,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     int re = 0;
     switch(file->instruction) {
-    case CSYNC_INSTRUCTION_NONE:
+    case CSYNC_INSTRUCTION_NONE: {
         if (remote && item->_should_update_metadata && !item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
-            // Update the database now already:  New fileid or Etag or RemotePerm
+            // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
+            // Or a local inode/mtime change (see localMetadataUpdate below)
 
             // In case of "resolved conflict": there should have been a conflict because they
             // both were new, or both had their local mtime or remote etag modified, but the
@@ -481,26 +499,33 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
             if (prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
                 const bool isReadOnly = !item->_remotePerm.contains('W');
-                FileSystem::setFileReadOnly(filePath, isReadOnly);
+                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
 
             _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
             item->_should_update_metadata = false;
-        }
-        if (item->_isDirectory && file->should_update_metadata) {
-            // Because we want to still update etags of directories
-            dir = SyncFileItem::None;
-        } else {
-            // No need to do anything.
-            if (file->other.instruction == CSYNC_INSTRUCTION_NONE
-                    // Directories with ignored files does not count as 'None'
-                    && (file->type != CSYNC_FTW_TYPE_DIR || !file->has_ignored_files)) {
-                _hasNoneFiles = true;
-            }
 
+            // Technically we're done with this item. See localMetadataUpdate hack below.
+            _syncItemMap.remove(key);
+        }
+        // Any files that are instruction NONE?
+        if (!item->_isDirectory && file->other.instruction == CSYNC_INSTRUCTION_NONE) {
+            _hasNoneFiles = true;
+        }
+        // We want to still update etags of directories, other NONE
+        // items can be ignored.
+        bool directoryEtagUpdate = item->_isDirectory && file->should_update_metadata;
+        bool localMetadataUpdate = !remote && file->should_update_metadata;
+        if (!directoryEtagUpdate) {
+            if (localMetadataUpdate) {
+                // Hack, we want a local metadata update to happen, but only if the
+                // remote tree doesn't ask us to do some kind of propagation.
+                _syncItemMap.insert(key, item);
+            }
             return re;
         }
         break;
+    }
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         item->_renameTarget = renameTarget;
@@ -675,6 +700,10 @@ void SyncEngine::startSync()
     qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
 
     csync_set_userdata(_csync_ctx, this);
+
+    // Set up checksumming hook
+    _csync_ctx->callbacks.checksum_hook = &CSyncChecksumHook::hook;
+    _csync_ctx->callbacks.checksum_userdata = &_checksum_hook;
 
     _stopWatch.start();
 

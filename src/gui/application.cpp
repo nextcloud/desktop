@@ -177,10 +177,14 @@ Application::Application(int &argc, char **argv) :
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
-    _checkConnectionTimer.setInterval(32 * 1000); // check for connection every 32 seconds.
+    _checkConnectionTimer.setInterval(ConnectionValidator::defaultCallingIntervalMsec()); // check for connection every 32 seconds.
     _checkConnectionTimer.start();
     // Also check immediately
     QTimer::singleShot( 0, this, SLOT( slotCheckConnection() ));
+
+    // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
+    connect(&_networkConfigurationManager, SIGNAL(configurationChanged(QNetworkConfiguration)),
+                this, SLOT(slotSystemOnlineConfigurationChanged(QNetworkConfiguration)));
 
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
@@ -232,6 +236,17 @@ void Application::slotCleanup()
 
     _gui->slotShutdown();
     _gui->deleteLater();
+}
+
+// FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
+// progress of timing out in some seconds.
+// Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
+void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
+{
+    if (cnf.state() & QNetworkConfiguration::Active) {
+        //qDebug() << "Trying fast reconnect";
+        QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
+    }
 }
 
 void Application::slotCheckConnection()

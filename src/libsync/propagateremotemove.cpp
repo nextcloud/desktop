@@ -158,8 +158,8 @@ void PropagateRemoteMove::finalize()
 
     SyncJournalFileRecord record(*_item, _propagator->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
-    record._transmissionChecksum = oldRecord._transmissionChecksum;
-    record._transmissionChecksumType = oldRecord._transmissionChecksumType;
+    record._contentChecksum = oldRecord._contentChecksum;
+    record._contentChecksumType = oldRecord._contentChecksumType;
 
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("Remote Rename");

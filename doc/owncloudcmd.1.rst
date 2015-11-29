@@ -50,6 +50,12 @@ OPTIONS
 ``--httpproxy  http://[user@pass:]<server>:<port>``
       Uses ``server`` as HTTP proxy.
 
+``--nonshib``
+      Uses Non Shibboleth WebDAV Authentication
+
+``--davpath [path]``
+      Overrides the WebDAV Path with ``path``
+
 Example
 =======
 To synchronize the ownCloud directory ``Music`` to the local directory ``media/music``
