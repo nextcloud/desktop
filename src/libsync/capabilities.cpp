@@ -37,7 +37,12 @@ bool Capabilities::shareAPI() const
 
 bool Capabilities::sharePublicLink() const
 {
-    return shareAPI() && _capabilities["files_sharing"].toMap()["public"].toMap()["enabled"].toBool();
+    if (_capabilities["files_sharing"].toMap().contains("public")) {
+        return shareAPI() && _capabilities["files_sharing"].toMap()["public"].toMap()["enabled"].toBool();
+    } else {
+        // This was later added so if it is not present just assume that link sharing is enabled.
+        return true;
+    }
 }
 
 bool Capabilities::sharePublicLinkAllowUpload() const
