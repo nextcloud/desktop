@@ -56,13 +56,11 @@ A right-click on the icon opens a menu for quick access to multiple operations.
 
 The Desktop Client menu provides the following options:
 
-* Open ownCloud in browser
-* Open folder [your local sync folder]
-* Up to date
-* Recent changes
-* Settings
-* Help
-* Log out
+* Quick access to your accounts
+* Recent Changes, showing latest activities
+* Status of your client version (whether it is up to date)
+* Help menu
+* An option to log out of all of your accounts at once
 * Quit ownCloud
 
 Using the Account Settings Window
@@ -72,7 +70,7 @@ Using the Account Settings Window
 
 Click **Settings** in the right-click menu to see a summary of your ownCloud 
 account settings, or left-click your systray icon. This shows which ownCloud 
-account you are connected to (or accounts, if you have more than one) your 
+account you are connected to, (or accounts, if you have more than one) your 
 quota status, and a window for managing your synchronization settings.
 
 .. image:: images/client6.png
@@ -84,20 +82,20 @@ have the following features:
 
 * Connection status, showing which ownCloud server you are connected to, and 
   your ownCloud username.
-* A **Remove Account** button, which deletes your account but does not delete 
-  your data files.
+* An **Account** button, which contains a dropdown menu with **Add New**, 
+  **Sign Out**, and **Remove**.
 * Used and available space on the server.
 * Current synchronization status.
 * **Add Folder Sync Connection** button, which is active only when you have 
   removed synchronization on an account (see **Remove Sync** below).
 
-The little button with three dots that sits to the right of the sync status bar 
-offers four additional options:
+The little button with three dots (the overflow menu) that sits to the right of 
+the sync status bar offers four additional options:
 
 * Open Folder
 * Choose What to Sync
 * Pause Sync / Resume Sync
-* Remove Sync
+* Remove folder sync connection
 
 **Open Folder** opens a file explorer window displaying the client-side folder
 that is being synced.
@@ -123,16 +121,16 @@ downloaded and deleted, and which local folders your files went into.
 The General window has configuration options such as **Launch on System 
 Startup**, **Use Monochrome Icons**, and **Show Desktop Notifications**. This 
 is where you will find the **Edit Ignored Files** button, to launch the ignored 
-files editor, and two new features: **Ask confirmation before downloading 
-folders larger than [folder size]**, and **Add an Account**. 
+files editor, and **Ask confirmation before downloading 
+folders larger than [folder size]**.
 
 Multi-Account Support
 ---------------------
 
 You may now configure multiple ownCloud accounts in your desktop sync client. 
-Simply click the **Add an Account** button on the General tab, and follow the 
-account creation wizard. The new account will appear as a new tab in the 
-settings dialog, where you can adjust its settings at any time.
+Simply click the **Account** > **Add New** button, and then follow the account 
+creation wizard. The new account will appear as a new tab in the settings 
+dialog, where you can adjust its settings at any time.
 
 Editing Ignored Files
 ---------------------
