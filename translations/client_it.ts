@@ -2409,12 +2409,12 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>crea</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>change</source>
         <translation>cambia</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>delete</source>
         <translation>elimina</translation>
     </message>

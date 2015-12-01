@@ -1482,7 +1482,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="141"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>正在下载版本 %1，请稍后....</translation>
+        <translation>正在下载版本 %1，请稍候（“稍后”和“稍候”请分清楚，OK？）...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1766,7 +1766,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>无法建立到 %1的链接，请稍后重试</translation>
+        <translation>无法建立到 %1的链接，请稍后重试（这里“稍后”用对了，赞！）。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
@@ -2397,12 +2397,12 @@ It is not advisable to use it.</source>
         <translation>创建</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>change</source>
         <translation>更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>delete</source>
         <translation>删除</translation>
     </message>

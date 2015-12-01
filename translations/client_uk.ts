@@ -2402,12 +2402,12 @@ It is not advisable to use it.</source>
         <translation>створити</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>change</source>
         <translation>змінити</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>delete</source>
         <translation>видалити</translation>
     </message>

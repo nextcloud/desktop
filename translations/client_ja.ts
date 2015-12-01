@@ -2406,12 +2406,12 @@ It is not advisable to use it.</source>
         <translation>作成</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>change</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>delete</source>
         <translation>削除</translation>
     </message>

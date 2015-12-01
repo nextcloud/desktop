@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="111"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Napaka v nastavitvah</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="113"/>
@@ -2389,7 +2389,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
@@ -2397,12 +2397,12 @@ Uporaba ni priporočljiva.</translation>
         <translation>ustvari</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>change</source>
         <translation>sprememba</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="220"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>delete</source>
         <translation>izbriši</translation>
     </message>
