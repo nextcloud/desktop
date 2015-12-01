@@ -693,14 +693,8 @@ void AccountSettings::slotDeleteAccount()
     manager->deleteAccount(_accountState);
     manager->save();
 
-    // if there is no more account, show the wizard.
-    if( manager->accounts().isEmpty() ) {
-        // allow to add a new account if there is non any more. Always think
-        // about single account theming!
-        _addAccountAction->setVisible(true);
-        OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
-    }
-
+    // IMPORTANT: "this" is deleted from this point on. We should probably remove this synchronous
+    // .exec() QMessageBox magic above as it recurses into the event loop.
 }
 
 bool AccountSettings::event(QEvent* e)

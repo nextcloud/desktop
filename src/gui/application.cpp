@@ -36,6 +36,7 @@
 #include "creds/abstractcredentials.h"
 #include "updater/ocupdater.h"
 #include "excludedfiles.h"
+#include "owncloudsetupwizard.h"
 
 #include "config.h"
 
@@ -218,6 +219,13 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     if (_folderManager) {
         disconnect(accountState, SIGNAL(stateChanged(int)),
                    _folderManager.data(), SLOT(slotAccountStateChanged()));
+    }
+
+    // if there is no more account, show the wizard.
+    if( AccountManager::instance()->accounts().isEmpty() ) {
+        // allow to add a new account if there is non any more. Always think
+        // about single account theming!
+        OwncloudSetupWizard::runWizard(this, SLOT(slotownCloudWizardDone(int)));
     }
 }
 
