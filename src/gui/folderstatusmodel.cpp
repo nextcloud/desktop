@@ -625,6 +625,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         suggestExpand(idx.child(*it, 0));
     }
 
+    /* We need lambda function for the following code.
+     * It's just a small feature that will be missing if the comiler is too old */
+#if !(defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG)) || (__GNUC__ * 100 + __GNUC_MINOR__ >= 405)
+
     /* Try to remove the the undecided lists the items that are not on the server. */
     auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
             [&](const QString &s) { return selectiveSyncUndecidedSet.count(s); } );
@@ -634,6 +638,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
                             SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
         emit dirtyChanged();
     }
+#endif
 }
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
