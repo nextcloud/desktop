@@ -53,6 +53,8 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
+		if (!accountState)
+			break;
         if (f->accountState() != accountState)
             continue;
         SubFolderInfo info;
@@ -74,6 +76,9 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
 Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 {
+	if (!_accountState) {
+		return 0;
+	}
     switch (classify(index)) {
         case AddButton: {
             Qt::ItemFlags ret;
@@ -479,6 +484,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex& parent) const
 
 bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
 {
+    if (!_accountState) {
+		return false;
+	}
     if (_accountState->state() != AccountState::Connected) {
         return false;
     }
