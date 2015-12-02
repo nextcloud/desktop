@@ -236,9 +236,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
-            if (!_passwordRequired) {
-                _ui->checkBox_password->setEnabled(true);
-            }
+            _ui->checkBox_password->setEnabled(!_passwordRequired);
+
             if (_share->isPasswordSet()) {
                 _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
