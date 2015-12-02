@@ -116,6 +116,15 @@ button, and re-select the folder tree that you want to sync.
 .. image:: images/client-7.png
    :alt: Extra options for sync operations
    
+Adding New Accounts
+^^^^^^^^^^^^^^^^^^^
+
+You may configure multiple ownCloud accounts in your desktop sync client. Simply 
+click the **Account** > **Add New** button on any account tab to add a new 
+account, and then follow the account creation wizard. The new account will 
+appear as a new tab in the settings dialog, where you can adjust its settings at 
+any time. Use **Account** > **Remove** to delete accounts.   
+   
 Activity Window
 ---------------
 
@@ -137,15 +146,6 @@ folders larger than [folder size]**.
 
 .. image:: images/client-9.png
    :alt: General window contains configuration options.
-
-Adding New Accounts
-^^^^^^^^^^^^^^^^^^^
-
-You may configure multiple ownCloud accounts in your desktop sync client. Simply 
-click the **Account** > **Add New** button to add new account, and then follow 
-the account creation wizard. The new account will appear as a new tab in the 
-settings dialog, where you can adjust its settings at any time. Use **Account** 
-> **Remove** to delete accounts.
 
 Using the Network Window
 ------------------------
