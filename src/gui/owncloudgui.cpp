@@ -637,6 +637,7 @@ void ownCloudGui::slotLogin()
     }
 }
 
+// FIXME: Unify codepath with AccountSettings::slotToggleSignInState()
 void ownCloudGui::slotLogout()
 {
     auto list = AccountManager::instance()->accounts();
