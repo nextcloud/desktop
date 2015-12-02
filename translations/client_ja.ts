@@ -2370,7 +2370,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーもしくはグループと共有 ...</translation>
     </message>
 </context>
 <context>

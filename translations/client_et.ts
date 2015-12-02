@@ -2360,7 +2360,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Jaga kasutajate või gruppidega ...</translation>
     </message>
 </context>
 <context>

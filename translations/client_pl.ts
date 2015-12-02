@@ -2361,7 +2361,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Współdziel z użytkownikami lub grupami</translation>
     </message>
 </context>
 <context>

@@ -2361,7 +2361,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Souporaba z uporabniki ali skupinami ...</translation>
     </message>
 </context>
 <context>

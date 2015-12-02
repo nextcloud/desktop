@@ -2375,7 +2375,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Delen met gebruikers of groepen ...</translation>
     </message>
 </context>
 <context>

@@ -2367,7 +2367,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Jaa käyttäjien tai ryhmien kanssa…</translation>
     </message>
 </context>
 <context>

@@ -2360,7 +2360,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Elkarbanatu erabiltzaile edo taldearekin...</translation>
     </message>
 </context>
 <context>

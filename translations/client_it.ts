@@ -2373,7 +2373,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
-        <translation type="unfinished"/>
+        <translation>Condividi con utenti o gruppi...</translation>
     </message>
 </context>
 <context>
