@@ -41,10 +41,6 @@ if (UNIX)
 	  "${LIB_INSTALL_DIR}"
 	  CACHE PATH "The subdirectory relative to the install prefix where private libs are installed"
 	  )
-  SET(PLUGIN_INSTALL_DIR
-    "${LIB_INSTALL_DIR}"
-    CACHE PATH "The subdirectory relative to the install prefix where plugins will be installed (default is prefix/lib/${APPLICATION_SHORTNAME})"
-  )
   SET(INCLUDE_INSTALL_DIR
     "${CMAKE_INSTALL_PREFIX}/include"
     CACHE PATH "The subdirectory to the header prefix (default prefix/include)"
@@ -106,7 +102,6 @@ if (WIN32)
   set(SBIN_INSTALL_DIR "." CACHE PATH "-")
   set(LIB_INSTALL_DIR "lib" CACHE PATH "-")
   set(INCLUDE_INSTALL_DIR "include" CACHE PATH "-")
-  set(PLUGIN_INSTALL_DIR "plugins" CACHE PATH "-")
   set(HTML_INSTALL_DIR "doc/HTML" CACHE PATH "-")
   set(ICON_INSTALL_DIR "." CACHE PATH "-")
   set(SOUND_INSTALL_DIR "." CACHE PATH "-")
