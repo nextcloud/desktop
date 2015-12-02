@@ -48,6 +48,10 @@
 
 #include "account.h"
 
+#ifdef Q_OS_MAC
+#include "settingsdialogmac.h"
+#endif
+
 namespace OCC {
 
 static const char progressBarStyleC[] =
@@ -159,6 +163,16 @@ void AccountSettings::slotOpenAccountWizard()
     if (QSystemTrayIcon::isSystemTrayAvailable()) {
         topLevelWidget()->close();
     }
+#ifdef Q_OS_MAC
+    qDebug() << parent() << topLevelWidget();
+    SettingsDialogMac *sd = qobject_cast<SettingsDialogMac*>(topLevelWidget());
+
+    if (sd) {
+        sd->showActivityPage();
+    } else {
+        qFatal("nope");
+    }
+#endif
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
