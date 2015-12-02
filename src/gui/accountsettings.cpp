@@ -150,6 +150,8 @@ void AccountSettings::createAccountToolbox()
     ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
+
+    slotAccountAdded(_accountState);
 }
 
 void AccountSettings::slotOpenAccountWizard()
@@ -665,9 +667,11 @@ void AccountSettings::slotAccountAdded(AccountState*)
 {
     // if the theme is limited to single account, the button must hide if
     // there is already one account.
-    if( AccountManager::instance()->accounts().size() > 1 &&
-            !Theme::instance()->multiAccount() ) {
+    int s = AccountManager::instance()->accounts().size();
+    if( s > 0 && !Theme::instance()->multiAccount() ) {
         _addAccountAction->setVisible(false);
+    } else {
+        _addAccountAction->setVisible(true);
     }
 }
 
