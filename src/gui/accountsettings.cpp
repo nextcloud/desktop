@@ -99,11 +99,6 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(_model, SIGNAL(rowsInserted(QModelIndex,int,int)),
             this, SLOT(refreshSelectiveSyncStatus()));
 
-    QAction *resetFolderAction = new QAction(this);
-    resetFolderAction->setShortcut(QKeySequence(Qt::Key_F5));
-    connect(resetFolderAction, SIGNAL(triggered()), SLOT(slotResetCurrentFolder()));
-    addAction(resetFolderAction);
-
     QAction *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
     connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
@@ -336,31 +331,6 @@ void AccountSettings::slotRemoveCurrentFolder()
             // single folder fix to show add-button and hide remove-button
 
             emit folderChanged();
-        }
-    }
-}
-
-void AccountSettings::slotResetCurrentFolder()
-{
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if( selected.isValid() ) {
-        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
-        if (alias.isEmpty())
-            return;
-        int ret = QMessageBox::question( 0, tr("Confirm Folder Reset"),
-                                         tr("<p>Do you really want to reset folder <i>%1</i> and rebuild your client database?</p>"
-                                            "<p><b>Note:</b> This function is designed for maintenance purposes only. "
-                                            "No files will be removed, but this can cause significant data traffic and "
-                                            "take several minutes or hours to complete, depending on the size of the folder. "
-                                            "Only use this option if advised by your administrator.</p>").arg(alias),
-                                         QMessageBox::Yes|QMessageBox::No );
-        if( ret == QMessageBox::Yes ) {
-            FolderMan *folderMan = FolderMan::instance();
-            if(Folder *f = folderMan->folder(alias)) {
-                f->slotTerminateSync();
-                f->wipe();
-            }
-            folderMan->slotScheduleAllFolders();
         }
     }
 }
