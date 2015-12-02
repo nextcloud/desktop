@@ -107,6 +107,7 @@ private:
     bool _resharingAllowed;
     bool _isFile;
     bool _autoShare;
+    bool _passwordRequired;
 };
 
 }

@@ -41,7 +41,8 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _manager(NULL),
     _share(NULL),
     _resharingAllowed(resharingAllowed),
-    _autoShare(autoShare)
+    _autoShare(autoShare),
+    _passwordRequired(false)
 {
     _ui->setupUi(this);
 
@@ -116,6 +117,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     // If password is enforced then don't allow users to disable it
     if (_account->capabilities().sharePublicLinkEnforcePassword()) {
         _ui->checkBox_password->setEnabled(false);
+        _passwordRequired = true;
     }
 
     // If expiredate is enforced do not allow disable and set max days
@@ -234,7 +236,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
-            _ui->checkBox_password->setEnabled(true);
+            _ui->checkBox_password->setEnabled(!_passwordRequired);
+
             if (_share->isPasswordSet()) {
                 _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
@@ -410,6 +413,7 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> sha
 void ShareLinkWidget::slotCreateShareRequiresPassword()
 {
     // there needs to be a password
+    _pi_editing->stopAnimation();
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
@@ -418,6 +422,8 @@ void ShareLinkWidget::slotCreateShareRequiresPassword()
     _ui->widget_shareLink->show();
     _ui->checkBox_expire->setEnabled(false);
     _ui->checkBox_editing->setEnabled(false);
+
+    _passwordRequired = true;
 
     slotCheckBoxPasswordClicked();
 }
