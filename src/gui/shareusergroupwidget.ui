@@ -17,7 +17,7 @@
    <item>
     <widget class="QLineEdit" name="shareeLineEdit">
      <property name="placeholderText">
-      <string>Share with users, groups or remote users ...</string>
+      <string>Share with users or groups ...</string>
      </property>
     </widget>
    </item>
