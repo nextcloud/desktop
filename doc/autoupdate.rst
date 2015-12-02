@@ -31,9 +31,6 @@ If an update is available, and has been successfully downloaded, the ownCloud
 client starts a silent update prior to its next launch and then restarts
 itself. Should the silent update fail, the client offers a manual download.
 
-When you upgrade from 1.7 you should restart Windows to ensure that all the new 
-features in 1.8 are enabled.
-
 .. note:: Administrative privileges are required to perform the update.
 
 Mac OS X
@@ -65,9 +62,15 @@ auto-update mechanism for different operating systems.
 Preventing Automatic Updates in Windows Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can prevent automatic updates from occuring in Windows environments using
-one of two methods.  The first method allows users to override the automatic
-update check mechanism whereas the second method prevents any manual overrides.
+Users may disable automatic updates by adding this line to the [General] 
+section of their ``owncloud.cfg`` files::
+
+ skipUpdateCheck=true
+
+Windows administrators have more options for preventing automatic updates in 
+Windows environments by using one of two methods. The first method allows users 
+to override the automatic update check mechanism, whereas the second method 
+prevents any manual overrides.
 
 To prevent automatic updates, but allow manual overrides:
 
@@ -125,8 +128,8 @@ Preventing Automatic Updates in Linux Environments
 
 Because the Linux client does not provide automatic updating functionality, there is no
 need to remove the automatic-update check.  However, if you want to disable it edit your desktop
-client configuration file, ``$HOME/.local/share/data/ownCloud/owncloud.cfg``. Add these lines:
+client configuration file, ``$HOME/.local/share/data/ownCloud/owncloud.cfg``. 
+Add these lines::
 
     [General]
     skipUpdateCheck=true
-
