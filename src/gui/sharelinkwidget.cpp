@@ -413,6 +413,7 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> sha
 void ShareLinkWidget::slotCreateShareRequiresPassword()
 {
     // there needs to be a password
+    _pi_editing->stopAnimation();
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
