@@ -42,6 +42,7 @@
 #include <unistd.h>
 #endif
 
+#include <math.h>
 #include <stdarg.h>
 
 #if defined(Q_OS_WIN)
