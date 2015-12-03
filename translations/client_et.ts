@@ -71,7 +71,7 @@
         <translation>Vorm</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="577"/>
         <source>Sign in</source>
         <translation>Logi sisse</translation>
     </message>
@@ -97,8 +97,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
-        <location filename="../src/gui/accountsettings.cpp" line="331"/>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="706"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
@@ -108,168 +108,168 @@
         <translation>Ühendatud &lt;server&gt; kasutajana &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="124"/>
+        <location filename="../src/gui/accountsettings.cpp" line="128"/>
         <source>No account configured.</source>
         <translation>Ühtegi kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="138"/>
+        <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="142"/>
-        <location filename="../src/gui/accountsettings.cpp" line="561"/>
+        <location filename="../src/gui/accountsettings.cpp" line="146"/>
+        <location filename="../src/gui/accountsettings.cpp" line="575"/>
         <source>Sign out</source>
         <translation>Logi välja</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="146"/>
+        <location filename="../src/gui/accountsettings.cpp" line="150"/>
         <source>Remove</source>
         <translation>Eemalda</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="150"/>
+        <location filename="../src/gui/accountsettings.cpp" line="154"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="203"/>
+        <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>Choose what to sync</source>
         <translation>Vali, mida sünkroniseerida</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="210"/>
+        <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <source>Remove folder sync connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Folder creation failed</source>
         <translation>Kausta loomine ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="277"/>
+        <location filename="../src/gui/accountsettings.cpp" line="291"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="338"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="330"/>
+        <location filename="../src/gui/accountsettings.cpp" line="344"/>
         <source>Remove Folder Sync Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="356"/>
+        <location filename="../src/gui/accountsettings.cpp" line="370"/>
         <source>Confirm Folder Reset</source>
         <translation>Kinnita kataloogi algseadistus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="371"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kas tõesti soovid kataloogi &lt;i&gt;%1&lt;/i&gt; algseadistada ning uuesti luua oma kliendi andmebaasi?&lt;/p&gt;&lt;p&gt;&lt;b&gt;See funktsioon on mõeldud peamiselt ainult hooldustöödeks. Märkus:&lt;/b&gt;Kuigi ühtegi faili ei eemaldata, siis see võib põhjustada märkimisväärset andmeliiklust ja võtta mitu minutit või tundi, sõltuvalt kataloogi suurusest. Kasuta seda võimalust ainult siis kui seda soovitab süsteemihaldur.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="438"/>
+        <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Sync Running</source>
         <translation>Sünkroniseerimine on käimas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="439"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Sünkroniseerimine on käimas.&lt;br/&gt;Kas sa soovid seda lõpetada?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>%1 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="541"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 as &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="545"/>
         <source>Connected to %1.</source>
         <translation>Ühendatud %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="547"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 pole ajutiselt saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="535"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Signed out from %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="551"/>
         <source>No connection to %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="644"/>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="684"/>
+        <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="685"/>
+        <location filename="../src/gui/accountsettings.cpp" line="699"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="691"/>
+        <location filename="../src/gui/accountsettings.cpp" line="705"/>
         <source>Remove connection</source>
         <translation>Eemalda ühendus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="200"/>
+        <location filename="../src/gui/accountsettings.cpp" line="214"/>
         <source>Open folder</source>
         <translation>Ava kaust</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="207"/>
+        <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Resume sync</source>
         <translation>Taasta sünroonimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="207"/>
+        <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Pause sync</source>
         <translation>Peata sünkroonimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="495"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>%1 of %2 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
+        <location filename="../src/gui/accountsettings.cpp" line="518"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Hetkel pole mahu kasutuse info saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="557"/>
         <source>No %1 connection configured.</source>
         <translation>Ühtegi %1 ühendust pole seadistatud.</translation>
     </message>
@@ -3317,27 +3317,27 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>QObject</name>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="444"/>
+        <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%1 day(s) ago</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="450"/>
+        <location filename="../src/libsync/utility.cpp" line="451"/>
         <source>%1 hour(s) ago</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="454"/>
+        <location filename="../src/libsync/utility.cpp" line="455"/>
         <source>Less than a minute ago</source>
         <translation type="unfinished"/>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="456"/>
+        <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="459"/>
+        <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Some time ago</source>
         <translation type="unfinished"/>
     </message>
@@ -3345,62 +3345,62 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="120"/>
+        <location filename="../src/libsync/utility.cpp" line="121"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="123"/>
+        <location filename="../src/libsync/utility.cpp" line="124"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="126"/>
+        <location filename="../src/libsync/utility.cpp" line="127"/>
         <source>%L1 KB</source>
         <translation>%L1 KB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="129"/>
+        <location filename="../src/libsync/utility.cpp" line="130"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="304"/>
+        <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln year(s)</source>
         <translation>%Ln aasta(t)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="305"/>
+        <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln month(s)</source>
         <translation>%Ln kuu(d)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="306"/>
+        <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln day(s)</source>
         <translation>%Ln päeva(a)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="307"/>
+        <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln hour(s)</source>
         <translation>%Ln tund(i)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="308"/>
+        <location filename="../src/libsync/utility.cpp" line="309"/>
         <source>%Ln minute(s)</source>
         <translation>%Ln minut(it)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="309"/>
+        <location filename="../src/libsync/utility.cpp" line="310"/>
         <source>%Ln second(s)</source>
         <translation>%Ln sekund(it)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="319"/>
+        <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>0 seconds</source>
         <translation>0 sekundit</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="335"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

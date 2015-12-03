@@ -71,7 +71,7 @@
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="563"/>
+        <location filename="../src/gui/accountsettings.cpp" line="577"/>
         <source>Sign in</source>
         <translation>Inloggen</translation>
     </message>
@@ -97,8 +97,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
-        <location filename="../src/gui/accountsettings.cpp" line="331"/>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="345"/>
+        <location filename="../src/gui/accountsettings.cpp" line="706"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -108,168 +108,168 @@
         <translation>Verbonden met &lt;server&gt; als &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="124"/>
+        <location filename="../src/gui/accountsettings.cpp" line="128"/>
         <source>No account configured.</source>
         <translation>Geen account ingesteld.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="138"/>
+        <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
         <translation>Toevoegen nieuw</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="142"/>
-        <location filename="../src/gui/accountsettings.cpp" line="561"/>
+        <location filename="../src/gui/accountsettings.cpp" line="146"/>
+        <location filename="../src/gui/accountsettings.cpp" line="575"/>
         <source>Sign out</source>
         <translation>Uitloggen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="146"/>
+        <location filename="../src/gui/accountsettings.cpp" line="150"/>
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="150"/>
+        <location filename="../src/gui/accountsettings.cpp" line="154"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="203"/>
+        <location filename="../src/gui/accountsettings.cpp" line="217"/>
         <source>Choose what to sync</source>
         <translation>Selectieve synchronisatie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="210"/>
+        <location filename="../src/gui/accountsettings.cpp" line="224"/>
         <source>Remove folder sync connection</source>
         <translation>Verwijderen map sync verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="276"/>
+        <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>Folder creation failed</source>
         <translation>Maken map mislukt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="277"/>
+        <location filename="../src/gui/accountsettings.cpp" line="291"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Kon lokale map &lt;i&gt;%1&lt;/i&gt; niet maken.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="324"/>
+        <location filename="../src/gui/accountsettings.cpp" line="338"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bevestig verwijderen Map Sync verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="330"/>
+        <location filename="../src/gui/accountsettings.cpp" line="344"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Verwijderen Map Sync verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="356"/>
+        <location filename="../src/gui/accountsettings.cpp" line="370"/>
         <source>Confirm Folder Reset</source>
         <translation>Bevestig map reset</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="371"/>
         <source>&lt;p&gt;Do you really want to reset folder &lt;i&gt;%1&lt;/i&gt; and rebuild your client database?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This function is designed for maintenance purposes only. No files will be removed, but this can cause significant data traffic and take several minutes or hours to complete, depending on the size of the folder. Only use this option if advised by your administrator.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt u map &lt;i&gt;%1&lt;/i&gt; echt resetten en de database opnieuw opbouwen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Deze functie is alleen ontworpen voor onderhoudsdoeleinden. Hoewel er geen bestanden worden verwijderd, kan dit een aanzienlijke hoeveelheid dataverkeer tot gevolg hebben en minuten tot zelfs uren duren, afhankelijk van de omvang van de map. Gebruik deze functie alleen als dit wordt geadviseerd door uw applicatiebeheerder.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="438"/>
+        <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Sync Running</source>
         <translation>Bezig met synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="439"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Bezig met synchroniseren.&lt;br/&gt;Wilt u stoppen met synchroniseren?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="507"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>%1 in use</source>
         <translation>%1 in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="541"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 als &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="545"/>
         <source>Connected to %1.</source>
         <translation>Verbonden met %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
+        <location filename="../src/gui/accountsettings.cpp" line="547"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 is tijdelijk niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="535"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Signed out from %1.</source>
         <translation>Uitgelogd van %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="551"/>
         <source>No connection to %1 at %2.</source>
         <translation>Geen verbinding met %1 op %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="644"/>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation>Er zijn nieuwe mappen die niet gesynchroniseerd werden omdat ze te groot zijn:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="684"/>
+        <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>Confirm Account Removal</source>
         <translation>Bevestig verwijderen account</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="685"/>
+        <location filename="../src/gui/accountsettings.cpp" line="699"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt u echt de verbinding met het account &lt;i&gt;%1&lt;/i&gt; verbreken?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hierdoor verwijdert u &lt;b&gt;geen&lt;/b&gt; bestanden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="691"/>
+        <location filename="../src/gui/accountsettings.cpp" line="705"/>
         <source>Remove connection</source>
         <translation>Verwijderen verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="200"/>
+        <location filename="../src/gui/accountsettings.cpp" line="214"/>
         <source>Open folder</source>
         <translation>Openen map</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="207"/>
+        <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Resume sync</source>
         <translation>Hervatten sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="207"/>
+        <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Pause sync</source>
         <translation>Pauzeren sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="325"/>
+        <location filename="../src/gui/accountsettings.cpp" line="339"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van map &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal &lt;b&gt;geen&lt;/b&gt; bestanden verwijderen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) van %2 in gebruik. Sommige mappen, inclusief netwerkmappen en gedeelde mappen, kunnen andere limieten hebben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="495"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>%1 of %2 in use</source>
         <translation>%1 van %2 in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
+        <location filename="../src/gui/accountsettings.cpp" line="518"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Er is nu geen informatie over het gebruik van de opslagruimte beschikbaar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="543"/>
+        <location filename="../src/gui/accountsettings.cpp" line="557"/>
         <source>No %1 connection configured.</source>
         <translation>Geen %1 connectie geconfigureerd.</translation>
     </message>
@@ -3332,27 +3332,27 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>QObject</name>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="444"/>
+        <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%1 day(s) ago</source>
         <translation><numerusform>%1 dag geleden</numerusform><numerusform>%1 dagen geleden</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="450"/>
+        <location filename="../src/libsync/utility.cpp" line="451"/>
         <source>%1 hour(s) ago</source>
         <translation><numerusform>%1 uur geleden</numerusform><numerusform>%1 uur geleden</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="454"/>
+        <location filename="../src/libsync/utility.cpp" line="455"/>
         <source>Less than a minute ago</source>
         <translation>Minder dan een minuut geleden</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="456"/>
+        <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
         <translation><numerusform>%1 minuut geleden</numerusform><numerusform>%1 minuten geleden</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="459"/>
+        <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Some time ago</source>
         <translation>Even geleden</translation>
     </message>
@@ -3360,62 +3360,62 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>Utility</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="120"/>
+        <location filename="../src/libsync/utility.cpp" line="121"/>
         <source>%L1 GB</source>
         <translation>%L1 GB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="123"/>
+        <location filename="../src/libsync/utility.cpp" line="124"/>
         <source>%L1 MB</source>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="126"/>
+        <location filename="../src/libsync/utility.cpp" line="127"/>
         <source>%L1 KB</source>
         <translation>%L1 KB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="129"/>
+        <location filename="../src/libsync/utility.cpp" line="130"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="304"/>
+        <location filename="../src/libsync/utility.cpp" line="305"/>
         <source>%Ln year(s)</source>
         <translation>%Ln ja(a)r(en)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="305"/>
+        <location filename="../src/libsync/utility.cpp" line="306"/>
         <source>%Ln month(s)</source>
         <translation>%Ln maand(en)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="306"/>
+        <location filename="../src/libsync/utility.cpp" line="307"/>
         <source>%Ln day(s)</source>
         <translation>%Ln dag(en)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="307"/>
+        <location filename="../src/libsync/utility.cpp" line="308"/>
         <source>%Ln hour(s)</source>
         <translation>%Ln u(u)r(en)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="308"/>
+        <location filename="../src/libsync/utility.cpp" line="309"/>
         <source>%Ln minute(s)</source>
         <translation>%Ln minu(u)t(en)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="309"/>
+        <location filename="../src/libsync/utility.cpp" line="310"/>
         <source>%Ln second(s)</source>
         <translation>%Ln seconde(n)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="319"/>
+        <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>0 seconds</source>
         <translation>0 seconden</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="335"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
