@@ -209,10 +209,10 @@ To build the most up to date version of the client:
 
     cmake -DCMAKE_BUILD_TYPE="Debug" ..
 
-  ..note:: You must use absolute paths for the ``include`` and ``library``
+  .. note:: You must use absolute paths for the ``include`` and ``library``
            directories.
 
-  ..note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+  .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
            where ``target`` is a private location, i.e. in parallel to your build
            dir by specifying ``../install``.
 
