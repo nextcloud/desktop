@@ -8,39 +8,39 @@ The ownCloud Desktop Client remains in the background and is visible as an icon
 in the system tray (Windows, KDE), status bar (Mac OS X), or notification area 
 (Linux).
 
-.. image:: images/icon.png
+.. figure:: images/icon.png
    :alt: Status icon, little cloud with green circle and white checkmark 
 
 The status indicator uses overlay icons to indicate the current status of your 
 synchronization. The green circle with the white checkmark tells you that your 
 synchronization is current and you are connected to your ownCloud server.
 
-.. image:: images/icon-syncing.png
+.. figure:: images/icon-syncing.png
    :alt: Status icon, little cloud with blue circle and white semi-circles
 
 The blue icon with the white semi-circles means synchronization is in progress.
 
-.. image:: images/icon-paused.png
+.. figure:: images/icon-paused.png
    :alt: Status icon, little cloud with yellow circle and vertical parallel 
     lines
 
 The yellow overlay icon with the parallel lines tells you your synchronization 
 has been paused. (Most likely by you.)
 
-.. image:: images/icon-offline.png
+.. figure:: images/icon-offline.png
    :alt: Status icon, little gray cloud with gray circle and three horizontal 
     white dots
 
 The gray icon with three white dots means your sync client has lost its 
 connection with your ownCloud server.
 
-.. image:: images/icon-information.png
+.. figure:: images/icon-information.png
    :alt: Status icon, little cloud with letter "i" in white circle
 
 When you see a white circle with the letter "i" that is the informational icon, 
 so you should click it to see what it has to tell you.
 
-.. image:: images/icon-error.png
+.. figure:: images/icon-error.png
    :alt: Status icon, little cloud with red circle and white x
 
 The red circle with the white "x" indicates a configuration error, such as an 
@@ -52,7 +52,7 @@ Systray Icon
 A right-click on the systray icon opens a menu for quick access to multiple 
 operations.
 
-.. image:: images/menu.png
+.. figure:: images/menu.png
    :alt: the right-click sync client menu
 
 This menu provides the following options:
@@ -67,7 +67,7 @@ This menu provides the following options:
 A left-click on your systray icon opens the desktop client to the account 
 settings window.
 
-.. image:: images/client6.png
+.. figure:: images/client6.png
    :alt: Account settings window
 
 Configuring ownCloud Account Settings
@@ -113,7 +113,7 @@ stops all sync activity, including file and folder list updates. If you want to
 synchronize the folder tree again then click the **Add Folder Sync Connection** 
 button, and re-select the folder tree that you want to sync.
 
-.. image:: images/client-7.png
+.. figure:: images/client-7.png
    :alt: Extra options for sync operations
    
 Adding New Accounts
@@ -123,16 +123,47 @@ You may configure multiple ownCloud accounts in your desktop sync client. Simply
 click the **Account** > **Add New** button on any account tab to add a new 
 account, and then follow the account creation wizard. The new account will 
 appear as a new tab in the settings dialog, where you can adjust its settings at 
-any time. Use **Account** > **Remove** to delete accounts.   
+any time. Use **Account** > **Remove** to delete accounts. 
+
+Sharing From Your Desktop
+-------------------------
+
+The ownCloud desktop sync client integrates with your file manager: Finder on 
+Mac OS X, Explorer on Windows, and Nautilus on Linux. (Linux users must install 
+the ``owncloud-client-nautilus`` plugin.) You can create share links, and share 
+with internal ownCloud users the same way as in your ownCloud Web interface.
+
+.. figure:: images/mac-share.png
+   :alt: Sync client integration in Finder on Mac OS X.
+   
+   *Shared ownCloud files in Finder on Mac OS X*
+   
+Right-click your systray icon, hover over the account you want to use, and 
+left-click "Open folder [folder name] to quickly enter your local ownCloud 
+folder. Right-click the file or folder you want to share to expose the share 
+dialog, and click **Share with ownCloud**.
+
+.. figure:: images/share-1.png
+   :alt: Sharing from Windows Explorer.
+   
+The share dialog has all the same options as your ownCloud Web interface.
+
+.. figure:: images/share-2.png
+   :alt: Share dialog in Windows Explorer.
+
+Use **Share with ownCloud** to see who you have shared with, and to modify 
+their permissions, or to delete the share.   
    
 Activity Window
 ---------------
 
-The Activity window contains the log of your recent activities, including files 
-downloaded and deleted, which local folders your files went into, and files not 
-synced.
+The Activity window contains the log of your recent activities, organized over 
+three tabs: **Server Activities**, which includes new shares and files 
+downloaded and deleted, **Sync Protocol**, which displays local activities such 
+as which local folders your files went into, and **Not Synced** shows errors 
+such as files not synced. 
 
-.. image:: images/client-8.png
+.. figure:: images/client-8.png
    :alt: Activity windows logs all server and client activities.
 
 General Window
@@ -144,7 +175,7 @@ is where you will find the **Edit Ignored Files** button, to launch the ignored
 files editor, and **Ask confirmation before downloading 
 folders larger than [folder size]**.
 
-.. image:: images/client-9.png
+.. figure:: images/client-9.png
    :alt: General window contains configuration options.
 
 Using the Network Window
@@ -153,10 +184,9 @@ Using the Network Window
 .. index:: proxy settings, SOCKS, bandwith, throttling, limiting
 
 The Network settings window enables you to define network proxy settings, and 
-also to limit download and upload bandwidth. New to version 2.0 is the option 
-for automatic bandwidth limits.
+also to limit download and upload bandwidth.
 
-.. image:: images/settings_network.png
+.. figure:: images/settings_network.png
 
 .. _ignoredFilesEditor-label:
 
@@ -169,7 +199,7 @@ You might have some local files or directories that you do not want to backup
 and store on the server. To identify and exclude these files or directories, you
 can use the *Ignored Files Editor* (General tab.)
 
-.. image:: images/ignored_files_editor.png
+.. figure:: images/ignored_files_editor.png
 
 For your convenience, the editor is pre-populated with a default list of typical 
 ignore patterns. These patterns are contained in a system file (typically 
