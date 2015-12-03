@@ -140,6 +140,18 @@ QSharedPointer<Sharee> ShareeModel::parseSharee(const QVariantMap &data)
     return QSharedPointer<Sharee>(new Sharee(shareWith, displayName, type));
 }
 
+
+// Helper function for setNewSharees   (could be a lambda when we can use them)
+static QSharedPointer<Sharee> shareeFromModelIndex(const QModelIndex &idx)
+{ return idx.data(Qt::UserRole).value<QSharedPointer<Sharee>>(); }
+
+struct FindShareeHelper {
+    const QSharedPointer<Sharee> &sharee;
+    bool operator()(const QSharedPointer<Sharee> &s2) const {
+        return s2->format() == sharee->format() && s2->displayName() == sharee->format();
+    }
+};
+
 /* Set the new sharee
 
     Do that while preserving the model index so the selection stays
@@ -152,17 +164,15 @@ void ShareeModel::setNewSharees(const QVector<QSharedPointer<Sharee>>& newSharee
     oldPersistantSharee.reserve(persistent.size());
 
     std::transform(persistent.begin(), persistent.end(), std::back_inserter(oldPersistantSharee),
-                   [](const QModelIndex &idx) { return idx.data(Qt::UserRole).value<QSharedPointer<Sharee>>(); });
+                   shareeFromModelIndex);
 
     _sharees = newSharees;
 
     QModelIndexList newPersistant;
     newPersistant.reserve(persistent.size());
     foreach(const QSharedPointer<Sharee> &sharee, oldPersistantSharee) {
-        auto it = std::find_if(_sharees.constBegin(), _sharees.constEnd(),
-                               [&sharee](const QSharedPointer<Sharee> &s2) {
-                                    return s2->format() == sharee->format() && s2->displayName() == sharee->format();
-                               });
+        FindShareeHelper helper = { sharee };
+        auto it = std::find_if(_sharees.constBegin(), _sharees.constEnd(), helper);
         if (it == _sharees.constEnd()) {
             newPersistant << QModelIndex();
         } else {
