@@ -183,7 +183,7 @@ void SettingsDialog::showFirstPage()
 void SettingsDialog::showActivityPage()
 {
     if (_activityAction) {
-        slotSwitchPage(_activityAction);
+        _activityAction->trigger();
     }
 }
 
