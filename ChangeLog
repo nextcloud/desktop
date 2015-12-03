@@ -1,54 +1,53 @@
 ChangeLog
 =========
-version 2.1 (release 2015-12-01)
+version 2.1 (release 2015-12-03)
  * GUI: Added a display of server activities
- * GUI: Added a separate view for not synced items, ignores, errors.
- * GUI: Improve upload/download progress UI (#3403, #3569)
- * Allow sharing with ownCloud internal users and groups from Desktop 
- * Consider .* files hidden on all platforms (#4023)
+ * GUI: Added a separate view for not synced items, ignores, errors
+ * GUI: Improved upload/download progress UI (#3403, #3569)
+ * Allowed sharing with ownCloud internal users and groups from Desktop
+ * Changed files starting in .* to be considered hidden on all platforms (#4023)
  * Reflect read-only permissions in filesystem (#3244)  
  * Blacklist: Clear on successful chunk upload (#3934)
- * Improve reconnecting after network change/disconnect (#4167 #3969 ...) 
- * Performance improvements in Windows file system discovery
- * libneon-based propagator removed.
-   It was already disabled on OS X and Windows and only used on
-   Linux when building with Qt < 5.4 and having bandwidth limiting enabled.
-   So now you need Qt 5.4 on Linux if you want bandwidth limiting.   
- * performance improvements in the logging functions
- * Handle local disk space problems gracefully (#2939)
+ * Improved reconnecting after network change/disconnect (#4167 #3969 ...)
+ * Improved performance in Windows file system discovery
+ * Removed libneon-based propagator. As a consequence, The client can no
+   longer provide bandwith limiting on Linux-distributions where it is
+   using Qt < 5.4
+ * Performance improvements in the logging functions
+ * Ensured that local disk space problems are handled gracefully (#2939)
  * Improved handling of checksums: transport validation, db (#3735)
  * For *eml-files don't reupload if size and checksum are unchanged (#3235)
- * Handle 403 reply code properly (File Firewall) (#3490)
- * Reduce number of PROPFIND requests to server(#3964)
+ * Ensured 403 reply code is handled properly (File Firewall) (#3490)
+ * Reduced number of PROPFIND requests to server(#3964)
  * GUI: Added Account toolbox widget to keep account actions (#4139)
- * Tray Menu: Recent Activity fixes (#4093, #3969)
- * FolderMan: Fix infinite wait on pause (#4093)
- * Rename env variables to include unit (#2939)
- * FolderStatusModel: attempt to detect removed undecided files (#3612) 
+ * Tray Menu: Added fixes for Recent Activity menu (#4093, #3969)
+ * FolderMan: Fixed infinite wait on pause (#4093)
+ * Renamed env variables to include unit (#2939)
+ * FolderStatusModel: Attempt to detect removed undecided files (#3612)
  * SyncEngine: Don't whipe the white list if the sync was aborted (#4018)
- * Quota: handle special negative value for the quota (#3940)
+ * Quota: Handle special negative value for the quota (#3940)
  * State app name in update notification (#4020)
- * PropagateUpload: Fix double-emission of finished (#3844)
- * GUI: Allow to click on folder names which are excluded from sync.
- * Shell Integration: Dolphin integration prepared, works if upstream released
- * FolderStatusModel: reset also if a folder was renamed (#4011)
- * GUI: No padding for toolbar extension (#3795)
- * Use the term folder sync connection in more places (#3757) 
- * AccountSettings: don't disable pause when offline (#4010) 
- * Fix handling of hidden files (#3980)
+ * PropagateUpload: Fixed double-emission of finished (#3844)
+ * GUI: Ensured folder names which are excluded from sync can be clicked
+ * Shell Integration: Dolphin support, requires KF 5.16 and KDE Application 15.12
+ * FolderStatusModel: Ensured reset also if a folder was renamed (#4011)
+ * GUI: Fixed accessiblity of remaing items in full settings toolbar (#3795)
+ * Introduced the term "folder sync connection" in more places (#3757)
+ * AccountSettings: Don't disable pause when offline (#4010)
+ * Fixed handling of hidden files (#3980)
  * Handle download errors while resuming as soft errors (#4000)
- * SocketAPI: don't trim the command (#3297)
+ * SocketAPI: Ensured that the command isn't trimmed (#3297)
  * Shutdown socket API before removing the db (#3824)
- * GUI: Make "Keep" default in the delete-all dialog (#3824)
- * owncloudcmd: Return code 0 for --version and --help
- * owncloudcmd: add --max-sync-retries (#4037)
+ * GUI: Made "Keep" default in the delete-all dialog (#3824)
+ * owncloudcmd: Introduced return code 0 for --version and --help
+ * owncloudcmd: Added --max-sync-retries (#4037)
  * owncloudcmd: Don't do a check that file are older than 2s (#4160)
- * Fix getting size for selective sync (#3986)
+ * Fixed getting size for selective sync (#3986)
  * Re-added close button in the settings window (#3713)
- * Abililty to handle storage limitations gracefully (#3736)
+ * Added abililty to handle storage limitations gracefully (#3736)
  * Updated 3rdparty dependencies: sqlite version 3.9.1
- * Organize needed vendor Qt patches better.
- * plus a lot of unmentioned improvements and fixes.
+ * Organized patches to our base Qt version into admin/qt/patches
+ * Plus: A lot of unmentioned improvements and fixes
 
 version 2.0.2 (release 2015-10-21)
   * csync_file_stat_s: Save a bit of memory
