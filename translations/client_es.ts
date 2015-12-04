@@ -78,7 +78,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Añadir nuevo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="146"/>
@@ -186,7 +186,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 en uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="541"/>
@@ -319,7 +319,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="264"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Debe volver a hacer login para continuar usando la cuenta %1.</translation>
     </message>
 </context>
 <context>
@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
         <source>(disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>(desconectado)</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="396"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="401"/>
@@ -365,22 +365,22 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="417"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>No sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="438"/>
         <source>server activity list</source>
-        <translation type="unfinished"/>
+        <translation>lista de actividad del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="442"/>
         <source>sync activity list</source>
-        <translation type="unfinished"/>
+        <translation>lista de actividad de sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="445"/>
         <source>not syned items list</source>
-        <translation type="unfinished"/>
+        <translation>lista de artículos no sincronizados</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
@@ -390,7 +390,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>El %1 ha sido copiado al portapapeles.</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Actividades del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="286"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Cuenta %1 no tiene habilitado actividades.</translation>
     </message>
 </context>
 <context>
@@ -856,13 +856,13 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
         <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
@@ -1851,12 +1851,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>La descarga reduciría el espacio libre en disco por debajo de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Espacio libre en el disco es inferior a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="479"/>
@@ -1920,7 +1920,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo eliminar la carpeta &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
@@ -2253,7 +2253,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2278,7 +2278,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="91"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no permite compartir</translation>
     </message>
 </context>
 <context>
@@ -2400,7 +2400,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
@@ -2803,7 +2803,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Acceso prohibido</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="179"/>
@@ -2853,7 +2853,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="653"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Solo %1 disponible, se necesita por lo menos %2 para comenzar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="686"/>
@@ -3074,12 +3074,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Terminar sessión en todas las cuentas</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar sesión en todas las cuentas...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
@@ -3331,27 +3331,27 @@ No se recomienda usarla.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%1 day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>hace %1 día(s)</numerusform><numerusform>hace %1 día(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="451"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>hace %1 hora(s)</numerusform><numerusform>hace %1 hora(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="455"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Hace menos de un minuto</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>hace %1 minuto</numerusform><numerusform>hace %1 minuto(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Hace unos momentos</translation>
     </message>
 </context>
 <context>
