@@ -64,13 +64,13 @@ private:
             return r;
 
         if (status.startsWith("OK"))
-            r << "ownCloud_ok";
+            r << "vcs-normal";
         if (status.startsWith("SYNC") || status.startsWith("NEW"))
-            r << "ownCloud_sync";
+            r << "vcs-update-required";
         if (status.startsWith("IGNORE") || status.startsWith("WARN"))
-            r << "ownCloud_warn";
+            r << "vcs-locally-modified-unstaged";
         if (status.startsWith("ERROR"))
-            r << "ownCloud_error";
+            r << "vcs-conflicting";
 
         if (status.contains("+SWM"))
             r << "document-share";
