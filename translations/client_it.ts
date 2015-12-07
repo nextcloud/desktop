@@ -3005,7 +3005,7 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Log out</source>
-        <translation>Disconnetti</translation>
+        <translation>Esci</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="386"/>
