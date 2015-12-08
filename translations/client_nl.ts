@@ -1642,7 +1642,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="127"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Deze url is NIET veilig omdat versleuteling omntbreekt.
+        <translation>Deze url is NIET veilig omdat versleuteling ontbreekt.
 We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
