@@ -129,13 +129,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     }
 
     // File can't have public upload set.
-    if (_isFile) {
-        _ui->checkBox_editing->setEnabled(false);
-    } else {
-        if (!_account->capabilities().sharePublicLinkAllowUpload()) {
-            _ui->checkBox_editing->setEnabled(false);
-        }
-    }
+    _ui->widget_editing->setVisible(!_isFile);
+    _ui->checkBox_editing->setEnabled(
+            _account->capabilities().sharePublicLinkAllowUpload());
 
     /*
      * Create the share manager and connect it properly
@@ -268,13 +264,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
              * Only directories can have public upload set
              * For public links the server sets CREATE and UPDATE permissions.
              */
+            _ui->checkBox_editing->setEnabled(
+                    _account->capabilities().sharePublicLinkAllowUpload());
             if (!_isFile) {
-                _ui->checkBox_editing->setEnabled(true);
-                if (_share->getPublicUpload()) {
-                    _ui->checkBox_editing->setChecked(true);
-                } else {
-                    _ui->checkBox_editing->setChecked(false);
-                }
+                _ui->checkBox_editing->setChecked(_share->getPublicUpload());
             }
 
             setShareLink(_share->getLink().toString());
