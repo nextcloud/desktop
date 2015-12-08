@@ -66,6 +66,11 @@ public:
                    const Permissions permissions = PermissionDefault,
                    const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
 
+    /**
+     * The account the share is defined on.
+     */
+    AccountPtr account() const;
+
     /*
      * Get the id
      */

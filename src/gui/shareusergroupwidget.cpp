@@ -246,6 +246,10 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
 
     _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
                                                      QIcon(QLatin1String(":/client/resources/delete.png"))));
+
+    if (!share->account()->capabilities().shareResharing()) {
+        _ui->permissionShare->hide();
+    }
 }
 
 void ShareWidget::on_deleteShareButton_clicked()
