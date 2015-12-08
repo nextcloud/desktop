@@ -143,7 +143,7 @@ void AccountSettings::createAccountToolbox()
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
 
-    _toggleSignInOutAction = new QAction(tr("Sign out"), this);
+    _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
     menu->addAction(_toggleSignInOutAction);
 
@@ -572,9 +572,9 @@ void AccountSettings::slotAccountStateChanged(int state)
     if( _accountState ) {
         bool isConnected = _accountState->isConnected();
         if( isConnected ) {
-            _toggleSignInOutAction->setText(tr("Sign out"));
+            _toggleSignInOutAction->setText(tr("Log out"));
         } else {
-            _toggleSignInOutAction->setText(tr("Sign in"));
+            _toggleSignInOutAction->setText(tr("Log in"));
         }
     }
 }
