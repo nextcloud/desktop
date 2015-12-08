@@ -216,7 +216,7 @@ int FolderMan::setupFolders()
         settings->endGroup(); // <account>
     }
 
-    emit folderListLoaded(_folderMap);
+    emit folderListChanged(_folderMap);
 
     return _folderMap.size();
 }
@@ -245,7 +245,7 @@ int FolderMan::setupFoldersMigration()
         }
     }
 
-    emit folderListLoaded(_folderMap);
+    emit folderListChanged(_folderMap);
 
     // return the number of valid folders.
     return _folderMap.size();
@@ -775,6 +775,8 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     if(folder && accountState) {
         folder->setAccountState(accountState);
         folder->saveToSettings();
+        emit folderSyncStateChange(folder);
+        emit folderListChanged(_folderMap);
     }
     return folder;
 }

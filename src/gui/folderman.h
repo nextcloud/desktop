@@ -139,7 +139,7 @@ signals:
      */
     void scheduleQueueChanged();
 
-    void folderListLoaded(const Folder::Map &);
+    void folderListChanged(const Folder::Map &);
 
 public slots:
     void slotRemoveFolder( Folder* );

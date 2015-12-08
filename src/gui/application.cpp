@@ -286,23 +286,39 @@ void Application::slotCrash()
 
 void Application::slotownCloudWizardDone( int res )
 {
+    AccountManager *accountMan = AccountManager::instance();
     FolderMan *folderMan = FolderMan::instance();
+
+    // During the wizard, scheduling of new syncs is disabled
+    folderMan->setSyncEnabled(true);
+
     if( res == QDialog::Accepted ) {
-        int cnt = folderMan->setupFolders();
-        qDebug() << "Set up " << cnt << " folders.";
-        // We have some sort of configuration. Enable autostart
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
-        if (cnt == 0) {
-            // The folder configuration was skipped
-            _gui->slotShowSettings();
+        // Open the settings page for the new account if no folders
+        // were configured. Using the last account for this check is
+        // not exactly correct, but good enough.
+        if (!accountMan->accounts().isEmpty()) {
+            AccountStatePtr newAccount = accountMan->accounts().last();
+            bool hasFolder = false;
+            foreach (Folder* folder, folderMan->map()) {
+                if (folder->accountState() == newAccount.data()) {
+                    hasFolder = true;
+                    break;
+                }
+            }
+
+            if (!hasFolder) {
+                _gui->slotShowSettings();
+            }
         }
-    }
-    folderMan->setSyncEnabled( true );
-    if( res == QDialog::Accepted ) {
+
+        // Check connectivity of the newly created account
         _checkConnectionTimer.start();
         slotCheckConnection();
-    }
 
+        // The very first time an account is configured: enabled autostart
+        // TODO: Doing this every time the account wizard finishes will annoy users.
+        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
+    }
 }
 
 void Application::setupLogging()
