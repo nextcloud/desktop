@@ -251,7 +251,9 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
                 _ui->pushButton_setPassword->hide();
             }
 
-            _ui->checkBox_expire->setEnabled(true);
+            _ui->checkBox_expire->setEnabled(
+                    !_account->capabilities().sharePublicLinkEnforceExpireDate());
+
             _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
             if (_share->getExpireDate().isValid()) {
                 _ui->calendar->setDate(_share->getExpireDate());
