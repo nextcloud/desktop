@@ -118,11 +118,15 @@ bool AccountState::isSignedOut() const
     return _state == SignedOut;
 }
 
-void AccountState::setSignedOut(bool signedOut)
+void AccountState::signOutByUi()
 {
-    if (signedOut) {
-        setState(SignedOut);
-    } else if (_state == SignedOut) {
+    account()->credentials()->forgetSensitiveData();
+    setState(SignedOut);
+}
+
+void AccountState::signIn()
+{
+    if (_state == SignedOut) {
         setState(Disconnected);
     }
 }

@@ -49,6 +49,7 @@ public:
     void persist() Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
     void invalidateToken() Q_DECL_OVERRIDE;
+    void forgetSensitiveData() Q_DECL_OVERRIDE;
 
     QString password() const;
 private Q_SLOTS:

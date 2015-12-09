@@ -238,6 +238,12 @@ void HttpCredentials::invalidateToken()
 #endif
 }
 
+void HttpCredentials::forgetSensitiveData()
+{
+    invalidateToken();
+    _previousPassword.clear();
+}
+
 void HttpCredentials::persist()
 {
     if (_user.isEmpty()) {

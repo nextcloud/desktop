@@ -78,7 +78,13 @@ public:
     static QString stateString(State state);
 
     bool isSignedOut() const;
-    void setSignedOut(bool signedOut);
+
+    /** A user-triggered sign out which disconnects, stops syncs
+     * for the account and forgets the password. */
+    void signOutByUi();
+
+    /// Move from SignedOut state to Disconnected (attempting to connect)
+    void signIn();
 
     bool isConnected() const;
     bool isConnectedOrTemporarilyUnavailable() const;

@@ -50,8 +50,23 @@ public:
     virtual void askFromUser() = 0;
     virtual bool stillValid(QNetworkReply *reply) = 0;
     virtual void persist() = 0;
-    /** Invalidates auth token, or password for basic auth */
+
+    /** Invalidates token used to authorize requests, it will no longer be used.
+     *
+     * For http auth, this would be the session cookie.
+     *
+     * Note that sensitive data (like the password used to acquire the
+     * session cookie) may be retained. See forgetSensitiveData().
+     */
     virtual void invalidateToken() = 0;
+
+    /** Clears out all sensitive data; used for fully signing out users.
+     *
+     * This should always imply invalidateToken() but may go beyond it.
+     *
+     * For http auth, this would clear the session cookie and password.
+     */
+    virtual void forgetSensitiveData() = 0;
 
     static QString keychainKey(const QString &url, const QString &user);
 
