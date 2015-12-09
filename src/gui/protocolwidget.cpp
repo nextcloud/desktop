@@ -292,19 +292,31 @@ void ProtocolWidget::storeSyncActivity(QTextStream& ts)
 
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *child = _ui->_treeWidget->topLevelItem(i);
-        ts << left
+        ts << right
               // time stamp
-           << qSetFieldWidth(10)
+           << qSetFieldWidth(20)
            << child->data(0,Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // file name
            << qSetFieldWidth(64)
            << child->data(1,Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // folder
            << qSetFieldWidth(30)
            << child->data(2, Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // action
            << qSetFieldWidth(15)
            << child->data(3, Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // size
            << qSetFieldWidth(10)
            << child->data(4, Qt::DisplayRole).toString()
@@ -319,20 +331,28 @@ void ProtocolWidget::storeSyncIssues(QTextStream& ts)
 
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *child = _issueItemView->topLevelItem(i);
-        ts << left
+        ts << right
               // time stamp
-           << qSetFieldWidth(10)
+           << qSetFieldWidth(20)
            << child->data(0,Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // file name
            << qSetFieldWidth(64)
            << child->data(1,Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // folder
            << qSetFieldWidth(30)
            << child->data(2, Qt::DisplayRole).toString()
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // action
            << qSetFieldWidth(15)
            << child->data(3, Qt::DisplayRole).toString()
-
            << qSetFieldWidth(0)
            << endl;
     }

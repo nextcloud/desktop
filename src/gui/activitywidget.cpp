@@ -347,19 +347,31 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
     ActivityList activities = _model->activityList();
 
     foreach( Activity activity, activities ) {
-        ts << left
+        ts << right
               // account name
            << qSetFieldWidth(30)
            << activity._accName
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // date and time
            << qSetFieldWidth(34)
            << activity._dateTime.toString()
-              // subject
-           << qSetFieldWidth(10)
-           << activity._subject
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // file
            << qSetFieldWidth(30)
            << activity._file
+              // separator
+           << qSetFieldWidth(0) << ","
+
+              // subject
+           << qSetFieldWidth(100)
+           << activity._subject
+              // separator
+           << qSetFieldWidth(0) << ","
+
               // message (mostly empty)
            << qSetFieldWidth(55)
            << activity._message
