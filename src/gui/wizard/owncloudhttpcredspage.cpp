@@ -81,6 +81,13 @@ void OwncloudHttpCredsPage::initializePage()
     } else {
         QUrl url = ocWizard->account()->url();
 
+        // If the final url does not have a username, check the
+        // user specified url too. Sometimes redirects can lose
+        // the user:pw information.
+        if (url.userName().isEmpty()) {
+            url = ocWizard->ocUrl();
+        }
+
         const QString user = url.userName();
         const QString password = url.password();
 
