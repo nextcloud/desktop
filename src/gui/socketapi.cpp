@@ -251,13 +251,9 @@ void SocketApi::slotItemCompleted(const QString &folder, const SyncFileItem &ite
         return;
     }
 
+    auto status = this->fileStatus(f, item.destination());
     const QString path = f->path() + item.destination();
-
-    QString command = QLatin1String("OK");
-    if (Progress::isWarningKind(item._status)) {
-        command = QLatin1String("ERROR");
-    }
-    broadcastMessage(QLatin1String("STATUS"), path, command);
+    broadcastMessage(QLatin1String("STATUS"), path, status.toSocketAPIString());
 }
 
 void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem &item)
