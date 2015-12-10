@@ -106,6 +106,7 @@ private slots:
 
     void slotLineEditReturn();
     void slotCompleterActivated(const QModelIndex & index);
+    void slotCompleterHighlighted(const QModelIndex & index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();
 
