@@ -84,7 +84,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     // all buttons must have the same size in order to keep a good layout
     _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     _actionGroup->addAction(_activityAction);
-    addActionToToolBar(_activityAction);
+    _toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
     _ui->stack->addWidget(_activitySettings);
     connect( _activitySettings, SIGNAL(guiLog(QString,QString)), _gui,
@@ -306,15 +306,6 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     action->setCheckable(true);
     action->setProperty("iconPath", iconPath);
     return action;
-}
-
-void SettingsDialog::addActionToToolBar(QAction *action) {
-    QToolButton* btn = new QToolButton;
-    btn->setDefaultAction(action);
-    btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    _toolBar->addWidget(btn);
-    btn->setMinimumWidth(_toolBar->sizeHint().height() * 1.3);
 }
 
 void SettingsDialog::slotRefreshActivity( AccountState* accountState )
