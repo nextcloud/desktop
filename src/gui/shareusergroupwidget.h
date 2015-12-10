@@ -104,6 +104,7 @@ private slots:
     void searchForSharees();
     void slotLineEditTextEdited(const QString &text);
 
+    void slotLineEditReturn();
     void slotCompleterActivated(const QModelIndex & index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();

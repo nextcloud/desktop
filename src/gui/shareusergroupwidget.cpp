@@ -73,7 +73,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
-//    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
+    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(slotLineEditReturn()));
     connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
 
     // Queued connection so this signal is recieved after textChanged
@@ -103,6 +103,23 @@ void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
     if (!text.isEmpty()) {
         _completionTimer.start();
     }
+}
+
+void ShareUserGroupWidget::slotLineEditReturn()
+{
+    // did the user type in one of the options?
+    const auto text = _ui->shareeLineEdit->text();
+    for (int i = 0; i < _completerModel->rowCount(); ++i) {
+        const auto sharee = _completerModel->getSharee(i);
+        if (sharee->format() == text) {
+            slotCompleterActivated(_completerModel->index(i));
+            break;
+        }
+
+    }
+
+    // nothing found? try to refresh completion
+    _completionTimer.start();
 }
 
 
