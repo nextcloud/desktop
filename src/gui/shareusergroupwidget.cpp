@@ -213,13 +213,17 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
     QMenu *menu = new QMenu(this);
     _permissionCreate = new QAction(tr("create"), this);
     _permissionCreate->setCheckable(true);
-    menu->addAction(_permissionCreate);
     _permissionUpdate = new QAction(tr("change"), this);
     _permissionUpdate->setCheckable(true);
-    menu->addAction(_permissionUpdate);
     _permissionDelete = new QAction(tr("delete"), this);
     _permissionDelete->setCheckable(true);
+
+    menu->addAction(_permissionUpdate);
+    /*
+     * Files can't have create or delete permissions
+     */
     if (!_isFile) {
+        menu->addAction(_permissionCreate);
         menu->addAction(_permissionDelete);
     }
     _ui->permissionToolButton->setMenu(menu);
@@ -242,6 +246,10 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
 
     _ui->deleteShareButton->setIcon(QIcon::fromTheme(QLatin1String("user-trash"),
                                                      QIcon(QLatin1String(":/client/resources/delete.png"))));
+
+    if (!share->account()->capabilities().shareResharing()) {
+        _ui->permissionShare->hide();
+    }
 }
 
 void ShareWidget::on_deleteShareButton_clicked()
@@ -266,10 +274,13 @@ void ShareWidget::slotEditPermissionsChanged()
     }
     
     if (_ui->permissionsEdit->checkState() == Qt::Checked) {
-        permissions |= Share::PermissionCreate;
         permissions |= Share::PermissionUpdate;
 
+        /*
+         * Files can't have create or delete permisisons
+         */
         if (!_isFile) {
+            permissions |= Share::PermissionCreate;
             permissions |= Share::PermissionDelete;
         }
     }
@@ -350,7 +361,7 @@ void ShareWidget::displayPermissions()
         _permissionUpdate->setChecked(true);
         _ui->permissionsEdit->setCheckState(Qt::Checked);
     }
-    if (_share->getPermissions() & Share::PermissionCreate) {
+    if (!_isFile && _share->getPermissions() & Share::PermissionCreate) {
         _permissionCreate->setChecked(true);
         _ui->permissionsEdit->setCheckState(Qt::Checked);
     }

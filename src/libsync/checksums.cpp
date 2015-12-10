@@ -20,6 +20,60 @@
 
 #include <qtconcurrentrun.h>
 
+/** \file checksums.cpp
+ *
+ * \brief Computing and validating file checksums
+ *
+ * Overview
+ * --------
+ *
+ * Checksums are used in two distinct ways during synchronization:
+ *
+ * - to guard uploads and downloads against data corruption
+ *   (transmission checksum)
+ * - to quickly check whether the content of a file has changed
+ *   to avoid redundant uploads (content checksum)
+ *
+ * In principle both are independent and different checksumming
+ * algorithms can be used. To avoid redundant computations, it can
+ * make sense to use the same checksum algorithm though.
+ *
+ * Transmission Checksums
+ * ----------------------
+ *
+ * The usage of transmission checksums is currently optional and needs
+ * to be explicitly enabled by adding 'transmissionChecksum=TYPE' to
+ * the '[General]' section of the config file.
+ *
+ * When enabled, the checksum will be calculated on upload and sent to
+ * the server in the OC-Checksum header with the format 'TYPE:CHECKSUM'.
+ *
+ * On download, the header with the same name is read and if the
+ * received data does not have the expected checksum, the download is
+ * rejected.
+ *
+ * Transmission checksums guard a specific sync action and are not stored
+ * in the database.
+ *
+ * Content Checksums
+ * -----------------
+ *
+ * Sometimes the metadata of a local file changes while the content stays
+ * unchanged. Content checksums allow the sync client to avoid uploading
+ * the same data again by comparing the file's actual checksum to the
+ * checksum stored in the database.
+ *
+ * Content checksums are not sent to the server.
+ *
+ * Checksum Algorithms
+ * -------------------
+ *
+ * - Adler32 (requires zlib)
+ * - MD5
+ * - SHA1
+ *
+ */
+
 namespace OCC {
 
 QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& checksum)

@@ -48,6 +48,10 @@
 
 #include "account.h"
 
+#ifdef Q_OS_MAC
+#include "settingsdialogmac.h"
+#endif
+
 namespace OCC {
 
 static const char progressBarStyleC[] =
@@ -109,7 +113,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
-    connect(FolderMan::instance(), SIGNAL(folderListLoaded(Folder::Map)), _model, SLOT(resetFolders()));
+    connect(FolderMan::instance(), SIGNAL(folderListChanged(Folder::Map)), _model, SLOT(resetFolders()));
     connect(this, SIGNAL(folderChanged()), _model, SLOT(resetFolders()));
 
 
@@ -134,7 +138,7 @@ void AccountSettings::createAccountToolbox()
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
 
-    _toggleSignInOutAction = new QAction(tr("Sign out"), this);
+    _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
     menu->addAction(_toggleSignInOutAction);
 
@@ -145,6 +149,8 @@ void AccountSettings::createAccountToolbox()
     ui->_accountToolbox->setText(tr("Account") + QLatin1Char(' '));
     ui->_accountToolbox->setMenu(menu);
     ui->_accountToolbox->setPopupMode(QToolButton::InstantPopup);
+
+    slotAccountAdded(_accountState);
 }
 
 void AccountSettings::slotOpenAccountWizard()
@@ -152,13 +158,26 @@ void AccountSettings::slotOpenAccountWizard()
     if (QSystemTrayIcon::isSystemTrayAvailable()) {
         topLevelWidget()->close();
     }
+#ifdef Q_OS_MAC
+    qDebug() << parent() << topLevelWidget();
+    SettingsDialogMac *sd = qobject_cast<SettingsDialogMac*>(topLevelWidget());
+
+    if (sd) {
+        sd->showActivityPage();
+    } else {
+        qFatal("nope");
+    }
+#endif
     OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
 }
 
 void AccountSettings::slotToggleSignInState()
 {
-    bool signedInState = _accountState->isSignedOut();
-    _accountState->setSignedOut( !signedInState );
+    if (_accountState->isSignedOut()) {
+        _accountState->signIn();
+    } else {
+        _accountState->signOutByUi();
+    }
 }
 
 void AccountSettings::doExpand()
@@ -522,9 +541,9 @@ void AccountSettings::slotAccountStateChanged(int state)
     if( _accountState ) {
         bool isConnected = _accountState->isConnected();
         if( isConnected ) {
-            _toggleSignInOutAction->setText(tr("Sign out"));
+            _toggleSignInOutAction->setText(tr("Log out"));
         } else {
-            _toggleSignInOutAction->setText(tr("Sign in"));
+            _toggleSignInOutAction->setText(tr("Log in"));
         }
     }
 }
@@ -631,9 +650,11 @@ void AccountSettings::slotAccountAdded(AccountState*)
 {
     // if the theme is limited to single account, the button must hide if
     // there is already one account.
-    if( AccountManager::instance()->accounts().size() > 1 &&
-            !Theme::instance()->multiAccount() ) {
+    int s = AccountManager::instance()->accounts().size();
+    if( s > 0 && !Theme::instance()->multiAccount() ) {
         _addAccountAction->setVisible(false);
+    } else {
+        _addAccountAction->setVisible(true);
     }
 }
 
@@ -659,18 +680,13 @@ void AccountSettings::slotDeleteAccount()
         }
     }
 
+    _model->setAccountState(0); // Else it might access during destruction. This should be better handled by it having a QSharedPointer
     auto manager = AccountManager::instance();
     manager->deleteAccount(_accountState);
     manager->save();
 
-    // if there is no more account, show the wizard.
-    if( manager->accounts().isEmpty() ) {
-        // allow to add a new account if there is non any more. Always think
-        // about single account theming!
-        _addAccountAction->setVisible(true);
-        OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
-    }
-
+    // IMPORTANT: "this" is deleted from this point on. We should probably remove this synchronous
+    // .exec() QMessageBox magic above as it recurses into the event loop.
 }
 
 bool AccountSettings::event(QEvent* e)

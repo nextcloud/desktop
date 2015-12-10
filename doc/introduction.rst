@@ -19,37 +19,11 @@ and local PC.
 Improvements and New Features
 -----------------------------
 
-The 2.0 release of the ownCloud desktop sync client has many new features and 
+The 2.1 release of the ownCloud desktop sync client has many new features and 
 improvements. (See the `complete changelog 
 <https://owncloud.org/changelog/desktop/>`_.)
 
-  * Multi-account support
-  * Many UI improvements
-  * Accessibility improvements (high contrast schemes)
-  * Automatic bandwidth throttling
-  * No redundant directory entries in activity log
-  * Remove deleted accounts properly from toolbar
-  * File manager integration: show hidden files as ignored
-  * Do not sync new big folders from server without user's consent
-  * Integrate selective sync into the default UI
-  * More reliable reconnect after timeout
-  * Improve progress reporting during sync
-  * Sharing: Do not allow sharing the root folder
-  * Sharing: Show thumbnail
-  * Client Updater: Check for updates periodically, not only once per run
-  * Quota: Only refresh from server when UI is shown
-  * SSL Button: Show more information
-  * System proxy: Ask user for credentials if needed
-  * Several fixes and performance improvements in the sync engine
-  * OS X: Show file name in UI if file has invalid UTF-8 in file name 
-  * OS X: Support native finder integration for 10.10 Yosemite  
-  * Network: Try to use SSL session tickets/identifiers
-  * Windows: Support paths >255 characters
-  * Windows, OS X: Allow to not sync hidden files
-  * Windows: Remove misleading option to remove sync data
-  * Windows: Do not provoke Active Directory account locking if password changes
-  * Windows: Fix installer when installing unprivileged
-
-.. note:: When you upgrade from 1.8, restart Windows to ensure that all new 
-   features are visible.
-   
+  * Share with internal ownCloud users from your desktop
+  * Separate views for server activity, sync activity, and errors
+  * Don't re-upload *eml-files if size and checksum are unchanged
+  * Improved upload/download progress indicator

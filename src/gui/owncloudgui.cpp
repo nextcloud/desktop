@@ -335,7 +335,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             menu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->path()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiPath()), this );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);
@@ -629,10 +629,10 @@ void ownCloudGui::slotLogin()
 {
     auto list = AccountManager::instance()->accounts();
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
-        account->setSignedOut(false);
+        account->signIn();
     } else {
         foreach (const auto &a, list) {
-            a->setSignedOut(false);
+            a->signIn();
         }
     }
 }
@@ -646,15 +646,7 @@ void ownCloudGui::slotLogout()
     }
 
     foreach (const auto &ai, list) {
-        AccountPtr a = ai->account();
-        // invalidate & forget token/password
-        a->credentials()->invalidateToken();
-        // terminate all syncs and unload folders
-        FolderMan *folderMan = FolderMan::instance();
-        folderMan->terminateSyncProcess();
-        ai->setSignedOut(true);
-        // show result
-        slotComputeOverallSyncStatus();
+        ai->signOutByUi();
     }
 }
 

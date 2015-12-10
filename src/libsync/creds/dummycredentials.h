@@ -37,6 +37,7 @@ public:
     void askFromUser() Q_DECL_OVERRIDE;
     void persist() Q_DECL_OVERRIDE;
     void invalidateToken() Q_DECL_OVERRIDE {}
+    void forgetSensitiveData() Q_DECL_OVERRIDE {};
 };
 
 } // namespace OCC

@@ -35,6 +35,11 @@ Share::Share(AccountPtr account,
 
 }
 
+AccountPtr Share::account() const
+{
+    return _account;
+}
+
 QString Share::getId() const
 {
     return _id;

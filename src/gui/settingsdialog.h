@@ -69,7 +69,6 @@ private slots:
 
 private:
     void customizeStyle();
-    void addActionToToolBar(QAction* action);
 
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);

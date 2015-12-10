@@ -251,13 +251,9 @@ void SocketApi::slotItemCompleted(const QString &folder, const SyncFileItem &ite
         return;
     }
 
+    auto status = this->fileStatus(f, item.destination());
     const QString path = f->path() + item.destination();
-
-    QString command = QLatin1String("OK");
-    if (Progress::isWarningKind(item._status)) {
-        command = QLatin1String("ERROR");
-    }
-    broadcastMessage(QLatin1String("STATUS"), path, command);
+    broadcastMessage(QLatin1String("STATUS"), path, status.toSocketAPIString());
 }
 
 void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem &item)
@@ -378,12 +374,23 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         // if the folder isn't connected, don't open the share dialog
         sendMessage(socket, message);
     } else {
+        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
+        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+
+        // Verify the file is on the server (to our knowledge of course)
+        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+            const QString message = QLatin1String("SHARE:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
+            sendMessage(socket, message);
+            return;
+        }
+
         const QString folderForPath = shareFolder->path();
         const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
 
         // Can't share root folder
         if (QDir::cleanPath(remotePath) == "/") {
-           const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
+            const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
             return;
         }
@@ -424,6 +431,17 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
         const QString message = QLatin1String("SHARE_STATUS:NOP:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
     } else {
+        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
+        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+
+        // Verify the file is on the server (to our knowledge of course)
+        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+            const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
+            sendMessage(socket, message);
+            return;
+        }
+
         const Capabilities capabilities = shareFolder->accountState()->account()->capabilities();
 
         if (!capabilities.shareAPI()) {

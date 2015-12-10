@@ -41,7 +41,8 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _manager(NULL),
     _share(NULL),
     _resharingAllowed(resharingAllowed),
-    _autoShare(autoShare)
+    _autoShare(autoShare),
+    _passwordRequired(false)
 {
     _ui->setupUi(this);
 
@@ -116,6 +117,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     // If password is enforced then don't allow users to disable it
     if (_account->capabilities().sharePublicLinkEnforcePassword()) {
         _ui->checkBox_password->setEnabled(false);
+        _passwordRequired = true;
     }
 
     // If expiredate is enforced do not allow disable and set max days
@@ -127,13 +129,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     }
 
     // File can't have public upload set.
-    if (_isFile) {
-        _ui->checkBox_editing->setEnabled(false);
-    } else {
-        if (!_account->capabilities().sharePublicLinkAllowUpload()) {
-            _ui->checkBox_editing->setEnabled(false);
-        }
-    }
+    _ui->widget_editing->setVisible(!_isFile);
+    _ui->checkBox_editing->setEnabled(
+            _account->capabilities().sharePublicLinkAllowUpload());
 
     /*
      * Create the share manager and connect it properly
@@ -234,7 +232,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
 
-            _ui->checkBox_password->setEnabled(true);
+            _ui->checkBox_password->setEnabled(!_passwordRequired);
+
             if (_share->isPasswordSet()) {
                 _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
@@ -248,7 +247,9 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
                 _ui->pushButton_setPassword->hide();
             }
 
-            _ui->checkBox_expire->setEnabled(true);
+            _ui->checkBox_expire->setEnabled(
+                    !_account->capabilities().sharePublicLinkEnforceExpireDate());
+
             _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
             if (_share->getExpireDate().isValid()) {
                 _ui->calendar->setDate(_share->getExpireDate());
@@ -263,13 +264,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
              * Only directories can have public upload set
              * For public links the server sets CREATE and UPDATE permissions.
              */
+            _ui->checkBox_editing->setEnabled(
+                    _account->capabilities().sharePublicLinkAllowUpload());
             if (!_isFile) {
-                _ui->checkBox_editing->setEnabled(true);
-                if (_share->getPublicUpload()) {
-                    _ui->checkBox_editing->setChecked(true);
-                } else {
-                    _ui->checkBox_editing->setChecked(false);
-                }
+                _ui->checkBox_editing->setChecked(_share->getPublicUpload());
             }
 
             setShareLink(_share->getLink().toString());
@@ -410,6 +408,7 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> sha
 void ShareLinkWidget::slotCreateShareRequiresPassword()
 {
     // there needs to be a password
+    _pi_editing->stopAnimation();
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
@@ -418,6 +417,8 @@ void ShareLinkWidget::slotCreateShareRequiresPassword()
     _ui->widget_shareLink->show();
     _ui->checkBox_expire->setEnabled(false);
     _ui->checkBox_editing->setEnabled(false);
+
+    _passwordRequired = true;
 
     slotCheckBoxPasswordClicked();
 }

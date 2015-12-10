@@ -53,6 +53,8 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
+		if (!accountState)
+			break;
         if (f->accountState() != accountState)
             continue;
         SubFolderInfo info;
@@ -74,6 +76,9 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
 Qt::ItemFlags FolderStatusModel::flags ( const QModelIndex &index  ) const
 {
+	if (!_accountState) {
+		return 0;
+	}
     switch (classify(index)) {
         case AddButton: {
             Qt::ItemFlags ret;
@@ -479,6 +484,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex& parent) const
 
 bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
 {
+    if (!_accountState) {
+		return false;
+	}
     if (_accountState->state() != AccountState::Connected) {
         return false;
     }
@@ -625,6 +633,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         suggestExpand(idx.child(*it, 0));
     }
 
+    /* We need lambda function for the following code.
+     * It's just a small feature that will be missing if the comiler is too old */
+#if !(defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG)) || (__GNUC__ * 100 + __GNUC_MINOR__ >= 405)
+
     /* Try to remove the the undecided lists the items that are not on the server. */
     auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
             [&](const QString &s) { return selectiveSyncUndecidedSet.count(s); } );
@@ -634,6 +646,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
                             SyncJournalDb::SelectiveSyncUndecidedList, selectiveSyncUndecidedList);
         emit dirtyChanged();
     }
+#endif
 }
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)

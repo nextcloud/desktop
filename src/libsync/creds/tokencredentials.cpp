@@ -144,6 +144,11 @@ void TokenCredentials::invalidateToken()
     _password = QString();
 }
 
+void TokenCredentials::forgetSensitiveData()
+{
+    invalidateToken();
+}
+
 void TokenCredentials::persist()
 {
 }

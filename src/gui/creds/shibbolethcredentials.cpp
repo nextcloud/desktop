@@ -186,6 +186,11 @@ void ShibbolethCredentials::invalidateToken()
     _shibCookie = QNetworkCookie();
 }
 
+void ShibbolethCredentials::forgetSensitiveData()
+{
+    invalidateToken();
+}
+
 void ShibbolethCredentials::onShibbolethCookieReceived(const QNetworkCookie& shibCookie)
 {
     storeShibCookie(shibCookie);

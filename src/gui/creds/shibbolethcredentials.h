@@ -58,6 +58,7 @@ public:
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
     void persist() Q_DECL_OVERRIDE;
     void invalidateToken() Q_DECL_OVERRIDE;
+    void forgetSensitiveData() Q_DECL_OVERRIDE;
 
     void showLoginWindow();
 

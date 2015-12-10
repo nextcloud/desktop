@@ -48,6 +48,7 @@ public:
     QString user() const Q_DECL_OVERRIDE;
     QString password() const;
     void invalidateToken() Q_DECL_OVERRIDE;
+    void forgetSensitiveData() Q_DECL_OVERRIDE;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
     QString certificatePath() const;
