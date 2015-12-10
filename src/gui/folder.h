@@ -307,9 +307,13 @@ private:
     /// Reset when no follow-up is requested.
     int           _consecutiveFollowUpSyncs;
 
-    // For the SocketAPI folder states
+    // SocketAPI: Cache files and folders that had errors so that they can
+    // get a red ERROR icon.
     QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync
     QSet<QString>   _stateLastSyncItemsWithError;
+
+    // SocketAPI: A folder is tained if we got a file watcher notification
+    // for it. It's displayed as EVAL.
     QSet<QString>   _stateTaintedFolders;
 
     SyncJournalDb _journal;

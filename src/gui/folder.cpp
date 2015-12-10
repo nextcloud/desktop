@@ -632,7 +632,7 @@ static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<
 
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 {
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithError);
+    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
     _syncResult.setSyncFileItemVector(items);
 }
 
@@ -642,7 +642,7 @@ void Folder::slotAboutToPropagate(SyncFileItemVector& items)
     // (which imply the folder) to generate the syncing state icon now.
     _stateTaintedFolders.clear();
 
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithError);
+    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
 }
 
 
@@ -1091,7 +1091,7 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
 {
     if (item.hasErrorStatus()) {
-        _stateLastSyncItemsWithError.insert(item._file);
+        _stateLastSyncItemsWithErrorNew.insert(item._file);
     }
 
     if (Progress::isWarningKind(item._status)) {
