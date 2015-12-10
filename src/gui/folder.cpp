@@ -622,9 +622,24 @@ void Folder::slotWatchedPathChanged(const QString& path)
     }
 }
 
+/**
+ * Whether this item should get an ERROR icon through the Socket API.
+ *
+ * The Socket API should only present serious, permanent errors to the user.
+ * In particular SoftErrors should just retain their 'needs to be synced'
+ * icon as the problem is most likely going to resolve itself quickly and
+ * automatically.
+ */
+static bool showErrorInSocketApi(const SyncFileItem& item)
+{
+    const auto status = item._status;
+    return status == SyncFileItem::NormalError
+        || status == SyncFileItem::FatalError;
+}
+
 static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
-    Q_FOREACH(const SyncFileItemPtr &item, items) {
-        if (item->hasErrorStatus()) {
+    foreach (const SyncFileItemPtr &item, items) {
+        if (showErrorInSocketApi(*item)) {
             set->insert(item->_file);
         }
     }
@@ -1090,7 +1105,7 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 // a item is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
 {
-    if (item.hasErrorStatus()) {
+    if (showErrorInSocketApi(item)) {
         _stateLastSyncItemsWithErrorNew.insert(item._file);
     }
 

@@ -118,6 +118,13 @@ public:
         return _file.isEmpty();
     }
 
+    /**
+     * True if the item had any kind of error.
+     *
+     * Used for deciding whether an item belongs to the protocol or the
+     * issues list on the activity page and for checking whether an
+     * item should be announced in the notification message.
+     */
     bool hasErrorStatus() const {
         return _status == SyncFileItem::SoftError
                 || _status == SyncFileItem::NormalError
