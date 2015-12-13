@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Hay carpetas nuevas que no fueron sincronizadas porque son demasiado grandes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -1472,7 +1472,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Qt &gt;= 5.4 necesario para utilizar el límite de ancho de banda</translation>
     </message>
 </context>
 <context>
@@ -1506,12 +1506,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versión %2 disponible. Reiniciar aplicación para comenzar la actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nueva %1 versión %2 está disponible. Use la herramienta de actualización de su sistema para instalarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -2026,7 +2026,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="698"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no reconoció la última parte. (No había una e-tag presente)</translation>
     </message>
 </context>
 <context>
