@@ -3347,7 +3347,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 minuto(s) atrás</numerusform><numerusform>%1 minuto(s) atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>
