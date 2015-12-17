@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation>Adicionar novo</translation>
+        <translation>Adicionar nova</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
@@ -791,7 +791,7 @@ Tem certeza de que deseja executar esta operação?</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Adicionar Connection de Sincronização de pasta</translation>
+        <translation>Adicionar Pasta a Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
@@ -1113,7 +1113,7 @@ Total de tempo que falta %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Lançar na Inicialização do Sistema</translation>
+        <translation>&amp;Executar na Inicialização do Sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
@@ -1219,7 +1219,7 @@ Conta: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
         <source>Allow Deletion</source>
-        <translation>Permitir Deleção</translation>
+        <translation>Permitir Exclusão</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
@@ -1233,7 +1233,7 @@ Conta: %3
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Arquivos ou pastas que correspondam a um padrão não serão sincronizados.
 
-Itens onde a eliminação é permitida serão excluídos se eles evitarem que um diretório seja removido. Isso é útil para meta dados.</translation>
+Itens onde a eliminação é permitida serão excluídos se eles evitarem que um diretório seja removido. Isso é útil para metadados.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="110"/>
