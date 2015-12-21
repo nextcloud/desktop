@@ -131,8 +131,11 @@ private slots:
     void slotShareDeleted();
     void slotPermissionsSet();
 
+    void slotAvatarLoaded(const QByteArray &data, const QString &mimeType);
+
 private:
     void displayPermissions();
+    void loadAvatar();
 
     Ui::ShareUserLine *_ui;
     QSharedPointer<Share> _share;
