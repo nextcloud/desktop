@@ -3533,27 +3533,27 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="64"/>
         <source>Sync is running</source>
-        <translation>Sincronización ejecutándose</translation>
+        <translation>Sincronizado en proceso</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="67"/>
         <source>Sync Success</source>
-        <translation>Sincronización con éxito</translation>
+        <translation>Sincronizado con éxito</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Sincronización con éxito, algunos archivos se han ignorado.</translation>
+        <translation>Sincronizado con éxito, algunos archivos han sido ignorados.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Error</source>
-        <translation>Error al sincronizar</translation>
+        <translation>Error de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Setup Error</source>
-        <translation>Error de instalación</translation>
+        <translation>Error en la instalación</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="79"/>
@@ -3563,12 +3563,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Aborting...</source>
-        <translation>Interrumpiendo...</translation>
+        <translation>Cancelando...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Sync is paused</source>
-        <translation>La sincronización se ha pausado</translation>
+        <translation>La sincronización está en pausa.</translation>
     </message>
 </context>
 </TS>
