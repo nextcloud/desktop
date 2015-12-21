@@ -165,6 +165,9 @@ Application::Application(int &argc, char **argv) :
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
 
+    // Enable word wrapping of QInputDialog (#4197)
+    setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
+
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountStateAdded(AccountState*)));
     connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
