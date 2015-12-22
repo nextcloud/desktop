@@ -147,8 +147,29 @@ void PropagateLocalMkdir::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QDir newDir(_propagator->_localDir + _item->_file);
+    QDir newDir(_propagator->getFilePath(_item->_file));
     QString newDirStr = QDir::toNativeSeparators(newDir.path());
+
+    // When turning something that used to be a file into a directory
+    // we need to delete the file first.
+    QFileInfo fi(newDirStr);
+    if (_deleteExistingFile && fi.exists() && fi.isFile()) {
+#ifdef Q_OS_WIN
+        // On Windows, write only files cannot be deleted.
+        if (!fi.isWritable()) {
+            FileSystem::setFileReadOnlyWeak(newDirStr, false);
+        }
+#endif
+
+        QFile f(newDirStr);
+        if (!f.remove()) {
+            done( SyncFileItem::NormalError,
+                  tr("could not delete file %1, error: %2")
+                  .arg(newDirStr, f.errorString()));
+            return;
+        }
+    }
+
     if( Utility::fsCasePreserving() && _propagator->localFileNameClash(_item->_file ) ) {
         qDebug() << "WARN: new folder to create locally already exists!";
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
@@ -172,6 +193,11 @@ void PropagateLocalMkdir::start()
     _propagator->_journal->commit("localMkdir");
 
     done(SyncFileItem::Success);
+}
+
+void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)
+{
+    _deleteExistingFile = enabled;
 }
 
 void PropagateLocalRename::start()

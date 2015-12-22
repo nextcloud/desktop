@@ -246,6 +246,12 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
             if (item->_isDirectory) {
+                // Did a file turn into a directory?
+                if (QFileInfo(getFilePath(item->_file)).isFile()) {
+                    auto job = new PropagateLocalMkdir(this, item);
+                    job->setDeleteExistingFile(true);
+                    return job;
+                }
                 // Should we set the mtime?
                 return 0;
             }
