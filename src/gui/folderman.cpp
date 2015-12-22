@@ -672,7 +672,7 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 
     // Find the first folder in the queue that can be synced.
-    Folder* f = nullptr;
+    Folder* f = 0;
     while( !_scheduleQueue.isEmpty() ) {
         f = _scheduleQueue.dequeue();
         Q_ASSERT(f);
