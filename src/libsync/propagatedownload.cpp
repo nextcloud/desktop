@@ -551,28 +551,6 @@ void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
-QString makeConflictFileName(const QString &fn, const QDateTime &dt)
-{
-    QString conflictFileName(fn);
-    // Add _conflict-XXXX  before the extension.
-    int dotLocation = conflictFileName.lastIndexOf('.');
-    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-        dotLocation = conflictFileName.size();
-    }
-    QString timeString = dt.toString("yyyyMMdd-hhmmss");
-
-    // Additional marker
-    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
-    if (conflictFileUserName.isEmpty())
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
-    else
-        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
-
-    return conflictFileName;
-}
-
-
 namespace { // Anonymous namespace for the recall feature
 static QString makeRecallFileName(const QString &fn)
 {
@@ -636,7 +614,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
+        QString conflictFileName = FileSystem::makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::SoftError, renameError);

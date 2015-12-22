@@ -346,7 +346,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // We do the removal of directories at the end, because there might be moves from
                 // these directories that will happen later.
-                directoriesToRemove.append(dir);
+                directoriesToRemove.prepend(dir);
                 removedDirectory = item->_file + "/";
 
                 // We should not update the etag of parent directories of the removed directory
@@ -362,7 +362,26 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
             }
             directories.push(qMakePair(item->destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
-            directories.top().second->append(current);
+            // If the target of a job is currently a directory, we need to remove it!
+            // This can happen when what used to be a directory changed to a file on the
+            // server an a PropagateLocalRename or PropageDownload job wants to run.
+            if (item->_direction == SyncFileItem::Down
+                    && QFileInfo(getFilePath(item->_file)).isDir()) {
+                // The DirectoryConflict job *must* run before the file propagation job
+                // and we also need to make sure other jobs that deal with the files
+                // in the directory (like removes or moves, in particular of other
+                // directories!) run first.
+                // Making it a directory job ensures that moves run first and that the
+                // (potential) directory rename happens before the file propagation.
+                // Prepending all jobs to directoriesToRemove ensures that removals of
+                // subdirectories happen before the directory is renamed.
+                PropagateDirectory *dir = new PropagateDirectory(this, item);
+                dir->_firstJob.reset(new PropagateLocalDirectoryConflict(this, item));
+                dir->append(current);
+                directoriesToRemove.prepend(dir);
+            } else {
+                directories.top().second->append(current);
+            }
         }
     }
 

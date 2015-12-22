@@ -169,6 +169,11 @@ QByteArray OWNCLOUDSYNC_EXPORT calcSha1( const QString& fileName );
 QByteArray OWNCLOUDSYNC_EXPORT calcAdler32( const QString& fileName );
 #endif
 
+/**
+ * Returns a file name based on \a fn that's suitable for a conflict.
+ */
+QString OWNCLOUDSYNC_EXPORT makeConflictFileName(const QString &fn, const QDateTime &dt);
+
 }
 
 /** @} */
