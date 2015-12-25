@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Προσθήκη νέου</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
