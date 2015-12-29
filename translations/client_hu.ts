@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Új hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="429"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>Nincs szinkronizálva</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
         <source>not syned items list</source>
-        <translation type="unfinished"/>
+        <translation>nem szinkronizált elemek listája</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
@@ -700,7 +700,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1102"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Várakozás a szinkronizálás elindítására.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1105"/>
@@ -755,7 +755,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1154"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nincs joga a kiválasztott könyvtár írásához!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1169"/>
