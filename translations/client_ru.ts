@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="223"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Удалить подключение синхронизации каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="337"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Подтвердите удаление подключения синхронизации каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Удалить подключение синхронизации каталога</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="520"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 используется</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="540"/>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Есть новые каталоги, которые не были синхронизированы, так как они слишком большие:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 на %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;У учетной записи %1 не включены события.</translation>
     </message>
 </context>
 <context>
@@ -856,13 +856,13 @@ Are you sure you want to perform this operation?</source>
         <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
@@ -950,7 +950,7 @@ Total time left 12 minutes&quot;</extracomment>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Добавить подключение для синхронизации</translation>
     </message>
 </context>
 <context>
@@ -1128,17 +1128,17 @@ Total time left 12 minutes&quot;</extracomment>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Редактировать &amp;Ignored файлы</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Запрашивать &amp;confirmation перед загрузкой каталогов больше  чем</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Показать отчёты об ошибках</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -1851,7 +1851,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Эта загрузка уменьшит свободное дисковое пространство ниже %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
@@ -2026,7 +2026,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="698"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Сервер не смог подтвердить последнюю часть данных.(Отсутствовали теги e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2258,7 +2258,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Диалог</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2405,7 +2405,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
@@ -2793,7 +2793,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>CSync не выполнен из-за отказа в доступе для необработанного разрешения.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -2962,7 +2962,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="201"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок контрольной суммы содержал неизвестный тип &apos;%1&apos; контрольной суммы</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="206"/>
@@ -3084,7 +3084,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Войти во все учетные записи...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
