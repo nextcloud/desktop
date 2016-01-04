@@ -56,7 +56,6 @@ AccountPtr Account::create()
 
 Account::~Account()
 {
-    qDebug() << "Account" << displayName() << "deleted";
     delete _credentials;
     delete _am;
 }

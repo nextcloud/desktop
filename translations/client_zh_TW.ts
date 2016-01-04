@@ -277,47 +277,47 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="101"/>
+        <location filename="../src/gui/accountstate.cpp" line="100"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="103"/>
+        <location filename="../src/gui/accountstate.cpp" line="102"/>
         <source>Disconnected</source>
         <translation>已經離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="105"/>
+        <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="107"/>
+        <location filename="../src/gui/accountstate.cpp" line="106"/>
         <source>Service unavailable</source>
         <translation>服務無法使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="109"/>
+        <location filename="../src/gui/accountstate.cpp" line="108"/>
         <source>Network error</source>
         <translation>網路異常</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="111"/>
+        <location filename="../src/gui/accountstate.cpp" line="110"/>
         <source>Configuration error</source>
         <translation>設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="113"/>
+        <location filename="../src/gui/accountstate.cpp" line="112"/>
         <source>Unknown account state</source>
         <translation>未知的帳號狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="268"/>
+        <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>Reauthentication required</source>
         <translation>要求重新驗證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="268"/>
+        <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>You need to re-login to continue using the account %1.</source>
         <translation>您需要重新登入才能繼續使用帳號 %1</translation>
     </message>
@@ -637,19 +637,19 @@
         <translation>同步活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="875"/>
+        <location filename="../src/gui/folder.cpp" line="890"/>
         <source>Could not read system exclude file</source>
         <translation>無法讀取系統的排除檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1132"/>
+        <location filename="../src/gui/folder.cpp" line="1147"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>一個大於 %1 MB 的資料夾已經新增至: %2.
 如果您想要下載它的話，請至設定中選取。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1160"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -658,17 +658,17 @@ Are you sure you want to perform this operation?</source>
 您確定要執行這項動作?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1149"/>
+        <location filename="../src/gui/folder.cpp" line="1164"/>
         <source>Remove All Files?</source>
         <translation>移除所有檔案?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1151"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>Remove all files</source>
         <translation>移除所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1152"/>
+        <location filename="../src/gui/folder.cpp" line="1167"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
     </message>
@@ -1898,12 +1898,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="148"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="160"/>
         <source>could not create folder %1</source>
         <translation>無法建立資料夾 %1</translation>
     </message>
@@ -1911,17 +1911,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="72"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="78"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
         <translation>移除時發生錯誤 &apos;%1&apos;: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>無法移除資料夾 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="122"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>無法刪除 %1 ，因為本地端的檔案名稱已毀損!</translation>
     </message>
@@ -1929,7 +1929,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="192"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>檔案 %1 無法更名成 %2，因為本地端的檔案名稱已毀損</translation>
     </message>
@@ -2399,17 +2399,17 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>create</source>
         <translation>建立</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>change</source>
         <translation>更動</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
         <source>delete</source>
         <translation>刪除</translation>
     </message>
@@ -2448,7 +2448,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="469"/>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>與 %1 分享</translation>

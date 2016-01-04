@@ -374,7 +374,8 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         // if the folder isn't connected, don't open the share dialog
         sendMessage(socket, message);
     } else {
-        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
+        const QString localFileClean = QDir::cleanPath(localFile);
+        const QString file = localFileClean.mid(shareFolder->cleanPath().length()+1);
         SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
 
         // Verify the file is on the server (to our knowledge of course)
@@ -385,17 +386,16 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
             return;
         }
 
-        const QString folderForPath = shareFolder->path();
-        const QString remotePath = shareFolder->remotePath() + localFile.right(localFile.count()-folderForPath.count()+1);
+        const QString remotePath = shareFolder->remotePath() + QLatin1Char('/') + file;
 
         // Can't share root folder
-        if (QDir::cleanPath(remotePath) == "/") {
+        if (remotePath == "/") {
             const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
             return;
         }
 
-        SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFile);
+        SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFileClean);
 
         bool allowReshare = true; // lets assume the good
         if( rec.isValid() ) {
@@ -407,7 +407,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         const QString message = QLatin1String("SHARE:OK:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
 
-        emit shareCommandReceived(remotePath, localFile, allowReshare);
+        emit shareCommandReceived(remotePath, localFileClean, allowReshare);
     }
 }
 

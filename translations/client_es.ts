@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Hay carpetas nuevas que no fueron sincronizadas porque son demasiado grandes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -277,49 +277,49 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="101"/>
+        <location filename="../src/gui/accountstate.cpp" line="100"/>
         <source>Signed out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="103"/>
+        <location filename="../src/gui/accountstate.cpp" line="102"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="105"/>
+        <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="107"/>
+        <location filename="../src/gui/accountstate.cpp" line="106"/>
         <source>Service unavailable</source>
         <translation>Servicio no disponible</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="109"/>
+        <location filename="../src/gui/accountstate.cpp" line="108"/>
         <source>Network error</source>
         <translation>Error en la red</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="111"/>
+        <location filename="../src/gui/accountstate.cpp" line="110"/>
         <source>Configuration error</source>
         <translation>Error en la configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="113"/>
+        <location filename="../src/gui/accountstate.cpp" line="112"/>
         <source>Unknown account state</source>
         <translation>Estado de cuenta desconocido</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="268"/>
+        <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>Reauthentication required</source>
         <translation>Debe volver a autenticarse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="268"/>
+        <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation>Debe volver a hacer login para continuar usando la cuenta %1.</translation>
+        <translation>Debe volver a identificarse para continuar usando la cuenta %1.</translation>
     </message>
 </context>
 <context>
@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Lista de archivos erróneos o ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;Cuenta %1 no tiene habilitado actividades.</translation>
+        <translation>&lt;br/&gt;La cuenta %1 no tiene actividades habilitadas.</translation>
     </message>
 </context>
 <context>
@@ -637,19 +637,19 @@
         <translation>Actividad de la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="875"/>
+        <location filename="../src/gui/folder.cpp" line="890"/>
         <source>Could not read system exclude file</source>
         <translation>No se ha podido leer el archivo de exclusión del sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1132"/>
+        <location filename="../src/gui/folder.cpp" line="1147"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Se ha añadido una nueva carpeta más grande de %1 MB: %2.
 Por favor diríjase a los ajustes para seleccionarlo si desea descargarlo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1160"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -658,17 +658,17 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
 ¿Está seguro de que desea realizar esta operación?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1149"/>
+        <location filename="../src/gui/folder.cpp" line="1164"/>
         <source>Remove All Files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1151"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>Remove all files</source>
         <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1152"/>
+        <location filename="../src/gui/folder.cpp" line="1167"/>
         <source>Keep files</source>
         <translation>Conservar archivos</translation>
     </message>
@@ -703,7 +703,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderman.cpp" line="1102"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Esperando para comenzar la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1105"/>
@@ -840,7 +840,7 @@ Esto se puede deber a que la carpeta fue reconfigurada de forma silenciosa o a q
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Añadir carpetas está deshabilitado debido a que ya están sincronizándose todos sus archivos. Si desea sincronizar múltiples carpeta, elimine la carpeta raíz actualmente configurada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
@@ -1472,7 +1472,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Qt &gt;= 5.4 necesario para utilizar el límite de ancho de banda</translation>
     </message>
 </context>
 <context>
@@ -1506,12 +1506,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versión %2 disponible. Reiniciar aplicación para comenzar la actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nueva %1 versión %2 está disponible. Use la herramienta de actualización de su sistema para instalarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1856,7 +1856,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Free space on disk is less than %1</source>
-        <translation>Espacio libre en el disco es inferior a %1</translation>
+        <translation>El espacio libre en el disco es inferior a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="479"/>
@@ -1900,12 +1900,12 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="148"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>Atención, posible error de mayúsculas/minúsculas en %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="160"/>
         <source>could not create folder %1</source>
         <translation>No se ha podido crear el directorio %1</translation>
     </message>
@@ -1913,17 +1913,17 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="72"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="78"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
         <translation>Error al borrar &apos;%1&apos;: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>No se pudo eliminar la carpeta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="122"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>No se ha podido eliminar %1 por causa de un conflicto con el nombre de un archivo local</translation>
     </message>
@@ -1931,7 +1931,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="192"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>El archivo %1 no se puede renombrar a %2 por causa de un conflicto con el nombre de un archivo local</translation>
     </message>
@@ -2026,7 +2026,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="698"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no reconoció la última parte. (No había una e-tag presente)</translation>
     </message>
 </context>
 <context>
@@ -2403,17 +2403,17 @@ No se recomienda usarla.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="214"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>create</source>
         <translation>crear</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>change</source>
         <translation>cambio</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
         <source>delete</source>
         <translation>borrar</translation>
     </message>
@@ -2452,7 +2452,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="469"/>
+        <location filename="../src/gui/socketapi.cpp" line="465"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Compartir con %1</translation>
@@ -3533,27 +3533,27 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="64"/>
         <source>Sync is running</source>
-        <translation>Sincronización ejecutándose</translation>
+        <translation>Sincronizado en proceso</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="67"/>
         <source>Sync Success</source>
-        <translation>Sincronización con éxito</translation>
+        <translation>Sincronizado con éxito</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="70"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Sincronización con éxito, algunos archivos se han ignorado.</translation>
+        <translation>Sincronizado con éxito, algunos archivos han sido ignorados.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Error</source>
-        <translation>Error al sincronizar</translation>
+        <translation>Error de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
         <source>Setup Error</source>
-        <translation>Error de instalación</translation>
+        <translation>Error en la instalación</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="79"/>
@@ -3563,12 +3563,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="82"/>
         <source>Aborting...</source>
-        <translation>Interrumpiendo...</translation>
+        <translation>Cancelando...</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="85"/>
         <source>Sync is paused</source>
-        <translation>La sincronización se ha pausado</translation>
+        <translation>La sincronización está en pausa.</translation>
     </message>
 </context>
 </TS>

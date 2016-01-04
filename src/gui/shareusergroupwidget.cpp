@@ -65,6 +65,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     connect(_completerModel, SIGNAL(shareesReady()), this, SLOT(slotShareesReady()));
 
     _completer->setModel(_completerModel);
+    _completer->setCaseSensitivity(Qt::CaseInsensitive);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
     _completer->setFilterMode(Qt::MatchContains);
 #endif
@@ -73,8 +74,14 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
-//    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(on_searchPushButton_clicked()));
-    connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)));
+    connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(slotLineEditReturn()));
+
+    // By making the next two QueuedConnections we can override
+    // the strings the completer sets on the line edit.
+    connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)),
+            Qt::QueuedConnection);
+    connect(_completer, SIGNAL(highlighted(QModelIndex)), SLOT(slotCompleterHighlighted(QModelIndex)),
+            Qt::QueuedConnection);
 
     // Queued connection so this signal is recieved after textChanged
     connect(_ui->shareeLineEdit, SIGNAL(textEdited(QString)),
@@ -103,6 +110,25 @@ void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
     if (!text.isEmpty()) {
         _completionTimer.start();
     }
+}
+
+void ShareUserGroupWidget::slotLineEditReturn()
+{
+    // did the user type in one of the options?
+    const auto text = _ui->shareeLineEdit->text();
+    for (int i = 0; i < _completerModel->rowCount(); ++i) {
+        const auto sharee = _completerModel->getSharee(i);
+        if (sharee->format() == text
+                || sharee->displayName() == text
+                || sharee->shareWith() == text) {
+            slotCompleterActivated(_completerModel->index(i));
+            break;
+        }
+
+    }
+
+    // nothing found? try to refresh completion
+    _completionTimer.start();
 }
 
 
@@ -195,6 +221,13 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
                           sharee->shareWith(), Share::PermissionDefault);
 
     _ui->shareeLineEdit->setText(QString());
+}
+
+void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex & index)
+{
+    // By default the completer would set the text to EditRole,
+    // override that here.
+    _ui->shareeLineEdit->setText(index.data(Qt::DisplayRole).toString());
 }
 
 ShareWidget::ShareWidget(QSharedPointer<Share> share,

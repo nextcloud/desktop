@@ -66,6 +66,12 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
         if (isDir) {
             ok = removeRecursively(path + QLatin1Char('/') + di.fileName()); // recursive
         } else {
+#ifdef Q_OS_WIN
+            // On Windows, write only files cannot be deleted. (#4277)
+            if (!di.fileInfo().isWritable()) {
+                FileSystem::setFileReadOnlyWeak(di.filePath(),false);
+            }
+#endif
             QFile f(di.filePath());
             ok = f.remove();
             if (!ok) {

@@ -224,7 +224,6 @@
   </layout>
   <zorder>errorLabel</zorder>
   <zorder>widget_shareLink</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

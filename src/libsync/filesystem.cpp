@@ -414,7 +414,7 @@ static qint64 getSizeWithCsync(const QString& filename)
             && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
         result = stat->size;
     } else {
-        qDebug() << "Could not get size time for" << filename << "with csync";
+        qDebug() << "Could not get size for" << filename << "with csync";
     }
     csync_vio_file_stat_destroy(stat);
     return result;

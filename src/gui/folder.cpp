@@ -488,7 +488,7 @@ void Folder::bubbleUpSyncResult()
         if(renTarget != renSource) {
             status.set(SyncFileStatus::STATUS_MOVE);
         }
-        createGuiLog( firstItemRenamed->_file, status, renamedItems, firstItemRenamed->_renameTarget );
+        createGuiLog( firstItemRenamed->_originalFile, status, renamedItems, firstItemRenamed->_renameTarget );
     }
 
     createGuiLog( firstItemError->_file,   SyncFileStatus::STATUS_ERROR, errorItems );

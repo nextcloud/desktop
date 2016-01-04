@@ -250,6 +250,17 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
 
+    if (!(buf->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
+        buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+    }
+    if (!(buf->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
+        DWORD rem;
+        buf->mtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
+        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
+        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+    }
+
     c_free_locale_string(wuri);
     CloseHandle(h);
     return 0;

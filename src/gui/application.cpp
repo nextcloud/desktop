@@ -113,6 +113,11 @@ Application::Application(int &argc, char **argv) :
 #if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #endif
+#if QT_VERSION > QT_VERSION_CHECK(5, 6, 0)
+    // this may slightly break some styles until they
+    // get fixed, but will make dialogs readable.
+    setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif
     parseOptions(arguments());
     //no need to waste time;
     if ( _helpOnly || _versionOnly ) return;
@@ -164,6 +169,9 @@ Application::Application(int &argc, char **argv) :
     if( _showLogWindow ) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+
+    // Enable word wrapping of QInputDialog (#4197)
+    setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
 
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountStateAdded(AccountState*)));
@@ -542,7 +550,9 @@ void Application::setupTranslations()
             const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
-                    qtTranslator->load(qtBaseTrFile, trPath);
+                    if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
+                        qtTranslator->load(qtBaseTrFile, trPath);
+                    }
                 }
             }
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
