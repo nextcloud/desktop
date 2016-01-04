@@ -860,7 +860,7 @@ void Folder::startSync(const QStringList &pathList)
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
             // the error should already be set
-            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
             return;
         }
     } else if (proxyDirty()) {
@@ -888,7 +888,7 @@ void Folder::startSync(const QStringList &pathList)
     if (! setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
-        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
         return;
     }
 
