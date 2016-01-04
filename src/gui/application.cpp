@@ -545,7 +545,9 @@ void Application::setupTranslations()
             const QString qtBaseTrFile = QLatin1String("qtbase_") + lang;
             if (!qtTranslator->load(qtTrFile, qtTrPath)) {
                 if (!qtTranslator->load(qtTrFile, trPath)) {
-                    qtTranslator->load(qtBaseTrFile, trPath);
+                    if (!qtTranslator->load(qtBaseTrFile, qtTrPath)) {
+                        qtTranslator->load(qtBaseTrFile, trPath);
+                    }
                 }
             }
             const QString qtkeychainTrFile = QLatin1String("qtkeychain_") + lang;
