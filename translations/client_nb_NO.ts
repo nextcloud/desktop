@@ -73,7 +73,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="55"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Legg til ny</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="223"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Fjern tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="337"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Bekreft fjerning av tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Fjern tilkobling for mappe-synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="520"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 i bruk</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="540"/>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Det finnes nye mapper som ikke ble synkronisert fordi de er for store: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -319,7 +319,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Du må logge inn på nytt for å fortsette å bruke konto %1.</translation>
     </message>
 </context>
 <context>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 på %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
@@ -340,17 +340,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="408"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Server-aktivitet</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="413"/>
         <source>Sync Protocol</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringsprotokoll</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Liste over filer som er ignorert eller har feil</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
@@ -370,17 +370,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>server activity list</source>
-        <translation type="unfinished"/>
+        <translation>server-aktivitetsliste</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>sync activity list</source>
-        <translation type="unfinished"/>
+        <translation>synkroniserings-aktivitetsliste</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
         <source>not syned items list</source>
-        <translation type="unfinished"/>
+        <translation>liste med ikke-synkroniserte elementer</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
@@ -390,7 +390,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>%1 er kopiert til utklippstavlen.</translation>
     </message>
 </context>
 <context>
@@ -409,7 +409,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Server-aktiviteter</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="286"/>
@@ -424,7 +424,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="320"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Konto %1 har ikke aktiviteter aktivert.</translation>
     </message>
 </context>
 <context>
@@ -703,7 +703,7 @@ Er du sikker på at du vil utføre denne operasjonen?</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1102"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Venter på å starte synkronisering.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1105"/>
@@ -840,29 +840,29 @@ Er du sikker på at du vil utføre denne operasjonen?</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan ikke legge til en mappe fordi du allerede synkroniserer alle filene dine. Hvis du ønsker å synkronisere individuelle mapper, må du fjerne synkroniseringen av rotmappen som er konfigurert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Henter mappeliste fra server..</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="808"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ser etter endringer i &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
@@ -950,7 +950,7 @@ Tid som gjenstår %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="564"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Legg til tilkobling for synkronisering</translation>
     </message>
 </context>
 <context>
@@ -1113,32 +1113,32 @@ Tid som gjenstår %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Start når maskinen starter</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Vis &amp;påminnelser på skrivebordet</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Bruk svart/&amp;hvite ikoner</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Rediger &amp;ignorerte filer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Be om &amp;bekreftelse før nedlasting av mapper større enn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Vis &amp;krasj-rapportering</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -1472,7 +1472,7 @@ Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning 
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Qt &gt;= 5.4 kreves for å bruke båndbreddebegrensing</translation>
     </message>
 </context>
 <context>
@@ -1507,12 +1507,12 @@ kan be om ytterligere rettigheter under behandlingen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versjon %2 tilgjengelig. Start applikasjonen på nytt for å starte oppdatering.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Ny %1 versjon %2 tilgjengelig. Bruk systemets oppdateringsverktøy til å installere den.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -1852,12 +1852,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Nedlastingen ville ha redusert ledig diskplass til under %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Ledig plass på disk er mindre enn %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="479"/>
@@ -1921,7 +1921,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Klarte ikke å fjerne mappe &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="122"/>
@@ -2027,7 +2027,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="698"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Serveren godtok ikke den siste deloverføringen. (Ingen e-tag var tilstede)</translation>
     </message>
 </context>
 <context>
@@ -2070,7 +2070,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="69"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Lokal synkroniseringsprotokoll</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="71"/>
@@ -2255,7 +2255,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2280,7 +2280,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="91"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>Serveren tillater ikke deling</translation>
     </message>
 </context>
 <context>
@@ -2402,7 +2402,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="80"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
@@ -2790,7 +2790,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="144"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>CSync feilet fordi nektet tilgang ikke ble håndtert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="150"/>
@@ -2805,7 +2805,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Tilgang er nektet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="179"/>
@@ -2855,7 +2855,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="653"/>
         <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
+        <translation>Bare %1 er tilgjengelig, trenger minst %2 for å begynne</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="686"/>
@@ -2920,7 +2920,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringslogg</translation>
     </message>
 </context>
 <context>
@@ -2959,7 +2959,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="201"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sjekksum-header inneholdt ukjent sjekksum-type &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="206"/>
@@ -3016,7 +3016,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="566"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ser etter endringer i &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
@@ -3076,12 +3076,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Logg ut av alle kontoer</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="452"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Logg inn på alle kontoer...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
@@ -3333,27 +3333,27 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%1 day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>for %1 dag siden</numerusform><numerusform>for %1 dager siden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="451"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>for %1 time siden</numerusform><numerusform>for %1 timer siden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="455"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>For mindre enn et minutt siden</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>for %1 minutt siden</numerusform><numerusform>for %1 minutter siden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>For en stund siden</translation>
     </message>
 </context>
 <context>
