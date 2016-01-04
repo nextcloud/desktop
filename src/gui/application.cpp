@@ -113,6 +113,11 @@ Application::Application(int &argc, char **argv) :
 #if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #endif
+#if QT_VERSION > QT_VERSION_CHECK(5, 6, 0)
+    // this may slightly break some styles until they
+    // get fixed, but will make dialogs readable.
+    setAttribute(Qt::AA_EnableHighDpiScaling, true);
+#endif
     parseOptions(arguments());
     //no need to waste time;
     if ( _helpOnly || _versionOnly ) return;
