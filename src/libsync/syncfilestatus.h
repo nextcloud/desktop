@@ -36,7 +36,7 @@ public:
         STATUS_NEW,
         STATUS_CONFLICT,
         STATUS_IGNORE,
-        STATUS_SYNC,
+        STATUS_UPTODATE,
         STATUS_STAT_ERROR,
         STATUS_ERROR,
         STATUS_UPDATED

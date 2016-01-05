@@ -1231,7 +1231,7 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
             else if (item->_status == SyncFileItem::FileIgnored)
                 s->set(SyncFileStatus::STATUS_IGNORE);
             else if (item->_status == SyncFileItem::Success)
-                s->set(SyncFileStatus::STATUS_SYNC);
+                s->set(SyncFileStatus::STATUS_UPDATED);
             else
                 s->set(SyncFileStatus::STATUS_EVAL);
             qDebug() << Q_FUNC_INFO << "Setting" << fn << "to" << s->toSocketAPIString();

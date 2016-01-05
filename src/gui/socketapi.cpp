@@ -379,7 +379,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
 
         // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+        if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
             fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
             const QString message = QLatin1String("SHARE:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
@@ -435,7 +435,7 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
         SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
 
         // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::STATUS_SYNC &&
+        if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
             fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
             const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
@@ -621,7 +621,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
 
         case SyncResult::Success:
         case SyncResult::Problem:
-            status.set(SyncFileStatus::STATUS_SYNC);
+            status.set(SyncFileStatus::STATUS_UPTODATE);
             return status;
 
         case SyncResult::Error:
@@ -636,7 +636,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         }
     } else if (type == CSYNC_FTW_TYPE_DIR) {
         if (rec.isValid()) {
-            status.set(SyncFileStatus::STATUS_SYNC);
+            status.set(SyncFileStatus::STATUS_UPTODATE);
         } else {
             qDebug() << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
             status.set(SyncFileStatus::STATUS_NEW);
@@ -644,7 +644,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     } else if (type == CSYNC_FTW_TYPE_FILE) {
         if (rec.isValid()) {
             if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
-                status.set(SyncFileStatus::STATUS_SYNC);
+                status.set(SyncFileStatus::STATUS_UPTODATE);
             } else {
                 if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
                     status.set(SyncFileStatus::STATUS_EVAL);
