@@ -1115,6 +1115,28 @@
 								</dict>
 								<key>PACKAGE_UUID</key>
 								<string>39F61FCD-6EAA-4F3A-81C6-25E3F667DFB5</string>
+								                                                                <key>REQUIREMENTS</key>
+								                                                               <array>
+								                                                                       <dict>
+								                                                                               <key>BEHAVIOR</key>
+								                                                                               <integer>1</integer>
+								                                                                               <key>DICTIONARY</key>
+								                                                                               <dict>
+								                                                                                       <key>IC_REQUIREMENT_JAVASCRIPT_FUNCTION</key>
+								                                                                                       <string>olderOsx</string>
+								                                                                                       <key>IC_REQUIREMENT_JAVASCRIPT_PARAMETERS</key>
+								                                                                                       <array/>
+								                                                                               </dict>
+								                                                                               <key>IDENTIFIER</key>
+								                                                                               <string>fr.whitebox.Packages.requirement.javascript</string>
+								                                                                               <key>MESSAGE</key>
+								                                                                               <array/>
+								                                                                               <key>NAME</key>
+								                                                                               <string>JavaScript</string>
+								                                                                               <key>STATE</key>
+							                                                                                <true/>
+								                                                                       </dict>
+								                                                               </array>								
 								<key>TITLE</key>
 								<array/>
 								<key>TOOLTIP</key>
@@ -1428,6 +1450,17 @@
 			<string>@CMAKE_INSTALL_DIR@</string>
 		</dict>
 	</dict>
+	        <key>SHARED_GLOBAL_DATA</key>
+	        <dict>
+	                <key>IC_REQUIREMENT_JAVASCRIPT_SHARED_SOURCE_CODE</key>
+	                <string>function olderOsx() {
+if(!(system.version.ProductVersion &gt;= '10.10')) {
+	    return true;
+	}
+	return false;
+	}
+	</string>
+	        </dict>	
 	<key>TYPE</key>
 	<integer>0</integer>
 	<key>VERSION</key>
