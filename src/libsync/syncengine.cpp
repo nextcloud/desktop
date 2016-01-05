@@ -254,7 +254,7 @@ void SyncEngine::deleteStaleDownloadInfos()
     foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
         const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
         qDebug() << "Deleting stale temporary file: " << tmppath;
-        QFile::remove(tmppath);
+        FileSystem::remove(tmppath);
     }
 }
 

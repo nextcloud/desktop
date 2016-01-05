@@ -325,7 +325,7 @@ void PropagateDownloadFileQNAM::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item->_etag) {
-            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
+            FileSystem::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -452,7 +452,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // used a bad range header or the file's not on the server anymore.
         if (_tmpFile.size() == 0 || badRangeHeader || fileNotFound) {
             _tmpFile.close();
-            _tmpFile.remove();
+            FileSystem::remove(_tmpFile.fileName());
             _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         }
 
@@ -517,7 +517,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qDebug() << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
-        _tmpFile.remove();
+        FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
         return;
     }
@@ -546,7 +546,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
 void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
 {
-    _tmpFile.remove();
+    FileSystem::remove(_tmpFile.fileName());
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
@@ -588,10 +588,9 @@ static void handleRecallFile(const QString &fn)
         QString fpath = thisDir.filePath(line);
         QString rpath = makeRecallFileName(fpath);
 
-        // if previously recalled file exists then remove it (copy will not overwrite it)
-        QFile(rpath).remove();
         qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-        QFile::copy(fpath,rpath);
+        QString error;
+        FileSystem::uncheckedRenameReplace(fpath, rpath, &error);
     }
 }
 } // end namespace

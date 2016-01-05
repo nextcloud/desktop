@@ -310,6 +310,11 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     }
 
 #else //Q_OS_WIN
+    // You can not overwrite a read-only file on windows.
+    if (!QFileInfo(destinationFileName).isWritable()) {
+        setFileReadOnly(destinationFileName, false);
+    }
+
     BOOL ok;
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
@@ -562,6 +567,25 @@ QString FileSystem::makeConflictFileName(const QString &fn, const QDateTime &dt)
         conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
 
     return conflictFileName;
+}
+
+bool FileSystem::remove(const QString &fileName, QString *errorString)
+{
+#ifdef Q_OS_WIN
+    // You cannot delete a read-only file on windows, but we want to
+    // allow that.
+    if (!QFileInfo(fileName).isWritable()) {
+        setFileReadOnly(fileName, false);
+    }
+#endif
+    QFile f(fileName);
+    if (!f.remove()) {
+        if (errorString) {
+            *errorString = f.errorString();
+        }
+        return false;
+    }
+    return true;
 }
 
 } // namespace OCC

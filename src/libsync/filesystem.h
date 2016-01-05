@@ -148,6 +148,14 @@ bool uncheckedRenameReplace(const QString &originFileName,
                             QString *errorString);
 
 /**
+ * Removes a file.
+ *
+ * Equivalent to QFile::remove(), except on Windows, where it will also
+ * successfully remove read-only files.
+ */
+bool OWNCLOUDSYNC_EXPORT remove(const QString &fileName, QString *errorString = 0);
+
+/**
  * Replacement for QFile::open(ReadOnly) followed by a seek().
  * This version sets a more permissive sharing mode on Windows.
  *
