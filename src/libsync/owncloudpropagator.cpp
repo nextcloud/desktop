@@ -663,8 +663,9 @@ void PropagateDirectory::finalize()
         }
     }
     _state = Finished;
+    _item->_status = _hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError;
     emit itemCompleted(*_item, *this);
-    emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+    emit finished(_item->_status);
 }
 
 qint64 PropagateDirectory::committedDiskSpace() const

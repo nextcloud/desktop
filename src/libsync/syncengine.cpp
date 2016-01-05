@@ -1221,12 +1221,20 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
     }
 
     Q_FOREACH(const SyncFileItemPtr &item, _syncedItems) {
-        //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
+        //qDebug() << Q_FUNC_INFO << fn << item->_status << item->_file << fn.startsWith(item->_file) << item->_file.startsWith(fn);
 
         if (item->_file.startsWith(pat) ||
-                item->_file == fn /* the same directory or file */) {
-            qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
-            s->set(SyncFileStatus::STATUS_EVAL);
+                item->_file == fn || item->_renameTarget == fn /* the same directory or file */) {
+            if (item->_status == SyncFileItem::NormalError
+                || item->_status == SyncFileItem::FatalError)
+                s->set(SyncFileStatus::STATUS_ERROR);
+            else if (item->_status == SyncFileItem::FileIgnored)
+                s->set(SyncFileStatus::STATUS_IGNORE);
+            else if (item->_status == SyncFileItem::Success)
+                s->set(SyncFileStatus::STATUS_SYNC);
+            else
+                s->set(SyncFileStatus::STATUS_EVAL);
+            qDebug() << Q_FUNC_INFO << "Setting" << fn << "to" << s->toSocketAPIString();
             return true;
         }
     }
