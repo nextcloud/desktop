@@ -120,7 +120,18 @@ signals:
     void finished(bool success);
     void started();
 
+    /**
+     * Emited when the sync engine detects that all the files have been removed or change.
+     * This usually happen when the server was reset or something.
+     * Set *cancel to true in a slot connected from this signal to abort the sync.
+     */
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
+    /**
+     * Emited when the sync engine detects that all the files are changed to dates in the past.
+     * This usually happen when a backup was restored on the server from an earlier date.
+     * Set *restore to true in a slot connected from this signal to re-upload all files.
+     */
+    void aboutToRestoreBackup(bool *restore);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder);
@@ -206,8 +217,16 @@ private:
     void checkForPermission();
     QByteArray getPermissions(const QString& file) const;
 
-    bool _hasNoneFiles; // true if there is at least one file with instruction NONE
+    /**
+     * Instead of downloading files from the server, upload the files to the server
+     */
+    void restoreOldFiles();
+
+    bool _hasNoneFiles; // true if there is at least one file which was not changed on the server
     bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE
+    bool _hasForwardInTimeFiles; // true if there is at least one file from the server that goes forward in time
+    int _backInTimeFiles; // number of files which goes back in time from the server
+
 
     int _uploadLimit;
     int _downloadLimit;

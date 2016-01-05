@@ -68,6 +68,8 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
   , _progressInfo(new ProgressInfo)
   , _hasNoneFiles(false)
   , _hasRemoveFile(false)
+  , _hasForwardInTimeFiles(false)
+  , _backInTimeFiles(0)
   , _uploadLimit(0)
   , _downloadLimit(0)
   , _newBigFolderSizeLimit(-1)
@@ -541,17 +543,27 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_ERROR:
         dir = SyncFileItem::None;
         break;
-    case CSYNC_INSTRUCTION_EVAL:
-    case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_SYNC:
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-    default:
-        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
-        if (!remote && file->instruction == CSYNC_INSTRUCTION_SYNC) {
+        if (!remote) {
             // An upload of an existing file means that the file was left unchanged on the server
             // This counts as a NONE for detecting if all the files on the server were changed
             _hasNoneFiles = true;
+        } else if (!item->_isDirectory) {
+            if (std::difftime(file->modtime, file->other.modtime) < 0) {
+                // We are going back on time
+                _backInTimeFiles++;
+                qDebug() << file->path << "has a timestamp earlier than the local file";
+            } else {
+                _hasForwardInTimeFiles = true;
+            }
         }
+        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
+        break;
+    case CSYNC_INSTRUCTION_NEW:
+    case CSYNC_INSTRUCTION_EVAL:
+    case CSYNC_INSTRUCTION_STAT_ERROR:
+    default:
+        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     }
 
@@ -812,6 +824,26 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         (*it)->_file = adjustRenamedPath((*it)->_file);
     }
 
+    if (!_hasNoneFiles && _hasRemoveFile) {
+        qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
+        bool cancel = false;
+        emit aboutToRemoveAllFiles(_syncedItems.first()->_direction, &cancel);
+        if (cancel) {
+            qDebug() << Q_FUNC_INFO << "Abort sync";
+            finalize(false);
+            return;
+        }
+    }
+    if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2) {
+        qDebug() << "All the changes are bringing files in the past, asking the user";
+        // this typically happen when a backup is restored on the server
+        bool restore = false;
+        emit aboutToRestoreBackup(&restore);
+        if (restore) {
+            restoreOldFiles();
+        }
+    }
+
     // Sort items per destination
     std::sort(_syncedItems.begin(), _syncedItems.end());
 
@@ -823,17 +855,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     emit transmissionProgress(*_progressInfo);
     _progressInfo->start();
-
-    if (!_hasNoneFiles && _hasRemoveFile) {
-        qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
-        bool cancel = false;
-        emit aboutToRemoveAllFiles(_syncedItems.first()->_direction, &cancel);
-        if (cancel) {
-            qDebug() << Q_FUNC_INFO << "Abort sync";
-            finalize(false);
-            return;
-        }
-    }
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {
@@ -1210,6 +1231,40 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
         }
     }
     return _remotePerms.value(file);
+}
+
+void SyncEngine::restoreOldFiles()
+{
+    /* When the server is trying to send us lots of file in the past, this means that a backup
+       was restored in the server.  In that case, we should not simply overwrite the newer file
+       on the file system with the older file from the backup on the server. Instead, we will
+       upload the client file. But we still downloaded the old file in a conflict file just in case
+    */
+
+    for (auto it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+        if ((*it)->_direction != SyncFileItem::Down)
+            continue;
+
+        switch ((*it)->_instruction) {
+        case CSYNC_INSTRUCTION_SYNC:
+            qDebug() << "restoreOldFiles: RESTORING" << (*it)->_file;
+            (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+            break;
+        case CSYNC_INSTRUCTION_REMOVE:
+            qDebug() << "restoreOldFiles: RESTORING" << (*it)->_file;
+            (*it)->_should_update_metadata = true;
+            (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
+            (*it)->_direction = SyncFileItem::Up;
+            break;
+        case CSYNC_INSTRUCTION_RENAME:
+        case CSYNC_INSTRUCTION_NEW:
+            // Ideally we should try to revert the rename or remove, but this would be dangerous
+            // without re-doing the reconcile phase.  So just let it happen.
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
