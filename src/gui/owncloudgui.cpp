@@ -199,7 +199,7 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
 
     auto result = folder->syncResult();
 
-    qDebug() << "Sync state changed for folder " << folder->alias() << ": "  << result.statusString();
+    qDebug() << "Sync state changed for folder " << folder->remoteUrl().toString() << ": "  << result.statusString();
 
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();

@@ -296,19 +296,19 @@ void Folder::prepareToSync()
 
 void Folder::slotRunEtagJob()
 {
-    qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
+    qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
     Q_ASSERT(_accountState );
 
     AccountPtr account = _accountState->account();
 
     if (!_requestEtagJob.isNull()) {
-        qDebug() << Q_FUNC_INFO << alias() << "has ETag job queued, not trying to sync";
+        qDebug() << Q_FUNC_INFO << remoteUrl().toString() << "has ETag job queued, not trying to sync";
         return;
     }
 
     if (_definition.paused || !_accountState->isConnected()) {
-        qDebug() << "Not syncing.  :"  << alias() << _definition.paused << AccountState::stateString(_accountState->state());
+        qDebug() << "Not syncing.  :"  << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
         return;
     }
 
@@ -356,12 +356,13 @@ void Folder::slotRunEtagJob()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
+    //qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
 
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
 
     if (_lastEtag != etag) {
+        qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
         _lastEtag = etag;
         emit scheduleToSync(this);
     }
@@ -882,7 +883,7 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setSyncFileItemVector(SyncFileItemVector());
     emit syncStateChange();
 
-    qDebug() << "*** Start syncing " << alias() << " - client version"
+    qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
     if (! setIgnoredFiles())

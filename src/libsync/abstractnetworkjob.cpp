@@ -76,7 +76,7 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
 
 void AbstractNetworkJob::setTimeout(qint64 msec)
 {
-    qDebug() << Q_FUNC_INFO << msec;
+    //qDebug() << Q_FUNC_INFO << msec;
 
     _timer.start(msec);
 }
@@ -225,7 +225,8 @@ void AbstractNetworkJob::start()
     const QUrl url = account()->url();
     const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
-    qDebug() << "!!!" << metaObject()->className() << "created for" << displayUrl << "+" << path();
+    QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
+    qDebug() << "!!!" << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()

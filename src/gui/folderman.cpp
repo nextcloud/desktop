@@ -523,12 +523,12 @@ void FolderMan::slotEtagJobDestroyed(QObject* /*o*/)
 void FolderMan::slotRunOneEtagJob()
 {
     if (_currentEtagJob.isNull()) {
-        QString alias;
+        Folder *folder;
         foreach(Folder *f, _folderMap) {
             if (f->etagJob()) {
                 // Caveat: always grabs the first folder with a job, but we think this is Ok for now and avoids us having a seperate queue.
                 _currentEtagJob = f->etagJob();
-                alias = f->alias();
+                folder = f;
                 break;
             }
         }
@@ -540,7 +540,7 @@ void FolderMan::slotRunOneEtagJob()
                 restartApplication();
             }
         } else {
-            qDebug() << "Scheduling" << alias << "to check remote ETag";
+            qDebug() << "Scheduling" << folder->remoteUrl().toString() << "to check remote ETag";
             _currentEtagJob->start(); // on destroy/end it will continue the queue via slotEtagJobDestroyed
         }
     }
@@ -657,7 +657,7 @@ void FolderMan::startScheduledSyncSoon(qint64 msMinimumDelay)
 void FolderMan::slotStartScheduledFolderSync()
 {
     if( _currentSyncFolder ) {
-        qDebug() << "Currently folder " << _currentSyncFolder->alias() << " is running, wait for finish!";
+        qDebug() << "Currently folder " << _currentSyncFolder->remoteUrl().toString() << " is running, wait for finish!";
         return;
     }
 
@@ -746,7 +746,7 @@ void FolderMan::slotForwardFolderSyncStateChange()
 
 void FolderMan::slotFolderSyncStarted( )
 {
-    qDebug() << ">===================================== sync started for " << _currentSyncFolder->alias();
+    qDebug() << ">===================================== sync started for " << _currentSyncFolder->remoteUrl().toString();
 }
 
 /*
@@ -757,7 +757,7 @@ void FolderMan::slotFolderSyncStarted( )
   */
 void FolderMan::slotFolderSyncFinished( const SyncResult& )
 {
-    qDebug() << "<===================================== sync finished for " << _currentSyncFolder->alias();
+    qDebug() << "<===================================== sync finished for " << _currentSyncFolder->remoteUrl().toString();
 
     _lastSyncFolder = _currentSyncFolder;
     _currentSyncFolder = 0;
