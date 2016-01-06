@@ -33,8 +33,6 @@ public:
                     HeaderRole,
                     FolderPathRole,
                     FolderSecondPathRole,
-                    FolderRemotePath,
-                    FolderStatus,
                     FolderErrorMsg,
                     FolderSyncPaused,
                     FolderStatusIconRole,

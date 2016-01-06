@@ -141,10 +141,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString itemString    = qvariant_cast<QString>(index.data(SyncProgressItemString));
     int warningCount      = qvariant_cast<int>(index.data(WarningCount));
     bool syncOngoing      = qvariant_cast<bool>(index.data(SyncRunning));
-
-    // QString statusText = qvariant_cast<QString>(index.data(FolderStatus));
-    bool syncEnabled = index.data(FolderAccountConnected).toBool();
-    // QString syncStatus = syncEnabled? tr( "Enabled" ) : tr( "Disabled" );
+    bool syncEnabled      = qvariant_cast<bool>(index.data(FolderAccountConnected));
 
     QRect iconRect = option.rect;
     QRect aliasRect = option.rect;
@@ -327,6 +324,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->restore();
 
     {
+        QRect rectWithoutErrors = option.rect;
+        rectWithoutErrors.setTop(iconRect.top());
+        rectWithoutErrors.setBottom(iconRect.bottom());
         QStyleOptionToolButton btnOpt;
         //btnOpt.text = QLatin1String("...");
         btnOpt.state = option.state;
@@ -334,7 +334,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonRect(option.rect);
+        btnOpt.rect = optionsButtonRect(rectWithoutErrors);
         btnOpt.icon = m_moreIcon;
         btnOpt.iconSize = btnOpt.rect.size();
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );

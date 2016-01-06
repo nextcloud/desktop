@@ -187,6 +187,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case FolderStatusDelegate::FolderPathRole         : return  f->shortGuiPath();
     case FolderStatusDelegate::FolderSecondPathRole   : return  f->remotePath();
+    case FolderStatusDelegate::FolderErrorMsg         : return  f->syncResult().errorStrings();
+    case FolderStatusDelegate::SyncRunning            : return  f->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::HeaderRole             : return  f->aliasGui();
     case FolderStatusDelegate::FolderAliasRole        : return  f->alias();
     case FolderStatusDelegate::FolderSyncPaused       : return  f->syncPaused();
@@ -708,8 +710,7 @@ void FolderStatusModel::slotUpdateFolderState(Folder *folder)
     if( ! folder ) return;
     for (int i = 0; i < _folders.count(); ++i) {
         if (_folders.at(i)._folder == folder) {
-            emit dataChanged(index(i), index(i),
-                             QVector<int>() << FolderStatusDelegate::FolderStatus);
+            emit dataChanged(index(i), index(i));
         }
     }
 }
@@ -970,7 +971,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         // Reset the progress info after a sync.
         _folders[folderIndex]._progress = SubFolderInfo::Progress();
     } else if (state == SyncResult::Error) {
-        _folders[folderIndex]._progress._progressString = f->syncResult().errorString();
+        _folders[folderIndex]._progress = SubFolderInfo::Progress();
     }
 
     // update the icon etc. now
