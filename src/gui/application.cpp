@@ -570,6 +570,10 @@ void Application::setupTranslations()
         if (property("ui_lang").isNull())
             setProperty("ui_lang", "C");
     }
+// Work around Qt 5 < 5.5.0 regression, see https://bugreports.qt.io/browse/QTBUG-43447
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
+    setLayoutDirection(QApplication::tr("QT_LAYOUT_DIRECTION") == QLatin1String("RTL") ? Qt::RightToLeft : Qt::LeftToRight);
+#endif
 }
 
 bool Application::giveHelp()
