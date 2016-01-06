@@ -650,7 +650,8 @@ void SyncEngine::startSync()
         qDebug() << "There are" << freeBytes << "bytes available at" << _localPath
                  << "and at least" << minFree << "are required";
         if (freeBytes < minFree) {
-            emit csyncError(tr("Only %1 are available, need at least %2 to start").arg(
+            emit csyncError(tr("Only %1 are available, need at least %2 to start",
+                               "Placeholders are postfixed with file sizes using Utility::octetsToString()").arg(
                                 Utility::octetsToString(freeBytes),
                                 Utility::octetsToString(minFree)));
             finalize(false);

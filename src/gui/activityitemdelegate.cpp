@@ -130,12 +130,13 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         accountRole.remove(0, atPos+1);
     }
 
-    QString timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
-    if( !accountOnline ) {
+    QString timeStr;
+    if ( accountOnline ) {
+        timeStr = tr("%1 on %2").arg(timeText).arg(accountRole);
+    } else {
+        timeStr = tr("%1 on %2 (disconnected)").arg(timeText).arg(accountRole);
         QPalette p = option.palette;
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
-        timeStr.append(" ");
-        timeStr.append(tr("(disconnected)"));
     }
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
 
