@@ -244,39 +244,4 @@ void PropagateLocalRename::start()
     done(SyncFileItem::Success);
 }
 
-void PropagateLocalDirectoryConflict::start()
-{
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
-        return;
-
-    QString existingDir = _propagator->getFilePath(_item->_file);
-    if (!QFileInfo(existingDir).isDir()) {
-        done(SyncFileItem::Success);
-        return;
-    }
-
-    // Delete the directory if it is empty!
-    QDir dir(existingDir);
-    if (dir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0) {
-        if (dir.rmdir(existingDir)) {
-            done(SyncFileItem::Success);
-            return;
-        }
-        // on error, just try to move it away...
-    }
-
-    QString conflictDir = FileSystem::makeConflictFileName(
-            existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
-
-    _propagator->addTouchedFile(existingDir);
-    _propagator->addTouchedFile(conflictDir);
-    QString renameError;
-    if (!FileSystem::rename(existingDir, conflictDir, &renameError)) {
-        done(SyncFileItem::NormalError, renameError);
-        return;
-    }
-
-    done(SyncFileItem::Success);
-}
-
 }

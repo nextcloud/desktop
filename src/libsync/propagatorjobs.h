@@ -82,24 +82,4 @@ public:
     JobParallelism parallelism() Q_DECL_OVERRIDE { return WaitForFinishedInParentDirectory; }
 };
 
-/**
- * Moves away a local directory when it should become a file.
- *
- * Example: Locally there's directory foo/ with three files in it,
- *   one of them ignored, while the server has a file foo.
- *   In this case, foo/ fill be moved to foo-conflict.../ and the
- *   file will be downloaded to foo.
- *
- * If the directory is empty, it will be removed instead.
- *
- * @ingroup libsync
- */
-class PropagateLocalDirectoryConflict : public PropagateItemJob {
-    Q_OBJECT
-public:
-    PropagateLocalDirectoryConflict (OwncloudPropagator* propagator, const SyncFileItemPtr& item) : PropagateItemJob(propagator, item) {}
-    void start() Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return WaitForFinishedInParentDirectory; }
-};
-
 }

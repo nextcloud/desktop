@@ -434,6 +434,7 @@ void Folder::bubbleUpSyncResult()
             if (!item->hasErrorStatus() && item->_direction == SyncFileItem::Down) {
                 switch (item->_instruction) {
                 case CSYNC_INSTRUCTION_NEW:
+                case CSYNC_INSTRUCTION_TYPE_CHANGE:
                     newItems++;
                     if (!firstItemNew)
                         firstItemNew = item;

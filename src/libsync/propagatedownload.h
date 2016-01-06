@@ -110,9 +110,20 @@ class PropagateDownloadFileQNAM : public PropagateItemJob {
     Q_OBJECT
 public:
     PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item), _resumeStart(0), _downloadProgress(0) {}
+        : PropagateItemJob(propagator, item), _resumeStart(0), _downloadProgress(0), _deleteExisting(false) {}
     void start() Q_DECL_OVERRIDE;
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
+
+    /**
+     * Whether an existing folder with the same name may be deleted before
+     * the download.
+     *
+     * If it's a non-empty folder, it'll be renamed to a conflict-style name
+     * to preserve any non-synced content that may be inside.
+     *
+     * Default: false.
+     */
+    void setDeleteExistingFolder(bool enabled);
 
 private slots:
     void slotGetFinished();
@@ -122,10 +133,13 @@ private slots:
     void slotChecksumFail( const QString& errMsg );
 
 private:
+    void deleteExistingFolder();
+
     quint64 _resumeStart;
     qint64 _downloadProgress;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
+    bool _deleteExisting;
 };
 
 }

@@ -310,6 +310,15 @@ void PropagateDownloadFileQNAM::start()
 
     qDebug() << Q_FUNC_INFO << _item->_file << _propagator->_activeJobs;
 
+    if (_deleteExisting) {
+        deleteExistingFolder();
+
+        // check for error with deletion
+        if (_state == Finished) {
+            return;
+        }
+    }
+
     // do a klaas' case clash check.
     if( _propagator->localFileNameClash(_item->_file) ) {
         done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
@@ -413,6 +422,11 @@ qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
         return qBound(0ULL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
     }
     return 0;
+}
+
+void PropagateDownloadFileQNAM::setDeleteExistingFolder(bool enabled)
+{
+    _deleteExisting = enabled;
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
@@ -549,6 +563,33 @@ void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
     FileSystem::remove(_tmpFile.fileName());
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
+}
+
+void PropagateDownloadFileQNAM::deleteExistingFolder()
+{
+    QString existingDir = _propagator->getFilePath(_item->_file);
+    if (!QFileInfo(existingDir).isDir()) {
+        return;
+    }
+
+    // Delete the directory if it is empty!
+    QDir dir(existingDir);
+    if (dir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0) {
+        if (dir.rmdir(existingDir)) {
+            return;
+        }
+        // on error, just try to move it away...
+    }
+
+    QString conflictDir = FileSystem::makeConflictFileName(
+            existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
+
+    _propagator->addTouchedFile(existingDir);
+    _propagator->addTouchedFile(conflictDir);
+    QString renameError;
+    if (!FileSystem::rename(existingDir, conflictDir, &renameError)) {
+        done(SyncFileItem::NormalError, renameError);
+    }
 }
 
 namespace { // Anonymous namespace for the recall feature

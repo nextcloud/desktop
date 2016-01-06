@@ -24,6 +24,7 @@
 #include "propagatorjobs.h"
 #include "checksums.h"
 #include "syncengine.h"
+#include "propagateremotedelete.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -208,6 +209,29 @@ void PropagateUploadFileQNAM::start()
         }
     }
 
+    _propagator->_activeJobs++;
+
+    if (!_deleteExisting) {
+        return slotComputeContentChecksum();
+    }
+
+    auto job = new DeleteJob(_propagator->account(),
+                             _propagator->_remoteFolder + _item->_file,
+                             this);
+    _jobs.append(job);
+    connect(job, SIGNAL(finishedSignal()), SLOT(slotComputeContentChecksum()));
+    connect(job, SIGNAL(destroyed(QObject*)), SLOT(slotJobDestroyed(QObject*)));
+    job->start();
+}
+
+void PropagateUploadFileQNAM::slotComputeContentChecksum()
+{
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+        return;
+    }
+
+    _propagator->_activeJobs--; // from start
+
     const QString filePath = _propagator->getFilePath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
@@ -237,6 +261,11 @@ void PropagateUploadFileQNAM::start()
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotComputeTransmissionChecksum(QByteArray,QByteArray)));
     computeChecksum->start(filePath);
+}
+
+void PropagateUploadFileQNAM::setDeleteExisting(bool enabled)
+{
+    _deleteExisting = enabled;
 }
 
 void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum)
@@ -491,8 +520,10 @@ void PropagateUploadFileQNAM::startNextChunk()
         headers["OC-Tag"] = ".sys.admin#recall#";
     }
 
-    if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag" &&
-            _item->_instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
+    if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag"
+            && _item->_instruction != CSYNC_INSTRUCTION_NEW  // On new files never send a If-Match
+            && _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
+            && !_deleteExisting
             ) {
         // We add quotes because the owncloud server always adds quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
@@ -710,7 +741,9 @@ void PropagateUploadFileQNAM::slotPutFinished()
         auto currentChunk = job->_chunk;
         foreach (auto *job, _jobs) {
             // Take the minimum finished one
-            currentChunk = qMin(currentChunk, job->_chunk - 1);
+            if (auto putJob = qobject_cast<PUTFileJob*>(job)) {
+                currentChunk = qMin(currentChunk, putJob->_chunk - 1);
+            }
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;

@@ -25,13 +25,24 @@ namespace OCC {
 class PropagateRemoteMkdir : public PropagateItemJob {
     Q_OBJECT
     QPointer<AbstractNetworkJob> _job;
+    bool _deleteExisting;
     friend class PropagateDirectory; // So it can access the _item;
 public:
     PropagateRemoteMkdir (OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item) {}
+        : PropagateItemJob(propagator, item), _deleteExisting(false) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
+
+    /**
+     * Whether an existing entity with the same name may be deleted before
+     * creating the directory.
+     *
+     * Default: false.
+     */
+    void setDeleteExisting(bool enabled);
+
 private slots:
+    void slotStartMkcolJob();
     void slotMkcolJobFinished();
     void propfindResult(const QVariantMap &);
     void propfindError();

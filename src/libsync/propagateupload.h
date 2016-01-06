@@ -177,7 +177,7 @@ private:
     int _chunkCount; /// Total number of chunks for this file
     int _transferId; /// transfer id (part of the url)
     QElapsedTimer _duration;
-    QVector<PUTFileJob*> _jobs; /// network jobs that are currently in transit
+    QVector<AbstractNetworkJob*> _jobs; /// network jobs that are currently in transit
     bool _finished; // Tells that all the jobs have been finished
 
     // measure the performance of checksum calc and upload
@@ -186,10 +186,21 @@ private:
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;
 
+    bool _deleteExisting;
+
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false) {}
+        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false), _deleteExisting(false) {}
     void start() Q_DECL_OVERRIDE;
+
+    /**
+     * Whether an existing entity with the same name may be deleted before
+     * the upload.
+     *
+     * Default: false.
+     */
+    void setDeleteExisting(bool enabled);
+
 private slots:
     void slotPutFinished();
     void slotPollFinished();
@@ -200,6 +211,7 @@ private slots:
     void slotJobDestroyed(QObject *job);
     void slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum);
     void slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum);
+    void slotComputeContentChecksum();
 
 private:
     void startPollJob(const QString& path);

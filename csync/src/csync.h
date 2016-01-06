@@ -134,7 +134,10 @@ enum csync_instructions_e {
   CSYNC_INSTRUCTION_IGNORE     = 0x00000020,  /* The file is ignored (UPDATE|RECONCILE) */
   CSYNC_INSTRUCTION_SYNC       = 0x00000040,  /* The file need to be pushed to the other remote (RECONCILE) */
   CSYNC_INSTRUCTION_STAT_ERROR = 0x00000080,
-  CSYNC_INSTRUCTION_ERROR      = 0x00000100
+  CSYNC_INSTRUCTION_ERROR      = 0x00000100,
+  CSYNC_INSTRUCTION_TYPE_CHANGE = 0x0000200,  /* Like NEW, but deletes the old entity first (RECONCILE)
+                                                 Used when the type of something changes from directory to file
+                                                 or back. */
 };
 
 enum csync_ftw_type_e {

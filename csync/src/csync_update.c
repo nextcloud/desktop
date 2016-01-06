@@ -301,6 +301,11 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                     goto out;
                 }
             }
+
+            // Preserve the EVAL flag later on if the type has changed.
+            if (tmp->type != fs->type)
+                st->child_modified = 1;
+
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
         }
