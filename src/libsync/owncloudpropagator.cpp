@@ -663,7 +663,10 @@ void PropagateDirectory::finalize()
         }
     }
     _state = Finished;
-    _item->_status = _hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError;
+    // Just to make sure that the SocketApi will know by looking in
+    // SyncEngine::_syncedItems that this folder is done synchronizing.
+    _item->_status = SyncFileItem::Success;
+
     emit itemCompleted(*_item, *this);
     emit finished(_item->_status);
 }
