@@ -308,9 +308,8 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
 void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
 {
     Q_UNUSED(authenticator)
-    // we cannot use QAuthenticator, because it sends username and passwords with latin1
-    // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
-    // those credentials were invalid and we terminate.
+    // Because of issue #4326, we need to set the login and password manually at every requests
+    // Thus, if we reach this signal, those credentials were invalid and we terminate.
     qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
