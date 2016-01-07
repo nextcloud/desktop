@@ -310,7 +310,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
-            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.last());
+            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.first());
 
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
@@ -330,10 +330,12 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 continue;
             } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
                 continue;
+            } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+                // all is good, the rename will be executed before the directory deletion
+            } else {
+                qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
+                           << item->_file << item->_instruction;
             }
-
-            qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
-                       << item->_file << item->_instruction;
         }
 
         while (!item->destination().startsWith(directories.top().first)) {
