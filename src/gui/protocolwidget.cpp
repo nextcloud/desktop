@@ -138,7 +138,14 @@ void ProtocolWidget::cleanItems(const QString& folder)
 
     // The issue list is a state, clear it and let the next sync fill it
     // with ignored files and propagation errors.
-    _issueItemView->clear();
+    itemCnt = _issueItemView->topLevelItemCount();
+    for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
+        QTreeWidgetItem *item = _issueItemView->topLevelItem(cnt);
+        QString itemFolder = item->data(2, Qt::UserRole).toString();
+        if( itemFolder == folder ) {
+            delete item;
+        }
+    }
 }
 
 QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
