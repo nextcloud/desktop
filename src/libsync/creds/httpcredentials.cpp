@@ -249,6 +249,15 @@ void HttpCredentials::invalidateToken()
     _account->clearCookieJar();
 
     // let QNAM forget about the password
+    // This needs to be done later in the event loop because we might be called (directly or
+    // indirectly) from QNetworkAccessManagerPrivate::authenticationRequired, which itself
+    // is a called from a BlockingQueuedConnection from the Qt HTTP thread. And clearing the
+    // cache needs to synchronize again with the HTTP thread.
+    QTimer::singleShot(0, this, SLOT(clearQNAMCache()));
+}
+
+void HttpCredentials::clearQNAMCache()
+{
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     _account->networkAccessManager()->clearAccessCache();
 #else

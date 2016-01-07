@@ -61,6 +61,7 @@ private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
     void slotReadJobDone(QKeychain::Job*);
     void slotWriteJobDone(QKeychain::Job*);
+    void clearQNAMCache();
 
 protected:
     QString _user;
