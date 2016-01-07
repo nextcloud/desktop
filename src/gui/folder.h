@@ -282,7 +282,7 @@ private:
     void createGuiLog(const QString& filename, SyncFileStatus status, int count,
                        const QString& renameTarget = QString::null );
 
-    AccountState* _accountState;
+    QPointer<AccountState> _accountState;
     FolderDefinition _definition;
 
     SyncResult _syncResult;

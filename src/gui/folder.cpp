@@ -247,7 +247,9 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        return QUrl("http://deleted-account");
+    }
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
@@ -298,7 +300,10 @@ void Folder::slotRunEtagJob()
 {
     qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
-    Q_ASSERT(_accountState );
+    if (!_accountState) {
+        qDebug() << "Can't run EtagJob, account is deleted";
+        return;
+    }
 
     AccountPtr account = _accountState->account();
 
@@ -703,7 +708,11 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 
 void Folder::saveToSettings() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't save folder to settings, account is deleted";
+        return;
+    }
+
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
@@ -714,7 +723,10 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't remove folder from settings, account is deleted";
+        return;
+    }
 
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
@@ -851,7 +863,10 @@ bool Folder::proxyDirty()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't startSync, account is deleted";
+        return;
+    }
 
     Q_UNUSED(pathList)
     if (!_csync_ctx) {
