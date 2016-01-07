@@ -325,14 +325,14 @@
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="135"/>
         <source>%1 on %2</source>
         <translation>%1 em %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
-        <source>(disconnected)</source>
-        <translation>(desconectado)</translation>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="137"/>
+        <source>%1 on %2 (disconnected)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -369,28 +369,23 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
-        <source>server activity list</source>
-        <translation>lista de atividades do servidor</translation>
+        <source>The server activity list has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
-        <source>sync activity list</source>
-        <translation>lista de atividades de sincronização</translation>
+        <source>The sync activity list has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
-        <source>not syned items list</source>
-        <translation>lista de itens não sincronizados</translation>
+        <source>The list of unsynched items has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Copied to clipboard</source>
         <translation>Copiado para área de transferência</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
-        <source>The %1 has been copied to the clipboard.</source>
-        <translation>O %1 foi copiado para a área de transferência.</translation>
     </message>
 </context>
 <context>
@@ -794,17 +789,17 @@ Tem certeza de que deseja executar esta operação?</translation>
         <translation>Adicionar Pasta a Sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
         <source>File</source>
         <translation>Arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="225"/>
         <source>Syncing selected files in your account with</source>
         <translation>Sincronizar arquivos selecionados na sua conta com</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Remote path: %1</source>
         <translation>Caminho remoto: %1</translation>
     </message>
@@ -833,7 +828,7 @@ Tem certeza de que deseja executar esta operação?</translation>
         <translation>Erro enquanto carregava a lista de pastas do servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="199"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
         <source>Signed out</source>
         <translation>Assinado</translation>
     </message>
@@ -848,70 +843,70 @@ Tem certeza de que deseja executar esta operação?</translation>
         <translation>Obtendo lista de pastas do servidor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="808"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="809"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Verificando alterações em &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="844"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="847"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="883"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>, </source>
         <translation>,</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="877"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>baixar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="886"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="887"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>enviar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="914"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7
@@ -920,22 +915,22 @@ Total time left 12 minutes&quot;</extracomment>
 Total de tempo que falta %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="920"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>file %1 of %2</source>
         <translation>arquivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="961"/>
         <source>Waiting...</source>
         <translation>Esperando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar...</translation>
     </message>
@@ -1903,7 +1898,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>não foi possível apagar o arquivo %1, erro: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="163"/>
@@ -2752,12 +2747,18 @@ It is not advisable to use it.</source>
         <translation>Erro ao ler pasta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
+        <location filename="../src/libsync/syncengine.cpp" line="653"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar pasta mãe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1037"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar arquivos na pasta</translation>
     </message>
@@ -2857,64 +2858,59 @@ It is not advisable to use it.</source>
         <translation>Caracteres inválidos, por favor renomear &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="653"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <translation>Apenas 1% estão disponíveis, precisamos de pelo menos 2% para começar</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="686"/>
+        <location filename="../src/libsync/syncengine.cpp" line="687"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossibilitado de iniciar a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="768"/>
+        <location filename="../src/libsync/syncengine.cpp" line="769"/>
         <source>Cannot open the sync journal</source>
         <translation>Não é possível abrir o arquivo de sincronização</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="998"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="999"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1006"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por causa da lista negra &quot;escolher o que sincronizar&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar subpastas para essa pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Não é permitido fazer o upload deste arquivo porque ele é somente leitura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Não é permitido remover, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1107"/>
         <source>Local files and share folder removed.</source>
         <translation>Arquivos locais e pasta compartilhada removida.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1162"/>
         <source>Move not allowed, item restored</source>
         <translation>Não é permitido mover, item restaurado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Não é permitido mover porque %1 é somente para leitura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the destination</source>
         <translation>o destino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the source</source>
         <translation>a fonte</translation>
     </message>
@@ -3330,6 +3326,14 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
         <translation>AperteoBotão</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="575"/>
+        <source>QT_LAYOUT_DIRECTION</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

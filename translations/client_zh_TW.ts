@@ -325,13 +325,13 @@
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="135"/>
         <source>%1 on %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
-        <source>(disconnected)</source>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="137"/>
+        <source>%1 on %2 (disconnected)</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -369,28 +369,23 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
-        <source>server activity list</source>
+        <source>The server activity list has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
-        <source>sync activity list</source>
+        <source>The sync activity list has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
-        <source>not syned items list</source>
+        <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Copied to clipboard</source>
         <translation>複製至剪貼簿中</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
-        <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -794,17 +789,17 @@ Are you sure you want to perform this operation?</source>
         <translation>新增資料夾同步功能的連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
         <source>File</source>
         <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="225"/>
         <source>Syncing selected files in your account with</source>
         <translation>正在同步您的帳號所選取的檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Remote path: %1</source>
         <translation>遠端路徑: %1</translation>
     </message>
@@ -833,7 +828,7 @@ Are you sure you want to perform this operation?</source>
         <translation>從伺服器端同步資料夾清單時發生錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="199"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
@@ -848,70 +843,70 @@ Are you sure you want to perform this operation?</source>
         <translation>從伺服器抓取資料夾清單中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="808"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="809"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>檢查 &apos;%1&apos; 的變動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="844"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="847"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="883"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="877"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>下載 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>u2193 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="886"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="887"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>上傳 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>u2191 %1/s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="914"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7
@@ -919,22 +914,22 @@ Total time left 12 minutes&quot;</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="920"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>file %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="961"/>
         <source>Waiting...</source>
         <translation>等待中...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>正在等候 %n 的資料夾(可能不只一個)</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
         <source>Preparing to sync...</source>
         <translation>正在準備同步...</translation>
     </message>
@@ -2747,12 +2742,18 @@ It is not advisable to use it.</source>
         <translation>讀取資料夾時發生錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
+        <location filename="../src/libsync/syncengine.cpp" line="653"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>拒絕此操作，您沒有新增母資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1037"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
@@ -2852,64 +2853,59 @@ It is not advisable to use it.</source>
         <translation>無效的字元，請您重新命名 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="653"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <translation>目前僅有 %1 可以使用，至少需要 %2 才能開始</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="686"/>
+        <location filename="../src/libsync/syncengine.cpp" line="687"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>同步處理日誌無法初始化</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="768"/>
+        <location filename="../src/libsync/syncengine.cpp" line="769"/>
         <source>Cannot open the sync journal</source>
         <translation>同步處理日誌無法開啟</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="998"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="999"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1006"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>拒絕上傳此檔案，此檔案在伺服器是唯讀檔，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1107"/>
         <source>Local files and share folder removed.</source>
         <translation>本地端檔案和共享資料夾已被刪除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1162"/>
         <source>Move not allowed, item restored</source>
         <translation>不允許移動，物件復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>不允許移動，因為 %1 是唯讀的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the destination</source>
         <translation>目標</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the source</source>
         <translation>來源</translation>
     </message>
@@ -3325,6 +3321,14 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
         <translation>按鈕</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="575"/>
+        <source>QT_LAYOUT_DIRECTION</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

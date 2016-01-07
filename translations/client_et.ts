@@ -325,14 +325,14 @@
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="135"/>
         <source>%1 on %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
-        <source>(disconnected)</source>
-        <translation>(lahti ühendatud)</translation>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="137"/>
+        <source>%1 on %2 (disconnected)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -369,28 +369,23 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
-        <source>server activity list</source>
-        <translation>serveri tegevuste nimekiri</translation>
+        <source>The server activity list has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
-        <source>sync activity list</source>
-        <translation>sünkroonimistegevuste nimekiri</translation>
+        <source>The sync activity list has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
-        <source>not syned items list</source>
-        <translation>sünkroonimata kirjete nimekiri</translation>
+        <source>The list of unsynched items has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Copied to clipboard</source>
         <translation>Kopeeritud lõikepuhvrisse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
-        <source>The %1 has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -791,17 +786,17 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="272"/>
         <source>File</source>
         <translation>Fail</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="225"/>
         <source>Syncing selected files in your account with</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
         <source>Remote path: %1</source>
         <translation>Eemalda asukoht: %1</translation>
     </message>
@@ -830,7 +825,7 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="199"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
         <source>Signed out</source>
         <translation>Välja logitud</translation>
     </message>
@@ -845,70 +840,70 @@ Are you sure you want to perform this operation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="808"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="809"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Kontrollitakse muudatusi kaustas &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="844"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="847"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sünkroniseerimine %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="883"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="877"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>allalaadimine %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="886"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="887"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>üleslaadimine %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="914"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7
@@ -917,22 +912,22 @@ Total time left 12 minutes&quot;</extracomment>
 Aega kokku jäänud %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="920"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>file %1 of %2</source>
         <translation>fail %1 / %2-st</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="961"/>
         <source>Waiting...</source>
         <translation>Ootamine...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
         <source>Preparing to sync...</source>
         <translation>Sünkroniseerimiseks valmistumine...</translation>
     </message>
@@ -2739,12 +2734,18 @@ Selle kasutamine pole soovitatav.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
+        <location filename="../src/libsync/syncengine.cpp" line="653"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1030"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1037"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2844,64 +2845,59 @@ Selle kasutamine pole soovitatav.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="653"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="686"/>
+        <location filename="../src/libsync/syncengine.cpp" line="687"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Ei suuda lähtestada sünkroniseeringu zurnaali.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="768"/>
+        <location filename="../src/libsync/syncengine.cpp" line="769"/>
         <source>Cannot open the sync journal</source>
         <translation>Ei suuda avada sünkroniseeringu zurnaali</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="998"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="999"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1006"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Vali, mida sünkroniseerida&quot; musta nimekirja tõttu vahele jäetud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1024"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Pole lubatud üles laadida, kuna tegemist on ainult-loetava serveriga, taastan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1094"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Eemaldamine pole lubatud, taastan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1107"/>
         <source>Local files and share folder removed.</source>
         <translation>Kohalikud failid ja jagatud kaustad eemaldatud.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1162"/>
         <source>Move not allowed, item restored</source>
         <translation>Liigutamine pole lubatud, üksus taastatud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Liigutamien pole võimalik kuna %1 on ainult lugemiseks</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the destination</source>
         <translation>sihtkoht</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
         <source>the source</source>
         <translation>allikas</translation>
     </message>
@@ -3317,6 +3313,14 @@ Selle kasutamine pole soovitatav.</translation>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="120"/>
         <source>PushButton</source>
         <translation>Nupp</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="575"/>
+        <source>QT_LAYOUT_DIRECTION</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
