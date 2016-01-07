@@ -244,12 +244,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     int h = iconRect.bottom();
     if( !errorTexts.isEmpty() ) {
-        h += aliasMargin;
+        h += margin;
         QRect errorRect = localPathRect;
         errorRect.setLeft( iconRect.left());
         errorRect.setTop( h );
-        errorRect.setHeight(errorTexts.count() * subFm.height()+aliasMargin);
-        errorRect.setRight( option.rect.right()-aliasMargin );
+        errorRect.setHeight(errorTexts.count() * subFm.height() + 2 * margin);
+        errorRect.setRight( option.rect.right() - margin );
 
         painter->setBrush( QColor(0xbb, 0x4d, 0x4d) );
         painter->setPen( QColor(0xaa, 0xaa, 0xaa));
@@ -257,23 +257,20 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                                  4, 4);
         painter->setPen( Qt::white );
         painter->setFont(errorFont);
-        QRect errorTextRect = errorRect;
-        errorTextRect.setLeft( errorTextRect.left()+aliasMargin );
-        errorTextRect.setTop( errorTextRect.top()+aliasMargin/2 );
-
-        int x = errorTextRect.left();
-        int y = errorTextRect.top()+aliasMargin/2 + subFm.height()/2;
+        QRect errorTextRect( errorRect.left() + margin,
+            errorRect.top() + margin,
+            errorRect.width() - 2 * margin,
+            subFm.height() );
 
         foreach( QString eText, errorTexts ) {
-            QRect lineRect = QRect(x, y, errorTextRect.width(), subFm.height());
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, lineRect), textAlign,
-                              subFm.elidedText( eText, Qt::ElideLeft, errorTextRect.width()-2*aliasMargin));
-            y += lineRect.height();
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, errorTextRect), textAlign,
+                              subFm.elidedText( eText, Qt::ElideLeft, errorTextRect.width()));
+            errorTextRect.translate(0, errorTextRect.height());
         }
 
         h = errorRect.bottom();
     }
-    h += aliasMargin;
+    h += margin;
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
