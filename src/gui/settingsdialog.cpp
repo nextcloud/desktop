@@ -190,10 +190,15 @@ void SettingsDialog::showActivityPage()
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
+
+    bool brandingSingleAccount = !Theme::instance()->multiAccount();
+
     auto accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
-                                                s->account()->displayName());
-    accountAction->setToolTip(s->account()->displayName());
-    accountAction->setIconText(s->shortDisplayNameForSettings(height * buttonSizeRatio));
+                                                brandingSingleAccount ? tr("Account") : s->account()->displayName());
+    if (!brandingSingleAccount) {
+        accountAction->setToolTip(s->account()->displayName());
+        accountAction->setIconText(s->shortDisplayNameForSettings(height * buttonSizeRatio));
+    }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0 , accountSettings);
