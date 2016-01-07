@@ -55,7 +55,7 @@ public:
     /**
      * return the position of the option button within the item
      */
-    static QRect optionsButtonRect(const QRect &within);
+    static QRect optionsButtonRect(const QRect& within, Qt::LayoutDirection direction);
 private:
     static QString addFolderText();
 };

@@ -242,7 +242,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex& indx)
         // tries to find if we clicked on the '...' button.
         QTreeView *tv = ui->_folderList;
         auto pos = tv->mapFromGlobal(QCursor::pos());
-        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx)).contains(pos)) {
+        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
             slotCustomContextMenuRequested(pos);
             return;
         }

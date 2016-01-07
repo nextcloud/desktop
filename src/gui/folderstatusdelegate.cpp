@@ -91,6 +91,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 {
     QStyledItemDelegate::paint(painter,option,index);
 
+    auto textAlign = Qt::AlignLeft;
+
     QFont aliasFont = option.font;
     QFont subFont   = option.font;
     QFont errorFont = subFont;
@@ -117,6 +119,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         opt.text = addFolderText();
         opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
         opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
+        opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
                 , option.widget
@@ -175,7 +178,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int iconSize = iconRect.width();
 
     QPixmap pm = statusIcon.pixmap(iconSize, iconSize, syncEnabled ? QIcon::Normal : QIcon::Disabled );
-    painter->drawPixmap(QPoint(iconRect.left(), iconRect.top()), pm);
+    painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect).left(),
+                        iconRect.top(), pm);
 
     // only show the warning icon if the sync is running. Otherwise its
     // encoded in the status icon.
@@ -188,6 +192,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         QIcon warnIcon(":/client/resources/warning");
         QPixmap pm = warnIcon.pixmap(16,16, syncEnabled ? QIcon::Normal : QIcon::Disabled );
+        warnRect = QStyle::visualRect(option.direction, option.rect, warnRect);
         painter->drawPixmap(QPoint(warnRect.left(), warnRect.top()),pm );
     }
 
@@ -214,7 +219,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     QString elidedAlias = aliasFm.elidedText(aliasText, Qt::ElideRight, aliasRect.width());
     painter->setFont(aliasFont);
-    painter->drawText(aliasRect, elidedAlias);
+    painter->drawText(QStyle::visualRect(option.direction, option.rect, aliasRect), textAlign, elidedAlias);
 
     const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
     if(!showProgess) {
@@ -228,10 +233,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
                                                     Qt::ElideMiddle, remotePathRect.width());
         }
-        painter->drawText(remotePathRect, elidedRemotePathText);
-
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect),
+                          textAlign, elidedRemotePathText);
         QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
-        painter->drawText(localPathRect, elidedPathText);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect),
+                          textAlign, elidedPathText);
     }
 
     // paint an error overlay if there is an error string
@@ -247,8 +253,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         painter->setBrush( QColor(0xbb, 0x4d, 0x4d) );
         painter->setPen( QColor(0xaa, 0xaa, 0xaa));
-        painter->drawRoundedRect( errorRect, 4, 4 );
-
+        painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, errorRect),
+                                 4, 4);
         painter->setPen( Qt::white );
         painter->setFont(errorFont);
         QRect errorTextRect = errorRect;
@@ -259,8 +265,10 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int y = errorTextRect.top()+aliasMargin/2 + subFm.height()/2;
 
         foreach( QString eText, errorTexts ) {
-            painter->drawText(x, y, subFm.elidedText( eText, Qt::ElideLeft, errorTextRect.width()-2*aliasMargin));
-            y += subFm.height();
+            QRect lineRect = QRect(x, y, errorTextRect.width(), subFm.height());
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, lineRect), textAlign,
+                              subFm.elidedText( eText, Qt::ElideLeft, errorTextRect.width()-2*aliasMargin));
+            y += lineRect.height();
         }
 
         h = errorRect.bottom();
@@ -270,8 +278,9 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
         int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-        int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4); ;
-        int overallWidth = option.rect.width()-aliasMargin-nextToIcon;
+        int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4);
+        const int optionsButtonWidth = 2*aliasMargin; // vague estimate
+        int overallWidth = option.rect.right() - aliasMargin - optionsButtonWidth - nextToIcon;
 
         painter->save();
 
@@ -293,7 +302,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pBarOpt.maximum  = 100;
         pBarOpt.progress = overallPercent;
         pBarOpt.orientation = Qt::Horizontal;
-        pBarOpt.rect = pBRect;
+        pBarOpt.rect = QStyle::visualRect(option.direction, option.rect, pBRect);
 
         QApplication::style()->drawControl( QStyle::CE_ProgressBar, &pBarOpt, painter );
 
@@ -305,7 +314,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         overallProgressRect.setWidth( progressTextWidth );
         painter->setFont(progressFont);
 
-        painter->drawText( overallProgressRect, Qt::AlignRight+Qt::AlignVCenter, overallString);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect),
+                          Qt::AlignRight | Qt::AlignVCenter, overallString);
         // painter->drawRect(overallProgressRect);
 
         // Individual File Progress
@@ -316,7 +326,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         fileRect.setHeight(fileNameTextHeight);
         QString elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
 
-        painter->drawText( fileRect, Qt::AlignLeft+Qt::AlignVCenter, elidedText);
+        painter->drawText(QStyle::visualRect(option.direction, option.rect, fileRect),
+                          Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 
         painter->restore();
     }
@@ -334,7 +345,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonRect(rectWithoutErrors);
+        btnOpt.rect = optionsButtonRect(rectWithoutErrors, btnOpt.direction);
         btnOpt.icon = m_moreIcon;
         btnOpt.iconSize = btnOpt.rect.size();
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
@@ -347,7 +358,7 @@ bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mo
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-QRect FolderStatusDelegate::optionsButtonRect(const QRect &within)
+QRect FolderStatusDelegate::optionsButtonRect(const QRect &within, Qt::LayoutDirection direction)
 {
     QStyleOptionToolButton opt;
     opt.text = QLatin1String("...");
@@ -358,9 +369,10 @@ QRect FolderStatusDelegate::optionsButtonRect(const QRect &within)
         expandedTo(QApplication::globalStrut());
 
     int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
-    return QRect(QPoint(within.right() - size.width() - margin,
-                        within.top() + within.height()/2 - size.height()/2),
-                 size);
+    QRect r(QPoint(within.right() - size.width() - margin,
+                   within.top() + within.height()/2 - size.height()/2),
+            size);
+    return QStyle::visualRect(direction, within, r);
 }
 
 
