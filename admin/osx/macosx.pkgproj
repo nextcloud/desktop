@@ -1453,8 +1453,9 @@
 	        <key>SHARED_GLOBAL_DATA</key>
 	        <dict>
 	                <key>IC_REQUIREMENT_JAVASCRIPT_SHARED_SOURCE_CODE</key>
-	                <string>function olderOsx() {
-if(!(system.version.ProductVersion &gt;= '10.10')) {
+	                <string>
+	function olderOsx() {
+   if(system.compareVersions(system.version.ProductVersion, '10.10') == -1) {
 	    return true;
 	}
 	return false;
