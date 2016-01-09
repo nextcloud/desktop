@@ -2220,7 +2220,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="197"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Account</translation>
     </message>
 </context>
 <context>
@@ -2248,7 +2248,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="120"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Account</translation>
     </message>
 </context>
 <context>

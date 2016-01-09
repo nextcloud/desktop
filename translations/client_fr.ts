@@ -2221,7 +2221,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="197"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Compte</translation>
     </message>
 </context>
 <context>
@@ -2249,7 +2249,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="120"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Compte</translation>
     </message>
 </context>
 <context>

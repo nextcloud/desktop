@@ -2221,7 +2221,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="197"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Účet</translation>
     </message>
 </context>
 <context>
@@ -2249,7 +2249,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="120"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Účet</translation>
     </message>
 </context>
 <context>

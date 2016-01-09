@@ -1123,7 +1123,7 @@ Tiempo restante %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editar archivos &amp;ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -2217,7 +2217,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="197"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
 </context>
 <context>
@@ -2245,7 +2245,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="120"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Cuenta</translation>
     </message>
 </context>
 <context>
@@ -2880,7 +2880,7 @@ No se recomienda usarla.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1002"/>
         <location filename="../src/libsync/syncengine.cpp" line="1009"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorado por que se encuentra en la lista negra de &quot;elija qué va a sincronizar&quot;</translation>
+        <translation>Ignorado porque se encuentra en la lista negra de &quot;elija qué va a sincronizar&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1028"/>
