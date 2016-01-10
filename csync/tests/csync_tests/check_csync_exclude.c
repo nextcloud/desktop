@@ -53,6 +53,12 @@ static void setup_init(void **state) {
     assert_int_equal(rc, 0);
     rc = _csync_exclude_add(&(csync->excludes), "пятницы.*");
     assert_int_equal(rc, 0);
+    rc = _csync_exclude_add(&(csync->excludes), "*/*.out");
+    assert_int_equal(rc, 0);
+    rc = _csync_exclude_add(&(csync->excludes), "latex*/*.run.xml");
+    assert_int_equal(rc, 0);
+    rc = _csync_exclude_add(&(csync->excludes), "latex/*/*.tex.tmp");
+    assert_int_equal(rc, 0);
 
     *state = csync;
 }
@@ -160,7 +166,21 @@ static void check_csync_excluded(void **state)
     rc = csync_excluded(csync, "unicode/中文.💩", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
+    /* path wildcards */
+    rc = csync_excluded(csync, "foobar/my_manuscript.out", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
+    rc = csync_excluded(csync, "latex_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+
+    rc = csync_excluded(csync, "word_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    rc = csync_excluded(csync, "latex/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+    rc = csync_excluded(csync, "latex/songbook/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_excluded_traversal(void **state)
