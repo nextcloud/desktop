@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="223"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Remover a conexão ao directório de sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="337"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirme a eliminação da conexão ao Directório de sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Remover a conexão ao Directório de sincronização.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
@@ -185,7 +185,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <source>Connected to %1.</source>
-        <translation>Conetado a %1.</translation>
+        <translation>Conectado a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="546"/>
@@ -195,7 +195,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="548"/>
         <source>Signed out from %1.</source>
-        <translation>Terminou a sesão de %1.</translation>
+        <translation>Terminou a sessão de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="550"/>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Existem novos directórios que não foram sincronizados porque são demasiado grandes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
@@ -284,12 +284,12 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="102"/>
         <source>Disconnected</source>
-        <translation>Desconetado</translation>
+        <translation>Desconectado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="104"/>
         <source>Connected</source>
-        <translation>Conetado</translation>
+        <translation>Conectado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="106"/>
@@ -314,12 +314,12 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>Reauthentication required</source>
-        <translation>Requerido reautenticação</translation>
+        <translation>É necessario autenticar novamente</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="267"/>
         <source>You need to re-login to continue using the account %1.</source>
-        <translation type="unfinished"/>
+        <translation>Volte a iniciar a sessão para poder continuar a utilizar a conta %1</translation>
     </message>
 </context>
 <context>
@@ -332,7 +332,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="137"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 em %2 (disconectado)</translation>
     </message>
 </context>
 <context>
@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Lista de ficheiros ignorados ou com erros</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>

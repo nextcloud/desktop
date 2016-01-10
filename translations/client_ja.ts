@@ -370,12 +370,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>サーバアクティビティリストをクリップボードにコピーしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>同期状況をクリップボードにコピーしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
