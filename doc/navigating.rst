@@ -116,6 +116,11 @@ button, and re-select the folder tree that you want to sync.
 .. figure:: images/client-7.png
    :alt: Extra options for sync operations
    
+.. note:: ownCloud does not preserve the mtime (modification time) of 
+   directories, though it does update the mtimes on files. See  
+   `Wrong folder date when syncing 
+   <https://github.com/owncloud/core/issues/7009>`_ for discussion of this.  
+   
 Adding New Accounts
 ^^^^^^^^^^^^^^^^^^^
 
