@@ -325,12 +325,12 @@
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="135"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
         <translation>%1 em %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="137"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
         <translation>%1 em %2 (disconectado)</translation>
     </message>
@@ -3341,7 +3341,7 @@ It is not advisable to use it.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="575"/>
+        <location filename="../src/gui/application.cpp" line="571"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
