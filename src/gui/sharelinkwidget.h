@@ -74,7 +74,6 @@ private slots:
 
 private:
     void setShareCheckBoxTitle(bool haveShares);
-    void displayError(int code);
     void displayError(const QString& errMsg);
     void setShareLink( const QString& url );
     void resizeEvent(QResizeEvent *e);

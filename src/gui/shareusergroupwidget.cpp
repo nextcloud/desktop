@@ -74,6 +74,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _manager = new ShareManager(_account, this);
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
+    connect(_manager, SIGNAL(serverError(int,QString)), this, SLOT(displayError(int,QString)));
     connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(slotLineEditReturn()));
 
     // By making the next two QueuedConnections we can override
@@ -91,6 +92,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _completionTimer.setInterval(600);
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
+    _ui->errorLabel->hide();
 }
 
 ShareUserGroupWidget::~ShareUserGroupWidget()
@@ -228,6 +230,13 @@ void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex & index)
     // By default the completer would set the text to EditRole,
     // override that here.
     _ui->shareeLineEdit->setText(index.data(Qt::DisplayRole).toString());
+}
+
+void ShareUserGroupWidget::displayError(int code, const QString& message)
+{
+    qDebug() << "Error from server" << code << message;
+    _ui->errorLabel->setText(message);
+    _ui->errorLabel->show();
 }
 
 ShareWidget::ShareWidget(QSharedPointer<Share> share,

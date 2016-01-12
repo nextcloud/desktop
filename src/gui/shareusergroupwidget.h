@@ -109,6 +109,7 @@ private slots:
     void slotCompleterHighlighted(const QModelIndex & index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();
+    void displayError(int code ,const QString &message);
 
 private:
     Ui::ShareUserGroupWidget *_ui;

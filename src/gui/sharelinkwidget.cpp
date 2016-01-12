@@ -505,8 +505,8 @@ void ShareLinkWidget::setShareCheckBoxTitle(bool haveShares)
 void ShareLinkWidget::displayError(int code, const QString &message)
 {
     const QString arg = QString("%1, %2").arg(code).arg(message);
-    const QString errMsg = tr("OCS API error code: %1").arg(arg);
-    displayError(errMsg);
+    qDebug() << "Error from server" << code << message;
+    displayError(message);
 }
 
 void ShareLinkWidget::displayError(const QString& errMsg)
@@ -515,10 +515,5 @@ void ShareLinkWidget::displayError(const QString& errMsg)
     _ui->errorLabel->show();
 }
 
-void ShareLinkWidget::displayError(int code)
-{
-    const QString errMsg = tr("OCS API error code: %1").arg(code);
-    displayError(errMsg);
-}
 
 }
