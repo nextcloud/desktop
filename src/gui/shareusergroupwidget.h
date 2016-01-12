@@ -123,7 +123,7 @@ private:
 
     bool _resharingAllowed;
     bool _isFile;
-
+    bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;
 };
 

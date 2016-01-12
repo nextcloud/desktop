@@ -48,7 +48,8 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
     _account(account),
     _sharePath(sharePath),
     _localPath(localPath),
-    _resharingAllowed(resharingAllowed)
+    _resharingAllowed(resharingAllowed),
+    _disableCompleterActivated(false)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SharingDialogUG"); // required as group for saveGeometry call
@@ -63,6 +64,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account, const QString &sh
                                       _isFile ? QLatin1String("file") : QLatin1String("folder"),
                                       _completer);
     connect(_completerModel, SIGNAL(shareesReady()), this, SLOT(slotShareesReady()));
+    connect(_completerModel, SIGNAL(displayErrorMessage(int,QString)), this, SLOT(displayError(int,QString)));
 
     _completer->setModel(_completerModel);
     _completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -107,6 +109,7 @@ void ShareUserGroupWidget::on_shareeLineEdit_textChanged(const QString &)
 
 void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
 {
+    _disableCompleterActivated = false;
     // First textChanged is called first and we stopped the timer when the text is changed, programatically or not
     // Then we restart the timer here if the user touched a key
     if (!text.isEmpty()) {
@@ -116,6 +119,7 @@ void ShareUserGroupWidget::slotLineEditTextEdited(const QString& text)
 
 void ShareUserGroupWidget::slotLineEditReturn()
 {
+    _disableCompleterActivated = false;
     // did the user type in one of the options?
     const auto text = _ui->shareeLineEdit->text();
     for (int i = 0; i < _completerModel->rowCount(); ++i) {
@@ -124,9 +128,11 @@ void ShareUserGroupWidget::slotLineEditReturn()
                 || sharee->displayName() == text
                 || sharee->shareWith() == text) {
             slotCompleterActivated(_completerModel->index(i));
-            break;
+            // make sure we do not send the same item twice (because return is called when we press
+            // return to activate an item inthe completer)
+            _disableCompleterActivated = true;
+            return;
         }
-
     }
 
     // nothing found? try to refresh completion
@@ -146,7 +152,7 @@ void ShareUserGroupWidget::searchForSharees()
     foreach (auto sw, _ui->scrollArea->findChildren<ShareWidget*>()) {
         blacklist << sw->share()->getShareWith();
     }
-
+    _ui->errorLabel->hide();
     _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist);
 
 }
@@ -159,7 +165,6 @@ void ShareUserGroupWidget::getShares()
 void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
     QScrollArea *scrollArea = _ui->scrollArea;
-
 
     auto newViewPort = new QWidget(scrollArea);
     auto layout = new QVBoxLayout(newViewPort);
@@ -190,6 +195,8 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     scrollArea->setMinimumSize(minimumSize);
     scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setWidget(newViewPort);
+
+    _disableCompleterActivated = false;
 }
 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
@@ -204,14 +211,19 @@ void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
     }
 }
 
-
 void ShareUserGroupWidget::slotShareesReady()
 {
+    if (_completerModel->rowCount() == 0) {
+        displayError(0, tr("No results for '%1'").arg(_completerModel->currentSearch()));
+        return;
+    }
     _completer->complete();
 }
 
 void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
 {
+    if (_disableCompleterActivated)
+        return;
     // The index is an index from the QCompletion model which is itelf a proxy
     // model proxying the _completerModel
     auto sharee = qvariant_cast<QSharedPointer<Sharee>>(index.data(Qt::UserRole));

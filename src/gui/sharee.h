@@ -64,8 +64,11 @@ public:
 
     QSharedPointer<Sharee> getSharee(int at);
 
+    QString currentSearch() const { return _search; }
+
 signals:
     void shareesReady();
+    void displayErrorMessage(int code, const QString &);
 
 private slots:
     void shareesFetched(const QVariantMap &reply);
