@@ -18,10 +18,10 @@
 #pragma once
 
 enum State {
-	State_Error = 0, State_ErrorShared,
+	State_Error = 0,
 	State_OK, State_OKShared,
-	State_Sync, State_SyncShared,
-	State_Warning, State_WarningShared
+	State_Sync, 
+	State_Warning
 };
 
 class OCOverlayFactory : public IClassFactory

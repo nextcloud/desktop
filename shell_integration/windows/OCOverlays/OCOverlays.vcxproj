@@ -184,22 +184,11 @@
     <ResourceCompile Include="OCOverlay.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Error.ico" />
-    <Image Include="Error_Shared.ico" />
     <Image Include="ico\Error.ico" />
-    <Image Include="ico\Error_Shared.ico" />
     <Image Include="ico\OK.ico" />
     <Image Include="ico\OK_Shared.ico" />
     <Image Include="ico\Sync.ico" />
-    <Image Include="ico\Sync_Shared.ico" />
     <Image Include="ico\Warning.ico" />
-    <Image Include="ico\Warning_Shared.ico" />
-    <Image Include="OK.ico" />
-    <Image Include="OK_Shared.ico" />
-    <Image Include="Sync.ico" />
-    <Image Include="Sync_Shared.ico" />
-    <Image Include="Warning.ico" />
-    <Image Include="Warning_Shared.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

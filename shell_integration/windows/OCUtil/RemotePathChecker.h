@@ -29,10 +29,10 @@ class __declspec(dllexport) RemotePathChecker {
 public:
 	enum FileState {
 		// Order synced with OCOverlay
-		StateError = 0, StateErrorSWM,
+		StateError = 0,
 		StateOk, StateOkSWM,
-		StateSync, StateSyncSWM,
-		StateWarning, StateWarningSWM,
+		StateSync,
+		StateWarning,
 		StateNone
 	};
 	RemotePathChecker();
