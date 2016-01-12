@@ -29,7 +29,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "${APPLICATION_NAME}erako Abiarazle 
 StrCpy $UNINSTALLER_FILE_Detail "Desinstalatzailea idazten"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Instalatzaileko Erregistroko Giltzak idazten"
 StrCpy $UNINSTALLER_FINISHED_Detail "Bukatuta"
-StrCpy $UNINSTALL_MESSAGEBOX "Ez dirudi ${APPLICATION_NAME} '$INSTDIR'.$ direktorioan instalatuta dagoenik.\n$\nJarraitu hala ere (ez da aholkatzen)?"
+StrCpy $UNINSTALL_MESSAGEBOX "Ez dirudi ${APPLICATION_NAME} '$INSTDIR'.$ direktorioan instalatuta dagoenik.$\n$\nJarraitu hala ere (ez da aholkatzen)?"
 StrCpy $UNINSTALL_ABORT "Desinstalazioak erabiltzaileak bertan behera utzi du"
 StrCpy $INIT_NO_QUICK_LAUNCH "Abiarazle Bizkorreko Lasterbidea (E/E)"
 StrCpy $INIT_NO_DESKTOP "Mahaigaineko Lasterbidea (dagoena berridazten du)"

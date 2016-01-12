@@ -1,6 +1,6 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Näytä julkaisutiedot"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Havaittiin sovelluksen ${APPLICATION_EXECUTABLE} prosessi (tai prosesseja) jotka pitäisi pysäyttää.\nHaluatko että asennusohjelma pysäyttää nämä puolestasi?"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Havaittiin sovelluksen ${APPLICATION_EXECUTABLE} prosessi (tai prosesseja) jotka pitäisi pysäyttää.$\nHaluatko että asennusohjelma pysäyttää nämä puolestasi?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Pysäytetään sovelluksen ${APPLICATION_EXECUTABLE} prosessit."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Tapettavaa prosessia ei löytynyt!"
 StrCpy $PageReinstall_NEW_Field_1 "Vanhempi versio sovelluksesta ${APPLICATION_NAME} on jo asennettu. On suositeltavaa että poistat vanhan asennuksen ensin. Valitse mikä toiminto suoritetaan ja napsauta Seuraava jatkaaksesi."
@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Pikakäynnistyksen pikakuvake sovell
 StrCpy $UNINSTALLER_FILE_Detail "Kirjoitetaan poisto-ohjelmaa"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Kirjoitetaan asennusohjelman rekisteriavaimia"
 StrCpy $UNINSTALLER_FINISHED_Detail "Valmis"
-StrCpy $UNINSTALL_MESSAGEBOX "Vaikuttaa siltä että sovellus ${APPLICATION_NAME} on asennettu kansioon '$INSTDIR'.\n\nHaluatko jatkaa tästä huolimatta (ei suositeltavaa)?"
+StrCpy $UNINSTALL_MESSAGEBOX "Vaikuttaa siltä että sovellus ${APPLICATION_NAME} on asennettu kansioon '$INSTDIR'.$\n$\nHaluatko jatkaa tästä huolimatta (ei suositeltavaa)?"
 StrCpy $UNINSTALL_ABORT "Poistaminen keskeytettiin käyttäjän toimesta"
 StrCpy $INIT_NO_QUICK_LAUNCH "Pikakäynnistyksen pikakuvake (-)"
 StrCpy $INIT_NO_DESKTOP "Työpöydän pikakuvake (korvaa nykyinen)"

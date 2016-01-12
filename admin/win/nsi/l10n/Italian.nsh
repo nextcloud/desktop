@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Scorciatoia per ${APPLICATION_NAME}
 StrCpy $UNINSTALLER_FILE_Detail "Creazione del programma di disinstallazione"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Scrittura delle chiavi di registro del programma di installazione"
 StrCpy $UNINSTALLER_FINISHED_Detail "Completato"
-StrCpy $UNINSTALL_MESSAGEBOX "Non sembra che ${APPLICATION_NAME} sia installato nella cartella '$INSTDIR'.$\nVuoi continuare comunque (non consigliato)?"
+StrCpy $UNINSTALL_MESSAGEBOX "Non sembra che ${APPLICATION_NAME} sia installato nella cartella '$INSTDIR'.$$\nVuoi continuare comunque (non consigliato)?"
 StrCpy $UNINSTALL_ABORT "Disinstallazione interrotta dall'utente"
 StrCpy $INIT_NO_QUICK_LAUNCH "Scorciatoia dell'avvio veloce (N/D)"
 StrCpy $INIT_NO_DESKTOP "Scorciatoia del desktop (sovrascrivi se esistente)"

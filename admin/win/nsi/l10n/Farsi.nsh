@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "میانبر اجرای سریع ب
 StrCpy $UNINSTALLER_FILE_Detail "نوشتن حذف کننده"
 StrCpy $UNINSTALLER_REGISTRY_Detail "در حال نوشتن کلید های رجیستری نصاب"
 StrCpy $UNINSTALLER_FINISHED_Detail "اتمام"
-StrCpy $UNINSTALL_MESSAGEBOX "به نظر نمی رسد نرم افزار ${APPLICATION_NAME} در '$INSTDIR'.$\n$\nنصب شده باشد.\nآیا می خواهید ادامه دهید ( توصیه نشده است ) ؟"
+StrCpy $UNINSTALL_MESSAGEBOX "به نظر نمی رسد نرم افزار ${APPLICATION_NAME} در '$INSTDIR'.$\n$\nنصب شده باشد.$\nآیا می خواهید ادامه دهید ( توصیه نشده است ) ؟"
 StrCpy $UNINSTALL_ABORT "عمل حذف توسط کاربر متوقف شد"
 StrCpy $INIT_NO_QUICK_LAUNCH "میانبر بازکردن سریع ( N/A )"
 StrCpy $INIT_NO_DESKTOP "میانبر دسکتاپ (رونویسی وجود دارد)"

@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Ярлык в меню быстро
 StrCpy $UNINSTALLER_FILE_Detail "Сохранение деинсталлятора"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Запись ключей реестра установщика"
 StrCpy $UNINSTALLER_FINISHED_Detail "Завершено"
-StrCpy $UNINSTALL_MESSAGEBOX "Похоже, что приложение ${APPLICATION_NAME} не установлено в каталог '$INSTDIR'.\nВсе равно продолжить (не рекомендуется)?"
+StrCpy $UNINSTALL_MESSAGEBOX "Похоже, что приложение ${APPLICATION_NAME} не установлено в каталог '$INSTDIR'.$\nВсе равно продолжить (не рекомендуется)?"
 StrCpy $UNINSTALL_ABORT "Удаление отменено пользователем"
 StrCpy $INIT_NO_QUICK_LAUNCH "Ярлык быстрого запуска (не доступен)"
 StrCpy $INIT_NO_DESKTOP "Ярлык на рабочем столе (перезапись существующего)"
