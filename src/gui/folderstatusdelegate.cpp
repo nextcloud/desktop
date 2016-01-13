@@ -55,10 +55,9 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
 
-    int margin = fm.height()/4;
-
     auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
     if (classif == FolderStatusModel::AddButton) {
+        int margins = fm.height();
         QFontMetrics fm(option.font);
         QStyleOptionButton opt;
         static_cast<QStyleOption&>(opt) = option;
@@ -66,7 +65,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
         return QApplication::style()->sizeFromContents(
                 QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).
             expandedTo(QApplication::globalStrut())
-            + QSize(0, margin);
+            + QSize(0, margins);
     }
 
     if (classif != FolderStatusModel::RootFolder) {
@@ -78,6 +77,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
 
     // add some space to show an error condition.
     if( ! qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty() ) {
+        int margin = fm.height()/4;
         QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
         h += margin + errMsgs.count()*fm.height();
     }
@@ -188,6 +188,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     int iconSize = iconRect.width();
 
+    auto optionsButtonVisualRect = optionsButtonRect(option.rect, option.direction);
+
     QPixmap pm = statusIcon.pixmap(iconSize, iconSize, syncEnabled ? QIcon::Normal : QIcon::Disabled );
     painter->drawPixmap(QStyle::visualRect(option.direction, option.rect, iconRect).left(),
                         iconRect.top(), pm);
@@ -287,8 +289,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (showProgess) {
         int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
         int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4);
-        const int optionsButtonWidth = 2*aliasMargin; // vague estimate
-        int overallWidth = option.rect.right() - aliasMargin - optionsButtonWidth - nextToIcon;
+        int overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;
 
         painter->save();
 
@@ -350,7 +351,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonRect(option.rect, btnOpt.direction);
+        btnOpt.rect = optionsButtonVisualRect;
         btnOpt.icon = m_moreIcon;
         btnOpt.iconSize = btnOpt.rect.size();
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
