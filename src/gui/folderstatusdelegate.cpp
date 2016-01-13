@@ -26,6 +26,14 @@
 #include <QPainter>
 #include <QApplication>
 
+inline static QFont makeAliasFont(const QFont &normalFont)
+{
+    QFont aliasFont = normalFont;
+    aliasFont.setBold(true);
+    aliasFont.setPointSize(normalFont.pointSize()+2);
+    return aliasFont;
+}
+
 namespace OCC {
 
 FolderStatusDelegate::FolderStatusDelegate() : QStyledItemDelegate() {
@@ -41,14 +49,12 @@ QString FolderStatusDelegate::addFolderText()
 QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
                                    const QModelIndex & index) const
 {
-    QFont aliasFont = option.font;
+    QFont aliasFont = makeAliasFont(option.font);
     QFont font = option.font;
-    aliasFont.setPointSize( font.pointSize() +2 );
 
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
 
-    int aliasMargin = aliasFm.height()/2;
     int margin = fm.height()/4;
 
     auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
@@ -60,7 +66,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
         return QApplication::style()->sizeFromContents(
                 QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).
             expandedTo(QApplication::globalStrut())
-            + QSize(0, 2*aliasMargin);
+            + QSize(0, margin);
     }
 
     if (classif != FolderStatusModel::RootFolder) {
@@ -68,6 +74,21 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
     }
 
     // calc height
+    int h = rootFolderHeightWithoutErrors(fm, aliasFm);
+
+    // add some space to show an error condition.
+    if( ! qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty() ) {
+        QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
+        h += margin + errMsgs.count()*fm.height();
+    }
+
+    return QSize( 0, h);
+}
+
+int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm)
+{
+    const int aliasMargin = aliasFm.height()/2;
+    const int margin = fm.height()/4;
 
     int h = aliasMargin;         // margin to top
     h += aliasFm.height();       // alias
@@ -76,14 +97,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
     h += margin;                 // between local and remote path
     h += fm.height();            // remote path
     h += aliasMargin;            // bottom margin
-
-    // add some space to show an error condition.
-    if( ! qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty() ) {
-        QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
-        h += aliasMargin*2 + errMsgs.count()*fm.height();
-    }
-
-    return QSize( 0, h);
+    return h;
 }
 
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -93,15 +107,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     auto textAlign = Qt::AlignLeft;
 
-    QFont aliasFont = option.font;
+    QFont aliasFont = makeAliasFont(option.font);
     QFont subFont   = option.font;
     QFont errorFont = subFont;
     QFont progressFont = subFont;
 
     progressFont.setPointSize( subFont.pointSize()-2);
-    //font.setPixelSize(font.weight()+);
-    aliasFont.setBold(true);
-    aliasFont.setPointSize( subFont.pointSize()+2 );
 
     QFontMetrics subFm( subFont );
     QFontMetrics aliasFm( aliasFont );
@@ -332,9 +343,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->restore();
 
     {
-        QRect rectWithoutErrors = option.rect;
-        rectWithoutErrors.setTop(iconRect.top());
-        rectWithoutErrors.setBottom(iconRect.bottom());
         QStyleOptionToolButton btnOpt;
         //btnOpt.text = QLatin1String("...");
         btnOpt.state = option.state;
@@ -342,7 +350,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.state |= QStyle::State_Raised;
         btnOpt.arrowType = Qt::NoArrow;
         btnOpt.subControls = QStyle::SC_ToolButton;
-        btnOpt.rect = optionsButtonRect(rectWithoutErrors, btnOpt.direction);
+        btnOpt.rect = optionsButtonRect(option.rect, btnOpt.direction);
         btnOpt.icon = m_moreIcon;
         btnOpt.iconSize = btnOpt.rect.size();
         QApplication::style()->drawComplexControl( QStyle::CC_ToolButton, &btnOpt, painter );
@@ -355,11 +363,16 @@ bool FolderStatusDelegate::editorEvent ( QEvent * event, QAbstractItemModel * mo
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-QRect FolderStatusDelegate::optionsButtonRect(const QRect &within, Qt::LayoutDirection direction)
+QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection direction)
 {
+    QFont font = QFont();
+    QFont aliasFont = makeAliasFont(font);
+    QFontMetrics fm(font);
+    QFontMetrics aliasFm(aliasFont);
+    within.setHeight(FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
+
     QStyleOptionToolButton opt;
     opt.text = QLatin1String("...");
-    QFontMetrics fm = QFontMetrics(QFont());
     QSize textSize = fm.size(Qt::TextShowMnemonic, opt.text);
     opt.rect.setSize(textSize);
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, textSize).
