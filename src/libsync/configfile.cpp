@@ -95,11 +95,9 @@ bool ConfigFile::setConfDir(const QString &value)
     if( dirPath.isEmpty() ) return false;
 
     QFileInfo fi(dirPath);
-    if ( !fi.exists() && !fi.isAbsolute() ) {
-        QDir::current().mkdir(dirPath);
-        QDir dir = QDir::current();
-        dir.cd(dirPath);
-        fi.setFile(dir.path());
+    if ( !fi.exists()  ) {
+        QDir().mkpath(dirPath);
+        fi.setFile(dirPath);
     }
     if( fi.exists() && fi.isDir() ) {
         dirPath = fi.absoluteFilePath();
