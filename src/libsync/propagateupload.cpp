@@ -199,16 +199,6 @@ void PropagateUploadFileQNAM::start()
         return;
     }
 
-    if (_propagator->account()->serverVersionInt() < 0x080100) {
-        // Server version older than 8.1 don't support these character in filename.
-        static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
-        if (_item->_file.contains(invalidCharRx)) {
-            _item->_httpErrorCode = 400; // So the entry get blacklisted
-            done(SyncFileItem::NormalError, tr("File name contains at least one invalid character"));
-            return;
-        }
-    }
-
     _propagator->_activeJobs++;
 
     if (!_deleteExisting) {

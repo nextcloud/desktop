@@ -816,6 +816,19 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         (*it)->_file = adjustRenamedPath((*it)->_file);
     }
 
+    // Check for invalid character in old server version
+    if (_account->serverVersionInt() < 0x080100) {
+        // Server version older than 8.1 don't support these character in filename.
+        static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
+        for (auto it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+            if ((*it)->_direction == SyncFileItem::Up &&
+                    (*it)->destination().contains(invalidCharRx)) {
+                (*it)->_errorString  = tr("File name contains at least one invalid character");
+                (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            }
+        }
+    }
+
     // Sort items per destination
     std::sort(_syncedItems.begin(), _syncedItems.end());
 
