@@ -785,22 +785,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>เพิ่มโฟลเดอร์ที่ต้องการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="277"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="290"/>
         <source>File</source>
         <translation>ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="243"/>
         <source>Syncing selected files in your account with</source>
         <translation>ซิงค์ไฟล์ที่เลือกในบัญชีของคุณด้วย</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="233"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Remote path: %1</source>
         <translation>ตำแหน่งพาธระยะไกล: %1</translation>
     </message>
@@ -1983,48 +1983,43 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="207"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
         <translation>ไฟล์ถูกลบไปแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>ไฟล์ต้นทางถูกเปลี่ยนแปลงในระหว่างการซิงค์ มันจะกลับมา</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="333"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="714"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>ไฟล์ต้นทางถูกเปลี่ยนแปลงขณะกำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="641"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>บังคับให้ยกเลิกงานในการตั้งค่าการเชื่อมต่อ HTTP กับ Qt &lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>ไฟล์ต้นทางที่ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้อ่านอย่างเดียว มันถูกเรียกคืนและแก้ไขของคุณอยู่ในไฟล์ความขัดแย้ง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>URL แบบสำรวจความคิดเห็นหายไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="703"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>ไฟล์ต้นทางถูกลบออกในระหว่างการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>เซิร์ฟเวอร์ไม่ยอมรับส่วนสุดท้าย (ไม่มี e-tag ในปัจจุบัน)</translation>
     </message>
@@ -2756,12 +2751,12 @@ It is not advisable to use it.</source>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
@@ -2871,49 +2866,54 @@ It is not advisable to use it.</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1002"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1009"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1061"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1078"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>

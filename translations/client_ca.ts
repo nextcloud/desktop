@@ -783,22 +783,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="277"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="290"/>
         <source>File</source>
         <translation>Fitxer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="243"/>
         <source>Syncing selected files in your account with</source>
         <translation>Sincronitzant els fitxers seleccionats del vostre compte amb</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="233"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Remote path: %1</source>
         <translation>Carpeta remota: %1</translation>
     </message>
@@ -1981,48 +1981,43 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="207"/>
-        <source>File name contains at least one invalid character</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
         <translation>Fitxer eliminat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="333"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="714"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="641"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer en conflicte.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="703"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation type="unfinished"/>
     </message>
@@ -2756,12 +2751,12 @@ No és aconsellada usar-la.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2871,49 +2866,54 @@ No és aconsellada usar-la.</translation>
         <translation>No es pot obrir el diari de sincronització</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1002"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1009"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <source>File name contains at least one invalid character</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>S&apos;ignora degut al filtre a «Trieu què sincronitzar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1061"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet pujar aquest fitxer perquè només és de lectura en el servidor, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1078"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet l&apos;eliminació, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Local files and share folder removed.</source>
         <translation>Fitxers locals i carpeta compartida esborrats.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
         <source>Move not allowed, item restored</source>
         <translation>No es permet moure&apos;l, l&apos;element es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No es permet moure perquè %1 només és de lectura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the destination</source>
         <translation>el destí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the source</source>
         <translation>l&apos;origen</translation>
     </message>

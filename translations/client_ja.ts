@@ -784,22 +784,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>同期フォルダーを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="277"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="290"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="243"/>
         <source>Syncing selected files in your account with</source>
         <translation>アカウントの指定ファイルは同期済み</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="233"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Remote path: %1</source>
         <translation>リモートパス: %1</translation>
     </message>
@@ -1982,48 +1982,43 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="207"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
         <translation>ファイルを削除しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="333"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="714"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="641"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>5.4.2 以下のQt でHTTP 接続リセットが強制終了されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>ファイルがローカルで編集されましたが、読み込み専用の共有の一部です。ファイルは復元され、あなたの編集は競合するファイル内にあります。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>ポーリングURLがありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="703"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>ローカルファイルを同期中に削除します。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>サーバーは最終チャンクを認識しませんでした。(e-tag が存在しませんでした)</translation>
     </message>
@@ -2759,12 +2754,12 @@ It is not advisable to use it.</source>
         <translation>%1 しか空き容量がありません、開始するためには少なくとも %2 は必要です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>親フォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
@@ -2874,49 +2869,54 @@ It is not advisable to use it.</source>
         <translation>同期ジャーナルを開くことができません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1002"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1009"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;同期対象先&quot; ブラックリストにより無視されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1061"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバーでは読み取り専用となっているため、このファイルをアップロードすることはできません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1078"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除できないので復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Local files and share folder removed.</source>
         <translation>ローカルファイルと共有フォルダーを削除しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
         <source>Move not allowed, item restored</source>
         <translation>移動できないので項目を復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 は読み取り専用のため移動できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the destination</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the source</source>
         <translation>移動元</translation>
     </message>

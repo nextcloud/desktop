@@ -784,22 +784,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>Προσθήκη σύνδεσης συγχρονισμού φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="277"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="290"/>
         <source>File</source>
         <translation>Αρχείο</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="230"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="243"/>
         <source>Syncing selected files in your account with</source>
         <translation>Συγχρονισμός επιλεγμένων αρχείων στο λογαριασμό σας με</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="233"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Remote path: %1</source>
         <translation>Απομακρυσμένη διαδρομή: %1</translation>
     </message>
@@ -1985,48 +1985,43 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="207"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
         <translation>Το αρχείο αφαιρέθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τη διάρκεια του συγχρονισμού. Θα συγχρονιστεί πάλι.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="333"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="714"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>Το τοπικό αρχείο τροποποιήθηκε κατά τον συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="641"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Εξαναγκασμός ακύρωσης εργασίας στην επαναφορά σύνδεσης HTTP με Qt &lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Το αρχείο υπέστη επεξεργασία τοπικά αλλά είναι τμήμα ενός διαμοιρασμένου καταλόγου μόνο για ανάγνωση. Επαναφέρθηκε και το επεξεργασμένο βρίσκεται στο αρχείο συγκρούσεων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="680"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>Η διεύθυνση poll URL λείπει</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="703"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>Το τοπικό αρχείο αφαιρέθηκε κατά το συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="729"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Ο διακομιστής δεν αναγνώρισε το τελευταίο τμήμα. (Δεν υπήρχε e-tag)</translation>
     </message>
@@ -2766,12 +2761,12 @@ It is not advisable to use it.</source>
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1034"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε γονικό κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε αρχεία σε αυτόν τον φάκελο</translation>
     </message>
@@ -2881,49 +2876,54 @@ It is not advisable to use it.</source>
         <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1002"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1009"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Αγνοήθηκε εξαιτίας της μαύρης λίστας &quot;διάλεξε τι να συγχρονιστεί&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1028"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1061"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1078"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Local files and share folder removed.</source>
         <translation>Οι τοπικοί φάκελοι και ο φάκελος κοινής χρήσης αφαιρέθηκαν.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
         <source>Move not allowed, item restored</source>
         <translation>Η μετακίνηση δεν επιτρέπεται, το αντικείμενο αποκαταστάθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Η μετακίνηση δεν επιτρέπεται επειδή το %1 είναι μόνο για ανάγνωση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the destination</source>
         <translation>ο προορισμός</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the source</source>
         <translation>η προέλευση</translation>
     </message>
