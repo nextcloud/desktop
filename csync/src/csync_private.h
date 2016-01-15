@@ -192,7 +192,7 @@ struct csync_file_stat_s {
 
   char *destpath;   /* for renames */
   const char *etag;
-  char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width of 21 byte. */
+  char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width in ownCloud. */
   char *directDownloadUrl;
   char *directDownloadCookies;
   char remotePerm[REMOTE_PERM_BUF_SIZE+1];
