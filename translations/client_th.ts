@@ -2373,7 +2373,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีผลลัพธ์สำหรับ &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
