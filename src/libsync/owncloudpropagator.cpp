@@ -444,6 +444,20 @@ int OwncloudPropagator::httpTimeout()
     return timeout;
 }
 
+quint64 OwncloudPropagator::chunkSize()
+{
+    static uint chunkSize;
+    if (!chunkSize) {
+        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
+        if (chunkSize == 0) {
+            ConfigFile cfg;
+            chunkSize = cfg.chunkSize();
+        }
+    }
+    return chunkSize;
+}
+
+
 bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 {
     bool re = false;

@@ -60,17 +60,6 @@ static bool fileIsStillChanging(const SyncFileItem & item)
             && msSinceMod > -10000;
 }
 
-static qint64 chunkSize() {
-    static uint chunkSize;
-    if (!chunkSize) {
-        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
-        if (chunkSize == 0) {
-            chunkSize = 5*1024*1024; // default to 5 MiB
-        }
-    }
-    return chunkSize;
-}
-
 PUTFileJob::~PUTFileJob()
 {
     // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.

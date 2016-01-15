@@ -317,6 +317,9 @@ public:
     // timeout in seconds
     static int httpTimeout();
 
+    /** returns the size of chunks in bytes  */
+    static quint64 chunkSize();
+
     /** Records that a file was touched by a job.
      *
      * Thread-safe.
@@ -342,6 +345,8 @@ public:
      *  all jobs that are currently running.
      */
     DiskSpaceResult diskSpaceCheck() const;
+
+
 
 private slots:
 

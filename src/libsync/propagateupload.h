@@ -188,6 +188,8 @@ private:
 
     bool _deleteExisting;
 
+    quint64 chunkSize() const { return _propagator->chunkSize(); }
+
 public:
     PropagateUploadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false), _deleteExisting(false) {}

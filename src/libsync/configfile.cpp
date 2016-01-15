@@ -49,6 +49,7 @@ static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
+static const char chunkSizeC[] = "chunkSize";
 static const char transmissionChecksumC[] = "transmissionChecksum";
 
 static const char proxyHostC[] = "Proxy/host";
@@ -118,6 +119,12 @@ int ConfigFile::timeout() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
+}
+
+quint64 ConfigFile::chunkSize() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(chunkSizeC), 5*1024*1024).toLongLong(); // default to 5 MiB
 }
 
 QString ConfigFile::transmissionChecksum() const
