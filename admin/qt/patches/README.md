@@ -37,6 +37,7 @@ purpose is outlined in each patches' front matter.
 * 0013-Make-UnknownAccessibility-not-block-requests.patch
 * 0015-Remove-legacy-platform-code-in-QSslSocket-for-OS-X-1.patch
 * 0016-Fix-possible-crash-when-passing-an-invalid-PAC-URL.patch
+* 0019-Ensure-system-tray-icon-is-prepared-even-when-menu-bar.patch
 
 ### Not submitted to be part of any release:
 * 0006-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
