@@ -358,14 +358,11 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
 {
     qDebug() << Q_FUNC_INFO <<( _ui->checkBox_shareLink->checkState() == Qt::Checked);
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked) {
-        _pi_link->startAnimation();
-
         /*
          * Check the capabilities if the server requires a password for a share
          * Ask for it directly
          */
         if (_account->capabilities().sharePublicLinkEnforcePassword()) {
-            _pi_link->stopAnimation();
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
@@ -379,6 +376,7 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
             return;
         }
 
+        _pi_link->startAnimation();
         _ui->checkBox_shareLink->setEnabled(false);
         _manager->createLinkShare(_sharePath);
     } else {
