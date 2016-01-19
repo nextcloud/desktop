@@ -112,8 +112,9 @@ static QString defaultJournalMode(const QString & dbPath)
     // See #2693: Some exFAT file systems seem unable to cope with the
     // WAL journaling mode. They work fine with DELETE.
     QString fileSystem = FileSystem::fileSystemForPath(dbPath);
+    qDebug() << "Detected filesystem" << fileSystem << "for" << dbPath;
     if (fileSystem.contains("FAT")) {
-        qDebug() << "Detected filesystem" << fileSystem << "- using DELETE journal mode";
+        qDebug() << "Filesystem contains FAT - using DELETE journal mode";
         return "DELETE";
     }
 #else

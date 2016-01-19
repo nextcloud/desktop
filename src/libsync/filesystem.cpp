@@ -476,9 +476,10 @@ bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
 QString FileSystem::fileSystemForPath(const QString & path)
 {
     // See also QStorageInfo (Qt >=5.4) and GetVolumeInformationByHandleW (>= Vista)
-    QString drive = path.left(3);
-    if (! drive.endsWith(":\\"))
+    QString drive = path.left(2);
+    if (! drive.endsWith(":"))
         return QString();
+    drive.append('\\');
 
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
