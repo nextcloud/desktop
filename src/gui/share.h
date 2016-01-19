@@ -259,9 +259,16 @@ public:
 signals:
     void shareCreated(const QSharedPointer<Share> &share);
     void linkShareCreated(const QSharedPointer<LinkShare> &share);
-    void linkShareRequiresPassword();
     void sharesFetched(const QList<QSharedPointer<Share>> &shares);
     void serverError(int code, const QString &message);
+
+    /** Emitted when creating a link share with password fails.
+     *
+     * @param message the error message reported by the server
+     *
+     * See createLinkShare().
+     */
+    void linkShareRequiresPassword(const QString &message);
 
 private slots:
     void slotSharesFetched(const QVariantMap &reply);

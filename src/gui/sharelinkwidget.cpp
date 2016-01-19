@@ -140,13 +140,14 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-    connect(_manager, SIGNAL(linkShareRequiresPassword()), SLOT(slotCreateShareRequiresPassword()));
+    connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
     connect(_manager, SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
 }
 
 void ShareLinkWidget::setExpireDate(const QDate &date)
 {
     _pi_date->startAnimation();
+    _ui->errorLabel->hide();
     _share->setExpireDate(date);
 }
 
@@ -185,6 +186,7 @@ void ShareLinkWidget::setPassword(const QString &password)
 {
     _pi_link->startAnimation();
     _pi_password->startAnimation();
+    _ui->errorLabel->hide();
 
     _ui->checkBox_password->setEnabled(false);
     _ui->lineEdit_password->setEnabled(false);
@@ -378,6 +380,7 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
 
         _pi_link->startAnimation();
         _ui->checkBox_shareLink->setEnabled(false);
+        _ui->errorLabel->hide();
         _manager->createLinkShare(_sharePath);
     } else {
 
@@ -403,18 +406,24 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> sha
     getShares();
 }
 
-void ShareLinkWidget::slotCreateShareRequiresPassword()
+void ShareLinkWidget::slotCreateShareRequiresPassword(const QString& message)
 {
     // there needs to be a password
-    _pi_editing->stopAnimation();
+    _pi_link->stopAnimation();
+    _pi_password->stopAnimation();
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+    _ui->lineEdit_password->setEnabled(true);
     _ui->lineEdit_password->setFocus();
     _ui->pushButton_copy->hide();
     _ui->widget_shareLink->show();
     _ui->checkBox_expire->setEnabled(false);
     _ui->checkBox_editing->setEnabled(false);
+    if (!message.isEmpty()) {
+        _ui->errorLabel->setText(message);
+        _ui->errorLabel->show();
+    }
 
     _passwordRequired = true;
 
@@ -477,6 +486,7 @@ void ShareLinkWidget::setPublicUpload(bool publicUpload)
 {
     _ui->checkBox_editing->setEnabled(false);
     _pi_editing->startAnimation();
+    _ui->errorLabel->hide();
 
     _share->setPublicUpload(publicUpload);
 }

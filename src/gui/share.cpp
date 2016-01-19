@@ -201,7 +201,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
      * meant that a share was password protected
      */
     if (code == 403) {
-        emit linkShareRequiresPassword();
+        emit linkShareRequiresPassword(message);
         return;
     } 
 
