@@ -57,7 +57,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem & option ,
 
     auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
     if (classif == FolderStatusModel::AddButton) {
-        int margins = fm.height();
+        const int margins = aliasFm.height();  // same as 2*aliasMargin of paint
         QFontMetrics fm(option.font);
         QStyleOptionButton opt;
         static_cast<QStyleOption&>(opt) = option;
