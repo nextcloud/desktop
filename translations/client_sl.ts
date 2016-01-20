@@ -110,7 +110,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="142"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj novo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="150"/>
@@ -125,12 +125,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="216"/>
         <source>Choose what to sync</source>
-        <translation>Izbor datotek za usklajevanje</translation>
+        <translation>Izbor predmetov za usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="223"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Odstrani povezavo mape usklajevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Ni mogoče ustvariti krajevne mape &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="337"/>
@@ -175,17 +175,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="520"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 v uporabi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="540"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 kot &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="544"/>
         <source>Connected to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Povezano z %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="546"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="697"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potrdi odstranitev računa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="110"/>
         <source>Configuration error</source>
-        <translation>Napaka v nastavitvah</translation>
+        <translation>Napaka nastavitve</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="112"/>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 na %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="408"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Dejavnost strežnika</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="413"/>
@@ -350,7 +350,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Seznam prezrtih datotek ali datotek z napako</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
@@ -404,7 +404,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Dejavnosti strežnika</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="286"/>
@@ -680,12 +680,12 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderman.cpp" line="885"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(varnostna kopija)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="890"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1099"/>
@@ -842,25 +842,25 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="809"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Preverjanje za spremembe v &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="844"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="847"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Usklajevanje %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
@@ -877,7 +877,7 @@ Are you sure you want to perform this operation?</source>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>u2193 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2193 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="887"/>
@@ -1120,7 +1120,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Uredi &amp;prezrte datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
@@ -1281,7 +1281,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Shrani beleženje v dnevniško datoteko na disk za nadaljnje razhroščevanje.</translation>
+        <translation>Shrani dnevniško datoteko na disk za nadaljnje razhroščevanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="184"/>
@@ -2731,12 +2731,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="171"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Med odpiranjem mape je prišlo do napake.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="174"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Napaka med branjem mape</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="656"/>
@@ -2802,7 +2802,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Dostop je prepovedan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="179"/>
@@ -3013,7 +3013,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="566"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Preverjanje za spremembe v &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="335"/>
