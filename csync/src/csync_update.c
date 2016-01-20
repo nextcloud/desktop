@@ -351,24 +351,41 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
             }
 
-            if (tmp && tmp->inode == fs->inode && tmp_vio_type == fs->type
+            // Default to NEW unless we're sure it's a rename.
+            st->instruction = CSYNC_INSTRUCTION_NEW;
+
+            bool isRename =
+                tmp && tmp->inode == fs->inode && tmp_vio_type == fs->type
                     && (tmp->modtime == fs->mtime || fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)
 #ifdef NO_RENAME_EXTENSION
                     && _csync_sameextension(tmp->path, path)
 #endif
-               ) {
+                ;
+
+
+            // Verify the checksum where possible
+            if (isRename && tmp->checksumTypeId && ctx->callbacks.checksum_hook
+                    && fs->type == CSYNC_VIO_FILE_TYPE_REGULAR) {
+                st->checksum = ctx->callbacks.checksum_hook(
+                            file, tmp->checksumTypeId,
+                            ctx->callbacks.checksum_userdata);
+                if (st->checksum) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", path, st->checksum, tmp->checksum);
+                    st->checksumTypeId = tmp->checksumTypeId;
+                    isRename = strncmp(st->checksum, tmp->checksum, 1000) == 0;
+                }
+            }
+
+            if (isRename) {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
                 /* inode found so the file has been renamed */
                 st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
                 }
-                goto out;
-            } else {
-                /* file not found in statedb */
-                st->instruction = CSYNC_INSTRUCTION_NEW;
-                goto out;
             }
+            goto out;
+
         } else {
             /* Remote Replica Rename check */
             tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
