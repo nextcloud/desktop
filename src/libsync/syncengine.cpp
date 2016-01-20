@@ -451,7 +451,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     item->_size = file->size;
 
-    if (!remote) {
+    if (!item->_inode) {
         item->_inode = file->inode;
     }
 
