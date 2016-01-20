@@ -695,7 +695,11 @@ bool AccountSettings::event(QEvent* e)
         _quotaInfo.setActive(isVisible());
     }
     if (e->type() == QEvent::Show) {
-        ui->_folderList->setExpanded(_model->index(0, 0), true);
+        // Expand the folder automatically only if there's only one, see #4283
+        // The 2 is 1 folder + 1 'add folder' button
+        if (_model->rowCount() <= 2) {
+            ui->_folderList->setExpanded(_model->index(0, 0), true);
+        }
     }
     return QWidget::event(e);
 }
