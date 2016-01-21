@@ -28,6 +28,7 @@
 #include "account.h"
 #include "theme.h"
 #include "cookiejar.h"
+#include "owncloudgui.h"
 #include "syncengine.h"
 
 #include <keychain.h>
@@ -269,9 +270,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
 void ShibbolethCredentials::showLoginWindow()
 {
     if (!_browser.isNull()) {
-        _browser->activateWindow();
-        _browser->raise();
-        // FIXME On OS X this does not raise properly
+        ownCloudGui::raiseDialog(_browser);
         return;
     }
 
@@ -286,7 +285,7 @@ void ShibbolethCredentials::showLoginWindow()
             this, SLOT(onShibbolethCookieReceived(QNetworkCookie)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()), this, SLOT(slotBrowserRejected()));
 
-    _browser->show();
+    ownCloudGui::raiseDialog(_browser);
 }
 
 QList<QNetworkCookie> ShibbolethCredentials::accountCookies(Account* account)

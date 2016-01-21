@@ -59,7 +59,6 @@ public:
         /// An error like invalid credentials where retrying won't help.
         ConfigurationError
     };
-    enum CredentialFetchMode { Interactive, NonInteractive };
 
     /// The actual current connectivity status.
     typedef ConnectionValidator::Status ConnectionStatus;
@@ -91,7 +90,7 @@ public:
 
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
-    void checkConnectivity(CredentialFetchMode credentialsFetchMode);
+    void checkConnectivity();
 
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
@@ -127,7 +126,6 @@ private:
     ConnectionStatus _connectionStatus;
     QStringList _connectionErrors;
     bool _waitingForNewCredentials;
-    CredentialFetchMode _credentialsFetchMode;
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
 };
