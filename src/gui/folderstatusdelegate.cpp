@@ -237,17 +237,12 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const bool showProgess = !overallString.isEmpty() || !itemString.isEmpty();
     if(!showProgess) {
         painter->setFont(subFont);
-        QString elidedRemotePathText;
-
-        if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
-            elidedRemotePathText = subFm.elidedText(tr("Syncing selected files in your account with"),
-                                                    Qt::ElideRight, remotePathRect.width());
-        } else {
-            elidedRemotePathText = subFm.elidedText(tr("Remote path: %1").arg(remotePath),
-                                                    Qt::ElideMiddle, remotePathRect.width());
-        }
+        QString elidedRemotePathText = subFm.elidedText(
+                tr("Synchronizing with local folder"),
+                Qt::ElideRight, remotePathRect.width());
         painter->drawText(QStyle::visualRect(option.direction, option.rect, remotePathRect),
                           textAlign, elidedRemotePathText);
+
         QString elidedPathText = subFm.elidedText(pathText, Qt::ElideMiddle, localPathRect.width());
         painter->drawText(QStyle::visualRect(option.direction, option.rect, localPathRect),
                           textAlign, elidedPathText);
@@ -288,21 +283,17 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
         int fileNameTextHeight = subFm.boundingRect(tr("File")).height();
-        int barHeight = qMax(fileNameTextHeight, aliasFm.height()+4);
+        int barHeight = 7; // same height as quota bar
         int overallWidth = option.rect.right() - aliasMargin - optionsButtonVisualRect.width() - nextToIcon;
 
         painter->save();
-
-        // Sizes-Text
-        QRect octetRect = progressFm.boundingRect(QRect(), 0, overallString );
-        int progressTextWidth = octetRect.width() + 5;
 
         // Overall Progress Bar.
         QRect pBRect;
         pBRect.setTop( remotePathRect.top() );
         pBRect.setLeft( nextToIcon );
         pBRect.setHeight(barHeight);
-        pBRect.setWidth( overallWidth - progressTextWidth - 2 * margin );
+        pBRect.setWidth( overallWidth - 2 * margin );
 
         QStyleOptionProgressBarV2 pBarOpt;
 
@@ -317,26 +308,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Overall Progress Text
         QRect overallProgressRect;
-        overallProgressRect.setTop( pBRect.top() );
-        overallProgressRect.setHeight( pBRect.height() );
-        overallProgressRect.setLeft( pBRect.right()+margin);
-        overallProgressRect.setWidth( progressTextWidth );
+        overallProgressRect.setTop( pBRect.bottom() + margin );
+        overallProgressRect.setHeight( fileNameTextHeight );
+        overallProgressRect.setLeft( pBRect.left() );
+        overallProgressRect.setWidth( pBRect.width() );
         painter->setFont(progressFont);
 
         painter->drawText(QStyle::visualRect(option.direction, option.rect, overallProgressRect),
-                          Qt::AlignRight | Qt::AlignVCenter, overallString);
+                          Qt::AlignLeft | Qt::AlignVCenter, overallString);
         // painter->drawRect(overallProgressRect);
-
-        // Individual File Progress
-        QRect fileRect;
-        fileRect.setTop( pBRect.bottom() + margin);
-        fileRect.setLeft(pBRect.left());
-        fileRect.setWidth(overallWidth);
-        fileRect.setHeight(fileNameTextHeight);
-        QString elidedText = progressFm.elidedText(itemString, Qt::ElideLeft, fileRect.width());
-
-        painter->drawText(QStyle::visualRect(option.direction, option.rect, fileRect),
-                          Qt::AlignLeft | Qt::AlignVCenter, elidedText);
 
         painter->restore();
     }
