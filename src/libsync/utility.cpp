@@ -113,6 +113,10 @@ QString Utility::octetsToString( qint64 octets )
     QString s;
     qreal value = octets;
 
+    // Whether we care about decimals: only for GB and only
+    // if it's less than 10 GB.
+    bool round = true;
+
     // do not display terra byte with the current units, as when
     // the MB, GB and KB units were made, there was no TB,
     // see the JEDEC standard
@@ -120,6 +124,7 @@ QString Utility::octetsToString( qint64 octets )
     if (octets >= gb) {
         s = QCoreApplication::translate("Utility", "%L1 GB");
         value /= gb;
+        round = false;
     } else if (octets >= mb) {
         s = QCoreApplication::translate("Utility", "%L1 MB");
         value /= mb;
@@ -130,7 +135,13 @@ QString Utility::octetsToString( qint64 octets )
         s = QCoreApplication::translate("Utility", "%L1 B");
     }
 
-    return (value > 9.95)  ? s.arg(qRound(value)) : s.arg(value, 0, 'g', 2);
+    if (value > 9.95)
+        round = true;
+
+    if (round)
+        return s.arg(qRound(value));
+
+    return s.arg(value, 0, 'g', 2);
 }
 
 // Qtified version of get_platforms() in csync_owncloud.c
