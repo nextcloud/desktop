@@ -84,6 +84,7 @@ set(client_SRCS
     proxyauthhandler.cpp
     proxyauthdialog.cpp
     synclogdialog.cpp
+    tooltipupdater.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp

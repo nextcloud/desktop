@@ -29,6 +29,7 @@
 #include "accountmanager.h"
 #include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
+#include "tooltipupdater.h"
 
 #include <math.h>
 
@@ -87,6 +88,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 #else
     ui->_folderList->setMinimumWidth( 300 );
 #endif
+    new ToolTipUpdater(ui->_folderList);
+
     createAccountToolbox();
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
             SLOT(slotAccountAdded(AccountState*)));
