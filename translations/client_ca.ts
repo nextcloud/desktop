@@ -2329,29 +2329,29 @@ No és aconsellada usar-la.</translation>
         <translation>Protegit amb contr&amp;asenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>Password Protected</source>
         <translation>Protegit amb contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="291"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El fitxer no es pot compartir perquè va ser compartit sense permisos de compartició.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="371"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="416"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>La comp&amp;artició pública requereix una contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="431"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="438"/>
         <source>Please Set Password</source>
         <translation>Establiu la contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="502"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>&amp;Share link</source>
         <translation>Com&amp;parteix l&apos;enllaç</translation>
     </message>

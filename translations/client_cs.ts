@@ -2338,29 +2338,29 @@ Nedoporučuje se jí používat.</translation>
         <translation>Ch&amp;ránit heslem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>Password Protected</source>
         <translation>Chráněno heslem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="291"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Tento soubor nelze sdílet, protože byl nasdílen bez možnosti dalšího sdílení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="371"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="416"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Veřejné s&amp;dílení vyžaduje heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="431"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="438"/>
         <source>Please Set Password</source>
         <translation>Nastavte prosím heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="502"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>&amp;Share link</source>
         <translation>&amp;Sdílet odkaz</translation>
     </message>

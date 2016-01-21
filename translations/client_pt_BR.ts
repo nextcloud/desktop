@@ -2335,29 +2335,29 @@ It is not advisable to use it.</source>
         <translation>S&amp;enha de proteção</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>Password Protected</source>
         <translation>Protegido por Senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="291"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>O arquivo não pode ser partilhado, pois foi compartilhado sem permissão de compartilhamento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="371"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="416"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Comp&amp;artilhamento público requer uma senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="431"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="438"/>
         <source>Please Set Password</source>
         <translation>Por favor, Definir senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="502"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>&amp;Share link</source>
         <translation>Link de &amp;Compartilhamento</translation>
     </message>

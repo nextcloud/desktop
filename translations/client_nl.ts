@@ -2337,29 +2337,29 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>&amp;Wachtwoord beveiligd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="175"/>
         <source>Password Protected</source>
         <translation>Wachtwoord beveiligd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="291"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="293"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Het bestand kan niet worden gedeeld, omdat het werd gedeeld zonder verder delen toestemming.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="371"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="370"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="416"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Openbaar de&amp;len vereist een wachtwoord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="431"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="438"/>
         <source>Please Set Password</source>
         <translation>Stel uw wachtwoord in</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="502"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>&amp;Share link</source>
         <translation>&amp;Deel link</translation>
     </message>
