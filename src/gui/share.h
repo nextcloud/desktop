@@ -268,11 +268,13 @@ private slots:
     void slotLinkShareCreated(const QVariantMap &reply);
     void slotShareCreated(const QVariantMap &reply);
     void slotOcsError(int statusCode, const QString &message);
+    void slotCreateShare(const QVariantMap &reply);
 
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QVariantMap &data);
     QSharedPointer<Share> parseShare(const QVariantMap &data);
 
+    QMap<QObject*, QVariant> _jobContinuation;
     AccountPtr _account;
 };
 

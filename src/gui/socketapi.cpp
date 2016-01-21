@@ -386,7 +386,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
             return;
         }
 
-        const QString remotePath = shareFolder->remotePath() + QLatin1Char('/') + file;
+        const QString remotePath = QDir(shareFolder->remotePath()).filePath(file);
 
         // Can't share root folder
         if (remotePath == "/") {

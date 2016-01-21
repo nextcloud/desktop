@@ -103,6 +103,11 @@ public:
                      const QString& shareWith = "",
                      const Share::Permissions permissions = Share::PermissionRead);
 
+    /**
+     * Returns information on the items shared with the current user.
+     */
+    void getSharedWithMe();
+
 signals:
     /**
      * Result of the OCS request

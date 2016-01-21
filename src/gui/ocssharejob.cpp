@@ -129,6 +129,13 @@ void OcsShareJob::createShare(const QString& path,
     start();
 }
 
+void OcsShareJob::getSharedWithMe()
+{
+    setVerb("GET");
+    addParam(QLatin1String("shared_with_me"), QLatin1String("true"));
+    start();
+}
+
 void OcsShareJob::jobDone(QVariantMap reply)
 {
     emit shareJobFinished(reply, _value);

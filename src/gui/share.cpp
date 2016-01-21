@@ -17,6 +17,17 @@
 
 #include <QUrl>
 
+namespace {
+struct CreateShare
+{
+    QString path;
+    OCC::Share::ShareType shareType;
+    QString shareWith;
+    OCC::Share::Permissions permissions;
+};
+} // anonymous namespace
+Q_DECLARE_METATYPE(CreateShare)
+
 namespace OCC {
 
 Share::Share(AccountPtr account, 
@@ -212,15 +223,57 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
     emit linkShareCreated(share);
 }
 
+
 void ShareManager::createShare(const QString& path,
                                const Share::ShareType shareType,
                                const QString shareWith,
                                const Share::Permissions permissions)
 {
+    auto job = new OcsShareJob(_account);
+
+    // Store values that we need for creating this share later.
+    CreateShare continuation;
+    continuation.path = path;
+    continuation.shareType = shareType;
+    continuation.shareWith = shareWith;
+    continuation.permissions = permissions;
+    _jobContinuation[job] = QVariant::fromValue(continuation);
+
+    connect(job, SIGNAL(shareJobFinished(QVariantMap,QVariant)), SLOT(slotCreateShare(QVariantMap)));
+    connect(job, SIGNAL(ocsError(int,QString)), SLOT(slotOcsError(int,QString)));
+    job->getSharedWithMe();
+}
+
+void ShareManager::slotCreateShare(const QVariantMap &reply)
+{
+    if (!_jobContinuation.contains(sender()))
+        return;
+
+    CreateShare cont = _jobContinuation[sender()].value<CreateShare>();
+    if (cont.path.isEmpty())
+        return;
+    _jobContinuation.remove(sender());
+
+    // Find existing share permissions (if this was shared with us)
+    Share::Permissions existingPermissions = Share::PermissionDefault;
+    foreach (const QVariant & element, reply["ocs"].toMap()["data"].toList()) {
+        QVariantMap map = element.toMap();
+        if (map["file_target"] == cont.path)
+            existingPermissions = Share::Permissions(map["permissions"].toInt());
+    }
+
+    // Limit the permissions we request for a share to the ones the item
+    // was shared with initially.
+    if (cont.permissions == Share::PermissionDefault) {
+        cont.permissions = existingPermissions;
+    } else if (existingPermissions != Share::PermissionDefault) {
+        cont.permissions &= existingPermissions;
+    }
+
     OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
-    job->createShare(path, shareType, shareWith, permissions);
+    job->createShare(cont.path, cont.shareType, cont.shareWith, cont.permissions);
 }
 
 void ShareManager::slotShareCreated(const QVariantMap &reply)
@@ -314,7 +367,7 @@ QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data)
 
 void ShareManager::slotOcsError(int statusCode, const QString &message)
 {
-    emit serverError(statusCode, message);   
+    emit serverError(statusCode, message);
 }
 
 }
