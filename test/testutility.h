@@ -83,21 +83,35 @@ private slots:
 
         QDateTime current = QDateTime::currentDateTime();
 
-        QCOMPARE(durationToDescriptiveString(0), QString("0 seconds") );
-        QCOMPARE(durationToDescriptiveString(5), QString("0 seconds") );
-        QCOMPARE(durationToDescriptiveString(1000), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString(1005), QString("1 second(s)") );
-        QCOMPARE(durationToDescriptiveString(56123), QString("56 second(s)") );
-        QCOMPARE(durationToDescriptiveString(90*sec), QString("1 minute(s) 30 second(s)") );
-        QCOMPARE(durationToDescriptiveString(3*hour), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString(3*hour + 20*sec), QString("3 hour(s)") );
-        QCOMPARE(durationToDescriptiveString(3*hour + 70*sec), QString("3 hour(s) 1 minute(s)") );
-        QCOMPARE(durationToDescriptiveString(3*hour + 100*sec), QString("3 hour(s) 2 minute(s)") );
-        QCOMPARE(durationToDescriptiveString(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23*60*60))),
+        QCOMPARE(durationToDescriptiveString2(0), QString("0 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(5), QString("0 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(1000), QString("1 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(1005), QString("1 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(56123), QString("56 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(90*sec), QString("1 minute(s) 30 second(s)") );
+        QCOMPARE(durationToDescriptiveString2(3*hour), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString2(3*hour + 20*sec), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString2(3*hour + 70*sec), QString("3 hour(s) 1 minute(s)") );
+        QCOMPARE(durationToDescriptiveString2(3*hour + 100*sec), QString("3 hour(s) 2 minute(s)") );
+        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23*60*60))),
                  QString("4 year(s) 5 month(s)") );
-        QCOMPARE(durationToDescriptiveString(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
+        QCOMPARE(durationToDescriptiveString2(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
                  QString("2 day(s) 23 hour(s)") );
 
+        QCOMPARE(durationToDescriptiveString1(0), QString("0 second(s)") );
+        QCOMPARE(durationToDescriptiveString1(5), QString("0 second(s)") );
+        QCOMPARE(durationToDescriptiveString1(1000), QString("1 second(s)") );
+        QCOMPARE(durationToDescriptiveString1(1005), QString("1 second(s)") );
+        QCOMPARE(durationToDescriptiveString1(56123), QString("56 second(s)") );
+        QCOMPARE(durationToDescriptiveString1(90*sec), QString("2 minute(s)") );
+        QCOMPARE(durationToDescriptiveString1(3*hour), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString1(3*hour + 20*sec), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString1(3*hour + 70*sec), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString1(3*hour + 100*sec), QString("3 hour(s)") );
+        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addYears(4).addMonths(5).addDays(2).addSecs(23*60*60))),
+                 QString("4 year(s)") );
+        QCOMPARE(durationToDescriptiveString1(current.msecsTo(current.addDays(2).addSecs(23*60*60))),
+                 QString("3 day(s)") );
 
     }
 

@@ -309,9 +309,19 @@ qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
     return t.toMSecsSinceEpoch() / 1000;
 }
 
-QString Utility::durationToDescriptiveString(quint64 msecs)
-{
-    struct Period { const char *name; quint64 msec; };
+namespace {
+    struct Period
+    {
+        const char *name;
+        quint64 msec;
+
+        QString description(quint64 value) const
+        {
+            return QCoreApplication::translate(
+                    "Utiliy", name, 0, QCoreApplication::UnicodeUTF8,
+                    value);
+        }
+    };
     Q_DECL_CONSTEXPR Period periods[] = {
         { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000LL },
         { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000LL },
@@ -321,17 +331,16 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
         { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000LL },
         { 0, 0 }
     };
+} // anonymous namespace
 
+QString Utility::durationToDescriptiveString2(quint64 msecs)
+{
     int p = 0;
-    while (periods[p].name && msecs < periods[p].msec) {
+    while (periods[p+1].name && msecs < periods[p].msec) {
         p++;
     }
 
-    if (!periods[p].name) {
-        return QCoreApplication::translate("Utility", "0 seconds");
-    }
-
-    auto firstPart = QCoreApplication::translate("Utility", periods[p].name, 0, QCoreApplication::UnicodeUTF8, int(msecs / periods[p].msec));
+    auto firstPart = periods[p].description(int(msecs / periods[p].msec));
 
     if (!periods[p+1].name) {
         return firstPart;
@@ -344,7 +353,18 @@ QString Utility::durationToDescriptiveString(quint64 msecs)
     }
 
     return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart,
-            QCoreApplication::translate("Utility", periods[p+1].name, 0, QCoreApplication::UnicodeUTF8, secondPartNum));
+            periods[p+1].description(secondPartNum));
+}
+
+QString Utility::durationToDescriptiveString1(quint64 msecs)
+{
+    int p = 0;
+    while (periods[p+1].name && msecs < periods[p].msec) {
+        p++;
+    }
+
+    quint64 amount = qRound( double(msecs) / periods[p].msec );
+    return periods[p].description(amount);
 }
 
 QString Utility::fileNameForGuiUse(const QString& fName)

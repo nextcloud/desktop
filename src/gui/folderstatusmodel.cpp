@@ -915,7 +915,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         overallSyncString = tr("%1 of %2, file %3 of %4\nTotal time left %5")
             .arg(s1, s2)
             .arg(currentFile).arg(totalFileCount)
-            .arg( Utility::durationToDescriptiveString(progress.totalProgress().estimatedEta) );
+            .arg( Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta) );
     } else if (totalFileCount > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);
