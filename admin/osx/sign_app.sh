@@ -9,8 +9,9 @@ team_identifier="$3"
 codesign -s "$identity" --force --preserve-metadata=entitlements --verbose=4 --deep "$src_app"
 
 # Verify the signature
-spctl -a -t exec -vv $src_app
 codesign -dv $src_app
+codesign --verify -v $src_app
+spctl -a -t exec -vv $src_app
 
 # Validate that the key used for signing the binary matches the expected TeamIdentifier
 # needed to pass the SocketApi through the sandbox
