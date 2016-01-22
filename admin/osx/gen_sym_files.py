@@ -25,6 +25,8 @@ def extractDeps(macho):
     deps = [macho]
     otool = subprocess.Popen(['otool', '-L', macho], stdout=subprocess.PIPE)
     for l in otool.communicate()[0].splitlines():
+        if 'is not an object file' in l:
+            return []
         m = re.search(r'@[^\s]+', l)
         if m:
             path = resolvePath(m.group(0))
