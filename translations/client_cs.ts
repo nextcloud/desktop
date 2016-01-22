@@ -3345,7 +3345,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="571"/>
         <source>QT_LAYOUT_DIRECTION</source>
-        <translation type="unfinished"/>
+        <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
 </context>
 <context>

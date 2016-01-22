@@ -1113,17 +1113,17 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation>Afficher les notifications du &amp;Bureau</translation>
+        <translation>Afficher les notifications sur le &amp;bureau</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Utiliser les Icônes &amp;Monochromes</translation>
+        <translation>Utiliser les icônes &amp;monochromes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Éditer les Fichiers &amp;ignorés</translation>
+        <translation>Éditer les fichiers &amp;ignorés</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
