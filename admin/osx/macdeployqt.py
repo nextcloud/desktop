@@ -261,6 +261,9 @@ def CopyFramework(source_dylib):
       dest_path = os.path.join(frameworks_dir, framework)
       dest_dylib_path = os.path.join(frameworks_dir, *parts[i:-1])
       break
+  if os.path.exists(dest_path):
+    print dest_path, "already exists, skipping..."
+    return
 
   args = ['mkdir', '-p', dest_dylib_path]
   commands.append(args)
