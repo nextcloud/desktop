@@ -249,35 +249,35 @@ def CopyPlugin(path, subdir):
   commands.append(args)
   return new_path
 
-def CopyFramework(path):
-  parts = path.split(os.sep)
-  print "CopyFramework:", path
+def CopyFramework(source_dylib):
+  parts = source_dylib.split(os.sep)
+  print "CopyFramework:", source_dylib
   for i, part in enumerate(parts):
     matchObj = re.match(r'(\w+\.framework)', part)
     if matchObj:
-      full_path = os.path.join(frameworks_dir, *parts[i:-1])
       framework = matchObj.group(1)
+      dylib_name = parts[-1]
+      source_path = os.path.join('/', *parts[:i+1])
+      dest_path = os.path.join(frameworks_dir, framework)
+      dest_dylib_path = os.path.join(frameworks_dir, *parts[i:-1])
       break
-  args = ['mkdir', '-p', full_path]
-  commands.append(args)
-  args = ['ditto', '--arch=x86_64', path, full_path]
-  commands.append(args)
-  args = ['chmod', 'u+w', os.path.join(full_path, parts[-1])]
-  commands.append(args)
-  resources_dir = os.path.join(frameworks_dir, framework, "Resources")
 
-  args = ['mkdir', resources_dir]
+  args = ['mkdir', '-p', dest_dylib_path]
   commands.append(args)
-  args = ['chmod', 'u+w', resources_dir]
+  args = ['ditto', '--arch=x86_64', source_dylib, dest_dylib_path]
+  commands.append(args)
+  args = ['chmod', 'u+w', os.path.join(dest_dylib_path, parts[-1])]
+  commands.append(args)
+  args = ['ln', '-s', '5', os.path.join(dest_path, 'Versions', 'Current')]
+  commands.append(args)
+  args = ['ln', '-s', os.path.join('Versions', 'Current', dylib_name), os.path.join(dest_path, dylib_name)]
+  commands.append(args)
+  args = ['ln', '-s', os.path.join('Versions', 'Current', 'Resources'), os.path.join(dest_path, 'Resources')]
+  commands.append(args)
+  args = ['cp', '-r', os.path.join(source_path, 'Versions', '5', 'Resources'), os.path.join(dest_path, 'Versions', '5')]
   commands.append(args)
 
-  info_plist = os.path.join(os.path.split(path)[0], '..', '..', 'Contents', 'Info.plist')
-  if not os.path.exists(info_plist):
-    info_plist = os.path.join(os.path.split(path)[0], 'Resources', 'Info.plist')
-  if os.path.exists(info_plist):
-    args = ['cp', '-r', info_plist, resources_dir]
-    commands.append(args)
-  return os.path.join(full_path, parts[-1])
+  return os.path.join(dest_dylib_path, dylib_name)
 
 def FixId(path, library_name):
   id = '@executable_path/../Frameworks/%s' % library_name
