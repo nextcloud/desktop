@@ -10,7 +10,7 @@ codesign -s "$identity" --force --preserve-metadata=entitlements --verbose=4 --d
 
 # Verify the signature
 codesign -dv $src_app
-codesign --verify -v --strict $src_app
+codesign --verify -v $src_app
 spctl -a -t exec -vv $src_app
 
 # Validate that the key used for signing the binary matches the expected TeamIdentifier
