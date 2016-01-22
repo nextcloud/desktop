@@ -151,7 +151,7 @@ void LinkShare::setPassword(const QString &password)
 {
     OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPasswordSet(QVariantMap, QVariant)));
-    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
+    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotSetPasswordError(int,QString)));
     job->setPassword(getId(), password);
 }
 
@@ -173,6 +173,11 @@ void LinkShare::slotExpireDateSet(const QVariantMap&, const QVariant &value)
 {
     _expireDate = value.toDate();
     emit expireDateSet();
+}
+
+void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
+{
+    emit passwordSetError(statusCode, message);
 }
 
 ShareManager::ShareManager(AccountPtr account, QObject *parent)

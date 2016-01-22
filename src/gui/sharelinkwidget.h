@@ -70,7 +70,8 @@ private slots:
     void slotCheckBoxEditingClicked();
     void slotPublicUploadSet();
 
-    void displayError(int code, const QString &message);
+    void slotServerError(int code, const QString &message);
+    void slotPasswordSetError(int code, const QString &message);
 
 private:
     void setShareCheckBoxTitle(bool haveShares);

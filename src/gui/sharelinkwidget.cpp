@@ -141,7 +141,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
     connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
-    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
+    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(slotServerError(int,QString)));
 }
 
 void ShareLinkWidget::setExpireDate(const QDate &date)
@@ -171,8 +171,6 @@ ShareLinkWidget::~ShareLinkWidget()
 void ShareLinkWidget::slotPasswordReturnPressed()
 {
     setPassword(_ui->lineEdit_password->text());
-    _ui->lineEdit_password->setText(QString());
-    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->clearFocus();
 }
 
@@ -201,6 +199,9 @@ void ShareLinkWidget::setPassword(const QString &password)
 
 void ShareLinkWidget::slotPasswordSet()
 {
+    _ui->lineEdit_password->setText(QString());
+    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
+
     /*
      * When setting/deleting a password from a share the old share is
      * deleted and a new one is created. So we need to refetch the shares
@@ -240,6 +241,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
                 _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
                 _ui->lineEdit_password->setPlaceholderText("********");
+                _ui->lineEdit_password->setText(QString());
                 _ui->lineEdit_password->show();
                 _ui->pushButton_setPassword->show();
             } else {
@@ -280,7 +282,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             connect(_share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
             connect(_share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
             connect(_share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
-            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
+            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(slotServerError(int,QString)));
+            connect(_share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int,QString)));
 
             break;
         }
@@ -510,11 +513,24 @@ void ShareLinkWidget::setShareCheckBoxTitle(bool haveShares)
 
 }
 
-void ShareLinkWidget::displayError(int code, const QString &message)
+void ShareLinkWidget::slotServerError(int code, const QString &message)
 {
-    const QString arg = QString("%1, %2").arg(code).arg(message);
+    _pi_link->stopAnimation();
+    _pi_date->stopAnimation();
+    _pi_password->stopAnimation();
+    _pi_editing->stopAnimation();
+
     qDebug() << "Error from server" << code << message;
     displayError(message);
+}
+
+void ShareLinkWidget::slotPasswordSetError(int code, const QString &message)
+{
+    slotServerError(code, message);
+
+    _ui->checkBox_password->setEnabled(true);
+    _ui->lineEdit_password->setEnabled(true);
+    _ui->lineEdit_password->setFocus();
 }
 
 void ShareLinkWidget::displayError(const QString& errMsg)

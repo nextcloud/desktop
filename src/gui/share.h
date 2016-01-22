@@ -195,11 +195,13 @@ signals:
     void expireDateSet();
     void publicUploadSet();
     void passwordSet();
+    void passwordSetError(int statusCode, const QString &message);
 
 private slots:
     void slotPasswordSet(const QVariantMap&, const QVariant &value);
     void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
     void slotExpireDateSet(const QVariantMap&, const QVariant &value);
+    void slotSetPasswordError(int statusCode, const QString &message);
 
 private:
     bool _passwordSet;
