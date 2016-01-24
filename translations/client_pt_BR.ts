@@ -3340,22 +3340,22 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%1 day(s) ago</source>
-        <translation><numerusform>%1 dia(s) atráz</numerusform><numerusform>%1 dia(s) atráz</numerusform></translation>
+        <translation><numerusform>%1 dia atrás</numerusform><numerusform>%1 dias atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="451"/>
         <source>%1 hour(s) ago</source>
-        <translation type="unfinished"><numerusform>%1 hora(s) atráz</numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 hora atrás</numerusform><numerusform>%1 horas atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="455"/>
         <source>Less than a minute ago</source>
-        <translation>A menos de um minuto atras</translation>
+        <translation>A menos de um minuto atrás</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="457"/>
         <source>%1 minute(s) ago</source>
-        <translation><numerusform>%1 minuto(s) atrás</numerusform><numerusform>%1 minuto(s) atrás</numerusform></translation>
+        <translation><numerusform>%1 minuto atrás</numerusform><numerusform>%1 minutos atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>

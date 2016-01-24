@@ -2361,7 +2361,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ei tuloksia haulla &apos;%1&apos;</translation>
     </message>
 </context>
 <context>

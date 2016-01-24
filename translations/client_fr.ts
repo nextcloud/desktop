@@ -2300,7 +2300,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation>Définir le mot de &amp;passe</translation>
+        <translation>Enregistrer le mot de &amp;passe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
@@ -2330,7 +2330,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Password Protected</source>
-        <translation>Protégé par un mot de passe</translation>
+        <translation>Protégé par mot de passe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="296"/>
@@ -2747,7 +2747,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="656"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Seulement %1 disponibles, nécessite au moins %2 pour commencer</translation>
+        <translation>Seulement %1 disponibles, il faut au moins %2 pour démarrer</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1047"/>
@@ -2867,7 +2867,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="826"/>
         <source>File name contains at least one invalid character</source>
-        <translation>Le nom de fichier contient au moins un caractère non valide</translation>
+        <translation>Le nom de fichier contient au moins un caractère non valable</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1015"/>
@@ -3363,7 +3363,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Some time ago</source>
-        <translation>Il y a quelques temps</translation>
+        <translation>Il y a quelque temps</translation>
     </message>
 </context>
 <context>
