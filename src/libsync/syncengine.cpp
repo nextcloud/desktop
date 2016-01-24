@@ -23,6 +23,7 @@
 #include "syncfilestatus.h"
 #include "csync_private.h"
 #include "filesystem.h"
+#include "configfile.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -824,7 +825,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     emit transmissionProgress(*_progressInfo);
     _progressInfo->start();
 
-    if (!_hasNoneFiles && _hasRemoveFile) {
+    // Check the config file before displaying prompt in case it is disabled.
+    ConfigFile cfgFile;
+    if (!_hasNoneFiles && _hasRemoveFile && cfgFile.promptDeleteFiles()) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
         bool cancel = false;
         emit aboutToRemoveAllFiles(_syncedItems.first()->_direction, &cancel);
