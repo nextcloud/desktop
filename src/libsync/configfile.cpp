@@ -43,6 +43,7 @@ namespace OCC {
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
 static const char monoIconsC[] = "monoIcons";
+static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
@@ -583,6 +584,18 @@ void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
 {
     setValue(newBigFolderSizeLimitC, mbytes);
     setValue(useNewBigFolderSizeLimitC, isChecked);
+}
+
+bool ConfigFile::promptDeleteFiles() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(promptDeleteC), true).toBool();
+}
+
+void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
 }
 
 bool ConfigFile::monoIcons() const
