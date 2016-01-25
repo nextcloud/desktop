@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation>La liste d&apos;objets non synchronisé a été copié dans le presse papier.</translation>
+        <translation>La liste des éléments non synchronisés a été copiée dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
@@ -394,7 +394,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Server Activities</source>
-        <translation>Activités du Serveur</translation>
+        <translation>Activités Serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="286"/>
