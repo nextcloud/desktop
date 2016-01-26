@@ -442,24 +442,24 @@ void ActivitySettings::slotCopyToClipboard()
     QTextStream ts(&text);
 
     int idx = _tab->currentIndex();
-    QString theSubject;
+    QString message;
 
     if( idx == 0 ) {
         // the activity widget
         _activityWidget->storeActivityList(ts);
-        theSubject = tr("server activity list");
+        message = tr("The server activity list has been copied to the clipboard.");
     } else if(idx == 1 ) {
         // the protocol widget
         _protocolWidget->storeSyncActivity(ts);
-        theSubject = tr("sync activity list");
+        message = tr("The sync activity list has been copied to the clipboard.");
     } else if(idx == 2 ) {
         // issues Widget
-        theSubject = tr("not syned items list");
+        message = tr("The list of unsynched items has been copied to the clipboard.");
        _protocolWidget->storeSyncIssues(ts);
     }
 
     QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), tr("The %1 has been copied to the clipboard.").arg(theSubject));
+    emit guiLog(tr("Copied to clipboard"), message);
 }
 
 void ActivitySettings::slotRemoveAccount( AccountState *ptr )

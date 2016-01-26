@@ -126,7 +126,7 @@ void ProtocolWidget::hideEvent(QHideEvent *ev)
     QWidget::hideEvent(ev);
 }
 
-void ProtocolWidget::cleanIgnoreItems(const QString& folder)
+void ProtocolWidget::cleanItems(const QString& folder)
 {
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
 
@@ -136,21 +136,13 @@ void ProtocolWidget::cleanIgnoreItems(const QString& folder)
         itemCnt--;
     }
 
-    // limit also in the protocol widget
+    // The issue list is a state, clear it and let the next sync fill it
+    // with ignored files and propagation errors.
     itemCnt = _issueItemView->topLevelItemCount();
-
-    // Limit the number of items in the issue view
-    while(itemCnt > 2000) {
-        delete _issueItemView->takeTopLevelItem(itemCnt - 1);
-        itemCnt--;
-    }
-
-    // clean up the issue list
     for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
         QTreeWidgetItem *item = _issueItemView->topLevelItem(cnt);
-        bool isErrorItem = item->data(0, IgnoredIndicatorRole).toBool();
         QString itemFolder = item->data(2, Qt::UserRole).toString();
-        if( isErrorItem && itemFolder == folder ) {
+        if( itemFolder == folder ) {
             delete item;
         }
     }
@@ -261,7 +253,7 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
 {
     if( !progress.hasStarted() ) {
         // The sync is restarting, clean the old items
-        cleanIgnoreItems(folder);
+        cleanItems(folder);
         computeResyncButtonEnabled();
     } else if (progress.completedFiles() >= progress.totalFiles()) {
         //Sync completed

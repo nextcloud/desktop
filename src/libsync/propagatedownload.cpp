@@ -310,6 +310,15 @@ void PropagateDownloadFileQNAM::start()
 
     qDebug() << Q_FUNC_INFO << _item->_file << _propagator->_activeJobs;
 
+    if (_deleteExisting) {
+        deleteExistingFolder();
+
+        // check for error with deletion
+        if (_state == Finished) {
+            return;
+        }
+    }
+
     // do a klaas' case clash check.
     if( _propagator->localFileNameClash(_item->_file) ) {
         done( SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!")
@@ -325,7 +334,7 @@ void PropagateDownloadFileQNAM::start()
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
         if (progressInfo._etag != _item->_etag) {
-            QFile::remove(_propagator->getFilePath(progressInfo._tmpfile));
+            FileSystem::remove(_propagator->getFilePath(progressInfo._tmpfile));
             _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
@@ -415,6 +424,11 @@ qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
     return 0;
 }
 
+void PropagateDownloadFileQNAM::setDeleteExistingFolder(bool enabled)
+{
+    _deleteExisting = enabled;
+}
+
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
 void PropagateDownloadFileQNAM::slotGetFinished()
 {
@@ -452,7 +466,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // used a bad range header or the file's not on the server anymore.
         if (_tmpFile.size() == 0 || badRangeHeader || fileNotFound) {
             _tmpFile.close();
-            _tmpFile.remove();
+            FileSystem::remove(_tmpFile.fileName());
             _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         }
 
@@ -517,7 +531,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qDebug() << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
-        _tmpFile.remove();
+        FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::SoftError, QLatin1String("Broken webserver returning empty content length for non-empty file on resume"));
         return;
     }
@@ -546,32 +560,37 @@ void PropagateDownloadFileQNAM::slotGetFinished()
 
 void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
 {
-    _tmpFile.remove();
+    FileSystem::remove(_tmpFile.fileName());
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
-QString makeConflictFileName(const QString &fn, const QDateTime &dt)
+void PropagateDownloadFileQNAM::deleteExistingFolder()
 {
-    QString conflictFileName(fn);
-    // Add _conflict-XXXX  before the extension.
-    int dotLocation = conflictFileName.lastIndexOf('.');
-    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-        dotLocation = conflictFileName.size();
+    QString existingDir = _propagator->getFilePath(_item->_file);
+    if (!QFileInfo(existingDir).isDir()) {
+        return;
     }
-    QString timeString = dt.toString("yyyyMMdd-hhmmss");
 
-    // Additional marker
-    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
-    if (conflictFileUserName.isEmpty())
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
-    else
-        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
+    // Delete the directory if it is empty!
+    QDir dir(existingDir);
+    if (dir.entryList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0) {
+        if (dir.rmdir(existingDir)) {
+            return;
+        }
+        // on error, just try to move it away...
+    }
 
-    return conflictFileName;
+    QString conflictDir = FileSystem::makeConflictFileName(
+            existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
+
+    _propagator->addTouchedFile(existingDir);
+    _propagator->addTouchedFile(conflictDir);
+    QString renameError;
+    if (!FileSystem::rename(existingDir, conflictDir, &renameError)) {
+        done(SyncFileItem::NormalError, renameError);
+    }
 }
-
 
 namespace { // Anonymous namespace for the recall feature
 static QString makeRecallFileName(const QString &fn)
@@ -610,10 +629,9 @@ static void handleRecallFile(const QString &fn)
         QString fpath = thisDir.filePath(line);
         QString rpath = makeRecallFileName(fpath);
 
-        // if previously recalled file exists then remove it (copy will not overwrite it)
-        QFile(rpath).remove();
         qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-        QFile::copy(fpath,rpath);
+        QString error;
+        FileSystem::uncheckedRenameReplace(fpath, rpath, &error);
     }
 }
 } // end namespace
@@ -636,7 +654,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
+        QString conflictFileName = FileSystem::makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             //If the rename fails, don't replace it.
             done(SyncFileItem::SoftError, renameError);

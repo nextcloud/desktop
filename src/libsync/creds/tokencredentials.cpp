@@ -121,7 +121,7 @@ bool TokenCredentials::ready() const
     return _ready;
 }
 
-void TokenCredentials::fetch(FetchMode)
+void TokenCredentials::fetch()
 {
     Q_EMIT fetched();
 }

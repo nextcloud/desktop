@@ -199,7 +199,7 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
 
     auto result = folder->syncResult();
 
-    qDebug() << "Sync state changed for folder " << folder->alias() << ": "  << result.statusString();
+    qDebug() << "Sync state changed for folder " << folder->remoteUrl().toString() << ": "  << result.statusString();
 
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
@@ -771,11 +771,32 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
 
     const auto accountState = folder->accountState();
 
-    qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
-    ShareDialog *w = new ShareDialog(accountState->account(), sharePath, localPath, resharingAllowed);
-    w->getShares();
-    w->setAttribute( Qt::WA_DeleteOnClose, true );
+    ShareDialog *w = 0;
+    if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
+        qDebug() << Q_FUNC_INFO << "Raising share dialog" << sharePath << localPath;
+        w = _shareDialogs[localPath];
+    } else {
+        qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
+        w = new ShareDialog(accountState->account(), sharePath, localPath, resharingAllowed);
+        w->getShares();
+        w->setAttribute( Qt::WA_DeleteOnClose, true );
+
+        _shareDialogs[localPath] = w;
+        connect(w, SIGNAL(destroyed(QObject*)), SLOT(slotRemoveDestroyedShareDialogs()));
+    }
     raiseDialog(w);
+}
+
+void ownCloudGui::slotRemoveDestroyedShareDialogs()
+{
+    QMutableMapIterator<QString, QPointer<ShareDialog> > it(_shareDialogs);
+    while (it.hasNext()) {
+        it.next();
+        if (! it.value() || it.value() == sender()) {
+            it.remove();
+            qDebug() << "REMOVED";
+        }
+    }
 }
 
 

@@ -113,11 +113,7 @@ Application::Application(int &argc, char **argv) :
 #if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 #endif
-#if QT_VERSION > QT_VERSION_CHECK(5, 6, 0)
-    // this may slightly break some styles until they
-    // get fixed, but will make dialogs readable.
-    setAttribute(Qt::AA_EnableHighDpiScaling, true);
-#endif
+
     parseOptions(arguments());
     //no need to waste time;
     if ( _helpOnly || _versionOnly ) return;
@@ -275,7 +271,7 @@ void Application::slotCheckConnection()
         // when the error is permanent.
         if (state != AccountState::SignedOut
                 && state != AccountState::ConfigurationError) {
-            accountState->checkConnectivity(AccountState::NonInteractive);
+            accountState->checkConnectivity();
         }
     }
 
@@ -570,6 +566,10 @@ void Application::setupTranslations()
         if (property("ui_lang").isNull())
             setProperty("ui_lang", "C");
     }
+// Work around Qt 5 < 5.5.0 regression, see https://bugreports.qt.io/browse/QTBUG-43447
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
+    setLayoutDirection(QApplication::tr("QT_LAYOUT_DIRECTION") == QLatin1String("RTL") ? Qt::RightToLeft : Qt::LeftToRight);
+#endif
 }
 
 bool Application::giveHelp()

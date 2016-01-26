@@ -18,9 +18,6 @@
 #include "UtilConstants.h"
 #include "StringUtil.h"
 
-#include <WinSock2.h>
-#include <Ws2def.h>
-#include <windows.h>
 #include <iostream>
 #include <vector>
 #include <array>
@@ -45,7 +42,6 @@ CommunicationSocket::~CommunicationSocket()
 
 bool CommunicationSocket::Close()
 {
-	WSACleanup();
 	if (_pipe == INVALID_HANDLE_VALUE) {
 		return false;
 	}

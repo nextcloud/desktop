@@ -83,7 +83,25 @@
 
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
 {
-	if (_shareMenuTitle) {
+	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
+	NSMutableSet *rootPaths = [[NSMutableSet alloc] init];
+	[syncController.directoryURLs enumerateObjectsUsingBlock: ^(id obj, BOOL *stop) {
+		[rootPaths addObject:[obj path]];
+	}];
+
+	// The server doesn't support sharing a root directory so do not show the option in this case.
+	// It is still possible to get a problematic sharing by selecting both the root and a child,
+	// but this is so complicated to do and meaningless that it's not worth putting this check
+	// also in shareMenuAction.
+	__block BOOL onlyRootsSelected = YES;
+	[syncController.selectedItemURLs enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		if (![rootPaths member:[obj path]]) {
+			onlyRootsSelected = NO;
+			*stop = YES;
+		}
+	}];
+
+	if (_shareMenuTitle && !onlyRootsSelected) {
 		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
 		[menu addItemWithTitle:_shareMenuTitle action:@selector(shareMenuAction:) keyEquivalent:@"title"];
 		

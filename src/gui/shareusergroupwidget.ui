@@ -41,11 +41,21 @@
         <x>0</x>
         <y>0</y>
         <width>441</width>
-        <height>128</height>
+        <height>98</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3"/>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="errorLabel">
+     <property name="text">
+      <string notr="true">Placeholder for Error text</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

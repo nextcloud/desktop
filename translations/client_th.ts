@@ -277,62 +277,52 @@
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="100"/>
+        <location filename="../src/gui/accountstate.cpp" line="99"/>
         <source>Signed out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="102"/>
+        <location filename="../src/gui/accountstate.cpp" line="101"/>
         <source>Disconnected</source>
         <translation>ยกเลิกการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="104"/>
+        <location filename="../src/gui/accountstate.cpp" line="103"/>
         <source>Connected</source>
         <translation>เชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="106"/>
+        <location filename="../src/gui/accountstate.cpp" line="105"/>
         <source>Service unavailable</source>
         <translation>ไม่สามารถให้บริการได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="108"/>
+        <location filename="../src/gui/accountstate.cpp" line="107"/>
         <source>Network error</source>
         <translation>ข้อผิดพลาดของเครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="110"/>
+        <location filename="../src/gui/accountstate.cpp" line="109"/>
         <source>Configuration error</source>
         <translation>กำหนดค่าผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="112"/>
+        <location filename="../src/gui/accountstate.cpp" line="111"/>
         <source>Unknown account state</source>
         <translation>ไม่ระบุสถานะบัญชี</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="267"/>
-        <source>Reauthentication required</source>
-        <translation>จำเป้นต้องรับรองความถูกต้องอีกครั้ง</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountstate.cpp" line="267"/>
-        <source>You need to re-login to continue using the account %1.</source>
-        <translation>คุณจำเป็นต้องเข้าสู่ระบบใหม่ เพื่อดำเนินการใช้บัญชี %1 ต่อ</translation>
     </message>
 </context>
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="133"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
         <translation>%1 บน %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="138"/>
-        <source>(disconnected)</source>
-        <translation>(ยกเลิกการเชื่อมต่อแล้ว)</translation>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
+        <source>%1 on %2 (disconnected)</source>
+        <translation>%1 บน %2 (ตัดการเชื่อมต่อ)</translation>
     </message>
 </context>
 <context>
@@ -369,28 +359,23 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
-        <source>server activity list</source>
-        <translation>รายชื่อกิจกรรมของเซิร์ฟเวอร์</translation>
+        <source>The server activity list has been copied to the clipboard.</source>
+        <translation>รายการกิจกรรมเซิร์ฟเวอร์ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
-        <source>sync activity list</source>
-        <translation>รายชื่อกิจกรรมการประสานข้อมูล</translation>
+        <source>The sync activity list has been copied to the clipboard.</source>
+        <translation>รายการกิจกรรมการประสานข้อมูลได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
-        <source>not syned items list</source>
-        <translation>รายชื่อรายการไม่ถูกประสานข้อมูล</translation>
+        <source>The list of unsynched items has been copied to the clipboard.</source>
+        <translation>รายชื่อที่ไม่ถูกประสานข้อมูลได้รับการคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
         <source>Copied to clipboard</source>
         <translation>คัดลอกไปยังคลิปบอร์ด</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
-        <source>The %1 has been copied to the clipboard.</source>
-        <translation>%1 ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
 </context>
 <context>
@@ -560,96 +545,96 @@
         <translation>ไม่สามารถอ่านข้อมูล %1 ได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="411"/>
+        <location filename="../src/gui/folder.cpp" line="417"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="513"/>
+        <location filename="../src/gui/folder.cpp" line="520"/>
         <source>%1 and %2 other files have been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="515"/>
+        <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="520"/>
+        <location filename="../src/gui/folder.cpp" line="527"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="522"/>
+        <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="527"/>
+        <location filename="../src/gui/folder.cpp" line="534"/>
         <source>%1 and %2 other files have been updated.</source>
         <translation>%1 และ %2 ไฟล์อื่นๆ ได้ถูกอัพเดทเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="529"/>
+        <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ได้ถูกอัพเดทเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="534"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
         <translation>%1 ได้ถูกเปลี่ยนชื่อเป็น %2 และ %3 ไฟล์อื่นๆ ได้ถูกเปลี่ยนชื่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="536"/>
+        <location filename="../src/gui/folder.cpp" line="543"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 ได้ถูกเปลี่ยนชื่อเป็น %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="541"/>
+        <location filename="../src/gui/folder.cpp" line="548"/>
         <source>%1 has been moved to %2 and %3 other files have been moved.</source>
         <translation>%1 ได้ถูกย้ายไปยัง %2 และ %3 ไฟล์อื่นๆ ได้ถูกย้าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="543"/>
+        <location filename="../src/gui/folder.cpp" line="550"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 ได้ถูกย้ายไปยัง %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="548"/>
+        <location filename="../src/gui/folder.cpp" line="555"/>
         <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 และ %2 ไฟล์อื่นๆ ไม่สามารถประสานข้อมูลเนื่องจากมีข้อผิดพลาด ดูบันทึกสำหรับรายละเอียด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="550"/>
+        <location filename="../src/gui/folder.cpp" line="557"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 ไม่สามารถประสานข้อมูลเนื่องจากมีข้อผิดพลาด ดูบันทึกสำหรับรายละเอียด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="558"/>
+        <location filename="../src/gui/folder.cpp" line="565"/>
         <source>Sync Activity</source>
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="890"/>
+        <location filename="../src/gui/folder.cpp" line="907"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1147"/>
+        <location filename="../src/gui/folder.cpp" line="1164"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 กรุณาไปตั้งค่าถ้าคุณต้องการให้มันดาวน์โหลดได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1160"/>
+        <location filename="../src/gui/folder.cpp" line="1177"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -658,17 +643,17 @@ Are you sure you want to perform this operation?</source>
 คุณแน่ใจว่าคุณต้องการที่จะดำเนินการนี้?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1164"/>
+        <location filename="../src/gui/folder.cpp" line="1181"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1166"/>
+        <location filename="../src/gui/folder.cpp" line="1183"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1167"/>
+        <location filename="../src/gui/folder.cpp" line="1184"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
@@ -790,22 +775,22 @@ Are you sure you want to perform this operation?</source>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="37"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
         <translation>เพิ่มโฟลเดอร์ที่ต้องการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="275"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="290"/>
         <source>File</source>
         <translation>ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="228"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="243"/>
         <source>Syncing selected files in your account with</source>
         <translation>ซิงค์ไฟล์ที่เลือกในบัญชีของคุณด้วย</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="231"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Remote path: %1</source>
         <translation>ตำแหน่งพาธระยะไกล: %1</translation>
     </message>
@@ -834,7 +819,7 @@ Are you sure you want to perform this operation?</source>
         <translation>ข้อผิดพลาดในขณะที่โหลดรายชื่อโฟลเดอร์จากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="199"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="201"/>
         <source>Signed out</source>
         <translation>ออกจากระบบ</translation>
     </message>
@@ -849,70 +834,70 @@ Are you sure you want to perform this operation?</source>
         <translation>กำลังดึงรายการโฟลเดอร์จากเซิร์ฟเวอร์ ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="808"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="809"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>กำลังตรวจสอบการเปลี่ยนแปลงใน &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="843"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="844"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="846"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="847"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="871"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="872"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="873"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="883"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="874"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="877"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="880"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="886"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="887"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>อัปโหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="894"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="914"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="915"/>
         <source>%1 of %2, file %3 of %4
 Total time left %5</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7
@@ -920,22 +905,22 @@ Total time left 12 minutes&quot;</extracomment>
         <translation>%1 จาก %2, ไฟล์ %3 จาก %4 เวลาที่เหลือทั้งหมด %5</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="920"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="961"/>
         <source>Waiting...</source>
         <translation>กรุณารอซักครู่...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>กำลังรออีก (%n) โฟลเดอร์...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="969"/>
         <source>Preparing to sync...</source>
         <translation>กำลังเตรียมพร้อมในการประสานข้อมูล</translation>
     </message>
@@ -1828,7 +1813,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="111"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="101"/>
         <source>Connection Timeout</source>
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
@@ -1836,7 +1821,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="168"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="158"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>ตอบกลับ JSON ไม่ถูกต้องจาก URL แบบสำรวจความคิดเห็น</translation>
     </message>
@@ -1844,37 +1829,37 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="315"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="324"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถดาวน์โหลดได้เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="373"/>
         <source>The download would reduce free disk space below %1</source>
         <translation>การดาวน์โหลดจะลดพื้นที่ว่างในดิสก์ด้านล่าง %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="378"/>
         <source>Free space on disk is less than %1</source>
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="479"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="493"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="528"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="542"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ไฟล์ไม่สามารถดาวน์โหลดได้อย่างสมบูรณ์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="628"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="646"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถบันทึกได้เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="668"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
@@ -1892,7 +1877,7 @@ It is not advisable to use it.</source>
         <translation>ดำเนินการขึ้นบัญชีดำ:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="230"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="231"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>ไฟล์หรือโฟลเดอร์ที่ถูกลบออกจากส่วนการอ่านเพียงอย่างเดียว แต่ล้มเหลวในการฟื้นฟู: %1</translation>
     </message>
@@ -1900,12 +1885,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalMkdir</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="154"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
+        <source>could not delete file %1, error: %2</source>
+        <translation>ไม่สามารถลบไฟล์ %1, ข้อผิดพลาด: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="163"/>
         <source>Attention, possible case sensitivity clash with %1</source>
         <translation>คำเตือน เคสที่เป็นไปไม่ได้มีผลกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="160"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="169"/>
         <source>could not create folder %1</source>
         <translation>ไม่สามารถสร้างโฟลเดอร์ %1</translation>
     </message>
@@ -1913,17 +1903,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRemove</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="78"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="72"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
         <translation>ข้อผิดพลาดขณะกำลังลบ &apos;%1&apos;: %2;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="104"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
         <translation>ไม่สามารถลบโฟลเดอร์ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="122"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>ไม่สามารถลบ %1 เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
@@ -1931,7 +1921,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="212"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
         <translation>ไฟล์ %1 ไม่สามารถเปลี่ยนชื่อเป็น %2 เพราะชื่อไฟล์ต้นทางตรงกัน!</translation>
     </message>
@@ -1952,7 +1942,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="72"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="97"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>รหัส HTTP ผิดพลาด โดยเซิร์ฟเวอร์คาดว่าจะได้รับรหัส 201 แต่กลับได้รับ &quot;%1 %2&quot;</translation>
     </message>
@@ -1983,48 +1973,43 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="206"/>
-        <source>File name contains at least one invalid character</source>
-        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="280"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="288"/>
         <source>File Removed</source>
         <translation>ไฟล์ถูกลบไปแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="300"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>ไฟล์ต้นทางถูกเปลี่ยนแปลงในระหว่างการซิงค์ มันจะกลับมา</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="304"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>Local file changed during sync.</source>
         <translation>ไฟล์ต้นทางถูกเปลี่ยนแปลงขณะกำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="610"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="620"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>บังคับให้ยกเลิกงานในการตั้งค่าการเชื่อมต่อ HTTP กับ Qt &lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="618"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="628"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>ไฟล์ต้นทางที่ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้อ่านอย่างเดียว มันถูกเรียกคืนและแก้ไขของคุณอยู่ในไฟล์ความขัดแย้ง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="649"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="659"/>
         <source>Poll URL missing</source>
         <translation>URL แบบสำรวจความคิดเห็นหายไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="672"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="682"/>
         <source>The local file was removed during sync.</source>
         <translation>ไฟล์ต้นทางถูกลบออกในระหว่างการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="698"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="708"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>เซิร์ฟเวอร์ไม่ยอมรับส่วนสุดท้าย (ไม่มี e-tag ในปัจจุบัน)</translation>
     </message>
@@ -2082,24 +2067,24 @@ It is not advisable to use it.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="246"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
         <translation>ปัจจุบันยังไม่มีไฟล์ที่ถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้และไม่มีความคืบหน้าในการดาวน์โหลด</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="249"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
         <source>%n files are ignored because of previous errors.
 </source>
         <translation><numerusform>%n ไฟล์จะถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="250"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
         <source>%n files are partially downloaded.
 </source>
         <translation><numerusform>%n ไฟล์จะถูกดาวน์โหลดบางส่วน</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="251"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
         <source>Try to sync these again.</source>
         <translation>พยายามที่จะประสานข้อมูลเหล่านี้อีกครั้ง</translation>
     </message>
@@ -2211,6 +2196,11 @@ It is not advisable to use it.</source>
         <source>Network</source>
         <translation>เครือข่าย</translation>
     </message>
+    <message>
+        <location filename="../src/gui/settingsdialog.cpp" line="197"/>
+        <source>Account</source>
+        <translation>บัญชี</translation>
+    </message>
 </context>
 <context>
     <name>OCC::SettingsDialogMac</name>
@@ -2233,6 +2223,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/settingsdialogmac.cpp" line="91"/>
         <source>Network</source>
         <translation>เครือข่าย</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="120"/>
+        <source>Account</source>
+        <translation>บัญชี</translation>
     </message>
 </context>
 <context>
@@ -2326,37 +2321,31 @@ It is not advisable to use it.</source>
         <translation>รหัสผ่านป้องกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="174"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Password Protected</source>
         <translation>รหัสผ่านถูกป้องกันแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="291"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="296"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="371"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="373"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="419"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="431"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="441"/>
         <source>Please Set Password</source>
         <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="494"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
         <source>&amp;Share link</source>
         <translation>&amp;แชร์ลิงค์</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="508"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
-        <source>OCS API error code: %1</source>
-        <translation>รหัสข้อผิดพลาด OCS API: %1</translation>
     </message>
 </context>
 <context>
@@ -2370,6 +2359,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
         <source>Share with users or groups ...</source>
         <translation>แชร์กับผู้ใช้หรือกลุ่ม ...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
+        <source>No results for &apos;%1&apos;</source>
+        <translation>ไม่มีผลลัพธ์สำหรับ &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -2400,17 +2394,17 @@ It is not advisable to use it.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="268"/>
         <source>create</source>
         <translation>สร้าง</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="270"/>
         <source>change</source>
         <translation>เปลี่ยนแปลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="272"/>
         <source>delete</source>
         <translation>ลบ</translation>
     </message>
@@ -2418,12 +2412,12 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethCredentials</name>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="229"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="230"/>
         <source>Login Error</source>
         <translation>เข้าสู่ระบบผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="229"/>
+        <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="230"/>
         <source>You must sign in as user %1</source>
         <translation>คุณต้องเข้าสู่ระบบเป็นผู้ใช้ %1</translation>
     </message>
@@ -2741,12 +2735,18 @@ It is not advisable to use it.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังอ่านโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
+        <location filename="../src/libsync/syncengine.cpp" line="656"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1047"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1036"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1054"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
@@ -2841,69 +2841,69 @@ It is not advisable to use it.</source>
         <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="599"/>
+        <location filename="../src/libsync/syncengine.cpp" line="602"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>ตัวอักษรไม่ถูกต้อง โปรดเปลี่ยนชื่อ &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="653"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="686"/>
+        <location filename="../src/libsync/syncengine.cpp" line="690"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>ไม่สามารถเตรียมการประสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="768"/>
+        <location filename="../src/libsync/syncengine.cpp" line="772"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="998"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="826"/>
+        <source>File name contains at least one invalid character</source>
+        <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1015"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1022"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1023"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1041"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1074"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1111"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1189"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>
@@ -3322,6 +3322,14 @@ It is not advisable to use it.</source>
     </message>
 </context>
 <context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../src/gui/application.cpp" line="571"/>
+        <source>QT_LAYOUT_DIRECTION</source>
+        <translation>QT_LAYOUT_DIRECTION</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
@@ -3436,79 +3444,79 @@ It is not advisable to use it.</source>
 <context>
     <name>progress</name>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="31"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="32"/>
         <source>Downloaded</source>
         <translation>ถูกดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="34"/>
         <source>Uploaded</source>
         <translation>ถูกอัพโหลด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="36"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded, renamed conflicting file</source>
         <translation>ถูกดาวน์โหลด เปลี่ยนชื่อไฟล์ที่ขัดแย้งกัน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
         <source>Deleted</source>
         <translation>ลบแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="41"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="42"/>
         <source>Moved to %1</source>
         <translation>ถูกย้ายไปยัง %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
         <translation>ถูกละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
         <source>Filesystem access error</source>
         <translation>ข้อผิดพลาดในการเข้าถึงระบบไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>Error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
         <source>Unknown</source>
         <translation>ไม่ทราบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="63"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="65"/>
         <source>downloading</source>
         <translation>กำลังดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="65"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="67"/>
         <source>uploading</source>
         <translation>กำลังอัพโหลด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="67"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="69"/>
         <source>deleting</source>
         <translation>กำลังลบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="70"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
         <source>moving</source>
         <translation>กำลังย้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
         <source>ignoring</source>
         <translation>กำลังละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
         <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="78"/>
         <source>error</source>
         <translation>ข้อผิดพลาด</translation>
     </message>

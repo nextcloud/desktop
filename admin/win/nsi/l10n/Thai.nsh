@@ -1,6 +1,6 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "แสดงบันทึกประจำรุ่น"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "พบว่ากระบวนการ ${APPLICATION_EXECUTABLE} จะต้องหยุดทำงาน\nคุณต้องการติดตั้งเพื่อหยุดการทำงานเหล่านี้ของคุณ?"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "พบว่ากระบวนการ ${APPLICATION_EXECUTABLE} จะต้องหยุดทำงาน$\nคุณต้องการติดตั้งเพื่อหยุดการทำงานเหล่านี้ของคุณ?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "ฆ่ากระบวนการทำงาน ${APPLICATION_EXECUTABLE}"
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "ไม่พบการฆ่ากระบวนการ!"
 StrCpy $PageReinstall_NEW_Field_1 "รุ่นเก่าของ ${APPLICATION_NAME} มีการติดตั้งในระบบของคุณ ขอแนะนำให้คุณถอนการติดตั้งรุ่นปัจจุบันออกก่อน เลือกการดำเนินการที่คุณต้องการที่จะดำเนินการและคลิกถัดไปเพื่อดำเนินการต่อ"

@@ -310,6 +310,11 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     }
 
 #else //Q_OS_WIN
+    // You can not overwrite a read-only file on windows.
+    if (!QFileInfo(destinationFileName).isWritable()) {
+        setFileReadOnly(destinationFileName, false);
+    }
+
     BOOL ok;
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
@@ -471,9 +476,10 @@ bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
 QString FileSystem::fileSystemForPath(const QString & path)
 {
     // See also QStorageInfo (Qt >=5.4) and GetVolumeInformationByHandleW (>= Vista)
-    QString drive = path.left(3);
-    if (! drive.endsWith(":\\"))
+    QString drive = path.left(2);
+    if (! drive.endsWith(":"))
         return QString();
+    drive.append('\\');
 
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
@@ -542,5 +548,45 @@ QByteArray FileSystem::calcAdler32( const QString& filename )
     return QByteArray::number( adler, 16 );
 }
 #endif
+
+QString FileSystem::makeConflictFileName(const QString &fn, const QDateTime &dt)
+{
+    QString conflictFileName(fn);
+    // Add _conflict-XXXX  before the extension.
+    int dotLocation = conflictFileName.lastIndexOf('.');
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+        dotLocation = conflictFileName.size();
+    }
+    QString timeString = dt.toString("yyyyMMdd-hhmmss");
+
+    // Additional marker
+    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
+    if (conflictFileUserName.isEmpty())
+        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    else
+        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
+
+    return conflictFileName;
+}
+
+bool FileSystem::remove(const QString &fileName, QString *errorString)
+{
+#ifdef Q_OS_WIN
+    // You cannot delete a read-only file on windows, but we want to
+    // allow that.
+    if (!QFileInfo(fileName).isWritable()) {
+        setFileReadOnly(fileName, false);
+    }
+#endif
+    QFile f(fileName);
+    if (!f.remove()) {
+        if (errorString) {
+            *errorString = f.errorString();
+        }
+        return false;
+    }
+    return true;
+}
 
 } // namespace OCC

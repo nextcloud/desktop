@@ -1,5 +1,25 @@
 ChangeLog
 =========
+version 2.1.1 (release 2016-01-2x)
+ * UI improvements for HiDPI screens, error messages, RTL languages
+ * Fix occurences of "Connection Closed" when a new unauthenticated TCP socket is used
+ * Fix undeliberate WiFi scanning done by Qt Network classes
+ * Several fixes/improvements to the sharing dialog
+ * Several fixes/improvements to the server activity tab
+ * Create the directory when using --confdir and it does not exist
+ * Windows Overlay icons: Fix DLL and icon oddities
+ * Mac Overlay icons: Don't install legacy Finder plugin on >= 10.10
+ * Linux Overlay icons: Nemo plugin
+ * Overlay icons: Fix several wrong icon state computations
+ * Allow changeable upload chunk size in owncloud.cfg
+ * Crash fixes on account deletion
+ * Forget password on explicit sign-out
+ * Sync Engine: .lnk files
+ * Sync Engine: symlinked syn directories
+ * Sync Engine: Windows: Fix deleting and replacing of read-only files (#4308 #4277)
+ * Sync Engine: Fixes for files becoming directories and vice versa (#4302)
+ * Misc other fixes/improvements
+
 version 2.1 (release 2015-12-03)
  * GUI: Added a display of server activities
  * GUI: Added a separate view for not synced items, ignores, errors

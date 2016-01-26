@@ -19,34 +19,43 @@ the server URL.
 Other command line switches supported by ``owncloudcmd`` include the following:
 
 ``--user``, ``-u`` ``[user]``
-      Specify the user's login name.
+       Use ``user`` as the login name.
 
 ``--password``, ``-p`` ``[password]``
-      Specify the user's password.
+       Use ``password`` as the password.
 
 ``-n``
-      Use ``netrc (5)`` for login.
+       Use ``netrc (5)`` for login.
 
 ``--non-interactive``
-      Do not prompt for questions.
+       Do not prompt for questions.
 
-``--silent``, ``-s``
-      Inhibits verbose log output.
+``--silent``, ``--s``
+       Inhibits verbose log output.
 
 ``--trust``
-      Trust any SSL certificate, including invalid ones.
+       Trust any SSL certificate, including invalid ones.
 
 ``--httpproxy  http://[user@pass:]<server>:<port>``
-      Uses the specified ``server`` as the HTTP proxy.
-      
-``--unsyncedfolders [file]`` 
-      File containing list of folders to not sync
+      Uses ``server`` as HTTP proxy.
 
 ``--nonshib``
       Uses Non Shibboleth WebDAV Authentication
 
 ``--davpath [path]``
       Overrides the WebDAV Path with ``path``
+
+``--exclude [file]``
+      Exclude list file
+
+``--unsyncedfolders [file]``
+      File containing the list of unsynced folders (selective sync)
+
+``--max-sync-retries [n]``
+      Retries maximum n times (defaults to 3)
+
+``-h``
+      Sync hidden files,do not ignore them
 
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~

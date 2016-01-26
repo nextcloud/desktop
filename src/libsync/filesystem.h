@@ -148,6 +148,14 @@ bool uncheckedRenameReplace(const QString &originFileName,
                             QString *errorString);
 
 /**
+ * Removes a file.
+ *
+ * Equivalent to QFile::remove(), except on Windows, where it will also
+ * successfully remove read-only files.
+ */
+bool OWNCLOUDSYNC_EXPORT remove(const QString &fileName, QString *errorString = 0);
+
+/**
  * Replacement for QFile::open(ReadOnly) followed by a seek().
  * This version sets a more permissive sharing mode on Windows.
  *
@@ -168,6 +176,11 @@ QByteArray OWNCLOUDSYNC_EXPORT calcSha1( const QString& fileName );
 #ifdef ZLIB_FOUND
 QByteArray OWNCLOUDSYNC_EXPORT calcAdler32( const QString& fileName );
 #endif
+
+/**
+ * Returns a file name based on \a fn that's suitable for a conflict.
+ */
+QString OWNCLOUDSYNC_EXPORT makeConflictFileName(const QString &fn, const QDateTime &dt);
 
 }
 

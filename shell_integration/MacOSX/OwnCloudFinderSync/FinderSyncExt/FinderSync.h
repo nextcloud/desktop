@@ -21,7 +21,6 @@
 {
 	SyncClientProxy *_syncClientProxy;
 	NSMutableSet *_registeredDirectories;
-	NSMutableSet *_requestedUrls;
 	NSString *_shareMenuTitle;
 }
 

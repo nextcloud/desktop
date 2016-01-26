@@ -79,7 +79,8 @@ public:
         return ! item._isDirectory && (
                item._instruction == CSYNC_INSTRUCTION_CONFLICT
             || item._instruction == CSYNC_INSTRUCTION_SYNC
-            || item._instruction == CSYNC_INSTRUCTION_NEW);
+            || item._instruction == CSYNC_INSTRUCTION_NEW
+            || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE);
     }
 
     /**

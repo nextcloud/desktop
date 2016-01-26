@@ -254,7 +254,7 @@ void SyncEngine::deleteStaleDownloadInfos()
     foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
         const QString tmppath = _propagator->getFilePath(deleted_info._tmpfile);
         qDebug() << "Deleting stale temporary file: " << tmppath;
-        QFile::remove(tmppath);
+        FileSystem::remove(tmppath);
     }
 }
 
@@ -444,14 +444,14 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_errorString = tr("Filename encoding is not valid");
     }
 
-    item->_isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    bool isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
 
     if (file->etag && file->etag[0]) {
         item->_etag = file->etag;
     }
     item->_size = file->size;
 
-    if (!remote) {
+    if (!item->_inode) {
         item->_inode = file->inode;
     }
 
@@ -474,7 +474,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE: {
-        if (remote && item->_should_update_metadata && !item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
+        if (remote && item->_should_update_metadata && !isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
             // Or a local inode/mtime change (see localMetadataUpdate below)
@@ -509,17 +509,18 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             _syncItemMap.remove(key);
         }
         // Any files that are instruction NONE?
-        if (!item->_isDirectory && file->other.instruction == CSYNC_INSTRUCTION_NONE) {
+        if (!isDirectory && file->other.instruction == CSYNC_INSTRUCTION_NONE) {
             _hasNoneFiles = true;
         }
         // We want to still update etags of directories, other NONE
         // items can be ignored.
-        bool directoryEtagUpdate = item->_isDirectory && file->should_update_metadata;
+        bool directoryEtagUpdate = isDirectory && file->should_update_metadata;
         bool localMetadataUpdate = !remote && file->should_update_metadata;
         if (!directoryEtagUpdate) {
             if (localMetadataUpdate) {
                 // Hack, we want a local metadata update to happen, but only if the
                 // remote tree doesn't ask us to do some kind of propagation.
+                item->_isDirectory = isDirectory;
                 _syncItemMap.insert(key, item);
             }
             return re;
@@ -529,7 +530,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         item->_renameTarget = renameTarget;
-        if (item->_isDirectory)
+        if (isDirectory)
             _renamedFolders.insert(item->_file, item->_renameTarget);
         break;
     case CSYNC_INSTRUCTION_REMOVE:
@@ -543,6 +544,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         break;
     case CSYNC_INSTRUCTION_EVAL:
     case CSYNC_INSTRUCTION_NEW:
+    case CSYNC_INSTRUCTION_TYPE_CHANGE:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_STAT_ERROR:
     default:
@@ -556,6 +558,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
 
     item->_direction = dir;
+    item->_isDirectory = isDirectory;
     if (instruction != CSYNC_INSTRUCTION_NONE) {
         // check for blacklisting of this item.
         // if the item is on blacklist, the instruction was set to ERROR
@@ -650,7 +653,8 @@ void SyncEngine::startSync()
         qDebug() << "There are" << freeBytes << "bytes available at" << _localPath
                  << "and at least" << minFree << "are required";
         if (freeBytes < minFree) {
-            emit csyncError(tr("Only %1 are available, need at least %2 to start").arg(
+            emit csyncError(tr("Only %1 are available, need at least %2 to start",
+                               "Placeholders are postfixed with file sizes using Utility::octetsToString()").arg(
                                 Utility::octetsToString(freeBytes),
                                 Utility::octetsToString(minFree)));
             finalize(false);
@@ -810,6 +814,19 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     for (SyncFileItemVector::iterator it = _syncedItems.begin();
             it != _syncedItems.end(); ++it) {
         (*it)->_file = adjustRenamedPath((*it)->_file);
+    }
+
+    // Check for invalid character in old server version
+    if (_account->serverVersionInt() < 0x080100) {
+        // Server version older than 8.1 don't support these character in filename.
+        static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
+        for (auto it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+            if ((*it)->_direction == SyncFileItem::Up &&
+                    (*it)->destination().contains(invalidCharRx)) {
+                (*it)->_errorString  = tr("File name contains at least one invalid character");
+                (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            }
+        }
     }
 
     // Sort items per destination
@@ -1009,6 +1026,7 @@ void SyncEngine::checkForPermission()
         }
 
         switch((*it)->_instruction) {
+            case CSYNC_INSTRUCTION_TYPE_CHANGE:
             case CSYNC_INSTRUCTION_NEW: {
                 int slashPos = (*it)->_file.lastIndexOf('/');
                 QString parentDir = slashPos <= 0 ? "" : (*it)->_file.mid(0, slashPos);
@@ -1221,12 +1239,20 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
     }
 
     Q_FOREACH(const SyncFileItemPtr &item, _syncedItems) {
-        //qDebug() << Q_FUNC_INFO << fn << item._file << fn.startsWith(item._file) << item._file.startsWith(fn);
+        //qDebug() << Q_FUNC_INFO << fn << item->_status << item->_file << fn.startsWith(item->_file) << item->_file.startsWith(fn);
 
         if (item->_file.startsWith(pat) ||
-                item->_file == fn /* the same directory or file */) {
-            qDebug() << Q_FUNC_INFO << "Setting" << fn << " to STATUS_EVAL";
-            s->set(SyncFileStatus::STATUS_EVAL);
+                item->_file == fn || item->_renameTarget == fn /* the same directory or file */) {
+            if (item->_status == SyncFileItem::NormalError
+                || item->_status == SyncFileItem::FatalError)
+                s->set(SyncFileStatus::STATUS_ERROR);
+            else if (item->_status == SyncFileItem::FileIgnored)
+                s->set(SyncFileStatus::STATUS_IGNORE);
+            else if (item->_status == SyncFileItem::Success)
+                s->set(SyncFileStatus::STATUS_UPDATED);
+            else
+                s->set(SyncFileStatus::STATUS_EVAL);
+            qDebug() << Q_FUNC_INFO << "Setting" << fn << "to" << s->toSocketAPIString();
             return true;
         }
     }

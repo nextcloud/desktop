@@ -33,8 +33,6 @@ public:
                     HeaderRole,
                     FolderPathRole,
                     FolderSecondPathRole,
-                    FolderRemotePath,
-                    FolderStatus,
                     FolderErrorMsg,
                     FolderSyncPaused,
                     FolderStatusIconRole,
@@ -57,7 +55,8 @@ public:
     /**
      * return the position of the option button within the item
      */
-    static QRect optionsButtonRect(const QRect &within);
+    static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
+    static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 private:
     static QString addFolderText();
 };

@@ -225,7 +225,7 @@ RemotePathChecker::FileState RemotePathChecker::_StrToFileState(const std::wstri
 	} else if (str == L"SYNC" || str == L"NEW") {
 		return StateSync;
 	} else if (str == L"SYNC+SWM" || str == L"NEW+SWM") {
-		return StateSyncSWM;
+		return StateSync;
 	} else if (str == L"OK") {
 		return StateOk;
 	} else if (str == L"OK+SWM") {
@@ -233,11 +233,11 @@ RemotePathChecker::FileState RemotePathChecker::_StrToFileState(const std::wstri
 	} else if (str == L"IGNORE") {
 		return StateWarning;
 	} else if (str == L"IGNORE+SWM") {
-		return StateWarningSWM;
+		return StateWarning;
 	} else if (str == L"ERROR") {
 		return StateError;
 	} else if (str == L"ERROR+SWM") {
-		return StateErrorSWM;
+		return StateError;
 	}
 
 	return StateNone;

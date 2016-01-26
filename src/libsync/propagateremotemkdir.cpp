@@ -16,6 +16,7 @@
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "syncjournalfilerecord.h"
+#include "propagateremotedelete.h"
 #include <QFile>
 
 namespace OCC {
@@ -27,11 +28,30 @@ void PropagateRemoteMkdir::start()
 
     qDebug() << Q_FUNC_INFO << _item->_file;
 
+    _propagator->_activeJobs++;
+
+    if (!_deleteExisting) {
+        return slotStartMkcolJob();
+    }
+
+    _job = new DeleteJob(_propagator->account(),
+                         _propagator->_remoteFolder + _item->_file,
+                         this);
+    connect(_job, SIGNAL(finishedSignal()), SLOT(slotStartMkcolJob()));
+    _job->start();
+}
+
+void PropagateRemoteMkdir::slotStartMkcolJob()
+{
+    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
+    qDebug() << Q_FUNC_INFO << _item->_file;
+
     _job = new MkColJob(_propagator->account(),
                         _propagator->_remoteFolder + _item->_file,
                         this);
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
-    _propagator->_activeJobs++;
     _job->start();
 }
 
@@ -39,6 +59,11 @@ void PropagateRemoteMkdir::abort()
 {
     if (_job &&  _job->reply())
         _job->reply()->abort();
+}
+
+void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
+{
+    _deleteExisting = enabled;
 }
 
 void PropagateRemoteMkdir::slotMkcolJobFinished()

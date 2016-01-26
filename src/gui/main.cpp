@@ -47,10 +47,33 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
+#ifdef Q_OS_WIN
+    // If the font size ratio is set on Windows, we need to
+    // enable the auto pixelRatio in Qt since we don't
+    // want to use sizes relative to the font size everywhere.
+    // This is automatic on OS X, but opt-in on Windows
+    // https://doc-snapshots.qt.io/qt5-5.6/highdpi.html#qt-support
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+    qputenv("QT_DEVICE_PIXEL_RATIO", "auto");
+#else
+    qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
+#endif
+#endif // Q_OS_WIN
+
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
     OCC::Application app(argc, argv);
+
+#ifdef Q_OS_WIN
+    // The Windows style still has pixelated elements with Qt 5.6,
+    // it's recommended to use the Fusion style in this case, even
+    // though it looks slightly less native. Check here after the
+    // QApplication was constructed, but before any QWidget is
+    // constructed.
+    if (app.devicePixelRatio() > 1)
+        QApplication::setStyle(QStringLiteral("fusion"));
+#endif // Q_OS_WIN
 
 #ifndef Q_OS_WIN
     signal(SIGPIPE, SIG_IGN);

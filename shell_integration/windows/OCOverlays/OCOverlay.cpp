@@ -115,18 +115,12 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 		*pPriority = 1;
 	case State_Warning:
 		*pPriority = 2;
-	case State_WarningShared:
-		*pPriority = 3;
 	case State_Sync:
-		*pPriority = 4;
-	case State_SyncShared:
-		*pPriority = 5;
+		*pPriority = 3;
 	case State_Error:
-		*pPriority = 6;
-	case State_ErrorShared:
-		*pPriority = 7;
+		*pPriority = 4;
 	default:
-		*pPriority = 8;
+		*pPriority = 5;
 	}
 
 	return S_OK;

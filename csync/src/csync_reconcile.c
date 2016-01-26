@@ -283,7 +283,13 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                 break;
                 /* file on the other replica has not been modified */
             case CSYNC_INSTRUCTION_NONE:
-                cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                if (cur->type != other->type) {
+                    // If the type of the entity changed, it's like NEW, but
+                    // needs to delete the other entity first.
+                    cur->instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
+                } else {
+                    cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                }
                 break;
             case CSYNC_INSTRUCTION_IGNORE:
                 cur->instruction = CSYNC_INSTRUCTION_IGNORE;

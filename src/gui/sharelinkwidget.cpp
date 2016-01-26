@@ -140,13 +140,14 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
     connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-    connect(_manager, SIGNAL(linkShareRequiresPassword()), SLOT(slotCreateShareRequiresPassword()));
-    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
+    connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
+    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(slotServerError(int,QString)));
 }
 
 void ShareLinkWidget::setExpireDate(const QDate &date)
 {
     _pi_date->startAnimation();
+    _ui->errorLabel->hide();
     _share->setExpireDate(date);
 }
 
@@ -170,8 +171,6 @@ ShareLinkWidget::~ShareLinkWidget()
 void ShareLinkWidget::slotPasswordReturnPressed()
 {
     setPassword(_ui->lineEdit_password->text());
-    _ui->lineEdit_password->setText(QString());
-    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
     _ui->lineEdit_password->clearFocus();
 }
 
@@ -185,6 +184,7 @@ void ShareLinkWidget::setPassword(const QString &password)
 {
     _pi_link->startAnimation();
     _pi_password->startAnimation();
+    _ui->errorLabel->hide();
 
     _ui->checkBox_password->setEnabled(false);
     _ui->lineEdit_password->setEnabled(false);
@@ -199,6 +199,9 @@ void ShareLinkWidget::setPassword(const QString &password)
 
 void ShareLinkWidget::slotPasswordSet()
 {
+    _ui->lineEdit_password->setText(QString());
+    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
+
     /*
      * When setting/deleting a password from a share the old share is
      * deleted and a new one is created. So we need to refetch the shares
@@ -238,6 +241,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
                 _ui->lineEdit_password->setEnabled(true);
                 _ui->checkBox_password->setChecked(true);
                 _ui->lineEdit_password->setPlaceholderText("********");
+                _ui->lineEdit_password->setText(QString());
                 _ui->lineEdit_password->show();
                 _ui->pushButton_setPassword->show();
             } else {
@@ -278,7 +282,8 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             connect(_share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
             connect(_share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
             connect(_share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
-            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(displayError(int, QString)));
+            connect(_share.data(), SIGNAL(serverError(int, QString)), SLOT(slotServerError(int,QString)));
+            connect(_share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int,QString)));
 
             break;
         }
@@ -358,14 +363,11 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
 {
     qDebug() << Q_FUNC_INFO <<( _ui->checkBox_shareLink->checkState() == Qt::Checked);
     if (_ui->checkBox_shareLink->checkState() == Qt::Checked) {
-        _pi_link->startAnimation();
-
         /*
          * Check the capabilities if the server requires a password for a share
          * Ask for it directly
          */
         if (_account->capabilities().sharePublicLinkEnforcePassword()) {
-            _pi_link->stopAnimation();
             _ui->checkBox_password->setChecked(true);
             _ui->checkBox_password->setEnabled(false);
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
@@ -379,7 +381,9 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
             return;
         }
 
+        _pi_link->startAnimation();
         _ui->checkBox_shareLink->setEnabled(false);
+        _ui->errorLabel->hide();
         _manager->createLinkShare(_sharePath);
     } else {
 
@@ -405,18 +409,24 @@ void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> sha
     getShares();
 }
 
-void ShareLinkWidget::slotCreateShareRequiresPassword()
+void ShareLinkWidget::slotCreateShareRequiresPassword(const QString& message)
 {
     // there needs to be a password
-    _pi_editing->stopAnimation();
+    _pi_link->stopAnimation();
+    _pi_password->stopAnimation();
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
+    _ui->lineEdit_password->setEnabled(true);
     _ui->lineEdit_password->setFocus();
     _ui->pushButton_copy->hide();
     _ui->widget_shareLink->show();
     _ui->checkBox_expire->setEnabled(false);
     _ui->checkBox_editing->setEnabled(false);
+    if (!message.isEmpty()) {
+        _ui->errorLabel->setText(message);
+        _ui->errorLabel->show();
+    }
 
     _passwordRequired = true;
 
@@ -479,6 +489,7 @@ void ShareLinkWidget::setPublicUpload(bool publicUpload)
 {
     _ui->checkBox_editing->setEnabled(false);
     _pi_editing->startAnimation();
+    _ui->errorLabel->hide();
 
     _share->setPublicUpload(publicUpload);
 }
@@ -502,11 +513,24 @@ void ShareLinkWidget::setShareCheckBoxTitle(bool haveShares)
 
 }
 
-void ShareLinkWidget::displayError(int code, const QString &message)
+void ShareLinkWidget::slotServerError(int code, const QString &message)
 {
-    const QString arg = QString("%1, %2").arg(code).arg(message);
-    const QString errMsg = tr("OCS API error code: %1").arg(arg);
-    displayError(errMsg);
+    _pi_link->stopAnimation();
+    _pi_date->stopAnimation();
+    _pi_password->stopAnimation();
+    _pi_editing->stopAnimation();
+
+    qDebug() << "Error from server" << code << message;
+    displayError(message);
+}
+
+void ShareLinkWidget::slotPasswordSetError(int code, const QString &message)
+{
+    slotServerError(code, message);
+
+    _ui->checkBox_password->setEnabled(true);
+    _ui->lineEdit_password->setEnabled(true);
+    _ui->lineEdit_password->setFocus();
 }
 
 void ShareLinkWidget::displayError(const QString& errMsg)
@@ -515,10 +539,5 @@ void ShareLinkWidget::displayError(const QString& errMsg)
     _ui->errorLabel->show();
 }
 
-void ShareLinkWidget::displayError(int code)
-{
-    const QString errMsg = tr("OCS API error code: %1").arg(code);
-    displayError(errMsg);
-}
 
 }

@@ -65,7 +65,7 @@ QString SyncFileStatus::toSocketAPIString() const
     case STATUS_IGNORE:
         statusString = QLatin1String("IGNORE");
         break;
-    case STATUS_SYNC:
+    case STATUS_UPTODATE:
     case STATUS_UPDATED:
         statusString = QLatin1String("OK");
         break;

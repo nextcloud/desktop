@@ -117,7 +117,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
 
-    QString displayName = s->shortDisplayNameForSettings();
+    QString displayName = Theme::instance()->multiAccount() ? s->shortDisplayNameForSettings() : tr("Account");
 
     insertPreferencesPanel(0, accountIcon, displayName, accountSettings);
 

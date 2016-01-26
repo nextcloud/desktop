@@ -247,7 +247,9 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        return QUrl("http://deleted-account");
+    }
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
@@ -296,19 +298,22 @@ void Folder::prepareToSync()
 
 void Folder::slotRunEtagJob()
 {
-    qDebug() << "* Trying to check" << alias() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
+    qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
-    Q_ASSERT(_accountState );
+    if (!_accountState) {
+        qDebug() << "Can't run EtagJob, account is deleted";
+        return;
+    }
 
     AccountPtr account = _accountState->account();
 
     if (!_requestEtagJob.isNull()) {
-        qDebug() << Q_FUNC_INFO << alias() << "has ETag job queued, not trying to sync";
+        qDebug() << Q_FUNC_INFO << remoteUrl().toString() << "has ETag job queued, not trying to sync";
         return;
     }
 
     if (_definition.paused || !_accountState->isConnected()) {
-        qDebug() << "Not syncing.  :"  << alias() << _definition.paused << AccountState::stateString(_accountState->state());
+        qDebug() << "Not syncing.  :"  << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
         return;
     }
 
@@ -356,12 +361,13 @@ void Folder::slotRunEtagJob()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
+    //qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
 
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
 
     if (_lastEtag != etag) {
+        qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
         _lastEtag = etag;
         emit scheduleToSync(this);
     }
@@ -428,6 +434,7 @@ void Folder::bubbleUpSyncResult()
             if (!item->hasErrorStatus() && item->_direction == SyncFileItem::Down) {
                 switch (item->_instruction) {
                 case CSYNC_INSTRUCTION_NEW:
+                case CSYNC_INSTRUCTION_TYPE_CHANGE:
                     newItems++;
                     if (!firstItemNew)
                         firstItemNew = item;
@@ -570,7 +577,7 @@ int Folder::slotDiscardDownloadProgress()
     foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
         const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
         qDebug() << "Deleting temporary file: " << tmppath;
-        QFile::remove(tmppath);
+        FileSystem::remove(tmppath);
     }
     return deleted_infos.size();
 }
@@ -702,7 +709,11 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 
 void Folder::saveToSettings() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't save folder to settings, account is deleted";
+        return;
+    }
+
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
@@ -713,7 +724,10 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't remove folder from settings, account is deleted";
+        return;
+    }
 
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
@@ -850,7 +864,10 @@ bool Folder::proxyDirty()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_ASSERT(_accountState);
+    if (!_accountState) {
+        qDebug() << "Can't startSync, account is deleted";
+        return;
+    }
 
     Q_UNUSED(pathList)
     if (!_csync_ctx) {
@@ -860,7 +877,7 @@ void Folder::startSync(const QStringList &pathList)
         if (!_csync_ctx) {
             qDebug() << Q_FUNC_INFO << "init failed.";
             // the error should already be set
-            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
             return;
         }
     } else if (proxyDirty()) {
@@ -882,13 +899,13 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setSyncFileItemVector(SyncFileItemVector());
     emit syncStateChange();
 
-    qDebug() << "*** Start syncing " << alias() << " - client version"
+    qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
     if (! setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
-        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
         return;
     }
 

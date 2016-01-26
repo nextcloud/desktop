@@ -175,7 +175,8 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
     if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item->_file )) {
         if( !_item->_isDirectory ) {
             SyncFileItemPtr downloadItem(new SyncFileItem(*_item));
-            if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW) {
+            if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW
+                    || downloadItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // don't try to recover pushing new files
                 return false;
             } else if (downloadItem->_instruction == CSYNC_INSTRUCTION_SYNC) {
@@ -234,14 +235,23 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
 // ================================================================================
 
 PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
+    bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     switch(item->_instruction) {
         case CSYNC_INSTRUCTION_REMOVE:
             if (item->_direction == SyncFileItem::Down) return new PropagateLocalRemove(this, item);
             else return new PropagateRemoteDelete(this, item);
         case CSYNC_INSTRUCTION_NEW:
+        case CSYNC_INSTRUCTION_TYPE_CHANGE:
             if (item->_isDirectory) {
-                if (item->_direction == SyncFileItem::Down) return new PropagateLocalMkdir(this, item);
-                else return new PropagateRemoteMkdir(this, item);
+                if (item->_direction == SyncFileItem::Down) {
+                    auto job = new PropagateLocalMkdir(this, item);
+                    job->setDeleteExistingFile(deleteExisting);
+                    return job;
+                } else {
+                    auto job = new PropagateRemoteMkdir(this, item);
+                    job->setDeleteExisting(deleteExisting);
+                    return job;
+                }
             }   //fall through
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
@@ -251,9 +261,13 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
             }
             {
                 if (item->_direction != SyncFileItem::Up) {
-                    return new PropagateDownloadFileQNAM(this, item);
+                    auto job = new PropagateDownloadFileQNAM(this, item);
+                    job->setDeleteExistingFolder(deleteExisting);
+                    return job;
                 } else {
-                    return new PropagateUploadFileQNAM(this, item);
+                    auto job = new PropagateUploadFileQNAM(this, item);
+                    job->setDeleteExisting(deleteExisting);
+                    return job;
                 }
             }
         case CSYNC_INSTRUCTION_RENAME:
@@ -304,7 +318,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
-            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.last());
+            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.first());
 
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
@@ -314,7 +328,9 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->_instruction == CSYNC_INSTRUCTION_NEW && item->_isDirectory) {
+            } else if (item->_isDirectory
+                       && (item->_instruction == CSYNC_INSTRUCTION_NEW
+                           || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)) {
                 // create a new directory within a deleted directory? That can happen if the directory
                 // etag was not fetched properly on the previous sync because the sync was aborted
                 // while uploading this directory (which is now removed).  We can ignore it.
@@ -324,10 +340,12 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 continue;
             } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
                 continue;
+            } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
+                // all is good, the rename will be executed before the directory deletion
+            } else {
+                qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
+                           << item->_file << item->_instruction;
             }
-
-            qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
-                       << item->_file << item->_instruction;
         }
 
         while (!item->destination().startsWith(directories.top().first)) {
@@ -337,10 +355,26 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         if (item->_isDirectory) {
             PropagateDirectory *dir = new PropagateDirectory(this, item);
             dir->_firstJob.reset(createJob(item));
+
+            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+                    && item->_direction == SyncFileItem::Up) {
+                // Skip all potential uploads to the new folder.
+                // Processing them now leads to problems with permissions:
+                // checkForPermissions() has already run and used the permissions
+                // of the file we're about to delete to decide whether uploading
+                // to the new dir is ok...
+                foreach(const SyncFileItemPtr &item2, items) {
+                    if (item2->destination().startsWith(item->destination() + "/")) {
+                        item2->_instruction = CSYNC_INSTRUCTION_NONE;
+                        _anotherSyncNeeded = true;
+                    }
+                }
+            }
+
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // We do the removal of directories at the end, because there might be moves from
                 // these directories that will happen later.
-                directoriesToRemove.append(dir);
+                directoriesToRemove.prepend(dir);
                 removedDirectory = item->_file + "/";
 
                 // We should not update the etag of parent directories of the removed directory
@@ -356,7 +390,13 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
             }
             directories.push(qMakePair(item->destination() + "/" , dir));
         } else if (PropagateItemJob* current = createJob(item)) {
-            directories.top().second->append(current);
+            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+                // will delete directories, so defer execution
+                directoriesToRemove.prepend(current);
+                removedDirectory = item->_file + "/";
+            } else {
+                directories.top().second->append(current);
+            }
         }
     }
 
@@ -403,6 +443,20 @@ int OwncloudPropagator::httpTimeout()
     }
     return timeout;
 }
+
+quint64 OwncloudPropagator::chunkSize()
+{
+    static uint chunkSize;
+    if (!chunkSize) {
+        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
+        if (chunkSize == 0) {
+            ConfigFile cfg;
+            chunkSize = cfg.chunkSize();
+        }
+    }
+    return chunkSize;
+}
+
 
 bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 {
@@ -638,8 +692,12 @@ void PropagateDirectory::finalize()
         }
     }
     _state = Finished;
+    // Just to make sure that the SocketApi will know by looking in
+    // SyncEngine::_syncedItems that this folder is done synchronizing.
+    _item->_status = SyncFileItem::Success;
+
     emit itemCompleted(*_item, *this);
-    emit finished(_hasError == SyncFileItem::NoStatus ? SyncFileItem::Success : _hasError);
+    emit finished(_item->_status);
 }
 
 qint64 PropagateDirectory::committedDiskSpace() const

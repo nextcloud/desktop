@@ -73,12 +73,16 @@ public:
 
         /** Jobs can be run in parallel to this job */
         FullParallelism,
-        /** This job does not support parallelism, and no other job shall
-            be started until this one has finished */
+
+        /** No other job shall be started until this one has finished.
+            So this job is guaranteed to finish before any jobs below it
+            are executed. */
         WaitForFinished,
 
-        /** This job supports parallelism with other jobs in the same directory, but it should
-             not be parallelized with jobs in other directories  (typically a move operation) */
+        /** A job with this parallelism will allow later jobs to start and
+            run in parallel as long as they aren't PropagateDirectory jobs.
+            When the first directory job is encountered, no further jobs
+            will be started until this one is finished. */
         WaitForFinishedInParentDirectory
     };
 
@@ -313,6 +317,9 @@ public:
     // timeout in seconds
     static int httpTimeout();
 
+    /** returns the size of chunks in bytes  */
+    static quint64 chunkSize();
+
     /** Records that a file was touched by a job.
      *
      * Thread-safe.
@@ -338,6 +345,8 @@ public:
      *  all jobs that are currently running.
      */
     DiskSpaceResult diskSpaceCheck() const;
+
+
 
 private slots:
 

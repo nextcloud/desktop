@@ -106,6 +106,7 @@ public:
     void setOptionalDesktopNotifications(bool show);
 
     int timeout() const;
+    quint64 chunkSize() const;
 
     // send a checksum as a header along with the transmission or not.
     // possible values:

@@ -109,6 +109,7 @@ private slots:
     void slotCompleterHighlighted(const QModelIndex & index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();
+    void displayError(int code ,const QString &message);
 
 private:
     Ui::ShareUserGroupWidget *_ui;
@@ -122,7 +123,7 @@ private:
 
     bool _resharingAllowed;
     bool _isFile;
-
+    bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;
 };
 

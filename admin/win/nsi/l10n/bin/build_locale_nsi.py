@@ -104,10 +104,12 @@ localeToName = {
 def escapeNSIS(st):
     return st.replace('\\', r'$\\')\
              .replace('\t', r'$\t')\
-             .replace('\r', r'\r')\
-             .replace('\n', r'\n')\
+             .replace('\r', r'$\r')\
+             .replace('\n', r'$\n')\
              .replace('\"', r'$\"')\
-             .replace('$$\\', '$\\')
+             .replace('$$\\', '$\\')\
+             .replace('$\\n', r'$\n')
+
 
 translationCache = {}
 
