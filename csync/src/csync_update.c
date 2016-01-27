@@ -106,6 +106,49 @@ static bool _last_db_return_error(CSYNC* ctx) {
     return ctx->statedb.lastReturnValue != SQLITE_OK && ctx->statedb.lastReturnValue != SQLITE_DONE && ctx->statedb.lastReturnValue != SQLITE_ROW;
 }
 
+/*
+ * This static method is needed because the type members of the two structs use
+ * different enum values. A direct comparion is not neccessarily correct.
+ *
+ * tmp is csync_file_stat_t
+ * fs  is csync_vio_file_stat_t with this vio type:
+ *  enum csync_vio_file_type_e {
+ *              CSYNC_VIO_FILE_TYPE_UNKNOWN,
+ *              CSYNC_VIO_FILE_TYPE_REGULAR,
+ *              CSYNC_VIO_FILE_TYPE_DIRECTORY,
+ *              CSYNC_VIO_FILE_TYPE_FIFO,
+ *              CSYNC_VIO_FILE_TYPE_SOCKET,
+ *              CSYNC_VIO_FILE_TYPE_CHARACTER_DEVICE,
+ *              CSYNC_VIO_FILE_TYPE_BLOCK_DEVICE,
+ *              CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK
+ *            };
+ *
+ * csync_file_stat_t can be:
+ * CSYNC_FTW_TYPE_SKIP, CSYNC_FTW_TYPE_FILE
+ * CSYNC_FTW_TYPE_DIR, CSYNC_FTW_TYPE_SLINK
+ */
+static bool _csync_filetype_different( const csync_file_stat_t *tmp, const csync_vio_file_stat_t *fs)
+{
+    if( !(tmp && fs)) return false;
+
+    if( tmp->type == CSYNC_FTW_TYPE_SKIP ) return true;
+
+    if( tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY )
+        return true;
+    if( tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR )
+        return true;
+    if( tmp->type == CSYNC_FTW_TYPE_SLINK && fs->type != CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK )
+        return true;
+
+    if( fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && tmp->type != CSYNC_FTW_TYPE_DIR )
+        return true;
+    if( fs->type == CSYNC_VIO_FILE_TYPE_REGULAR && tmp->type != CSYNC_FTW_TYPE_FILE )
+        return true;
+    if( fs->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK && tmp->type != CSYNC_FTW_TYPE_SLINK )
+        return true;
+
+    return false; // both are NOT different.
+}
 
 /* Return true if two mtime are considered equal
  * We consider mtime that are one hour difference to be equal if they are one hour appart
@@ -274,8 +317,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             st->instruction = CSYNC_INSTRUCTION_EVAL;
 
             // Preserve the EVAL flag later on if the type has changed.
-            if (tmp->type != fs->type)
+            if (_csync_filetype_different(tmp, fs)) {
                 st->child_modified = 1;
+            }
 
             goto out;
         }
@@ -303,8 +347,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
 
             // Preserve the EVAL flag later on if the type has changed.
-            if (tmp->type != fs->type)
+            if (_csync_filetype_different(tmp, fs)) {
                 st->child_modified = 1;
+            }
 
             st->instruction = CSYNC_INSTRUCTION_EVAL;
             goto out;
@@ -391,8 +436,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 return -1;
             }
             if(tmp ) {                           /* tmp existing at all */
-                if ((tmp->type == CSYNC_FTW_TYPE_DIR && fs->type != CSYNC_VIO_FILE_TYPE_DIRECTORY) ||
-                        (tmp->type == CSYNC_FTW_TYPE_FILE && fs->type != CSYNC_VIO_FILE_TYPE_REGULAR)) {
+                if ( _csync_filetype_different(tmp, fs)) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: file types different is not!");
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
