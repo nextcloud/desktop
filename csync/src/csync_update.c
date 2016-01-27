@@ -353,10 +353,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
 
             /* translate the file type between the two stat types csync has. */
-            if( tmp && tmp->type == 0 ) {
+            if( tmp && tmp->type == CSYNC_FTW_TYPE_FILE ) {
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_REGULAR;
-            } else if( tmp && tmp->type == 2 ) {
+            } else if( tmp && tmp->type == CSYNC_FTW_TYPE_DIR) {
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+            } else if( tmp && tmp->type == CSYNC_FTW_TYPE_SLINK ) {
+                tmp_vio_type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
             } else {
                 tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
             }
