@@ -140,13 +140,6 @@ static bool _csync_filetype_different( const csync_file_stat_t *tmp, const csync
     if( tmp->type == CSYNC_FTW_TYPE_SLINK && fs->type != CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK )
         return true;
 
-    if( fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && tmp->type != CSYNC_FTW_TYPE_DIR )
-        return true;
-    if( fs->type == CSYNC_VIO_FILE_TYPE_REGULAR && tmp->type != CSYNC_FTW_TYPE_FILE )
-        return true;
-    if( fs->type == CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK && tmp->type != CSYNC_FTW_TYPE_SLINK )
-        return true;
-
     return false; // both are NOT different.
 }
 
