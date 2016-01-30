@@ -2368,7 +2368,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Keine Ergebnisse für &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
