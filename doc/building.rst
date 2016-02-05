@@ -28,9 +28,6 @@ Linux
 
 4. (Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory.
 
-.. note:: This step requires the ``mingw32-cross-nsis`` packages be installed on
-          Windows.
-
 Mac OS X
 --------
 
@@ -63,15 +60,17 @@ To set up your build environment for development using HomeBrew_:
 
 5. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
-6. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
+6. Install the Packages_ package creation tool.
+
+7. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
    <install_dir>``. If you have a developer signing certificate, you can specify
    its Common Name as a third parameter (use quotes) to have the package
    signed automatically.
 
-.. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
-          as a ``pkg`` installer. Do not call "make package" at any time when
-          compiling for OS X, as this will build a disk image, and will not
-          work correctly.
+   .. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
+             as a ``pkg`` installer. Do not call "make package" at any time when
+             compiling for OS X, as this will build a disk image, and will not
+             work correctly.
 
 Windows Development Build
 -----------------------
@@ -111,64 +110,62 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 6. Create the build directory::
 
-    mkdir client-build
-    cd client-build
+     mkdir client-build
+     cd client-build
 
 7. Build the client::
 
-    cmake -G "MinGW Makefiles" ../client
-    mingw32-make
+     cmake -G "MinGW Makefiles" ../client
+     mingw32-make
 
-  .. note:: You can try using ninja to build in parallel using
-     ``cmake -G Ninja ../client`` and ``ninja`` instead.
-  .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
+   .. note:: You can try using ninja to build in parallel using
+      ``cmake -G Ninja ../client`` and ``ninja`` instead.
+   .. note:: Refer to the :ref:`generic-build-instructions` section for additional options.
 
-  The ownCloud binary will appear in the ``bin`` directory.
+   The ownCloud binary will appear in the ``bin`` directory.
 
 Windows Installer Build (Cross-Compile)
 ---------------------------------------
 
 Due to the large number of dependencies, building the client installer for Windows
 is **currently only officially supported on openSUSE**, by using the MinGW cross compiler.
-You can set up openSUSE 13.1, 13.2 or openSUSE Factory in a virtual machine if you do not
+You can set up any currently supported version of openSUSE in a virtual machine if you do not
 have it installed already.
 
-To cross-compile:
+In order to make setup simple, you can use the provided Dockerfile to build your own image. 
 
-1. Add the following repository using YaST or ``zypper ar`` (adjust when using another openSUSE version)::
+1. Assuming you are in the root of the ownCloud Client's source tree, you can
+   build an image from this Dockerfile like this::
 
-    zypper ar https://build.opensuse.org/project/show/isv:ownCloud:toolchains:mingw:win32:stable
+     cd admin/win32/docker
+     docker build . -t ownCloud-client-win32:<version>
 
-2. Install the cross-compiler packages and the cross-compiled dependencies::
+   Replace ``<version>`` by the version of the client you are building, e.g.
+   |version| for the release of the client that this document describes.
+   If you do not wish to use docker, you can run the commands in ``RUN`` manually
+   in a shell, e.g. to create your own build environment in a virtual machine.
 
-   zypper install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
-                mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
-                mingw32-headers mingw32-runtime site-config mingw32-libwebp \
-                mingw32-cross-libqt5-qmake mingw32-cross-libqt5-qttools mingw32-libqt5*
+   .. note:: Docker images are specific to releases. This one refers to |version|.
+             Newer releases may have different dependencies, and thus require a later
+             version of the docker image! Always pick the docker image fitting your release
+             of ownCloud client!
 
-3. For the installer, install the NSIS installer package::
+2. From within the source tree Run the docker instance::
 
-    zypper install mingw32-cross-nsis mingw32-cross-nsis-plugin-uac mingw32-cross-nsis-plugin-nsprocess
+     docker run ownCloud-client-win32:<version> -v "$PWD:/home/jenkins/client" \
+                admin/win32/docker/build.sh $(id -u)
 
-4. Follow the :ref:`generic-build-instructions`
+   It will run the build, create an NSIS based installer, as well as run tests.
+   You will find the resulting binary in an newly created ``build-win32`` subfolder.
 
-.. note:: When building for Windows platforms, you must specify a special
-     toolchain file that enables cmake to locate the platform-specific tools. To add
-     this parameter to the call to cmake, enter
-     ``-DCMAKE_TOOLCHAIN_FILE=../client/admin/win/Toolchain-mingw32-openSUSE.cmake``.
+   If you do not wish to use docker, and ran the ``RUN`` commands above in a virtual machine,
+   you can run the indented commands in the lower section of ``build.sh`` manually in your
+   source tree.
 
-5. Build by running ``make``.
+4. Finally, you should sign the installer to avoid warnings upon installation.
+   This requires a `Microsoft Authenticode`_ Certificate ``osslsigncode`` to sign the installer::
 
-.. note:: Using ``make package`` produces an NSIS-based installer, provided
-    the NSIS mingw32 packages are installed.
-
-6. If you want to sign the installer, acquire a `Microsoft Authenticode`_ Certificate and install ``osslsigncode`` to sign the installer::
-
-    zypper install osslsigncode
-
-7. Sign the package::
-
-    osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha1 \
+     osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha1 \
                -pass yourpass \
                -n "ACME Client" \
                -i "http://acme.com" \
@@ -179,6 +176,7 @@ To cross-compile:
    for ``-in``, use the URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
    you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
 
+   If you're familiar with docker, you can use the version of ``osslsigncode`` that is part of the docker image.
 
 .. _generic-build-instructions:
 
@@ -193,31 +191,31 @@ You can download the desktop sync client from the ownCloud `Client Download Page
 
 To build the most up to date version of the client:
 
-1. Clone the latest versions of the client from Git_ as follows:
+1. Clone the latest versions of the client from Git_ as follows::
 
-  ``git clone git://github.com/owncloud/client.git``
-  ``git submodule init``
-  ``git submodule update``
+     git clone git://github.com/owncloud/client.git
+     git submodule init
+     git submodule update
 
-2. Create the build directory:
+2. Create the build directory::
 
-  ``mkdir client-build``
-  ``cd client-build``
+     mkdir client-build
+     cd client-build
 
-3. Configure the client build:
+3. Configure the client build::
 
-  ``cmake -DCMAKE_BUILD_TYPE="Debug" ../client``
+     cmake -DCMAKE_BUILD_TYPE="Debug" ../client
 
-  ..note:: You must use absolute paths for the ``include`` and ``library``
-           directories.
+   .. note:: You must use absolute paths for the ``include`` and ``library``
+            directories.
 
-  ..note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
-           where ``target`` is a private location, i.e. in parallel to your build
-           dir by specifying ``../install``.
+   .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+            where ``target`` is a private location, i.e. in parallel to your build
+            dir by specifying ``../install``.
 
 4. Call ``make``.
 
-  The owncloud binary will appear in the ``bin`` directory.
+   The owncloud binary will appear in the ``bin`` directory.
 
 The following are known cmake parameters:
 
@@ -241,3 +239,4 @@ The following are known cmake parameters:
 .. _Qt: http://www.qt.io/download
 .. _`Microsoft Authenticode`: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
+.. _Packages: http://s.sudre.free.fr/Software/Packages/about.html
