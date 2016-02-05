@@ -24,10 +24,6 @@
 #include "accessmanager.h"
 #include "utility.h"
 
-#include <QInputDialog>
-#include <QMutexLocker>
-#include <QApplication>
-
 namespace OCC
 {
 

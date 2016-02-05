@@ -17,7 +17,6 @@
 #include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
-#include <QInputDialog>
 
 #include <keychain.h>
 

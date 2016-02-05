@@ -121,10 +121,16 @@ bool TokenCredentials::ready() const
     return _ready;
 }
 
-void TokenCredentials::fetch()
+void TokenCredentials::fetchFromKeychain()
 {
     Q_EMIT fetched();
 }
+
+void TokenCredentials::askFromUser()
+{
+    emit asked();
+}
+
 
 bool TokenCredentials::stillValid(QNetworkReply *reply)
 {
