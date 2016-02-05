@@ -44,16 +44,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="promptDeleteAllFiles">
-        <property name="toolTip">
-         <string>Prompt user when sync will delete all files</string>
-        </property>
-        <property name="text">
-         <string>Confirm when Deleting All Files</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>

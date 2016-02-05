@@ -62,7 +62,6 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     // misc
     connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
-    connect(_ui->promptDeleteAllFiles, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->newFolderLimitCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->newFolderLimitSpinBox, SIGNAL(valueChanged(int)), SLOT(saveMiscSettings()));
@@ -101,7 +100,6 @@ void GeneralSettings::loadMiscSettings()
 {
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
-    _ui->promptDeleteAllFiles->setChecked(cfgFile.promptDeleteFiles());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -128,8 +126,6 @@ void GeneralSettings::saveMiscSettings()
     ConfigFile cfgFile;
     bool isChecked = _ui->monoIconsCheckBox->isChecked();
     cfgFile.setMonoIcons(isChecked);
-    bool promptIsChecked = _ui->promptDeleteAllFiles->isChecked();
-    cfgFile.setPromptDeleteFiles(promptIsChecked);
     Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
