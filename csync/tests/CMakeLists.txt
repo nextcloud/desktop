@@ -53,7 +53,3 @@ add_cmocka_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGE
 # encoding
 add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.c ${TEST_TARGET_LIBRARIES})
 
-if(UNIT_TESTING)
-    INSTALL( FILES "${CMOCKA_LIBRARIES}" DESTINATION ${CMAKE_INSTALL_LIBDIR})
-endif(UNIT_TESTING)
-
