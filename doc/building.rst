@@ -165,7 +165,7 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 4. Finally, you should sign the installer to avoid warnings upon installation.
    This requires a `Microsoft Authenticode`_ Certificate ``osslsigncode`` to sign the installer::
 
-     osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha1 \
+     osslsigncode -pkcs12 $HOME/.codesign/packages.pfx -h sha256 \
                -pass yourpass \
                -n "ACME Client" \
                -i "http://acme.com" \
