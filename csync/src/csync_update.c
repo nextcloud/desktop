@@ -820,7 +820,9 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
      * local stat function.
      */
     if( d_name[0] == '.' ) {
-        dirent->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+        if (strcmp(".sys.admin#recall#", d_name) != 0) { /* recall file shall not be ignored (#4420) */
+            dirent->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+        }
     }
 
     if( res == 0) {
