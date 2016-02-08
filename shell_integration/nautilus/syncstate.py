@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 #
 # Copyright (C) by Klaas Freitag <freitag@owncloud.com>
 #
