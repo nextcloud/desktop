@@ -63,7 +63,7 @@ static void callback(
         qstring.resize(pathLength);
         CFStringGetCharacters(path, CFRangeMake(0, pathLength), reinterpret_cast<UniChar *>(qstring.data()));
 
-        paths.append(qstring);
+        paths.append(qstring.normalized(QString::NormalizationForm_C));
     }
 
     reinterpret_cast<FolderWatcherPrivate*>(clientCallBackInfo)->doNotifyParent(paths);
