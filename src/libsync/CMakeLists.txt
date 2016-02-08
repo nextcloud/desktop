@@ -67,10 +67,15 @@ set(libsync_SRCS
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
-    creds/httpcredentials.cpp
     ../3rdparty/qjson/json.cpp
     ../3rdparty/certificates/p12topem.cpp
 )
+
+if(TOKEN_AUTH_ONLY)
+    set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
+else()
+    set (libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
+endif()
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS

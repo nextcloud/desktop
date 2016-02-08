@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>List of ignored or erroneous files</source>
-        <translation>Liste de fichiers ignorés ou erronés</translation>
+        <translation>Liste des fichiers ignorés ou en erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="423"/>
@@ -355,7 +355,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="429"/>
         <source>Not Synced</source>
-        <translation>Non Synchronisé</translation>
+        <translation>Fichiers non synchronisés</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
@@ -1457,7 +1457,7 @@ Les éléments dont la suppression automatique est permise seront supprimés s&a
     <message>
         <location filename="../src/gui/networksettings.cpp" line="128"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation>Qt &gt;= 5.4 est requis pour pouvoir utiliser la limite de bande passante</translation>
+        <translation>Qt &gt;= 5.4 est requis pour utiliser la limite de bande passante</translation>
     </message>
 </context>
 <context>
@@ -1492,7 +1492,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>%1 version %2 disponible. Redémarrez l&apos;application pour démarrer la mise à jour.</translation>
+        <translation>%1 version %2 disponible. Redémarrez l&apos;application pour commencer la mise à jour.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -2352,7 +2352,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
         <source>&amp;Share link</source>
-        <translation>&amp;Partager par lien public</translation>
+        <translation>Partager par &amp;lien public</translation>
     </message>
 </context>
 <context>
