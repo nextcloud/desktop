@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.1.1 (release 2016-02-0x)
+version 2.1.1 (release 2016-02-10)
  * UI improvements for HiDPI screens, error messages, RTL languages
  * Fix occurences of "Connection Closed" when a new unauthenticated TCP socket is used
  * Fix undeliberate WiFi scanning done by Qt Network classes
