@@ -517,7 +517,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="539"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="536"/>
         <source>Aborted by the user</source>
         <translation>Interrompu par l&apos;utilisateur</translation>
     </message>
@@ -1123,7 +1123,7 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation>A&amp;fficher le rapport d&apos;incident</translation>
+        <translation>Affic&amp;her le rapport d&apos;incident</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
