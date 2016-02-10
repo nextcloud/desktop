@@ -25,7 +25,7 @@ namespace OCC {
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
-static qint64 timeoutToUseMsec = qMax(qint64(1000), ConnectionValidator::defaultCallingIntervalMsec() - 5*1000);
+static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5*1000);
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
     : QObject(parent),

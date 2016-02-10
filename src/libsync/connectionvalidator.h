@@ -85,7 +85,7 @@ public:
     static QString statusString( Status );
 
     // How often should the Application ask this object to check for the connection?
-    static qint64 defaultCallingIntervalMsec() { return 32 * 1000;}
+    enum { DefaultCallingIntervalMsec = 32 * 1000 };
 
 public slots:
     /// Checks the server and the authentication.
