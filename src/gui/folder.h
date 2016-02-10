@@ -222,7 +222,9 @@ public slots:
        */
      void slotTerminateSync();
 
+     // connected to the corresponding signals in the SyncEngine
      void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool*);
+     void slotAboutToRestoreBackup(bool*);
 
 
      /**
