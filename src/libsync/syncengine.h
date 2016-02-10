@@ -31,6 +31,7 @@
 // when do we go away with this private/public separation?
 #include <csync_private.h>
 
+#include "excludedfiles.h"
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include "utility.h"
@@ -56,8 +57,8 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(AccountPtr account, CSYNC *, const QString &localPath,
-               const QString &remoteURL, const QString &remotePath, SyncJournalDb *journal);
+    SyncEngine(AccountPtr account, const QString &localPath,
+               const QUrl &remoteURL, const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -72,7 +73,9 @@ public:
      * -1 means infinite
      */
     void setNewBigFolderSizeLimit(qint64 limit) { _newBigFolderSizeLimit = limit; }
+    void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
 
+    ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }
 
     /* Return true if we detected that another sync is needed to complete the sync */
@@ -178,7 +181,7 @@ private:
     CSYNC *_csync_ctx;
     bool _needsUpdate;
     QString _localPath;
-    QString _remoteUrl;
+    QUrl _remoteUrl;
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
@@ -204,6 +207,7 @@ private:
 
     QScopedPointer<ProgressInfo> _progressInfo;
 
+    QScopedPointer<ExcludedFiles> _excludedFiles;
     Utility::StopWatch _stopWatch;
 
     // maps the origin and the target of the folders that have been renamed

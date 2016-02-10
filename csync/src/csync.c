@@ -579,9 +579,6 @@ int csync_destroy(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-  /* destroy exclude list */
-  csync_exclude_destroy(ctx);
-
   _csync_clean_ctx(ctx);
 
   SAFE_FREE(ctx->local.uri);
@@ -603,11 +600,6 @@ int csync_add_exclude_list(CSYNC *ctx, const char *path) {
   }
 
   return csync_exclude_load(path, &ctx->excludes);
-}
-
-void csync_clear_exclude_list(CSYNC *ctx)
-{
-    csync_exclude_clear(ctx);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {

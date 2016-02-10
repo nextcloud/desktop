@@ -378,13 +378,6 @@ int csync_destroy(CSYNC *ctx);
 int csync_add_exclude_list(CSYNC *ctx, const char *path);
 
 /**
- * @brief Removes all items imported from exclude lists.
- *
- * @param ctx           The context to add the exclude list.
- */
-void csync_clear_exclude_list(CSYNC *ctx);
-
-/**
  * @brief Get the userdata saved in the context.
  *
  * @param ctx           The csync context.

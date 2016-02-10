@@ -46,15 +46,6 @@
 
 namespace OCC {
 
-static void csyncLogCatcher(int /*verbosity*/,
-                        const char */*function*/,
-                        const char *buffer,
-                        void */*userdata*/)
-{
-    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
-
 Folder::Folder(const FolderDefinition& definition,
                QObject* parent)
     : QObject(parent)
@@ -69,7 +60,6 @@ Folder::Folder(const FolderDefinition& definition,
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
       , _journal(definition.localPath)
-      , _csync_ctx(0)
 {
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
@@ -87,41 +77,12 @@ Folder::Folder(const FolderDefinition& definition,
     _syncResult.setFolder(_definition.alias);
 }
 
-bool Folder::init()
-{
-    // We need to reconstruct the url because the path needs to be fully decoded, as csync will re-encode the path:
-    //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
-    //  csync_owncloud will then re-encode everything.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QUrl url = remoteUrl();
-    QString url_string = url.scheme() + QLatin1String("://") + url.authority(QUrl::EncodeDelimiters) + url.path(QUrl::FullyDecoded);
-#else
-    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a problem when parsing the path from QUrl::setPath
-    QString url_string = remoteUrl().toString();
-#endif
-    url_string = Utility::toCSyncScheme(url_string);
-
-    QString localpath = path();
-
-    csync_create( &_csync_ctx, localpath.toUtf8().data(), url_string.toUtf8().data() );
-    csync_init( _csync_ctx );
-
-    csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
-
-    Q_ASSERT( _accountState );
-
-    return _csync_ctx;
-}
-
 Folder::~Folder()
 {
     if( _engine ) {
         _engine->abort();
         _engine.reset(0);
     }
-    // Destroy csync here.
-    csync_destroy(_csync_ctx);
 }
 
 void Folder::setAccountState( AccountState *account )
@@ -816,25 +777,19 @@ void Folder::wipe()
 
 bool Folder::setIgnoredFiles()
 {
-    bool ok = false;
-
-    ConfigFile cfgFile;
-    csync_clear_exclude_list( _csync_ctx );
-    QString excludeList = cfgFile.excludeFile( ConfigFile::SystemScope );
-    if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added system ignore list to csync:" << excludeList.toUtf8();
-        if (csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() ) == 0) {
-            ok = true;
-        }
+    ConfigFile cfg;
+    QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
+    if( QFile::exists(systemList) ) {
+        qDebug() << "==== adding system ignore list to csync:" << systemList;
+        _engine->excludedFiles().addExcludeFilePath(systemList);
     }
-    excludeList = cfgFile.excludeFile( ConfigFile::UserScope );
-    if( !excludeList.isEmpty() ) {
-        qDebug() << "==== added user defined ignore list to csync:" << excludeList.toUtf8();
-        csync_add_exclude_list( _csync_ctx, excludeList.toUtf8() );
-        // reading the user exclude file is optional
+    QString userList = cfg.excludeFile(ConfigFile::UserScope);
+    if( QFile::exists(userList) ) {
+        qDebug() << "==== adding user defined ignore list to csync:" << userList;
+        _engine->excludedFiles().addExcludeFilePath(userList);
     }
 
-    return ok;
+    return _engine->excludedFiles().reloadExcludes();
 }
 
 void Folder::setProxyDirty(bool value)
@@ -855,20 +810,9 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     Q_UNUSED(pathList)
-    if (!_csync_ctx) {
-        // no _csync_ctx yet,  initialize it.
-        init();
-
-        if (!_csync_ctx) {
-            qDebug() << Q_FUNC_INFO << "init failed.";
-            // the error should already be set
-            QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
-            return;
-        }
-    } else if (proxyDirty()) {
+    if (proxyDirty()) {
         setProxyDirty(false);
     }
-    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
     if (isBusy()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
@@ -887,17 +831,18 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
-    if (! setIgnoredFiles())
+    // pass the setting if hidden files are to be ignored, will be read in csync_update
+    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+    // _csync_ctx->ignore_hidden_files = _definition.ignoreHiddenFiles;
+
+    _engine.reset(new SyncEngine( _accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
+
+    if (!setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
         QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
         return;
     }
-
-    // pass the setting if hidden files are to be ignored, will be read in csync_update
-    _csync_ctx->ignore_hidden_files = _definition.ignoreHiddenFiles;
-
-    _engine.reset(new SyncEngine( _accountState->account(), _csync_ctx, path(), remoteUrl().path(), remotePath(), &_journal));
 
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");

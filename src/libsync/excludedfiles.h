@@ -36,6 +36,9 @@ class OWNCLOUDSYNC_EXPORT ExcludedFiles : public QObject
 public:
     static ExcludedFiles & instance();
 
+    ExcludedFiles(c_strlist_t** excludesPtr);
+    ~ExcludedFiles();
+
     /**
      * Adds a new path to a file containing exclude patterns.
      *
@@ -60,13 +63,10 @@ public slots:
     /**
      * Reloads the exclude patterns from the registered paths.
      */
-    void reloadExcludes();
+    bool reloadExcludes();
 
 private:
-    ExcludedFiles();
-    ~ExcludedFiles();
-
-    c_strlist_t* _excludes;
+    c_strlist_t** _excludesPtr;
     QStringList _excludeFiles;
     mutable QReadWriteLock _mutex;
 };

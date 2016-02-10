@@ -385,18 +385,9 @@ int main(int argc, char **argv) {
     int restartCount = 0;
 restart_sync:
 
-    CSYNC *_csync_ctx;
-
-    csync_create( &_csync_ctx, options.source_dir.toUtf8(), remUrl.constData());
-
     csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
-
-    csync_init( _csync_ctx );
-
-    // ignore hidden files or not
-    _csync_ctx->ignore_hidden_files = options.ignoreHiddenFiles;
 
     if( !options.proxy.isNull() ) {
         QString host;
@@ -424,18 +415,6 @@ restart_sync:
         }
     }
 
-    // Exclude lists
-    QString systemExcludeListFn = ConfigFile::excludeFileFromSystem();
-    int loadedSystemExcludeList = false;
-    if (!systemExcludeListFn.isEmpty()) {
-        loadedSystemExcludeList = csync_add_exclude_list(_csync_ctx, systemExcludeListFn.toLocal8Bit());
-    }
-
-    int loadedUserExcludeList = false;
-    if (!options.exclude.isEmpty()) {
-        loadedUserExcludeList = csync_add_exclude_list(_csync_ctx, options.exclude.toLocal8Bit());
-    }
-
     QStringList selectiveSyncList;
     if (!options.unsyncedfolders.isEmpty()) {
         QFile f(options.unsyncedfolders);
@@ -453,29 +432,32 @@ restart_sync:
         }
     }
 
-
-    if (loadedSystemExcludeList != 0 && loadedUserExcludeList != 0) {
-        // Always make sure at least one list has been loaded
-        qFatal("Cannot load system exclude list or list supplied via --exclude");
-        return EXIT_FAILURE;
-    }
-
     Cmd cmd;
     SyncJournalDb db(options.source_dir);
     if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(&db, selectiveSyncList);
     }
 
-    SyncEngine engine(account, _csync_ctx, options.source_dir, QUrl(options.target_url).path(), folder, &db);
+    SyncEngine engine(account, options.source_dir, QUrl(options.target_url), folder, &db);
+    engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
+
+// FIXME: Test (maybe even auto)
+    // Exclude lists
+    engine.excludedFiles().addExcludeFilePath(ConfigFile::excludeFileFromSystem());
+    if( QFile::exists(options.exclude) )
+        engine.excludedFiles().addExcludeFilePath(options.exclude);
+    if (!engine.excludedFiles().reloadExcludes()) {
+        // Always make sure at least one list has been loaded
+        qFatal("Cannot load system exclude list or list supplied via --exclude");
+        return EXIT_FAILURE;
+    }
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.
     QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
 
     app.exec();
-
-    csync_destroy(_csync_ctx);
 
     if (engine.isAnotherSyncNeeded()) {
         if (restartCount < options.restartTimes) {

@@ -48,37 +48,6 @@ int _csync_exclude_add(c_strlist_t **inList, const char *string);
 int csync_exclude_load(const char *fname, c_strlist_t **list);
 
 /**
- * @brief Clear the exclude list in memory.
- *
- * @param ctx   The synchronizer context.
- */
-void csync_exclude_clear(CSYNC *ctx);
-
-/**
- * @brief Destroy the exclude list in memory.
- *
- * @param ctx   The synchronizer context.
- */
-void csync_exclude_destroy(CSYNC *ctx);
-
-/**
- * @brief Check if the given path should be excluded.
- *
- * This excludes also paths which can't be used without unix extensions.
- *
- * The exclude list is checked against the full path, each component of
- * the path and all leading directory strings, e.g.
- * '/foo/bar/file' checks ('/foo/bar/file', 'foo', 'bar', 'file',
- * '/foo/bar', '/foo').
- *
- * @param ctx   The synchronizer context.
- * @param path  The patch to check.
- *
- * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
- */
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype);
-
-/**
  * @brief Check if the given path should be excluded in a traversal situation.
  *
  * It does only part of the work that csync_excluded does because it's assumed
