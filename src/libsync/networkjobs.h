@@ -118,7 +118,7 @@ public:
 
 signals:
     void result(const QVariantMap &values);
-    void finishedWithError();
+    void finishedWithError(QNetworkReply *reply = 0);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
