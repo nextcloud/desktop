@@ -38,13 +38,12 @@
 #define NIL &_sentinel /* all leafs are sentinels */
 static c_rbnode_t _sentinel = {NULL, NIL, NIL, NULL, NULL, BLACK};
 
-int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_rbtree_compare_func *data_compare) {
-  c_rbtree_t *tree = NULL;
+void c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_rbtree_compare_func *data_compare) {
+  assert(rbtree);
+  assert(key_compare);
+  assert(data_compare);
 
-  if (rbtree == NULL || key_compare == NULL || data_compare == NULL) {
-    errno = EINVAL;
-    return -1;
-  }
+  c_rbtree_t *tree = NULL;
 
   tree = c_malloc(sizeof(*tree));
   tree->root = NIL;
@@ -53,8 +52,6 @@ int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_r
   tree->size = 0;
 
   *rbtree = tree;
-
-  return 0;
 }
 
 static c_rbnode_t *_rbtree_subtree_dup(const c_rbnode_t *node, c_rbtree_t *new_tree, c_rbnode_t *new_parent) {

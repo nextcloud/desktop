@@ -42,8 +42,7 @@ static void check_csync_create(void **state)
 
     (void) state; /* unused */
 
-    rc = csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
 
     rc = csync_destroy(csync);
     assert_int_equal(rc, 0);

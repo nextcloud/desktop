@@ -103,29 +103,14 @@ bool Folder::init()
 
     QString localpath = path();
 
-    if( csync_create( &_csync_ctx, localpath.toUtf8().data(), url_string.toUtf8().data() ) < 0 ) {
-        qDebug() << "Unable to create csync-context!";
-        slotSyncError(tr("Unable to create csync-context"));
-        _csync_ctx = 0;
-    } else {
-        csync_set_log_callback( csyncLogCatcher );
-        csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
+    csync_create( &_csync_ctx, localpath.toUtf8().data(), url_string.toUtf8().data() );
+    csync_init( _csync_ctx );
 
-        Q_ASSERT( _accountState );
+    csync_set_log_callback( csyncLogCatcher );
+    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
-        if( csync_init( _csync_ctx ) < 0 ) {
-            qDebug() << "Could not initialize csync!" << csync_get_status(_csync_ctx) << csync_get_status_string(_csync_ctx);
-            QString errStr = SyncEngine::csyncErrorToString(CSYNC_STATUS(csync_get_status(_csync_ctx)));
-            const char *errMsg = csync_get_status_string(_csync_ctx);
-            if( errMsg ) {
-                errStr += QLatin1String("<br/>");
-                errStr += QString::fromUtf8(errMsg);
-            }
-            slotSyncError(errStr);
-            csync_destroy(_csync_ctx);
-            _csync_ctx = 0;
-        }
-    }
+    Q_ASSERT( _accountState );
+
     return _csync_ctx;
 }
 

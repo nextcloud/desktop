@@ -387,20 +387,13 @@ restart_sync:
 
     CSYNC *_csync_ctx;
 
-    if( csync_create( &_csync_ctx, options.source_dir.toUtf8(),
-                      remUrl.constData()) < 0 ) {
-        qFatal("Unable to create csync-context!");
-        return EXIT_FAILURE;
-    }
+    csync_create( &_csync_ctx, options.source_dir.toUtf8(), remUrl.constData());
 
     csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
 
-    if( csync_init( _csync_ctx ) < 0 ) {
-        qFatal("Could not initialize csync!");
-        return EXIT_FAILURE;
-    }
+    csync_init( _csync_ctx );
 
     // ignore hidden files or not
     _csync_ctx->ignore_hidden_files = options.ignoreHiddenFiles;

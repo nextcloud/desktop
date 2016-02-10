@@ -84,10 +84,8 @@ static void destructor(void *data) {
 
 static void setup(void **state) {
     c_rbtree_t *tree = NULL;
-    int rc;
 
-    rc = c_rbtree_create(&tree, key_cmp, data_cmp);
-    assert_int_equal(rc, 0);
+    c_rbtree_create(&tree, key_cmp, data_cmp);
 
     *state = tree;
 }
@@ -97,8 +95,7 @@ static void setup_complete_tree(void **state) {
     int i = 0;
     int rc;
 
-    rc = c_rbtree_create(&tree, key_cmp, data_cmp);
-    assert_int_equal(rc, 0);
+    c_rbtree_create(&tree, key_cmp, data_cmp);
 
     for (i = 0; i < 100; i++) {
         test_t *testdata = NULL;
@@ -131,29 +128,11 @@ static void check_c_rbtree_create_free(void **state)
 
     (void) state; /* unused */
 
-    rc = c_rbtree_create(&tree, key_cmp, data_cmp);
-    assert_int_equal(rc, 0);
+    c_rbtree_create(&tree, key_cmp, data_cmp);
     assert_int_equal(tree->size, 0);
 
     rc = c_rbtree_free(tree);
     assert_int_equal(rc, 0);
-}
-
-static void check_c_rbtree_create_null(void **state)
-{
-    c_rbtree_t *tree = NULL;
-    int rc;
-
-    (void) state; /* unused */
-
-    rc = c_rbtree_create(NULL, key_cmp, data_cmp);
-    assert_int_equal(rc, -1);
-
-    rc = c_rbtree_create(&tree, NULL, data_cmp);
-    assert_int_equal(rc, -1);
-
-    rc = c_rbtree_create(&tree, key_cmp, NULL);
-    assert_int_equal(rc, -1);
 }
 
 static void check_c_rbtree_free_null(void **state)
@@ -175,8 +154,7 @@ static void check_c_rbtree_insert_delete(void **state)
 
     (void) state; /* unused */
 
-    rc = c_rbtree_create(&tree, key_cmp, data_cmp);
-    assert_int_equal(rc, 0);
+    c_rbtree_create(&tree, key_cmp, data_cmp);
 
     testdata = malloc(sizeof(test_t));
     testdata->key = 42;
@@ -369,7 +347,6 @@ int torture_run_tests(void)
 {
   const UnitTest tests[] = {
       unit_test(check_c_rbtree_create_free),
-      unit_test(check_c_rbtree_create_null),
       unit_test(check_c_rbtree_free_null),
       unit_test(check_c_rbtree_insert_delete),
       unit_test_setup_teardown(check_c_rbtree_insert_random, setup, teardown),

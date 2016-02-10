@@ -135,10 +135,8 @@ struct c_rbnode_s {
  *
  * @param data_compare  Callback function to compare a key as data with thee
  *                      data inside a red-black tree node.
- * 
- * @return              0 on success, -1 if an error occurred with errno set.
  */
-int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_rbtree_compare_func *data_compare);
+void c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_rbtree_compare_func *data_compare);
 
 /**
  * @brief Duplicate a red-black tree.

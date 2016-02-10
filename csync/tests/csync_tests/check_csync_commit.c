@@ -33,8 +33,7 @@ static void setup(void **state) {
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 
     *state = csync;
 }
@@ -49,10 +48,9 @@ static void setup_module(void **state) {
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
 
-    rc = csync_create(&csync, "/tmp/check_csync1", "dummy://foo/bar");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/check_csync1", "dummy://foo/bar");
 
-    rc = csync_init(csync);
+    csync_init(csync);
     *state = csync;
 }
 
@@ -72,16 +70,6 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
-}
-
-static void check_csync_commit_null(void **state)
-{
-    int rc;
-
-    (void) state; /* unused */
-
-    rc = csync_commit(NULL);
-    assert_int_equal(rc, -1);
 }
 
 static void check_csync_commit(void **state)
@@ -110,7 +98,6 @@ static void check_csync_commit_dummy(void **state)
 int torture_run_tests(void)
 {
     const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_commit_null, setup, teardown),
         unit_test_setup_teardown(check_csync_commit, setup, teardown),
         unit_test_setup_teardown(check_csync_commit_dummy, setup_module, teardown),
     };
