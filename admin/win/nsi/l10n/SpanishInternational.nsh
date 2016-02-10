@@ -1,6 +1,6 @@
 # Auto-generated - do not modify
 StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Mostrar notas de la versión"
-StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Se encontrarion ${APPLICATION_EXECUTABLE} proceso(s) que debe/n ser detenidos.$\"$\\n$\"¿Quiere que el instalador lo haga por usted?"
+StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Se encontrarion ${APPLICATION_EXECUTABLE} proceso(s) que debe/n ser detenidos.$\"$\n$\"¿Quiere que el instalador lo haga por usted?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Parando el proceso ${APPLICATION_EXECUTABLE}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Proceso a detener no encontrado!"
 StrCpy $PageReinstall_NEW_Field_1 "Una versión anterior de ${APPLICATION_NAME} esta instalada en el sistema. Es recomendado que quite esta versión antes de instalar. Elija la operación a realizar y seleccione Siguiente para continuar."

@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.1.1 (release 2016-02-0x)
+version 2.1.1 (release 2016-02-10)
  * UI improvements for HiDPI screens, error messages, RTL languages
  * Fix occurences of "Connection Closed" when a new unauthenticated TCP socket is used
  * Fix undeliberate WiFi scanning done by Qt Network classes
@@ -14,10 +14,11 @@ version 2.1.1 (release 2016-02-0x)
  * Allow changeable upload chunk size in owncloud.cfg
  * Crash fixes on account deletion
  * Forget password on explicit sign-out
+ * OS X: Fix the file system watcher ignoring unicode paths (#4424)
  * Windows Installer: Update to NSIS 2.50, fixes possible DLL injection
  * Sync Engine: .lnk files
  * Sync Engine: symlinked syn directories
- * Sync Engine: Windows: Fix deleting and replacing of read-only files (#4308 #4277)
+ * Sync Engine: Windows: Fix deleting and replacing of read-only files (#4308, #4277)
  * Sync Engine: Fixes for files becoming directories and vice versa (#4302)
  * Misc other fixes/improvements
 

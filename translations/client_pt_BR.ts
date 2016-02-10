@@ -517,7 +517,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="539"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="536"/>
         <source>Aborted by the user</source>
         <translation>Abortado pelo usuário</translation>
     </message>

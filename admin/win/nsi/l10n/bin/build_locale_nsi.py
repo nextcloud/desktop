@@ -108,7 +108,8 @@ def escapeNSIS(st):
              .replace('\n', r'$\n')\
              .replace('\"', r'$\"')\
              .replace('$$\\', '$\\')\
-             .replace('$\\n', r'$\n')
+             .replace('$\\n', r'$\n')\
+             .replace('$\\\\n', r'$\n')
 
 
 translationCache = {}
@@ -120,7 +121,7 @@ translationCache = {}
 for root,dirs,files in os.walk(options.podir):
     for file in files:
         filename,ext = os.path.splitext(file)
-        if ext == ".po" or ext == ".nsh":
+        if ext == ".po":
             # Valid locale filename (fr.po, de.po etc)?
             if filename in localeToName:
                 language = localeToName[filename]
