@@ -108,7 +108,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     auto acc = static_cast<OwncloudWizard *>(wizard())->account();
     auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
-    quotaJob->setProperties(QList<QByteArray>() << "quota-used-bytes");
+    quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
     connect(quotaJob, SIGNAL(result(QVariantMap)), SLOT(slotQuotaRetrieved(QVariantMap)));
     quotaJob->start();
@@ -303,7 +303,7 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
-    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["quota-used-bytes"].toDouble())));
+    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["size"].toDouble())));
 
 }
 

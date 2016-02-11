@@ -485,7 +485,7 @@ void DiscoveryMainThread::doGetSizeSlot(const QString& path, qint64* result)
 
     // Schedule the DiscoverySingleDirectoryJob
     auto propfindJob = new PropfindJob(_account, fullPath, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
     QObject::connect(propfindJob, SIGNAL(finishedWithError()),
                      this, SLOT(slotGetSizeFinishedWithError()));
     QObject::connect(propfindJob, SIGNAL(result(QVariantMap)),
@@ -513,7 +513,7 @@ void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
         return; // possibly aborted
     }
 
-    *_currentGetSizeResult = map.value(QLatin1String("quota-used-bytes")).toLongLong();
+    *_currentGetSizeResult = map.value(QLatin1String("size")).toLongLong();
     qDebug() << "Size of folder:" << *_currentGetSizeResult;
     _currentGetSizeResult = 0;
     QMutexLocker locker(&_discoveryJob->_vioMutex);

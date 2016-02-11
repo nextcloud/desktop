@@ -208,7 +208,7 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
             QString propertyContent = readContentsAsString(reader);
             if (name == QLatin1String("resourcetype") && propertyContent.contains("collection")) {
                 folders.append(currentHref);
-            } else if (name == QLatin1String("quota-used-bytes")) {
+            } else if (name == QLatin1String("size")) {
                 bool ok = false;
                 auto s = propertyContent.toLongLong(&ok);
                 if (ok && sizes) {

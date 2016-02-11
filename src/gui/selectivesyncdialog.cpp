@@ -81,7 +81,7 @@ QSize SelectiveSyncTreeView::sizeHint() const
 void SelectiveSyncTreeView::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             this, SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
@@ -263,7 +263,7 @@ void SelectiveSyncTreeView::slotItemExpanded(QTreeWidgetItem *item)
         prefix = _folderPath + QLatin1Char('/');
     }
     LsColJob *job = new LsColJob(_account, prefix + dir, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     job->start();

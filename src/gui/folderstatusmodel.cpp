@@ -517,7 +517,7 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "quota-used-bytes");
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
     job->setTimeout(60 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
