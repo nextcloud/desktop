@@ -655,7 +655,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Varmuuskopio poistettu</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
