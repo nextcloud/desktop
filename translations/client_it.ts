@@ -657,17 +657,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Backup rilevato</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizzazione normale</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Mantieni i file locali come conflitto</translation>
     </message>
 </context>
 <context>
