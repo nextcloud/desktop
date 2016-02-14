@@ -652,7 +652,9 @@ Sei sicuro di voler eseguire questa operazione?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Questa sincronizzazione potrebbe ripristinare i file a una data precedente nella cartella di sincronizzazione &apos;%1&apos;.
+Ciò potrebbe verificarsi in seguito al ripristino di un backup sul server.
+Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tutti i tuoi file con file più datati in uno stato precedente. Vuoi mantenere i tuoi file locali più recenti come file di conflitto?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
