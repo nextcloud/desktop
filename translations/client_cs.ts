@@ -652,22 +652,24 @@ Opravdu chcete provést tuto akci?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Tato synchronizace resetuje soubory na dřívější čas v synchronizovaném adresáři &apos;%1&apos;.
+Toto může být způsobeno obnovením zálohy na straně serveru.
+Pokračováním v synchronizaci způsobí přepsání všech vašich souborů staršími soubory z dřívějšího stavu. Přejete si ponechat své místní nejaktuálnější soubory jako konfliktní soubory?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Záloha nalezena</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normální synchronizace</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Ponechat místní soubory jako konflikt</translation>
     </message>
 </context>
 <context>

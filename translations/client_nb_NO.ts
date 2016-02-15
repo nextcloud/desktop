@@ -652,22 +652,24 @@ Er du sikker på at du vil utføre denne operasjonen?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Denne synkroniseringen vil tilbakestille filene til et tidligere tidspunkt i mappe &apos;%1&apos;.
+Dette kan være fordi en backup ble gjenopprettet på serveren.
+Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrevet av en eldre fil i en tidligere tilstand. Ønsker du å beholde dine ferskeste lokale filer som konflikt-filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Backup oppdaget</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normal synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Behold lokale filer som konflikt</translation>
     </message>
 </context>
 <context>

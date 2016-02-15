@@ -312,7 +312,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%2 üzerinde %1 (bağlantı kesildi)</translation>
     </message>
 </context>
 <context>
@@ -350,17 +350,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="450"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu etkinlik listesi panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme etkinlik listesi panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="457"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlenmemiş ögelerin listesi panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="462"/>
@@ -652,22 +652,23 @@ Bu işlemi gerçekleştirmek istediğinize emin misiniz?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Bu eşitleme, &apos;%1&apos; eşitleme klasörünündeki dosyaları daha önceki bir zamana sıfırlayacak.
+Bunun nedeni sunucuda bir yedeğin geri yüklenmesinden dolayı olabilir. Eşitlemeye normal şekilde devam etmek dosyalarınızın daha önceki durumu ile üzerine yazılmasına sebep olacak. Çakışma durumunda en son yerel dosyalarınızı tutmak ister misiniz?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Yedek bulundu</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normal Eşitleme</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Çakışma Durumunda Yerel Dosyaları Tut</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1900,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
         <source>could not delete file %1, error: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası silinemedi, hata: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="163"/>
@@ -2379,7 +2380,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="217"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; için sonuç yok</translation>
     </message>
 </context>
 <context>
@@ -3344,7 +3345,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="571"/>
         <source>QT_LAYOUT_DIRECTION</source>
-        <translation type="unfinished"/>
+        <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
 </context>
 <context>

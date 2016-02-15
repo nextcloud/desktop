@@ -652,7 +652,9 @@ Peut-être la configuration a-t-elle été modifiée, ou les fichiers  supprimé
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Cette synchronisation remettra une version précédente des fichiers dans le dossier de synchronisation &apos;%1&apos;.
+Cela peut être dû à une copie de sauvegarde restaurée sur le serveur.
+Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fichiers soient remplacés par des fichiers plus vieux d&apos;un état précédent. Voulez-vous garder les versions les plus récentes de vos fichiers en tant que fichiers conflictuels ?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
