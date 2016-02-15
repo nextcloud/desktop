@@ -118,6 +118,38 @@ private slots:
 	    QVERIFY( versionOfInstalledBinary().isEmpty());
 	}
     }
+
+    void testTimeAgo()
+    {
+        // Both times in local time
+        QDateTime d1 = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
+        QDateTime d2 = QDateTime::fromString("2015-01-23T09:20:30+01:00", Qt::ISODate);
+        QString s = timeAgoInWords(d2, d1);
+        QCOMPARE(s, QLatin1String("1 day(s) ago"));
+
+        //
+        QDateTime earlyTS = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
+        earlyTS.setTimeSpec(Qt::UTC);
+        QDateTime laterTS = earlyTS.toOffsetFromUtc(3600);
+        laterTS.setTimeSpec(Qt::UTC);
+        s = timeAgoInWords(earlyTS, laterTS);
+        QCOMPARE(s, QLatin1String("1 hour(s) ago"));
+
+        earlyTS = QDateTime::currentDateTime();
+
+        laterTS.setTimeSpec(Qt::LocalTime);
+        laterTS.setTimeZone( QTimeZone("Pacific/Easter") );
+        laterTS = earlyTS;
+
+        s = timeAgoInWords(earlyTS, laterTS );
+        QCOMPARE(s, QLatin1String("now"));
+
+        earlyTS = earlyTS.addSecs(-6);
+        s = timeAgoInWords(earlyTS, laterTS );
+        QCOMPARE(s, QLatin1String("Less than a minute ago"));
+
+
+    }
 };
 
 #endif
