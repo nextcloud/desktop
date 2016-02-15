@@ -182,6 +182,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
         a._file     = json.value("file").toString();
         a._link     = json.value("link").toUrl();
         a._dateTime = json.value("date").toDateTime();
+        a._dateTime.setTimeSpec(Qt::UTC);
         list.append(a);
     }
 
