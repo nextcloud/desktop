@@ -8,7 +8,7 @@
 
 #define VER_PRODUCTNAME_STR         "@APPLICATION_NAME@"
 #define VER_COMPANYNAME_STR         "@APPLICATION_VENDOR@"
-#define VER_COPYRIGHT_STR           "© @MIRALL_VERSION_YEAR@"
+#define VER_COPYRIGHT_STR           "(c) @MIRALL_VERSION_YEAR@"
 
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION    VER_FILEVERSION
@@ -23,6 +23,7 @@ BEGIN
             VALUE "CompanyName",     VER_COMPANYNAME_STR
             VALUE "LegalCopyright",  VER_COPYRIGHT_STR
             VALUE "FileVersion",     VER_FILEVERSION_STR
+            VALUE "Comment",         VER_PRODUCTVERSION_STR
             VALUE "FileDescription", VER_PRODUCTVERSION_STR
             VALUE "ProductVersion",  VER_PRODUCTVERSION_STR
             VALUE "ProductName",     VER_PRODUCTNAME_STR
