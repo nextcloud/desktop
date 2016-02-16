@@ -318,52 +318,52 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="408"/>
+        <location filename="../src/gui/activitywidget.cpp" line="409"/>
         <source>Server Activity</source>
         <translation>Действия Сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="413"/>
+        <location filename="../src/gui/activitywidget.cpp" line="414"/>
         <source>Sync Protocol</source>
         <translation>Протокол синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="419"/>
+        <location filename="../src/gui/activitywidget.cpp" line="420"/>
         <source>List of ignored or erroneous files</source>
         <translation>Список игнорируемых или ошибочных файлов</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="423"/>
+        <location filename="../src/gui/activitywidget.cpp" line="424"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="424"/>
+        <location filename="../src/gui/activitywidget.cpp" line="425"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Скопировать журнал синхронизации в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="429"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Not Synced</source>
         <translation>Не синхронизировано</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="450"/>
+        <location filename="../src/gui/activitywidget.cpp" line="451"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Список активности сервера скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="454"/>
+        <location filename="../src/gui/activitywidget.cpp" line="455"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Список активности синхронизации скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="457"/>
+        <location filename="../src/gui/activitywidget.cpp" line="458"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Список несинхронизированных элементов скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="462"/>
+        <location filename="../src/gui/activitywidget.cpp" line="463"/>
         <source>Copied to clipboard</source>
         <translation>Скопировано в буфер обмена</translation>
     </message>
@@ -382,22 +382,22 @@
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="313"/>
+        <location filename="../src/gui/activitywidget.cpp" line="314"/>
         <source>Server Activities</source>
         <translation>Действия Сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="286"/>
+        <location filename="../src/gui/activitywidget.cpp" line="287"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="287"/>
+        <location filename="../src/gui/activitywidget.cpp" line="288"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Скопировать журнал синхронизации в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="320"/>
+        <location filename="../src/gui/activitywidget.cpp" line="321"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;У учетной записи %1 не включены события.</translation>
     </message>
@@ -3360,23 +3360,33 @@ It is not advisable to use it.</source>
         <source>%1 day(s) ago</source>
         <translation><numerusform>%1 день назад</numerusform><numerusform>%1 дней назад</numerusform><numerusform>%1 дней назад</numerusform><numerusform>%1 дней назад</numerusform></translation>
     </message>
+    <message>
+        <location filename="../src/libsync/utility.cpp" line="449"/>
+        <source>in the future</source>
+        <translation type="unfinished"/>
+    </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="451"/>
+        <location filename="../src/libsync/utility.cpp" line="453"/>
         <source>%1 hour(s) ago</source>
         <translation><numerusform>%1 час назад</numerusform><numerusform>%1 часов назад</numerusform><numerusform>%1 часов назад</numerusform><numerusform>%1 часов назад</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="455"/>
+        <location filename="../src/libsync/utility.cpp" line="458"/>
+        <source>now</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Less than a minute ago</source>
         <translation>Меньше минуты назад</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="457"/>
+        <location filename="../src/libsync/utility.cpp" line="463"/>
         <source>%1 minute(s) ago</source>
         <translation><numerusform>%1 минуту назад</numerusform><numerusform>%1 минут назад</numerusform><numerusform>%1 минуту назад</numerusform><numerusform>%1 минуту назад</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="460"/>
+        <location filename="../src/libsync/utility.cpp" line="466"/>
         <source>Some time ago</source>
         <translation>Некоторое время назад</translation>
     </message>
