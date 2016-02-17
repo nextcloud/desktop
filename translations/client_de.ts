@@ -360,7 +360,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="458"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Die Liste der unsynchronisierten Dateien wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="463"/>
@@ -651,22 +651,24 @@ Sind Sie sicher, dass Sie diese Operation durchführen möchten?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Sync-Vorgang des Synchronisationsordners &apos;%1&apos; würde Dateien auf ein früheres Änderungsdatum zurücksetzen.
+Der Grund dafür ist möglicherweise, dass auf dem Server ein Backup eingespielt wurde.
+Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älteren Versionen überschrieben. Möchten Sie die neueren Dateien als Konflikt-Dateien behalten?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1209"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Backup erkannt</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normale Synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Konfliktdateien behalten</translation>
     </message>
 </context>
 <context>
@@ -3344,7 +3346,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="571"/>
         <source>QT_LAYOUT_DIRECTION</source>
-        <translation type="unfinished"/>
+        <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
 </context>
 <context>
@@ -3357,7 +3359,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="449"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>in der Zukunft</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="453"/>
@@ -3367,7 +3369,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>jetzt</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>

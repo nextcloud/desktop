@@ -660,7 +660,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1211"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normaali synkronointi</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1212"/>
