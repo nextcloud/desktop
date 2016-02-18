@@ -22,8 +22,16 @@ Improvements and New Features
 The 2.1 release of the ownCloud desktop sync client has many new features and 
 improvements. (See the `complete changelog 
 <https://owncloud.org/changelog/desktop/>`_.)
-
+ 
+  * Improved appearance on HiDPI screens
+  * Improved error messages
+  * Several fixes/improvements to the sharing dialog
+  * Several fixes/improvements to the server activity tab
+  * Allow changeable upload chunk size in owncloud.cfg
+  * Forget password on explicit sign-out
+  * Windows: Fix deleting and replacing of read-only files
   * Share with internal ownCloud users from your desktop
   * Separate views for server activity, sync activity, and errors
   * Don't re-upload *eml-files if size and checksum are unchanged
   * Improved upload/download progress indicator
+  
