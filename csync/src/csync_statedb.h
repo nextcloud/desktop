@@ -54,7 +54,7 @@ int csync_get_statedb_exists(CSYNC *ctx);
  * @param ctx      The csync context.
  * @param statedb  Path to the statedb file (sqlite3 db).
  *
- * @return 0 on success, less than 0 if an error occured with errno set.
+ * @return 0 on success, less than 0 if an error occurred with errno set.
  */
 int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb);
 

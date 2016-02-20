@@ -249,7 +249,7 @@ void SelectiveSyncTreeView::slotLscolFinishedWithError(QNetworkReply *r)
     if (r->error() == QNetworkReply::ContentNotFoundError) {
         _loading->setText(tr("No subfolders currently on the server."));
     } else {
-        _loading->setText(tr("An error occured while loading the list of sub folders."));
+        _loading->setText(tr("An error occurred while loading the list of sub folders."));
     }
     _loading->resize(_loading->sizeHint()); // because it's not in a layout
 }
