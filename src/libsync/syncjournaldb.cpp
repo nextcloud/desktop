@@ -613,6 +613,13 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
     }
 
+    SqlQuery query(_db);
+    query.prepare("CREATE INDEX IF NOT EXISTS blacklist_index ON blacklist(path collate nocase);");
+    if( !query.exec()) {
+        sqlFail("updateErrorBlacklistTableStructure: create index blacklit", query);
+        re = false;
+    }
+
     return re;
 }
 

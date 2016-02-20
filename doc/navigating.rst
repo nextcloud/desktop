@@ -58,11 +58,12 @@ operations.
 This menu provides the following options:
 
 * Quick access to your accounts
+* Sync status
 * Recent Changes, showing latest activities
-* Status of your client version (whether it is up to date)
+* Settings
 * Help menu
 * An option to log in or log out of all of your accounts at once
-* Quit ownCloud
+* Quit ownCloud, logging out and closing the client
 
 A left-click on your systray icon opens the desktop client to the account 
 settings window.
@@ -82,7 +83,7 @@ have the following features:
 * Connection status, showing which ownCloud server you are connected to, and 
   your ownCloud username.
 * An **Account** button, which contains a dropdown menu with **Add New**, 
-  **Sign In/Sign Out**, and **Remove**.
+  **Log In/Log Out**, and **Remove**.
 * Used and available space on the server.
 * Current synchronization status.
 * **Add Folder Sync Connection** button, which is active only when you have 
@@ -124,10 +125,12 @@ button, and re-select the folder tree that you want to sync.
 Adding New Accounts
 ^^^^^^^^^^^^^^^^^^^
 
-You may configure multiple ownCloud accounts in your desktop sync client. Simply 
+You may configure multiple ownCloud accounts in your desktop sync client. 
+Simply 
 click the **Account** > **Add New** button on any account tab to add a new 
 account, and then follow the account creation wizard. The new account will 
-appear as a new tab in the settings dialog, where you can adjust its settings at 
+appear as a new tab in the settings dialog, where you can adjust its settings 
+at 
 any time. Use **Account** > **Remove** to delete accounts. 
 
 Sharing From Your Desktop
@@ -206,10 +209,12 @@ can use the *Ignored Files Editor* (General tab.)
 
 .. figure:: images/ignored_files_editor.png
 
-For your convenience, the editor is pre-populated with a default list of typical 
+For your convenience, the editor is pre-populated with a default list of 
+typical 
 ignore patterns. These patterns are contained in a system file (typically 
 ``sync-exclude.lst``) located in the ownCloud Client application directory. You 
-cannot modify these pre-populated patterns directly from the editor. However, if 
+cannot modify these pre-populated patterns directly from the editor. However, 
+if 
 necessary, you can hover over any pattern in the list to show the path and 
 filename associated with that pattern, locate the file, and edit the 
 ``sync-exclude.lst`` file.

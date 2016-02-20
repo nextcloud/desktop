@@ -173,7 +173,7 @@ void ConnectionValidator::checkAuthentication()
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
-    connect(job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
     job->start();
 }
 

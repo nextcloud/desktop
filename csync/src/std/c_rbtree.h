@@ -136,7 +136,7 @@ struct c_rbnode_s {
  * @param data_compare  Callback function to compare a key as data with thee
  *                      data inside a red-black tree node.
  * 
- * @return              0 on success, -1 if an error occured with errno set.
+ * @return              0 on success, -1 if an error occurred with errno set.
  */
 int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_rbtree_compare_func *data_compare);
 
@@ -146,7 +146,7 @@ int c_rbtree_create(c_rbtree_t **rbtree, c_rbtree_compare_func *key_compare, c_r
  * @param tree Tree to duplicate.
  *
  * @return   Pointer to a new allocated duplicated rbtree. NULL if an error
- *           occured.
+ *           occurred.
  */
 c_rbtree_t *c_rbtree_dup(const c_rbtree_t *tree);
 
@@ -157,7 +157,7 @@ c_rbtree_t *c_rbtree_dup(const c_rbtree_t *tree);
  *
  * @param tree  The tree to free.
  *
- * @return   0 on success, less than 0 if an error occured.
+ * @return   0 on success, less than 0 if an error occurred.
  */
 int c_rbtree_free(c_rbtree_t *tree);
 
@@ -198,7 +198,7 @@ int c_rbtree_free(c_rbtree_t *tree);
  * @param data  The data to insert into the tree.
  *
  * @return  0 on success, 1 if a duplicate has been found and < 0 if an error
- *          occured with errno set.
+ *          occurred with errno set.
  *          EINVAL if a null pointer has been passed as the tree.
  *          ENOMEM if there is no memory left.
  */
@@ -223,7 +223,7 @@ c_rbnode_t *c_rbtree_find(c_rbtree_t *tree, const void *key);
  *
  * @param tree   The tree to get the head for.
  *
- * @return   The head node. NULL if an error occured.
+ * @return   The head node. NULL if an error occurred.
  */
 c_rbnode_t *c_rbtree_head(c_rbtree_t *tree);
 
@@ -232,7 +232,7 @@ c_rbnode_t *c_rbtree_head(c_rbtree_t *tree);
  *
  * @param tree   The tree to get the tail for.
  *
- * @return   The tail node. NULL if an error occured.
+ * @return   The tail node. NULL if an error occurred.
  */
 c_rbnode_t *c_rbtree_tail(c_rbtree_t *tree);
 
@@ -254,7 +254,7 @@ c_rbnode_t *c_rbtree_tail(c_rbtree_t *tree);
  * @param data     Data which should be passed to the visitor function.
  * @param visitor  Visitor function. This will be called for each node passed.
  *
- * @return   0 on sucess, less than 0 if an error occured.
+ * @return   0 on sucess, less than 0 if an error occurred.
  */
 int c_rbtree_walk(c_rbtree_t *tree, void *data, c_rbtree_visit_func *visitor);
 
@@ -263,7 +263,7 @@ int c_rbtree_walk(c_rbtree_t *tree, void *data, c_rbtree_visit_func *visitor);
  *
  * @param node  Node which should be deleted.
  *
- * @return  0 on success, -1 if an error occured.
+ * @return  0 on success, -1 if an error occurred.
  */
 int c_rbtree_node_delete(c_rbnode_t *node);
 
@@ -272,7 +272,7 @@ int c_rbtree_node_delete(c_rbnode_t *node);
  *
  * @param node  The node of which you want the next node.
  *
- * @return  The next node, NULL if an error occured.
+ * @return  The next node, NULL if an error occurred.
  */
 c_rbnode_t *c_rbtree_node_next(c_rbnode_t *node);
 
@@ -281,7 +281,7 @@ c_rbnode_t *c_rbtree_node_next(c_rbnode_t *node);
  *
  * @param node  The node of which you want the previous node.
  *
- * @return  The previous node, NULL if an error occured.
+ * @return  The previous node, NULL if an error occurred.
  */
 c_rbnode_t *c_rbtree_node_prev(c_rbnode_t *node);
 
@@ -290,7 +290,7 @@ c_rbnode_t *c_rbtree_node_prev(c_rbnode_t *node);
  *
  * @param N  The node to get the data from.
  *
- * @return  The data, NULL if an error occured.
+ * @return  The data, NULL if an error occurred.
  */
 #define c_rbtree_node_data(N) ((N) ? ((N)->data) : NULL)
 
@@ -301,7 +301,7 @@ c_rbnode_t *c_rbtree_node_prev(c_rbnode_t *node);
  *
  * @param tree  The tree to check.
  *
- * @return 0 on success, less than 0 if an error occured.
+ * @return 0 on success, less than 0 if an error occurred.
  */
 int c_rbtree_check_sanity(c_rbtree_t *tree);
 

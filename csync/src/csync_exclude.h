@@ -43,7 +43,7 @@ int _csync_exclude_add(c_strlist_t **inList, const char *string);
  * @param ctx    The context of the synchronizer.
  * @param fname  The filename to load.
  *
- * @return  0 on success, -1 if an error occured with errno set.
+ * @return  0 on success, -1 if an error occurred with errno set.
  */
 int csync_exclude_load(const char *fname, c_strlist_t **list);
 
