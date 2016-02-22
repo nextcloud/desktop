@@ -208,9 +208,11 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotOpenCurrentFolder()));
 
-    ac = menu->addAction(tr("Choose what to sync"));
-    ac->setEnabled(folderConnected);
-    connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
+    if (!ui->_folderList->isExpanded(index)) {
+        ac = menu->addAction(tr("Choose what to sync"));
+        ac->setEnabled(folderConnected);
+        connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
+    }
 
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
     connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotEnableCurrentFolder()));
