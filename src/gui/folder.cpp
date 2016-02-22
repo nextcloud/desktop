@@ -1175,6 +1175,10 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 {
+    ConfigFile cfgFile;
+    if (!cfgFile.promptDeleteFiles())
+        return;
+
     QString msg =
         tr("This sync would remove all the files in the sync folder '%1'.\n"
            "This might be because the folder was silently reconfigured, or that all "
