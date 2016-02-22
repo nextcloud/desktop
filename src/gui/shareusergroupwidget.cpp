@@ -197,6 +197,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     scrollArea->setWidget(newViewPort);
 
     _disableCompleterActivated = false;
+    _ui->shareeLineEdit->setEnabled(true);
 }
 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
@@ -234,6 +235,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
     _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
                           sharee->shareWith(), Share::PermissionDefault);
 
+    _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->setText(QString());
 }
 
