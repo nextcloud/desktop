@@ -145,7 +145,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
         case Qt::DisplayRole:
             //: Example text: "File.txt (23KB)"
-            return tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+            return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:

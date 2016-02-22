@@ -145,8 +145,10 @@ void SelectiveSyncTreeView::recursiveInsert(QTreeWidgetItem* parent, QStringList
             }
             item->setIcon(0, folderIcon);
             item->setText(0, pathTrail.first());
-            item->setText(1, Utility::octetsToString(size));
-            item->setData(1, Qt::UserRole, size);
+            if (size >= 0) {
+                item->setText(1, Utility::octetsToString(size));
+                item->setData(1, Qt::UserRole, size);
+            }
 //            item->setData(0, Qt::UserRole, pathTrail.first());
             item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         }
