@@ -92,10 +92,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
         return;
     }
 
+    auto theme = Theme::instance();
     bool autoShare = true;
 
     // We only do user/group sharing from 8.2.0
-    if (account->serverVersionInt() >= ((8 << 16) + (2 << 8))) {
+    if (theme->userGroupSharing() && account->serverVersionInt() >= ((8 << 16) + (2 << 8))) {
         _userGroupWidget = new ShareUserGroupWidget(account, sharePath, localPath, resharingAllowed, this);
         _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
 
@@ -112,9 +113,11 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
         autoShare = false;
     }
 
-    _linkWidget = new ShareLinkWidget(account, sharePath, localPath, resharingAllowed, autoShare, this);
-    _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-    _ui->shareWidgetsLayout->addWidget(_linkWidget);
+    if (theme->linkSharing()) {
+        _linkWidget = new ShareLinkWidget(account, sharePath, localPath, resharingAllowed, autoShare, this);
+        _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        _ui->shareWidgetsLayout->addWidget(_linkWidget);
+    }
 }
 
 ShareDialog::~ShareDialog()
