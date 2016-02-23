@@ -520,7 +520,7 @@ void OwncloudPropagator::scheduleNextJob()
 {
     if (this->_activeJobs < maximumActiveJob()) {
         if (_rootJob->scheduleNextJob()) {
-            QTimer::singleShot(100, this, SLOT(scheduleNextJob()));
+            QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
         }
     }
 }
