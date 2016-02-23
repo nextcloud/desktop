@@ -194,7 +194,14 @@ AccountPtr AccountManager::load(QSettings& settings)
 {
     auto acc = createAccount();
 
-    acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+    QString overrideUrl = Theme::instance()->overrideServerUrl();
+    if( !overrideUrl.isEmpty() ) {
+        // if there is a overrideUrl, don't even bother reading from the config as all the accounts
+        // must use the overrideUrl
+        acc->setUrl(overrideUrl);
+    } else {
+        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+    }
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
