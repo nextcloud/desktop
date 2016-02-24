@@ -11,12 +11,30 @@ desktop client.
 .. note:: Build instructions are subject to change as development proceeds.
   Please check the version for which you want to build.
 
-The instructions contained in this topic were updated to work with version 1.7 of the ownCloud Client.
+The instructions contained in this topic were updated to work with version 2.1 
+of the ownCloud Client.
+
+Getting Source Code
+-------------------
+
+The :ref:`generic-build-instructions` pull the latest code directly from 
+GitHub, and work on Linux, Mac OS X, and Windows.
 
 Linux
 -----
 
-1. Add the `ownCloud repository from OBS`_.
+You may wish to use source packages for your Linux distribution, as these give 
+you the exact sources from which the binary packages are built. These are 
+hosted on the `ownCloud repository from OBS`_. Go to the `Index of repositories`_ to see all the Linux client repos.
+
+1. Add the `ownCloud repository from OBS`_. At the bottom of the page for each 
+   distribution is a "Grab binary packages directly" section. These contain
+   source RPMs for all distros except Debian and Ubuntu. To get the .deb source 
+   packages add the source repo for your Debian version, like this example for Debian 8::
+ 
+    echo 'deb-src 
+    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
+
 2. Install the dependencies (as root, or using ``sudo``) using the following 
    commands for your specific Linux distribution:
   
@@ -228,15 +246,16 @@ The following are known cmake parameters:
 * ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
-.. _`ownCloud repository from OBS`: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
+.. _ownCloud repository from OBS: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
 .. _CMake: http://www.cmake.org/download
 .. _CSync: http://www.csync.org
-.. _`Client Download Page`: http://owncloud.org/sync-clients/
+.. _Client Download Page: https://owncloud.org/install/#desktop
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
-.. _`OpenSSL Windows Build`: http://slproweb.com/products/Win32OpenSSL.html
+.. _OpenSSL Windows Build: http://slproweb.com/products/Win32OpenSSL.html
 .. _Qt: http://www.qt.io/download
-.. _`Microsoft Authenticode`: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
+.. _Microsoft Authenticode: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
 .. _Packages: http://s.sudre.free.fr/Software/Packages/about.html
+.. _Index of repositories: http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/
