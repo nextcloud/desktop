@@ -310,7 +310,8 @@ void PropagateDownloadFileQNAM::start()
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item->_file << _propagator->_activeJobs;
+    qDebug() << Q_FUNC_INFO << _item->_file << _propagator->_activeJobList.count();
+    _stopwatch.start();
 
     if (_deleteExisting) {
         deleteExistingFolder();
@@ -414,7 +415,7 @@ void PropagateDownloadFileQNAM::start()
     _job->setBandwidthManager(&_propagator->_bandwidthManager);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
     connect(_job, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(slotDownloadProgress(qint64,qint64)));
-    _propagator->_activeJobs ++;
+    _propagator->_activeJobList.append(this);
     _job->start();
 }
 
@@ -434,7 +435,7 @@ void PropagateDownloadFileQNAM::setDeleteExistingFolder(bool enabled)
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
 void PropagateDownloadFileQNAM::slotGetFinished()
 {
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
 
     GETFileJob *job = qobject_cast<GETFileJob *>(sender());
     Q_ASSERT(job);
@@ -730,6 +731,11 @@ void PropagateDownloadFileQNAM::downloadFinished()
     // handle the special recall file
     if(_item->_file == QLatin1String(".sys.admin#recall#") || _item->_file.endsWith("/.sys.admin#recall#")) {
         handleRecallFile(fn);
+    }
+
+    qint64 duration = _stopwatch.elapsed();
+    if (isLikelyFinishedQuickly() && duration > 5*1000) {
+        qDebug() << "WARNING: Unexpectedly slow connection, took" << duration << "msec for" << _item->_size - _resumeStart << "bytes for" << _item->_file;
     }
 }
 

@@ -28,7 +28,7 @@ void PropagateRemoteMkdir::start()
 
     qDebug() << Q_FUNC_INFO << _item->_file;
 
-    _propagator->_activeJobs++;
+    _propagator->_activeJobList.append(this);
 
     if (!_deleteExisting) {
         return slotStartMkcolJob();
@@ -68,7 +68,7 @@ void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
 
 void PropagateRemoteMkdir::slotMkcolJobFinished()
 {
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 
@@ -109,7 +109,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // So we must get the file id using a PROPFIND
         // This is required so that we can detect moves even if the folder is renamed on the server
         // while files are still uploading
-        _propagator->_activeJobs++;
+        _propagator->_activeJobList.append(this);
         auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
         propfindJob->setProperties(QList<QByteArray>() << "getetag" << "http://owncloud.org/ns:id");
         QObject::connect(propfindJob, SIGNAL(result(QVariantMap)), this, SLOT(propfindResult(QVariantMap)));
@@ -123,7 +123,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 {
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
     if (result.contains("getetag")) {
         _item->_etag = result["getetag"].toByteArray();
     }
@@ -136,7 +136,7 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 void PropagateRemoteMkdir::propfindError()
 {
     // ignore the PROPFIND error
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
     done(SyncFileItem::Success);
 }
 
