@@ -30,11 +30,14 @@ you the exact sources from which the binary packages are built. These are
 hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
 repositories`_ to see all the Linux client repos.
 
-1. At the `bottom of the page for each distribution <ownCloud repository from 
-   OBS>`_ is a "Grab binary packages directly" section. These contain source 
-   RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE. except Debian and 
-   Ubuntu. To get the .deb source packages add the source repo for your 
-   Debian or Ubuntu version, like this example for Debian 8 (run as root)::
+1. At the `bottom of the page for each distribution 
+   <https://software.opensuse.org/download/package?project=isv:ownCloud:desktop&
+   package=owncloud-client>`_ is a "Grab binary packages directly" section. 
+   These contain source RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE. 
+   
+   To get the .deb source packages add the source 
+   repo for your Debian or Ubuntu version, like this example for Debian 8 
+   (run as root)::
  
     echo 'deb-src 
     http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
