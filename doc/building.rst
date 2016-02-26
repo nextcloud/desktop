@@ -30,11 +30,11 @@ you the exact sources from which the binary packages are built. These are
 hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
 repositories`_ to see all the Linux client repos.
 
-1. At the bottom of the page for each distribution is a "Grab binary packages 
-   directly" section. These contain source RPMs for CentOS, RHEL, Fedora, 
-   SLES, and openSUSE. except Debian and Ubuntu. To get the .deb source 
-   packages add the source repo for your Debian or Ubuntu version, like this 
-   example for Debian 8 (run as root)::
+1. At the `bottom of the page for each distribution <ownCloud repository from 
+   OBS>`_ is a "Grab binary packages directly" section. These contain source 
+   RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE. except Debian and 
+   Ubuntu. To get the .deb source packages add the source repo for your 
+   Debian or Ubuntu version, like this example for Debian 8 (run as root)::
  
     echo 'deb-src 
     http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
@@ -206,9 +206,7 @@ Compared to previous versions, building the desktop sync client has become easie
 earlier versions, CSync, which is the sync engine library of the client, is now
 part of the client source repository and not a separate module.
 
-You can download the desktop sync client from the ownCloud `Client Download Page`_.
-
-To build the most up to date version of the client:
+To build the most up-to-date version of the client:
 
 1. Clone the latest versions of the client from Git_ as follows::
 
