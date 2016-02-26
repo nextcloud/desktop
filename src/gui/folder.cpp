@@ -831,11 +831,9 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
+    _engine.reset(new SyncEngine( _accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-    // _csync_ctx->ignore_hidden_files = _definition.ignoreHiddenFiles;
-
-    _engine.reset(new SyncEngine( _accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
 
     if (!setIgnoredFiles())
     {
