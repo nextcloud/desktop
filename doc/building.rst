@@ -11,8 +11,7 @@ desktop client.
 .. note:: Build instructions are subject to change as development proceeds.
   Please check the version for which you want to build.
 
-The instructions contained in this topic were updated to work with version 2.1 
-of the ownCloud Client.
+These instructions are updated to work with version 2.1 of the ownCloud Client.
 
 Getting Source Code
 -------------------
@@ -20,31 +19,33 @@ Getting Source Code
 The :ref:`generic-build-instructions` pull the latest code directly from 
 GitHub, and work on Linux, Mac OS X, and Windows.
 
+See the next section for instructions on getting source code from Linux 
+packages.
+
 Linux
 -----
 
 You may wish to use source packages for your Linux distribution, as these give 
 you the exact sources from which the binary packages are built. These are 
-hosted on the `ownCloud repository from OBS`_. Go to the `Index of repositories`_ to see all the Linux client repos.
+hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
+repositories`_ to see all the Linux client repos.
 
-1. Add the `ownCloud repository from OBS`_. At the bottom of the page for each 
-   distribution is a "Grab binary packages directly" section. These contain
-   source RPMs for all distros except Debian and Ubuntu. To get the .deb source 
-   packages add the source repo for your Debian version, like this example for Debian 8::
+1. At the bottom of the page for each distribution is a "Grab binary packages 
+   directly" section. These contain source RPMs for CentOS, RHEL, Fedora, 
+   SLES, and openSUSE. except Debian and Ubuntu. To get the .deb source 
+   packages add the source repo for your Debian or Ubuntu version, like this 
+   example for Debian 8 (run as root)::
  
     echo 'deb-src 
     http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 
-2. Install the dependencies (as root, or using ``sudo``) using the following 
-   commands for your specific Linux distribution:
+2. Install the dependencies using the following commands for your specific Linux distribution:
   
    * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
-   * openSUSE: ``zypper ref; zypper si -d owncloud-client``
-   * Fedora/CentOS: ``yum install yum-utils; yum-builddep owncloud-client``
+   * openSUSE/SLES: ``zypper ref; zypper si -d owncloud-client``
+   * Fedora/CentOS/RHEL: ``yum install yum-utils; yum-builddep owncloud-client``
 
-3. Follow the :ref:`generic-build-instructions`.
-
-4. (Optional) Call ``make install`` to install the client to the ``/usr/local/bin`` directory.
+3. Follow the :ref:`generic-build-instructions`, starting with step 2.
 
 Mac OS X
 --------
@@ -234,6 +235,9 @@ To build the most up to date version of the client:
 4. Call ``make``.
 
    The owncloud binary will appear in the ``bin`` directory.
+   
+5. (Optional) Call ``make install`` to install the client to the   
+   ``/usr/local/bin`` directory.   
 
 The following are known cmake parameters:
 
@@ -246,7 +250,8 @@ The following are known cmake parameters:
 * ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
-.. _ownCloud repository from OBS: http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client
+.. _ownCloud repository from OBS: http://software.opensuse.org/download/package? 
+   project=isv:ownCloud:desktop&package=owncloud-client
 .. _CMake: http://www.cmake.org/download
 .. _CSync: http://www.csync.org
 .. _Client Download Page: https://owncloud.org/install/#desktop
