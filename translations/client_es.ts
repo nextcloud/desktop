@@ -2188,7 +2188,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="254"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Ha ocurrido un error mientras cargaba la lista de carpetas.</translation>
     </message>
 </context>
 <context>
@@ -2756,7 +2756,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="413"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Se ignoran los Archivos/Carpetas ocultos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="668"/>
