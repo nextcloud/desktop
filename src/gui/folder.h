@@ -143,7 +143,7 @@ public:
     /**
      * Returns true when the folder may sync.
      *
-     * !syncPaused() && accountState->isConnected().
+     * !syncPaused() && accountState->canSync().
      */
     bool canSync() const;
 

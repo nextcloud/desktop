@@ -84,8 +84,11 @@ private slots:
     void slotDisplayIdle();
     void slotLogin();
     void slotLogout();
+    void slotUnpauseAllFolders();
+    void slotPauseAllFolders();
 
 private:
+    void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu* menu, bool separateMenu);
 

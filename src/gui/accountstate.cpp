@@ -139,6 +139,11 @@ bool AccountState::isConnectedOrTemporarilyUnavailable() const
     return isConnected() || _state == ServiceUnavailable;
 }
 
+bool AccountState::canSync() const
+{
+    return isConnected();
+}
+
 void AccountState::tagLastSuccessfullETagRequest()
 {
     _timeSinceLastETagCheck.restart();

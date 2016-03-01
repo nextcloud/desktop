@@ -554,7 +554,7 @@ void FolderMan::slotAccountStateChanged()
     }
     QString accountName = accountState->account()->displayName();
 
-    if (accountState->isConnected()) {
+    if (accountState->canSync()) {
         qDebug() << "Account" << accountName << "connected, scheduling its folders";
 
         foreach (Folder *f, _folderMap.values()) {
