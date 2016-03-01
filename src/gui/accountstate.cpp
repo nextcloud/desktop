@@ -46,6 +46,16 @@ AccountState::~AccountState()
 {
 }
 
+AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings& /*settings*/)
+{
+    auto accountState = new AccountState(account);
+    return accountState;
+}
+
+void AccountState::writeToSettings(QSettings& /*settings*/)
+{
+}
+
 AccountPtr AccountState::account() const
 {
     return _account;

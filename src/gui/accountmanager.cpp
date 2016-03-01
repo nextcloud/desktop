@@ -53,9 +53,11 @@ bool AccountManager::restore()
 
     foreach (const auto& accountId, settings->childGroups()) {
         settings->beginGroup(accountId);
-        if (auto acc = load(*settings)) {
+        if (auto acc = loadAccountHelper(*settings)) {
             acc->_id = accountId;
-            addAccount(acc);
+            if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
+                addAccountState(accState);
+            }
         }
         settings->endGroup();
     }
@@ -110,7 +112,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
-        if (auto acc = load(*settings)) {
+        if (auto acc = loadAccountHelper(*settings)) {
             if (migratedCreds) {
                 acc->setMigrated(true);
             }
@@ -127,7 +129,8 @@ void AccountManager::save(bool saveCredentials)
     settings->setValue(QLatin1String(versionC), 2);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
-        save(acc->account(), *settings, saveCredentials);
+        saveAccountHelper(acc->account().data(), *settings, saveCredentials);
+        acc->writeToSettings(*settings);
         settings->endGroup();
     }
 
@@ -135,19 +138,31 @@ void AccountManager::save(bool saveCredentials)
     qDebug() << "Saved all account settings, status:" << settings->status();
 }
 
-void AccountManager::wantsAccountSavedSlot(AccountPtr a)
+void AccountManager::saveAccount(Account* a)
 {
     qDebug() << "Saving account" << a->url().toString();
     auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
-    save(a, *settings, false); // don't save credentials they might not have been loaded yet
+    saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
     qDebug() << "Saved account settings, status:" << settings->status();
 }
 
-void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveCredentials)
+void AccountManager::saveAccountState(AccountState* a)
+{
+    qDebug() << "Saving account state" << a->account()->url().toString();
+    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    settings->beginGroup(a->account()->id());
+    a->writeToSettings(*settings);
+    settings->endGroup();
+
+    settings->sync();
+    qDebug() << "Saved account state settings, status:" << settings->status();
+}
+
+void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     if (acc->_credentials) {
@@ -190,7 +205,7 @@ void AccountManager::save(const AccountPtr& acc, QSettings& settings, bool saveC
     }
 }
 
-AccountPtr AccountManager::load(QSettings& settings)
+AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
 {
     auto acc = createAccount();
 
@@ -233,13 +248,9 @@ AccountState *AccountManager::addAccount(const AccountPtr& newAccount)
     }
     newAccount->_id = id;
 
-    QObject::connect(newAccount.data(), SIGNAL(wantsAccountSaved(AccountPtr)),
-            this, SLOT(wantsAccountSavedSlot(AccountPtr)));
-
-    AccountStatePtr newAccountState(new AccountState(newAccount));
-    _accounts << newAccountState;
-    emit accountAdded(newAccountState.data());
-    return newAccountState.data();
+    auto newAccountState = new AccountState(newAccount);
+    addAccountState(newAccountState);
+    return newAccountState;
 }
 
 void AccountManager::deleteAccount(AccountState* account)
@@ -294,6 +305,17 @@ QString AccountManager::generateFreeAccountId() const
         }
         ++i;
     }
+}
+
+void AccountManager::addAccountState(AccountState* accountState)
+{
+    QObject::connect(accountState->account().data(),
+                     SIGNAL(wantsAccountSaved(Account*)),
+                     SLOT(saveAccount(Account*)));
+
+    AccountStatePtr ptr(accountState);
+    _accounts << ptr;
+    emit accountAdded(accountState);
 }
 
 }

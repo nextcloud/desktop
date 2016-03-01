@@ -565,7 +565,7 @@ void FolderMan::slotAccountStateChanged()
             }
         }
     } else {
-        qDebug() << "Account" << accountName << "disconnected, "
+        qDebug() << "Account" << accountName << "disconnected or paused, "
                     "terminating or descheduling sync folders";
 
         if (_currentSyncFolder

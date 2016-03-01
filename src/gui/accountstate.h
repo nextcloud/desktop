@@ -64,8 +64,20 @@ public:
     typedef ConnectionValidator::Status ConnectionStatus;
 
     /// Use the account as parent
-    AccountState(AccountPtr account);
+    explicit AccountState(AccountPtr account);
     ~AccountState();
+
+    /** Creates an account state from settings and an Account object.
+     *
+     * Use from AccountManager with a prepared QSettings object only.
+     */
+    static AccountState* loadFromSettings(AccountPtr account, QSettings& settings);
+
+    /** Writes account state information to settings.
+     *
+     * It does not write the Account data.
+     */
+    void writeToSettings(QSettings& settings);
 
     AccountPtr account() const;
 
