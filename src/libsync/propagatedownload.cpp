@@ -691,8 +691,13 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 
     // Apply the remote permissions
-    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
-                                    !_item->_remotePerm.contains('W'));
+    // Older server versions sometimes provide empty remote permissions
+    // see #4450 - don't adjust the write permissions there.
+    const int serverVersionGoodRemotePerm = 0x070000; // 7.0.0
+    if (_propagator->account()->serverVersionInt() >= serverVersionGoodRemotePerm) {
+        FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
+                                        !_item->_remotePerm.contains('W'));
+    }
 
     QString error;
     _propagator->addTouchedFile(fn);
