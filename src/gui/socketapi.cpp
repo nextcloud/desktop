@@ -364,6 +364,8 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
 
     qDebug() << Q_FUNC_INFO << localFile;
 
+    auto theme = Theme::instance();
+
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
     if (!shareFolder) {
         const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(localFile);
@@ -372,6 +374,11 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
     } else if (!shareFolder->accountState()->isConnected()) {
         const QString message = QLatin1String("SHARE:NOTCONNECTED:")+QDir::toNativeSeparators(localFile);
         // if the folder isn't connected, don't open the share dialog
+        sendMessage(socket, message);
+    } else if (!theme->linkSharing() && (
+                 !theme->userGroupSharing() ||
+                 shareFolder->accountState()->account()->serverVersionInt() < ((8 << 16) + (2 << 8)))) {
+        const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(localFile);
         sendMessage(socket, message);
     } else {
         const QString localFileClean = QDir::cleanPath(localFile);
@@ -448,14 +455,28 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
             const QString message = QLatin1String("SHARE_STATUS:DISABLED:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
         } else {
-            QString available = "USER,GROUP";
+            auto theme = Theme::instance();
+            QString available;
 
-            if (capabilities.sharePublicLink()) {
-                available += ",LINK";
+            if (theme->userGroupSharing()) {
+                available = "USER,GROUP";
             }
 
-            const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
-            sendMessage(socket, message);
+            if (theme->linkSharing() && capabilities.sharePublicLink()) {
+                if (available.isEmpty()) {
+                    available = "LINK";
+                } else {
+                    available += ",LINK";
+                }
+            }
+
+            if (available.isEmpty()) {
+                const QString message = QLatin1String("SHARE_STATUS:DISABLED") + ":" + QDir::toNativeSeparators(localFile);
+                sendMessage(socket, message);
+            } else {
+                const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
+                sendMessage(socket, message);
+            }
         }
     }
 }

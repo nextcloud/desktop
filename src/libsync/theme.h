@@ -229,6 +229,14 @@ public:
     virtual QString webDavPath() const;
     virtual QString webDavPathNonShib() const;
 
+    /**
+     * @brief Sharing options
+     *
+     * Allow link sharing and or user/group sharing
+     */
+    virtual bool linkSharing() const;
+    virtual bool userGroupSharing() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
