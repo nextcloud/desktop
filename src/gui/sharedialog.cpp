@@ -17,6 +17,7 @@
 #include "ui_sharedialog.h"
 
 #include "account.h"
+#include "accountstate.h"
 #include "configfile.h"
 #include "theme.h"
 #include "thumbnailjob.h"
@@ -24,15 +25,16 @@
 #include <QFileInfo>
 #include <QFileIconProvider>
 #include <QDebug>
+#include <QPointer>
 #include <QPushButton>
 #include <QFrame>
 
 namespace OCC {
 
-ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
+ShareDialog::ShareDialog(QPointer<AccountState> accountState, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::ShareDialog),
-    _account(account),
+    _accountState(accountState),
     _sharePath(sharePath),
     _localPath(localPath),
     _resharingAllowed(resharingAllowed),
@@ -46,6 +48,9 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+    // We want to act on account state changes
+    connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
 
     // Because people press enter in the dialog and we don't want to close for that
     closeButton->setDefault(false);
@@ -87,7 +92,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
 
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
-    if (!account->capabilities().shareAPI()) {
+    if (!accountState->account()->capabilities().shareAPI()) {
         _ui->shareWidgetsLayout->addWidget(new QLabel(tr("The server does not allow sharing")));
         return;
     }
@@ -96,8 +101,8 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     bool autoShare = true;
 
     // We only do user/group sharing from 8.2.0
-    if (theme->userGroupSharing() && account->serverVersionInt() >= ((8 << 16) + (2 << 8))) {
-        _userGroupWidget = new ShareUserGroupWidget(account, sharePath, localPath, resharingAllowed, this);
+    if (theme->userGroupSharing() && accountState->account()->serverVersionInt() >= ((8 << 16) + (2 << 8))) {
+        _userGroupWidget = new ShareUserGroupWidget(accountState->account(), sharePath, localPath, resharingAllowed, this);
         _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
 
 
@@ -114,7 +119,7 @@ ShareDialog::ShareDialog(AccountPtr account, const QString &sharePath, const QSt
     }
 
     if (theme->linkSharing()) {
-        _linkWidget = new ShareLinkWidget(account, sharePath, localPath, resharingAllowed, autoShare, this);
+        _linkWidget = new ShareLinkWidget(accountState->account(), sharePath, localPath, resharingAllowed, autoShare, this);
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         _ui->shareWidgetsLayout->addWidget(_linkWidget);
     }
@@ -134,7 +139,7 @@ void ShareDialog::done( int r ) {
 void ShareDialog::getShares()
 {
     if (QFileInfo(_localPath).isFile()) {
-        ThumbnailJob *job = new ThumbnailJob(_sharePath, _account, this);
+        ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
         connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
         job->start();
     }
@@ -157,6 +162,19 @@ void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &
     QPixmap p;
     p.loadFromData(reply, "PNG");
     _ui->label_icon->setPixmap(p);
+}
+
+void ShareDialog::slotAccountStateChanged(int state) {
+    bool enabled = (state == AccountState::State::Connected);
+    qDebug() << Q_FUNC_INFO << enabled;
+
+    if (_userGroupWidget != NULL) {
+        _userGroupWidget->setEnabled(enabled);
+    }
+
+    if (_linkWidget != NULL) {
+        _linkWidget->setEnabled(enabled);
+    }
 }
 
 }

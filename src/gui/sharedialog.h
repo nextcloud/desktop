@@ -14,7 +14,9 @@
 #ifndef SHAREDIALOG_H
 #define SHAREDIALOG_H
 
-#include "accountfwd.h"
+#include "accountstate.h"
+
+#include <QPointer>
 #include <QString>
 #include <QDialog>
 #include <QWidget>
@@ -33,7 +35,7 @@ class ShareDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShareDialog(AccountPtr account,
+    explicit ShareDialog(QPointer<AccountState> accountState,
                          const QString &sharePath,
                          const QString &localPath,
                          bool resharingAllowed,
@@ -45,10 +47,11 @@ public:
 private slots:
     void done( int r );
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
+    void slotAccountStateChanged(int state);
 
 private:
     Ui::ShareDialog *_ui;
-    AccountPtr _account;
+    QPointer<AccountState> _accountState;
     QString _sharePath;
     QString _localPath;
 
