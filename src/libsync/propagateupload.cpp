@@ -282,6 +282,12 @@ void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& transmissionChec
     _transmissionChecksum = transmissionChecksum;
     _transmissionChecksumType = transmissionChecksumType;
 
+    if (_item->_contentChecksum.isEmpty() && _item->_contentChecksumType.isEmpty())  {
+        // If the _contentChecksum was not set, reuse the transmission checksum as the content checksum.
+        _item->_contentChecksum = transmissionChecksum;
+        _item->_contentChecksumType = transmissionChecksumType;
+    }
+
     const QString fullFilePath = _propagator->getFilePath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {

@@ -550,7 +550,7 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
     connect(validator, SIGNAL(validated(QByteArray,QByteArray)),
-            SLOT(downloadFinished()));
+            SLOT(downloadFinished(QByteArray,QByteArray)));
     connect(validator, SIGNAL(validationFailed(QString)),
             SLOT(slotChecksumFail(QString)));
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
@@ -638,8 +638,13 @@ static void handleRecallFile(const QString &fn)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::downloadFinished()
+void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& transportChecksumType,
+                                                 const QByteArray& transportChecksum)
 {
+    // by default, reuse the transport checksum as content checksum
+    _item->_contentChecksum = transportChecksum;
+    _item->_contentChecksumType = transportChecksumType;
+
     QString fn = _propagator->getFilePath(_item->_file);
 
     // In case of file name clash, report an error
