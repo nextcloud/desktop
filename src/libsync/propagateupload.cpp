@@ -219,23 +219,18 @@ void PropagateUploadFileQNAM::slotComputeContentChecksum()
 
     _stopWatch.start();
 
-    QByteArray contentChecksumType;
-    // We currently only do content checksums for the particular .eml case
-    // This should be done more generally in the future!
-    if (filePath.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive)) {
-        contentChecksumType = "MD5";
-    }
+    QByteArray checksumType = contentChecksumType();
 
     // Maybe the discovery already computed the checksum?
-    if (_item->_contentChecksumType == contentChecksumType
+    if (_item->_contentChecksumType == checksumType
             && !_item->_contentChecksum.isEmpty()) {
-        slotComputeTransmissionChecksum(contentChecksumType, _item->_contentChecksum);
+        slotComputeTransmissionChecksum(checksumType, _item->_contentChecksum);
         return;
     }
 
     // Compute the content checksum.
     auto computeChecksum = new ComputeChecksum(this);
-    computeChecksum->setChecksumType(contentChecksumType);
+    computeChecksum->setChecksumType(checksumType);
 
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotComputeTransmissionChecksum(QByteArray,QByteArray)));
