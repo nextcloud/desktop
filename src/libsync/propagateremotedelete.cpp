@@ -64,7 +64,7 @@ void PropagateRemoteDelete::start()
                          _propagator->_remoteFolder + _item->_file,
                          this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
-    _propagator->_activeJobs ++;
+    _propagator->_activeJobList.append(this);
     _job->start();
 }
 
@@ -76,7 +76,7 @@ void PropagateRemoteDelete::abort()
 
 void PropagateRemoteDelete::slotDeleteJobFinished()
 {
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 

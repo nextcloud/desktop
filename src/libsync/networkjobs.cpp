@@ -490,6 +490,10 @@ void PropfindJob::start()
         qWarning() << "Propfind with no properties!";
     }
     QNetworkRequest req;
+    // Always have a higher priority than the propagator because we use this from the UI
+    // and really want this to be done first (no matter what internal scheduling QNAM uses).
+    // Also possibly useful for avoiding false timeouts.
+    req.setPriority(QNetworkRequest::HighPriority);
     req.setRawHeader("Depth", "0");
     QByteArray propStr;
     foreach (const QByteArray &prop, properties) {

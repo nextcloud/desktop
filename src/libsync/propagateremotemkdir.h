@@ -33,6 +33,9 @@ public:
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
 
+    // Creating a directory should be fast.
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return true; }
+
     /**
      * Whether an existing entity with the same name may be deleted before
      * creating the directory.

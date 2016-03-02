@@ -97,7 +97,7 @@ void PropagateRemoteMove::start()
                         _propagator->_remoteDir + _item->_renameTarget,
                         this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
-    _propagator->_activeJobs++;
+    _propagator->_activeJobList.append(this);
     _job->start();
 
 }
@@ -110,7 +110,7 @@ void PropagateRemoteMove::abort()
 
 void PropagateRemoteMove::slotMoveJobFinished()
 {
-    _propagator->_activeJobs--;
+    _propagator->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 

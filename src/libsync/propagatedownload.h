@@ -114,6 +114,9 @@ public:
     void start() Q_DECL_OVERRIDE;
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
+    // We think it might finish quickly because it is a small file.
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < 100*1024; }
+
     /**
      * Whether an existing folder with the same name may be deleted before
      * the download.
@@ -141,6 +144,8 @@ private:
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
     bool _deleteExisting;
+
+    QElapsedTimer _stopwatch;
 };
 
 }
