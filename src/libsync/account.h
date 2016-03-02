@@ -154,8 +154,20 @@ public:
     void setCapabilities(const QVariantMap &caps);
     const Capabilities &capabilities() const;
     void setServerVersion(const QString &version);
-    QString serverVersion();
-    int serverVersionInt();
+    QString serverVersion() const;
+    int serverVersionInt() const;
+
+    /** Whether the server is too old.
+     *
+     * Not supporting server versions is a gradual process. There's a hard
+     * compatibility limit (see ConnectionValidator) that forbids connecting
+     * to extremely old servers. And there's a weak "untested, not
+     * recommended, potentially dangerous" limit, that users might want
+     * to go beyond.
+     *
+     * This function returns true if the server is beyond the weak limit.
+     */
+    bool serverVersionUnsupported() const;
 
     // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
     bool rootEtagChangesNotOnlySubFolderEtags();
@@ -180,6 +192,8 @@ signals:
 
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(Account* acc);
+
+    void serverVersionChanged(Account* account, const QString& newVersion, const QString& oldVersion);
 
 protected Q_SLOTS:
     void slotHandleSslErrors(QNetworkReply*,QList<QSslError>);

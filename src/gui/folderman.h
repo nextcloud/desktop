@@ -196,6 +196,8 @@ private slots:
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
+    void slotServerVersionChanged(Account* account);
+
 private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
