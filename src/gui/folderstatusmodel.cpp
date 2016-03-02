@@ -995,9 +995,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 void FolderStatusModel::slotFolderScheduleQueueChanged()
 {
     // Update messages on waiting folders.
-    // It's ok to only update folders currently in the queue, because folders
-    // are only removed from the queue if they are deleted.
-    foreach (Folder* f, FolderMan::instance()->scheduleQueue()) {
+    foreach (Folder* f, FolderMan::instance()->map()) {
         slotFolderSyncStateChange(f);
     }
 }

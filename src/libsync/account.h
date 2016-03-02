@@ -179,7 +179,7 @@ signals:
     void proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(AccountPtr acc);
+    void wantsAccountSaved(Account* acc);
 
 protected Q_SLOTS:
     void slotHandleSslErrors(QNetworkReply*,QList<QSslError>);

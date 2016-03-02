@@ -46,6 +46,16 @@ AccountState::~AccountState()
 {
 }
 
+AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings& /*settings*/)
+{
+    auto accountState = new AccountState(account);
+    return accountState;
+}
+
+void AccountState::writeToSettings(QSettings& /*settings*/)
+{
+}
+
 AccountPtr AccountState::account() const
 {
     return _account;
@@ -137,6 +147,11 @@ bool AccountState::isConnected() const
 bool AccountState::isConnectedOrTemporarilyUnavailable() const
 {
     return isConnected() || _state == ServiceUnavailable;
+}
+
+bool AccountState::canSync() const
+{
+    return isConnected();
 }
 
 void AccountState::tagLastSuccessfullETagRequest()

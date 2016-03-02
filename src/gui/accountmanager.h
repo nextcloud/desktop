@@ -76,15 +76,24 @@ public:
     static AccountPtr createAccount();
 
 private:
-    void save(const AccountPtr& account, QSettings& settings, bool saveCredentials = true);
-    AccountPtr load(QSettings& settings);
+    // saving and loading Account to settings
+    void saveAccountHelper(Account* account, QSettings& settings, bool saveCredentials = true);
+    AccountPtr loadAccountHelper(QSettings& settings);
+
     bool restoreFromLegacySettings();
 
     bool isAccountIdAvailable(const QString& id) const;
     QString generateFreeAccountId() const;
 
+    // Adds an account to the tracked list, emitting accountAdded()
+    void addAccountState(AccountState* accountState);
+
 public slots:
-    void wantsAccountSavedSlot(AccountPtr a);
+    /// Saves account data, not including the credentials
+    void saveAccount(Account* a);
+
+    /// Saves account state data, not including the account
+    void saveAccountState(AccountState* a);
 
 
 Q_SIGNALS:

@@ -260,7 +260,7 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected();
+    return !syncPaused() && accountState()->canSync();
 }
 
 void Folder::setSyncPaused( bool paused )
@@ -272,12 +272,14 @@ void Folder::setSyncPaused( bool paused )
 
     if( !paused ) {
         // qDebug() << "Syncing enabled on folder " << name();
+        setSyncState(SyncResult::NotYetStarted);
     } else {
         // do not stop or start the watcher here, that is done internally by
         // folder class. Even if the watcher fires, the folder does not
         // schedule itself because it checks the var. _enabled before.
         setSyncState(SyncResult::Paused);
     }
+    emit syncStateChange();
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -312,7 +314,7 @@ void Folder::slotRunEtagJob()
         return;
     }
 
-    if (_definition.paused || !_accountState->isConnected()) {
+    if (!canSync()) {
         qDebug() << "Not syncing.  :"  << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
         return;
     }
