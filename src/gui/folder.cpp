@@ -265,20 +265,19 @@ bool Folder::canSync() const
 
 void Folder::setSyncPaused( bool paused )
 {
-    if (paused != _definition.paused) {
-        _definition.paused = paused;
-        saveToSettings();
+    if (paused == _definition.paused) {
+        return;
     }
 
+    _definition.paused = paused;
+    saveToSettings();
+
     if( !paused ) {
-        // qDebug() << "Syncing enabled on folder " << name();
         setSyncState(SyncResult::NotYetStarted);
     } else {
-        // do not stop or start the watcher here, that is done internally by
-        // folder class. Even if the watcher fires, the folder does not
-        // schedule itself because it checks the var. _enabled before.
         setSyncState(SyncResult::Paused);
     }
+    emit syncPausedChanged(this, paused);
     emit syncStateChange();
 }
 

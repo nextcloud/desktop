@@ -437,8 +437,7 @@ void AccountSettings::slotEnableCurrentFolder()
         if ( f->isBusy() && terminate ) {
             f->slotTerminateSync();
         }
-        f->setSyncPaused(!currentlyPaused); // toggle the pause setting
-        folderMan->slotSetFolderPaused( f, !currentlyPaused );
+        f->setSyncPaused(!currentlyPaused);
 
         // keep state for the icon setting.
         if( currentlyPaused ) _wasDisabledBefore = true;

@@ -106,6 +106,8 @@ void FolderMan::unloadFolder( Folder *f )
                this, SLOT(slotFolderSyncFinished(SyncResult)));
     disconnect(f, SIGNAL(syncStateChange()),
                this, SLOT(slotForwardFolderSyncStateChange()));
+    disconnect(f, SIGNAL(syncPausedChanged(Folder*,bool)),
+               this, SLOT(slotFolderSyncPaused(Folder*,bool)));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -411,21 +413,19 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     return folder;
 }
 
-void FolderMan::slotSetFolderPaused( Folder *f, bool paused )
+void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
 {
     if( !f ) {
-        qWarning() << "!! slotSetFolderPaused called with empty folder";
+        qWarning() << "!! slotFolderSyncPaused called with empty folder";
         return;
     }
 
-    f->setSyncPaused(paused);
     if (!paused) {
         _disabledFolders.remove(f);
         slotScheduleSync(f);
     } else {
         _disabledFolders.insert(f);
     }
-    emit folderSyncStateChange(f);
 }
 
 // this really terminates the current sync process
@@ -796,6 +796,7 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
     connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
     connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
+    connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
 
     registerFolderMonitor(folder);
     return folder;
