@@ -15,7 +15,6 @@
 
 #include "syncengine.h"
 #include "account.h"
-#include "logger.h"
 #include "owncloudpropagator.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
@@ -57,14 +56,6 @@ bool SyncEngine::_syncRunning = false;
 
 qint64 SyncEngine::minimumFileAgeForUpload = 2000;
 
-static void csyncLogCatcher(int /*verbosity*/,
-                        const char */*function*/,
-                        const char *buffer,
-                        void */*userdata*/)
-{
-    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
 SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
                        const QUrl& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)
@@ -97,9 +88,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     QString url_string = _remoteUrl.toString();
 #endif
     url_string = Utility::toCSyncScheme(url_string);
-
-    csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
     csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
     csync_init(_csync_ctx);
