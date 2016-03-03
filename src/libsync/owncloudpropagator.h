@@ -298,7 +298,7 @@ public:
     QAtomicInt _abortRequested; // boolean set by the main thread to abort.
 
     /* The list of currently active jobs */
-    QVector<PropagateItemJob*> _activeJobList;
+    QList<PropagateItemJob*> _activeJobList;
 
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
