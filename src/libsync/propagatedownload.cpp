@@ -637,6 +637,16 @@ static void handleRecallFile(const QString &fn)
         FileSystem::uncheckedRenameReplace(fpath, rpath, &error);
     }
 }
+
+static void preserveGroupOwnership(const QString& fileName, const QFileInfo& fi)
+{
+#ifdef Q_OS_UNIX
+    chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+#else
+    Q_UNUSED(fileName);
+    Q_UNUSED(fi);
+#endif
+}
 } // end namespace
 
 void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& transportChecksumType,
@@ -682,6 +692,7 @@ void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& transportChec
         if (existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
         }
+        preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Check whether the existing file has changed since the discovery
         // phase by comparing size and mtime to the previous values. This
