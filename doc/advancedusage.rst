@@ -18,3 +18,8 @@ ownCloud Command Line Client
 ----------------------------
 .. index:: owncloudcmd
 .. include:: owncloudcmd.rst
+
+Low Disk Space
+--------------
+.. index:: disk space
+.. include:: lowdiskspace.rst
