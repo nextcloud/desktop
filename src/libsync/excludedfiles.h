@@ -66,6 +66,8 @@ public slots:
     bool reloadExcludes();
 
 private:
+    // This is a pointer to the csync exclude list, its is owned by this class
+    // but the pointer can be in a csync_context so that it can itself also query the list.
     c_strlist_t** _excludesPtr;
     QStringList _excludeFiles;
     mutable QReadWriteLock _mutex;

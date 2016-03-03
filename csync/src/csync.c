@@ -594,14 +594,6 @@ int csync_destroy(CSYNC *ctx) {
   return rc;
 }
 
-int csync_add_exclude_list(CSYNC *ctx, const char *path) {
-  if (ctx == NULL || path == NULL) {
-    return -1;
-  }
-
-  return csync_exclude_load(path, &ctx->excludes);
-}
-
 void *csync_get_userdata(CSYNC *ctx) {
   if (ctx == NULL) {
     return NULL;

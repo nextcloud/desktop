@@ -367,17 +367,6 @@ int csync_commit(CSYNC *ctx);
 int csync_destroy(CSYNC *ctx);
 
 /**
- * @brief Add an additional exclude list.
- *
- * @param ctx           The context to add the exclude list.
- *
- * @param path          The path pointing to the file.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int csync_add_exclude_list(CSYNC *ctx, const char *path);
-
-/**
  * @brief Get the userdata saved in the context.
  *
  * @param ctx           The csync context.

@@ -443,7 +443,6 @@ restart_sync:
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
-// FIXME: Test (maybe even auto)
     // Exclude lists
     engine.excludedFiles().addExcludeFilePath(ConfigFile::excludeFileFromSystem());
     if( QFile::exists(options.exclude) )
