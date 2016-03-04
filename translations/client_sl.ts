@@ -1858,12 +1858,12 @@ Uporaba ni priporočljiva.</translation>
         <translation>Datoteke ni mogoče v celoti prejeti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="664"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Datoteke %1 ni mogoče shraniti zaradi neskladja z imenom obstoječe datoteke!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>File has changed since discovery</source>
         <translation>Datoteka je bila po spremenjena po usklajevanju seznama datotek.</translation>
     </message>
@@ -2343,7 +2343,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="441"/>
         <source>Please Set Password</source>
-        <translation type="unfinished"/>
+        <translation>Določite geslo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
@@ -2590,7 +2590,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Potrdilo ni vredno zaupanja</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
@@ -2919,7 +2919,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Zapisnik usklajevanja</translation>
     </message>
 </context>
 <context>
@@ -3380,7 +3380,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="449"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>v prihodnje</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="453"/>
@@ -3390,7 +3390,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>zdaj</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>

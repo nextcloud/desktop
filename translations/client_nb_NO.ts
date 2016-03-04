@@ -1869,12 +1869,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Hele filen kunne ikke lastes ned.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="664"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Fil %1 kan ikke lagres på grunn av lokal konflikt med filnavn.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>File has changed since discovery</source>
         <translation>Filen er endret siden den ble oppdaget</translation>
     </message>
@@ -3090,37 +3090,37 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Kontosynkronisering er deaktivert</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett alle mapper</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Sett alle mapper på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett all synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Sett all synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Sett synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="503"/>

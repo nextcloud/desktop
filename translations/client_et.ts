@@ -1857,12 +1857,12 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>Faili täielik allalaadimine ebaõnnestus.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="664"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Faili %1 ei saa salvestada kuna on nime konflikt kohaliku failiga!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>File has changed since discovery</source>
         <translation>Faili on pärast avastamist muudetud</translation>
     </message>

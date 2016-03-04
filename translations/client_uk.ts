@@ -1857,12 +1857,12 @@ It is not advisable to use it.</source>
         <translation>Файл не може бути завантажений повністю.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="664"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Файл %1 не збережено, через локальний конфлікт ім&apos;я! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="705"/>
         <source>File has changed since discovery</source>
         <translation>Файл змінився з моменту знаходження</translation>
     </message>
