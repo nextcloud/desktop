@@ -148,6 +148,11 @@ QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
     return addTimer(_account->headRequest(url));
 }
 
+QNetworkReply *AbstractNetworkJob::deleteRequest(const QUrl &url)
+{
+    return addTimer(_account->deleteRequest(url));
+}
+
 void AbstractNetworkJob::slotFinished()
 {
     _timer.stop();
