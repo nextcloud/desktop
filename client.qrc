@@ -22,5 +22,6 @@
         <file>resources/account.png</file>
         <file>resources/more.png</file>
         <file>resources/delete.png</file>
+        <file>resources/bell.png</file>
     </qresource>
 </RCC>
