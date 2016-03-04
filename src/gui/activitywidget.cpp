@@ -33,6 +33,8 @@
 #include "activityitemdelegate.h"
 #include "protocolwidget.h"
 #include "QProgressIndicator.h"
+#include "notificationwidget.h"
+#include "notificationconfirmjob.h"
 
 #include "ui_activitywidget.h"
 
@@ -48,6 +50,20 @@ void ActivityList::setAccountName( const QString& name )
 QString ActivityList::accountName() const
 {
     return _accountName;
+}
+
+/* ==================================================================== */
+
+QHash <QString, QVariant> ActivityLink::toVariantHash()
+{
+    QHash<QString, QVariant> hash;
+
+    hash["label"] = _label;
+    hash["link"]  = _link;
+    hash["verb"]  = _verb;
+    hash["primary"] = _isPrimary;
+
+    return hash;
 }
 
 /* ==================================================================== */
@@ -176,6 +192,7 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
         auto json = activ.toMap();
 
         Activity a;
+        a._type = Activity::ActivityType;
         a._accName  = ast->account()->displayName();
         a._id       = json.value("id").toLongLong();
         a._subject  = json.value("subject").toString();
@@ -277,6 +294,16 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
+    _ui->_notifyLabel->hide();
+    _ui->_notifyScroll->hide();
+
+    // Create a widget container for the notifications. The ui file defines
+    // a scroll area that get a widget with a layout as children
+    QWidget *w = new QWidget(this);
+    _notificationsLayout = new QVBoxLayout(this);
+    w->setLayout(_notificationsLayout);
+    _ui->_notifyScroll->setWidget(w);
+
     showLabels();
 
     connect(_model, SIGNAL(activityJobStatusCode(AccountState*,int)),
@@ -290,6 +317,9 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     connect( _ui->_activityList, SIGNAL(activated(QModelIndex)), this,
              SLOT(slotOpenFile(QModelIndex)));
+
+    connect( this, SIGNAL(newNotificationList(ActivityList)), this,
+             SLOT(slotBuildNotificationDisplay(ActivityList)) );
 }
 
 ActivityWidget::~ActivityWidget()
@@ -300,6 +330,7 @@ ActivityWidget::~ActivityWidget()
 void ActivityWidget::slotRefresh(AccountState *ptr)
 {
     _model->slotRefreshActivity(ptr);
+    slotFetchNotifications(ptr);
 }
 
 void ActivityWidget::slotRemoveAccount( AccountState *ptr )
@@ -312,6 +343,8 @@ void ActivityWidget::showLabels()
     QString t = tr("Server Activities");
     _ui->_headerLabel->setTextFormat(Qt::RichText);
     _ui->_headerLabel->setText(t);
+
+    _ui->_notifyLabel->setText(tr("Action Required: Notifications"));
 
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
@@ -398,6 +431,137 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
             showInFileManager(fullPath);
         }
     }
+}
+
+void ActivityWidget::slotFetchNotifications(AccountState *ptr)
+{
+    /* start the notification fetch job as well */
+    if( !ptr) {
+        return;
+    }
+
+    // if the previous notification job has finished, start next.
+    if( !_notificationJob ) {
+        _notificationJob = new JsonApiJob( ptr->account(), QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications"), this );
+        QObject::connect(_notificationJob.data(), SIGNAL(jsonReceived(QVariantMap, int)),
+                         this, SLOT(slotNotificationsReceived(QVariantMap, int)));
+        _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(ptr));
+
+        qDebug() << "Start fetching notifications for " << ptr->account()->displayName();
+        _notificationJob->start();
+    } else {
+        qDebug() << "Notification Job still running, not starting a new one.";
+    }
+}
+
+
+void ActivityWidget::slotNotificationsReceived(const QVariantMap& json, int statusCode)
+{
+    if( statusCode != 200 ) {
+        qDebug() << "Failed for Notifications";
+        return;
+    }
+
+    auto notifies = json.value("ocs").toMap().value("data").toList();
+
+    AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
+
+    qDebug() << "Notifications for " << ai->account()->displayName() << notifies;
+
+    ActivityList list;
+
+    foreach( auto element, notifies ) {
+        Activity a;
+        auto json   = element.toMap();
+        a._type     = Activity::NotificationType;
+        a._accName  = ai->account()->displayName();
+        a._id       = json.value("notification_id").toLongLong();
+        a._subject  = json.value("subject").toString();
+        a._message  = json.value("message").toString();
+        QString s   = json.value("link").toString();
+        if( !s.isEmpty() ) {
+            a._link     = QUrl(s);
+        }
+        a._dateTime = json.value("datetime").toDateTime();
+        a._dateTime.setTimeSpec(Qt::UTC);
+
+        auto actions = json.value("actions").toList();
+        foreach( auto action, actions) {
+            auto actionJson = action.toMap();
+            ActivityLink al;
+            al._label = QUrl::fromPercentEncoding(actionJson.value("label").toByteArray());
+            al._link  = actionJson.value("link").toString();
+            al._verb  = actionJson.value("type").toString();
+            al._isPrimary = actionJson.value("primary").toBool();
+
+            a._links.append(al);
+        }
+
+        list.append(a);
+    }
+    emit newNotificationList( list );
+}
+
+// GUI: Display the notifications
+void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
+{
+    foreach( auto activity, list ) {
+        NotificationWidget *widget = 0;
+
+        if( _widgetForNotifId.contains(activity._id) ) {
+            widget = _widgetForNotifId[activity._id];
+        } else {
+            widget = new NotificationWidget(this);
+            connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QString)),
+                    this, SLOT(slotSendNotificationRequest(QString, QString, QString)));
+            _notificationsLayout->addWidget(widget);
+            // _ui->_notifyScroll->setMinimumHeight( widget->height());
+            _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+            _widgetForNotifId[activity._id] = widget;
+        }
+
+        widget->setAccountName( activity._accName );
+        widget->setActivity( activity );
+    }
+    _ui->_notifyLabel->setHidden( list.count() == 0 );
+    _ui->_notifyScroll->setHidden( list.count() == 0 );
+}
+
+void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QString& verb)
+{
+    qDebug() << "Server Notification Request " << verb << link << "on account" << accountName;
+
+    const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
+
+    if( validVerbs.contains(verb)) {
+        AccountStatePtr acc = AccountManager::instance()->account(accountName);
+        if( acc ) {
+            NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
+            QString myLink(link);
+            QUrl l(myLink);
+            job->setLinkAndVerb(l, verb);
+            connect( job, SIGNAL( networkError(QNetworkReply*)),
+                                  this, SLOT(slotNotifyNetworkError(QNetworkReply*)));
+            connect( job, SIGNAL( jobFinished(QString, int)),
+                     this, SLOT(slotNotifyServerFinished(QString, int)) );
+            job->start();
+        }
+    } else {
+        qDebug() << "Invalid verb:" << verb;
+    }
+}
+
+
+void ActivityWidget::slotNotifyNetworkError( QNetworkReply* )
+{
+    qDebug() << "Server notify job failed.";
+}
+
+void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCode )
+{
+    // FIXME: remove the  widget after a couple of seconds
+    qDebug() << "Server Notification reply code"<< replyCode << reply;
+
 }
 
 /* ==================================================================== */

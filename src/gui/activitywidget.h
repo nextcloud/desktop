@@ -33,11 +33,30 @@ namespace OCC {
 class Account;
 class AccountStatusPtr;
 class ProtocolWidget;
+class JsonApiJob;
+class NotificationWidget;
 
 namespace Ui {
   class ActivityWidget;
 }
 class Application;
+
+/**
+ * @brief The ActivityLink class describes actions of an activity
+ *
+ * These are part of notifications which are mapped into activities.
+ */
+
+class ActivityLink
+{
+public:
+    QHash <QString, QVariant> toVariantHash();
+
+    QString _label;
+    QString _link;
+    QString _verb;
+    bool _isPrimary;
+};
 
 /**
  * @brief Activity Structure
@@ -49,6 +68,11 @@ class Application;
 class Activity
 {
 public:
+    enum Type {
+        ActivityType,
+        NotificationType
+    };
+    Type      _type;
     qlonglong _id;
     QString   _subject;
     QString   _message;
@@ -57,6 +81,7 @@ public:
     QDateTime _dateTime;
     QString   _accName;
 
+    QVector <ActivityLink> _links;
     /**
      * @brief Sort operator to sort the list youngest first.
      * @param val
@@ -146,12 +171,21 @@ public slots:
     void slotRefresh(AccountState* ptr);
     void slotRemoveAccount( AccountState *ptr );
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotFetchNotifications(AccountState *ptr);
 
 signals:
     void guiLog(const QString&, const QString&);
     void copyToClipboard();
     void rowsInserted();
     void hideAcitivityTab(bool);
+    void newNotificationList(const ActivityList& list);
+
+private slots:
+    void slotNotificationsReceived(const QVariantMap& json, int statusCode);
+    void slotBuildNotificationDisplay(const ActivityList& list);
+    void slotSendNotificationRequest(const QString &accountName, const QString& link, const QString& verb);
+    void slotNotifyNetworkError( QNetworkReply* );
+    void slotNotifyServerFinished( const QString& reply, int replyCode );
 
 private:
     void showLabels();
@@ -160,8 +194,10 @@ private:
     QPushButton *_copyBtn;
 
     QSet<QString> _accountsWithoutActivities;
-
+    QMap<int, NotificationWidget*> _widgetForNotifId;
+    QPointer<JsonApiJob> _notificationJob;
     ActivityListModel *_model;
+    QVBoxLayout *_notificationsLayout;
 };
 
 

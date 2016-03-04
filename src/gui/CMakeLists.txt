@@ -32,6 +32,7 @@ set(client_UI
     owncloudsetuppage.ui
     addcertificatedialog.ui
     proxyauthdialog.ui
+    notificationwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -84,6 +85,8 @@ set(client_SRCS
     proxyauthhandler.cpp
     proxyauthdialog.cpp
     synclogdialog.cpp
+    notificationwidget.cpp
+    notificationconfirmjob.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp
