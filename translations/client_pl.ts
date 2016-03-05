@@ -2249,7 +2249,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Okno dialogowe</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2274,7 +2274,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="96"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>Serwer nie zezwala na współdzielenie</translation>
     </message>
 </context>
 <context>
@@ -2297,12 +2297,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>Set &amp;password </source>
-        <translation type="unfinished"/>
+        <translation>Ustaw &amp;hasło</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
         <source>Set &amp;expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Ustaw &amp;datę wygaśnięcia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
@@ -3381,7 +3381,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="449"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>w przyszłości</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="453"/>
@@ -3391,12 +3391,12 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>teraz</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Mniej niż minutę temu</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="463"/>
@@ -3406,7 +3406,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="466"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Jakiś czas temu</translation>
     </message>
 </context>
 <context>
@@ -3424,7 +3424,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="127"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="130"/>

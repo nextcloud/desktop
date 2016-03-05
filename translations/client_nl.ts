@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="628"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation>Er zijn nieuwe mappen die niet gesynchroniseerd werden omdat ze te groot zijn:</translation>
+        <translation>Er zijn nieuwe mappen die niet gesynchroniseerd werden, omdat ze te groot zijn:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="668"/>
@@ -629,7 +629,7 @@ Ga naar de instellingen om het te selecteren als u deze wilt downloaden.</transl
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
         <translation>Deze sync zou alle bestanden in syncmap &apos;%1&apos; verwijderen.
-Dat zou kunnen gebeuren omdat de map stilletjes was geherconfigureerd, of omdat alle bestanden handmatig zijn verwijderd.
+Dat zou kunnen gebeuren, omdat de map stilletjes was geherconfigureerd, of omdat alle bestanden handmatig zijn verwijderd.
 Weet je zeker dat je door wilt gaan?</translation>
     </message>
     <message>
@@ -1847,7 +1847,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="327"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Bestand %1 kan niet worden gedownload omdat de naam conflicteert met een lokaal bestand</translation>
+        <translation>Bestand %1 kan niet worden gedownload, omdat de naam conflicteert met een lokaal bestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="376"/>
@@ -2891,7 +2891,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1062"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Niet toegestaan omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
+        <translation>Niet toegestaan, omdat je geen permissies hebt om submappen aan die map toe te voegen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1095"/>
@@ -2917,7 +2917,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1209"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation>Verplaatsen niet toegestaan omdat %1 alleen-lezen is</translation>
+        <translation>Verplaatsen niet toegestaan, omdat %1 alleen-lezen is</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1210"/>
