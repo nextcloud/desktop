@@ -3618,7 +3618,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="73"/>
         <source>Sync Error</source>
-        <translation>Synchronisatie fout</translation>
+        <translation>Synchronisatiefout</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="76"/>
