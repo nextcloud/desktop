@@ -272,8 +272,6 @@ private slots:
     void slotNewBigFolderDiscovered(const QString &);
 
 private:
-    bool init();
-
     bool setIgnoredFiles();
 
     void bubbleUpSyncResult();
@@ -320,8 +318,6 @@ private:
     SyncJournalDb _journal;
 
     ClientProxy   _clientProxy;
-
-    CSYNC *_csync_ctx;
 };
 
 }

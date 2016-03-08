@@ -32,8 +32,7 @@ static void setup(void **state) {
     CSYNC *csync;
     int rc;
 
-    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 
     *state = csync;
 }
@@ -42,8 +41,7 @@ static void setup_init(void **state) {
     CSYNC *csync;
     int rc;
 
-    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes));
     assert_int_equal(rc, 0);
@@ -102,84 +100,84 @@ static void check_csync_excluded(void **state)
     CSYNC *csync = *state;
     int rc;
 
-    rc = csync_excluded(csync, "", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
-    rc = csync_excluded(csync, "/", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
-    rc = csync_excluded(csync, "krawel_krawel", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "krawel_krawel", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
-    rc = csync_excluded(csync, ".kde/share/config/kwin.eventsrc", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".kde/share/config/kwin.eventsrc", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
-    rc = csync_excluded(csync, ".htaccess/cache-maximegalon/cache1.txt", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".htaccess/cache-maximegalon/cache1.txt", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
-    rc = csync_excluded(csync, "mozilla/.htaccess", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "mozilla/.htaccess", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /*
      * Test for patterns in subdirs. '.beagle' is defined as a pattern and has
      * to be found in top dir as well as in directories underneath.
      */
-    rc = csync_excluded(csync, ".apdisk", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, ".apdisk", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
-    rc = csync_excluded(csync, "foo/.apdisk", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "foo/.apdisk", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
-    rc = csync_excluded(csync, "foo/bar/.apdisk", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "foo/bar/.apdisk", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, ".java", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".java", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
     /* Files in the ignored dir .java will also be ignored. */
-    rc = csync_excluded(csync, ".apdisk/totally_amazing.jar", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".apdisk/totally_amazing.jar", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /* and also in subdirs */
-    rc = csync_excluded(csync, "projects/.apdisk/totally_amazing.jar", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "projects/.apdisk/totally_amazing.jar", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /* csync-journal is ignored in general silently. */
-    rc = csync_excluded(csync, ".csync_journal.db", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".csync_journal.db", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
-    rc = csync_excluded(csync, ".csync_journal.db.ctmp", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".csync_journal.db.ctmp", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
-    rc = csync_excluded(csync, "subdir/.csync_journal.db", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "subdir/.csync_journal.db", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
 
     /* pattern ]*.directory - ignore and remove */
-    rc = csync_excluded(csync, "my.~directory", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "my.~directory", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_AND_REMOVE);
 
-    rc = csync_excluded(csync, "/a_folder/my.~directory", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/a_folder/my.~directory", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_AND_REMOVE);
 
     /* Not excluded because the pattern .netscape/cache requires directory. */
-    rc = csync_excluded(csync, ".netscape/cache", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".netscape/cache", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
     /* Not excluded  */
-    rc = csync_excluded(csync, "unicode/中文.hé", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "unicode/中文.hé", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
     /* excluded  */
-    rc = csync_excluded(csync, "unicode/пятницы.txt", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "unicode/пятницы.txt", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
-    rc = csync_excluded(csync, "unicode/中文.💩", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "unicode/中文.💩", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /* path wildcards */
-    rc = csync_excluded(csync, "foobar/my_manuscript.out", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "foobar/my_manuscript.out", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "latex_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "latex_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "word_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "word_tmp/my_manuscript.run.xml", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
-    rc = csync_excluded(csync, "latex/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "latex/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
-    rc = csync_excluded(csync, "latex/songbook/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "latex/songbook/my_manuscript.tex.tmp", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
@@ -241,45 +239,45 @@ static void check_csync_pathes(void **state)
     _csync_exclude_add( &(csync->excludes), "/exclude" );
 
     /* Check toplevel dir, the pattern only works for toplevel dir. */
-    rc = csync_excluded(csync, "/exclude", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/exclude", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "/foo/exclude", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/foo/exclude", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
     /* check for a file called exclude. Must still work */
-    rc = csync_excluded(csync, "/exclude", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/exclude", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "/foo/exclude", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/foo/exclude", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
     /* Add an exclude for directories only: excl/ */
     _csync_exclude_add( &(csync->excludes), "excl/" );
-    rc = csync_excluded(csync, "/excl", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excl", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "meep/excl", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "meep/excl", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "meep/excl/file", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "meep/excl/file", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "/excl", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excl", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
     _csync_exclude_add(&csync->excludes, "/excludepath/withsubdir");
 
-    rc = csync_excluded(csync, "/excludepath/withsubdir", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excludepath/withsubdir", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "/excludepath/withsubdir", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excludepath/withsubdir", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
-    rc = csync_excluded(csync, "/excludepath/withsubdir2", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excludepath/withsubdir2", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
-    rc = csync_excluded(csync, "/excludepath/withsubdir/foo", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "/excludepath/withsubdir/foo", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
@@ -314,8 +312,8 @@ static void check_csync_excluded_performance(void **state)
         gettimeofday(&before, 0);
 
         for (int i = 0; i < N; ++i) {
-            totalRc += csync_excluded(csync, "/this/is/quite/a/long/path/with/many/components", CSYNC_FTW_TYPE_DIR);
-            totalRc += csync_excluded(csync, "/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29", CSYNC_FTW_TYPE_FILE);
+            totalRc += csync_excluded_no_ctx(csync->excludes, "/this/is/quite/a/long/path/with/many/components", CSYNC_FTW_TYPE_DIR);
+            totalRc += csync_excluded_no_ctx(csync->excludes, "/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29", CSYNC_FTW_TYPE_FILE);
         }
         assert_int_equal(totalRc, CSYNC_NOT_EXCLUDED); // mainly to avoid optimization
 

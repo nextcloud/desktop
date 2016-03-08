@@ -49,8 +49,7 @@ static void setup(void **state)
     rc = system("rm -rf /tmp/csync_test");
     assert_int_equal(rc, 0);
 
-    rc = csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/csync1", "/tmp/csync2");
 
     csync->replica = LOCAL_REPLICA;
 

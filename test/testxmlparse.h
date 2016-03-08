@@ -116,7 +116,7 @@ private slots:
         QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
 
         QVERIFY(_success);
-        QVERIFY(sizes.size() == 0 ); // No quota info in the XML
+        QCOMPARE(sizes.size(), 1 ); // Quota info in the XML
 
         QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder/quitte.pdf"));
         QVERIFY(_items.contains("/oc/remote.php/webdav/sharefolder"));

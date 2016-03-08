@@ -316,10 +316,8 @@ typedef const char* (*csync_checksum_hook) (
  * @brief Allocate a csync context.
  *
  * @param csync  The context variable to allocate.
- *
- * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_create(CSYNC **csync, const char *local, const char *remote);
+void csync_create(CSYNC **csync, const char *local, const char *remote);
 
 /**
  * @brief Initialize the file synchronizer.
@@ -327,10 +325,8 @@ int csync_create(CSYNC **csync, const char *local, const char *remote);
  * This function loads the configuration
  *
  * @param ctx  The context to initialize.
- *
- * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_init(CSYNC *ctx);
+void csync_init(CSYNC *ctx);
 
 /**
  * @brief Update detection
@@ -369,24 +365,6 @@ int csync_commit(CSYNC *ctx);
  * @return  0 on success, less than 0 if an error occurred.
  */
 int csync_destroy(CSYNC *ctx);
-
-/**
- * @brief Add an additional exclude list.
- *
- * @param ctx           The context to add the exclude list.
- *
- * @param path          The path pointing to the file.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int csync_add_exclude_list(CSYNC *ctx, const char *path);
-
-/**
- * @brief Removes all items imported from exclude lists.
- *
- * @param ctx           The context to add the exclude list.
- */
-void csync_clear_exclude_list(CSYNC *ctx);
 
 /**
  * @brief Get the userdata saved in the context.

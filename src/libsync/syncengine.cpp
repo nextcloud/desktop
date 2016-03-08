@@ -56,10 +56,9 @@ bool SyncEngine::_syncRunning = false;
 
 qint64 SyncEngine::minimumFileAgeForUpload = 2000;
 
-SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
-                       const QString& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
+SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
+                       const QUrl& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)
-  , _csync_ctx(ctx)
   , _needsUpdate(false)
   , _localPath(localPath)
   , _remoteUrl(remoteURL)
@@ -79,12 +78,28 @@ SyncEngine::SyncEngine(AccountPtr account, CSYNC *ctx, const QString& localPath,
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
 
+    // We need to reconstruct the url because the path needs to be fully decoded, as csync will re-encode the path:
+    //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
+    //  csync_owncloud will then re-encode everything.
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QString url_string = _remoteUrl.scheme() + QLatin1String("://") + _remoteUrl.authority(QUrl::EncodeDelimiters) + _remoteUrl.path(QUrl::FullyDecoded);
+#else
+    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a problem when parsing the path from QUrl::setPath
+    QString url_string = _remoteUrl.toString();
+#endif
+    url_string = Utility::toCSyncScheme(url_string);
+
+    csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
+    csync_init(_csync_ctx);
+    _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
+
     _thread.setObjectName("SyncEngine_Thread");
     _thread.start();
 }
 
 SyncEngine::~SyncEngine()
 {
+    csync_destroy(_csync_ctx);
     _thread.quit();
     _thread.wait();
 }
@@ -889,7 +904,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _journal->commit("post treewalk");
 
     _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator (_account, _localPath, _remoteUrl, _remotePath, _journal));
+        new OwncloudPropagator (_account, _localPath, _remoteUrl.path(), _remotePath, _journal));
     connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),

@@ -25,6 +25,7 @@
 #define _GNU_SOURCE
 #endif
 
+#include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -89,14 +90,11 @@ static int _data_cmp(const void *key, const void *data) {
   return 0;
 }
 
-int csync_create(CSYNC **csync, const char *local, const char *remote) {
+void csync_create(CSYNC **csync, const char *local, const char *remote) {
   CSYNC *ctx;
   size_t len = 0;
 
   ctx = c_malloc(sizeof(CSYNC));
-  if (ctx == NULL) {
-    return -1;
-  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -121,46 +119,21 @@ int csync_create(CSYNC **csync, const char *local, const char *remote) {
   ctx->ignore_hidden_files = true;
 
   *csync = ctx;
-  return 0;
 }
 
-int csync_init(CSYNC *ctx) {
-  int rc;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
-
-  ctx->status_code = CSYNC_STATUS_OK;
-
+void csync_init(CSYNC *ctx) {
+  assert(ctx);
   /* Do not initialize twice */
-  if (ctx->status & CSYNC_STATUS_INIT) {
-    return 1;
-  }
 
-  /* check for uri */
-  if (csync_fnmatch("owncloud://*", ctx->remote.uri, 0) == 0 && csync_fnmatch("ownclouds://*", ctx->remote.uri, 0) == 0) {
-      ctx->status_code = CSYNC_STATUS_NO_MODULE;
-      rc = -1;
-      goto out;
-  }
+  assert(!(ctx->status & CSYNC_STATUS_INIT));
+  ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->local.type = LOCAL_REPLICA;
 
   ctx->remote.type = REMOTE_REPLICA;
 
-  if (c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp) < 0) {
-    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    rc = -1;
-    goto out;
-  }
-
-  if (c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp) < 0) {
-    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    rc = -1;
-    goto out;
-  }
+  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
 
   ctx->remote.root_perms = 0;
 
@@ -168,11 +141,6 @@ int csync_init(CSYNC *ctx) {
 
   /* initialize random generator */
   srand(time(NULL));
-
-  rc = 0;
-
-out:
-  return rc;
 }
 
 int csync_update(CSYNC *ctx) {
@@ -584,25 +552,14 @@ int csync_commit(CSYNC *ctx) {
 
 
   /* Create new trees */
-  rc = c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
-  if (rc < 0) {
-    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    goto out;
-  }
-
-  rc = c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
-  if (rc < 0) {
-    ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-    goto out;
-  }
+  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
 
 
   ctx->status = CSYNC_STATUS_INIT;
   SAFE_FREE(ctx->error_string);
 
   rc = 0;
-
-out:
   return rc;
 }
 
@@ -622,9 +579,6 @@ int csync_destroy(CSYNC *ctx) {
   }
   ctx->statedb.db = NULL;
 
-  /* destroy exclude list */
-  csync_exclude_destroy(ctx);
-
   _csync_clean_ctx(ctx);
 
   SAFE_FREE(ctx->local.uri);
@@ -638,19 +592,6 @@ int csync_destroy(CSYNC *ctx) {
   SAFE_FREE(ctx);
 
   return rc;
-}
-
-int csync_add_exclude_list(CSYNC *ctx, const char *path) {
-  if (ctx == NULL || path == NULL) {
-    return -1;
-  }
-
-  return csync_exclude_load(path, &ctx->excludes);
-}
-
-void csync_clear_exclude_list(CSYNC *ctx)
-{
-    csync_exclude_clear(ctx);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {

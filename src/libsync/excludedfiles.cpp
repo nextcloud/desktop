@@ -25,19 +25,20 @@ extern "C" {
 
 using namespace OCC;
 
-ExcludedFiles::ExcludedFiles()
-    : _excludes(NULL)
+ExcludedFiles::ExcludedFiles(c_strlist_t** excludesPtr)
+    : _excludesPtr(excludesPtr)
 {
 }
 
 ExcludedFiles::~ExcludedFiles()
 {
-    c_strlist_destroy(_excludes);
+    c_strlist_destroy(*_excludesPtr);
 }
 
 ExcludedFiles& ExcludedFiles::instance()
 {
-    static ExcludedFiles inst;
+    static c_strlist_t* globalExcludes;
+    static ExcludedFiles inst(&globalExcludes);
     return inst;
 }
 
@@ -47,15 +48,18 @@ void ExcludedFiles::addExcludeFilePath(const QString& path)
     _excludeFiles.append(path);
 }
 
-void ExcludedFiles::reloadExcludes()
+bool ExcludedFiles::reloadExcludes()
 {
     QWriteLocker locker(&_mutex);
-    c_strlist_destroy(_excludes);
-    _excludes = NULL;
+    c_strlist_destroy(*_excludesPtr);
+    *_excludesPtr = NULL;
 
+    bool success = true;
     foreach (const QString& file, _excludeFiles) {
-        csync_exclude_load(file.toUtf8(), &_excludes);
+        if (csync_exclude_load(file.toUtf8(), _excludesPtr) < 0)
+            success = false;
     }
+    return success;
 }
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::isExcluded(
@@ -76,5 +80,5 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::isExcluded(
         type = CSYNC_FTW_TYPE_DIR;
     }
     QReadLocker lock(&_mutex);
-    return csync_excluded_no_ctx(_excludes, relativePath.toUtf8(), type);
+    return csync_excluded_no_ctx(*_excludesPtr, relativePath.toUtf8(), type);
 }

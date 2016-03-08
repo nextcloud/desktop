@@ -42,10 +42,8 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync");
     assert_int_equal(rc, 0);
-    rc = csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    assert_int_equal(rc, 0);
-    rc = csync_init(csync);
-    assert_int_equal(rc, 0);
+    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_init(csync);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);

@@ -117,23 +117,6 @@ out:
   return rc;
 }
 
-void csync_exclude_clear(CSYNC *ctx) {
-  c_strlist_clear(ctx->excludes);
-}
-
-void csync_exclude_destroy(CSYNC *ctx) {
-  c_strlist_destroy(ctx->excludes);
-}
-
-CSYNC_EXCLUDE_TYPE csync_excluded(CSYNC *ctx, const char *path, int filetype) {
-
-    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
-
-    match = csync_excluded_no_ctx( ctx->excludes, path, filetype );
-
-    return match;
-}
-
 // See http://support.microsoft.com/kb/74496 and
 // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
 // Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
