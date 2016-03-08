@@ -2190,7 +2190,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="254"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Ett fel uppstod när listan för submappar laddades.</translation>
     </message>
 </context>
 <context>
@@ -2758,7 +2758,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="413"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Filen/Mappen är ignorerad för att den är dold.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="668"/>
@@ -3090,37 +3090,37 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering för konto är avstängd</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Sluta pausa alla mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Pausa alla mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Sluta pausa all synkroinisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Sluta pausa synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausa all synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausa synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="503"/>
@@ -3382,7 +3382,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="571"/>
         <source>QT_LAYOUT_DIRECTION</source>
-        <translation type="unfinished"/>
+        <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
 </context>
 <context>
@@ -3428,17 +3428,17 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="121"/>
         <source>%L1 GB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 GB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="124"/>
         <source>%L1 MB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 MB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="127"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="130"/>

@@ -320,12 +320,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="409"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activitat del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="414"/>
         <source>Sync Protocol</source>
-        <translation>Protocol de soncronització</translation>
+        <translation>Protocol de sincronització</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="420"/>
@@ -345,12 +345,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>No sincronitzat</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="451"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>La llista de l&apos;activitat del servidor s&apos;ha copiat al porta-retalls.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="455"/>
@@ -699,12 +699,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1103"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està esperant per començar a sincronitzar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1106"/>
         <source>Preparing for sync.</source>
-        <translation>Perparant per la sincronització.</translation>
+        <translation>S&apos;està preparant per la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1109"/>
@@ -1109,32 +1109,32 @@ Temps restant total %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Executa en iniciar el sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostra les notificacions &amp;d&apos;escriptori</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Usa icones en &amp;monocrom</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editeu els fitxers &amp;ignorats</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Demana la &amp;confirmació abans de  descarregar carpetes més grans de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Mostra l&apos;informe de &amp;fallades</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -1226,7 +1226,9 @@ Compte: %3
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Els fitxers o directoris que concordin amb algun patró no es sincronitzaran.
+
+Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una carpeta sigui eliminada. Això és útil per les metadades.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="110"/>
@@ -1501,12 +1503,12 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>Versió %2 de %1 disponible. Reinicieu l&apos;aplicació per començar l&apos;actualització.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nova versió %1 de %2 disponible. Utilitzeu l&apos;eina d&apos;actualització del sistema per instal·lar-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -2255,7 +2257,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diàleg</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -3396,7 +3398,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>ara</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="460"/>

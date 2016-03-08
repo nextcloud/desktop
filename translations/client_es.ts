@@ -3088,37 +3088,37 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="283"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>La sincronización está deshabilitada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Despausar todas las carpetas</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Pausar todas las carpetas</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="484"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Despausar todas las sincronizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Despausar la sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="494"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausar todas las sincronizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pausar la sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="503"/>
