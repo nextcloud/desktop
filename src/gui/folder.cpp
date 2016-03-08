@@ -1186,7 +1186,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
            "the files were manually removed.\n"
            "Are you sure you want to perform this operation?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
-                       msg.arg(alias()));
+                       msg.arg(aliasGui()));
     msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::AcceptRole);
     if (msgBox.exec() == -1) {
@@ -1212,7 +1212,7 @@ void Folder::slotAboutToRestoreBackup(bool *restore)
            "file in an earlier state. "
            "Do you want to keep your local most recent files as conflict files?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Backup detected"),
-                       msg.arg(alias()));
+                       msg.arg(aliasGui()));
     msgBox.addButton(tr("Normal Synchronisation"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep Local Files as Conflict"), QMessageBox::AcceptRole);
 
