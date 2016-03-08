@@ -120,6 +120,8 @@ int ActivityListModel::rowCount(const QModelIndex&) const
 }
 
 // current strategy: Fetch 100 items per Account
+// ATTENTION: This method is const and thus it is not possible to modify
+// the _activityLists hash or so. Doesn't make it easier...
 bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 {
     if( _activityLists.count() == 0 ) return true;
@@ -127,13 +129,12 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
     QMap<AccountState*, ActivityList>::const_iterator i = _activityLists.begin();
     while (i != _activityLists.end()) {
         AccountState *ast = i.key();
-        if( !ast->isConnected() ) {
-            return false;
-        }
-        ActivityList activities = i.value();
-        if( activities.count() == 0 &&
-                ! _currentlyFetching.contains(ast) ) {
-            return true;
+        if( ast && ast->isConnected() ) {
+            ActivityList activities = i.value();
+            if( activities.count() == 0 &&
+                    ! _currentlyFetching.contains(ast) ) {
+                return true;
+            }
         }
         ++i;
     }
@@ -167,15 +168,15 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
     qDebug() << "*** activities" << activities;
 
     ActivityList list;
-    AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
-    _currentlyFetching.remove(ai);
-    list.setAccountName( ai->account()->displayName());
+    AccountState* ast = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
+    _currentlyFetching.remove(ast);
+    list.setAccountName( ast->account()->displayName());
 
     foreach( auto activ, activities ) {
         auto json = activ.toMap();
 
         Activity a;
-        a._accName  = ai->account()->displayName();
+        a._accName  = ast->account()->displayName();
         a._id       = json.value("id").toLongLong();
         a._subject  = json.value("subject").toString();
         a._message  = json.value("message").toString();
@@ -186,11 +187,9 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
         list.append(a);
     }
 
-    _activityLists[ai] = list;
+    _activityLists[ast] = list;
 
-    if( statusCode == 999 ) {
-        emit accountWithoutActivityApp(ai);
-    }
+    emit activityJobStatusCode(ast, statusCode);
 
     combineActivityLists();
 }
@@ -217,12 +216,11 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 
     foreach (AccountStatePtr asp, accounts) {
         bool newItem = false;
-        // if the account is not yet managed, add an empty list.
-        if( !_activityLists.contains(asp.data()) ) {
+
+        if( !_activityLists.contains(asp.data()) && asp->isConnected() ) {
             _activityLists[asp.data()] = ActivityList();
             newItem = true;
         }
-        ActivityList activities = _activityLists[asp.data()];
         if( newItem ) {
             startFetchJob(asp.data());
         }
@@ -281,8 +279,8 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     showLabels();
 
-    connect(_model, SIGNAL(accountWithoutActivityApp(AccountState*)),
-            this, SLOT(slotAccountWithoutActivityApp(AccountState*)));
+    connect(_model, SIGNAL(activityJobStatusCode(AccountState*,int)),
+            this, SLOT(slotAccountActivityStatus(AccountState*,int)));
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
@@ -324,11 +322,19 @@ void ActivityWidget::showLabels()
     _ui->_bottomLabel->setText(t);
 }
 
-void ActivityWidget::slotAccountWithoutActivityApp(AccountState *ast)
+void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode)
 {
-    if( ast && ast->account() ) {
-        _accountsWithoutActivities.insert(ast->account()->displayName());
+    if( !(ast && ast->account()) ) {
+        return;
     }
+    if( statusCode == 999 ) {
+        _accountsWithoutActivities.insert(ast->account()->displayName());
+    } else {
+        _accountsWithoutActivities.remove(ast->account()->displayName());
+    }
+
+    int accountCount = AccountManager::instance()->accounts().count();
+    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount);
 
     showLabels();
 }
@@ -406,12 +412,12 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _tab = new QTabWidget(this);
     hbox->addWidget(_tab);
     _activityWidget = new ActivityWidget(this);
-    _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
+    _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
-
+    connect(_activityWidget, SIGNAL(hideAcitivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
 
     _protocolWidget = new ProtocolWidget(this);
-    _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
+    _tab->insertTab(1, _protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
     connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
 
     // Add the not-synced list into the tab
@@ -427,7 +433,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_copyBtn, SIGNAL(clicked()), this, SLOT(slotCopyToClipboard()));
 
     w->setLayout(vbox2);
-    _tab->addTab(w, Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
+    _tab->insertTab(2, w, Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
@@ -435,6 +441,18 @@ ActivitySettings::ActivitySettings(QWidget *parent)
 
     // connect a model signal to stop the animation.
     connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
+}
+
+void ActivitySettings::setActivityTabHidden(bool hidden)
+{
+    if( hidden && _activityTabId > -1 ) {
+        _tab->removeTab(_activityTabId);
+        _activityTabId = -1;
+    }
+
+    if( !hidden && _activityTabId == -1 ) {
+        _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
+    }
 }
 
 void ActivitySettings::slotCopyToClipboard()
