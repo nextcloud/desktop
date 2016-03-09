@@ -440,6 +440,15 @@ void ActivityWidget::slotFetchNotifications(AccountState *ptr)
         return;
     }
 
+    // check if the account has notifications enabled. If the capabilities are
+    // not yet valid, its assumed that notifications are available.
+    if( ptr->account() && ptr->account()->capabilities().isValid() ) {
+        if( ! ptr->account()->capabilities().notificationsAvailable() ) {
+            qDebug() << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            return;
+        }
+    }
+
     // if the previous notification job has finished, start next.
     if( !_notificationJob ) {
         _notificationJob = new JsonApiJob( ptr->account(), QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications"), this );
