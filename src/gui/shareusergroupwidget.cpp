@@ -233,6 +233,15 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
     }
 
     /*
+     * Add spinner to the bottom of the widget list
+     */
+    auto viewPort = _ui->scrollArea->widget();
+    auto layout = viewPort->layout();
+    auto indicator = new QProgressIndicator(viewPort);
+    indicator->startAnimation();
+    layout->addWidget(indicator);
+
+    /*
      * Don't send the reshare permissions for federataed shares
      * https://github.com/owncloud/core/issues/22122#issuecomment-185637344
      */
