@@ -113,7 +113,7 @@ private slots:
     void slotActivitiesReceived(const QVariantMap& json, int statusCode);
 
 signals:
-    void accountWithoutActivityApp(AccountState* ast);
+    void activityJobStatusCode(AccountState* ast, int statusCode);
 
 private:
     void startFetchJob(AccountState* s);
@@ -145,12 +145,13 @@ public slots:
     void slotOpenFile(QModelIndex indx);
     void slotRefresh(AccountState* ptr);
     void slotRemoveAccount( AccountState *ptr );
-    void slotAccountWithoutActivityApp(AccountState *ast);
+    void slotAccountActivityStatus(AccountState *ast, int statusCode);
 
 signals:
     void guiLog(const QString&, const QString&);
     void copyToClipboard();
     void rowsInserted();
+    void hideAcitivityTab(bool);
 
 private:
     void showLabels();
@@ -183,7 +184,9 @@ public slots:
     void slotRefresh( AccountState* ptr );
     void slotRemoveAccount( AccountState *ptr );
 
+private slots:
     void slotCopyToClipboard();
+    void setActivityTabHidden(bool hidden);
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -192,6 +195,8 @@ private:
     bool event(QEvent* e) Q_DECL_OVERRIDE;
 
     QTabWidget *_tab;
+    int _activityTabId;
+
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
     QProgressIndicator *_progressIndicator;
