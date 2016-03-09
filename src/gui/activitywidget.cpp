@@ -530,6 +530,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QString& verb)
 {
     qDebug() << "Server Notification Request " << verb << link << "on account" << accountName;
+    NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());
 
     const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
 
@@ -537,9 +538,9 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
         AccountStatePtr acc = AccountManager::instance()->account(accountName);
         if( acc ) {
             NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
-            QString myLink(link);
-            QUrl l(myLink);
+            QUrl l(link);
             job->setLinkAndVerb(l, verb);
+            job->setWidget(theSender);
             connect( job, SIGNAL( networkError(QNetworkReply*)),
                                   this, SLOT(slotNotifyNetworkError(QNetworkReply*)));
             connect( job, SIGNAL( jobFinished(QString, int)),
@@ -547,21 +548,44 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
             job->start();
         }
     } else {
-        qDebug() << "Invalid verb:" << verb;
+        qDebug() << "Notificatio Links: Invalid verb:" << verb;
     }
 }
 
-
-void ActivityWidget::slotNotifyNetworkError( QNetworkReply* )
+void ActivityWidget::endNotificationRequest( NotificationWidget *widget, int replyCode )
 {
+    if( widget ) {
+        widget->slotNotificationRequestFinished(replyCode);
+    }
+}
+
+void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
+{
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob*>(sender());
+    if( !job ) {
+        return;
+    }
+
+    int resultCode =0;
+    if( reply ) {
+        resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    }
+
+    endNotificationRequest(job->widget(), resultCode);
     qDebug() << "Server notify job failed.";
+
 }
 
 void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCode )
 {
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob*>(sender());
+    if( !job ) {
+        return;
+    }
+
+    endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
     qDebug() << "Server Notification reply code"<< replyCode << reply;
-
 }
 
 /* ==================================================================== */

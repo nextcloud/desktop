@@ -24,6 +24,8 @@
 
 namespace OCC {
 
+class NotificationWidget;
+
 /**
  * @brief The NotificationConfirmJob class
  * @ingroup gui
@@ -51,6 +53,10 @@ public:
      */
     void start() Q_DECL_OVERRIDE;
 
+    void setWidget( NotificationWidget *widget );
+
+    NotificationWidget *widget();
+
 signals:
 
     /**
@@ -66,6 +72,7 @@ private slots:
 private:
     QString _verb;
     QUrl _link;
+    NotificationWidget *_widget;
 };
 
 }

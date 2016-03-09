@@ -35,6 +35,7 @@ signals:
 
 public slots:
      void setActivity(const Activity& activity);
+     void slotNotificationRequestFinished(int statusCode);
 
 private slots:
      void slotButtonClicked();
@@ -44,6 +45,7 @@ private:
     Activity _myActivity;
     QList<QPushButton*> _buttons;
     QString _accountName;
+    QProgressIndicator *_progressIndi;
 };
 
 }

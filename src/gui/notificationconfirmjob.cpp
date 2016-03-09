@@ -21,7 +21,8 @@
 namespace OCC {
 
 NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
-: AbstractNetworkJob(account, "")
+: AbstractNetworkJob(account, ""),
+  _widget(0)
 {
     setIgnoreCredentialFailure(true);
 }
@@ -30,6 +31,16 @@ void NotificationConfirmJob::setLinkAndVerb(const QUrl& link, const QString &ver
 {
     _link = link;
     _verb = verb;
+}
+
+void NotificationConfirmJob::setWidget( NotificationWidget *widget )
+{
+    _widget = widget;
+}
+
+NotificationWidget *NotificationConfirmJob::widget()
+{
+    return _widget;
 }
 
 void NotificationConfirmJob::start()
@@ -52,9 +63,16 @@ bool NotificationConfirmJob::finished()
 {
     int replyCode = 0;
     // FIXME: check for the reply code!
-    const QString replyData = reply()->readAll();
+    const QString replyStr = reply()->readAll();
 
-    emit jobFinished(replyData, replyCode);
+    if( replyStr.contains( "<?xml version=\"1.0\"?>") ) {
+         QRegExp rex("<statuscode>(\\d+)</statuscode>");
+         if( replyStr.contains(rex) ) {
+             // this is a error message coming back from ocs.
+             replyCode = rex.cap(1).toInt();
+         }
+    }
+    emit jobFinished(replyStr, replyCode);
 
     return true;
 

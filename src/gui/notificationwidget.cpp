@@ -12,6 +12,7 @@
  */
 
 #include "notificationwidget.h"
+#include "QProgressIndicator.h"
 
 #include <QPushButton>
 
@@ -20,6 +21,8 @@ namespace OCC {
 NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
 {
     _ui.setupUi(this);
+    _progressIndi = new QProgressIndicator(this);
+    _ui.horizontalLayout->addWidget(_progressIndi);
 }
 
 void NotificationWidget::setAccountName( const QString& name )
@@ -65,19 +68,40 @@ void NotificationWidget::slotButtonClicked()
     QObject *buttonWidget = QObject::sender();
     int index = -1;
     if( buttonWidget ) {
+        // find the button that was clicked, it has to be in the list
+        // of buttons that were added to the button box before.
         for( int i = 0; i < _buttons.count(); i++ ) {
             if( _buttons.at(i) == buttonWidget ) {
                 index = i;
-                break;
             }
+            _buttons.at(i)->setEnabled(false);
         }
+
+        // if the button was found, the link must be called
         if( index > -1 && index < _myActivity._links.count() ) {
             ActivityLink triggeredLink = _myActivity._links.at(index);
             qDebug() << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
-
+            _progressIndi->startAnimation();
             emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
         }
     }
+}
+
+void NotificationWidget::slotNotificationRequestFinished(int statusCode)
+{
+    int i = 0;
+    // the ocs API returns stat code 100 if it succeeded.
+    if( statusCode != 100 ) {
+        qDebug() << "Notification Request to Server failed, leave button visible.";
+        for( i = 0; i < _buttons.count(); i++ ) {
+            _buttons.at(i)->setEnabled(true);
+        }
+    } else {
+        // the call to the ocs API succeeded.
+        _ui._buttonBox->hide();
+
+    }
+    _progressIndi->stopAnimation();
 }
 
 }

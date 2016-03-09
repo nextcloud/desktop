@@ -186,6 +186,7 @@ private slots:
     void slotSendNotificationRequest(const QString &accountName, const QString& link, const QString& verb);
     void slotNotifyNetworkError( QNetworkReply* );
     void slotNotifyServerFinished( const QString& reply, int replyCode );
+    void endNotificationRequest(NotificationWidget *widget , int replyCode);
 
 private:
     void showLabels();
