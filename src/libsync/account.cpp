@@ -488,6 +488,10 @@ int Account::serverVersionInt() const
 
 bool Account::serverVersionUnsupported() const
 {
+    if (serverVersionInt() == 0) {
+        // not detected yet, assume it is fine.
+        return false;
+    }
     return serverVersionInt() < 0x070000;
 }
 
