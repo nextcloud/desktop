@@ -744,6 +744,21 @@ void FolderMan::slotForwardFolderSyncStateChange()
     }
 }
 
+void FolderMan::slotServerVersionChanged(Account *account)
+{
+    // Pause folders if the server version is unsupported
+    if (account->serverVersionUnsupported()) {
+        qDebug() << "The server version is unsupported:" << account->serverVersion()
+                 << "pausing all folders on the account";
+
+        foreach (auto& f, _folderMap) {
+            if (f->accountState()->account().data() == account) {
+                f->setSyncPaused(true);
+            }
+        }
+    }
+}
+
 void FolderMan::slotFolderSyncStarted( )
 {
     qDebug() << ">===================================== sync started for " << _currentSyncFolder->remoteUrl().toString();

@@ -219,10 +219,14 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
     if (_gui) {
         disconnect(accountState, SIGNAL(stateChanged(int)),
                    _gui, SLOT(slotAccountStateChanged()));
+        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account*,QString,QString)),
+                   _gui, SLOT(slotTrayMessageIfServerUnsupported(Account*)));
     }
     if (_folderManager) {
         disconnect(accountState, SIGNAL(stateChanged(int)),
                    _folderManager.data(), SLOT(slotAccountStateChanged()));
+        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account*,QString,QString)),
+                   _folderManager.data(), SLOT(slotServerVersionChanged(Account*)));
     }
 
     // if there is no more account, show the wizard.
@@ -237,8 +241,14 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 {
     connect(accountState, SIGNAL(stateChanged(int)),
             _gui, SLOT(slotAccountStateChanged()));
+    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account*,QString,QString)),
+            _gui, SLOT(slotTrayMessageIfServerUnsupported(Account*)));
     connect(accountState, SIGNAL(stateChanged(int)),
             _folderManager.data(), SLOT(slotAccountStateChanged()));
+    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account*,QString,QString)),
+            _folderManager.data(), SLOT(slotServerVersionChanged(Account*)));
+
+    _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }
 
 void Application::slotCleanup()

@@ -77,6 +77,7 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString& path);
     void slotAccountStateChanged();
+    void slotTrayMessageIfServerUnsupported(Account *account);
     void slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed);
     void slotRemoveDestroyedShareDialogs();
 

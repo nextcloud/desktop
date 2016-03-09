@@ -30,6 +30,7 @@ static const char httpUserC[] = "http_user";
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
+static const char serverVersionC[] = "serverVersion";
 }
 
 
@@ -165,6 +166,7 @@ void AccountManager::saveAccountState(AccountState* a)
 void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
         if (saveCredentials) {
             // Only persist the credentials if the parameter is set, on migration from 1.8.x
@@ -210,6 +212,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
     auto acc = createAccount();
 
     acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+    acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));

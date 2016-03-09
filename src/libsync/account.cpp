@@ -472,23 +472,34 @@ void Account::setCapabilities(const QVariantMap &caps)
     _capabilities = Capabilities(caps);
 }
 
-QString Account::serverVersion()
+QString Account::serverVersion() const
 {
     return _serverVersion;
 }
 
-int Account::serverVersionInt()
+int Account::serverVersionInt() const
 {
     // FIXME: Use Qt 5.5 QVersionNumber
     auto components = serverVersion().split('.');
     return  (components.value(0).toInt() << 16)
                    + (components.value(1).toInt() << 8)
-                   + components.value(2).toInt();
+            + components.value(2).toInt();
+}
+
+bool Account::serverVersionUnsupported() const
+{
+    return serverVersionInt() < 0x070000;
 }
 
 void Account::setServerVersion(const QString& version)
 {
+    if (version == _serverVersion) {
+        return;
+    }
+
+    auto oldServerVersion = _serverVersion;
     _serverVersion = version;
+    emit serverVersionChanged(this, oldServerVersion, version);
 }
 
 bool Account::rootEtagChangesNotOnlySubFolderEtags()
