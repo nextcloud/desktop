@@ -40,6 +40,12 @@ public:
     int  sharePublicLinkExpireDateDays() const;
     bool shareResharing() const;
 
+    /// returns true if the capabilities report notifications
+    bool notificationsAvailable() const;
+
+    /// returns true if the capabilities are loaded already.
+    bool isValid() const;
+
     /// Returns the checksum types the server explicitly advertises
     QList<QByteArray> supportedChecksumTypesAdvertised() const;
 
