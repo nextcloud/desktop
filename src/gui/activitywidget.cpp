@@ -509,6 +509,9 @@ void ActivityWidget::slotNotificationsReceived(const QVariantMap& json, int stat
         list.append(a);
     }
     emit newNotificationList( list );
+
+    _notificationJob->deleteLater();
+    _notificationJob = 0;
 }
 
 // GUI: Display the notifications
