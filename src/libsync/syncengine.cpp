@@ -52,7 +52,7 @@ extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 namespace OCC {
 
-bool SyncEngine::_syncRunning = false;
+bool SyncEngine::s_anySyncRunning = false;
 
 qint64 SyncEngine::minimumFileAgeForUpload = 2000;
 
@@ -60,6 +60,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
                        const QUrl& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)
   , _needsUpdate(false)
+  , _syncRunning(false)
   , _localPath(localPath)
   , _remoteUrl(remoteURL)
   , _remotePath(remotePath)
@@ -94,11 +95,11 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
 
     _thread.setObjectName("SyncEngine_Thread");
-    _thread.start();
 }
 
 SyncEngine::~SyncEngine()
 {
+    abort();
     _excludedFiles.reset();
     csync_destroy(_csync_ctx);
     _thread.quit();
@@ -662,10 +663,11 @@ void SyncEngine::startSync()
         }
     }
 
+    Q_ASSERT(!s_anySyncRunning);
     Q_ASSERT(!_syncRunning);
+    s_anySyncRunning = true;
     _syncRunning = true;
-
-    Q_ASSERT(_csync_ctx);
+    _anotherSyncNeeded = false;
 
     if (!QDir(_localPath).exists()) {
         // No _tr, it should only occur in non-mirall
@@ -741,6 +743,7 @@ void SyncEngine::startSync()
 
     qDebug() << "#### Discovery start #################################################### >>";
 
+    _thread.start();
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished(bool)), _discoveryMainThread, SLOT(deleteLater()));
@@ -1000,6 +1003,7 @@ void SyncEngine::finalize(bool success)
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();
 
+    s_anySyncRunning = false;
     _syncRunning = false;
     emit finished(success);
 

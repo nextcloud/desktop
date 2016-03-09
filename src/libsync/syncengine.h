@@ -69,6 +69,8 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
+    bool isSyncRunning() const { return _syncRunning; }
+
     /* Set the maximum size a folder can have without asking for confirmation
      * -1 means infinite
      */
@@ -168,7 +170,7 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
-    static bool _syncRunning; //true when one sync is running somewhere (for debugging)
+    static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
     QMap<QString, SyncFileItemPtr> _syncItemMap;
@@ -180,6 +182,7 @@ private:
     AccountPtr _account;
     CSYNC *_csync_ctx;
     bool _needsUpdate;
+    bool _syncRunning;
     QString _localPath;
     QUrl _remoteUrl;
     QString _remotePath;

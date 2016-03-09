@@ -71,6 +71,9 @@ Folder::Folder(const FolderDefinition& definition,
       , _consecutiveFollowUpSyncs(0)
       , _journal(definition.localPath)
 {
+    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
+
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -85,14 +88,40 @@ Folder::Folder(const FolderDefinition& definition,
     checkLocalPath();
 
     _syncResult.setFolder(_definition.alias);
+
+    _engine.reset(new SyncEngine(_accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
+    // pass the setting if hidden files are to be ignored, will be read in csync_update
+    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+
+    if (!setIgnoredFiles())
+        qWarning("Could not read system exclude file");
+
+    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
+    connect(_engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
+              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
+              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
+
+    connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
+
+    //direct connection so the message box is blocking the sync.
+    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
+                    SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
+    connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool*)),
+            SLOT(slotAboutToRestoreBackup(bool*)));
+    connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
+    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
+    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 }
 
 Folder::~Folder()
 {
-    if( _engine ) {
-        _engine->abort();
-        _engine.reset(0);
-    }
 }
 
 void Folder::checkLocalPath()
@@ -183,7 +212,7 @@ QString Folder::cleanPath()
 
 bool Folder::isBusy() const
 {
-    return !_engine.isNull();
+    return _engine->isSyncRunning();
 }
 
 QString Folder::remotePath() const
@@ -340,7 +369,7 @@ void Folder::bubbleUpSyncResult()
 
     SyncRunFileLog syncFileLog;
 
-    syncFileLog.start(path(), _engine ? _engine->stopWatch() : Utility::StopWatch() );
+    syncFileLog.start(path(), _engine->isSyncRunning() ? _engine->stopWatch() : Utility::StopWatch() );
 
     QElapsedTimer timer;
     timer.start();
@@ -538,7 +567,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
 {
     // When no sync is running or it's in the prepare phase, we can
     // always schedule a new sync.
-    if (! _engine || _syncResult.status() == SyncResult::SyncPrepare) {
+    if (! _engine->isSyncRunning() || _syncResult.status() == SyncResult::SyncPrepare) {
         emit scheduleToSync(this);
         return;
     }
@@ -614,7 +643,7 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
             return true;
         }
         // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
-        if (!_engine.isNull()) {
+        if (_engine->isSyncRunning()) {
             if (_engine->estimateState(fn, t, s)) {
                 return true;
             }
@@ -635,7 +664,7 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
             return true;
         }
         // If sync running: _syncedItems -> SyncingState
-        if (!_engine.isNull()) {
+        if (_engine->isSyncRunning()) {
             if (_engine->estimateState(fn, t, s)) {
                 return true;
             }
@@ -663,19 +692,19 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
 {
-    return ExcludedFiles::instance().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
+    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString& relativePath) const
 {
-    return ExcludedFiles::instance().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
+    return _engine->excludedFiles().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
 }
 
 void Folder::watcherSlot(QString fn)
 {
     // FIXME: On OS X we could not do this "if" since on OS X the file watcher ignores events for ourselves
     // however to have the same behaviour atm on all platforms, we don't do it
-    if (!_engine.isNull()) {
+    if (_engine->isSyncRunning()) {
         qDebug() << Q_FUNC_INFO << "Sync running, IGNORE event for " << fn;
         return;
     }
@@ -700,7 +729,7 @@ void Folder::slotTerminateSync()
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
-    if( _engine ) {
+    if( _engine->isSyncRunning() ) {
         _engine->abort();
 
         // Do not display an error message, user knows his own actions.
@@ -797,42 +826,12 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
-    _engine.reset(new SyncEngine( _accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
-    // pass the setting if hidden files are to be ignored, will be read in csync_update
-    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-
     if (!setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
         QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
         return;
     }
-
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
-    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
-
-    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
-    connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
-              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
-    connect( _engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-
-    connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
-
-    //direct connection so the message box is blocking the sync.
-    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
-                    SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
-    connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool*)),
-            SLOT(slotAboutToRestoreBackup(bool*)));
-    connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
-    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
-    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
-    connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
-    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 
     setDirtyNetworkLimits();
 
@@ -850,27 +849,24 @@ void Folder::startSync(const QStringList &pathList)
 
 void Folder::setDirtyNetworkLimits()
 {
-    if (_engine) {
-
-        ConfigFile cfg;
-        int downloadLimit = -75; // 75%
-        int useDownLimit = cfg.useDownloadLimit();
-        if (useDownLimit >= 1) {
-            downloadLimit = cfg.downloadLimit() * 1000;
-        } else if (useDownLimit == 0) {
-            downloadLimit = 0;
-        }
-
-        int uploadLimit = -75; // 75%
-        int useUpLimit = cfg.useUploadLimit();
-        if ( useUpLimit >= 1) {
-            uploadLimit = cfg.uploadLimit() * 1000;
-        } else if (useUpLimit == 0) {
-            uploadLimit = 0;
-        }
-
-        _engine->setNetworkLimits(uploadLimit, downloadLimit);
+    ConfigFile cfg;
+    int downloadLimit = -75; // 75%
+    int useDownLimit = cfg.useDownloadLimit();
+    if (useDownLimit >= 1) {
+        downloadLimit = cfg.downloadLimit() * 1000;
+    } else if (useDownLimit == 0) {
+        downloadLimit = 0;
     }
+
+    int uploadLimit = -75; // 75%
+    int useUpLimit = cfg.useUploadLimit();
+    if ( useUpLimit >= 1) {
+        uploadLimit = cfg.uploadLimit() * 1000;
+    } else if (useUpLimit == 0) {
+        uploadLimit = 0;
+    }
+
+    _engine->setNetworkLimits(uploadLimit, downloadLimit);
 }
 
 
@@ -909,11 +905,7 @@ void Folder::slotSyncFinished(bool success)
     }
     bubbleUpSyncResult();
 
-    bool anotherSyncNeeded = false;
-    if (_engine) {
-        anotherSyncNeeded = _engine->isAnotherSyncNeeded();
-        _engine.reset(0);
-    }
+    bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
     // _watcher->setEventsEnabledDelayed(2000);
 
 
