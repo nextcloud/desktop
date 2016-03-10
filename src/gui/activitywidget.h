@@ -199,6 +199,9 @@ private:
     QPointer<JsonApiJob> _notificationJob;
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;
+
+    QElapsedTimer _guiLogTimer;
+    QSet<int> _guiLoggedNotifications;
 };
 
 

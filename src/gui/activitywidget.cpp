@@ -478,6 +478,7 @@ void ActivityWidget::slotNotificationsReceived(const QVariantMap& json, int stat
     qDebug() << "Notifications for " << ai->account()->displayName() << notifies;
 
     ActivityList list;
+    int newGuiLogs = 0;
 
     foreach( auto element, notifies ) {
         Activity a;
@@ -506,10 +507,31 @@ void ActivityWidget::slotNotificationsReceived(const QVariantMap& json, int stat
             a._links.append(al);
         }
 
+        // handle gui logs. In order to NOT annoy the user with every fetching of the
+        // notifications the notification id is stored in a Set. Only if an id
+        // is not in the set, it qualifies for guiLog.
+        // Important: The _guiLoggedNotifications set must be wiped regularly which
+        // will repeat the gui log.
+
+        // after one hour, clear the gui log notification store
+        if( _guiLogTimer.elapsed() > 60*1000 ) {
+            _guiLoggedNotifications.clear();
+        }
+        if( !_guiLoggedNotifications.contains(a._id)) {
+            newGuiLogs++;
+            _guiLoggedNotifications.insert(a._id);
+        }
         list.append(a);
     }
     emit newNotificationList( list );
 
+    if( newGuiLogs > 0 ) {
+        // restart the gui log timer now that we show a notification
+        _guiLogTimer.restart();
+
+        emit guiLog(tr("Notifications - Action Required"),
+                    tr("You received %n new notification(s) from the server!", "", newGuiLogs));
+    }
     _notificationJob->deleteLater();
     _notificationJob = 0;
 }
@@ -615,6 +637,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
     connect(_activityWidget, SIGNAL(hideAcitivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
+    connect(_activityWidget, SIGNAL(guiLog(QString,QString)), this, SIGNAL(guiLog(QString,QString)));
 
     _protocolWidget = new ProtocolWidget(this);
     _tab->insertTab(1, _protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
