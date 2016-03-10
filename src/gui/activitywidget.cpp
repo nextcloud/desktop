@@ -35,6 +35,7 @@
 #include "QProgressIndicator.h"
 #include "notificationwidget.h"
 #include "notificationconfirmjob.h"
+#include "servernotificationhandler.h"
 
 #include "ui_activitywidget.h"
 
@@ -181,7 +182,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
 void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int statusCode)
 {
     auto activities = json.value("ocs").toMap().value("data").toList();
-    qDebug() << "*** activities" << activities;
+    // qDebug() << "*** activities" << activities;
 
     ActivityList list;
     AccountState* ast = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
@@ -278,7 +279,8 @@ void ActivityListModel::slotRemoveAccount(AccountState *ast )
 
 ActivityWidget::ActivityWidget(QWidget *parent) :
     QWidget(parent),
-    _ui(new Ui::ActivityWidget)
+    _ui(new Ui::ActivityWidget),
+    _notificationRequests(0)
 {
     _ui->setupUi(this);
 
@@ -317,9 +319,6 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     connect( _ui->_activityList, SIGNAL(activated(QModelIndex)), this,
              SLOT(slotOpenFile(QModelIndex)));
-
-    connect( this, SIGNAL(newNotificationList(ActivityList)), this,
-             SLOT(slotBuildNotificationDisplay(ActivityList)) );
 }
 
 ActivityWidget::~ActivityWidget()
@@ -330,7 +329,18 @@ ActivityWidget::~ActivityWidget()
 void ActivityWidget::slotRefresh(AccountState *ptr)
 {
     _model->slotRefreshActivity(ptr);
-    slotFetchNotifications(ptr);
+
+    // start a server notification handler if no notification requests
+    // are running
+    if( _notificationRequests == 0 ) {
+        ServerNotificationHandler *snh = new ServerNotificationHandler;
+        connect(snh, SIGNAL(newNotificationList(ActivityList)), this,
+                SLOT(slotBuildNotificationDisplay(ActivityList)));
+
+        snh->slotFetchNotifications(ptr);
+    } else {
+        qDebug() << "========> notification request counter not zero.";
+    }
 }
 
 void ActivityWidget::slotRemoveAccount( AccountState *ptr )
@@ -433,112 +443,11 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     }
 }
 
-void ActivityWidget::slotFetchNotifications(AccountState *ptr)
-{
-    /* start the notification fetch job as well */
-    if( !ptr) {
-        return;
-    }
-
-    // check if the account has notifications enabled. If the capabilities are
-    // not yet valid, its assumed that notifications are available.
-    if( ptr->account() && ptr->account()->capabilities().isValid() ) {
-        if( ! ptr->account()->capabilities().notificationsAvailable() ) {
-            qDebug() << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
-            return;
-        }
-    }
-
-    // if the previous notification job has finished, start next.
-    if( !_notificationJob ) {
-        _notificationJob = new JsonApiJob( ptr->account(), QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications"), this );
-        QObject::connect(_notificationJob.data(), SIGNAL(jsonReceived(QVariantMap, int)),
-                         this, SLOT(slotNotificationsReceived(QVariantMap, int)));
-        _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(ptr));
-
-        qDebug() << "Start fetching notifications for " << ptr->account()->displayName();
-        _notificationJob->start();
-    } else {
-        qDebug() << "Notification Job still running, not starting a new one.";
-    }
-}
-
-
-void ActivityWidget::slotNotificationsReceived(const QVariantMap& json, int statusCode)
-{
-    if( statusCode != 200 ) {
-        qDebug() << "Failed for Notifications";
-        return;
-    }
-
-    auto notifies = json.value("ocs").toMap().value("data").toList();
-
-    AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
-
-    qDebug() << "Notifications for " << ai->account()->displayName() << notifies;
-
-    ActivityList list;
-    int newGuiLogs = 0;
-
-    foreach( auto element, notifies ) {
-        Activity a;
-        auto json   = element.toMap();
-        a._type     = Activity::NotificationType;
-        a._accName  = ai->account()->displayName();
-        a._id       = json.value("notification_id").toLongLong();
-        a._subject  = json.value("subject").toString();
-        a._message  = json.value("message").toString();
-        QString s   = json.value("link").toString();
-        if( !s.isEmpty() ) {
-            a._link     = QUrl(s);
-        }
-        a._dateTime = json.value("datetime").toDateTime();
-        a._dateTime.setTimeSpec(Qt::UTC);
-
-        auto actions = json.value("actions").toList();
-        foreach( auto action, actions) {
-            auto actionJson = action.toMap();
-            ActivityLink al;
-            al._label = QUrl::fromPercentEncoding(actionJson.value("label").toByteArray());
-            al._link  = actionJson.value("link").toString();
-            al._verb  = actionJson.value("type").toString();
-            al._isPrimary = actionJson.value("primary").toBool();
-
-            a._links.append(al);
-        }
-
-        // handle gui logs. In order to NOT annoy the user with every fetching of the
-        // notifications the notification id is stored in a Set. Only if an id
-        // is not in the set, it qualifies for guiLog.
-        // Important: The _guiLoggedNotifications set must be wiped regularly which
-        // will repeat the gui log.
-
-        // after one hour, clear the gui log notification store
-        if( _guiLogTimer.elapsed() > 60*1000 ) {
-            _guiLoggedNotifications.clear();
-        }
-        if( !_guiLoggedNotifications.contains(a._id)) {
-            newGuiLogs++;
-            _guiLoggedNotifications.insert(a._id);
-        }
-        list.append(a);
-    }
-    emit newNotificationList( list );
-
-    if( newGuiLogs > 0 ) {
-        // restart the gui log timer now that we show a notification
-        _guiLogTimer.restart();
-
-        emit guiLog(tr("Notifications - Action Required"),
-                    tr("You received %n new notification(s) from the server!", "", newGuiLogs));
-    }
-    _notificationJob->deleteLater();
-    _notificationJob = 0;
-}
-
 // GUI: Display the notifications
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 {
+    int newGuiLogs = 0;
+
     foreach( auto activity, list ) {
         NotificationWidget *widget = 0;
 
@@ -556,9 +465,33 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
         widget->setAccountName( activity._accName );
         widget->setActivity( activity );
+
+        // handle gui logs. In order to NOT annoy the user with every fetching of the
+        // notifications the notification id is stored in a Set. Only if an id
+        // is not in the set, it qualifies for guiLog.
+        // Important: The _guiLoggedNotifications set must be wiped regularly which
+        // will repeat the gui log.
+
+        // after one hour, clear the gui log notification store
+        if( _guiLogTimer.elapsed() > 60*60*1000 ) {
+            _guiLoggedNotifications.clear();
+        }
+        if( !_guiLoggedNotifications.contains(activity._id)) {
+            newGuiLogs++;
+            _guiLoggedNotifications.insert(activity._id);
+        }
     }
-    _ui->_notifyLabel->setHidden( list.count() == 0 );
-    _ui->_notifyScroll->setHidden( list.count() == 0 );
+
+    _ui->_notifyLabel->setHidden( _widgetForNotifId.isEmpty() );
+    _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
+
+    if( newGuiLogs > 0 ) {
+        // restart the gui log timer now that we show a notification
+        _guiLogTimer.restart();
+
+        emit guiLog(tr("Notifications - Action Required"),
+                    tr("You received %n new notification(s) from the server!", "", newGuiLogs));
+    }
 }
 
 void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QString& verb)
@@ -580,14 +513,19 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
             connect( job, SIGNAL( jobFinished(QString, int)),
                      this, SLOT(slotNotifyServerFinished(QString, int)) );
             job->start();
+
+            // count the number of running notification requests. If this member var
+            // is larger than zero, no new fetching of notifications is started
+            _notificationRequests++;
         }
     } else {
-        qDebug() << "Notificatio Links: Invalid verb:" << verb;
+        qDebug() << "Notification Links: Invalid verb:" << verb;
     }
 }
 
 void ActivityWidget::endNotificationRequest( NotificationWidget *widget, int replyCode )
 {
+    _notificationRequests--;
     if( widget ) {
         widget->slotNotificationRequestFinished(replyCode);
     }

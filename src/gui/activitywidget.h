@@ -171,7 +171,6 @@ public slots:
     void slotRefresh(AccountState* ptr);
     void slotRemoveAccount( AccountState *ptr );
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
-    void slotFetchNotifications(AccountState *ptr);
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -181,7 +180,6 @@ signals:
     void newNotificationList(const ActivityList& list);
 
 private slots:
-    void slotNotificationsReceived(const QVariantMap& json, int statusCode);
     void slotBuildNotificationDisplay(const ActivityList& list);
     void slotSendNotificationRequest(const QString &accountName, const QString& link, const QString& verb);
     void slotNotifyNetworkError( QNetworkReply* );
@@ -196,12 +194,13 @@ private:
 
     QSet<QString> _accountsWithoutActivities;
     QMap<int, NotificationWidget*> _widgetForNotifId;
-    QPointer<JsonApiJob> _notificationJob;
+    QElapsedTimer _guiLogTimer;
+    QSet<int> _guiLoggedNotifications;
+    int _notificationRequests;
+
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;
 
-    QElapsedTimer _guiLogTimer;
-    QSet<int> _guiLoggedNotifications;
 };
 
 

@@ -87,6 +87,7 @@ set(client_SRCS
     synclogdialog.cpp
     notificationwidget.cpp
     notificationconfirmjob.cpp
+    servernotificationhandler.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp
