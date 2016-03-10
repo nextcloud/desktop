@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
-        <location filename="../src/gui/accountsettings.cpp" line="676"/>
+        <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -173,47 +173,52 @@
         <translation>%1 som &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="519"/>
         <source>Connected to %1.</source>
         <translation>Ansluten till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servern %1 är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>No connection to %1 at %2.</source>
         <translation>Ingen anslutning till %1 vid %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="547"/>
+        <location filename="../src/gui/accountsettings.cpp" line="551"/>
         <source>Log in</source>
         <translation>Logga in</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="628"/>
+        <location filename="../src/gui/accountsettings.cpp" line="632"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation>Det finns nya mappar som inte synkroniserades på grund av att det är för stora:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="668"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="669"/>
+        <location filename="../src/gui/accountsettings.cpp" line="673"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen avsluta anslutningen till kontot &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="675"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Remove connection</source>
         <translation>Radera anslutning</translation>
     </message>
@@ -224,7 +229,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="141"/>
-        <location filename="../src/gui/accountsettings.cpp" line="545"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Log out</source>
         <translation>Logga ut</translation>
     </message>
@@ -259,7 +264,7 @@
         <translation>Just nu finns ingen utrymmes information tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
@@ -318,52 +323,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="409"/>
+        <location filename="../src/gui/activitywidget.cpp" line="415"/>
+        <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Server Activity</source>
         <translation>Serveraktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="420"/>
         <source>Sync Protocol</source>
         <translation>Synkprotokoll</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="420"/>
+        <location filename="../src/gui/activitywidget.cpp" line="426"/>
         <source>List of ignored or erroneous files</source>
         <translation>Lista av ignorerade eller felaktiga filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="424"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Copy</source>
         <translation>Kopiera</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="425"/>
+        <location filename="../src/gui/activitywidget.cpp" line="431"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiera aktivitetslistan till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="436"/>
         <source>Not Synced</source>
         <translation>Inte synkroniserad</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="451"/>
+        <location filename="../src/gui/activitywidget.cpp" line="469"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Listan på serveraktivitet har kopierats till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="455"/>
+        <location filename="../src/gui/activitywidget.cpp" line="473"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Listan på synkaktivitet har kopierats till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="458"/>
+        <location filename="../src/gui/activitywidget.cpp" line="476"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Listan över osynkroniserade objekt har kopierats till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="463"/>
+        <location filename="../src/gui/activitywidget.cpp" line="481"/>
         <source>Copied to clipboard</source>
         <translation>Kopierat till urklipp</translation>
     </message>
@@ -382,22 +388,22 @@
         <translation>Textetikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="314"/>
+        <location filename="../src/gui/activitywidget.cpp" line="312"/>
         <source>Server Activities</source>
         <translation>Serveraktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="287"/>
+        <location filename="../src/gui/activitywidget.cpp" line="285"/>
         <source>Copy</source>
         <translation>Kopiera</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="288"/>
+        <location filename="../src/gui/activitywidget.cpp" line="286"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiera aktivitetslistan till urklipp.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="321"/>
+        <location filename="../src/gui/activitywidget.cpp" line="319"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Kontot %1 har inte aktiviteter aktiverade</translation>
     </message>
@@ -471,27 +477,27 @@
         <translation>Inget ownCloud konto konfigurerat</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="126"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="127"/>
         <source>The configured server for this client is too old</source>
         <translation>Den konfigurerade servern är för den här klienten är för gammal</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="127"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="128"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Uppgradera servern och starta sedan om klienten.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="148"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentiseringsfel: Användarnamn eller lösenord är felaktigt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="156"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="160"/>
         <source>timeout</source>
         <translation>timeout</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="188"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="192"/>
         <source>The provided credentials are not correct</source>
         <translation>De angivna uppgifterna stämmer ej</translation>
     </message>
@@ -680,102 +686,102 @@ Om du fortsätter synkningen leder till att dina filer skrivs över av äldre fi
         <translation>En gammal synkroniseringsjournal &apos;%1&apos; hittades, men kunde inte raderas. Vänligen se till att inga program för tillfället använder den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="886"/>
+        <location filename="../src/gui/folderman.cpp" line="901"/>
         <source> (backup)</source>
         <translation>(säkerhetskopia)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="891"/>
+        <location filename="../src/gui/folderman.cpp" line="906"/>
         <source> (backup %1)</source>
         <translation>(säkerhetkopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1100"/>
+        <location filename="../src/gui/folderman.cpp" line="1115"/>
         <source>Undefined State.</source>
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1103"/>
+        <location filename="../src/gui/folderman.cpp" line="1118"/>
         <source>Waiting to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1106"/>
+        <location filename="../src/gui/folderman.cpp" line="1121"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1112"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>Last Sync was successful.</source>
         <translation>Senaste synkronisering lyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1117"/>
+        <location filename="../src/gui/folderman.cpp" line="1132"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Senaste synkning lyckades, men det finns varningar för vissa filer!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1135"/>
         <source>Setup Error.</source>
         <translation>Inställningsfel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1123"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>User Abort.</source>
         <translation>Användare Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1126"/>
+        <location filename="../src/gui/folderman.cpp" line="1141"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1147"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synk är stoppad)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1140"/>
+        <location filename="../src/gui/folderman.cpp" line="1155"/>
         <source>No valid folder selected!</source>
         <translation>Ingen giltig mapp markerad!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected path is not a folder!</source>
         <translation>Den markerade sökvägen är inte en mapp!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1170"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Du har inga skrivrättigheter till den valda mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1185"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 synkas redan. Var god välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 innehåller redan en mapp som synkas. Var god välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1197"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 är en symbolisk länk. Länkmålet innehåller redan en mapp som synkas. Var god välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1204"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 finns redan inuti en mapp som synkas. Var god välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1195"/>
+        <location filename="../src/gui/folderman.cpp" line="1210"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 är en symbolisk länk. Länkmålet finns redan inuti en mapp som synkas. Var god välj en annan!</translation>
     </message>
@@ -2408,17 +2414,17 @@ Det är inte lämpligt använda den.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="283"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="292"/>
         <source>create</source>
         <translation>skapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="294"/>
         <source>change</source>
         <translation>ändra</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="287"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="296"/>
         <source>delete</source>
         <translation>radera</translation>
     </message>
@@ -2979,182 +2985,192 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Please sign in</source>
         <translation>Vänliga logga in</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Folder %1: %2</source>
         <translation>Mapp %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>No sync folders configured.</source>
         <translation>Ingen synkroniseringsmapp är konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>There are no sync folders configured.</source>
         <translation>Det finns inga synkmappar konfigurerade.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="327"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
         <source>Open in browser</source>
         <translation>Öppna i webbläsare</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="592"/>
         <source>Log in...</source>
         <translation>Logga in...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Log out</source>
         <translation>Logga ut</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="425"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="437"/>
         <source>Recent Changes</source>
         <translation>Senaste ändringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="625"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="637"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Kollar efter ändringar i &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Managed Folders:</source>
         <translation>Hanterade mappar:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Öppna mapp &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <source>Open %1 in browser</source>
         <translation>Öppna %1 i webbläsaren</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="579"/>
         <source>Unknown status</source>
         <translation>Okänd status</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="569"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>Settings...</source>
         <translation>Inställningar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
         <source>Details...</source>
         <translation>Detaljer...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="575"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
         <source>Help</source>
         <translation>Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="577"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="589"/>
         <source>Quit %1</source>
         <translation>Avsluta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Disconnected from %1</source>
         <translation>Koppla från %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="235"/>
+        <source>Unsupported Server Version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
+        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from accounts:</source>
         <translation>Bortkopplad från dessa konton:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account synchronization is disabled</source>
         <translation>Synkronisering för konto är avstängd</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Unpause all folders</source>
         <translation>Sluta pausa alla mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <source>Pause all folders</source>
         <translation>Pausa alla mappar</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="484"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Unpause all synchronization</source>
         <translation>Sluta pausa all synkroinisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>Unpause synchronization</source>
         <translation>Sluta pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Pause all synchronization</source>
         <translation>Pausa all synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>Pause synchronization</source>
         <translation>Pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Log out of all accounts</source>
         <translation>Logga ut från alla konton</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Log in to all accounts...</source>
         <translation>Logga in på alla konton...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="586"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Krascha nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="603"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>No items synced recently</source>
         <translation>Inga filer har synkroniseras nyligen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="630"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="642"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synkroniserar %1 av %2 (%3 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="635"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="647"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="655"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="667"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="696"/>
         <source>Up to date</source>
         <translation>Aktuell version</translation>
     </message>
@@ -3375,7 +3391,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="571"/>
+        <location filename="../src/gui/application.cpp" line="581"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

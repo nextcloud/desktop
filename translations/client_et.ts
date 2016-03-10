@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
-        <location filename="../src/gui/accountsettings.cpp" line="676"/>
+        <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
@@ -173,47 +173,52 @@
         <translation>%1 as &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="515"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="519"/>
         <source>Connected to %1.</source>
         <translation>Ühendatud %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 pole ajutiselt saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="523"/>
         <source>Signed out from %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>No connection to %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="547"/>
+        <location filename="../src/gui/accountsettings.cpp" line="551"/>
         <source>Log in</source>
         <translation>Logi sisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="628"/>
+        <location filename="../src/gui/accountsettings.cpp" line="632"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="668"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Confirm Account Removal</source>
         <translation>Kinnita konto eemaldamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="669"/>
+        <location filename="../src/gui/accountsettings.cpp" line="673"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="675"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Remove connection</source>
         <translation>Eemalda ühendus</translation>
     </message>
@@ -224,7 +229,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="141"/>
-        <location filename="../src/gui/accountsettings.cpp" line="545"/>
+        <location filename="../src/gui/accountsettings.cpp" line="549"/>
         <source>Log out</source>
         <translation>Logi välja</translation>
     </message>
@@ -259,7 +264,7 @@
         <translation>Hetkel pole mahu kasutuse info saadaval.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
         <source>No %1 connection configured.</source>
         <translation>Ühtegi %1 ühendust pole seadistatud.</translation>
     </message>
@@ -318,52 +323,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="409"/>
+        <location filename="../src/gui/activitywidget.cpp" line="415"/>
+        <location filename="../src/gui/activitywidget.cpp" line="454"/>
         <source>Server Activity</source>
         <translation>Serveri aktiivsus</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="420"/>
         <source>Sync Protocol</source>
         <translation>Sünkroniseerimisprotokoll</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="420"/>
+        <location filename="../src/gui/activitywidget.cpp" line="426"/>
         <source>List of ignored or erroneous files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="424"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Copy</source>
         <translation>Kopeeri</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="425"/>
+        <location filename="../src/gui/activitywidget.cpp" line="431"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopeeri tegevuste nimistu puhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="436"/>
         <source>Not Synced</source>
         <translation>Pole sünkroonitud</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="451"/>
+        <location filename="../src/gui/activitywidget.cpp" line="469"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="455"/>
+        <location filename="../src/gui/activitywidget.cpp" line="473"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="458"/>
+        <location filename="../src/gui/activitywidget.cpp" line="476"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="463"/>
+        <location filename="../src/gui/activitywidget.cpp" line="481"/>
         <source>Copied to clipboard</source>
         <translation>Kopeeritud lõikepuhvrisse</translation>
     </message>
@@ -382,22 +388,22 @@
         <translation>Tekstisilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="314"/>
+        <location filename="../src/gui/activitywidget.cpp" line="312"/>
         <source>Server Activities</source>
         <translation>Serveri tegevused</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="287"/>
+        <location filename="../src/gui/activitywidget.cpp" line="285"/>
         <source>Copy</source>
         <translation>Kopeeri</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="288"/>
+        <location filename="../src/gui/activitywidget.cpp" line="286"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopeeri tegevuste nimistu puhvrisse.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="321"/>
+        <location filename="../src/gui/activitywidget.cpp" line="319"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation type="unfinished"/>
     </message>
@@ -471,27 +477,27 @@
         <translation>Ühtegi ownCloud kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="126"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="127"/>
         <source>The configured server for this client is too old</source>
         <translation>Seadistatud server on selle kliendi jaoks liiga vana</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="127"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="128"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Palun uuenda server viimasele versioonile ning taaskäivita klient.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="144"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="148"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentimise tõrge: Kasutajanimi või parool on vale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="156"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="160"/>
         <source>timeout</source>
         <translation>aegumine</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="188"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="192"/>
         <source>The provided credentials are not correct</source>
         <translation>Sisestatud kasutajatunnused pole õiged</translation>
     </message>
@@ -675,102 +681,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Leiti vana sünkroniseeringu zurnaal &apos;%1&apos;, kuid selle eemaldamine ebaõnnenstus. Palun veendu, et seda kasutaks ükski programm.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="886"/>
+        <location filename="../src/gui/folderman.cpp" line="901"/>
         <source> (backup)</source>
         <translation>(varukoopia)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="891"/>
+        <location filename="../src/gui/folderman.cpp" line="906"/>
         <source> (backup %1)</source>
         <translation> (varukoopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1100"/>
+        <location filename="../src/gui/folderman.cpp" line="1115"/>
         <source>Undefined State.</source>
         <translation>Määramata staatus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1103"/>
+        <location filename="../src/gui/folderman.cpp" line="1118"/>
         <source>Waiting to start syncing.</source>
         <translation>Oodatakse sünkroonimise alustamist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1106"/>
+        <location filename="../src/gui/folderman.cpp" line="1121"/>
         <source>Preparing for sync.</source>
         <translation>Valmistun sünkroniseerima.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1109"/>
+        <location filename="../src/gui/folderman.cpp" line="1124"/>
         <source>Sync is running.</source>
         <translation>Sünkroniseerimine on käimas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1112"/>
+        <location filename="../src/gui/folderman.cpp" line="1127"/>
         <source>Last Sync was successful.</source>
         <translation>Viimane sünkroniseerimine oli edukas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1117"/>
+        <location filename="../src/gui/folderman.cpp" line="1132"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Viimane sünkroniseering oli edukas, kuid mõned failid põhjustasid tõrkeid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1120"/>
+        <location filename="../src/gui/folderman.cpp" line="1135"/>
         <source>Setup Error.</source>
         <translation>Seadistamise viga.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1123"/>
+        <location filename="../src/gui/folderman.cpp" line="1138"/>
         <source>User Abort.</source>
         <translation>Kasutaja tühistamine.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1126"/>
+        <location filename="../src/gui/folderman.cpp" line="1141"/>
         <source>Sync is paused.</source>
         <translation>Sünkroniseerimine on peatatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1132"/>
+        <location filename="../src/gui/folderman.cpp" line="1147"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sünkroniseerimine on peatatud)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1140"/>
+        <location filename="../src/gui/folderman.cpp" line="1155"/>
         <source>No valid folder selected!</source>
         <translation>Sobilikku kausta pole valitud!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1166"/>
         <source>The selected path is not a folder!</source>
         <translation>Valitud asukoht pole kaust!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1170"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Sul puuduvad õigused valitud kataloogi kirjutamiseks!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1185"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1175"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1197"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1204"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1195"/>
+        <location filename="../src/gui/folderman.cpp" line="1210"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -2392,17 +2398,17 @@ Selle kasutamine pole soovitatav.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="283"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="292"/>
         <source>create</source>
         <translation>loo</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="285"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="294"/>
         <source>change</source>
         <translation>muuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="287"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="296"/>
         <source>delete</source>
         <translation>kustuta</translation>
     </message>
@@ -2963,182 +2969,192 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="279"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Please sign in</source>
         <translation>Palun logi sisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Folder %1: %2</source>
         <translation>Kaust %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>No sync folders configured.</source>
         <translation>Sünkroniseeritavaid kaustasid pole seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>There are no sync folders configured.</source>
         <translation>Sünkroniseeritavaid kaustasid pole määratud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="327"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="339"/>
         <source>Open in browser</source>
         <translation>Ava veebilehitsejas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="377"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="513"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="592"/>
         <source>Log in...</source>
         <translation>Logi sisse...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="505"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="594"/>
         <source>Log out</source>
         <translation>Logi välja</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="425"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="437"/>
         <source>Recent Changes</source>
         <translation>Hiljutised muudatused</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="625"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="637"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Kontrollitakse muudatusi kaustas &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="354"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>Managed Folders:</source>
         <translation>Hallatavad kaustad:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Ava kaust &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <source>Open %1 in browser</source>
         <translation>Ava %1 veebilehitsejas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="567"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="579"/>
         <source>Unknown status</source>
         <translation>Tundmatu staatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="569"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="581"/>
         <source>Settings...</source>
         <translation>Seaded...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="570"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
         <source>Details...</source>
         <translation>Üksikasjad...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="575"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="587"/>
         <source>Help</source>
         <translation>Abiinfo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="577"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="589"/>
         <source>Quit %1</source>
         <translation>Lõpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="258"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Disconnected from %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="262"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="235"/>
+        <source>Unsupported Server Version</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
+        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from accounts:</source>
         <translation>Kontodest lahtiühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="264"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="283"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account synchronization is disabled</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Unpause all folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <source>Pause all folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="484"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Unpause all synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>Unpause synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="494"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Pause all synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="496"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>Pause synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="503"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Log out of all accounts</source>
         <translation>Logi välja kõikidelt kontodelt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="511"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="523"/>
         <source>Log in to all accounts...</source>
         <translation>Logi sisse kõikidesse kontodesse...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="586"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Jookse kokku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="603"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="615"/>
         <source>No items synced recently</source>
         <translation>Ühtegi üksust pole hiljuti sünkroniseeritud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="630"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="642"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sünkroniseerin %1 %2-st (%3 veel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="635"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="647"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sünkroniseerin %1 (%2 veel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="655"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="667"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="696"/>
         <source>Up to date</source>
         <translation>Ajakohane</translation>
     </message>
@@ -3359,7 +3375,7 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="571"/>
+        <location filename="../src/gui/application.cpp" line="581"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>
