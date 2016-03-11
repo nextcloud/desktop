@@ -28,16 +28,19 @@ ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
 
 void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 {
-    /* start the notification fetch job as well */
-    if( !ptr) {
+    // check connectivity and credentials
+    if( !( ptr && ptr->isConnected() && ptr->account() &&
+           ptr->account()->credentials() &&
+           ptr->account()->credentials()->ready() ) ) {
+        deleteLater();
         return;
     }
-
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
-    if( ptr->account() && ptr->account()->capabilities().isValid() ) {
+    if( ptr->account()->capabilities().isValid() ) {
         if( ! ptr->account()->capabilities().notificationsAvailable() ) {
             qDebug() << Q_FUNC_INFO << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            deleteLater();
             return;
         }
     }
@@ -55,6 +58,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QVariantMap& jso
 {
     if( statusCode != 200 ) {
         qDebug() << Q_FUNC_INFO << "Notifications failed with status code " << statusCode;
+        deleteLater();
         return;
     }
 
