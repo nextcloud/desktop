@@ -37,6 +37,7 @@
 #include "notificationwidget.h"
 #include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
+#include "theme.h"
 
 #include "ui_activitywidget.h"
 
@@ -218,6 +219,8 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 {
     int newGuiLogs = 0;
 
+    QHash<QString, int> accNotified;
+
     foreach( auto activity, list ) {
         NotificationWidget *widget = 0;
 
@@ -248,6 +251,21 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         }
         if( !_guiLoggedNotifications.contains(activity._id)) {
             newGuiLogs++;
+            QString host = activity._accName;
+            // store the name of the account that sends the notification to be
+            // able to add it to the tray notification
+            // remove the user name from the account as that is not accurate here.
+            int indx = host.indexOf(QChar('@'));
+            if( indx>-1 ) {
+                host.remove(0, 1+indx);
+            }
+            if( !host.isEmpty() ) {
+                if( accNotified.contains(host)) {
+                    accNotified[host] = accNotified[host]+1;
+                } else {
+                    accNotified[host] = 1;
+                }
+            }
             _guiLoggedNotifications.insert(activity._id);
         }
     }
@@ -259,8 +277,22 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         // restart the gui log timer now that we show a notification
         _guiLogTimer.restart();
 
-        emit guiLog(tr("Notifications - Action Required"),
-                    tr("You received %n new notification(s) from the server!", "", newGuiLogs));
+        // Assemble a tray notification
+        QString msg = tr("You received %n new notification(s)", "", newGuiLogs);
+        QString addM;
+        foreach( QString m, accNotified.keys() ) {
+            if(addM.isEmpty()) {
+                /*: translators: from is in the context of "got a message from account goof@owncloud.foo.com" */
+                addM = tr(" from ");
+            } else {
+                addM += tr(" and ");
+            }
+            addM += m;
+        }
+        msg += addM;
+
+        emit guiLog(Theme::instance()->appNameGUI() + QLatin1String(" ") + tr("Notifications - Action Required"),
+                    msg);
     }
 }
 
