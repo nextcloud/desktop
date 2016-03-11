@@ -3083,7 +3083,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Version du Serveur non prise en charge</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>

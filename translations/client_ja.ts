@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>サーバーバージョン %1 は古くサポートされていません！自己責任で進んでください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
@@ -3077,7 +3077,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>サポートされていないサーバーバージョン</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>

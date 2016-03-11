@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>A versão do servidor %1 é antiga e não suportada! Prossiga por conta própria.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
@@ -3080,12 +3080,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Versão do Servidor Não Suportada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor %1 está executando uma versão antiga e não suportada %2. Usar esse cliente junto com versões não suportadas e não testadas é potencialmente perigoso. Prossiga por conta própria.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
