@@ -16,9 +16,11 @@
 
 #include <QWidget>
 
-#include "activitywidget.h"
+#include "activitydata.h"
 
 #include "ui_notificationwidget.h"
+
+class QProgressIndicator;
 
 namespace OCC {
 
