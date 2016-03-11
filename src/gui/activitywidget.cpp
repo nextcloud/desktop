@@ -441,6 +441,9 @@ ActivitySettings::ActivitySettings(QWidget *parent)
 
     // connect a model signal to stop the animation.
     connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
+
+    // We want the protocol be the default
+    _tab->setCurrentIndex(1);
 }
 
 void ActivitySettings::setActivityTabHidden(bool hidden)
