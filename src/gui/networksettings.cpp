@@ -86,6 +86,11 @@ QSize NetworkSettings::sizeHint() const {
 
 void NetworkSettings::loadProxySettings()
 {
+    if (Theme::instance()->forceSystemNetworkProxy()) {
+        _ui->systemProxyRadioButton->setChecked(true);
+        _ui->proxyGroupBox->setEnabled(false);
+        return;
+    }
     // load current proxy settings
     OCC::ConfigFile cfgFile;
     int type = cfgFile.proxyType();

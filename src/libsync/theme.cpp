@@ -427,6 +427,12 @@ bool Theme::userGroupSharing() const
     return true;
 }
 
+bool Theme::forceSystemNetworkProxy() const
+{
+    return false;
+}
+
+
 
 } // end namespace client
 

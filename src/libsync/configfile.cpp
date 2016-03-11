@@ -508,6 +508,9 @@ void ConfigFile::setValue(const QString& key, const QVariant &value)
 
 int ConfigFile::proxyType() const
 {
+    if (Theme::instance()->forceSystemNetworkProxy()) {
+        return QNetworkProxy::DefaultProxy;
+    }
     return getValue(QLatin1String(proxyTypeC)).toInt();
 }
 
