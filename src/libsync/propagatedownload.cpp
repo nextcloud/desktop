@@ -547,11 +547,11 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     }
 
     // Do checksum validation for the download. If there is no checksum header, the validator
-    // will also emit the validated() signal to continue the flow in slot downloadFinished()
+    // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
     connect(validator, SIGNAL(validated(QByteArray,QByteArray)),
-            SLOT(downloadFinished(QByteArray,QByteArray)));
+            SLOT(transmissionChecksumValidated(QByteArray,QByteArray)));
     connect(validator, SIGNAL(validationFailed(QString)),
             SLOT(slotChecksumFail(QString)));
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
@@ -649,13 +649,38 @@ static void preserveGroupOwnership(const QString& fileName, const QFileInfo& fi)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::downloadFinished(const QByteArray& transportChecksumType,
-                                                 const QByteArray& transportChecksum)
-{
-    // by default, reuse the transport checksum as content checksum
-    _item->_contentChecksum = transportChecksum;
-    _item->_contentChecksumType = transportChecksumType;
 
+void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
+{
+    const auto theContentChecksumType = contentChecksumType();
+
+    // Reuse transmission checksum as content checksum.
+    //
+    // We could do this more aggressively and accept both MD5 and SHA1
+    // instead of insisting on the exactly correct checksum type.
+    if (theContentChecksumType == checksumType || theContentChecksumType.isEmpty()) {
+        return contentChecksumComputed(checksumType, checksum);
+    }
+
+    // Compute the content checksum.
+    auto computeChecksum = new ComputeChecksum(this);
+    computeChecksum->setChecksumType(theContentChecksumType);
+
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            SLOT(contentChecksumComputed(QByteArray,QByteArray)));
+    computeChecksum->start(_tmpFile.fileName());
+}
+
+void PropagateDownloadFileQNAM::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+{
+    _item->_contentChecksum = checksum;
+    _item->_contentChecksumType = checksumType;
+
+    downloadFinished();
+}
+
+void PropagateDownloadFileQNAM::downloadFinished()
+{
     QString fn = _propagator->getFilePath(_item->_file);
 
     // In case of file name clash, report an error

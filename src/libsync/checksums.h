@@ -37,6 +37,10 @@ bool uploadChecksumEnabled();
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_DOWNLOAD
 bool downloadChecksumEnabled();
 
+/// Checks OWNCLOUD_CONTENT_CHECKSUM_TYPE (default: SHA1)
+QByteArray contentChecksumType();
+
+
 /**
  * Computes the checksum of a file.
  * \ingroup libsync
