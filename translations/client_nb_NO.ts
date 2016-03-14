@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Server-versjonen %1 er gammel og støttes ikke! Fortsett på egen risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
@@ -2606,7 +2606,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation>Ikke tiltrodd sertifikat</translation>
+        <translation>Ikke-tiltrodd sertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
@@ -3081,12 +3081,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Server-versjonen støttes ikke</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Serveren på konto %1 kjører en gammel %2 som ikke støttes. Bruk av denne klienten med ikke-støttede server-versjoner er ikke testet og kan være farlig. Fortsett på egen risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>

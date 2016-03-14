@@ -3084,7 +3084,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Версия сервера не поддерживается</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
@@ -3104,7 +3104,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация учётной записи отключена</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="378"/>
@@ -3119,22 +3119,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="496"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Возобновить все синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="498"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Возобновить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="506"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Приостановить все синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="508"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>

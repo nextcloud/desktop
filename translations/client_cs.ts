@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Server verze %1 je zastaralý a nepodporovaný! Pokračujte na vlastní riziko.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>

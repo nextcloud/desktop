@@ -2992,7 +2992,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="339"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Odpri v brskalniku</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="389"/>
