@@ -217,8 +217,6 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // GUI: Display the notifications
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 {
-    int newGuiLogs = 0;
-
     QHash<QString, int> accNotified;
 
     foreach( auto activity, list ) {
@@ -250,7 +248,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             _guiLoggedNotifications.clear();
         }
         if( !_guiLoggedNotifications.contains(activity._id)) {
-            newGuiLogs++;
             QString host = activity._accName;
             // store the name of the account that sends the notification to be
             // able to add it to the tray notification
@@ -273,23 +270,27 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     _ui->_notifyLabel->setHidden( _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
 
-    if( newGuiLogs > 0 ) {
+    int newGuiLogCount = accNotified.count();
+
+    if( newGuiLogCount > 0 ) {
         // restart the gui log timer now that we show a notification
         _guiLogTimer.restart();
 
         // Assemble a tray notification
-        QString msg = tr("You received %n new notification(s)", "", newGuiLogs);
-        QString addM;
-        foreach( QString m, accNotified.keys() ) {
-            if(addM.isEmpty()) {
-                /*: translators: from is in the context of "got a message from account goof@owncloud.foo.com" */
-                addM = tr(" from ");
+        QString msg = tr("You received %1 new notification(s) from %2.").
+                arg(accNotified[accNotified.keys().at(0)]).
+                arg(accNotified.keys().at(0));
+
+        if( newGuiLogCount >= 2 ) {
+            QString acc1 = accNotified.keys().at(0);
+            QString acc2 = accNotified.keys().at(1);
+            if( newGuiLogCount == 2 ) {
+                int notiCount = accNotified[ acc1 ] + accNotified[ acc2 ];
+                msg = tr("You received %1 new notifications from %2 and %3.").arg(notiCount).arg(acc1).arg(acc2);
             } else {
-                addM += tr(" and ");
+                msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1).arg(acc2);
             }
-            addM += m;
         }
-        msg += addM;
 
         emit guiLog(Theme::instance()->appNameGUI() + QLatin1String(" ") + tr("Notifications - Action Required"),
                     msg);
