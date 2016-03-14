@@ -26,8 +26,8 @@ namespace OCC {
 class ActivityLink
 {
 public:
-    QHash <QString, QVariant> toVariantHash() {
-        QHash<QString, QVariant> hash;
+    QVariantHash toVariantHash() const {
+        QVariantHash hash;
 
         hash["label"] = _label;
         hash["link"]  = _link;
@@ -86,20 +86,9 @@ public:
  *
  * A QList based list of Activities
  */
-class ActivityList:public QList<Activity>
-{
-public:
-    void setAccountName( const QString& name ) {
-        _accountName = name;
-    }
 
-    QString accountName() const {
-        return _accountName;
-    }
+typedef QList<Activity> ActivityList;
 
-private:
-    QString _accountName;
-};
 
 }
 
