@@ -44,9 +44,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
     QStringList list;
 
-    if (role == Qt::EditRole)
-        return QVariant();
-
     switch (role) {
     case ActivityItemDelegate::PathRole:
         list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
@@ -134,19 +131,17 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);
-    qDebug() << "Start fetching activities for " << s->account()->displayName();
+    qDebug() << Q_FUNC_INFO << "Start fetching activities for " << s->account()->displayName();
     job->start();
 }
 
 void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int statusCode)
 {
     auto activities = json.value("ocs").toMap().value("data").toList();
-    // qDebug() << "*** activities" << activities;
 
     ActivityList list;
     AccountState* ast = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
     _currentlyFetching.remove(ast);
-    list.setAccountName( ast->account()->displayName());
 
     foreach( auto activ, activities ) {
         auto json = activ.toMap();
@@ -182,7 +177,11 @@ void ActivityListModel::combineActivityLists()
 
     std::sort( resultList.begin(), resultList.end() );
 
-    beginInsertRows(QModelIndex(), 0, resultList.count()-1);
+    beginRemoveRows(QModelIndex(), 0, _finalList.count() );
+    _finalList.clear();
+    endRemoveRows();
+
+    beginInsertRows(QModelIndex(), 0, resultList.count());
     _finalList = resultList;
     endInsertRows();
 }
@@ -192,13 +191,9 @@ void ActivityListModel::fetchMore(const QModelIndex &)
     QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
 
     foreach (AccountStatePtr asp, accounts) {
-        bool newItem = false;
 
         if( !_activityLists.contains(asp.data()) && asp->isConnected() ) {
             _activityLists[asp.data()] = ActivityList();
-            newItem = true;
-        }
-        if( newItem ) {
             startFetchJob(asp.data());
         }
     }
@@ -207,7 +202,6 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 void ActivityListModel::slotRefreshActivity(AccountState *ast)
 {
     if(ast && _activityLists.contains(ast)) {
-        qDebug() << "**** Refreshing Activity list for" << ast->account()->displayName();
         _activityLists.remove(ast);
     }
     startFetchJob(ast);

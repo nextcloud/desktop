@@ -37,7 +37,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     // not yet valid, its assumed that notifications are available.
     if( ptr->account() && ptr->account()->capabilities().isValid() ) {
         if( ! ptr->account()->capabilities().notificationsAvailable() ) {
-            qDebug() << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            qDebug() << Q_FUNC_INFO << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
             return;
         }
     }
@@ -48,22 +48,19 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
                      this, SLOT(slotNotificationsReceived(QVariantMap, int)));
     _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(ptr));
 
-    qDebug() << "Start fetching notifications for " << ptr->account()->displayName();
     _notificationJob->start();
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QVariantMap& json, int statusCode)
 {
     if( statusCode != 200 ) {
-        qDebug() << "Failed for Notifications";
+        qDebug() << Q_FUNC_INFO << "Notifications failed with status code " << statusCode;
         return;
     }
 
     auto notifies = json.value("ocs").toMap().value("data").toList();
 
     AccountState* ai = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
-
-    // qDebug() << "Notifications for " << ai->account()->displayName() << notifies;
 
     ActivityList list;
 

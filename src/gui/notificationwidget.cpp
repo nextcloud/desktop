@@ -80,7 +80,7 @@ void NotificationWidget::slotButtonClicked()
         // if the button was found, the link must be called
         if( index > -1 && index < _myActivity._links.count() ) {
             ActivityLink triggeredLink = _myActivity._links.at(index);
-            qDebug() << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
+            qDebug() << Q_FUNC_INFO << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
             _progressIndi->startAnimation();
             emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
         }

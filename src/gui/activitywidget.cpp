@@ -110,7 +110,7 @@ void ActivityWidget::slotRefresh(AccountState *ptr)
 
         snh->slotFetchNotifications(ptr);
     } else {
-        qDebug() << "========> notification request counter not zero.";
+        qDebug() << Q_FUNC_INFO << "========> notification request counter not zero.";
     }
 }
 
@@ -204,7 +204,7 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
-    qDebug() << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
+    qDebug() << Q_FUNC_INFO << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if( indx.isValid() ) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
@@ -299,7 +299,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
 void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QString& verb)
 {
-    qDebug() << "Server Notification Request " << verb << link << "on account" << accountName;
+    qDebug() << Q_FUNC_INFO << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());
 
     const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
@@ -322,7 +322,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
             _notificationRequests++;
         }
     } else {
-        qDebug() << "Notification Links: Invalid verb:" << verb;
+        qDebug() << Q_FUNC_INFO << "Notification Links: Invalid verb:" << verb;
     }
 }
 
@@ -347,7 +347,7 @@ void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
     }
 
     endNotificationRequest(job->widget(), resultCode);
-    qDebug() << "Server notify job failed.";
+    qDebug() << Q_FUNC_INFO << "Server notify job failed with code " << resultCode;
 
 }
 
@@ -360,7 +360,7 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
 
     endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
-    qDebug() << "Server Notification reply code"<< replyCode << reply;
+    qDebug() << Q_FUNC_INFO << "Server Notification reply code"<< replyCode << reply;
 }
 
 /* ==================================================================== */
@@ -453,7 +453,6 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
     if( ptr && ptr->isConnected() && isVisible()) {
-        qDebug() << "Refreshing Activity list for " << ptr->account()->displayName();
         _progressIndicator->startAnimation();
         _activityWidget->slotRefresh(ptr);
     }
