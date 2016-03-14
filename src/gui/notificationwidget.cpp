@@ -16,6 +16,8 @@
 
 #include <QPushButton>
 
+#include "ocsjob.h"
+
 namespace OCC {
 
 NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
@@ -91,8 +93,8 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 {
     int i = 0;
     // the ocs API returns stat code 100 if it succeeded.
-    if( statusCode != 100 ) {
-        qDebug() << "Notification Request to Server failed, leave button visible.";
+    if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
+        qDebug() << Q_FUNC_INFO << "Notification Request to Server failed, leave button visible.";
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);
         }

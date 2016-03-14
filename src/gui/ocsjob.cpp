@@ -23,7 +23,7 @@ namespace OCC {
 OcsJob::OcsJob(AccountPtr account)
 : AbstractNetworkJob(account, "")
 {
-    _passStatusCodes.append(100);
+    _passStatusCodes.append(OCS_SUCCESS_STATUS_CODE);
     setIgnoreCredentialFailure(true);
 }
 
