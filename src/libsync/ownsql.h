@@ -82,7 +82,7 @@ public:
     void bindValue(int pos, const QVariant& value);
     QString lastQuery() const;
     int numRowsAffected();
-    void reset();
+    void reset_and_clear_bindings();
     void finish();
 
 private:

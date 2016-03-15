@@ -693,7 +693,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
         QString remotePerm (record._remotePerm);
         if (remotePerm.isEmpty()) remotePerm = QString(); // have NULL in DB (vs empty)
         int contentChecksumTypeId = mapChecksumType(record._contentChecksumType);
-        _setFileRecordQuery->reset();
+        _setFileRecordQuery->reset_and_clear_bindings();
         _setFileRecordQuery->bindValue(1, QString::number(phash));
         _setFileRecordQuery->bindValue(2, plen);
         _setFileRecordQuery->bindValue(3, record._path );
@@ -722,7 +722,7 @@ bool SyncJournalDb::setFileRecord( const SyncJournalFileRecord& _record )
                  << record._etag << record._fileId << record._remotePerm << record._fileSize << (record._serverHasIgnoredFiles ? 1:0)
                  << record._contentChecksum << record._contentChecksumType << contentChecksumTypeId;
 
-        _setFileRecordQuery->reset();
+        _setFileRecordQuery->reset_and_clear_bindings();
         return true;
     } else {
         qDebug() << "Failed to connect database.";
@@ -739,7 +739,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
         // always delete the actual file.
 
         qlonglong phash = getPHash(filename);
-        _deleteFileRecordPhash->reset();
+        _deleteFileRecordPhash->reset_and_clear_bindings();
         _deleteFileRecordPhash->bindValue( 1, QString::number(phash) );
 
         if( !_deleteFileRecordPhash->exec() ) {
@@ -749,9 +749,9 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
             return false;
         }
         qDebug() <<  _deleteFileRecordPhash->lastQuery() << phash << filename;
-        _deleteFileRecordPhash->reset();
+        _deleteFileRecordPhash->reset_and_clear_bindings();
         if( recursively) {
-            _deleteFileRecordRecursively->reset();
+            _deleteFileRecordRecursively->reset_and_clear_bindings();
             _deleteFileRecordRecursively->bindValue(1, filename);
             if( !_deleteFileRecordRecursively->exec() ) {
                 qWarning() << "Exec error of SQL statement: "
@@ -760,7 +760,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
                 return false;
             }
             qDebug() <<  _deleteFileRecordRecursively->lastQuery()  << filename;
-            _deleteFileRecordRecursively->reset();
+            _deleteFileRecordRecursively->reset_and_clear_bindings();
         }
         return true;
     } else {
@@ -778,7 +778,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
     SyncJournalFileRecord rec;
 
     if( checkConnect() ) {
-        _getFileRecordQuery->reset();
+        _getFileRecordQuery->reset_and_clear_bindings();
         _getFileRecordQuery->bindValue(1, QString::number(phash));
 
         if (!_getFileRecordQuery->exec()) {
@@ -808,7 +808,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename;
         }
-        _getFileRecordQuery->reset();
+        _getFileRecordQuery->reset_and_clear_bindings();
     }
     return rec;
 }
@@ -907,7 +907,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString& filename,
     int checksumTypeId = mapChecksumType(contentChecksumType);
     auto & query = _setFileRecordChecksumQuery;
 
-    query->reset();
+    query->reset_and_clear_bindings();
     query->bindValue(1, QString::number(phash));
     query->bindValue(2, contentChecksum);
     query->bindValue(3, checksumTypeId);
@@ -922,7 +922,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString& filename,
     qDebug() << query->lastQuery() << phash << contentChecksum
              << contentChecksumType << checksumTypeId;
 
-    query->reset();
+    query->reset_and_clear_bindings();
     return true;
 }
 
@@ -964,7 +964,7 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
     qDebug() << "Removing stale " << qPrintable(name) << " entries: " << entries.join(", ");
     // FIXME: Was ported from execBatch, check if correct!
     foreach( const QString& entry, entries ) {
-        query.reset();
+        query.reset_and_clear_bindings();
         query.bindValue(1, entry);
         if (!query.exec()) {
             QString err = query.error();
@@ -973,7 +973,7 @@ static bool deleteBatch(SqlQuery & query, const QStringList & entries, const QSt
             return false;
         }
     }
-    query.reset(); // viel hilft viel ;-)
+    query.reset_and_clear_bindings(); // viel hilft viel ;-)
 
     return true;
 }
@@ -985,7 +985,7 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
     DownloadInfo res;
 
     if( checkConnect() ) {
-        _getDownloadInfoQuery->reset();
+        _getDownloadInfoQuery->reset_and_clear_bindings();
         _getDownloadInfoQuery->bindValue(1, file);
 
         if (!_getDownloadInfoQuery->exec()) {
@@ -999,7 +999,7 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString& file)
         } else {
             res._valid = false;
         }
-        _getDownloadInfoQuery->reset();
+        _getDownloadInfoQuery->reset_and_clear_bindings();
     }
     return res;
 }
@@ -1013,7 +1013,7 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
     }
 
     if (i._valid) {
-        _setDownloadInfoQuery->reset();
+        _setDownloadInfoQuery->reset_and_clear_bindings();
         _setDownloadInfoQuery->bindValue(1, file);
         _setDownloadInfoQuery->bindValue(2, i._tmpfile);
         _setDownloadInfoQuery->bindValue(3, i._etag );
@@ -1025,10 +1025,10 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
         }
 
         qDebug() <<  _setDownloadInfoQuery->lastQuery() << file << i._tmpfile << i._etag << i._errorCount;
-        _setDownloadInfoQuery->reset();
+        _setDownloadInfoQuery->reset_and_clear_bindings();
 
     } else {
-        _deleteDownloadInfoQuery->reset();
+        _deleteDownloadInfoQuery->reset_and_clear_bindings();
         _deleteDownloadInfoQuery->bindValue( 1, file );
 
         if( !_deleteDownloadInfoQuery->exec() ) {
@@ -1036,7 +1036,7 @@ void SyncJournalDb::setDownloadInfo(const QString& file, const SyncJournalDb::Do
             return;
         }
         qDebug() <<  _deleteDownloadInfoQuery->lastQuery()  << file;
-        _deleteDownloadInfoQuery->reset();
+        _deleteDownloadInfoQuery->reset_and_clear_bindings();
     }
 }
 
@@ -1104,7 +1104,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
 
     if( checkConnect() ) {
 
-        _getUploadInfoQuery->reset();
+        _getUploadInfoQuery->reset_and_clear_bindings();
         _getUploadInfoQuery->bindValue(1, file);
 
         if (!_getUploadInfoQuery->exec()) {
@@ -1122,7 +1122,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString& file)
             res._modtime    = Utility::qDateTimeFromTime_t(_getUploadInfoQuery->int64Value(4));
             res._valid      = ok;
         }
-        _getUploadInfoQuery->reset();
+        _getUploadInfoQuery->reset_and_clear_bindings();
     }
     return res;
 }
@@ -1136,7 +1136,7 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 
     if (i._valid) {
-        _setUploadInfoQuery->reset();
+        _setUploadInfoQuery->reset_and_clear_bindings();
         _setUploadInfoQuery->bindValue(1, file);
         _setUploadInfoQuery->bindValue(2, i._chunk);
         _setUploadInfoQuery->bindValue(3, i._transferid );
@@ -1150,9 +1150,9 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
         }
 
         qDebug() <<  _setUploadInfoQuery->lastQuery() << file << i._chunk << i._transferid << i._errorCount;
-        _setUploadInfoQuery->reset();
+        _setUploadInfoQuery->reset_and_clear_bindings();
     } else {
-        _deleteUploadInfoQuery->reset();
+        _deleteUploadInfoQuery->reset_and_clear_bindings();
         _deleteUploadInfoQuery->bindValue(1, file);
 
         if( !_deleteUploadInfoQuery->exec() ) {
@@ -1160,7 +1160,7 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
             return;
         }
         qDebug() <<  _deleteUploadInfoQuery->lastQuery() << file;
-        _deleteUploadInfoQuery->reset();
+        _deleteUploadInfoQuery->reset_and_clear_bindings();
     }
 }
 
@@ -1203,7 +1203,7 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QStrin
     // SELECT lastTryEtag, lastTryModtime, retrycount, errorstring
 
     if( checkConnect() ) {
-        _getErrorBlacklistQuery->reset();
+        _getErrorBlacklistQuery->reset_and_clear_bindings();
         _getErrorBlacklistQuery->bindValue( 1, file );
         if( _getErrorBlacklistQuery->exec() ){
             if( _getErrorBlacklistQuery->next() ) {
@@ -1215,7 +1215,7 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QStrin
                 entry._ignoreDuration = _getErrorBlacklistQuery->int64Value(5);
                 entry._file           = file;
             }
-            _getErrorBlacklistQuery->reset();
+            _getErrorBlacklistQuery->reset_and_clear_bindings();
         } else {
             qWarning() << "Exec error blacklist: " << _getErrorBlacklistQuery->lastQuery() <<  " : "
                        << _getErrorBlacklistQuery->error();
@@ -1331,7 +1331,7 @@ void SyncJournalDb::updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRe
     qDebug() << "set blacklist entry for " << item._file << item._retryCount
              << item._errorString << item._lastTryTime << item._ignoreDuration
              << item._lastTryModtime << item._lastTryEtag;
-    _setErrorBlacklistQuery->reset();
+    _setErrorBlacklistQuery->reset_and_clear_bindings();
 
 }
 
@@ -1402,7 +1402,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         return result;
     }
 
-    _getSelectiveSyncListQuery->reset();
+    _getSelectiveSyncListQuery->reset_and_clear_bindings();
     _getSelectiveSyncListQuery->bindValue(1, int(type));
     if (!_getSelectiveSyncListQuery->exec()) {
         qWarning() << "SQL query failed: "<< _getSelectiveSyncListQuery->error();
@@ -1434,7 +1434,7 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
 
     SqlQuery insQuery("INSERT INTO selectivesync VALUES (?1, ?2)" , _db);
     foreach(const auto &path, list) {
-        insQuery.reset();
+        insQuery.reset_and_clear_bindings();
         insQuery.bindValue(1, path);
         insQuery.bindValue(2, int(type));
         if (!insQuery.exec()) {
@@ -1526,7 +1526,7 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
 
     // Retrieve the id
     auto & query = *_getChecksumTypeQuery;
-    query.reset();
+    query.reset_and_clear_bindings();
     query.bindValue(1, checksumTypeId);
     if( !query.exec() ) {
         qWarning() << "Error SQL statement getChecksumType: "
@@ -1549,7 +1549,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray& checksumType)
     }
 
     // Ensure the checksum type is in the db
-    _insertChecksumTypeQuery->reset();
+    _insertChecksumTypeQuery->reset_and_clear_bindings();
     _insertChecksumTypeQuery->bindValue(1, checksumType);
     if( !_insertChecksumTypeQuery->exec() ) {
         qWarning() << "Error SQL statement insertChecksumType: "
@@ -1559,7 +1559,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray& checksumType)
     }
 
     // Retrieve the id
-    _getChecksumTypeIdQuery->reset();
+    _getChecksumTypeIdQuery->reset_and_clear_bindings();
     _getChecksumTypeIdQuery->bindValue(1, checksumType);
     if( !_getChecksumTypeIdQuery->exec() ) {
         qWarning() << "Error SQL statement getChecksumTypeId: "
