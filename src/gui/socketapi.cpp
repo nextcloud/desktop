@@ -566,7 +566,7 @@ SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString file
             rec._fileId  = query->baValue(4);
             rec._remotePerm = query->baValue(5);
         }
-        query->reset();
+        query->reset_and_clear_bindings();
     }
     return rec;
 }
