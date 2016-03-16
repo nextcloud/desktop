@@ -234,7 +234,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             _widgetForNotifId[activity._id] = widget;
         }
 
-        widget->setAccountName( activity._accName );
         widget->setActivity( activity );
 
         // handle gui logs. In order to NOT annoy the user with every fetching of the

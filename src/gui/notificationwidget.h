@@ -30,8 +30,6 @@ class NotificationWidget : public QWidget
 public:
     explicit NotificationWidget(QWidget *parent = 0);
 
-    void setAccountName( const QString& name );
-
 signals:
     void sendNotificationRequest( const QString&, const QString& link, const QString& verb);
 

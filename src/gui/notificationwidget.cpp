@@ -27,11 +27,6 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
     _ui.horizontalLayout->addWidget(_progressIndi);
 }
 
-void NotificationWidget::setAccountName( const QString& name )
-{
-    _accountName = name;
-}
-
 void NotificationWidget::setActivity(const Activity& activity)
 {
     _myActivity = activity;
