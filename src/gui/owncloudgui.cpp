@@ -350,7 +350,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     bool onePaused = false;
     bool allPaused = true;
     foreach (Folder* folder, folderMan->map()) {
-        if (folder->accountState() != accountState) {
+        if (folder->accountState() != accountState.data()) {
             continue;
         }
 

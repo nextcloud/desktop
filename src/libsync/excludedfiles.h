@@ -49,14 +49,12 @@ public:
     /**
      * Checks whether a file or directory should be excluded.
      *
-     * @param fullPath     the absolute path to the file
-     * @param relativePath path relative to the folder
-     *
-     * For directories, the paths must not contain a trailing /.
+     * @param filePath     the absolute path to the file
+     * @param basePath     folder path from which to apply exclude rules
      */
-    CSYNC_EXCLUDE_TYPE isExcluded(
-            const QString& fullPath,
-            const QString& relativePath,
+    bool isExcluded(
+            const QString& filePath,
+            const QString& basePath,
             bool excludeHidden) const;
 
 public slots:

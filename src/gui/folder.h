@@ -87,7 +87,7 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const FolderDefinition& definition, QObject* parent = 0L);
+    Folder(const FolderDefinition& definition, AccountState* accountState, QObject* parent = 0L);
 
     ~Folder();
 
@@ -97,8 +97,7 @@ public:
     /**
      * The account the folder is configured on.
      */
-    void setAccountState( AccountState *account );
-    AccountState* accountState() const;
+    AccountState* accountState() const { return _accountState.data(); }
 
     /**
      * alias or nickname
@@ -281,7 +280,7 @@ private:
     void createGuiLog(const QString& filename, SyncFileStatus status, int count,
                        const QString& renameTarget = QString::null );
 
-    QPointer<AccountState> _accountState;
+    AccountStatePtr _accountState;
     FolderDefinition _definition;
 
     SyncResult _syncResult;

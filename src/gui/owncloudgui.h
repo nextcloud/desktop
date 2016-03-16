@@ -35,7 +35,6 @@ class ShareDialog;
 class Application;
 class LogBrowser;
 class AccountState;
-typedef QSharedPointer<AccountState> AccountStatePtr;
 
 /**
  * @brief The ownCloudGui class

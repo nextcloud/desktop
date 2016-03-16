@@ -15,6 +15,7 @@
 
 #include "utility.h"
 #include "folderman.h"
+#include "account.h"
 #include "accountstate.h"
 
 using namespace OCC;
@@ -52,10 +53,11 @@ private slots:
             f.write("hello");
         }
 
+        AccountStatePtr newAccountState(new AccountState(Account::create()));
         FolderMan *folderman = FolderMan::instance();
         QCOMPARE(folderman, &_fm);
-        QVERIFY(folderman->addFolder(0, folderDefinition(dir.path() + "/sub/ownCloud1")));
-        QVERIFY(folderman->addFolder(0, folderDefinition(dir.path() + "/ownCloud2")));
+        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dir.path() + "/sub/ownCloud1")));
+        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dir.path() + "/ownCloud2")));
 
 
         // those should be allowed

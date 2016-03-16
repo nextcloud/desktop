@@ -56,9 +56,10 @@ static void csyncLogCatcher(int /*verbosity*/,
 
 
 Folder::Folder(const FolderDefinition& definition,
+               AccountState* accountState,
                QObject* parent)
     : QObject(parent)
-      , _accountState(0)
+      , _accountState(accountState)
       , _definition(definition)
       , _csyncError(false)
       , _csyncUnavail(false)
@@ -92,16 +93,6 @@ Folder::~Folder()
         _engine->abort();
         _engine.reset(0);
     }
-}
-
-void Folder::setAccountState( AccountState *account )
-{
-    _accountState = account;
-}
-
-AccountState* Folder::accountState() const
-{
-    return _accountState;
 }
 
 void Folder::checkLocalPath()
@@ -202,9 +193,6 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    if (!_accountState) {
-        return QUrl("http://deleted-account");
-    }
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
@@ -255,11 +243,6 @@ void Folder::prepareToSync()
 void Folder::slotRunEtagJob()
 {
     qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
-
-    if (!_accountState) {
-        qDebug() << "Can't run EtagJob, account is deleted";
-        return;
-    }
 
     AccountPtr account = _accountState->account();
 
@@ -328,9 +311,7 @@ void Folder::etagRetreived(const QString& etag)
         emit scheduleToSync(this);
     }
 
-    if( _accountState ) {
-        _accountState->tagLastSuccessfullETagRequest();
-    }
+    _accountState->tagLastSuccessfullETagRequest();
 }
 
 void Folder::etagRetreivedFromSyncEngine(const QString& etag)
@@ -665,11 +646,6 @@ bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
 
 void Folder::saveToSettings() const
 {
-    if (!_accountState) {
-        qDebug() << "Can't save folder to settings, account is deleted";
-        return;
-    }
-
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
@@ -680,11 +656,6 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    if (!_accountState) {
-        qDebug() << "Can't remove folder from settings, account is deleted";
-        return;
-    }
-
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     settings->remove(_definition.alias);
@@ -692,24 +663,12 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
 {
-    if (!fullPath.startsWith(path())) {
-        // Mark paths we're not responsible for as excluded...
-        return true;
-    }
-
-    QString myFullPath = fullPath;
-    if (myFullPath.endsWith(QLatin1Char('/'))) {
-        myFullPath.chop(1);
-    }
-
-    QString relativePath = myFullPath.mid(path().size());
-    auto excl = ExcludedFiles::instance().isExcluded(myFullPath, relativePath, _definition.ignoreHiddenFiles);
-    return excl != CSYNC_NOT_EXCLUDED;
+    return ExcludedFiles::instance().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString& relativePath) const
 {
-    return isFileExcludedAbsolute(path() + relativePath);
+    return ExcludedFiles::instance().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
 }
 
 void Folder::watcherSlot(QString fn)
@@ -814,11 +773,6 @@ bool Folder::proxyDirty()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    if (!_accountState) {
-        qDebug() << "Can't startSync, account is deleted";
-        return;
-    }
-
     Q_UNUSED(pathList)
     if (proxyDirty()) {
         setProxyDirty(false);

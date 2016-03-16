@@ -202,7 +202,7 @@ private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */
-    Folder* addFolderInternal(const FolderDefinition& folderDefinition);
+    Folder* addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder( Folder * );

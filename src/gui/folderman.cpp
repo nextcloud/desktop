@@ -206,9 +206,8 @@ int FolderMan::setupFolders()
         foreach (const auto& folderAlias, settings->childGroups()) {
             FolderDefinition folderDefinition;
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(folderDefinition);
+                Folder* f = addFolderInternal(folderDefinition, account.data());
                 if (f) {
-                    f->setAccountState( account.data() );
                     slotScheduleSync(f);
                     emit folderSyncStateChange(f);
                 }
@@ -395,10 +394,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition);
+    folder = addFolderInternal(folderDefinition, accountState);
     if (folder) {
-        folder->setAccountState(accountState);
-
         QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
             //migrate settings
@@ -786,9 +783,8 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
         return 0;
     }
 
-    auto folder = addFolderInternal(folderDefinition);
-    if(folder && accountState) {
-        folder->setAccountState(accountState);
+    auto folder = addFolderInternal(folderDefinition, accountState);
+    if(folder) {
         folder->saveToSettings();
         emit folderSyncStateChange(folder);
         emit folderListChanged(_folderMap);
@@ -796,9 +792,9 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
+Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState)
 {
-    auto folder = new Folder(folderDefinition, this );
+    auto folder = new Folder(folderDefinition, accountState, this );
 
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[folder->alias()] = folder;
