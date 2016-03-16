@@ -22,6 +22,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="errorLabel">
+     <property name="text">
+      <string notr="true">Placeholder for Error text</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -46,16 +56,6 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3"/>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="errorLabel">
-     <property name="text">
-      <string notr="true">Placeholder for Error text</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
