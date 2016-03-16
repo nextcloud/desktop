@@ -51,7 +51,7 @@ namespace OCC {
 ActivityWidget::ActivityWidget(QWidget *parent) :
     QWidget(parent),
     _ui(new Ui::ActivityWidget),
-    _notificationRequests(0)
+    _notificationRequestsRunning(0)
 {
     _ui->setupUi(this);
 
@@ -103,7 +103,7 @@ void ActivityWidget::slotRefresh(AccountState *ptr)
 
     // start a server notification handler if no notification requests
     // are running
-    if( _notificationRequests == 0 ) {
+    if( _notificationRequestsRunning == 0 ) {
         ServerNotificationHandler *snh = new ServerNotificationHandler;
         connect(snh, SIGNAL(newNotificationList(ActivityList)), this,
                 SLOT(slotBuildNotificationDisplay(ActivityList)));
@@ -317,7 +317,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
 
             // count the number of running notification requests. If this member var
             // is larger than zero, no new fetching of notifications is started
-            _notificationRequests++;
+            _notificationRequestsRunning++;
         }
     } else {
         qDebug() << Q_FUNC_INFO << "Notification Links: Invalid verb:" << verb;
@@ -326,7 +326,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
 
 void ActivityWidget::endNotificationRequest( NotificationWidget *widget, int replyCode )
 {
-    _notificationRequests--;
+    _notificationRequestsRunning--;
     if( widget ) {
         widget->slotNotificationRequestFinished(replyCode);
     }

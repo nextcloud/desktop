@@ -90,7 +90,10 @@ private:
     QMap<int, NotificationWidget*> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
     QSet<int> _guiLoggedNotifications;
-    int _notificationRequests;
+
+    // number of currently running notification requests. If non zero,
+    // no query for notifications is started.
+    int _notificationRequestsRunning;
 
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;

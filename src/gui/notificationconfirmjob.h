@@ -42,19 +42,29 @@ public:
     explicit NotificationConfirmJob(AccountPtr account);
 
     /**
-     * Set the verb and link for the job
+     * @brief Set the verb and link for the job
      *
      * @param verb currently supported GET PUT POST DELETE
      */
     void setLinkAndVerb(const QUrl& link, const QString &verb);
 
     /**
-     * Start the OCS request
+     * @brief Start the OCS request
      */
     void start() Q_DECL_OVERRIDE;
 
+    /**
+     * @brief setWidget stores the associated widget to be able to use
+     *        it when the job has finished
+     * @param widget pointer to the notification widget to store
+     */
     void setWidget( NotificationWidget *widget );
 
+    /**
+     * @brief widget - get the associated notification widget as stored
+     *        with setWidget method.
+     * @return widget pointer to the notification widget
+     */
     NotificationWidget *widget();
 
 signals:
