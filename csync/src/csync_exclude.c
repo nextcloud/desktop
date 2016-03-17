@@ -47,6 +47,43 @@ int _csync_exclude_add(c_strlist_t **inList, const char *string) {
     return c_strlist_add_grow(inList, string);
 }
 
+/** Expands C-like escape sequences.
+ *
+ * The returned string is heap-allocated and owned by the caller.
+ */
+static const char *csync_exclude_expand_escapes(const char * input)
+{
+    size_t i_len = strlen(input) + 1;
+    char *out = c_malloc(i_len); // out can only be shorter
+
+    for (size_t i = 0, o = 0; i < i_len; ++i) {
+        if (input[i] == '\\') {
+            // at worst input[i+1] is \0
+            switch (input[i+1]) {
+            case '\'': out[o++] = '\''; break;
+            case '"': out[o++] = '"'; break;
+            case '?': out[o++] = '?'; break;
+            case '\\': out[o++] = '\\'; break;
+            case 'a': out[o++] = '\a'; break;
+            case 'b': out[o++] = '\b'; break;
+            case 'f': out[o++] = '\f'; break;
+            case 'n': out[o++] = '\n'; break;
+            case 'r': out[o++] = '\r'; break;
+            case 't': out[o++] = '\t'; break;
+            case 'v': out[o++] = '\v'; break;
+            default:
+                out[o++] = input[i];
+                out[o++] = input[i+1];
+                break;
+            }
+            ++i;
+        } else {
+            out[o++] = input[i];
+        }
+    }
+    return out;
+}
+
 int csync_exclude_load(const char *fname, c_strlist_t **list) {
   int fd = -1;
   int i = 0;
@@ -99,8 +136,10 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
       if (entry != buf + i) {
         buf[i] = '\0';
         if (*entry != '#') {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", entry);
-          rc = _csync_exclude_add(list, entry);
+          const char *unescaped = csync_exclude_expand_escapes(entry);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
+          rc = _csync_exclude_add(list, unescaped);
+          SAFE_FREE(unescaped);
           if (rc < 0) {
               goto out;
           }
