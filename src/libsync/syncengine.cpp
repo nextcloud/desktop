@@ -93,6 +93,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
     csync_init(_csync_ctx);
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
+    _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
     _thread.setObjectName("SyncEngine_Thread");
 }

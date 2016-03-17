@@ -99,8 +99,6 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
     connect(_engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
 
     connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
@@ -595,71 +593,11 @@ void Folder::slotWatchedPathChanged(const QString& path)
     }
 }
 
-/**
- * Whether this item should get an ERROR icon through the Socket API.
- *
- * The Socket API should only present serious, permanent errors to the user.
- * In particular SoftErrors should just retain their 'needs to be synced'
- * icon as the problem is most likely going to resolve itself quickly and
- * automatically.
- */
-static bool showErrorInSocketApi(const SyncFileItem& item)
-{
-    const auto status = item._status;
-    return status == SyncFileItem::NormalError
-        || status == SyncFileItem::FatalError;
-}
-
-static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
-    foreach (const SyncFileItemPtr &item, items) {
-        if (showErrorInSocketApi(*item)) {
-            set->insert(item->_file);
-        }
-    }
-}
-
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 {
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotAboutToPropagate(SyncFileItemVector& items)
-{
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
-}
-
-
-bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
-{
-    if (t == CSYNC_FTW_TYPE_DIR) {
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
-            s->set(SyncFileStatus::STATUS_ERROR);
-            return true;
-        }
-        // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
-        if (_engine->isSyncRunning()) {
-            if (_engine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-        return false;
-    } else if ( t== CSYNC_FTW_TYPE_FILE) {
-        // check if errorList has the directory/file
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            s->set(SyncFileStatus::STATUS_ERROR);
-            return true;
-        }
-        // If sync running: _syncedItems -> SyncingState
-        if (_engine->isSyncRunning()) {
-            if (_engine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
 
 void Folder::saveToSettings() const
 {
@@ -873,10 +811,6 @@ void Folder::slotSyncFinished(bool success)
 
 
 
-    // This is for sync state calculation
-    _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
-    _stateLastSyncItemsWithErrorNew.clear();
-
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
         qDebug() << "  ** error Strings: " << _errors;
@@ -972,10 +906,6 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 // a item is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
 {
-    if (showErrorInSocketApi(item)) {
-        _stateLastSyncItemsWithErrorNew.insert(item._file);
-    }
-
     if (Progress::isWarningKind(item._status)) {
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);

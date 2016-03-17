@@ -23,6 +23,7 @@
 #include "utility.h"
 #include "theme.h"
 #include "syncjournalfilerecord.h"
+#include "syncengine.h"
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "version.h"
@@ -215,7 +216,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
                 f->syncResult().status() == SyncResult::SetupError ) {
 
             broadcastMessage(QLatin1String("STATUS"), f->path() ,
-                             this->fileStatus(f, "").toSocketAPIString());
+                             f->syncEngine().syncFileStatusTracker().fileStatus("").toSocketAPIString());
 
             broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
         } else {
@@ -235,7 +236,7 @@ void SocketApi::slotItemCompleted(const QString &folder, const SyncFileItem &ite
         return;
     }
 
-    auto status = this->fileStatus(f, item.destination());
+    auto status = f->syncEngine().syncFileStatusTracker().fileStatus(item.destination());
     const QString path = f->path() + item.destination();
     broadcastMessage(QLatin1String("STATUS"), path, status.toSocketAPIString());
 }
@@ -330,7 +331,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
         statusString = QLatin1String("NOP");
     } else {
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
-        SyncFileStatus fileStatus = this->fileStatus(syncFolder, file);
+        SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
         statusString = fileStatus.toSocketAPIString();
     }
@@ -367,7 +368,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
     } else {
         const QString localFileClean = QDir::cleanPath(localFile);
         const QString file = localFileClean.mid(shareFolder->cleanPath().length()+1);
-        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+        SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
         // Verify the file is on the server (to our knowledge of course)
         if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
@@ -423,7 +424,7 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
         sendMessage(socket, message);
     } else {
         const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length()+1);
-        SyncFileStatus fileStatus = this->fileStatus(shareFolder, file);
+        SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
         // Verify the file is on the server (to our knowledge of course)
         if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
@@ -478,142 +479,4 @@ QString SocketApi::buildRegisterPathMessage(const QString& path)
     return message;
 }
 
-/**
- * Get status about a single file.
- */
-SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileName)
-{
-    QString file = folder->path();
-    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
-    QString fileNameSlash = fileName;
-
-    if(fileName != QLatin1String("/") && !fileName.isEmpty()) {
-        file += fileName;
-    }
-
-    if( fileName.endsWith(QLatin1Char('/')) ) {
-        fileName.truncate(fileName.length()-1);
-        qDebug() << "Removed trailing slash: " << fileName;
-    } else {
-        fileNameSlash += QLatin1Char('/');
-    }
-
-    const QFileInfo fi(file);
-    if( !FileSystem::fileExists(file, fi) ) {
-        qDebug() << "OO File " << file << " is not existing";
-        return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
-    }
-
-    // file is ignored?
-    // Qt considers .lnk files symlinks on Windows so we need to work
-    // around that here.
-    if( fi.isSymLink()
-#ifdef Q_OS_WIN
-            && fi.suffix() != "lnk"
-#endif
-            ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
-    }
-
-    csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
-    if( fi.isDir() ) {
-        type = CSYNC_FTW_TYPE_DIR;
-    }
-
-    // Is it excluded?
-    if( folder->isFileExcludedRelative(fileName) ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
-    }
-
-    // Error if it is in the selective sync blacklist
-    foreach(const auto &s, folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
-        if (fileNameSlash.startsWith(s)) {
-            return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
-        }
-    }
-
-    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
-
-    if (folder->estimateState(fileName, type, &status)) {
-        qDebug() << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
-    } else if (fileName == "") {
-        // sync folder itself
-        switch (folder->syncResult().status()) {
-        case SyncResult::Undefined:
-        case SyncResult::NotYetStarted:
-        case SyncResult::SyncPrepare:
-        case SyncResult::SyncRunning:
-            status.set(SyncFileStatus::STATUS_EVAL);
-            return status;
-
-        case SyncResult::Success:
-        case SyncResult::Problem:
-            status.set(SyncFileStatus::STATUS_UPTODATE);
-            return status;
-
-        case SyncResult::Error:
-        case SyncResult::SetupError:
-        case SyncResult::SyncAbortRequested:
-            status.set(SyncFileStatus::STATUS_ERROR);
-            return status;
-
-        case SyncResult::Paused:
-            status.set(SyncFileStatus::STATUS_IGNORE);
-            return status;
-        }
-    } else if (type == CSYNC_FTW_TYPE_DIR) {
-        if (rec.isValid()) {
-            status.set(SyncFileStatus::STATUS_UPTODATE);
-        } else {
-            qDebug() << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
-            status.set(SyncFileStatus::STATUS_NEW);
-        }
-    } else if (type == CSYNC_FTW_TYPE_FILE) {
-        if (rec.isValid()) {
-            if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
-                status.set(SyncFileStatus::STATUS_UPTODATE);
-            } else {
-                if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
-                    status.set(SyncFileStatus::STATUS_EVAL);
-                } else {
-                    status.set(SyncFileStatus::STATUS_ERROR);
-                }
-            }
-        } else {
-            qDebug() << "Could not determine state for file" << fileName << "will set STATUS_NEW";
-            status.set(SyncFileStatus::STATUS_NEW);
-        }
-    }
-
-    if (rec.isValid() && rec._remotePerm.contains("S"))
-        status.setSharedWithMe(true);
-
-    if (status.tag() == SyncFileStatus::STATUS_NEW) {
-        // check the parent folder if it is shared and if it is allowed to create a file/dir within
-        QDir d( fi.path() );
-        auto parentPath = d.path();
-        auto dirRec = folder->journalDb()->getFileRecord(parentPath);
-        bool isDir = type == CSYNC_FTW_TYPE_DIR;
-        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
-            d.cdUp(); // returns true if the dir exists.
-
-            parentPath = d.path();
-            // cut the folder path
-            dirRec = folder->journalDb()->getFileRecord(parentPath);
-
-            isDir = true;
-        }
-        if( dirRec.isValid() && !dirRec._remotePerm.isNull()) {
-            if( (isDir && !dirRec._remotePerm.contains("K"))
-                    || (!isDir && !dirRec._remotePerm.contains("C")) ) {
-                status.set(SyncFileStatus::STATUS_ERROR);
-            }
-        }
-    }
-    return status;
-}
-
-
 } // namespace OCC
-
