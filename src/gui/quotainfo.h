@@ -71,6 +71,9 @@ Q_SIGNALS:
 private:
     bool canGetQuota() const;
 
+    /// Returns the folder that quota shall be retrieved for
+    QString quotaBaseFolder() const;
+
     QPointer<AccountState> _accountState;
     qint64 _lastQuotaTotalBytes;
     qint64 _lastQuotaUsedBytes;
