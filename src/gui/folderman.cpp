@@ -147,9 +147,6 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         // is lost this way, but we do not need it for the current implementation.
         connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
         _folderWatchers.insert(folder->alias(), fw);
-
-        // This is at the moment only for the behaviour of the SocketApi.
-        connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API

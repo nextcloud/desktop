@@ -267,7 +267,6 @@ private slots:
 
     void slotEmitFinishedDelayed();
 
-    void watcherSlot(QString);
     void slotNewBigFolderDiscovered(const QString &);
 
 private:
