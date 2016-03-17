@@ -33,7 +33,7 @@
    <item row="1" column="1">
     <layout class="QFormLayout" name="formLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="usernameLabel">
        <property name="text">
         <string>&amp;Username</string>
        </property>
@@ -127,8 +127,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>topLabel</zorder>
-  <zorder>bottomLabel</zorder>
  </widget>
  <resources/>
  <connections/>

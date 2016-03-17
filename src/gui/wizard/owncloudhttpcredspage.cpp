@@ -42,6 +42,22 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget* parent)
     registerField( QLatin1String("OCUser*"),   _ui.leUsername);
     registerField( QLatin1String("OCPasswd*"), _ui.lePassword);
 
+    Theme *theme = Theme::instance();
+    switch(theme->userIDType()) {
+    case Theme::UserIDUserName:
+        // default, handled in ui file
+        break;
+    case Theme::UserIDEmail:
+        _ui.usernameLabel->setText(tr("&E-mail address"));
+        break;
+    case Theme::UserIDCustom:
+        _ui.usernameLabel->setText(theme->customUserID());
+        break;
+    default:
+        break;
+    }
+    _ui.leUsername->setPlaceholderText(theme->userIDHint());
+
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Enter user credentials")));
 
