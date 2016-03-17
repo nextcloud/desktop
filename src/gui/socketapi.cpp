@@ -195,24 +195,8 @@ void SocketApi::slotRegisterPath( const QString& alias )
 void SocketApi::slotUnregisterPath( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
-    if (f) {
+    if (f)
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
-
-        if( _dbQueries.contains(f)) {
-            auto h = _dbQueries[f];
-            if( h ) {
-                h->finish();
-            }
-            _dbQueries.remove(f);
-        }
-        if( _openDbs.contains(f) ) {
-            auto db = _openDbs[f];
-            if( db ) {
-                db->close();
-            }
-            _openDbs.remove(f);
-        }
-    }
 }
 
 void SocketApi::slotUpdateFolderView(Folder *f)
@@ -402,7 +386,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
             return;
         }
 
-        SyncJournalFileRecord rec = dbFileRecord_capi(shareFolder, localFileClean);
+        SyncJournalFileRecord rec = shareFolder->journalDb()->getFileRecord(localFileClean);
 
         bool allowReshare = true; // lets assume the good
         if( rec.isValid() ) {
@@ -494,83 +478,6 @@ QString SocketApi::buildRegisterPathMessage(const QString& path)
     return message;
 }
 
-SqlQuery* SocketApi::getSqlQuery( Folder *folder )
-{
-    if( !folder ) {
-        return 0;
-    }
-
-    if( _dbQueries.contains(folder) ) {
-        return _dbQueries[folder].data();
-    }
-
-    /* No valid sql query object yet for this folder */
-    int rc;
-    const QString sql("SELECT inode, modtime, type, md5, fileid, remotePerm FROM "
-                      "metadata WHERE phash=?1");
-    QString dbFileName = folder->journalDb()->databaseFilePath();
-
-    QFileInfo fi(dbFileName);
-    if( fi.exists() ) {
-        auto db = QSharedPointer<SqlDatabase>::create();
-
-        if( db && db->openReadOnly(dbFileName) ) {
-            _openDbs.insert(folder, db);
-
-            QSharedPointer<SqlQuery> query(new SqlQuery(*db));
-            rc = query->prepare(sql);
-
-            if( rc != SQLITE_OK ) {
-                qDebug() << "Unable to prepare the query statement:" << rc;
-                return 0; // do not insert into hash
-            }
-            _dbQueries.insert( folder, query);
-            return query.data();
-        } else {
-            qDebug() << "Unable to open db" << dbFileName;
-        }
-    } else {
-        qDebug() << Q_FUNC_INFO << "Journal to query does not yet exist.";
-    }
-    return 0;
-}
-
-SyncJournalFileRecord SocketApi::dbFileRecord_capi( Folder *folder, QString fileName )
-{
-    if( !(folder && folder->journalDb()) ) {
-        return SyncJournalFileRecord();
-    }
-
-    if( fileName.startsWith( folder->path() )) {
-        fileName.remove(0, folder->path().length());
-    }
-
-    // remove trailing slash
-    if( fileName.endsWith( QLatin1Char('/') ) ) {
-        fileName.truncate(fileName.length()-1);
-    }
-    SqlQuery *query = getSqlQuery(folder);
-    SyncJournalFileRecord rec;
-
-    if( query ) {
-        qlonglong phash = SyncJournalDb::getPHash( fileName );
-        query->bindValue(1, phash);
-        // int column_count = sqlite3_column_count(stmt);
-
-        if (query->next()) {
-            rec._path    = fileName;
-            rec._inode   = query->int64Value(0);
-            rec._modtime = Utility::qDateTimeFromTime_t( query->int64Value(1));
-            rec._type    = query->intValue(2);
-            rec._etag    = query->baValue(3);
-            rec._fileId  = query->baValue(4);
-            rec._remotePerm = query->baValue(5);
-        }
-        query->reset_and_clear_bindings();
-    }
-    return rec;
-}
-
 /**
  * Get status about a single file.
  */
@@ -626,7 +533,7 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
     }
 
     SyncFileStatus status(SyncFileStatus::STATUS_NONE);
-    SyncJournalFileRecord rec = dbFileRecord_capi(folder, fileName );
+    SyncJournalFileRecord rec = folder->journalDb()->getFileRecord(fileName);
 
     if (folder->estimateState(fileName, type, &status)) {
         qDebug() << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
@@ -686,14 +593,14 @@ SyncFileStatus SocketApi::fileStatus(Folder *folder, const QString& systemFileNa
         // check the parent folder if it is shared and if it is allowed to create a file/dir within
         QDir d( fi.path() );
         auto parentPath = d.path();
-        auto dirRec = dbFileRecord_capi(folder, parentPath);
+        auto dirRec = folder->journalDb()->getFileRecord(parentPath);
         bool isDir = type == CSYNC_FTW_TYPE_DIR;
         while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
             d.cdUp(); // returns true if the dir exists.
 
             parentPath = d.path();
             // cut the folder path
-            dirRec = dbFileRecord_capi(folder, parentPath);
+            dirRec = folder->journalDb()->getFileRecord(parentPath);
 
             isDir = true;
         }

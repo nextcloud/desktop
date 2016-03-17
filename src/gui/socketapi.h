@@ -17,7 +17,6 @@
 #define SOCKETAPI_H
 
 #include "syncfileitem.h"
-#include "syncjournalfilerecord.h"
 #include "ownsql.h"
 
 #if defined(Q_OS_MAC)
@@ -66,8 +65,6 @@ private slots:
 
 private:
     SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName);
-    SyncJournalFileRecord dbFileRecord_capi( Folder *folder, QString fileName );
-    SqlQuery *getSqlQuery( Folder *folder );
 
     void sendMessage(QIODevice* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
@@ -84,8 +81,6 @@ private:
 
     QList<QIODevice*> _listeners;
     SocketApiServer _localServer;
-    QHash<Folder*, QSharedPointer<SqlQuery>> _dbQueries;
-    QHash<Folder*, QSharedPointer<SqlDatabase>> _openDbs;
 };
 
 }
