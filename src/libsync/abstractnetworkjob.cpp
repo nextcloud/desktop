@@ -265,7 +265,7 @@ QString extractErrorMessage(const QByteArray& errorResponse)
     }
 
     QString exception;
-    while (!reader.atEnd() && reader.error() == QXmlStreamReader::NoError) {
+    while (!reader.atEnd() && !reader.hasError()) {
         reader.readNextStartElement();
         if (reader.name() == QLatin1String("message")) {
             QString message = reader.readElementText();

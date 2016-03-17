@@ -558,7 +558,12 @@ bool PropfindJob::finished()
                 }
             }
         }
-        emit result(items);
+        if (reader.hasError()) {
+            qDebug() << "PROPFIND request XML parser error: " << reader.errorString();
+            emit finishedWithError(reply());
+        } else {
+            emit result(items);
+        }
     } else {
         qDebug() << "PROPFIND request *not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
