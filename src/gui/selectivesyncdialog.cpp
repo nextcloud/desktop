@@ -198,6 +198,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
     if (_oldBlackList == QStringList("/")) {
         _oldBlackList.clear();
         foreach (QString path, list) {
+            path.remove(pathToRemove);
             if (path.isEmpty()) {
                 continue;
             }
