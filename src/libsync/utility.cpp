@@ -434,13 +434,11 @@ QByteArray Utility::versionOfInstalledBinary( const QString& command )
 
 QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
 {
-    QDateTime now = QDateTime::currentDateTimeUtc();
+    QDateTime now = QDateTime::currentDateTime();
 
     if( from.isValid() ) {
         now = from;
     }
-
-    Q_ASSERT(dt.timeSpec() == Qt::UTC);
 
     if( dt.daysTo(now)>0 ) {
         int dtn = dt.daysTo(now);
