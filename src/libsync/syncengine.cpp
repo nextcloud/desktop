@@ -99,6 +99,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
 
 SyncEngine::~SyncEngine()
 {
+    _excludedFiles.reset();
     csync_destroy(_csync_ctx);
     _thread.quit();
     _thread.wait();
