@@ -757,6 +757,12 @@ Function .onInit
 
    ;Shutdown ${APPLICATION_NAME} in case Add/Remove re-installer option used.
    Call EnsureOwncloudShutdown
+
+   ReadRegStr $R0 ${MEMENTO_REGISTRY_ROOT} "${MEMENTO_REGISTRY_KEY}" "InstallLocation"
+   ${If} ${Silent}
+   ${AndIf} $R0 != ""
+       ExecWait '"$R0\Uninstall.exe" /S _?=$R0'
+   ${EndIf}
 FunctionEnd
 
 Function .onInstSuccess
@@ -765,6 +771,11 @@ Function .onInstSuccess
    ${If} $NoAutomaticUpdates == "yes"
       WriteRegDWORD HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "skipUpdateCheck" "1"
    ${EndIf}
+
+   ; TODO: Only needed to when updating from 2.1.{0,1}. Remove in due time.
+   Delete /REBOOTOK $INSTDIR\bearer\qgenericbearer.dll
+   Delete /REBOOTOK $INSTDIR\bearer\qnativewifibearer.dll
+   RMDir /REBOOTOK $INSTDIR\bearer
 
    ${If} ${Silent}
    ${AndIf} $InstallRunIfSilent == "yes"
