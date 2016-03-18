@@ -434,15 +434,17 @@ QByteArray Utility::versionOfInstalledBinary( const QString& command )
 
 QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
 {
-    QDateTime now = QDateTime::currentDateTime();
+    QDateTime now = QDateTime::currentDateTimeUtc();
 
     if( from.isValid() ) {
         now = from;
     }
 
+    Q_ASSERT(dt.timeSpec() == Qt::UTC);
+
     if( dt.daysTo(now)>0 ) {
         int dtn = dt.daysTo(now);
-        return QObject::tr("%1 day(s) ago", "", dtn).arg(dtn);
+        return QObject::tr("%n day(s) ago", "", dtn).arg(dtn);
     } else {
         qint64 secs = dt.secsTo(now);
         if( secs < 0 ) {
@@ -450,7 +452,7 @@ QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
         }
         if( floor(secs / 3600.0) > 0 ) {
             int hours = floor(secs/3600.0);
-            return( QObject::tr("%1 hour(s) ago", "", hours).arg(hours));
+            return( QObject::tr("%n hour(s) ago", "", hours).arg(hours));
         } else {
             int minutes = qRound(secs/60.0);
             if( minutes == 0 ) {
@@ -460,7 +462,7 @@ QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
                     return QObject::tr("Less than a minute ago");
                 }
             }
-            return( QObject::tr("%1 minute(s) ago", "", minutes).arg(minutes));
+            return( QObject::tr("%n minute(s) ago", "", minutes).arg(minutes));
         }
     }
     return QObject::tr("Some time ago");
