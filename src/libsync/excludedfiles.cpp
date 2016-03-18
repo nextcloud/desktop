@@ -14,8 +14,6 @@
 #include "excludedfiles.h"
 
 #include <QFileInfo>
-#include <QReadLocker>
-#include <QWriteLocker>
 
 extern "C" {
 #include "std/c_string.h"
@@ -44,13 +42,11 @@ ExcludedFiles& ExcludedFiles::instance()
 
 void ExcludedFiles::addExcludeFilePath(const QString& path)
 {
-    QWriteLocker locker(&_mutex);
     _excludeFiles.append(path);
 }
 
 bool ExcludedFiles::reloadExcludes()
 {
-    QWriteLocker locker(&_mutex);
     c_strlist_destroy(*_excludesPtr);
     *_excludesPtr = NULL;
 
@@ -89,6 +85,5 @@ bool ExcludedFiles::isExcluded(
         relativePath.chop(1);
     }
 
-    QReadLocker lock(&_mutex);
     return csync_excluded_no_ctx(*_excludesPtr, relativePath.toUtf8(), type) != CSYNC_NOT_EXCLUDED;
 }

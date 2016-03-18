@@ -16,7 +16,6 @@
 #include "owncloudlib.h"
 
 #include <QObject>
-#include <QReadWriteLock>
 #include <QStringList>
 
 extern "C" {
@@ -68,7 +67,6 @@ private:
     // but the pointer can be in a csync_context so that it can itself also query the list.
     c_strlist_t** _excludesPtr;
     QStringList _excludeFiles;
-    mutable QReadWriteLock _mutex;
 };
 
 } // namespace OCC
