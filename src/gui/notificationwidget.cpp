@@ -13,6 +13,7 @@
 
 #include "notificationwidget.h"
 #include "QProgressIndicator.h"
+#include "utility.h"
 
 #include <QPushButton>
 
@@ -30,6 +31,7 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
 void NotificationWidget::setActivity(const Activity& activity)
 {
     _myActivity = activity;
+    QLocale locale;
 
     Q_ASSERT( !activity._accName.isEmpty() );
     _accountName = activity._accName;
@@ -45,6 +47,9 @@ void NotificationWidget::setActivity(const Activity& activity)
     _ui._notifIcon->setMinimumWidth(64);
     _ui._notifIcon->setMinimumHeight(64);
     _ui._notifIcon->show();
+
+    QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
+    _ui._timeLabel->setText(tText);
 
     // always remove the buttons
     foreach( auto button, _ui._buttonBox->buttons() ) {
@@ -96,7 +101,6 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
     } else {
         // the call to the ocs API succeeded.
         _ui._buttonBox->hide();
-
     }
     _progressIndi->stopAnimation();
 }
