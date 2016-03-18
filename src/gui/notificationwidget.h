@@ -46,6 +46,7 @@ private:
     QList<QPushButton*> _buttons;
     QString _accountName;
     QProgressIndicator *_progressIndi;
+    QString _actionLabel;
 };
 
 }

@@ -82,6 +82,7 @@ void NotificationWidget::slotButtonClicked()
         // if the button was found, the link must be called
         if( index > -1 && index < _myActivity._links.count() ) {
             ActivityLink triggeredLink = _myActivity._links.at(index);
+            _actionLabel = triggeredLink._label;
             qDebug() << Q_FUNC_INFO << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
             _progressIndi->startAnimation();
             emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
@@ -92,16 +93,28 @@ void NotificationWidget::slotButtonClicked()
 void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 {
     int i = 0;
+    QString doneText;
+    QLocale locale;
+
+    QString timeStr = locale.toString(QTime::currentTime());
+
     // the ocs API returns stat code 100 if it succeeded.
     if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
         qDebug() << Q_FUNC_INFO << "Notification Request to Server failed, leave button visible.";
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);
         }
+        //* The second parameter is a time, such as 'failed at 09:58pm'
+        doneText = tr("%1 request failed at %2").arg(_actionLabel).arg(timeStr);
     } else {
         // the call to the ocs API succeeded.
         _ui._buttonBox->hide();
+
+        //* The second parameter is a time, such as 'selected at 09:58pm'
+        doneText = tr("'%1' selected at %2").arg(_actionLabel).arg(timeStr);
     }
+    _ui._timeLabel->setText( doneText );
+
     _progressIndi->stopAnimation();
 }
 
