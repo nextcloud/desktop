@@ -62,7 +62,8 @@ public:
 
 public slots:
     void slotOpenFile(QModelIndex indx);
-    void slotRefresh(AccountState* ptr);
+    void slotRefreshActivities(AccountState* ptr);
+    void slotRefreshNotifications(AccountState *ptr);
     void slotRemoveAccount( AccountState *ptr );
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
 
@@ -121,9 +122,12 @@ public slots:
     void slotRefresh( AccountState* ptr );
     void slotRemoveAccount( AccountState *ptr );
 
+    void setNotificationRefreshInterval( quint64 interval );
+
 private slots:
     void slotCopyToClipboard();
     void setActivityTabHidden(bool hidden);
+    void slotRegularNotificationCheck();
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -137,7 +141,8 @@ private:
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
     QProgressIndicator *_progressIndicator;
-
+    QTimer         _notificationCheckTimer;
+    QElapsedTimer  _timeSinceLastCheck;
 };
 
 }

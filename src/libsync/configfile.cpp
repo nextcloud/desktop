@@ -42,6 +42,7 @@ namespace OCC {
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
+static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
@@ -386,6 +387,22 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     if( interval < pollInterval) {
         qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
         interval = pollInterval;
+    }
+    return interval;
+}
+
+quint64 ConfigFile::notificationRefreshInterval(const QString& connection) const
+{
+    QString con( connection );
+    if( connection.isEmpty() ) con = defaultConnection();
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup( con );
+
+    quint64 defaultInterval = 5 * 60 * 1000ull; // 5 minutes
+    quint64 interval = settings.value( QLatin1String(notificationRefreshIntervalC), defaultInterval ).toULongLong();
+    if( interval < 60*1000ull) {
+        qDebug() << "notification refresh interval smaller than one minute, setting to one minute";
+        interval = 60*1000ull;
     }
     return interval;
 }

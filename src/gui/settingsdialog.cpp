@@ -61,6 +61,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     QDialog(parent)
     , _ui(new Ui::SettingsDialog), _gui(gui)
 {
+    ConfigFile cfg;
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     _ui->setupUi(this);
     _toolBar = new QToolBar;
@@ -89,6 +91,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
     _ui->stack->addWidget(_activitySettings);
     connect( _activitySettings, SIGNAL(guiLog(QString,QString)), _gui,
              SLOT(slotShowOptionalTrayMessage(QString,QString)) );
+    _activitySettings->setNotificationRefreshInterval( cfg.notificationRefreshInterval());
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -128,7 +131,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent) :
 
     customizeStyle();
 
-    ConfigFile cfg;
     cfg.restoreGeometry(this);
 }
 

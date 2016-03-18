@@ -18,7 +18,6 @@
 
 #include "activitylistmodel.h"
 #include "activitywidget.h"
-#include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
 #include "utility.h"
@@ -43,6 +42,10 @@
 #include "ui_activitywidget.h"
 
 #include <climits>
+
+// time span in milliseconds which has to be between two
+// refreshes of the notifications
+#define NOTIFICATION_REQUEST_FREE_PERIOD 15000
 
 namespace OCC {
 
@@ -98,10 +101,13 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-void ActivityWidget::slotRefresh(AccountState *ptr)
+void ActivityWidget::slotRefreshActivities(AccountState *ptr)
 {
     _model->slotRefreshActivity(ptr);
+}
 
+void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
+{
     // start a server notification handler if no notification requests
     // are running
     if( _notificationRequestsRunning == 0 ) {
@@ -428,8 +434,17 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _progressIndicator = new QProgressIndicator(this);
     _tab->setCornerWidget(_progressIndicator);
 
+    connect(&_notificationCheckTimer, SIGNAL(timeout()),
+            this, SLOT(slotRegularNotificationCheck()));
+
     // connect a model signal to stop the animation.
     connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
+}
+
+void ActivitySettings::setNotificationRefreshInterval( quint64 interval )
+{
+    qDebug() << "Starting Notification refresh timer with " << interval/1000 << " sec interval";
+    _notificationCheckTimer.start(interval);
 }
 
 void ActivitySettings::setActivityTabHidden(bool hidden)
@@ -477,9 +492,30 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
-    if( ptr && ptr->isConnected() && isVisible()) {
-        _progressIndicator->startAnimation();
-        _activityWidget->slotRefresh(ptr);
+    // Fetch Activities only if visible and if last check is longer than 15 secs ago
+    if( _timeSinceLastCheck.isValid() && _timeSinceLastCheck.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
+        qDebug() << Q_FUNC_INFO << "do not check as last check is only secs ago: " << _timeSinceLastCheck.elapsed() / 1000;
+        return;
+    }
+    if( ptr && ptr->isConnected() ) {
+        if( isVisible() ) {
+            _progressIndicator->startAnimation();
+            _activityWidget->slotRefreshActivities( ptr);
+        }
+        _activityWidget->slotRefreshNotifications(ptr);
+        if( !_timeSinceLastCheck.isValid() ) {
+            _timeSinceLastCheck.start();
+        } else {
+            _timeSinceLastCheck.restart();
+        }
+    }
+}
+
+void ActivitySettings::slotRegularNotificationCheck()
+{
+    AccountManager *am = AccountManager::instance();
+    foreach (AccountStatePtr a, am->accounts()) {
+        slotRefresh(a.data());
     }
 }
 
