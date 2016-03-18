@@ -323,53 +323,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="415"/>
-        <location filename="../src/gui/activitywidget.cpp" line="457"/>
+        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="456"/>
         <source>Server Activity</source>
         <translation>Server Aktivität</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="420"/>
+        <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>Sync Protocol</source>
         <translation>Synchronisationsprotokoll</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="426"/>
+        <location filename="../src/gui/activitywidget.cpp" line="425"/>
         <source>List of ignored or erroneous files</source>
         <translation>Liste von ignorierten oder feherhaften Dateien</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="429"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="431"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Aktivitätsliste in die Zwischenablage kopieren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="436"/>
+        <location filename="../src/gui/activitywidget.cpp" line="435"/>
         <source>Not Synced</source>
         <translation>nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="472"/>
+        <location filename="../src/gui/activitywidget.cpp" line="471"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Die Server-Aktivitätsliste wurde in die Zwischenablage  kopiert. </translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="476"/>
+        <location filename="../src/gui/activitywidget.cpp" line="475"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Die Synchronisationsliste wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="479"/>
+        <location filename="../src/gui/activitywidget.cpp" line="478"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Die Liste der unsynchronisierten Dateien wurde in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="484"/>
+        <location filename="../src/gui/activitywidget.cpp" line="483"/>
         <source>Copied to clipboard</source>
         <translation>In die Zwischenablage kopiert</translation>
     </message>
@@ -388,22 +388,22 @@
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="312"/>
+        <location filename="../src/gui/activitywidget.cpp" line="311"/>
         <source>Server Activities</source>
         <translation>Server Aktivitäten</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="284"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="286"/>
+        <location filename="../src/gui/activitywidget.cpp" line="285"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Aktivitätsliste in die Zwischenablage kopieren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="319"/>
+        <location filename="../src/gui/activitywidget.cpp" line="318"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Für Konto %1 sind serverseitig keine Aktivitäten aktiviert.</translation>
     </message>

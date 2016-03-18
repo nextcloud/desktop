@@ -323,53 +323,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="415"/>
-        <location filename="../src/gui/activitywidget.cpp" line="457"/>
+        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="456"/>
         <source>Server Activity</source>
         <translation>Dejavnost strežnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="420"/>
+        <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>Sync Protocol</source>
         <translation>Protokol usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="426"/>
+        <location filename="../src/gui/activitywidget.cpp" line="425"/>
         <source>List of ignored or erroneous files</source>
         <translation>Seznam prezrtih datotek ali datotek z napako</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="429"/>
         <source>Copy</source>
         <translation>Kopiraj</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="431"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiraj seznam opravil v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="436"/>
+        <location filename="../src/gui/activitywidget.cpp" line="435"/>
         <source>Not Synced</source>
         <translation>Ni usklajeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="472"/>
+        <location filename="../src/gui/activitywidget.cpp" line="471"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Seznam opravil strežnika je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="476"/>
+        <location filename="../src/gui/activitywidget.cpp" line="475"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Seznam opravil usklajevanja je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="479"/>
+        <location filename="../src/gui/activitywidget.cpp" line="478"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Seznam neusklajenih predmetov je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="484"/>
+        <location filename="../src/gui/activitywidget.cpp" line="483"/>
         <source>Copied to clipboard</source>
         <translation>Kopirano v odložišče</translation>
     </message>
@@ -388,22 +388,22 @@
         <translation>Besedilna oznaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="312"/>
+        <location filename="../src/gui/activitywidget.cpp" line="311"/>
         <source>Server Activities</source>
         <translation>Dejavnosti strežnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="284"/>
         <source>Copy</source>
         <translation>Kopiraj</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="286"/>
+        <location filename="../src/gui/activitywidget.cpp" line="285"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiraj seznam opravil v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="319"/>
+        <location filename="../src/gui/activitywidget.cpp" line="318"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Za račun %1 možnosti opravil niso omogočene.</translation>
     </message>
@@ -1131,7 +1131,7 @@ Skupaj še %5</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Vprašaj za &amp;potrditev pred prejemanjem map, večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
@@ -1190,7 +1190,7 @@ Račun: %3</translation>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>Splošne nastavitve prezrtih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1200,7 +1200,7 @@ Račun: %3</translation>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke, prezrte po vzorcu</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1467,7 +1467,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/networksettings.cpp" line="133"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation type="unfinished"/>
+        <translation>Za uporabo omejevanja pasovne širine je zahtevana različica Qt &gt;= 5.4</translation>
     </message>
 </context>
 <context>
@@ -1594,7 +1594,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Ponovno poskusi nešifriran prenos prek HTTP (ni varna povezava)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -1847,7 +1847,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="376"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Prejem bi zmanjšal prostor na disku pod %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
@@ -2086,13 +2086,15 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/protocolwidget.cpp" line="241"/>
         <source>%n files are ignored because of previous errors.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n datoteka je prezrta zaradi predhodnih napak.</numerusform><numerusform>%n datoteki sta prezrti zaradi predhodnih napak.</numerusform><numerusform>%n datoteke so prezrte zaradi predhodnih napak.</numerusform><numerusform>%n datotek je prezrtih zaradi predhodnih napak.
+</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="242"/>
         <source>%n files are partially downloaded.
 </source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n datoteka je le delno prejeta.</numerusform><numerusform>%n datoteki sta le delno prejeti.</numerusform><numerusform>%n datoteke so le delno prejete.</numerusform><numerusform>%n datotek je le delno prejetih.
+</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="243"/>
@@ -2120,7 +2122,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>Posredniški strežnik zahteva uporabniško ime in geslo.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2266,7 +2268,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="93"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>%1 souporaba datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="68"/>
@@ -2289,7 +2291,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Souporaba datoteke NovDokument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
@@ -2364,7 +2366,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation type="unfinished"/>
+        <translation>Souporaba datoteke NovDokument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="20"/>
@@ -2374,7 +2376,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="218"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ni zadetkov za &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -2567,7 +2569,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="218"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Ni podpore za določila in karte ključe SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="229"/>
@@ -2602,7 +2604,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ni mogoče vzpostaviti varne povezave z &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="171"/>
@@ -2735,7 +2737,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="182"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Priklopljena mapa trenutno ni na voljo na strežniku</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
@@ -2750,7 +2752,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="428"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka/Mapa je prezrta, ker je skrita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="683"/>
@@ -2761,12 +2763,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1083"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Dejanje ni dovoljeno, ker ni ustreznih dovoljenj za dodajanje starševske mape</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1090"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Dejanje ni dovoljeno, ker ni ustreznih dovoljenj za dodajanje datotek v to mapo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
@@ -2856,7 +2858,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="629"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Uporabljen je neveljaven znak; preimenujte &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="717"/>
@@ -2882,7 +2884,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Dejanje ni dovoljeno! Ni ustreznih dovoljenj za dodajanje podmap v to mapo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
@@ -2960,17 +2962,17 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="195"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Glava nadzorne vsote je napačno oblikovana.</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="210"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Glava nadzorne vsote vsebuje neznano vrsto zapisa &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="215"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeta datoteka ni skladna z nadzorno vsoto te datoteke, zato bo prenos ponovljen.</translation>
     </message>
 </context>
 <context>
@@ -3067,7 +3069,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Prekinjena povezava z %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="235"/>
@@ -3082,7 +3084,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Prekinjena je povezava z računi:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="276"/>
@@ -3200,12 +3202,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="200"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Izbrana možnost omogoči brisanje celotne krajevne mape z vsebino in začenjanje svežega usklajevanja s strežnika.&lt;/p&gt;&lt;p&gt;Te možnosti ne izberite, če želite vsebino krajevne mape poslati na strežnik v oblak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation type="unfinished"/>
+        <translation>Začni s &amp;svežim usklajevanjem (izbriše krajevno mapo!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="278"/>
@@ -3384,7 +3386,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="581"/>
         <source>QT_LAYOUT_DIRECTION</source>
-        <translation type="unfinished"/>
+        <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
 </context>
 <context>
@@ -3524,7 +3526,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Downloaded, renamed conflicting file</source>
-        <translation type="unfinished"/>
+        <translation>Prejem in preimenovanje datoteke v sporu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

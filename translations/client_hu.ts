@@ -323,53 +323,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="415"/>
-        <location filename="../src/gui/activitywidget.cpp" line="457"/>
+        <location filename="../src/gui/activitywidget.cpp" line="414"/>
+        <location filename="../src/gui/activitywidget.cpp" line="456"/>
         <source>Server Activity</source>
         <translation>Szerver aktivitás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="420"/>
+        <location filename="../src/gui/activitywidget.cpp" line="419"/>
         <source>Sync Protocol</source>
         <translation>Szinkronizációs protokoll</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="426"/>
+        <location filename="../src/gui/activitywidget.cpp" line="425"/>
         <source>List of ignored or erroneous files</source>
         <translation>Kihagyott vagy hibás fájlok listázása</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="429"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="431"/>
+        <location filename="../src/gui/activitywidget.cpp" line="430"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Az aktivitási lista másolása a vágólapra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="436"/>
+        <location filename="../src/gui/activitywidget.cpp" line="435"/>
         <source>Not Synced</source>
         <translation>Nincs szinkronizálva</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="472"/>
+        <location filename="../src/gui/activitywidget.cpp" line="471"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>A szerver aktivitási lista a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="476"/>
+        <location filename="../src/gui/activitywidget.cpp" line="475"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>A szinkronizációs aktivitási lista a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="479"/>
+        <location filename="../src/gui/activitywidget.cpp" line="478"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>A nem szinkronizált elemek a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="484"/>
+        <location filename="../src/gui/activitywidget.cpp" line="483"/>
         <source>Copied to clipboard</source>
         <translation>Másolva a vágólapra</translation>
     </message>
@@ -388,22 +388,22 @@
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="312"/>
+        <location filename="../src/gui/activitywidget.cpp" line="311"/>
         <source>Server Activities</source>
         <translation>Szerver aktivitások</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="284"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="286"/>
+        <location filename="../src/gui/activitywidget.cpp" line="285"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Aktivitási lista másolása a vágólapra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="319"/>
+        <location filename="../src/gui/activitywidget.cpp" line="318"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br /&gt; %1 fióknak nincsenek engedélyezve az aktivitások.</translation>
     </message>
