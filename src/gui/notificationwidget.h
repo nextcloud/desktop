@@ -20,6 +20,8 @@
 
 #include "ui_notificationwidget.h"
 
+#define NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS 4800
+
 class QProgressIndicator;
 
 namespace OCC {
@@ -29,6 +31,8 @@ class NotificationWidget : public QWidget
     Q_OBJECT
 public:
     explicit NotificationWidget(QWidget *parent = 0);
+
+    bool readyToClose();
 
 signals:
     void sendNotificationRequest( const QString&, const QString& link, const QString& verb);
@@ -47,6 +51,7 @@ private:
     QString _accountName;
     QProgressIndicator *_progressIndi;
     QString _actionLabel;
+    QElapsedTimer _closeTimer;
 };
 
 }

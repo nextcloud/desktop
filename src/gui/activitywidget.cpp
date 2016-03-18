@@ -38,6 +38,7 @@
 #include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
 #include "theme.h"
+#include "ocsjob.h"
 
 #include "ui_activitywidget.h"
 
@@ -359,7 +360,33 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
     endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
     qDebug() << Q_FUNC_INFO << "Server Notification reply code"<< replyCode << reply;
+
+    // if the notification was successful start a timer that triggers
+    // removal of the done widgets in a few seconds
+    // Add 200 millisecs to the predefined value to make sure that the timer in
+    // widget's method readyToClose() has elapsed.
+    if( replyCode == OCS_SUCCESS_STATUS_CODE ) {
+        QTimer::singleShot(NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS+200, this, SLOT(slotCleanWidgetList()));
+    }
 }
+
+void ActivityWidget::slotCleanWidgetList()
+{
+    foreach( int id, _widgetForNotifId.keys() ) {
+        Q_ASSERT(_widgetForNotifId[id]);
+        if( _widgetForNotifId[id]->readyToClose() ) {
+            auto *widget = _widgetForNotifId[id];
+            _widgetForNotifId.remove(id);
+            delete widget;
+        }
+    }
+
+    if( _widgetForNotifId.isEmpty() ) {
+        _ui->_notifyLabel->setHidden(true);
+        _ui->_notifyScroll->setHidden(true);
+    }
+}
+
 
 /* ==================================================================== */
 

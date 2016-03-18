@@ -79,6 +79,7 @@ private slots:
     void slotNotifyNetworkError( QNetworkReply* );
     void slotNotifyServerFinished( const QString& reply, int replyCode );
     void endNotificationRequest(NotificationWidget *widget , int replyCode);
+    void slotCleanWidgetList();
 
 private:
     void showLabels();

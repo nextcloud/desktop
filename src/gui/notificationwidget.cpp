@@ -112,10 +112,22 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
         //* The second parameter is a time, such as 'selected at 09:58pm'
         doneText = tr("'%1' selected at %2").arg(_actionLabel).arg(timeStr);
+
+        // start a timer, so that activity widget can remove this widget after a
+        // certain time. It needs to be done by ActivityWidget because it also
+        // needs to hide the scrollview if no widget is left any more.
+        // method readyToClose() checks for the timer value to see if it is expired
+        _closeTimer.start();
     }
     _ui._timeLabel->setText( doneText );
 
     _progressIndi->stopAnimation();
+
+}
+
+bool NotificationWidget::readyToClose()
+{
+    return _closeTimer.isValid() && _closeTimer.elapsed() > NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS;
 }
 
 }
