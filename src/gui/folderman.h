@@ -19,7 +19,6 @@
 #include <QObject>
 #include <QQueue>
 #include <QList>
-#include <QPointer>
 
 #include "folder.h"
 #include "folderwatcher.h"
@@ -228,7 +227,7 @@ private:
     QPointer<RequestEtagJob>        _currentEtagJob; // alias of Folder running the current RequestEtagJob
 
     QMap<QString, FolderWatcher*> _folderWatchers;
-    QPointer<SocketApi> _socketApi;
+    QScopedPointer<SocketApi> _socketApi;
 
     /** The aliases of folders that shall be synced. */
     QQueue<Folder*> _scheduleQueue;

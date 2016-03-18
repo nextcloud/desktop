@@ -32,7 +32,6 @@
 #endif
 
 #include <QMessageBox>
-#include <QPointer>
 #include <QtCore>
 #include <QMutableSetIterator>
 #include <QSet>
@@ -50,7 +49,7 @@ FolderMan::FolderMan(QObject *parent) :
     Q_ASSERT(!_instance);
     _instance = this;
 
-    _socketApi = new SocketApi(this);
+    _socketApi.reset(new SocketApi);
 
     ConfigFile cfg;
     int polltime = cfg.remotePollInterval();
@@ -89,9 +88,7 @@ void FolderMan::unloadFolder( Folder *f )
         return;
     }
 
-    if( _socketApi ) {
-        _socketApi->slotUnregisterPath(f->alias());
-    }
+    _socketApi->slotUnregisterPath(f->alias());
 
     if( _folderWatchers.contains(f->alias())) {
         _folderWatchers.remove(f->alias());
@@ -150,9 +147,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
     }
 
     // register the folder with the socket API
-    if( _socketApi ) {
-        _socketApi->slotRegisterPath(folder->alias());
-    }
+    _socketApi->slotRegisterPath(folder->alias());
 }
 
 void FolderMan::addMonitorPath( const QString& alias, const QString& path )
@@ -303,7 +298,7 @@ QString FolderMan::escapeAlias( const QString& alias )
 
 SocketApi *FolderMan::socketApi()
 {
-    return this->_socketApi;
+    return this->_socketApi.data();
 }
 
 QString FolderMan::unescapeAlias( const QString& alias )
@@ -472,21 +467,17 @@ void FolderMan::slotScheduleSync( Folder *f )
     }
     auto alias = f->alias();
 
-    if( _socketApi ) {
-        // We want the SocketAPI to already now update so that it can show the EVAL icon
-        // for files/folders. Only do this when not syncing, else we might get a lot
-        // of those notifications.
-        _socketApi->slotUpdateFolderView(f);
-    }
+    // We want the SocketAPI to already now update so that it can show the EVAL icon
+    // for files/folders. Only do this when not syncing, else we might get a lot
+    // of those notifications.
+    _socketApi->slotUpdateFolderView(f);
 
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(f) ) {
         if( !f->canSync() ) {
             qDebug() << "Folder is not ready to sync, not scheduled!";
-            if( _socketApi ) {
-                _socketApi->slotUpdateFolderView(f);
-            }
+            _socketApi->slotUpdateFolderView(f);
             return;
         }
         f->prepareToSync();
@@ -928,15 +919,13 @@ bool FolderMan::startFromScratch( const QString& localFolder )
         }
         // Disconnect the socket api from the database to avoid that locking of the
         // db file does not allow to move this dir.
-        if( _socketApi ) {
-            Folder *f = folderForPath(localFolder);
-            if(f) {
-                if( localFolder.startsWith(f->path()) ) {
-                    _socketApi->slotUnregisterPath(f->alias());
-                }
-                f->journalDb()->close();
-                f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
+        Folder *f = folderForPath(localFolder);
+        if(f) {
+            if( localFolder.startsWith(f->path()) ) {
+                _socketApi->slotUnregisterPath(f->alias());
             }
+            f->journalDb()->close();
+            f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
         }
 
         // Make a backup of the folder/file.
