@@ -56,7 +56,9 @@ static const char *csync_exclude_expand_escapes(const char * input)
     size_t i_len = strlen(input) + 1;
     char *out = c_malloc(i_len); // out can only be shorter
 
-    for (size_t i = 0, o = 0; i < i_len; ++i) {
+    size_t i = 0;
+    size_t o = 0;
+    for (; i < i_len; ++i) {
         if (input[i] == '\\') {
             // at worst input[i+1] is \0
             switch (input[i+1]) {
