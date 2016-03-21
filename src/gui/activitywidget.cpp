@@ -273,6 +273,30 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         }
     }
 
+    // check if we have widgets that have no corresponding activity from
+    // the server any more. Collect them in a list
+    QList<int> strayCats;
+    foreach( auto id, _widgetForNotifId.keys() ) {
+        bool found = false;
+        foreach( auto activity, list ) {
+            if( activity._id == id ) {
+                // found an activity
+                found = true;
+                break;
+            }
+        }
+        if( ! found ) {
+            // the activity does not exist any more.
+            strayCats.append(id);
+        }
+    }
+    // .. and now delete all these stray cat widgets.
+    foreach( auto strayCatId, strayCats ) {
+        NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
+        widgetToGo->deleteLater();
+        _widgetForNotifId.remove(strayCatId);
+    }
+
     _ui->_notifyLabel->setHidden( _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
 
