@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>De server versie %1 is oud en wordt niet meer ondersteund. Verdergaan is op eigen risico.</translation>
+        <translation>De serverversie %1 is oud en wordt niet meer ondersteund. Verdergaan is op eigen risico.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="519"/>
@@ -456,7 +456,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="31"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Geen gebruikersnaam en wachtwoord op voor &apos;%1&apos; bij %2.</translation>
+        <translation>Geef gebruikersnaam en wachtwoord op voor &apos;%1&apos; bij %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="35"/>
@@ -489,7 +489,7 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="148"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Authenticatiefout: Gebruikersnaam of wachtwoord is onjuist.</translation>
+        <translation>Authenticatiefout: Gebruikersnaam of wachtwoord onjuist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="160"/>
@@ -556,13 +556,13 @@
         <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 and %2 other files have been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 en %2 andere bestanden zijn gedownloaded.</translation>
+        <translation>%1 en %2 andere bestanden zijn gedownload.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="485"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 is gedownloaded.</translation>
+        <translation>%1 is gedownload.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="490"/>
@@ -819,7 +819,7 @@ Doorgaan met deze synchronisatie overschrijft al uw bestandend door een eerdere 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="137"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Klik op deze button om een map ter synchroniseren toe te voegen.</translation>
+        <translation>Klik op deze knop om een te synchroniseren map toe te voegen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="148"/>
@@ -1037,7 +1037,7 @@ Totaal resterende tijd %5</translation>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="466"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>U bent al uw bestanden al aan het synchroniseren.Het synchroniseren van een andere map wordt &lt;b&gt;niet&lt;/b&gt; ondersteund. Als u meerdere mappen wilt synchroniseren moet u de nu geconfigureerde synchronisatie hoofdmap verwijderen.</translation>
+        <translation>U bent al uw bestanden al aan het synchroniseren. Het synchroniseren van een andere map wordt &lt;b&gt;niet&lt;/b&gt; ondersteund. Als u meerdere mappen wilt synchroniseren moet u de nu geconfigureerde synchronisatie hoofdmap verwijderen.</translation>
     </message>
 </context>
 <context>
@@ -1176,7 +1176,7 @@ account: %3
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="40"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Het lezen van de sleutelhanger is mislukt met fout: &apos;%1&apos;</translation>
+        <translation>Het lezen van de sleutelketen is mislukt met fout: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="45"/>
@@ -1204,7 +1204,7 @@ account: %3
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>bestanden genegeerd per patroon</translation>
+        <translation>Bestanden genegeerd per patroon</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1408,7 +1408,7 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Bandbreedte downloaden</translation>
+        <translation>Download bandbreedte</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1437,13 +1437,13 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Bandbreedte uploaden</translation>
+        <translation>Upload bandbreedte</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation>Beperkt automatisch</translation>
+        <translation>Beperk automatisch</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
@@ -1840,7 +1840,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="158"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Ongeldig JSON antwoord van de peilingen URL</translation>
+        <translation>Ongeldig JSON antwoord van de opgegeven URL</translation>
     </message>
 </context>
 <context>
@@ -2018,7 +2018,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="660"/>
         <source>Poll URL missing</source>
-        <translation>URL peiling ontbreekt</translation>
+        <translation>URL opvraag ontbreekt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="683"/>
@@ -2086,7 +2086,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="238"/>
         <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Er worden op dit moment geen bestanden genegeerd vanwege eerdere fouten er zijn geen downloads bezig.</translation>
+        <translation>Er worden op dit moment geen bestanden genegeerd vanwege eerdere fouten en er zijn geen downloads bezig.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/protocolwidget.cpp" line="241"/>
@@ -2163,7 +2163,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="426"/>
         <source>Choose What to Sync</source>
-        <translation>Wat synchroniseren</translation>
+        <translation>Kies wat te synchroniseren</translation>
     </message>
 </context>
 <context>
@@ -2796,7 +2796,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="423"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation>Bestandsnaam bevat ongeldige karakters die niet tussen platformen gesynchroniseerd kunnen worden.</translation>
+        <translation>Bestandsnaam bevat ongeldige tekens die niet tussen platformen gesynchroniseerd kunnen worden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="165"/>
@@ -2841,7 +2841,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="417"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>Symbolic links worden niet ondersteund bij het synchroniseren.</translation>
+        <translation>Symbolische links worden niet ondersteund bij het synchroniseren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="420"/>
@@ -2866,7 +2866,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="630"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation>Ongeldige karakters, hernoem &quot;%1&quot;</translation>
+        <translation>Ongeldige tekens, hernoem &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="718"/>
@@ -2962,7 +2962,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gedistribueer door %1 en gelicenseerd onder de GNU General Public License (GPL) Versie 2.0.&lt;br/&gt;%2 en het %2 logo zijn geregistreerde handelsmerken van %1 in de Verenigde Staten, in andere landen of beide.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Gedistribueerd door %1 en gelicenseerd onder de GNU General Public License (GPL) Versie 2.0.&lt;br/&gt;%2 en het %2 logo zijn geregistreerde handelsmerken van %1 in de Verenigde Staten, in andere landen of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2970,7 +2970,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="195"/>
         <source>The checksum header is malformed.</source>
-        <translation>De kop van het controlegetal is misvormd.</translation>
+        <translation>De header van het controlegetal is misvormd.</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="210"/>
