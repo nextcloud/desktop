@@ -105,6 +105,8 @@ void FolderMan::unloadFolder( Folder *f )
                this, SLOT(slotForwardFolderSyncStateChange()));
     disconnect(f, SIGNAL(syncPausedChanged(Folder*,bool)),
                this, SLOT(slotFolderSyncPaused(Folder*,bool)));
+    disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
+               _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -796,6 +798,8 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, A
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
     connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
+    connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
+            _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
 
     registerFolderMonitor(folder);
     return folder;

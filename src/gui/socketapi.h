@@ -60,12 +60,9 @@ private slots:
     void slotNewConnection();
     void onLostConnection();
     void slotReadSocket();
-    void slotItemCompleted(const QString &, const SyncFileItem &);
-    void slotSyncItemDiscovered(const QString &, const SyncFileItem &);
+    void slotFileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
 
 private:
-    SyncFileStatus fileStatus(Folder *folder, const QString& systemFileName);
-
     void sendMessage(QIODevice* socket, const QString& message, bool doWait = false);
     void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
 

@@ -239,8 +239,6 @@ signals:
                        const SyncFileItem & item,
                        const PropagatorJob & job);
 
-    void syncItemDiscovered(const QString &folder, const SyncFileItem & item);
-
 protected:
     void setProgressInfo(const QString& folder, const ProgressInfo& progress);
 

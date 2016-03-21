@@ -114,10 +114,6 @@ SocketApi::SocketApi(QObject* parent)
 
     // folder watcher
     connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder*)), this, SLOT(slotUpdateFolderView(Folder*)));
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, const SyncFileItem &, const PropagatorJob &)),
-            SLOT(slotItemCompleted(QString, const SyncFileItem &)));
-    connect(ProgressDispatcher::instance(), SIGNAL(syncItemDiscovered(QString, const SyncFileItem &)),
-            this, SLOT(slotSyncItemDiscovered(QString, const SyncFileItem &)));
 }
 
 SocketApi::~SocketApi()
@@ -225,47 +221,10 @@ void SocketApi::slotUpdateFolderView(Folder *f)
     }
 }
 
-void SocketApi::slotItemCompleted(const QString &folder, const SyncFileItem &item)
+void SocketApi::slotFileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus)
 {
-    if (_listeners.isEmpty()) {
-        return;
-    }
-
-    Folder *f = FolderMan::instance()->folder(folder);
-    if (!f) {
-        return;
-    }
-
-    auto status = f->syncEngine().syncFileStatusTracker().fileStatus(item.destination());
-    const QString path = f->path() + item.destination();
-    broadcastMessage(QLatin1String("STATUS"), path, status.toSocketAPIString());
+    broadcastMessage(QLatin1String("STATUS"), systemFileName, fileStatus.toSocketAPIString());
 }
-
-void SocketApi::slotSyncItemDiscovered(const QString &folder, const SyncFileItem &item)
-{
-    if (_listeners.isEmpty()) {
-        return;
-    }
-
-    Folder *f = FolderMan::instance()->folder(folder);
-    if (!f) {
-        return;
-    }
-
-    QString path = f->path() + item.destination();
-
-    // the trailing slash for directories must be appended as the filenames coming in
-    // from the plugins have that too. Otherwise the matching entry item is not found
-    // in the plugin.
-    if( item._type == SyncFileItem::Type::Directory ) {
-        path += QLatin1Char('/');
-    }
-
-    const QString command = QLatin1String("SYNC");
-    broadcastMessage(QLatin1String("STATUS"), path, command);
-}
-
-
 
 void SocketApi::sendMessage(QIODevice *socket, const QString& message, bool doWait)
 {

@@ -26,15 +26,20 @@ class SyncEngine;
 
 class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
 {
+    Q_OBJECT
 public:
     SyncFileStatusTracker(SyncEngine *syncEngine);
     SyncFileStatus fileStatus(const QString& systemFileName);
+
+signals:
+    void fileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
 
 private slots:
     void slotThreadTreeWalkResult(const SyncFileItemVector& items);
     void slotAboutToPropagate(SyncFileItemVector& items);
     void slotSyncFinished();
     void slotItemCompleted(const SyncFileItem &item);
+    void slotItemDiscovered(const SyncFileItem &item);
 
 private:
     bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);

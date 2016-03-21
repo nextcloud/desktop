@@ -114,7 +114,6 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
-    connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 }
 
@@ -911,11 +910,6 @@ void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& jo
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
-}
-
-void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
-{
-    emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF)

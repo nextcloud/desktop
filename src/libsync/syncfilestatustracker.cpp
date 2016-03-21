@@ -54,8 +54,10 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
               this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &)));
+    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
+            this, SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(syncItemDiscovered(const SyncFileItem&)),
+            this, SLOT(slotItemDiscovered(const SyncFileItem&)));
 }
 
 bool SyncFileStatusTracker::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
@@ -225,6 +227,32 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
     if (showErrorInSocketApi(item)) {
         _stateLastSyncItemsWithErrorNew.insert(item._file);
     }
+
+    QString systemFileName = _syncEngine->localPath() + item.destination();
+
+    // the trailing slash for directories must be appended as the filenames coming in
+    // from the plugins have that too. Otherwise the matching entry item is not found
+    // in the plugin.
+    if( item._type == SyncFileItem::Type::Directory ) {
+        systemFileName += QLatin1Char('/');
+    }
+
+    auto status = fileStatus(item.destination());
+    emit fileStatusChanged(systemFileName, status);
+}
+
+void SyncFileStatusTracker::slotItemDiscovered(const SyncFileItem &item)
+{
+    QString systemFileName = _syncEngine->localPath() + item.destination();
+
+    // the trailing slash for directories must be appended as the filenames coming in
+    // from the plugins have that too. Otherwise the matching entry item is not found
+    // in the plugin.
+    if( item._type == SyncFileItem::Type::Directory ) {
+        systemFileName += QLatin1Char('/');
+    }
+
+    emit fileStatusChanged(systemFileName, SyncFileStatus(SyncFileStatus::STATUS_EVAL));
 }
 
 }
