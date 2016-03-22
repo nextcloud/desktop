@@ -3402,12 +3402,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n日前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="453"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n 時間前</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
@@ -3422,7 +3422,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="463"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform> %n 分前</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="466"/>

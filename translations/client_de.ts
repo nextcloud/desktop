@@ -3405,12 +3405,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="445"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>vor %n Tage(n)</numerusform><numerusform>vor %n Tage(n)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="453"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>vor %n Stunde(n)</numerusform><numerusform>vor %n Stunde(n)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="458"/>
@@ -3425,7 +3425,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="463"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>vor %n Minute(n)</numerusform><numerusform>vor %n Minute(n)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="466"/>
