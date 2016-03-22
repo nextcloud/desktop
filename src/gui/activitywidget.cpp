@@ -516,9 +516,11 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
+    QElapsedTimer timer = _timeSinceLastCheck[ptr];
+
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
-    if( _timeSinceLastCheck.isValid() && _timeSinceLastCheck.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
-        qDebug() << Q_FUNC_INFO << "do not check as last check is only secs ago: " << _timeSinceLastCheck.elapsed() / 1000;
+    if( timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
+        qDebug() << Q_FUNC_INFO << "do not check as last check is only secs ago: " << timer.elapsed() / 1000;
         return;
     }
     if( ptr && ptr->isConnected() ) {
@@ -527,10 +529,10 @@ void ActivitySettings::slotRefresh( AccountState* ptr )
             _activityWidget->slotRefreshActivities( ptr);
         }
         _activityWidget->slotRefreshNotifications(ptr);
-        if( !_timeSinceLastCheck.isValid() ) {
-            _timeSinceLastCheck.start();
+        if( !( _timeSinceLastCheck[ptr].isValid() ) ) {
+            _timeSinceLastCheck[ptr].start();
         } else {
-            _timeSinceLastCheck.restart();
+            _timeSinceLastCheck[ptr].restart();
         }
     }
 }

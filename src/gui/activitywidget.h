@@ -142,7 +142,7 @@ private:
     ProtocolWidget *_protocolWidget;
     QProgressIndicator *_progressIndicator;
     QTimer         _notificationCheckTimer;
-    QElapsedTimer  _timeSinceLastCheck;
+    QHash<AccountState*, QElapsedTimer>  _timeSinceLastCheck;
 };
 
 }
