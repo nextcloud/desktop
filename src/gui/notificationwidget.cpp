@@ -65,6 +65,11 @@ void NotificationWidget::setActivity(const Activity& activity)
     }
 }
 
+QString NotificationWidget::accountName() const
+{
+    return _myActivity._accName;
+}
+
 void NotificationWidget::slotButtonClicked()
 {
     QObject *buttonWidget = QObject::sender();

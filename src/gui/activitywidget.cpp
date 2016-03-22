@@ -221,10 +221,14 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     }
 }
 
-// GUI: Display the notifications
+// GUI: Display the notifications.
+// All notifications in list are coming from the same account
+// but in the _widgetForNotifId hash widgets for all accounts are
+// collected.
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 {
     QHash<QString, int> accNotified;
+    QString listAccountName;
 
     foreach( auto activity, list ) {
         NotificationWidget *widget = 0;
@@ -242,6 +246,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         }
 
         widget->setActivity( activity );
+
+        // remember the list account name for the strayCat handling below.
+        listAccountName = activity._accName;
 
         // handle gui logs. In order to NOT annoy the user with every fetching of the
         // notifications the notification id is stored in a Set. Only if an id
@@ -278,6 +285,12 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     QList<int> strayCats;
     foreach( auto id, _widgetForNotifId.keys() ) {
         bool found = false;
+        NotificationWidget *widget = _widgetForNotifId[id];
+
+        // do not mark widgets of other accounts to delete.
+        if( widget->accountName() != listAccountName ) {
+            continue;
+        }
         foreach( auto activity, list ) {
             if( activity._id == id ) {
                 // found an activity
@@ -290,6 +303,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             strayCats.append(id);
         }
     }
+
     // .. and now delete all these stray cat widgets.
     foreach( auto strayCatId, strayCats ) {
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
@@ -297,7 +311,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         _widgetForNotifId.remove(strayCatId);
     }
 
-    _ui->_notifyLabel->setHidden( _widgetForNotifId.isEmpty() );
+    _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
 
     int newGuiLogCount = accNotified.count();
