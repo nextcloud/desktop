@@ -31,7 +31,6 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
 void NotificationWidget::setActivity(const Activity& activity)
 {
     _myActivity = activity;
-    QLocale locale;
 
     Q_ASSERT( !activity._accName.isEmpty() );
     _accountName = activity._accName;
