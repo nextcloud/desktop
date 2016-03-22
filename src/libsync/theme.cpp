@@ -448,6 +448,12 @@ QString Theme::userIDHint() const
 }
 
 
+QString Theme::wizardUrlPostfix() const
+{
+    return QString();
+}
+
+
 
 } // end namespace client
 

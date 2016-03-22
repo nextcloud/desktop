@@ -89,6 +89,7 @@ set(client_SRCS
     creds/shibbolethcredentials.cpp
     creds/shibboleth/shibbolethwebview.cpp
     creds/shibboleth/shibbolethuserjob.cpp
+    wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
@@ -133,7 +134,6 @@ list(APPEND client_SRCS folderwatcher_mac.cpp)
 ENDIF()
 
 set(3rdparty_SRC
-    ../3rdparty/fancylineedit/fancylineedit.cpp
     ../3rdparty/QProgressIndicator/QProgressIndicator.cpp
     ../3rdparty/qtlockedfile/qtlockedfile.cpp
     ../3rdparty/qtsingleapplication/qtlocalpeer.cpp
@@ -157,7 +157,6 @@ else()
 endif()
 
 set(3rdparty_INC
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/fancylineedit
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qjson
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile

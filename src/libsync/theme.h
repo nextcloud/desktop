@@ -272,6 +272,15 @@ public:
      */
     virtual QString userIDHint() const;
 
+    /**
+     * @brief Postfix that will be enforced in a URL. e.g.
+     *        ".myhosting.com".
+     *
+     * @return An empty string, unless reimplemented
+     */
+    virtual QString wizardUrlPostfix() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
