@@ -78,7 +78,7 @@ Other issues can affect synchronization of your ownCloud files:
 - If you are operating your own server, and use the local storage backend (the
   default), make sure that ownCloud has exclusive access to the directory.
 
-  .. note:: The data directory on the server is exclusive to ownCloud and must not be modified manually.
+  .. warning:: The data directory on the server is exclusive to ownCloud and must not be modified manually.
 
 - If you are using a different file backend on the server, you can try to exclude a bug in the
   backend by reverting to the built-in backend.
