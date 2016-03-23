@@ -37,6 +37,7 @@ public:
 
 signals:
     void sendNotificationRequest( const QString&, const QString& link, const QString& verb);
+    void requestCleanupAndBlacklist( const Activity& activity );
 
 public slots:
      void setActivity(const Activity& activity);
@@ -52,7 +53,6 @@ private:
     QString _accountName;
     QProgressIndicator *_progressIndi;
     QString _actionLabel;
-    QElapsedTimer _closeTimer;
 };
 
 }

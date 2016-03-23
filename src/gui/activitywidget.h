@@ -66,6 +66,7 @@ public slots:
     void slotRefreshNotifications(AccountState *ptr);
     void slotRemoveAccount( AccountState *ptr );
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotRequestCleanupAndBlacklist(const Activity& blacklistActivity);
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -80,7 +81,8 @@ private slots:
     void slotNotifyNetworkError( QNetworkReply* );
     void slotNotifyServerFinished( const QString& reply, int replyCode );
     void endNotificationRequest(NotificationWidget *widget , int replyCode);
-    void slotCleanWidgetList();
+    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 4500);
+    void slotCheckToCleanWidgets();
 
 private:
     void showLabels();
@@ -89,9 +91,13 @@ private:
     QPushButton *_copyBtn;
 
     QSet<QString> _accountsWithoutActivities;
-    QMap<int, NotificationWidget*> _widgetForNotifId;
+    QMap<Activity::Identifier, NotificationWidget*> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
     QSet<int> _guiLoggedNotifications;
+    ActivityList _blacklistedActivities;
+
+    QSet< QPair<QDateTime, NotificationWidget*> > _widgetsToRemove;
+    QTimer _removeTimer;
 
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.

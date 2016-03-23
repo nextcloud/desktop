@@ -54,13 +54,22 @@ void NotificationWidget::setActivity(const Activity& activity)
     foreach( auto button, _ui._buttonBox->buttons() ) {
         _ui._buttonBox->removeButton(button);
     }
+    _buttons.clear();
 
     // display buttons for the links
-    foreach( auto link, activity._links ) {
-        QPushButton *b = _ui._buttonBox->addButton( link._label, QDialogButtonBox::AcceptRole);
-        b->setDefault(link._isPrimary);
+    if( activity._links.isEmpty() ) {
+        // in case there is no action defined, do a close button.
+        QPushButton *b = _ui._buttonBox->addButton( QDialogButtonBox::Close );
+        b->setDefault(true);
         connect(b, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
         _buttons.append(b);
+    } else {
+        foreach( auto link, activity._links ) {
+            QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
+            b->setDefault(link._isPrimary);
+            connect(b, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
+            _buttons.append(b);
+        }
     }
 }
 
@@ -84,12 +93,24 @@ void NotificationWidget::slotButtonClicked()
         }
 
         // if the button was found, the link must be called
+        if( index > -1 && _myActivity._links.count() == 0 ) {
+            // no links, that means it was the close button
+            // empty link. Just close and remove the widget.
+            QString doneText = tr("Closing in a few seconds...");
+            _ui._timeLabel->setText(doneText);
+            emit requestCleanupAndBlacklist(_myActivity);
+            return;
+        }
+
         if( index > -1 && index < _myActivity._links.count() ) {
             ActivityLink triggeredLink = _myActivity._links.at(index);
             _actionLabel = triggeredLink._label;
-            qDebug() << Q_FUNC_INFO << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
-            _progressIndi->startAnimation();
-            emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
+
+            if( ! triggeredLink._link.isEmpty() ) {
+                qDebug() << Q_FUNC_INFO << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
+                _progressIndi->startAnimation();
+                emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
+            }
         }
     }
 }
@@ -116,22 +137,11 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
         //* The second parameter is a time, such as 'selected at 09:58pm'
         doneText = tr("'%1' selected at %2").arg(_actionLabel).arg(timeStr);
-
-        // start a timer, so that activity widget can remove this widget after a
-        // certain time. It needs to be done by ActivityWidget because it also
-        // needs to hide the scrollview if no widget is left any more.
-        // method readyToClose() checks for the timer value to see if it is expired
-        _closeTimer.start();
     }
     _ui._timeLabel->setText( doneText );
 
     _progressIndi->stopAnimation();
 
-}
-
-bool NotificationWidget::readyToClose()
-{
-    return _closeTimer.isValid() && _closeTimer.elapsed() > NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS;
 }
 
 }

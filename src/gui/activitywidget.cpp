@@ -94,6 +94,9 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     connect( _ui->_activityList, SIGNAL(activated(QModelIndex)), this,
              SLOT(slotOpenFile(QModelIndex)));
+
+    connect( &_removeTimer, SIGNAL(timeout()), this, SLOT(slotCheckToCleanWidgets()) );
+    _removeTimer.setInterval(1000);
 }
 
 ActivityWidget::~ActivityWidget()
@@ -231,18 +234,26 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     QString listAccountName;
 
     foreach( auto activity, list ) {
+        if( _blacklistedActivities.contains(activity)) {
+            qDebug() << Q_FUNC_INFO << "Activity in blacklist, skip";
+            continue;
+        }
+
         NotificationWidget *widget = 0;
 
-        if( _widgetForNotifId.contains(activity._id) ) {
-            widget = _widgetForNotifId[activity._id];
+        if( _widgetForNotifId.contains( activity.ident()) ) {
+            widget = _widgetForNotifId[activity.ident()];
         } else {
             widget = new NotificationWidget(this);
             connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QString)),
                     this, SLOT(slotSendNotificationRequest(QString, QString, QString)));
+            connect(widget, SIGNAL(requestCleanupAndBlacklist(Activity)),
+                    this, SLOT(slotRequestCleanupAndBlacklist(Activity)));
+
             _notificationsLayout->addWidget(widget);
             // _ui->_notifyScroll->setMinimumHeight( widget->height());
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-            _widgetForNotifId[activity._id] = widget;
+            _widgetForNotifId[activity.ident()] = widget;
         }
 
         widget->setActivity( activity );
@@ -280,19 +291,20 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         }
     }
 
-    // check if we have widgets that have no corresponding activity from
+    // check if there are widgets that have no corresponding activity from
     // the server any more. Collect them in a list
-    QList<int> strayCats;
+    QList< Activity::Identifier > strayCats;
     foreach( auto id, _widgetForNotifId.keys() ) {
-        bool found = false;
         NotificationWidget *widget = _widgetForNotifId[id];
 
+        bool found = false;
         // do not mark widgets of other accounts to delete.
-        if( widget->accountName() != listAccountName ) {
+        if( widget->activity()._accName != listAccountName ) {
             continue;
         }
+
         foreach( auto activity, list ) {
-            if( activity._id == id ) {
+            if( activity.ident() == id ) {
                 // found an activity
                 found = true;
                 break;
@@ -307,8 +319,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     // .. and now delete all these stray cat widgets.
     foreach( auto strayCatId, strayCats ) {
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
-        widgetToGo->deleteLater();
-        _widgetForNotifId.remove(strayCatId);
+        scheduleWidgetToRemove(widgetToGo, 0);
     }
 
     _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
@@ -410,21 +421,60 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
     // Add 200 millisecs to the predefined value to make sure that the timer in
     // widget's method readyToClose() has elapsed.
     if( replyCode == OCS_SUCCESS_STATUS_CODE ) {
-        QTimer::singleShot(NOTIFICATION_WIDGET_CLOSE_AFTER_MILLISECS+200, this, SLOT(slotCleanWidgetList()));
+        scheduleWidgetToRemove( job->widget() );
     }
 }
 
-void ActivityWidget::slotCleanWidgetList()
+// blacklist the activity coming in here.
+void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity& blacklistActivity)
 {
-    foreach( int id, _widgetForNotifId.keys() ) {
-        Q_ASSERT(_widgetForNotifId[id]);
-        if( _widgetForNotifId[id]->readyToClose() ) {
-            auto *widget = _widgetForNotifId[id];
+    if ( ! _blacklistedActivities.contains(blacklistActivity) ) {
+        _blacklistedActivities.append(blacklistActivity);
+    }
+
+    NotificationWidget *widget = _widgetForNotifId[ blacklistActivity.ident() ];
+    scheduleWidgetToRemove(widget);
+}
+
+void ActivityWidget::scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds)
+{
+    if( !widget ) {
+        return;
+    }
+    // in fife seconds from now, remove the widget.
+    QDateTime removeTime = QDateTime::currentDateTime().addMSecs(milliseconds);
+
+    QPair<QDateTime, NotificationWidget*> removeInfo = qMakePair(removeTime, widget);
+    if( !_widgetsToRemove.contains(removeInfo) ) {
+        _widgetsToRemove.insert( removeInfo );
+        if( !_removeTimer.isActive() ) {
+            _removeTimer.start();
+        }
+    }
+}
+
+// Called every second to see if widgets need to be removed.
+void ActivityWidget::slotCheckToCleanWidgets()
+{
+    // loop over all widgets in the to-remove queue
+    foreach( auto toRemove, _widgetsToRemove ) {
+        QDateTime t = toRemove.first;
+        NotificationWidget *widget = toRemove.second;
+
+        if( QDateTime::currentDateTime() > t ) {
+            // found one to remove!
+            Activity::Identifier id = widget->activity().ident();
             _widgetForNotifId.remove(id);
-            delete widget;
+            widget->deleteLater();
+            _widgetsToRemove.remove(toRemove);
         }
     }
 
+    if( _widgetsToRemove.isEmpty() ) {
+        _removeTimer.stop();
+    }
+
+    // check to see if the whole notification pane should be hidden
     if( _widgetForNotifId.isEmpty() ) {
         _ui->_notifyLabel->setHidden(true);
         _ui->_notifyScroll->setHidden(true);
