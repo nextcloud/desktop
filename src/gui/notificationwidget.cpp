@@ -64,9 +64,9 @@ void NotificationWidget::setActivity(const Activity& activity)
     }
 }
 
-QString NotificationWidget::accountName() const
+Activity NotificationWidget::activity() const
 {
-    return _myActivity._accName;
+    return _myActivity;
 }
 
 void NotificationWidget::slotButtonClicked()

@@ -33,7 +33,7 @@ public:
     explicit NotificationWidget(QWidget *parent = 0);
 
     bool readyToClose();
-    QString accountName() const;
+    Activity activity() const;
 
 signals:
     void sendNotificationRequest( const QString&, const QString& link, const QString& verb);
