@@ -26,17 +26,6 @@ namespace OCC {
 class ActivityLink
 {
 public:
-    QVariantHash toVariantHash() const {
-        QVariantHash hash;
-
-        hash["label"] = _label;
-        hash["link"]  = _link;
-        hash["verb"]  = _verb;
-        hash["primary"] = _isPrimary;
-
-        return hash;
-    }
-
     QString _label;
     QString _link;
     QString _verb;
@@ -54,10 +43,13 @@ public:
 class Activity
 {
 public:
+    typedef QPair<qlonglong, QString> Identifier;
+
     enum Type {
         ActivityType,
         NotificationType
     };
+
     Type      _type;
     qlonglong _id;
     QString   _subject;
@@ -73,10 +65,11 @@ public:
      * @param val
      * @return
      */
-    bool operator<( const Activity& val ) const {
-        return _dateTime.toMSecsSinceEpoch() > val._dateTime.toMSecsSinceEpoch();
-    }
+    bool operator<( const Activity& val ) const;
 
+    bool operator==( const Activity& val ) const;
+
+    Identifier ident() const;
 };
 
 /* ==================================================================== */

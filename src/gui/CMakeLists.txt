@@ -63,6 +63,7 @@ set(client_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    activitydata.cpp
     activitylistmodel.cpp
     activitywidget.cpp
     activityitemdelegate.cpp
