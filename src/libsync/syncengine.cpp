@@ -1306,33 +1306,14 @@ void SyncEngine::restoreOldFiles()
     }
 }
 
-bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
+SyncFileItem* SyncEngine::findSyncItem(const QString &fileName) const
 {
-    Q_UNUSED(t);
-    QString pat(fn);
-    if( t == CSYNC_FTW_TYPE_DIR && ! fn.endsWith(QLatin1Char('/'))) {
-        pat.append(QLatin1Char('/'));
-    }
-
     Q_FOREACH(const SyncFileItemPtr &item, _syncedItems) {
-        //qDebug() << Q_FUNC_INFO << fn << item->_status << item->_file << fn.startsWith(item->_file) << item->_file.startsWith(fn);
-
-        if (item->_file.startsWith(pat) ||
-                item->_file == fn || item->_renameTarget == fn /* the same directory or file */) {
-            if (item->_status == SyncFileItem::NormalError
-                || item->_status == SyncFileItem::FatalError)
-                s->set(SyncFileStatus::StatusError);
-            else if (item->_status == SyncFileItem::FileIgnored)
-                s->set(SyncFileStatus::StatusIgnore);
-            else if (item->_status == SyncFileItem::Success)
-                s->set(SyncFileStatus::StatusUpToDate);
-            else
-                s->set(SyncFileStatus::StatusSync);
-            qDebug() << Q_FUNC_INFO << "Setting" << fn << "to" << s->toSocketAPIString();
-            return true;
-        }
+        // Directories will appear in this list as well, and will get their status set once all children have been propagated
+        if ((item->_file == fileName || item->_renameTarget == fileName))
+            return item.data();
     }
-    return false;
+    return 0;
 }
 
 qint64 SyncEngine::timeSinceFileTouched(const QString& fn) const

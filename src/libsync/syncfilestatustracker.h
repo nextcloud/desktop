@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Jocelyn Turcotte <jturcotte@woboq.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,38 +18,43 @@
 #include "ownsql.h"
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
-#include <QSet>
-#include <csync.h>
+#include <set>
 
 namespace OCC {
 
 class SyncEngine;
 
+struct Problem {
+    QString path;
+    SyncFileStatus::SyncFileStatusTag severity = SyncFileStatus::StatusError;
+
+    Problem(const QString &path) : path(path) { }
+    Problem(const QString &path, SyncFileStatus::SyncFileStatusTag severity) : path(path), severity(severity) { }
+
+    // Assume that each path will only have one severity, don't care about it in sorting
+    bool operator<(const Problem &other) const { return path < other.path; }
+    bool operator==(const Problem &other) const { return path == other.path; }
+};
+
 class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
 {
     Q_OBJECT
 public:
-    SyncFileStatusTracker(SyncEngine *syncEngine);
+    SyncFileStatusTracker(SyncEngine* syncEngine);
     SyncFileStatus fileStatus(const QString& systemFileName);
 
 signals:
     void fileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
 
 private slots:
-    void slotThreadTreeWalkResult(const SyncFileItemVector& items);
     void slotAboutToPropagate(SyncFileItemVector& items);
-    void slotSyncFinished();
-    void slotItemCompleted(const SyncFileItem &item);
-    void slotItemDiscovered(const SyncFileItem &item);
+    void slotItemCompleted(const SyncFileItem& item);
 
 private:
-    bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
-
-    SyncEngine *_syncEngine;
-    // SocketAPI: Cache files and folders that had errors so that they can
-    // get a red ERROR icon.
-    QSet<QString>   _stateLastSyncItemsWithErrorNew; // gets moved to _stateLastSyncItemsWithError at end of sync
-    QSet<QString>   _stateLastSyncItemsWithError;
+    SyncFileStatus fileStatus(const SyncFileItem& item);
+    void invalidateParentPaths(const QString& path);
+    SyncEngine* _syncEngine;
+    std::set<Problem> _syncProblems;
 };
 
 }

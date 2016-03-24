@@ -1,5 +1,6 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Jocelyn Turcotte <jturcotte@woboq.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,16 +13,24 @@
  */
 
 #include "syncfilestatustracker.h"
-#include "filesystem.h"
 #include "syncengine.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include "utility.h"
-
-#include <QDir>
-#include <QFileInfo>
 
 namespace OCC {
+
+static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const std::set<Problem> &set)
+{
+    for (auto it = set.cbegin(); it != set.cend(); ++it) {
+        qDebug() << Q_FUNC_INFO << pathToMatch << it->severity << it->path;
+        auto problemPath = it->path;
+        if (problemPath == pathToMatch)
+            return it->severity;
+        else if (it->severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch))
+            return SyncFileStatus::StatusWarning;
+    }
+    return SyncFileStatus::StatusNone;
+}
 
 /**
  * Whether this item should get an ERROR icon through the Socket API.
@@ -31,229 +40,143 @@ namespace OCC {
  * icon as the problem is most likely going to resolve itself quickly and
  * automatically.
  */
-static bool showErrorInSocketApi(const SyncFileItem& item)
+static inline bool showErrorInSocketApi(const SyncFileItem& item)
 {
     const auto status = item._status;
     return status == SyncFileItem::NormalError
-        || status == SyncFileItem::FatalError;
+        || status == SyncFileItem::FatalError
+        || item._hasBlacklistEntry;
 }
 
-static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
-    foreach (const SyncFileItemPtr &item, items) {
-        if (showErrorInSocketApi(*item)) {
-            set->insert(item->_file);
-        }
-    }
+static inline bool showWarningInSocketApi(const SyncFileItem& item)
+{
+    const auto status = item._status;
+    return status == SyncFileItem::FileIgnored
+        || status == SyncFileItem::Conflict
+        || status == SyncFileItem::Restoration;
 }
 
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
-    connect(syncEngine, SIGNAL(treeWalkResult(const SyncFileItemVector&)),
-              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
               this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
     connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
             this, SLOT(slotItemCompleted(const SyncFileItem&)));
-    connect(syncEngine, SIGNAL(syncItemDiscovered(const SyncFileItem&)),
-            this, SLOT(slotItemDiscovered(const SyncFileItem&)));
-}
-
-bool SyncFileStatusTracker::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
-{
-    if (t == CSYNC_FTW_TYPE_DIR) {
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
-            s->set(SyncFileStatus::StatusError);
-            return true;
-        }
-        // If sync is running, check _syncedItems, possibly give it StatusSync
-        if (_syncEngine->isSyncRunning()) {
-            if (_syncEngine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-        return false;
-    } else if ( t== CSYNC_FTW_TYPE_FILE) {
-        // check if errorList has the directory/file
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            s->set(SyncFileStatus::StatusError);
-            return true;
-        }
-        // If sync running: _syncedItems -> SyncingState
-        if (_syncEngine->isSyncRunning()) {
-            if (_syncEngine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 
-/**
- * Get status about a single file.
- */
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 {
-    QString file = _syncEngine->localPath();
     QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
-    QString fileNameSlash = fileName;
-
-    if(fileName != QLatin1String("/") && !fileName.isEmpty()) {
-        file += fileName;
-    }
-
     if( fileName.endsWith(QLatin1Char('/')) ) {
         fileName.truncate(fileName.length()-1);
         qDebug() << "Removed trailing slash: " << fileName;
-    } else {
-        fileNameSlash += QLatin1Char('/');
     }
 
-    const QFileInfo fi(file);
-    if( !FileSystem::fileExists(file, fi) ) {
-        qDebug() << "OO File " << file << " is not existing";
-        return SyncFileStatus(SyncFileStatus::StatusError);
-    }
+    SyncFileItem* item = _syncEngine->findSyncItem(fileName);
+    if (item)
+        return fileStatus(*item);
 
-    // file is ignored?
-    // Qt considers .lnk files symlinks on Windows so we need to work
-    // around that here.
-    if( fi.isSymLink()
-#ifdef Q_OS_WIN
-            && fi.suffix() != "lnk"
-#endif
-            ) {
-        return SyncFileStatus(SyncFileStatus::StatusIgnore);
-    }
+    // If we're not currently syncing that file, look it up in the database to know if it's shared
+    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
+    if (rec.isValid())
+        return fileStatus(rec.toSyncFileItem());
 
-    csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
-    if( fi.isDir() ) {
-        type = CSYNC_FTW_TYPE_DIR;
-    }
-
-    // Is it excluded?
-    if( _syncEngine->excludedFiles().isExcluded(file, _syncEngine->localPath(), _syncEngine->ignoreHiddenFiles()) ) {
-        return SyncFileStatus(SyncFileStatus::StatusIgnore);
-    }
-
-    // Error if it is in the selective sync blacklist
-    foreach(const auto &s, _syncEngine->journal()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
-        if (fileNameSlash.startsWith(s)) {
-            return SyncFileStatus(SyncFileStatus::StatusError);
-        }
-    }
-
-    SyncFileStatus status(SyncFileStatus::StatusNone);
-    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName );
-
-    if (estimateState(fileName, type, &status)) {
-        qDebug() << "Folder estimated status for" << fileName << "to" << status.toSocketAPIString();
-    } else if (fileName == "") {
-        // sync folder itself
-        // FIXME: The new parent folder logic should take over this, treating the root the same as any folder.
-    } else if (type == CSYNC_FTW_TYPE_DIR) {
-        if (rec.isValid()) {
-            status.set(SyncFileStatus::StatusUpToDate);
-        } else {
-            qDebug() << "Could not determine state for folder" << fileName << "will set StatusSync";
-            status.set(SyncFileStatus::StatusSync);
-        }
-    } else if (type == CSYNC_FTW_TYPE_FILE) {
-        if (rec.isValid()) {
-            if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
-                status.set(SyncFileStatus::StatusUpToDate);
-            } else {
-                if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
-                    status.set(SyncFileStatus::StatusSync);
-                } else {
-                    status.set(SyncFileStatus::StatusError);
-                }
-            }
-        } else {
-            qDebug() << "Could not determine state for file" << fileName << "will set StatusSync";
-            status.set(SyncFileStatus::StatusSync);
-        }
-    }
-
-    if (rec.isValid() && rec._remotePerm.contains("S"))
-        status.setSharedWithMe(true);
-
-    // FIXME: Wrong, but will go away
-    if (status.tag() == SyncFileStatus::StatusSync) {
-        // check the parent folder if it is shared and if it is allowed to create a file/dir within
-        QDir d( fi.path() );
-        auto parentPath = d.path();
-        auto dirRec = _syncEngine->journal()->getFileRecord(parentPath);
-        bool isDir = type == CSYNC_FTW_TYPE_DIR;
-        while( !d.isRoot() && !(d.exists() && dirRec.isValid()) ) {
-            d.cdUp(); // returns true if the dir exists.
-
-            parentPath = d.path();
-            // cut the folder path
-            dirRec = _syncEngine->journal()->getFileRecord(parentPath);
-
-            isDir = true;
-        }
-        if( dirRec.isValid() && !dirRec._remotePerm.isNull()) {
-            if( (isDir && !dirRec._remotePerm.contains("K"))
-                    || (!isDir && !dirRec._remotePerm.contains("C")) ) {
-                status.set(SyncFileStatus::StatusError);
-            }
-        }
-    }
-    return status;
-}
-
-void SyncFileStatusTracker::slotThreadTreeWalkResult(const SyncFileItemVector& items)
-{
-    addErroredSyncItemPathsToList(items, &_stateLastSyncItemsWithErrorNew);
+    // Must be a new file, wait for the filesystem watcher to trigger a sync
+    return SyncFileStatus();
 }
 
 void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
 {
-    addErroredSyncItemPathsToList(items, &_stateLastSyncItemsWithErrorNew);
-}
+    std::set<Problem> oldProblems;
+    std::swap(_syncProblems, oldProblems);
 
-void SyncFileStatusTracker::slotSyncFinished()
-{
-    _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
-    _stateLastSyncItemsWithErrorNew.clear();
+    foreach (const SyncFileItemPtr &item, items) {
+        qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status;
+
+        if (showErrorInSocketApi(*item))
+            _syncProblems.insert({item->_file, SyncFileStatus::StatusError});
+        else if (showWarningInSocketApi(*item))
+            _syncProblems.insert({item->_file, SyncFileStatus::StatusWarning});
+
+        QString systemFileName = _syncEngine->localPath() + item->destination();
+        // the trailing slash for directories must be appended as the filenames coming in
+        // from the plugins have that too. Otherwise the matching entry item is not found
+        // in the plugin.
+        if( item->_type == SyncFileItem::Type::Directory )
+            systemFileName += QLatin1Char('/');
+        emit fileStatusChanged(systemFileName, fileStatus(*item));
+    }
+
+    // Make sure to push any status that might have been resolved indirectly since the last sync
+    // (like an error file being deleted from disk)
+    for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it)
+        oldProblems.erase(*it);
+    for (auto it = oldProblems.begin(); it != oldProblems.end(); ++it) {
+        if (it->severity == SyncFileStatus::StatusError)
+            invalidateParentPaths(it->path);
+        emit fileStatusChanged(_syncEngine->localPath() + it->path, fileStatus(it->path));
+    }
 }
 
 void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
 {
+    qDebug() << Q_FUNC_INFO << item.destination() << item._status;
+
     if (showErrorInSocketApi(item)) {
-        _stateLastSyncItemsWithErrorNew.insert(item._file);
+        _syncProblems.insert({item._file, SyncFileStatus::StatusError});
+        invalidateParentPaths(item.destination());
+    } else if (showWarningInSocketApi(item)) {
+        _syncProblems.insert({item._file, SyncFileStatus::StatusWarning});
+    } else {
+        // There is currently no situation where an error status set during discovery/update is fixed by propagation.
+        Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
     }
 
     QString systemFileName = _syncEngine->localPath() + item.destination();
-
     // the trailing slash for directories must be appended as the filenames coming in
     // from the plugins have that too. Otherwise the matching entry item is not found
     // in the plugin.
     if( item._type == SyncFileItem::Type::Directory ) {
         systemFileName += QLatin1Char('/');
     }
-
-    auto status = fileStatus(item.destination());
-    emit fileStatusChanged(systemFileName, status);
+    emit fileStatusChanged(systemFileName, fileStatus(item));
 }
 
-void SyncFileStatusTracker::slotItemDiscovered(const SyncFileItem &item)
+SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
 {
-    QString systemFileName = _syncEngine->localPath() + item.destination();
+    // Hack to know if the item was taken from the sync engine (Sync), or from the database (UpToDate)
+    bool waitingForPropagation = item._direction != SyncFileItem::None && item._status == SyncFileItem::NoStatus;
 
-    // the trailing slash for directories must be appended as the filenames coming in
-    // from the plugins have that too. Otherwise the matching entry item is not found
-    // in the plugin.
-    if( item._type == SyncFileItem::Type::Directory ) {
-        systemFileName += QLatin1Char('/');
+    SyncFileStatus status(SyncFileStatus::StatusUpToDate);
+    if (waitingForPropagation) {
+        status.set(SyncFileStatus::StatusSync);
+    } else if (showErrorInSocketApi(item)) {
+        status.set(SyncFileStatus::StatusError);
+    } else if (showWarningInSocketApi(item)) {
+        status.set(SyncFileStatus::StatusWarning);
+    } else {
+        // After a sync finished, we need to show the users issues from that last sync like the activity list does.
+        // Also used for parent directories showing a warning for an error child.
+        SyncFileStatus::SyncFileStatusTag problemStatus = lookupProblem(item.destination(), _syncProblems);
+        if (problemStatus != SyncFileStatus::StatusNone)
+            status.set(problemStatus);
     }
 
-    emit fileStatusChanged(systemFileName, SyncFileStatus(SyncFileStatus::StatusSync));
+    if (item._remotePerm.contains("S"))
+        status.setSharedWithMe(true);
+
+    return status;
+}
+
+void SyncFileStatusTracker::invalidateParentPaths(const QString& path)
+{
+    QStringList splitPath = path.split('/', QString::SkipEmptyParts);
+    for (int i = 0; i < splitPath.size(); ++i) {
+        QString parentPath = splitPath.mid(0, i).join('/');
+        emit fileStatusChanged(_syncEngine->localPath() + parentPath, fileStatus(parentPath));
+    }
 }
 
 }

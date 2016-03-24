@@ -40,11 +40,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path);
     OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
-    /** Like QLocale::toString(double, 'f', prec), but drops trailing zeros after the decimal point */
-
-    OWNCLOUDSYNC_EXPORT bool doesSetContainPrefix(const QSet<QString> &l, const QString &p);
-
-
 
     /**
      * @brief compactFormatDouble - formats a double value human readable.

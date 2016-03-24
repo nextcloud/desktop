@@ -59,7 +59,8 @@ QString SyncFileStatus::toSocketAPIString() const
     case StatusSync:
         statusString = QLatin1String("SYNC");
         break;
-    case StatusIgnore:
+    case StatusWarning:
+        // The protocol says IGNORE, but all implementations show a yellow warning sign.
         statusString = QLatin1String("IGNORE");
         break;
     case StatusUpToDate:

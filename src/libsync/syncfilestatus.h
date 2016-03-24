@@ -30,7 +30,7 @@ public:
     enum SyncFileStatusTag {
         StatusNone,
         StatusSync,
-        StatusIgnore,
+        StatusWarning,
         StatusUpToDate,
         StatusError,
     };
