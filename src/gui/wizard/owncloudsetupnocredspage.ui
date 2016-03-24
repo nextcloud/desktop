@@ -88,7 +88,7 @@
           </widget>
          </item>
          <item>
-          <widget class="Utils::FancyLineEdit" name="leUrl">
+          <widget class="OCC::PostfixLineEdit" name="leUrl">
            <property name="sizePolicy">
             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -189,15 +189,12 @@
     </widget>
    </item>
   </layout>
-  <zorder>topLabel</zorder>
-  <zorder>errorLabel</zorder>
-  <zorder>bottomLabel</zorder>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Utils::FancyLineEdit</class>
+   <class>OCC::PostfixLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">fancylineedit.h</header>
+   <header>wizard/postfixlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

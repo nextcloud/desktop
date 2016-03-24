@@ -432,6 +432,27 @@ bool Theme::forceSystemNetworkProxy() const
     return false;
 }
 
+Theme::UserIDType Theme::userIDType() const
+{
+    return UserIDType::UserIDUserName;
+}
+
+QString Theme::customUserID() const
+{
+    return QString();
+}
+
+QString Theme::userIDHint() const
+{
+    return QString();
+}
+
+
+QString Theme::wizardUrlPostfix() const
+{
+    return QString();
+}
+
 
 
 } // end namespace client

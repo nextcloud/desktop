@@ -239,6 +239,48 @@ public:
 
     virtual bool forceSystemNetworkProxy() const;
 
+    /**
+     * @brief How to handle the userID
+     *
+     * @value UserIDUserName Wizard asks for user name as ID
+     * @value UserIDEmail Wizard asks for an email as ID
+     * @value UserIDCustom Specify string in \ref customUserID
+     */
+    enum UserIDType { UserIDUserName = 0, UserIDEmail, UserIDCustom };
+
+    /** @brief What to display as the userID (e.g. in the wizards)
+     *
+     *  @return UserIDType::UserIDUserName, unless reimplemented
+     */
+    virtual UserIDType userIDType() const;
+
+    /**
+     * @brief Allows to customize the type of user ID (e.g. user name, email)
+     *
+     * @note This string cannot be translated, but is still useful for
+     *       referencing brand name IDs (e.g. "ACME ID", when using ACME.)
+     *
+     * @return An empty string, unless reimplemented
+     */
+    virtual QString customUserID() const;
+
+    /**
+     * @brief Demo string to be displayed when no text has been
+     *        entered for the user id (e.g. mylogin@company.com)
+     *
+     * @return An empty string, unless reimplemented
+     */
+    virtual QString userIDHint() const;
+
+    /**
+     * @brief Postfix that will be enforced in a URL. e.g.
+     *        ".myhosting.com".
+     *
+     * @return An empty string, unless reimplemented
+     */
+    virtual QString wizardUrlPostfix() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;
