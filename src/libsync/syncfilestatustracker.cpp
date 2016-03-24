@@ -65,10 +65,10 @@ bool SyncFileStatusTracker::estimateState(QString fn, csync_ftw_type_e t, SyncFi
     if (t == CSYNC_FTW_TYPE_DIR) {
         if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
             qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
-            s->set(SyncFileStatus::STATUS_ERROR);
+            s->set(SyncFileStatus::StatusError);
             return true;
         }
-        // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
+        // If sync is running, check _syncedItems, possibly give it StatusSync
         if (_syncEngine->isSyncRunning()) {
             if (_syncEngine->estimateState(fn, t, s)) {
                 return true;
@@ -78,7 +78,7 @@ bool SyncFileStatusTracker::estimateState(QString fn, csync_ftw_type_e t, SyncFi
     } else if ( t== CSYNC_FTW_TYPE_FILE) {
         // check if errorList has the directory/file
         if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            s->set(SyncFileStatus::STATUS_ERROR);
+            s->set(SyncFileStatus::StatusError);
             return true;
         }
         // If sync running: _syncedItems -> SyncingState
@@ -115,7 +115,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     const QFileInfo fi(file);
     if( !FileSystem::fileExists(file, fi) ) {
         qDebug() << "OO File " << file << " is not existing";
-        return SyncFileStatus(SyncFileStatus::STATUS_STAT_ERROR);
+        return SyncFileStatus(SyncFileStatus::StatusError);
     }
 
     // file is ignored?
@@ -126,7 +126,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
             && fi.suffix() != "lnk"
 #endif
             ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
+        return SyncFileStatus(SyncFileStatus::StatusIgnore);
     }
 
     csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
@@ -136,17 +136,17 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
     // Is it excluded?
     if( _syncEngine->excludedFiles().isExcluded(file, _syncEngine->localPath(), _syncEngine->ignoreHiddenFiles()) ) {
-        return SyncFileStatus(SyncFileStatus::STATUS_IGNORE);
+        return SyncFileStatus(SyncFileStatus::StatusIgnore);
     }
 
     // Error if it is in the selective sync blacklist
     foreach(const auto &s, _syncEngine->journal()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList)) {
         if (fileNameSlash.startsWith(s)) {
-            return SyncFileStatus(SyncFileStatus::STATUS_ERROR);
+            return SyncFileStatus(SyncFileStatus::StatusError);
         }
     }
 
-    SyncFileStatus status(SyncFileStatus::STATUS_NONE);
+    SyncFileStatus status(SyncFileStatus::StatusNone);
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName );
 
     if (estimateState(fileName, type, &status)) {
@@ -156,32 +156,33 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         // FIXME: The new parent folder logic should take over this, treating the root the same as any folder.
     } else if (type == CSYNC_FTW_TYPE_DIR) {
         if (rec.isValid()) {
-            status.set(SyncFileStatus::STATUS_UPTODATE);
+            status.set(SyncFileStatus::StatusUpToDate);
         } else {
-            qDebug() << "Could not determine state for folder" << fileName << "will set STATUS_NEW";
-            status.set(SyncFileStatus::STATUS_NEW);
+            qDebug() << "Could not determine state for folder" << fileName << "will set StatusSync";
+            status.set(SyncFileStatus::StatusSync);
         }
     } else if (type == CSYNC_FTW_TYPE_FILE) {
         if (rec.isValid()) {
             if( FileSystem::getModTime(fi.absoluteFilePath()) == Utility::qDateTimeToTime_t(rec._modtime) ) {
-                status.set(SyncFileStatus::STATUS_UPTODATE);
+                status.set(SyncFileStatus::StatusUpToDate);
             } else {
                 if (rec._remotePerm.isNull() || rec._remotePerm.contains("W") ) {
-                    status.set(SyncFileStatus::STATUS_EVAL);
+                    status.set(SyncFileStatus::StatusSync);
                 } else {
-                    status.set(SyncFileStatus::STATUS_ERROR);
+                    status.set(SyncFileStatus::StatusError);
                 }
             }
         } else {
-            qDebug() << "Could not determine state for file" << fileName << "will set STATUS_NEW";
-            status.set(SyncFileStatus::STATUS_NEW);
+            qDebug() << "Could not determine state for file" << fileName << "will set StatusSync";
+            status.set(SyncFileStatus::StatusSync);
         }
     }
 
     if (rec.isValid() && rec._remotePerm.contains("S"))
         status.setSharedWithMe(true);
 
-    if (status.tag() == SyncFileStatus::STATUS_NEW) {
+    // FIXME: Wrong, but will go away
+    if (status.tag() == SyncFileStatus::StatusSync) {
         // check the parent folder if it is shared and if it is allowed to create a file/dir within
         QDir d( fi.path() );
         auto parentPath = d.path();
@@ -199,7 +200,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         if( dirRec.isValid() && !dirRec._remotePerm.isNull()) {
             if( (isDir && !dirRec._remotePerm.contains("K"))
                     || (!isDir && !dirRec._remotePerm.contains("C")) ) {
-                status.set(SyncFileStatus::STATUS_ERROR);
+                status.set(SyncFileStatus::StatusError);
             }
         }
     }
@@ -252,7 +253,7 @@ void SyncFileStatusTracker::slotItemDiscovered(const SyncFileItem &item)
         systemFileName += QLatin1Char('/');
     }
 
-    emit fileStatusChanged(systemFileName, SyncFileStatus(SyncFileStatus::STATUS_EVAL));
+    emit fileStatusChanged(systemFileName, SyncFileStatus(SyncFileStatus::StatusSync));
 }
 
 }

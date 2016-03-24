@@ -330,8 +330,7 @@ void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
         SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
         // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
-            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
             const QString message = QLatin1String("SHARE:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
             return;
@@ -386,8 +385,7 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket
         SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
         // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::STATUS_UPTODATE &&
-            fileStatus.tag() != SyncFileStatus::STATUS_UPDATED) {
+        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
             const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:")+QDir::toNativeSeparators(localFile);
             sendMessage(socket, message);
             return;

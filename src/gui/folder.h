@@ -21,7 +21,6 @@
 #include "progressdispatcher.h"
 #include "syncjournaldb.h"
 #include "clientproxy.h"
-#include "syncfilestatus.h"
 #include "networkjobs.h"
 
 #include <csync.h>
@@ -266,7 +265,16 @@ private:
 
     void checkLocalPath();
 
-    void createGuiLog(const QString& filename, SyncFileStatus status, int count,
+    enum LogStatus {
+        LogStatusRemove,
+        LogStatusRename,
+        LogStatusMove,
+        LogStatusNew,
+        LogStatusError,
+        LogStatusUpdated
+    };
+
+    void createGuiLog(const QString& filename, LogStatus status, int count,
                        const QString& renameTarget = QString::null );
 
     AccountStatePtr _accountState;

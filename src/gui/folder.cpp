@@ -441,32 +441,32 @@ void Folder::bubbleUpSyncResult()
     _syncResult.setWarnCount(ignoredItems);
 
     if( firstItemNew ) {
-        createGuiLog( firstItemNew->_file,     SyncFileStatus::STATUS_NEW, newItems );
+        createGuiLog( firstItemNew->_file, LogStatusNew, newItems );
     }
     if( firstItemDeleted ) {
-        createGuiLog( firstItemDeleted->_file, SyncFileStatus::STATUS_REMOVE, removedItems );
+        createGuiLog( firstItemDeleted->_file, LogStatusRemove, removedItems );
     }
     if( firstItemUpdated ) {
-        createGuiLog( firstItemUpdated->_file, SyncFileStatus::STATUS_UPDATED, updatedItems );
+        createGuiLog( firstItemUpdated->_file, LogStatusUpdated, updatedItems );
     }
 
     if( firstItemRenamed ) {
-        SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
+        LogStatus status(LogStatusRename);
         // if the path changes it's rather a move
         QDir renTarget = QFileInfo(firstItemRenamed->_renameTarget).dir();
         QDir renSource = QFileInfo(firstItemRenamed->_file).dir();
         if(renTarget != renSource) {
-            status.set(SyncFileStatus::STATUS_MOVE);
+            status = LogStatusMove;
         }
         createGuiLog( firstItemRenamed->_originalFile, status, renamedItems, firstItemRenamed->_renameTarget );
     }
 
-    createGuiLog( firstItemError->_file,   SyncFileStatus::STATUS_ERROR, errorItems );
+    createGuiLog( firstItemError->_file, LogStatusError, errorItems );
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
 
-void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int count,
+void Folder::createGuiLog( const QString& filename, LogStatus status, int count,
                            const QString& renameTarget )
 {
     if(count > 0) {
@@ -475,52 +475,48 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
         QString file = QDir::toNativeSeparators(filename);
         QString text;
 
-        // not all possible values of status are evaluated here because the others
-        // are not used in the calling function. Please check there.
-        switch (status.tag()) {
-        case SyncFileStatus::STATUS_REMOVE:
+        switch (status) {
+        case LogStatusRemove:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been removed.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been removed.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_NEW:
+        case LogStatusNew:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been downloaded.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_UPDATED:
+        case LogStatusUpdated:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been updated.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been updated.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_RENAME:
+        case LogStatusRename:
             if( count > 1 ) {
                 text = tr("%1 has been renamed to %2 and %3 other files have been renamed.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
             }
             break;
-        case SyncFileStatus::STATUS_MOVE:
+        case LogStatusMove:
             if( count > 1 ) {
                 text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
             }
             break;
-        case SyncFileStatus::STATUS_ERROR:
+        case LogStatusError:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files could not be synced due to errors. See the log for details.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
-            break;
-        default:
             break;
         }
 

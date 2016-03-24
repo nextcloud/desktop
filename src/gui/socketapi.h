@@ -17,6 +17,7 @@
 #define SOCKETAPI_H
 
 #include "syncfileitem.h"
+#include "syncfilestatus.h"
 #include "ownsql.h"
 
 #if defined(Q_OS_MAC)

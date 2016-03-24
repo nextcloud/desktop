@@ -1321,13 +1321,13 @@ bool SyncEngine::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s
                 item->_file == fn || item->_renameTarget == fn /* the same directory or file */) {
             if (item->_status == SyncFileItem::NormalError
                 || item->_status == SyncFileItem::FatalError)
-                s->set(SyncFileStatus::STATUS_ERROR);
+                s->set(SyncFileStatus::StatusError);
             else if (item->_status == SyncFileItem::FileIgnored)
-                s->set(SyncFileStatus::STATUS_IGNORE);
+                s->set(SyncFileStatus::StatusIgnore);
             else if (item->_status == SyncFileItem::Success)
-                s->set(SyncFileStatus::STATUS_UPDATED);
+                s->set(SyncFileStatus::StatusUpToDate);
             else
-                s->set(SyncFileStatus::STATUS_EVAL);
+                s->set(SyncFileStatus::StatusSync);
             qDebug() << Q_FUNC_INFO << "Setting" << fn << "to" << s->toSocketAPIString();
             return true;
         }
