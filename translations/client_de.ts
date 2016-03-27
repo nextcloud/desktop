@@ -1615,7 +1615,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>&amp;E-Mail-Adresse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>

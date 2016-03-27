@@ -1618,7 +1618,7 @@ por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>Endereço &amp;E-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -3090,7 +3090,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>O servidor %1 está executando uma versão antiga e não suportada %2. Usar esse cliente junto com versões não suportadas e não testadas é potencialmente perigoso. Prossiga por conta própria.</translation>
+        <translation>O servidor da conta %1 está executando uma versão %2 antiga e não suportada. Usar esse cliente junto com versões não suportadas e não testadas é potencialmente perigoso. Prossiga por conta própria.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="274"/>

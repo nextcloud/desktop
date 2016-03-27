@@ -1617,7 +1617,7 @@ privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>endereço &amp;E-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
