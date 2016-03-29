@@ -18,23 +18,11 @@
 #include "ownsql.h"
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
-#include <set>
+#include <map>
 
 namespace OCC {
 
 class SyncEngine;
-
-struct Problem {
-    QString path;
-    SyncFileStatus::SyncFileStatusTag severity = SyncFileStatus::StatusError;
-
-    Problem(const QString &path) : path(path) { }
-    Problem(const QString &path, SyncFileStatus::SyncFileStatusTag severity) : path(path), severity(severity) { }
-
-    // Assume that each path will only have one severity, don't care about it in sorting
-    bool operator<(const Problem &other) const { return path < other.path; }
-    bool operator==(const Problem &other) const { return path == other.path; }
-};
 
 class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
 {
@@ -54,7 +42,7 @@ private:
     SyncFileStatus fileStatus(const SyncFileItem& item);
     void invalidateParentPaths(const QString& path);
     SyncEngine* _syncEngine;
-    std::set<Problem> _syncProblems;
+    std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
 };
 
 }

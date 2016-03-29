@@ -19,15 +19,25 @@
 
 namespace OCC {
 
-static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const std::set<Problem> &set)
+static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const std::map<QString, SyncFileStatus::SyncFileStatusTag> &problemMap)
 {
-    for (auto it = set.cbegin(); it != set.cend(); ++it) {
-        qDebug() << Q_FUNC_INFO << pathToMatch << it->severity << it->path;
-        auto problemPath = it->path;
+    auto lower = problemMap.lower_bound(pathToMatch);
+    for (auto it = lower; it != problemMap.cend(); ++it) {
+        const QString &problemPath = it->first;
+        SyncFileStatus::SyncFileStatusTag severity = it->second;
+        qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
         if (problemPath == pathToMatch)
-            return it->severity;
-        else if (it->severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch))
+            return severity;
+        else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch))
             return SyncFileStatus::StatusWarning;
+        else if (!problemPath.startsWith(pathToMatch))
+            // Starting at lower_bound we get the first path that is not smaller,
+            // since: "/a/" < "/a/aa" < "/a/aa/aaa" < "/a/ab/aba"
+            // If problemMap keys are ["/a/aa/aaa", "/a/ab/aba"] and pathToMatch == "/a/aa",
+            // lower_bound(pathToMatch) will point to "/a/aa/aaa", and the moment that
+            // problemPath.startsWith(pathToMatch) == false, we know that we've looked
+            // at everything that interest us.
+            break;
     }
     return SyncFileStatus::StatusNone;
 }
@@ -89,16 +99,16 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
 void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
 {
-    std::set<Problem> oldProblems;
+    std::map<QString, SyncFileStatus::SyncFileStatusTag> oldProblems;
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
         qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status;
 
         if (showErrorInSocketApi(*item))
-            _syncProblems.insert({item->_file, SyncFileStatus::StatusError});
+            _syncProblems[item->_file] = SyncFileStatus::StatusError;
         else if (showWarningInSocketApi(*item))
-            _syncProblems.insert({item->_file, SyncFileStatus::StatusWarning});
+            _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
 
         QString systemFileName = _syncEngine->localPath() + item->destination();
         // the trailing slash for directories must be appended as the filenames coming in
@@ -112,11 +122,13 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     // Make sure to push any status that might have been resolved indirectly since the last sync
     // (like an error file being deleted from disk)
     for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it)
-        oldProblems.erase(*it);
+        oldProblems.erase(it->first);
     for (auto it = oldProblems.begin(); it != oldProblems.end(); ++it) {
-        if (it->severity == SyncFileStatus::StatusError)
-            invalidateParentPaths(it->path);
-        emit fileStatusChanged(_syncEngine->localPath() + it->path, fileStatus(it->path));
+        const QString &path = it->first;
+        SyncFileStatus::SyncFileStatusTag severity = it->second;
+        if (severity == SyncFileStatus::StatusError)
+            invalidateParentPaths(path);
+        emit fileStatusChanged(_syncEngine->localPath() + path, fileStatus(path));
     }
 }
 
@@ -125,10 +137,10 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
     qDebug() << Q_FUNC_INFO << item.destination() << item._status;
 
     if (showErrorInSocketApi(item)) {
-        _syncProblems.insert({item._file, SyncFileStatus::StatusError});
+        _syncProblems[item._file] = SyncFileStatus::StatusError;
         invalidateParentPaths(item.destination());
     } else if (showWarningInSocketApi(item)) {
-        _syncProblems.insert({item._file, SyncFileStatus::StatusWarning});
+        _syncProblems[item._file] = SyncFileStatus::StatusWarning;
     } else {
         // There is currently no situation where an error status set during discovery/update is fixed by propagation.
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
