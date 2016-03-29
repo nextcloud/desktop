@@ -25,7 +25,7 @@ static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatc
     for (auto it = lower; it != problemMap.cend(); ++it) {
         const QString &problemPath = it->first;
         SyncFileStatus::SyncFileStatusTag severity = it->second;
-        qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
+        // qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
         if (problemPath == pathToMatch)
             return severity;
         else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch))
@@ -103,7 +103,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
-        qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status;
+        // qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status;
 
         if (showErrorInSocketApi(*item))
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
@@ -134,7 +134,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
 
 void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
 {
-    qDebug() << Q_FUNC_INFO << item.destination() << item._status;
+    // qDebug() << Q_FUNC_INFO << item.destination() << item._status;
 
     if (showErrorInSocketApi(item)) {
         _syncProblems[item._file] = SyncFileStatus::StatusError;

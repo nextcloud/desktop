@@ -24,11 +24,16 @@ namespace OCC {
 
 class SyncEngine;
 
+/**
+ * @brief Takes care of tracking the status of individual files as they
+ *        go through the SyncEngine, to be reported as overlay icons in the shell.
+ * @ingroup libsync
+ */
 class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
 {
     Q_OBJECT
 public:
-    SyncFileStatusTracker(SyncEngine* syncEngine);
+    explicit SyncFileStatusTracker(SyncEngine* syncEngine);
     SyncFileStatus fileStatus(const QString& systemFileName);
 
 signals:
