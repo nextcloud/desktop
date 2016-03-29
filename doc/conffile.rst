@@ -24,4 +24,4 @@ You can change the following configuration settings (must be under the ``[ownClo
 
 - ``chunkSize`` (default:  ``5242880``) -- Specifies the chunk size of uploaded files in bytes.
 
-- ``notificationRefreshInterval`` (default``300,000``)  -- Specifies the default interval of checking for new server notifications.
+- ``notificationRefreshInterval`` (default``300,000``)  -- Specifies the default interval of checking for new server notifications in milliseconds.
