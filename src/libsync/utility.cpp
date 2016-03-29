@@ -440,8 +440,6 @@ QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
         now = from;
     }
 
-    Q_ASSERT(dt.timeSpec() == Qt::UTC);
-
     if( dt.daysTo(now)>0 ) {
         int dtn = dt.daysTo(now);
         return QObject::tr("%n day(s) ago", "", dtn);

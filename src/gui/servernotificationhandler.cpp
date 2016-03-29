@@ -81,7 +81,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QVariantMap& jso
             a._link     = QUrl(s);
         }
         a._dateTime = json.value("datetime").toDateTime();
-        a._dateTime.setTimeSpec(Qt::UTC);
 
         auto actions = json.value("actions").toList();
         foreach( auto action, actions) {
