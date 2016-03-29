@@ -31,7 +31,7 @@ namespace OCC {
 class StrictRegExpValidator : public QRegExpValidator
 {
 public:
-    explicit StrictRegExpValidator(const QRegExp& rx, QObject *parent = Q_NULLPTR) :
+    explicit StrictRegExpValidator(const QRegExp& rx, QObject *parent = 0) :
         QRegExpValidator(rx, parent) {}
 
     virtual QValidator::State validate(QString& input, int& pos) const Q_DECL_OVERRIDE;
