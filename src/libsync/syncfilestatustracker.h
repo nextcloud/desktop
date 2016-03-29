@@ -46,6 +46,8 @@ private slots:
 private:
     SyncFileStatus fileStatus(const SyncFileItem& item);
     void invalidateParentPaths(const QString& path);
+    QString getSystemDestination(const SyncFileItem& syncEnginePath);
+
     SyncEngine* _syncEngine;
     std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
 };

@@ -110,13 +110,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
         else if (showWarningInSocketApi(*item))
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
 
-        QString systemFileName = _syncEngine->localPath() + item->destination();
-        // the trailing slash for directories must be appended as the filenames coming in
-        // from the plugins have that too. Otherwise the matching entry item is not found
-        // in the plugin.
-        if( item->_type == SyncFileItem::Type::Directory )
-            systemFileName += QLatin1Char('/');
-        emit fileStatusChanged(systemFileName, fileStatus(*item));
+        emit fileStatusChanged(getSystemDestination(*item), fileStatus(*item));
     }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
@@ -146,14 +140,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
     }
 
-    QString systemFileName = _syncEngine->localPath() + item.destination();
-    // the trailing slash for directories must be appended as the filenames coming in
-    // from the plugins have that too. Otherwise the matching entry item is not found
-    // in the plugin.
-    if( item._type == SyncFileItem::Type::Directory ) {
-        systemFileName += QLatin1Char('/');
-    }
-    emit fileStatusChanged(systemFileName, fileStatus(item));
+    emit fileStatusChanged(getSystemDestination(item), fileStatus(item));
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
@@ -189,6 +176,18 @@ void SyncFileStatusTracker::invalidateParentPaths(const QString& path)
         QString parentPath = splitPath.mid(0, i).join('/');
         emit fileStatusChanged(_syncEngine->localPath() + parentPath, fileStatus(parentPath));
     }
+}
+
+QString SyncFileStatusTracker::getSystemDestination(const SyncFileItem& item)
+{
+    QString systemFileName = _syncEngine->localPath() + item.destination();
+    // the trailing slash for directories must be appended as the filenames coming in
+    // from the plugins have that too. Otherwise the matching entry item is not found
+    // in the plugin.
+    if( item._type == SyncFileItem::Type::Directory ) {
+        systemFileName += QLatin1Char('/');
+    }
+    return systemFileName;
 }
 
 }
