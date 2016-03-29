@@ -544,11 +544,10 @@ void AccountSettings::slotAccountStateChanged(int state)
     }
     /* set the correct label for the Account toolbox button */
     if( _accountState ) {
-        bool isConnected = _accountState->isConnected();
-        if( isConnected ) {
-            _toggleSignInOutAction->setText(tr("Log out"));
-        } else {
+        if( _accountState->isSignedOut() ) {
             _toggleSignInOutAction->setText(tr("Log in"));
+        } else {
+            _toggleSignInOutAction->setText(tr("Log out"));
         }
     }
 }
