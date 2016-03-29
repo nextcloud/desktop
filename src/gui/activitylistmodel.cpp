@@ -99,8 +99,7 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
 {
     if( _activityLists.count() == 0 ) return true;
 
-    QMap<AccountState*, ActivityList>::const_iterator i = _activityLists.begin();
-    while (i != _activityLists.end()) {
+    for(auto i = _activityLists.begin() ; i != _activityLists.end(); ++i) {
         AccountState *ast = i.key();
         if( ast && ast->isConnected() ) {
             ActivityList activities = i.value();
@@ -176,9 +175,9 @@ void ActivityListModel::combineActivityLists()
 
     std::sort( resultList.begin(), resultList.end() );
 
-    beginRemoveRows(QModelIndex(), 0, _finalList.count() );
+    beginResetModel();
     _finalList.clear();
-    endRemoveRows();
+    endResetModel();
 
     beginInsertRows(QModelIndex(), 0, resultList.count());
     _finalList = resultList;
@@ -189,7 +188,7 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 {
     QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
 
-    foreach (AccountStatePtr asp, accounts) {
+    foreach (const AccountStatePtr& asp, accounts) {
 
         if( !_activityLists.contains(asp.data()) && asp->isConnected() ) {
             _activityLists[asp.data()] = ActivityList();
