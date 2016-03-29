@@ -340,18 +340,18 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             QString acc2 = accNotified.keys().at(1);
             if( newGuiLogCount == 2 ) {
                 int notiCount = accNotified[ acc1 ] + accNotified[ acc2 ];
-                msg = tr("You received %1 new notifications from %2 and %3.").arg(notiCount).arg(acc1).arg(acc2);
+                msg = tr("You received %n new notification(s) from %1 and %2.", "", notiCount).arg(acc1, acc2);
             } else {
-                msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1).arg(acc2);
+                msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1, acc2);
             }
         }
 
-        emit guiLog(Theme::instance()->appNameGUI() + QLatin1String(" ") + tr("Notifications - Action Required"),
-                    msg);
+        const QString log = tr("%1 Notifications - Action Required").arg(Theme::instance()->appNameGUI());
+        emit guiLog( log, msg);
     }
 }
 
-void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QString& verb)
+void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QByteArray& verb)
 {
     qDebug() << Q_FUNC_INFO << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());

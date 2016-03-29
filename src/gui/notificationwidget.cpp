@@ -129,14 +129,14 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);
         }
-        //* The second parameter is a time, such as 'failed at 09:58pm'
-        doneText = tr("%1 request failed at %2").arg(_actionLabel).arg(timeStr);
+        //: The second parameter is a time, such as 'failed at 09:58pm'
+        doneText = tr("%1 request failed at %2").arg(_actionLabel, timeStr);
     } else {
         // the call to the ocs API succeeded.
         _ui._buttonBox->hide();
 
-        //* The second parameter is a time, such as 'selected at 09:58pm'
-        doneText = tr("'%1' selected at %2").arg(_actionLabel).arg(timeStr);
+        //: The second parameter is a time, such as 'selected at 09:58pm'
+        doneText = tr("'%1' selected at %2").arg(_actionLabel, timeStr);
     }
     _ui._timeLabel->setText( doneText );
 
