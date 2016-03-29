@@ -94,7 +94,7 @@ private:
     QMap<Activity::Identifier, NotificationWidget*> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
     QSet<int> _guiLoggedNotifications;
-    ActivityList _blacklistedActivities;
+    ActivityList _blacklistedNotifications;
 
     QSet< QPair<QDateTime, NotificationWidget*> > _widgetsToRemove;
     QTimer _removeTimer;

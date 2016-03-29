@@ -234,7 +234,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     QString listAccountName;
 
     foreach( auto activity, list ) {
-        if( _blacklistedActivities.contains(activity)) {
+        if( _blacklistedNotifications.contains(activity)) {
             qDebug() << Q_FUNC_INFO << "Activity in blacklist, skip";
             continue;
         }
@@ -428,8 +428,8 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
 // blacklist the activity coming in here.
 void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity& blacklistActivity)
 {
-    if ( ! _blacklistedActivities.contains(blacklistActivity) ) {
-        _blacklistedActivities.append(blacklistActivity);
+    if ( ! _blacklistedNotifications.contains(blacklistActivity) ) {
+        _blacklistedNotifications.append(blacklistActivity);
     }
 
     NotificationWidget *widget = _widgetForNotifId[ blacklistActivity.ident() ];
