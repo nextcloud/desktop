@@ -108,7 +108,6 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
                 return true;
             }
         }
-        ++i;
     }
 
     return false;
