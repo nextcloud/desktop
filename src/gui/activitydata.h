@@ -65,12 +65,13 @@ public:
      * @param val
      * @return
      */
-    bool operator<( const Activity& val ) const;
 
-    bool operator==( const Activity& val ) const;
 
     Identifier ident() const;
 };
+
+bool operator==( const Activity& rhs, const Activity& lhs );
+bool operator<( const Activity& rhs, const Activity& lhs );
 
 /* ==================================================================== */
 /**

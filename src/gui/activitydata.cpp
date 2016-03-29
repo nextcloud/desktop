@@ -19,12 +19,12 @@
 namespace OCC
 {
 
-bool Activity::operator<( const Activity& val ) const {
-    return _dateTime.toMSecsSinceEpoch() > val._dateTime.toMSecsSinceEpoch();
+bool operator<( const Activity& rhs, const Activity& lhs ) {
+    return rhs._dateTime.toMSecsSinceEpoch() > lhs._dateTime.toMSecsSinceEpoch();
 }
 
-bool Activity::operator==( const Activity& val ) const {
-    return (_type == val._type && _id == val._id && _accName == val._accName);
+bool operator==( const Activity& rhs, const Activity& lhs ) {
+    return (rhs._type == lhs._type && rhs._id== lhs._id && rhs._accName == lhs._accName);
 }
 
 Activity::Identifier Activity::ident() const {
