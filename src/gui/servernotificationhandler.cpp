@@ -88,7 +88,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QVariantMap& jso
             ActivityLink al;
             al._label = QUrl::fromPercentEncoding(actionJson.value("label").toByteArray());
             al._link  = actionJson.value("link").toString();
-            al._verb  = actionJson.value("type").toString();
+            al._verb  = actionJson.value("type").toByteArray();
             al._isPrimary = actionJson.value("primary").toBool();
 
             a._links.append(al);

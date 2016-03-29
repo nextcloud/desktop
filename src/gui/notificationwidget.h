@@ -36,7 +36,7 @@ public:
     Activity activity() const;
 
 signals:
-    void sendNotificationRequest( const QString&, const QString& link, const QString& verb);
+    void sendNotificationRequest( const QString&, const QString& link, const QByteArray& verb);
     void requestCleanupAndBlacklist( const Activity& activity );
 
 public slots:

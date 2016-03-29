@@ -26,10 +26,10 @@ namespace OCC {
 class ActivityLink
 {
 public:
-    QString _label;
-    QString _link;
-    QString _verb;
-    bool _isPrimary;
+    QString    _label;
+    QString    _link;
+    QByteArray _verb;
+    bool       _isPrimary;
 };
 
 /* ==================================================================== */

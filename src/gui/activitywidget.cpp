@@ -245,8 +245,8 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             widget = _widgetForNotifId[activity.ident()];
         } else {
             widget = new NotificationWidget(this);
-            connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QString)),
-                    this, SLOT(slotSendNotificationRequest(QString, QString, QString)));
+            connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QByteArray)),
+                    this, SLOT(slotSendNotificationRequest(QString, QString, QByteArray)));
             connect(widget, SIGNAL(requestCleanupAndBlacklist(Activity)),
                     this, SLOT(slotRequestCleanupAndBlacklist(Activity)));
 

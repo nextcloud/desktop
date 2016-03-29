@@ -27,7 +27,7 @@ NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
     setIgnoreCredentialFailure(true);
 }
 
-void NotificationConfirmJob::setLinkAndVerb(const QUrl& link, const QString &verb)
+void NotificationConfirmJob::setLinkAndVerb(const QUrl& link, const QByteArray &verb)
 {
     _link = link;
     _verb = verb;
@@ -53,7 +53,7 @@ void NotificationConfirmJob::start()
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     QIODevice *iodevice = 0;
-    setReply(davRequest(_verb.toAscii(), _link, req, iodevice));
+    setReply(davRequest(_verb, _link, req, iodevice));
     setupConnections(reply());
 
     AbstractNetworkJob::start();

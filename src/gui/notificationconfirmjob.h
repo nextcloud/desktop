@@ -46,7 +46,7 @@ public:
      *
      * @param verb currently supported GET PUT POST DELETE
      */
-    void setLinkAndVerb(const QUrl& link, const QString &verb);
+    void setLinkAndVerb(const QUrl& link, const QByteArray &verb);
 
     /**
      * @brief Start the OCS request
@@ -80,7 +80,7 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 
 private:
-    QString _verb;
+    QByteArray _verb;
     QUrl _link;
     NotificationWidget *_widget;
 };
