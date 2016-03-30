@@ -184,7 +184,7 @@ void SyncFileStatusTracker::invalidateParentPaths(const QString& path)
 {
     QStringList splitPath = path.split('/', QString::SkipEmptyParts);
     for (int i = 0; i < splitPath.size(); ++i) {
-        QString parentPath = splitPath.mid(0, i).join('/');
+        QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1String("/"));
         emit fileStatusChanged(_syncEngine->localPath() + parentPath, fileStatus(parentPath));
     }
 }
