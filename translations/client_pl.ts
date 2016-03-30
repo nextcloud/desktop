@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
-        <location filename="../src/gui/accountsettings.cpp" line="680"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
@@ -198,27 +198,27 @@
         <translation>Brak połączenia do %1 z %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="548"/>
         <source>Log in</source>
         <translation>Zaloguj</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="632"/>
+        <location filename="../src/gui/accountsettings.cpp" line="631"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="672"/>
+        <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Confirm Account Removal</source>
         <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="673"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Czy na pewno chcesz usunąć połączenie z kontem &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Uwaga:&lt;/b&gt;  ta operacja &lt;b&gt;nie&lt;/b&gt; usunie plików klienta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="679"/>
+        <location filename="../src/gui/accountsettings.cpp" line="678"/>
         <source>Remove connection</source>
         <translation>Usuwanie połączenia</translation>
     </message>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="141"/>
-        <location filename="../src/gui/accountsettings.cpp" line="549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="550"/>
         <source>Log out</source>
         <translation>Wyloguj</translation>
     </message>

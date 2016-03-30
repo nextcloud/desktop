@@ -93,7 +93,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
-        <location filename="../src/gui/accountsettings.cpp" line="680"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Cancel</source>
         <translation>Άκυρο</translation>
     </message>
@@ -198,27 +198,27 @@
         <translation>Δεν υπάρχει σύνδεση με το %1 στο %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="551"/>
+        <location filename="../src/gui/accountsettings.cpp" line="548"/>
         <source>Log in</source>
         <translation>Είσοδος</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="632"/>
+        <location filename="../src/gui/accountsettings.cpp" line="631"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation>Υπάρχουν νέοι φάκελοι που δεν συγχρονίστηκαν καθώς είναι πολύ μεγάλοι:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="672"/>
+        <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Confirm Account Removal</source>
         <translation>Επιβεβαίωση Αφαίρεσης Λογαριασμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="673"/>
+        <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Θέλετε πραγματικά να αφαιρέσετε τη σύνδεση με το λογαριασμό &lt;i&gt;%1&lt;/i&gt;;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Σημείωση:&lt;/b&gt; Αυτό &lt;b&gt;δεν&lt;/b&gt; θα διαγράψει κανένα αρχείο.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="679"/>
+        <location filename="../src/gui/accountsettings.cpp" line="678"/>
         <source>Remove connection</source>
         <translation>Αφαίρεση σύνδεσης</translation>
     </message>
@@ -229,7 +229,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="141"/>
-        <location filename="../src/gui/accountsettings.cpp" line="549"/>
+        <location filename="../src/gui/accountsettings.cpp" line="550"/>
         <source>Log out</source>
         <translation>Αποσύνδεση</translation>
     </message>
