@@ -4,9 +4,6 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTUTILITY_H
-#define MIRALL_TESTUTILITY_H
-
 #include <QtTest>
 
 #include "updater/updater.h"
@@ -33,4 +30,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestUpdater)
+#include "testupdater.moc"

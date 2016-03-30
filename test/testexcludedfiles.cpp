@@ -5,8 +5,6 @@
  *
  */
 
-#pragma once
-
 #include <QtTest>
 
 #include "excludedfiles.h"
@@ -47,4 +45,5 @@ private slots:
     }
 };
 
-
+QTEST_MAIN(TestExcludedFiles)
+#include "testexcludedfiles.moc"

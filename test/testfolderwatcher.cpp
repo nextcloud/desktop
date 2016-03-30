@@ -5,9 +5,6 @@
  *
  */
 
-#ifndef MIRALL_TESTFOLDERWATCHER_H
-#define MIRALL_TESTFOLDERWATCHER_H
-
 #include <QtTest>
 
 #include "folderwatcher.h"
@@ -173,4 +170,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestFolderWatcher)
+#include "testfolderwatcher.moc"

@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_TESTSYNCJOURNALDB_H
-#define MIRALL_TESTSYNCJOURNALDB_H
-
 #include <QtTest>
 
 #include <sqlite3.h>
@@ -174,4 +171,5 @@ private:
     SyncJournalDb _db;
 };
 
-#endif
+QTEST_MAIN(TestSyncJournalDB)
+#include "testsyncjournaldb.moc"

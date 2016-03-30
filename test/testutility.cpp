@@ -4,14 +4,13 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTUTILITY_H
-#define MIRALL_TESTUTILITY_H
-
 #include <QtTest>
 
 #include "utility.h"
 
-#include "oc_bin.h"
+#define STR_(X) #X
+#define STR(X) STR_(X)
+#define BIN_PATH STR(OWNCLOUD_BIN_PATH)
 
 using namespace OCC::Utility;
 
@@ -122,7 +121,7 @@ private slots:
                 // Current requires an X-Server
                 return;
             }
-            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN);
+            QString ver = versionOfInstalledBinary(BIN_PATH);
 	    qDebug() << "Version of installed ownCloud Binary: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
@@ -166,4 +165,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestUtility)
+#include "testutility.moc"

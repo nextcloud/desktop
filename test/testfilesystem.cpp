@@ -4,9 +4,6 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTFILESYSTEM_H
-#define MIRALL_TESTFILESYSTEM_H
-
 #include <QtTest>
 #include <QDebug>
 
@@ -90,4 +87,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestFileSystem)
+#include "testfilesystem.moc"

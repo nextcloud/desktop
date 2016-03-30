@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_INOTIFYWATCHER_H
-#define MIRALL_INOTIFYWATCHER_H
-
 #include <QtTest>
 
 #include "folderwatcher_linux.h"
@@ -72,4 +69,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestInotifyWatcher)
+#include "testinotifywatcher.moc"

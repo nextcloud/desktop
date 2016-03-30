@@ -5,9 +5,6 @@
  *
  */
 
-#ifndef MIRALL_TESTCONCATURL_H
-#define MIRALL_TESTCONCATURL_H
-
 #include <QtTest>
 
 #include <QUrl>
@@ -103,4 +100,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestConcatUrl)
+#include "testconcaturl.moc"
