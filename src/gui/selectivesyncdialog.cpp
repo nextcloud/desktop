@@ -14,6 +14,7 @@
 #include "selectivesyncdialog.h"
 #include "folder.h"
 #include "account.h"
+#include "excludedfiles.h"
 #include "networkjobs.h"
 #include "theme.h"
 #include "folderman.h"
@@ -176,21 +177,11 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
         pathToRemove.append('/');
 
     // Check for excludes.
-    //
-    // We would like to use Folder::isFileExcluded, but the folder doesn't
-    // exist yet. So we just create one temporarily...
-    FolderDefinition def;
-    def.localPath = pathToRemove;
-    def.ignoreHiddenFiles = FolderMan::instance()->ignoreHiddenFiles();
-    Folder f(def);
     QMutableListIterator<QString> it(list);
     while (it.hasNext()) {
         it.next();
-        QString path = it.value();
-        path.remove(pathToRemove);
-        if (f.isFileExcludedRelative(path)) {
+        if (ExcludedFiles::instance().isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles()))
             it.remove();
-        }
     }
 
     // Since / cannot be in the blacklist, expand it to the actual

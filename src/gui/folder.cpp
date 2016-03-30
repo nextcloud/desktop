@@ -56,9 +56,10 @@ static void csyncLogCatcher(int /*verbosity*/,
 
 
 Folder::Folder(const FolderDefinition& definition,
+               AccountState* accountState,
                QObject* parent)
     : QObject(parent)
-      , _accountState(0)
+      , _accountState(accountState)
       , _definition(definition)
       , _csyncError(false)
       , _csyncUnavail(false)
@@ -70,6 +71,9 @@ Folder::Folder(const FolderDefinition& definition,
       , _consecutiveFollowUpSyncs(0)
       , _journal(definition.localPath)
 {
+    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
+
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -84,24 +88,37 @@ Folder::Folder(const FolderDefinition& definition,
     checkLocalPath();
 
     _syncResult.setFolder(_definition.alias);
+
+    _engine.reset(new SyncEngine(_accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
+    // pass the setting if hidden files are to be ignored, will be read in csync_update
+    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+
+    if (!setIgnoredFiles())
+        qWarning("Could not read system exclude file");
+
+    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
+    connect(_engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
+              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
+
+    connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
+    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
+
+    //direct connection so the message box is blocking the sync.
+    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
+                    SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
+    connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool*)),
+            SLOT(slotAboutToRestoreBackup(bool*)));
+    connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
+    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
+    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 }
 
 Folder::~Folder()
 {
-    if( _engine ) {
-        _engine->abort();
-        _engine.reset(0);
-    }
-}
-
-void Folder::setAccountState( AccountState *account )
-{
-    _accountState = account;
-}
-
-AccountState* Folder::accountState() const
-{
-    return _accountState;
 }
 
 void Folder::checkLocalPath()
@@ -192,7 +209,7 @@ QString Folder::cleanPath()
 
 bool Folder::isBusy() const
 {
-    return !_engine.isNull();
+    return _engine->isSyncRunning();
 }
 
 QString Folder::remotePath() const
@@ -202,9 +219,6 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    if (!_accountState) {
-        return QUrl("http://deleted-account");
-    }
     return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
@@ -255,11 +269,6 @@ void Folder::prepareToSync()
 void Folder::slotRunEtagJob()
 {
     qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
-
-    if (!_accountState) {
-        qDebug() << "Can't run EtagJob, account is deleted";
-        return;
-    }
 
     AccountPtr account = _accountState->account();
 
@@ -328,9 +337,7 @@ void Folder::etagRetreived(const QString& etag)
         emit scheduleToSync(this);
     }
 
-    if( _accountState ) {
-        _accountState->tagLastSuccessfullETagRequest();
-    }
+    _accountState->tagLastSuccessfullETagRequest();
 }
 
 void Folder::etagRetreivedFromSyncEngine(const QString& etag)
@@ -359,7 +366,7 @@ void Folder::bubbleUpSyncResult()
 
     SyncRunFileLog syncFileLog;
 
-    syncFileLog.start(path(), _engine ? _engine->stopWatch() : Utility::StopWatch() );
+    syncFileLog.start(path(), _engine->isSyncRunning() ? _engine->stopWatch() : Utility::StopWatch() );
 
     QElapsedTimer timer;
     timer.start();
@@ -434,32 +441,32 @@ void Folder::bubbleUpSyncResult()
     _syncResult.setWarnCount(ignoredItems);
 
     if( firstItemNew ) {
-        createGuiLog( firstItemNew->_file,     SyncFileStatus::STATUS_NEW, newItems );
+        createGuiLog( firstItemNew->_file, LogStatusNew, newItems );
     }
     if( firstItemDeleted ) {
-        createGuiLog( firstItemDeleted->_file, SyncFileStatus::STATUS_REMOVE, removedItems );
+        createGuiLog( firstItemDeleted->_file, LogStatusRemove, removedItems );
     }
     if( firstItemUpdated ) {
-        createGuiLog( firstItemUpdated->_file, SyncFileStatus::STATUS_UPDATED, updatedItems );
+        createGuiLog( firstItemUpdated->_file, LogStatusUpdated, updatedItems );
     }
 
     if( firstItemRenamed ) {
-        SyncFileStatus status(SyncFileStatus::STATUS_RENAME);
+        LogStatus status(LogStatusRename);
         // if the path changes it's rather a move
         QDir renTarget = QFileInfo(firstItemRenamed->_renameTarget).dir();
         QDir renSource = QFileInfo(firstItemRenamed->_file).dir();
         if(renTarget != renSource) {
-            status.set(SyncFileStatus::STATUS_MOVE);
+            status = LogStatusMove;
         }
         createGuiLog( firstItemRenamed->_originalFile, status, renamedItems, firstItemRenamed->_renameTarget );
     }
 
-    createGuiLog( firstItemError->_file,   SyncFileStatus::STATUS_ERROR, errorItems );
+    createGuiLog( firstItemError->_file, LogStatusError, errorItems );
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
 
-void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int count,
+void Folder::createGuiLog( const QString& filename, LogStatus status, int count,
                            const QString& renameTarget )
 {
     if(count > 0) {
@@ -468,52 +475,48 @@ void Folder::createGuiLog( const QString& filename, SyncFileStatus status, int c
         QString file = QDir::toNativeSeparators(filename);
         QString text;
 
-        // not all possible values of status are evaluated here because the others
-        // are not used in the calling function. Please check there.
-        switch (status.tag()) {
-        case SyncFileStatus::STATUS_REMOVE:
+        switch (status) {
+        case LogStatusRemove:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been removed.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been removed.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_NEW:
+        case LogStatusNew:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been downloaded.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_UPDATED:
+        case LogStatusUpdated:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files have been updated.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 has been updated.", "%1 names a file.").arg(file);
             }
             break;
-        case SyncFileStatus::STATUS_RENAME:
+        case LogStatusRename:
             if( count > 1 ) {
                 text = tr("%1 has been renamed to %2 and %3 other files have been renamed.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
             }
             break;
-        case SyncFileStatus::STATUS_MOVE:
+        case LogStatusMove:
             if( count > 1 ) {
                 text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
             } else {
                 text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
             }
             break;
-        case SyncFileStatus::STATUS_ERROR:
+        case LogStatusError:
             if( count > 1 ) {
                 text = tr("%1 and %2 other files could not be synced due to errors. See the log for details.", "%1 names a file.").arg(file).arg(count-1);
             } else {
                 text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
-            break;
-        default:
             break;
         }
 
@@ -557,7 +560,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
 {
     // When no sync is running or it's in the prepare phase, we can
     // always schedule a new sync.
-    if (! _engine || _syncResult.status() == SyncResult::SyncPrepare) {
+    if (! _engine->isSyncRunning() || _syncResult.status() == SyncResult::SyncPrepare) {
         emit scheduleToSync(this);
         return;
     }
@@ -585,91 +588,14 @@ void Folder::slotWatchedPathChanged(const QString& path)
     }
 }
 
-/**
- * Whether this item should get an ERROR icon through the Socket API.
- *
- * The Socket API should only present serious, permanent errors to the user.
- * In particular SoftErrors should just retain their 'needs to be synced'
- * icon as the problem is most likely going to resolve itself quickly and
- * automatically.
- */
-static bool showErrorInSocketApi(const SyncFileItem& item)
-{
-    const auto status = item._status;
-    return status == SyncFileItem::NormalError
-        || status == SyncFileItem::FatalError;
-}
-
-static void addErroredSyncItemPathsToList(const SyncFileItemVector& items, QSet<QString>* set) {
-    foreach (const SyncFileItemPtr &item, items) {
-        if (showErrorInSocketApi(*item)) {
-            set->insert(item->_file);
-        }
-    }
-}
-
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 {
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
     _syncResult.setSyncFileItemVector(items);
 }
 
-void Folder::slotAboutToPropagate(SyncFileItemVector& items)
-{
-    // empty the tainted list since the status generation code will use the _syncedItems
-    // (which imply the folder) to generate the syncing state icon now.
-    _stateTaintedFolders.clear();
-
-    addErroredSyncItemPathsToList(items, &this->_stateLastSyncItemsWithErrorNew);
-}
-
-
-bool Folder::estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s)
-{
-    if (t == CSYNC_FTW_TYPE_DIR) {
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            qDebug() << Q_FUNC_INFO << "Folder has error" << fn;
-            s->set(SyncFileStatus::STATUS_ERROR);
-            return true;
-        }
-        // If sync is running, check _syncedItems, possibly give it STATUS_EVAL (=syncing down)
-        if (!_engine.isNull()) {
-            if (_engine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-        if(!fn.endsWith(QLatin1Char('/'))) {
-            fn.append(QLatin1Char('/'));
-        }
-        if (Utility::doesSetContainPrefix(_stateTaintedFolders, fn)) {
-            qDebug() << Q_FUNC_INFO << "Folder is tainted, EVAL!" << fn;
-            s->set(SyncFileStatus::STATUS_EVAL);
-            return true;
-        }
-        return false;
-    } else if ( t== CSYNC_FTW_TYPE_FILE) {
-        // check if errorList has the directory/file
-        if (Utility::doesSetContainPrefix(_stateLastSyncItemsWithError, fn)) {
-            s->set(SyncFileStatus::STATUS_ERROR);
-            return true;
-        }
-        // If sync running: _syncedItems -> SyncingState
-        if (!_engine.isNull()) {
-            if (_engine->estimateState(fn, t, s)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
 
 void Folder::saveToSettings() const
 {
-    if (!_accountState) {
-        qDebug() << "Can't save folder to settings, account is deleted";
-        return;
-    }
-
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     FolderDefinition::save(*settings, _definition);
@@ -680,11 +606,6 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    if (!_accountState) {
-        qDebug() << "Can't remove folder from settings, account is deleted";
-        return;
-    }
-
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     settings->remove(_definition.alias);
@@ -692,56 +613,19 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
 {
-    if (!fullPath.startsWith(path())) {
-        // Mark paths we're not responsible for as excluded...
-        return true;
-    }
-
-    QString myFullPath = fullPath;
-    if (myFullPath.endsWith(QLatin1Char('/'))) {
-        myFullPath.chop(1);
-    }
-
-    QString relativePath = myFullPath.mid(path().size());
-    auto excl = ExcludedFiles::instance().isExcluded(myFullPath, relativePath, _definition.ignoreHiddenFiles);
-    return excl != CSYNC_NOT_EXCLUDED;
+    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString& relativePath) const
 {
-    return isFileExcludedAbsolute(path() + relativePath);
+    return _engine->excludedFiles().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
 }
-
-void Folder::watcherSlot(QString fn)
-{
-    // FIXME: On OS X we could not do this "if" since on OS X the file watcher ignores events for ourselves
-    // however to have the same behaviour atm on all platforms, we don't do it
-    if (!_engine.isNull()) {
-        qDebug() << Q_FUNC_INFO << "Sync running, IGNORE event for " << fn;
-        return;
-    }
-    QFileInfo fi(fn);
-    if (fi.isFile()) {
-        fn = fi.path(); // depending on OS, file watcher might be for dir or file
-    }
-    // Make it a relative path depending on the folder
-    QString relativePath = fn.remove(0, path().length());
-    if( !relativePath.endsWith(QLatin1Char('/'))) {
-        relativePath.append(QLatin1Char('/'));
-    }
-    qDebug() << Q_FUNC_INFO << fi.canonicalFilePath() << fn << relativePath;
-    _stateTaintedFolders.insert(relativePath);
-
-    // Notify the SocketAPI?
-}
-
-
 
 void Folder::slotTerminateSync()
 {
     qDebug() << "folder " << alias() << " Terminating!";
 
-    if( _engine ) {
+    if( _engine->isSyncRunning() ) {
         _engine->abort();
 
         // Do not display an error message, user knows his own actions.
@@ -814,11 +698,6 @@ bool Folder::proxyDirty()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    if (!_accountState) {
-        qDebug() << "Can't startSync, account is deleted";
-        return;
-    }
-
     Q_UNUSED(pathList)
     if (proxyDirty()) {
         setProxyDirty(false);
@@ -843,42 +722,12 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
-    _engine.reset(new SyncEngine( _accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
-    // pass the setting if hidden files are to be ignored, will be read in csync_update
-    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-
     if (!setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
         QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
         return;
     }
-
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
-    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
-
-    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
-    connect( _engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
-              this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
-    connect( _engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-
-    connect(_engine.data(), SIGNAL(started()),  SLOT(slotSyncStarted()), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
-
-    //direct connection so the message box is blocking the sync.
-    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction,bool*)),
-                    SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction,bool*)));
-    connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool*)),
-            SLOT(slotAboutToRestoreBackup(bool*)));
-    connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
-    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
-    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
-    connect(_engine.data(), SIGNAL(syncItemDiscovered(const SyncFileItem &)), this, SLOT(slotSyncItemDiscovered(const SyncFileItem &)));
-    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
 
     setDirtyNetworkLimits();
 
@@ -896,27 +745,24 @@ void Folder::startSync(const QStringList &pathList)
 
 void Folder::setDirtyNetworkLimits()
 {
-    if (_engine) {
-
-        ConfigFile cfg;
-        int downloadLimit = -75; // 75%
-        int useDownLimit = cfg.useDownloadLimit();
-        if (useDownLimit >= 1) {
-            downloadLimit = cfg.downloadLimit() * 1000;
-        } else if (useDownLimit == 0) {
-            downloadLimit = 0;
-        }
-
-        int uploadLimit = -75; // 75%
-        int useUpLimit = cfg.useUploadLimit();
-        if ( useUpLimit >= 1) {
-            uploadLimit = cfg.uploadLimit() * 1000;
-        } else if (useUpLimit == 0) {
-            uploadLimit = 0;
-        }
-
-        _engine->setNetworkLimits(uploadLimit, downloadLimit);
+    ConfigFile cfg;
+    int downloadLimit = -75; // 75%
+    int useDownLimit = cfg.useDownloadLimit();
+    if (useDownLimit >= 1) {
+        downloadLimit = cfg.downloadLimit() * 1000;
+    } else if (useDownLimit == 0) {
+        downloadLimit = 0;
     }
+
+    int uploadLimit = -75; // 75%
+    int useUpLimit = cfg.useUploadLimit();
+    if ( useUpLimit >= 1) {
+        uploadLimit = cfg.uploadLimit() * 1000;
+    } else if (useUpLimit == 0) {
+        uploadLimit = 0;
+    }
+
+    _engine->setNetworkLimits(uploadLimit, downloadLimit);
 }
 
 
@@ -955,19 +801,10 @@ void Folder::slotSyncFinished(bool success)
     }
     bubbleUpSyncResult();
 
-    bool anotherSyncNeeded = false;
-    if (_engine) {
-        anotherSyncNeeded = _engine->isAnotherSyncNeeded();
-        _engine.reset(0);
-    }
+    bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
     // _watcher->setEventsEnabledDelayed(2000);
 
 
-
-    // This is for sync state calculation
-    _stateLastSyncItemsWithError = _stateLastSyncItemsWithErrorNew;
-    _stateLastSyncItemsWithErrorNew.clear();
-    _stateTaintedFolders.clear(); // heuristic: assume the sync had been done, new file watches needed to taint dirs
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
@@ -1064,20 +901,11 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 // a item is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
 {
-    if (showErrorInSocketApi(item)) {
-        _stateLastSyncItemsWithErrorNew.insert(item._file);
-    }
-
     if (Progress::isWarningKind(item._status)) {
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
-}
-
-void Folder::slotSyncItemDiscovered(const SyncFileItem & item)
-{
-    emit ProgressDispatcher::instance()->syncItemDiscovered(alias(), item);
 }
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF)

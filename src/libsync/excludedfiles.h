@@ -16,7 +16,6 @@
 #include "owncloudlib.h"
 
 #include <QObject>
-#include <QReadWriteLock>
 #include <QStringList>
 
 extern "C" {
@@ -49,14 +48,12 @@ public:
     /**
      * Checks whether a file or directory should be excluded.
      *
-     * @param fullPath     the absolute path to the file
-     * @param relativePath path relative to the folder
-     *
-     * For directories, the paths must not contain a trailing /.
+     * @param filePath     the absolute path to the file
+     * @param basePath     folder path from which to apply exclude rules
      */
-    CSYNC_EXCLUDE_TYPE isExcluded(
-            const QString& fullPath,
-            const QString& relativePath,
+    bool isExcluded(
+            const QString& filePath,
+            const QString& basePath,
             bool excludeHidden) const;
 
 public slots:
@@ -70,7 +67,6 @@ private:
     // but the pointer can be in a csync_context so that it can itself also query the list.
     c_strlist_t** _excludesPtr;
     QStringList _excludeFiles;
-    mutable QReadWriteLock _mutex;
 };
 
 } // namespace OCC

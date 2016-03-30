@@ -28,18 +28,11 @@ class OWNCLOUDSYNC_EXPORT SyncFileStatus
 {
 public:
     enum SyncFileStatusTag {
-        STATUS_NONE,
-        STATUS_EVAL,
-        STATUS_REMOVE,
-        STATUS_RENAME,
-        STATUS_MOVE,
-        STATUS_NEW,
-        STATUS_CONFLICT,
-        STATUS_IGNORE,
-        STATUS_UPTODATE,
-        STATUS_STAT_ERROR,
-        STATUS_ERROR,
-        STATUS_UPDATED
+        StatusNone,
+        StatusSync,
+        StatusWarning,
+        StatusUpToDate,
+        StatusError,
     };
 
     SyncFileStatus();

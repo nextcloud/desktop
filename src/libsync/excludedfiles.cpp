@@ -14,8 +14,6 @@
 #include "excludedfiles.h"
 
 #include <QFileInfo>
-#include <QReadLocker>
-#include <QWriteLocker>
 
 extern "C" {
 #include "std/c_string.h"
@@ -44,13 +42,11 @@ ExcludedFiles& ExcludedFiles::instance()
 
 void ExcludedFiles::addExcludeFilePath(const QString& path)
 {
-    QWriteLocker locker(&_mutex);
     _excludeFiles.append(path);
 }
 
 bool ExcludedFiles::reloadExcludes()
 {
-    QWriteLocker locker(&_mutex);
     c_strlist_destroy(*_excludesPtr);
     *_excludesPtr = NULL;
 
@@ -62,16 +58,20 @@ bool ExcludedFiles::reloadExcludes()
     return success;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::isExcluded(
-        const QString& fullPath,
-        const QString& relativePath,
+bool ExcludedFiles::isExcluded(
+        const QString& filePath,
+        const QString& basePath,
         bool excludeHidden) const
 {
-    QFileInfo fi(fullPath);
+    if (!filePath.startsWith(basePath)) {
+        // Mark paths we're not responsible for as excluded...
+        return true;
+    }
 
+    QFileInfo fi(filePath);
     if( excludeHidden ) {
         if( fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.')) ) {
-            return CSYNC_FILE_EXCLUDE_HIDDEN;
+            return true;
         }
     }
 
@@ -79,6 +79,11 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::isExcluded(
     if (fi.isDir()) {
         type = CSYNC_FTW_TYPE_DIR;
     }
-    QReadLocker lock(&_mutex);
-    return csync_excluded_no_ctx(*_excludesPtr, relativePath.toUtf8(), type);
+
+    QString relativePath = filePath.mid(basePath.size());
+    if (relativePath.endsWith(QLatin1Char('/'))) {
+        relativePath.chop(1);
+    }
+
+    return csync_excluded_no_ctx(*_excludesPtr, relativePath.toUtf8(), type) != CSYNC_NOT_EXCLUDED;
 }

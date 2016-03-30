@@ -35,7 +35,7 @@
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
 #include "utility.h"
-#include "syncfilestatus.h"
+#include "syncfilestatustracker.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
 #include "checksums.h"
@@ -69,19 +69,23 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
+    bool isSyncRunning() const { return _syncRunning; }
+
     /* Set the maximum size a folder can have without asking for confirmation
      * -1 means infinite
      */
     void setNewBigFolderSizeLimit(qint64 limit) { _newBigFolderSizeLimit = limit; }
+    bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
 
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }
+    SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    bool estimateState(QString fn, csync_ftw_type_e t, SyncFileStatus* s);
+    SyncFileItem* findSyncItem(const QString &fileName) const;
 
     /** Get the ms since a file was touched, or -1 if it wasn't.
      *
@@ -91,7 +95,7 @@ public:
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
-
+    QString localPath() const { return _localPath; }
     /**
      * Minimum age, in milisecond, of a file that can be uploaded.
      * Files more recent than that are not going to be uploaeded as they are considered
@@ -168,7 +172,7 @@ private:
     // cleanup and emit the finished signal
     void finalize(bool success);
 
-    static bool _syncRunning; //true when one sync is running somewhere (for debugging)
+    static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
     QMap<QString, SyncFileItemPtr> _syncItemMap;
@@ -180,6 +184,7 @@ private:
     AccountPtr _account;
     CSYNC *_csync_ctx;
     bool _needsUpdate;
+    bool _syncRunning;
     QString _localPath;
     QUrl _remoteUrl;
     QString _remotePath;
@@ -208,6 +213,7 @@ private:
     QScopedPointer<ProgressInfo> _progressInfo;
 
     QScopedPointer<ExcludedFiles> _excludedFiles;
+    QScopedPointer<SyncFileStatusTracker> _syncFileStatusTracker;
     Utility::StopWatch _stopWatch;
 
     // maps the origin and the target of the folders that have been renamed

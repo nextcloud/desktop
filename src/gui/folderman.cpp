@@ -32,7 +32,6 @@
 #endif
 
 #include <QMessageBox>
-#include <QPointer>
 #include <QtCore>
 #include <QMutableSetIterator>
 #include <QSet>
@@ -50,7 +49,7 @@ FolderMan::FolderMan(QObject *parent) :
     Q_ASSERT(!_instance);
     _instance = this;
 
-    _socketApi = new SocketApi(this);
+    _socketApi.reset(new SocketApi);
 
     ConfigFile cfg;
     int polltime = cfg.remotePollInterval();
@@ -89,9 +88,7 @@ void FolderMan::unloadFolder( Folder *f )
         return;
     }
 
-    if( _socketApi ) {
-        _socketApi->slotUnregisterPath(f->alias());
-    }
+    _socketApi->slotUnregisterPath(f->alias());
 
     if( _folderWatchers.contains(f->alias())) {
         _folderWatchers.remove(f->alias());
@@ -108,6 +105,8 @@ void FolderMan::unloadFolder( Folder *f )
                this, SLOT(slotForwardFolderSyncStateChange()));
     disconnect(f, SIGNAL(syncPausedChanged(Folder*,bool)),
                this, SLOT(slotFolderSyncPaused(Folder*,bool)));
+    disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
+               _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -147,15 +146,10 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         // is lost this way, but we do not need it for the current implementation.
         connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
         _folderWatchers.insert(folder->alias(), fw);
-
-        // This is at the moment only for the behaviour of the SocketApi.
-        connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(watcherSlot(QString)));
     }
 
     // register the folder with the socket API
-    if( _socketApi ) {
-        _socketApi->slotRegisterPath(folder->alias());
-    }
+    _socketApi->slotRegisterPath(folder->alias());
 }
 
 void FolderMan::addMonitorPath( const QString& alias, const QString& path )
@@ -206,9 +200,8 @@ int FolderMan::setupFolders()
         foreach (const auto& folderAlias, settings->childGroups()) {
             FolderDefinition folderDefinition;
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(folderDefinition);
+                Folder* f = addFolderInternal(folderDefinition, account.data());
                 if (f) {
-                    f->setAccountState( account.data() );
                     slotScheduleSync(f);
                     emit folderSyncStateChange(f);
                 }
@@ -307,7 +300,7 @@ QString FolderMan::escapeAlias( const QString& alias )
 
 SocketApi *FolderMan::socketApi()
 {
-    return this->_socketApi;
+    return this->_socketApi.data();
 }
 
 QString FolderMan::unescapeAlias( const QString& alias )
@@ -395,10 +388,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition);
+    folder = addFolderInternal(folderDefinition, accountState);
     if (folder) {
-        folder->setAccountState(accountState);
-
         QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
             //migrate settings
@@ -478,21 +469,17 @@ void FolderMan::slotScheduleSync( Folder *f )
     }
     auto alias = f->alias();
 
-    if( _socketApi ) {
-        // We want the SocketAPI to already now update so that it can show the EVAL icon
-        // for files/folders. Only do this when not syncing, else we might get a lot
-        // of those notifications.
-        _socketApi->slotUpdateFolderView(f);
-    }
+    // We want the SocketAPI to already now update so that it can show the EVAL icon
+    // for files/folders. Only do this when not syncing, else we might get a lot
+    // of those notifications.
+    _socketApi->slotUpdateFolderView(f);
 
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(f) ) {
         if( !f->canSync() ) {
             qDebug() << "Folder is not ready to sync, not scheduled!";
-            if( _socketApi ) {
-                _socketApi->slotUpdateFolderView(f);
-            }
+            _socketApi->slotUpdateFolderView(f);
             return;
         }
         f->prepareToSync();
@@ -786,9 +773,8 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
         return 0;
     }
 
-    auto folder = addFolderInternal(folderDefinition);
-    if(folder && accountState) {
-        folder->setAccountState(accountState);
+    auto folder = addFolderInternal(folderDefinition, accountState);
+    if(folder) {
         folder->saveToSettings();
         emit folderSyncStateChange(folder);
         emit folderListChanged(_folderMap);
@@ -796,9 +782,9 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
+Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState)
 {
-    auto folder = new Folder(folderDefinition, this );
+    auto folder = new Folder(folderDefinition, accountState, this );
 
     qDebug() << "Adding folder to Folder Map " << folder;
     _folderMap[folder->alias()] = folder;
@@ -812,6 +798,8 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition)
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
     connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
+    connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
+            _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
 
     registerFolderMonitor(folder);
     return folder;
@@ -935,15 +923,13 @@ bool FolderMan::startFromScratch( const QString& localFolder )
         }
         // Disconnect the socket api from the database to avoid that locking of the
         // db file does not allow to move this dir.
-        if( _socketApi ) {
-            Folder *f = folderForPath(localFolder);
-            if(f) {
-                if( localFolder.startsWith(f->path()) ) {
-                    _socketApi->slotUnregisterPath(f->alias());
-                }
-                f->journalDb()->close();
-                f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
+        Folder *f = folderForPath(localFolder);
+        if(f) {
+            if( localFolder.startsWith(f->path()) ) {
+                _socketApi->slotUnregisterPath(f->alias());
             }
+            f->journalDb()->close();
+            f->slotTerminateSync(); // Normally it should not be running, but viel hilft viel
         }
 
         // Make a backup of the folder/file.

@@ -29,11 +29,13 @@ namespace OCC {
 class AccountState;
 class Account;
 
+typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
+
 /**
  * @brief Extra info about an ownCloud server account.
  * @ingroup gui
  */
-class AccountState : public QObject {
+class AccountState : public QObject, public QSharedData {
     Q_OBJECT
 public:
     enum State {
@@ -148,6 +150,6 @@ private:
 }
 
 Q_DECLARE_METATYPE(OCC::AccountState*)
-Q_DECLARE_METATYPE(QSharedPointer<OCC::AccountState>)
+Q_DECLARE_METATYPE(OCC::AccountStatePtr)
 
 #endif //ACCOUNTINFO_H

@@ -18,8 +18,6 @@
 
 namespace OCC {
 
-typedef QSharedPointer<AccountState> AccountStatePtr;
-
 /**
    @brief The AccountManager class
    @ingroup gui

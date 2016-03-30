@@ -19,7 +19,6 @@
 #include <QObject>
 #include <QQueue>
 #include <QList>
-#include <QPointer>
 
 #include "folder.h"
 #include "folderwatcher.h"
@@ -202,7 +201,7 @@ private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */
-    Folder* addFolderInternal(const FolderDefinition& folderDefinition);
+    Folder* addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder( Folder * );
@@ -228,7 +227,7 @@ private:
     QPointer<RequestEtagJob>        _currentEtagJob; // alias of Folder running the current RequestEtagJob
 
     QMap<QString, FolderWatcher*> _folderWatchers;
-    QPointer<SocketApi> _socketApi;
+    QScopedPointer<SocketApi> _socketApi;
 
     /** The aliases of folders that shall be synced. */
     QQueue<Folder*> _scheduleQueue;
