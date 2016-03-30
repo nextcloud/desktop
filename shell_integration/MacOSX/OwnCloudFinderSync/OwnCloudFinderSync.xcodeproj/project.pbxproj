@@ -267,6 +267,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ ${OC_OEM_SHARE_ICNS} ]]; then\n  cp ${OC_OEM_SHARE_ICNS} ${BUILT_PRODUCTS_DIR}/FinderSyncExt.appex/Contents/Resources/app.icns\nfi";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
