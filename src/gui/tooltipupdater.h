@@ -15,6 +15,7 @@
 #include <QPoint>
 
 class QTreeView;
+class QModelIndex;
 
 namespace OCC {
 
