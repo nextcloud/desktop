@@ -31,15 +31,20 @@
 
 namespace OCC {
 
-ShareDialog::ShareDialog(QPointer<AccountState> accountState, const QString &sharePath, const QString &localPath, bool resharingAllowed, QWidget *parent) :
+ShareDialog::ShareDialog(QPointer<AccountState> accountState,
+                         const QString &sharePath,
+                         const QString &localPath,
+                         SharePermissions maxSharingPermissions,
+                         QWidget *parent) :
     QDialog(parent),
     _ui(new Ui::ShareDialog),
     _accountState(accountState),
     _sharePath(sharePath),
     _localPath(localPath),
-    _resharingAllowed(resharingAllowed),
+    _maxSharingPermissions(maxSharingPermissions),
     _linkWidget(NULL),
-    _userGroupWidget(NULL)
+    _userGroupWidget(NULL),
+    _progressIndicator(NULL)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SharingDialog"); // required as group for saveGeometry call
@@ -97,32 +102,25 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState, const QString &sha
         return;
     }
 
-    auto theme = Theme::instance();
-    bool autoShare = true;
-
-    // We only do user/group sharing from 8.2.0
-    if (theme->userGroupSharing() && accountState->account()->serverVersionInt() >= ((8 << 16) + (2 << 8))) {
-        _userGroupWidget = new ShareUserGroupWidget(accountState->account(), sharePath, localPath, resharingAllowed, this);
-        _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
-
-
-        QFrame *hline = new QFrame(this);
-        hline->setFrameShape(QFrame::HLine);
-        QPalette p = palette();
-        // Make the line softer:
-        p.setColor(QPalette::Foreground, QColor::fromRgba((p.color(QPalette::Foreground).rgba() & 0x00ffffff) | 0x50000000));
-        hline->setPalette(p);
-        _ui->shareWidgetsLayout->addWidget(hline);
-
-
-        autoShare = false;
+    if (QFileInfo(_localPath).isFile()) {
+        ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
+        connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
+        job->start();
     }
 
-    if (theme->linkSharing()) {
-        _linkWidget = new ShareLinkWidget(accountState->account(), sharePath, localPath, resharingAllowed, autoShare, this);
-        _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        _ui->shareWidgetsLayout->addWidget(_linkWidget);
-    }
+    _progressIndicator = new QProgressIndicator(this);
+    _progressIndicator->startAnimation();
+    _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
+    _ui->shareWidgetsLayout->addWidget(_progressIndicator);
+
+    // Server versions >= 9.1 support the "share-permissions" property
+    // older versions will just return share-permissions: ""
+    auto job = new PropfindJob(accountState->account(), _sharePath);
+    job->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:share-permissions");
+    job->setTimeout(10 * 1000);
+    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotMaxSharingPermissionsReceived(QVariantMap)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)), SLOT(slotMaxSharingPermissionsError()));
+    job->start();
 }
 
 ShareDialog::~ShareDialog()
@@ -136,19 +134,61 @@ void ShareDialog::done( int r ) {
     QDialog::done(r);
 }
 
-void ShareDialog::getShares()
+void ShareDialog::slotMaxSharingPermissionsReceived(const QVariantMap & result)
 {
-    if (QFileInfo(_localPath).isFile()) {
-        ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
-        connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
-        job->start();
+    const QVariant receivedPermissions = result["share-permissions"];
+    if (!receivedPermissions.toString().isEmpty()) {
+        _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
+        qDebug() << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
 
-    if (_linkWidget) {
-        _linkWidget->getShares();
-    }
-    if (_userGroupWidget != NULL) {
+    showSharingUi();
+}
+
+void ShareDialog::slotMaxSharingPermissionsError()
+{
+    // On error show the share ui anyway. The user can still see shares,
+    // delete them and so on, even though adding new shares or granting
+    // some of the permissions might fail.
+
+    showSharingUi();
+}
+
+void ShareDialog::showSharingUi()
+{
+    _progressIndicator->stopAnimation();
+
+    auto theme = Theme::instance();
+
+    // We only do user/group sharing from 8.2.0
+    bool userGroupSharing =
+            theme->userGroupSharing()
+            && _accountState->account()->serverVersionInt() >= ((8 << 16) + (2 << 8));
+
+    bool autoShare = !userGroupSharing;
+
+
+    if (userGroupSharing) {
+        _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
+        _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
         _userGroupWidget->getShares();
+    }
+
+    if (theme->linkSharing()) {
+        if (userGroupSharing) {
+            QFrame *hline = new QFrame(this);
+            hline->setFrameShape(QFrame::HLine);
+            QPalette p = palette();
+            // Make the line softer:
+            p.setColor(QPalette::Foreground, QColor::fromRgba((p.color(QPalette::Foreground).rgba() & 0x00ffffff) | 0x50000000));
+            hline->setPalette(p);
+            _ui->shareWidgetsLayout->addWidget(hline);
+        }
+
+        _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, autoShare, this);
+        _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        _ui->shareWidgetsLayout->addWidget(_linkWidget);
+        _linkWidget->getShares();
     }
 }
 

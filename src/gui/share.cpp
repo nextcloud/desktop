@@ -135,8 +135,8 @@ LinkShare::LinkShare(AccountPtr account,
 
 bool LinkShare::getPublicUpload()
 {
-    return ((_permissions & PermissionUpdate) &&
-            (_permissions & PermissionCreate));
+    return ((_permissions & SharePermissionUpdate) &&
+            (_permissions & SharePermissionCreate));
 }
 
 void LinkShare::setPublicUpload(bool publicUpload)
@@ -150,9 +150,9 @@ void LinkShare::setPublicUpload(bool publicUpload)
 void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
 {
     if (value.toBool()) {
-        _permissions = PermissionRead | PermissionUpdate | PermissionCreate;
+        _permissions = SharePermissionRead | SharePermissionUpdate | SharePermissionCreate;
     } else {
-        _permissions = PermissionRead;
+        _permissions = SharePermissionRead;
     }
 
     emit publicUploadSet();
@@ -260,7 +260,7 @@ void ShareManager::slotCreateShare(const QVariantMap &reply)
     _jobContinuation.remove(sender());
 
     // Find existing share permissions (if this was shared with us)
-    Share::Permissions existingPermissions = Share::PermissionDefault;
+    Share::Permissions existingPermissions = SharePermissionDefault;
     foreach (const QVariant & element, reply["ocs"].toMap()["data"].toList()) {
         QVariantMap map = element.toMap();
         if (map["file_target"] == cont.path)
@@ -269,9 +269,9 @@ void ShareManager::slotCreateShare(const QVariantMap &reply)
 
     // Limit the permissions we request for a share to the ones the item
     // was shared with initially.
-    if (cont.permissions == Share::PermissionDefault) {
+    if (cont.permissions == SharePermissionDefault) {
         cont.permissions = existingPermissions;
-    } else if (existingPermissions != Share::PermissionDefault) {
+    } else if (existingPermissions != SharePermissionDefault) {
         cont.permissions &= existingPermissions;
     }
 

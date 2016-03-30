@@ -15,6 +15,7 @@
 #define SHAREUSERGROUPWIDGET_H
 
 #include "accountfwd.h"
+#include "sharepermissions.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QWidget>
@@ -48,7 +49,10 @@ class ShareWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareWidget(QSharedPointer<Share> Share, bool isFile, QWidget *parent = 0);
+    explicit ShareWidget(QSharedPointer<Share> Share,
+                         SharePermissions maxSharingPermissions,
+                         bool isFile,
+                         QWidget *parent = 0);
     ~ShareWidget();
 
     QSharedPointer<Share> share() const;
@@ -90,7 +94,7 @@ public:
     explicit ShareUserGroupWidget(AccountPtr account, 
                                   const QString &sharePath,
                                   const QString &localPath,
-                                  bool resharingAllowed,
+                                  SharePermissions maxSharingPermissions,
                                   QWidget *parent = 0);
     ~ShareUserGroupWidget();
 
@@ -121,7 +125,7 @@ private:
     ShareeModel *_completerModel;
     QTimer _completionTimer;
 
-    bool _resharingAllowed;
+    SharePermissions _maxSharingPermissions;
     bool _isFile;
     bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;

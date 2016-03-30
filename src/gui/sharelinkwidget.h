@@ -16,6 +16,7 @@
 #define SHARELINKWIDGET_H
 
 #include "accountfwd.h"
+#include "sharepermissions.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QVariantMap>
@@ -47,7 +48,7 @@ public:
     explicit ShareLinkWidget(AccountPtr account,
                              const QString &sharePath,
                              const QString &localPath,
-                             bool resharingAllowed,
+                             SharePermissions maxSharingPermissions,
                              bool autoShare = false,
                              QWidget *parent = 0);
     ~ShareLinkWidget();
@@ -104,7 +105,7 @@ private:
     ShareManager *_manager;
     QSharedPointer<LinkShare> _share;
 
-    bool _resharingAllowed;
+    SharePermissions _maxSharingPermissions;
     bool _isFile;
     bool _autoShare;
     bool _passwordRequired;
