@@ -47,18 +47,18 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
-#ifdef Q_OS_WIN
+#ifndef Q_OS_MAC
     // If the font size ratio is set on Windows, we need to
     // enable the auto pixelRatio in Qt since we don't
     // want to use sizes relative to the font size everywhere.
-    // This is automatic on OS X, but opt-in on Windows
+    // This is automatic on OS X, but opt-in on Windows and Linux
     // https://doc-snapshots.qt.io/qt5-5.6/highdpi.html#qt-support
 #if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
     qputenv("QT_DEVICE_PIXEL_RATIO", "auto");
 #else
     qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
 #endif
-#endif // Q_OS_WIN
+#endif // !Q_OS_MAC
 
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
