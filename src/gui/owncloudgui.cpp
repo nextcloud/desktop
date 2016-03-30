@@ -35,6 +35,7 @@
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
+#include <QDir>
 #include <QMessageBox>
 #include <QSignalMapper>
 
