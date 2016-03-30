@@ -103,7 +103,8 @@
 
 	if (_shareMenuTitle && !onlyRootsSelected) {
 		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-		[menu addItemWithTitle:_shareMenuTitle action:@selector(shareMenuAction:) keyEquivalent:@"title"];
+		NSMenuItem *item = [menu addItemWithTitle:_shareMenuTitle action:@selector(shareMenuAction:) keyEquivalent:@"title"];
+		item.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
 		
 		return menu;
 	}
