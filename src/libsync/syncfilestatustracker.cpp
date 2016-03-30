@@ -26,11 +26,12 @@ static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatc
         const QString &problemPath = it->first;
         SyncFileStatus::SyncFileStatusTag severity = it->second;
         // qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
-        if (problemPath == pathToMatch)
+        if (problemPath == pathToMatch) {
             return severity;
-        else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch))
+        } else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch) && problemPath.at(pathToMatch.size()) == '/') {
+            Q_ASSERT(!pathToMatch.endsWith('/'));
             return SyncFileStatus::StatusWarning;
-        else if (!problemPath.startsWith(pathToMatch))
+        } else if (!problemPath.startsWith(pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
             // since: "/a/" < "/a/aa" < "/a/aa/aaa" < "/a/ab/aba"
             // If problemMap keys are ["/a/aa/aaa", "/a/ab/aba"] and pathToMatch == "/a/aa",
@@ -38,6 +39,7 @@ static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatc
             // problemPath.startsWith(pathToMatch) == false, we know that we've looked
             // at everything that interest us.
             break;
+        }
     }
     return SyncFileStatus::StatusNone;
 }
