@@ -419,7 +419,7 @@ QString Theme::webDavPathNonShib() const
 
 bool Theme::linkSharing() const
 {
-    return false;
+    return true;
 }
 
 bool Theme::userGroupSharing() const
