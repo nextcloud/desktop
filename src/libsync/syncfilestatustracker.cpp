@@ -86,6 +86,15 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         qDebug() << "Removed trailing slash: " << fileName;
     }
 
+    // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
+    // and CSYNC_FILE_EXCLUDE_AND_REMOVE excludes. Even though it's possible
+    // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
+    // update the exclude list at runtime and doing it statically here removes
+    // our ability to notify changes through the fileStatusChanged signal,
+    // it's an acceptable compromize to treat all exclude types the same.
+    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + fileName, _syncEngine->localPath(), _syncEngine->ignoreHiddenFiles()) )
+        return SyncFileStatus(SyncFileStatus::StatusWarning);
+
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
     if (item)
         return fileStatus(*item);
