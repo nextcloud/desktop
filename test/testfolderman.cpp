@@ -5,8 +5,6 @@
  *
  */
 
-#pragma once
-
 #include <qglobal.h>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 #include <QTemporaryDir>
@@ -120,4 +118,5 @@ private slots:
     }
 };
 
-
+QTEST_MAIN(TestFolderMan)
+#include "testfolderman.moc"

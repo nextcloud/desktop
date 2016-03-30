@@ -4,9 +4,6 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTOWNCLOUDPROPAGATOR_H
-#define MIRALL_TESTOWNCLOUDPROPAGATOR_H
-
 #include <QtTest>
 #include <QDebug>
 
@@ -81,4 +78,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestOwncloudPropagator)
+#include "testowncloudpropagator.moc"

@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_TESTSYNCFILEITEM_H
-#define MIRALL_TESTSYNCFILEITEM_H
-
 #include <QtTest>
 
 #include "syncfileitem.h"
@@ -68,4 +65,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestSyncFileItem)
+#include "testsyncfileitem.moc"

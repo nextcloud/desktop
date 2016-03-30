@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_TESTOWNSQL_H
-#define MIRALL_TESTOWNSQL_H
-
 #include <QtTest>
 
 #include <sqlite3.h>
@@ -152,4 +149,5 @@ private:
     SqlDatabase _db;
 };
 
-#endif
+QTEST_MAIN(TestOwnSql)
+#include "testownsql.moc"

@@ -5,8 +5,6 @@
  *
  */
 
-#pragma once
-
 #include <QtTest>
 #include <QDir>
 #include <QString>
@@ -151,3 +149,6 @@ using namespace OCC;
     void cleanupTestCase() {
     }
 };
+
+QTEST_MAIN(TestChecksumValidator)
+#include "testchecksumvalidator.moc"

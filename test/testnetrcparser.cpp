@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_INOTIFYWATCHER_H
-#define MIRALL_INOTIFYWATCHER_H
-
 #include <QtTest>
 
 #include "cmd/netrcparser.h"
@@ -73,4 +70,5 @@ private slots:
     }
 };
 
-#endif
+QTEST_MAIN(TestNetrcParser)
+#include "testnetrcparser.moc"

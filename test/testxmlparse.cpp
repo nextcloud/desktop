@@ -4,9 +4,6 @@
  *          any purpose.
  *          */
 
-#ifndef MIRALL_TESTXMLPARSE_H
-#define MIRALL_TESTXMLPARSE_H
-
 #include <QtTest>
 
 #include "networkjobs.h"
@@ -444,4 +441,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestXmlParse)
+#include "testxmlparse.moc"

@@ -4,9 +4,6 @@
    any purpose.
 */
 
-#ifndef MIRALL_TESTCSYNCSQLITE_H
-#define MIRALL_TESTCSYNCSQLITE_H
-
 #include "csync_statedb.h"
 #include "csync_private.h"
 #include <QtTest>
@@ -88,4 +85,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestCSyncSqlite)
+#include "testcsyncsqlite.moc"

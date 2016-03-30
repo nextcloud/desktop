@@ -5,9 +5,6 @@
  *
  */
 
-#ifndef MIRALL_TESTFOLDER_H
-#define MIRALL_TESTFOLDER_H
-
 #include <QtTest>
 
 #include "utility.h"
@@ -44,4 +41,5 @@ private slots:
 
 };
 
-#endif
+QTEST_MAIN(TestFolder)
+#include "testfolder.moc"

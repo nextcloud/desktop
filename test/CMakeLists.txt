@@ -26,8 +26,6 @@ if( UNIX AND NOT APPLE )
     owncloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
 endif(UNIX AND NOT APPLE)
 
-configure_file(oc_bin.h.in oc_bin.h)
-
 owncloud_add_test(CSyncSqlite "")
 owncloud_add_test(NetrcParser ../src/cmd/netrcparser.cpp)
 owncloud_add_test(OwnSql "")
