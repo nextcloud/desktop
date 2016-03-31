@@ -222,13 +222,13 @@ void SettingsDialog::accountRemoved(AccountState *s)
         if (as->accountsState() == s) {
             _toolBar->removeAction(it.key());
 
-            it.key()->deleteLater();
-            it.value()->deleteLater();
-            _actionGroupWidgets.erase(it);
-
             if (_ui->stack->currentWidget() == it.value()) {
                 showFirstPage();
             }
+
+            it.key()->deleteLater();
+            it.value()->deleteLater();
+            _actionGroupWidgets.erase(it);
             break;
         }
     }
