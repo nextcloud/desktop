@@ -796,7 +796,7 @@ Continuando a sincronização como normal fará com que todos os seus arquivos s
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando com a pasta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -909,7 +909,7 @@ Continuando a sincronização como normal fará com que todos os seus arquivos s
         <location filename="../src/gui/folderstatusmodel.cpp" line="920"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 restando, %1 de %2, arquivo %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="926"/>
