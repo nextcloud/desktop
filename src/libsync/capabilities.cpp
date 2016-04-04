@@ -71,6 +71,16 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
+bool Capabilities::notificationsAvailable() const
+{
+    return _capabilities.contains("notifications");
+}
+
+bool Capabilities::isValid() const
+{
+    return !_capabilities.isEmpty();
+}
+
 QList<QByteArray> Capabilities::supportedChecksumTypesAdvertised() const
 {
     return QList<QByteArray>();

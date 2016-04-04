@@ -77,6 +77,7 @@ protected:
     QNetworkReply* getRequest(const QUrl &url);
     QNetworkReply* headRequest(const QString &relPath);
     QNetworkReply* headRequest(const QUrl &url);
+    QNetworkReply* deleteRequest(const QUrl &url);
 
     int maxRedirects() const { return 10; }
     virtual bool finished() = 0;

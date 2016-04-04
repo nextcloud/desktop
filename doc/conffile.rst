@@ -25,3 +25,6 @@ You can change the following configuration settings (must be under the ``[ownClo
 - ``chunkSize`` (default:  ``5242880``) -- Specifies the chunk size of uploaded files in bytes.
 
 - ``promptDeleteAllFiles`` (default:  ``true``) -- If a UI prompt should ask for confirmation if it was detected that all files and folders were deleted.
+
+- ``notificationRefreshInterval`` (default``300,000``)  -- Specifies the default interval of checking for new server notifications in milliseconds.
+

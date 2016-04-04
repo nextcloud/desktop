@@ -239,6 +239,15 @@ QNetworkReply *Account::getRequest(const QUrl &url)
     return _am->get(request);
 }
 
+QNetworkReply *Account::deleteRequest( const QUrl &url)
+{
+    QNetworkRequest request(url);
+#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
+    request.setSslConfiguration(this->getOrCreateSslConfig());
+#endif
+    return _am->deleteResource(request);
+}
+
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data)
 {
     return davRequest(verb, concatUrlPath(davUrl(), relPath), req, data);

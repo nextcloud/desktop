@@ -32,6 +32,7 @@ set(client_UI
     owncloudsetuppage.ui
     addcertificatedialog.ui
     proxyauthdialog.ui
+    notificationwidget.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -62,6 +63,8 @@ set(client_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    activitydata.cpp
+    activitylistmodel.cpp
     activitywidget.cpp
     activityitemdelegate.cpp
     selectivesyncdialog.cpp
@@ -85,6 +88,9 @@ set(client_SRCS
     proxyauthdialog.cpp
     synclogdialog.cpp
     tooltipupdater.cpp
+    notificationwidget.cpp
+    notificationconfirmjob.cpp
+    servernotificationhandler.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/shibbolethcredentials.cpp

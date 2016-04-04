@@ -63,6 +63,9 @@ public:
     /* Set poll interval. Value in milliseconds has to be larger than 5000 */
     void setRemotePollInterval(int interval, const QString& connection = QString() );
 
+    /* Interval to check for new notifications */
+    quint64 notificationRefreshInterval(const QString& connection = QString()) const;
+
     /* Force sync interval, in milliseconds */
     quint64 forceSyncInterval(const QString &connection = QString()) const;
 

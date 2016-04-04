@@ -22,6 +22,8 @@
 #include <QPair>
 #include <QUrl>
 
+#define OCS_SUCCESS_STATUS_CODE 100
+
 namespace OCC {
 
 /**

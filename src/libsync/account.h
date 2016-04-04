@@ -111,6 +111,7 @@ public:
     QNetworkReply* headRequest(const QUrl &url);
     QNetworkReply* getRequest(const QString &relPath);
     QNetworkReply* getRequest(const QUrl &url);
+    QNetworkReply* deleteRequest( const QUrl &url);
     QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
 

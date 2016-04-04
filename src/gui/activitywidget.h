@@ -22,6 +22,7 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 #include "account.h"
+#include "activitydata.h"
 
 #include "ui_activitywidget.h"
 
@@ -33,96 +34,14 @@ namespace OCC {
 class Account;
 class AccountStatusPtr;
 class ProtocolWidget;
+class JsonApiJob;
+class NotificationWidget;
+class ActivityListModel;
 
 namespace Ui {
   class ActivityWidget;
 }
 class Application;
-
-/**
- * @brief Activity Structure
- * @ingroup gui
- *
- * contains all the information describing a single activity.
- */
-
-class Activity
-{
-public:
-    qlonglong _id;
-    QString   _subject;
-    QString   _message;
-    QString   _file;
-    QUrl      _link;
-    QDateTime _dateTime;
-    QString   _accName;
-
-    /**
-     * @brief Sort operator to sort the list youngest first.
-     * @param val
-     * @return
-     */
-    bool operator<( const Activity& val ) const {
-        return _dateTime.toMSecsSinceEpoch() > val._dateTime.toMSecsSinceEpoch();
-    }
-
-};
-
-/**
- * @brief The ActivityList
- * @ingroup gui
- *
- * A QList based list of Activities
- */
-class ActivityList:public QList<Activity>
-{
-public:
-    void setAccountName( const QString& name );
-    QString accountName() const;
-
-private:
-    QString _accountName;
-};
-
-
-/**
- * @brief The ActivityListModel
- * @ingroup gui
- *
- * Simple list model to provide the list view with data.
- */
-class ActivityListModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    explicit ActivityListModel(QWidget *parent=0);
-
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-
-    bool canFetchMore(const QModelIndex& ) const Q_DECL_OVERRIDE;
-    void fetchMore(const QModelIndex&) Q_DECL_OVERRIDE;
-
-    ActivityList activityList() { return _finalList; }
-
-public slots:
-    void slotRefreshActivity(AccountState* ast);
-    void slotRemoveAccount( AccountState *ast );
-
-private slots:
-    void slotActivitiesReceived(const QVariantMap& json, int statusCode);
-
-signals:
-    void activityJobStatusCode(AccountState* ast, int statusCode);
-
-private:
-    void startFetchJob(AccountState* s);
-    void combineActivityLists();
-
-    QMap<AccountState*, ActivityList> _activityLists;
-    ActivityList _finalList;
-    QSet<AccountState*> _currentlyFetching;
-};
 
 /**
  * @brief The ActivityWidget class
@@ -143,15 +62,27 @@ public:
 
 public slots:
     void slotOpenFile(QModelIndex indx);
-    void slotRefresh(AccountState* ptr);
+    void slotRefreshActivities(AccountState* ptr);
+    void slotRefreshNotifications(AccountState *ptr);
     void slotRemoveAccount( AccountState *ptr );
     void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotRequestCleanupAndBlacklist(const Activity& blacklistActivity);
 
 signals:
     void guiLog(const QString&, const QString&);
     void copyToClipboard();
     void rowsInserted();
     void hideAcitivityTab(bool);
+    void newNotificationList(const ActivityList& list);
+
+private slots:
+    void slotBuildNotificationDisplay(const ActivityList& list);
+    void slotSendNotificationRequest(const QString &accountName, const QString& link, const QByteArray &verb);
+    void slotNotifyNetworkError( QNetworkReply* );
+    void slotNotifyServerFinished( const QString& reply, int replyCode );
+    void endNotificationRequest(NotificationWidget *widget , int replyCode);
+    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 4500);
+    void slotCheckToCleanWidgets();
 
 private:
     void showLabels();
@@ -160,8 +91,21 @@ private:
     QPushButton *_copyBtn;
 
     QSet<QString> _accountsWithoutActivities;
+    QMap<Activity::Identifier, NotificationWidget*> _widgetForNotifId;
+    QElapsedTimer _guiLogTimer;
+    QSet<int> _guiLoggedNotifications;
+    ActivityList _blacklistedNotifications;
+
+    QSet< QPair<QDateTime, NotificationWidget*> > _widgetsToRemove;
+    QTimer _removeTimer;
+
+    // number of currently running notification requests. If non zero,
+    // no query for notifications is started.
+    int _notificationRequestsRunning;
 
     ActivityListModel *_model;
+    QVBoxLayout *_notificationsLayout;
+
 };
 
 
@@ -184,9 +128,12 @@ public slots:
     void slotRefresh( AccountState* ptr );
     void slotRemoveAccount( AccountState *ptr );
 
+    void setNotificationRefreshInterval( quint64 interval );
+
 private slots:
     void slotCopyToClipboard();
     void setActivityTabHidden(bool hidden);
+    void slotRegularNotificationCheck();
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -200,7 +147,8 @@ private:
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
     QProgressIndicator *_progressIndicator;
-
+    QTimer         _notificationCheckTimer;
+    QHash<AccountState*, QElapsedTimer>  _timeSinceLastCheck;
 };
 
 }
