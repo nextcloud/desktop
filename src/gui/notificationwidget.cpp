@@ -36,12 +36,12 @@ void NotificationWidget::setActivity(const Activity& activity)
     _accountName = activity._accName;
 
     // _ui._headerLabel->setText( );
+    _ui._subjectLabel->setVisible( !activity._subject.isEmpty() );
+    _ui._messageLabel->setVisible( !activity._message.isEmpty() );
+
     _ui._subjectLabel->setText(activity._subject);
-    if( activity._message.isEmpty()) {
-        _ui._messageLabel->hide();
-    } else {
-        _ui._messageLabel->setText(activity._message);
-    }
+    _ui._messageLabel->setText(activity._message);
+
     _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
     _ui._notifIcon->setMinimumWidth(64);
     _ui._notifIcon->setMinimumHeight(64);
