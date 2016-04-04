@@ -1043,8 +1043,17 @@ void SyncEngine::checkForPermission()
                     (*it)->_status = SyncFileItem::NormalError;
                     (*it)->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
 
-                    for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
+                    for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->destination().startsWith(path); ++it_next) {
                         it = it_next;
+                        if ((*it)->_instruction == CSYNC_INSTRUCTION_RENAME) {
+                            // The file was most likely moved in this directory.
+                            // If the file was read only or could not be moved or removed, it should
+                            // be restored. Do that in the next sync by not considering as a rename
+                            // but delete and upload. It will then be restored if needed.
+                            _journal->avoidRenamesOnNextSync((*it)->_file);
+                            _anotherSyncNeeded = true;
+                            qDebug() << "Moving of " << (*it)->_file << " canceled because no permission to add parent folder";
+                        }
                         (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                         (*it)->_status = SyncFileItem::NormalError;
                         (*it)->_errorString = tr("Not allowed because you don't have permission to add parent folder");
