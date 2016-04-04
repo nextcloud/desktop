@@ -172,7 +172,7 @@ QByteArray Utility::userAgentString()
 {
     QString re = QString::fromLatin1("Mozilla/5.0 (%1) mirall/%2")
             .arg(platform())
-            .arg(QLatin1String(MIRALL_STRINGIFY(MIRALL_VERSION)));
+            .arg(QLatin1String(MIRALL_VERSION_STRING));
 
     QLatin1String appName(APPLICATION_SHORTNAME);
 

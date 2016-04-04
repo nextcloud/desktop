@@ -87,7 +87,7 @@ To manually override this key, use the same value in ``HKEY_CURRENT_USER``.
 
 To prevent automatic updates and disallow manual overrides:
 
-.. note::This is the preferred method of controlling the updater behavior using 
+.. note:: This is the preferred method of controlling the updater behavior using 
    Group Policies.
 
 1. Edit this Registry key:
@@ -97,6 +97,14 @@ To prevent automatic updates and disallow manual overrides:
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 
 3. Specify a value of ``1`` to the machine.
+
+.. note:: Enterprise branded clients 
+   (see `Building Branded ownCloud Clients 
+   <https://doc.owncloud.org/branded_clients/>`_) have different key names, 
+   which are set in ownBrander using the Application Vendor and Application 
+   Name fields. Your key names look like this::
+
+   ``HKEY_LOCAL_MACHINE\Software\Policies\myCompanyName\myAppName``
 
 
 Preventing Automatic Updates in Mac OS X Environments

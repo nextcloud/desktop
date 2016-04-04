@@ -160,6 +160,10 @@ void PropagateRemoteMove::finalize()
     record._path = _item->_renameTarget;
     record._contentChecksum = oldRecord._contentChecksum;
     record._contentChecksumType = oldRecord._contentChecksumType;
+    if (record._fileSize != oldRecord._fileSize) {
+        qDebug() << "Warning: file sizes differ on server vs csync_journal: " << record._fileSize << oldRecord._fileSize;
+        record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
+    }
 
     _propagator->_journal->setFileRecord(record);
     _propagator->_journal->commit("Remote Rename");
