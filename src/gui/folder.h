@@ -271,6 +271,7 @@ private:
         LogStatusMove,
         LogStatusNew,
         LogStatusError,
+        LogStatusConflict,
         LogStatusUpdated
     };
 
