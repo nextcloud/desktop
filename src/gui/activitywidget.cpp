@@ -501,6 +501,8 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _protocolWidget = new ProtocolWidget(this);
     _tab->insertTab(1, _protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
     connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
+    connect(_protocolWidget, SIGNAL(issueItemCountUpdated(int)),
+            this, SLOT(slotShowIssueItemCount(int)));
 
     // Add the not-synced list into the tab
     QWidget *w = new QWidget;
@@ -515,7 +517,8 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_copyBtn, SIGNAL(clicked()), this, SLOT(slotCopyToClipboard()));
 
     w->setLayout(vbox2);
-    _tab->insertTab(2, w, Theme::instance()->syncStateIcon(SyncResult::Problem), tr("Not Synced"));
+    _syncIssueTabId = _tab->insertTab(2, w, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
+    slotShowIssueItemCount(0); // to display the label.
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
@@ -547,6 +550,15 @@ void ActivitySettings::setActivityTabHidden(bool hidden)
     if( !hidden && _activityTabId == -1 ) {
         _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     }
+}
+
+void ActivitySettings::slotShowIssueItemCount(int cnt)
+{
+    QString cntText = tr("Not Synced");
+    if( cnt ) {
+        cntText = tr("Not Synced - %n file(s)", "", cnt);
+    }
+    _tab->tabBar()->setTabText(_syncIssueTabId, cntText);
 }
 
 void ActivitySettings::slotCopyToClipboard()

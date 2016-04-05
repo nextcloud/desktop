@@ -60,6 +60,7 @@ protected:
 
 signals:
     void copyToClipboard();
+    void issueItemCountUpdated(int);
 
 private:
     void setSyncResultStatus(const SyncResult& result );

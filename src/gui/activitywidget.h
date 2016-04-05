@@ -134,6 +134,7 @@ private slots:
     void slotCopyToClipboard();
     void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
+    void slotShowIssueItemCount(int cnt);
 
 signals:
     void guiLog(const QString&, const QString&);
@@ -143,6 +144,7 @@ private:
 
     QTabWidget *_tab;
     int _activityTabId;
+    int _syncIssueTabId;
 
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
