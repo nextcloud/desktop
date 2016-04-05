@@ -64,6 +64,29 @@
     </message>
 </context>
 <context>
+    <name>NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="20"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="56"/>
+        <source>Lorem ipsum dolor sit amet</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -323,53 +346,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
-        <location filename="../src/gui/activitywidget.cpp" line="456"/>
+        <location filename="../src/gui/activitywidget.cpp" line="496"/>
+        <location filename="../src/gui/activitywidget.cpp" line="548"/>
         <source>Server Activity</source>
         <translation>กิจกรรมของเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="419"/>
+        <location filename="../src/gui/activitywidget.cpp" line="502"/>
         <source>Sync Protocol</source>
         <translation>โปรโตคอลที่ใช้ในการผสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="425"/>
+        <location filename="../src/gui/activitywidget.cpp" line="508"/>
         <source>List of ignored or erroneous files</source>
         <translation>รายชื่อของไฟล์ที่ถูกเพิกเฉยหรือมีผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="429"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
         <source>Copy</source>
         <translation>คัดลอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="513"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="435"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Not Synced</source>
         <translation>ไม่ถูกประสานข้อมูลให้ตรงกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="471"/>
+        <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>รายการกิจกรรมเซิร์ฟเวอร์ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="475"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>รายการกิจกรรมการประสานข้อมูลได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="478"/>
+        <location filename="../src/gui/activitywidget.cpp" line="570"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>รายชื่อที่ไม่ถูกประสานข้อมูลได้รับการคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="483"/>
+        <location filename="../src/gui/activitywidget.cpp" line="575"/>
         <source>Copied to clipboard</source>
         <translation>คัดลอกไปยังคลิปบอร์ด</translation>
     </message>
@@ -383,29 +406,55 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="30"/>
+        <location filename="../src/gui/activitywidget.ui" line="50"/>
+        <location filename="../src/gui/activitywidget.ui" line="67"/>
         <source>TextLabel</source>
         <translation>ป้ายข้อความ</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="311"/>
+        <location filename="../src/gui/activitywidget.cpp" line="133"/>
         <source>Server Activities</source>
         <translation>กิจกรรมของเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="284"/>
+        <location filename="../src/gui/activitywidget.cpp" line="88"/>
         <source>Copy</source>
         <translation>คัดลอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="89"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="318"/>
+        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <source>Action Required: Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="142"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;บัญชี %1 ไม่มีกิจกรรมที่เปิดใช้งาน</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <source>You received %n new notification(s) from %2.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <source>You received %n new notification(s) from %1 and %2.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <source>You received new notifications from %1, %2 and other accounts.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <source>%1 Notifications - Action Required</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1467,6 +1516,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
 </context>
 <context>
+    <name>OCC::NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="50"/>
+        <source>Created at %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="99"/>
+        <source>Closing in a few seconds...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="133"/>
+        <source>%1 request failed at %2</source>
+        <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="139"/>
+        <source>&apos;%1&apos; selected at %2</source>
+        <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::OCUpdater</name>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
@@ -2193,22 +2267,22 @@ It is not advisable to use it.</source>
         <translation>ตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="85"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="87"/>
         <source>Activity</source>
         <translation>กิจกรรม</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="93"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="96"/>
         <source>General</source>
         <translation>ทั่วไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="99"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>Network</source>
         <translation>เครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="197"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="199"/>
         <source>Account</source>
         <translation>บัญชี</translation>
     </message>
@@ -2751,18 +2825,18 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="687"/>
+        <location filename="../src/libsync/syncengine.cpp" line="690"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1089"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1108"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
@@ -2852,69 +2926,69 @@ It is not advisable to use it.</source>
         <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="632"/>
+        <location filename="../src/libsync/syncengine.cpp" line="635"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>ตัวอักษรไม่ถูกต้อง โปรดเปลี่ยนชื่อ &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="721"/>
+        <location filename="../src/libsync/syncengine.cpp" line="724"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>ไม่สามารถเตรียมการประสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="804"/>
+        <location filename="../src/libsync/syncengine.cpp" line="807"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="858"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1086"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1116"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1133"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1221"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1233"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1230"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>

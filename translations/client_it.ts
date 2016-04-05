@@ -64,6 +64,29 @@
     </message>
 </context>
 <context>
+    <name>NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="20"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="56"/>
+        <source>Lorem ipsum dolor sit amet</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -323,53 +346,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
-        <location filename="../src/gui/activitywidget.cpp" line="456"/>
+        <location filename="../src/gui/activitywidget.cpp" line="496"/>
+        <location filename="../src/gui/activitywidget.cpp" line="548"/>
         <source>Server Activity</source>
         <translation>Attività del server</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="419"/>
+        <location filename="../src/gui/activitywidget.cpp" line="502"/>
         <source>Sync Protocol</source>
         <translation>Protocollo di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="425"/>
+        <location filename="../src/gui/activitywidget.cpp" line="508"/>
         <source>List of ignored or erroneous files</source>
         <translation>Elenco dei file ignorati o errati</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="429"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
         <source>Copy</source>
         <translation>Copia</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="513"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copia l&apos;elenco delle attività negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="435"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Not Synced</source>
         <translation>Non sincronizzata</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="471"/>
+        <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>L&apos;elenco di attività del server è stato copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="475"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>L&apos;elenco di attività di sincronizzazione è stato copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="478"/>
+        <location filename="../src/gui/activitywidget.cpp" line="570"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>L&apos;elenco di elementi non sincronizzati è stato copiato negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="483"/>
+        <location filename="../src/gui/activitywidget.cpp" line="575"/>
         <source>Copied to clipboard</source>
         <translation>Copiato negli appunti</translation>
     </message>
@@ -383,29 +406,55 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="30"/>
+        <location filename="../src/gui/activitywidget.ui" line="50"/>
+        <location filename="../src/gui/activitywidget.ui" line="67"/>
         <source>TextLabel</source>
         <translation>EtichettaTesto</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="311"/>
+        <location filename="../src/gui/activitywidget.cpp" line="133"/>
         <source>Server Activities</source>
         <translation>Attività del server</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="284"/>
+        <location filename="../src/gui/activitywidget.cpp" line="88"/>
         <source>Copy</source>
         <translation>Copia</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="89"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copia l&apos;elenco delle attività negli appunti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="318"/>
+        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <source>Action Required: Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="142"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;L&apos;account %1 non ha attività abilitate.</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <source>You received %n new notification(s) from %2.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <source>You received %n new notification(s) from %1 and %2.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <source>You received new notifications from %1, %2 and other accounts.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <source>%1 Notifications - Action Required</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1468,6 +1517,31 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     </message>
 </context>
 <context>
+    <name>OCC::NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="50"/>
+        <source>Created at %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="99"/>
+        <source>Closing in a few seconds...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="133"/>
+        <source>%1 request failed at %2</source>
+        <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="139"/>
+        <source>&apos;%1&apos; selected at %2</source>
+        <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::OCUpdater</name>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
@@ -2198,22 +2272,22 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="85"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="87"/>
         <source>Activity</source>
         <translation>Attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="93"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="96"/>
         <source>General</source>
         <translation>Generale</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="99"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>Network</source>
         <translation>Rete</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="197"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="199"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
@@ -2758,18 +2832,18 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>Il file/cartella è ignorato poiché è nascosto.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="687"/>
+        <location filename="../src/libsync/syncengine.cpp" line="690"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Sono disponibili solo %1, servono almeno %2 per iniziare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1089"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere la cartella superiore</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1108"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere file in quella cartella</translation>
     </message>
@@ -2859,69 +2933,69 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>La codifica del nome del file non è valida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="632"/>
+        <location filename="../src/libsync/syncengine.cpp" line="635"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Caratteri non validi, rinomina &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="721"/>
+        <location filename="../src/libsync/syncengine.cpp" line="724"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Impossibile inizializzare il registro di sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="804"/>
+        <location filename="../src/libsync/syncengine.cpp" line="807"/>
         <source>Cannot open the sync journal</source>
         <translation>Impossibile aprire il registro di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="858"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>File name contains at least one invalid character</source>
         <translation>Il nome del file contiene almeno un carattere non valido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorato in base alla lista nera per la scelta di cosa sincronizzare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1086"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non consentito poiché non disponi dei permessi per aggiungere sottocartelle in quella cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1116"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Il caricamento di questo file non è consentito poiché è in sola lettura sul server, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1133"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Rimozione non consentita, ripristino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
         <source>Local files and share folder removed.</source>
         <translation>I file locali e la cartella condivisa sono stati rimossi.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1221"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1233"/>
         <source>Move not allowed, item restored</source>
         <translation>Spostamento non consentito, elemento ripristinato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1230"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Spostamento non consentito poiché %1 è in sola lettura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the destination</source>
         <translation>la destinazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the source</source>
         <translation>l&apos;origine</translation>
     </message>

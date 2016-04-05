@@ -64,6 +64,29 @@
     </message>
 </context>
 <context>
+    <name>NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="20"/>
+        <source>Form</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="56"/>
+        <source>Lorem ipsum dolor sit amet</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
@@ -323,53 +346,53 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="414"/>
-        <location filename="../src/gui/activitywidget.cpp" line="456"/>
+        <location filename="../src/gui/activitywidget.cpp" line="496"/>
+        <location filename="../src/gui/activitywidget.cpp" line="548"/>
         <source>Server Activity</source>
         <translation>Szerver aktivitás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="419"/>
+        <location filename="../src/gui/activitywidget.cpp" line="502"/>
         <source>Sync Protocol</source>
         <translation>Szinkronizációs protokoll</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="425"/>
+        <location filename="../src/gui/activitywidget.cpp" line="508"/>
         <source>List of ignored or erroneous files</source>
         <translation>Kihagyott vagy hibás fájlok listázása</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="429"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="430"/>
+        <location filename="../src/gui/activitywidget.cpp" line="513"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Az aktivitási lista másolása a vágólapra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="435"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Not Synced</source>
         <translation>Nincs szinkronizálva</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="471"/>
+        <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>A szerver aktivitási lista a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="475"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>A szinkronizációs aktivitási lista a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="478"/>
+        <location filename="../src/gui/activitywidget.cpp" line="570"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>A nem szinkronizált elemek a vágólapra másolva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="483"/>
+        <location filename="../src/gui/activitywidget.cpp" line="575"/>
         <source>Copied to clipboard</source>
         <translation>Másolva a vágólapra</translation>
     </message>
@@ -383,29 +406,55 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="30"/>
+        <location filename="../src/gui/activitywidget.ui" line="50"/>
+        <location filename="../src/gui/activitywidget.ui" line="67"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="311"/>
+        <location filename="../src/gui/activitywidget.cpp" line="133"/>
         <source>Server Activities</source>
         <translation>Szerver aktivitások</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="284"/>
+        <location filename="../src/gui/activitywidget.cpp" line="88"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="285"/>
+        <location filename="../src/gui/activitywidget.cpp" line="89"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Aktivitási lista másolása a vágólapra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="318"/>
+        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <source>Action Required: Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="142"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br /&gt; %1 fióknak nincsenek engedélyezve az aktivitások.</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <source>You received %n new notification(s) from %2.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <source>You received %n new notification(s) from %1 and %2.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <source>You received new notifications from %1, %2 and other accounts.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <source>%1 Notifications - Action Required</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1461,6 +1510,31 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
 </context>
 <context>
+    <name>OCC::NotificationWidget</name>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="50"/>
+        <source>Created at %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="99"/>
+        <source>Closing in a few seconds...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="133"/>
+        <source>%1 request failed at %2</source>
+        <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/notificationwidget.cpp" line="139"/>
+        <source>&apos;%1&apos; selected at %2</source>
+        <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::OCUpdater</name>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
@@ -2186,22 +2260,22 @@ It is not advisable to use it.</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="85"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="87"/>
         <source>Activity</source>
         <translation>Aktivitás</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="93"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="96"/>
         <source>General</source>
         <translation>Általános</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="99"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>Network</source>
         <translation>Hálózat</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="197"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="199"/>
         <source>Account</source>
         <translation>Fiók</translation>
     </message>
@@ -2745,18 +2819,18 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="687"/>
+        <location filename="../src/libsync/syncengine.cpp" line="690"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1089"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1101"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1108"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2846,69 +2920,69 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="632"/>
+        <location filename="../src/libsync/syncengine.cpp" line="635"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Érvénytelen karakterek, kérjük nevezd át: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="721"/>
+        <location filename="../src/libsync/syncengine.cpp" line="724"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="804"/>
+        <location filename="../src/libsync/syncengine.cpp" line="807"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="858"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>File name contains at least one invalid character</source>
         <translation>A fájlnév legalább egy érvénytelen karaktert tartalmaz!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1057"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1064"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1086"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1116"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1133"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
         <source>Not allowed to remove, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
         <source>Local files and share folder removed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1221"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1233"/>
         <source>Move not allowed, item restored</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1230"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the destination</source>
         <translation>a cél</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1231"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
         <source>the source</source>
         <translation>a forrás</translation>
     </message>
