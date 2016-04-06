@@ -740,6 +740,9 @@ void SyncEngine::startSync()
         qDebug() << Q_FUNC_INFO << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
     } else {
         qDebug() << Q_FUNC_INFO << "Could not retrieve selective sync list from DB";
+        emit csyncError(tr("Unable to read the blacklist from the local database"));
+        finalize(false);
+        return;
     }
     csync_set_userdata(_csync_ctx, this);
 
@@ -770,6 +773,8 @@ void SyncEngine::startSync()
     if (!ok) {
         delete discoveryJob;
         qDebug() << Q_FUNC_INFO << "Unable to read selective sync list, aborting.";
+        emit csyncError(tr("Unable to read from the sync journal."));
+        finalize(false);
         return;
     }
 
