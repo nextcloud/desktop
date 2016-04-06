@@ -379,6 +379,7 @@ void Folder::bubbleUpSyncResult()
 
         // and process the item to the gui
         if( item->_status == SyncFileItem::FatalError || item->_status == SyncFileItem::NormalError ) {
+            //: this displays an error string (%2) for a file %1
             slotSyncError( tr("%1: %2").arg(item->_file, item->_errorString) );
             errorItems++;
             if (!firstItemError) {
@@ -487,49 +488,49 @@ void Folder::createGuiLog( const QString& filename, LogStatus status, int count,
         switch (status) {
         case LogStatusRemove:
             if( count > 1 ) {
-                text = tr("%1 and %2 other files have been removed.", "%1 names a file.").arg(file).arg(count-1);
+                text = tr("%1 and %n other file(s) have been removed.", "", count-1).arg(file);
             } else {
                 text = tr("%1 has been removed.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusNew:
             if( count > 1 ) {
-                text = tr("%1 and %2 other files have been downloaded.", "%1 names a file.").arg(file).arg(count-1);
+                text = tr("%1 and %n other file(s) have been downloaded.", "", count-1).arg(file);
             } else {
                 text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusUpdated:
             if( count > 1 ) {
-                text = tr("%1 and %2 other files have been updated.").arg(file).arg(count-1);
+                text = tr("%1 and %n other file(s) have been updated.", "", count-1).arg(file);
             } else {
                 text = tr("%1 has been updated.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusRename:
             if( count > 1 ) {
-                text = tr("%1 has been renamed to %2 and %3 other files have been renamed.").arg(file).arg(renameTarget).arg(count-1);
+                text = tr("%1 has been renamed to %2 and %n other file(s) have been renamed.", "", count-1).arg(file).arg(renameTarget);
             } else {
                 text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
             }
             break;
         case LogStatusMove:
             if( count > 1 ) {
-                text = tr("%1 has been moved to %2 and %3 other files have been moved.").arg(file).arg(renameTarget).arg(count-1);
+                text = tr("%1 has been moved to %2 and %n other file(s) have been moved.", "", count-1).arg(file).arg(renameTarget);
             } else {
                 text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
             }
             break;
         case LogStatusConflict:
             if( count > 1 ) {
-                text = tr("%1 has and %2 other files have sync conflict.").arg(file, count-1);
+                text = tr("%1 has and %n other file(s) have sync conflicts.", "", count-1).arg(file);
             } else {
                 text = tr("%1 has a sync conflict. Please check the conflict file!").arg(file);
             }
             break;
         case LogStatusError:
             if( count > 1 ) {
-                text = tr("%1 and %2 other files could not be synced due to errors. See the log for details.", "%1 names a file.").arg(file).arg(count-1);
+                text = tr("%1 and %n other file(s) could not be synced due to errors. See the log for details.", "", count-1).arg(file);
             } else {
                 text = tr("%1 could not be synced due to an error. See the log for details.").arg(file);
             }
