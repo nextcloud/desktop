@@ -129,6 +129,7 @@ public:
         return _status == SyncFileItem::SoftError
                 || _status == SyncFileItem::NormalError
                 || _status == SyncFileItem::FatalError
+                || _status == SyncFileItem::Conflict
                 || !_errorString.isEmpty();
     }
 
