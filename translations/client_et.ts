@@ -68,7 +68,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Vorm</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="83"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Tekstisilt</translation>
     </message>
 </context>
 <context>
