@@ -733,10 +733,14 @@ void SyncEngine::startSync()
     // thereby speeding up the initial discovery significantly.
     _csync_ctx->db_is_empty = (fileRecordCount == 0);
 
-    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
-    bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
-    qDebug() << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
-
+    bool ok;
+    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (ok) {
+        bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
+        qDebug() << Q_FUNC_INFO << (usingSelectiveSync ? "====Using Selective Sync" : "====NOT Using Selective Sync");
+    } else {
+        qDebug() << Q_FUNC_INFO << "Could not retrieve selective sync list from DB";
+    }
     csync_set_userdata(_csync_ctx, this);
 
     // Set up checksumming hook
@@ -762,7 +766,13 @@ void SyncEngine::startSync()
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
-        _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
+        _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
+    if (!ok) {
+        delete discoveryJob;
+        qDebug() << Q_FUNC_INFO << "Unable to read selective sync list, aborting.";
+        return;
+    }
+
     discoveryJob->_newBigFolderSizeLimit = _newBigFolderSizeLimit;
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
@@ -1042,7 +1052,8 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
  */
 void SyncEngine::checkForPermission()
 {
-    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
+    bool selectiveListOk;
+    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &selectiveListOk);
     std::sort(selectiveSyncBlackList.begin(), selectiveSyncBlackList.end());
 
     for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
@@ -1053,7 +1064,9 @@ void SyncEngine::checkForPermission()
 
         // Do not propagate anything in the server if it is in the selective sync blacklist
         const QString path = (*it)->destination() + QLatin1Char('/');
-        if (std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(),
+
+        // if reading the selective sync list from db failed, lets ignore all rather than nothing.
+        if (!selectiveListOk || std::binary_search(selectiveSyncBlackList.constBegin(), selectiveSyncBlackList.constEnd(),
                                 path)) {
             (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             (*it)->_status = SyncFileItem::FileIgnored;

@@ -917,26 +917,29 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
     auto journal = journalDb();
 
     // Add the entry to the blacklist if it is neither in the blacklist or whitelist already
-    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList);
-    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList);
-    if (!blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
+    bool ok1, ok2;
+    auto blacklist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok1);
+    auto whitelist = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok2);
+    if (ok1 && ok2 && !blacklist.contains(newFolder) && !whitelist.contains(newFolder)) {
         blacklist.append(newFolder);
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
     }
 
     // And add the entry to the undecided list and signal the UI
-    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
-    if (!undecidedList.contains(newFolder)) {
-        undecidedList.append(newFolder);
-        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
-        emit newBigFolderDiscovered(newFolder);
-    }
-    QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
-                         "Please go in the settings to select it if you wish to download it.")
+    auto undecidedList = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok1);
+    if( ok1 ) {
+        if (!undecidedList.contains(newFolder)) {
+            undecidedList.append(newFolder);
+            journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
+            emit newBigFolderDiscovered(newFolder);
+        }
+        QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
+                             "Please go in the settings to select it if you wish to download it.")
                 .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF);
 
-    auto logger = Logger::instance();
-    logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+        auto logger = Logger::instance();
+        logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+    }
 }
 
 

@@ -391,12 +391,17 @@ qint64 SelectiveSyncTreeView::estimatedSize(QTreeWidgetItem* root)
 
 
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
-    :   QDialog(parent, f), _folder(folder)
+    :   QDialog(parent, f), _folder(folder),
+      _okButton(0) // defined in init()
 {
+    bool ok;
     init(account, tr("Unchecked folders will be <b>removed</b> from your local file system and will not be synchronized to this computer anymore"));
-    _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(),
-                             _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList));
-
+    QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if( ok ) {
+        _treeView->setFolderInfo(_folder->remotePath(), _folder->alias(),selectiveSyncList);
+    } else {
+        _okButton->setEnabled(false);
+    }
     // Make sure we don't get crashes if the folder is destroyed while we are still open
     connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
 }
@@ -422,9 +427,9 @@ void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelTe
     layout->addWidget(label);
     layout->addWidget(_treeView);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
+    _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
+    connect(_okButton, SIGNAL(clicked()), this, SLOT(accept()));
     QPushButton *button;
-    button = buttonBox->addButton(QDialogButtonBox::Ok);
-    connect(button, SIGNAL(clicked()), this, SLOT(accept()));
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
     connect(button, SIGNAL(clicked()), this, SLOT(reject()));
     layout->addWidget(buttonBox);
@@ -433,7 +438,11 @@ void SelectiveSyncDialog::init(const AccountPtr &account, const QString &labelTe
 void SelectiveSyncDialog::accept()
 {
     if (_folder) {
-        auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList).toSet();
+        bool ok;
+        auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+        if( ! ok ) {
+            return;
+        }
         QStringList blackList = _treeView->createBlackList();
         _folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 

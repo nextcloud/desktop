@@ -90,6 +90,7 @@ private:
     SelectiveSyncTreeView *_treeView;
 
     Folder *_folder;
+    QPushButton *_okButton;
 };
 
 }
