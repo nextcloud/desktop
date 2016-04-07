@@ -556,7 +556,8 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
 {
     QString cntText = tr("Not Synced");
     if( cnt ) {
-        cntText += QLatin1String(" (") + QString::number(cnt) + QLatin1String(")");
+        //: %1 is the number of not synced files.
+        cntText = tr("Not Synced (%1)").arg(cnt);
     }
     _tab->tabBar()->setTabText(_syncIssueTabId, cntText);
 }
