@@ -769,7 +769,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
     // Get up to date information for the journal.
     _item->_size = FileSystem::getSize(fn);
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn));
+    if (!_propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn))) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        return;
+    }
     _propagator->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     _propagator->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);

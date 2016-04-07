@@ -177,7 +177,10 @@ void PropagateLocalMkdir::start()
     // before the correct etag is stored.
     SyncJournalFileRecord record(*_item, newDirStr);
     record._etag = "_invalid_";
-    _propagator->_journal->setFileRecord(record);
+    if (!_propagator->_journal->setFileRecord(record)) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        return;
+    }
     _propagator->_journal->commit("localMkdir");
 
     done(SyncFileItem::Success);
@@ -236,7 +239,10 @@ void PropagateLocalRename::start()
     record._contentChecksumType = oldRecord._contentChecksumType;
 
     if (!_item->_isDirectory) { // Directories are saved at the end
-        _propagator->_journal->setFileRecord(record);
+        if (!_propagator->_journal->setFileRecord(record)) {
+            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+            return;
+        }
     }
     _propagator->_journal->commit("localRename");
 
