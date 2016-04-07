@@ -271,6 +271,7 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
     if(line) {
        if( item.hasErrorStatus() ) {
             _issueItemView->insertTopLevelItem(0, line);
+            emit issueItemCountUpdated(_issueItemView->topLevelItemCount());
         } else {
             _ui->_treeWidget->insertTopLevelItem(0, line);
         }
