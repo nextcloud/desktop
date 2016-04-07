@@ -606,7 +606,8 @@ void AccountSettings::refreshSelectiveSyncStatus()
             continue;
         }
 
-        auto undecidedList =  folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList);
+        bool ok;
+        auto undecidedList =  folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         QString p;
         foreach(const auto &it, undecidedList) {
             // FIXME: add the folder alias in a hoover hint.

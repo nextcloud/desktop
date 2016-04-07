@@ -258,14 +258,18 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
         return;
     }
 
-    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList).toSet();
-    auto blackListSet = newList.toSet();
-    auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-    foreach(const auto &it, changes) {
-        journal->avoidReadFromDbOnNextSync(it);
-    }
+    bool ok;
 
-    journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
+    auto oldBlackListSet = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+    if( ok ) {
+        auto blackListSet = newList.toSet();
+        auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
+        foreach(const auto &it, changes) {
+            journal->avoidReadFromDbOnNextSync(it);
+        }
+
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);
+    }
 }
 
 

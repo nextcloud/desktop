@@ -1393,12 +1393,14 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
     }
 }
 
-QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type)
+QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok )
 {
     QStringList result;
+    Q_ASSERT(ok);
 
     QMutexLocker locker(&_mutex);
     if( !checkConnect() ) {
+        *ok = false;
         return result;
     }
 
@@ -1406,6 +1408,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
     _getSelectiveSyncListQuery->bindValue(1, int(type));
     if (!_getSelectiveSyncListQuery->exec()) {
         qWarning() << "SQL query failed: "<< _getSelectiveSyncListQuery->error();
+        *ok = false;
         return result;
     }
     while( _getSelectiveSyncListQuery->next() ) {
@@ -1415,6 +1418,8 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         }
         result.append(entry);
     }
+    *ok = true;
+
     return result;
 }
 
