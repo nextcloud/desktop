@@ -73,12 +73,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="63"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="83"/>
@@ -429,7 +429,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="137"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zahtevano je dejanje: obvestila</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="142"/>
@@ -449,7 +449,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="344"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Prejeli ste nova obvestila prek %1, %2 in drugih računov.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="348"/>
@@ -585,96 +585,104 @@
         <translation>%1 ni mogoče brati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="380"/>
+        <location filename="../src/gui/folder.cpp" line="383"/>
         <source>%1: %2</source>
+        <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="481"/>
-        <source>%1 and %2 other files have been removed.</source>
-        <comment>%1 names a file.</comment>
-        <translation>Datoteka %1 in %2 drugih datotek je odstranjenih.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="488"/>
-        <source>%1 and %2 other files have been downloaded.</source>
-        <comment>%1 names a file.</comment>
-        <translation>Datoteka %1 in %2 drugih datotek je prejetih.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je prejeta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="495"/>
-        <source>%1 and %2 other files have been updated.</source>
-        <translation>Datoteka %1 in še %2 drugih datotek je posodobljenih.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="497"/>
+        <location filename="../src/gui/folder.cpp" line="507"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je posodobljena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="502"/>
-        <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation>Datoteka %1 je preimenovana v %2. Preimenovanih je bilo še nekaj datotek (%3).</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="504"/>
+        <location filename="../src/gui/folder.cpp" line="514"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Datoteka %1 je preimenovana v %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="509"/>
-        <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation>Datoteka %1 je premaknjena v %2. Premaknjenih je bilo še nekaj datotek (%3).</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="511"/>
+        <location filename="../src/gui/folder.cpp" line="521"/>
         <source>%1 has been moved to %2.</source>
         <translation>Datoteka %1 je premaknjena v %2.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="516"/>
-        <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
-        <comment>%1 names a file.</comment>
-        <translation>Datoteka %1 in še %2 drugih datotek ni mogoče uskladiti zaradi napake. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="491"/>
+        <source>%1 and %n other file(s) have been removed.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="498"/>
+        <source>%1 and %n other file(s) have been downloaded.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="505"/>
+        <source>%1 and %n other file(s) have been updated.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="512"/>
+        <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="519"/>
+        <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="526"/>
+        <source>%1 has and %n other file(s) have sync conflicts.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="528"/>
+        <source>%1 has a sync conflict. Please check the conflict file!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="533"/>
+        <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="535"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Datoteke %1 zaradi napake ni mogoče uskladiti. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>Sync Activity</source>
         <translation>Dejavnost usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="727"/>
+        <location filename="../src/gui/folder.cpp" line="744"/>
         <source>Could not read system exclude file</source>
         <translation>Ni mogoče prebrati sistemske izločitvene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="934"/>
+        <location filename="../src/gui/folder.cpp" line="951"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Dodana je nova mapa, ki presega %1 MB: %2.
 Med nastavitvami jo lahko izberete in označite za prejem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="951"/>
+        <location filename="../src/gui/folder.cpp" line="968"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -683,39 +691,39 @@ Mapa je bila morda odstranjena, ali pa so bile spremenjene nastavitve.
 Ali ste prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="972"/>
         <source>Remove All Files?</source>
         <translation>Ali naj bodo odstranjene vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="957"/>
+        <location filename="../src/gui/folder.cpp" line="974"/>
         <source>Remove all files</source>
         <translation>Odstrani vse datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="958"/>
+        <location filename="../src/gui/folder.cpp" line="975"/>
         <source>Keep files</source>
         <translation>Ohrani datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="976"/>
+        <location filename="../src/gui/folder.cpp" line="993"/>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="981"/>
+        <location filename="../src/gui/folder.cpp" line="998"/>
         <source>Backup detected</source>
         <translation>Varnostna kopija je zaznana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="983"/>
+        <location filename="../src/gui/folder.cpp" line="1000"/>
         <source>Normal Synchronisation</source>
         <translation>Običajno usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="984"/>
+        <location filename="../src/gui/folder.cpp" line="1001"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Ohrani krajevne datoteke kot datoteke v sporu</translation>
     </message>
@@ -843,7 +851,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Poteka usklajevanje s krajevno mapo</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -1518,7 +1526,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarjeno ob %1$s</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
@@ -3593,8 +3601,8 @@ Uporaba ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
-        <source>Downloaded, renamed conflicting file</source>
-        <translation>Prejem in preimenovanje datoteke v sporu</translation>
+        <source>Server version downloaded, copied changed local file into conflict file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

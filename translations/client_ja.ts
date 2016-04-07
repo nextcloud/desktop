@@ -585,96 +585,104 @@
         <translation>%1 は読み込み可能ではありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="380"/>
+        <location filename="../src/gui/folder.cpp" line="383"/>
         <source>%1: %2</source>
+        <extracomment>this displays an error string (%2) for a file %1</extracomment>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="481"/>
-        <source>%1 and %2 other files have been removed.</source>
-        <comment>%1 names a file.</comment>
-        <translation>%1 と他 %2 個のファイルが削除されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="493"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 は削除されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="488"/>
-        <source>%1 and %2 other files have been downloaded.</source>
-        <comment>%1 names a file.</comment>
-        <translation>%1 と他 %2 個のファイルがダウンロードされました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="500"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 はダウンロードされました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="495"/>
-        <source>%1 and %2 other files have been updated.</source>
-        <translation>%1 と他 %2 個のファイルが更新されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="497"/>
+        <location filename="../src/gui/folder.cpp" line="507"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 が更新されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="502"/>
-        <source>%1 has been renamed to %2 and %3 other files have been renamed.</source>
-        <translation>%1 の名前が %2 に変更され、他 %3 個のファイルの名前が変更されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="504"/>
+        <location filename="../src/gui/folder.cpp" line="514"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 の名前が %2 に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="509"/>
-        <source>%1 has been moved to %2 and %3 other files have been moved.</source>
-        <translation>%1 が %2 に移され、他 %3 個のファイルが移されました。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="511"/>
+        <location filename="../src/gui/folder.cpp" line="521"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 は %2 に移動しました。</translation>
     </message>
-    <message>
-        <location filename="../src/gui/folder.cpp" line="516"/>
-        <source>%1 and %2 other files could not be synced due to errors. See the log for details.</source>
-        <comment>%1 names a file.</comment>
-        <translation>エラーにより、%1 や %2 等のファイルが同期できませんでした。ログで詳細を確認してください。</translation>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="491"/>
+        <source>%1 and %n other file(s) have been removed.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="498"/>
+        <source>%1 and %n other file(s) have been downloaded.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="505"/>
+        <source>%1 and %n other file(s) have been updated.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="512"/>
+        <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="519"/>
+        <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="526"/>
+        <source>%1 has and %n other file(s) have sync conflicts.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="518"/>
+        <location filename="../src/gui/folder.cpp" line="528"/>
+        <source>%1 has a sync conflict. Please check the conflict file!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/folder.cpp" line="533"/>
+        <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="535"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>エラーにより %1 が未同期です。ログで詳細を確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="524"/>
+        <location filename="../src/gui/folder.cpp" line="541"/>
         <source>Sync Activity</source>
         <translation>同期アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="727"/>
+        <location filename="../src/gui/folder.cpp" line="744"/>
         <source>Could not read system exclude file</source>
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="934"/>
+        <location filename="../src/gui/folder.cpp" line="951"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>新しい %1 MB以上のフォルダーが追加されました: %2
 ダウンロードしたい場合は、設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="951"/>
+        <location filename="../src/gui/folder.cpp" line="968"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -683,22 +691,22 @@ Are you sure you want to perform this operation?</source>
 本当にこの操作を実行しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="972"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="957"/>
+        <location filename="../src/gui/folder.cpp" line="974"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="958"/>
+        <location filename="../src/gui/folder.cpp" line="975"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="976"/>
+        <location filename="../src/gui/folder.cpp" line="993"/>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -707,17 +715,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 このまま同期を続けた場合、あたらしいファイルが全て古いファイルで上書きされます。ローカルファイルで新しいものをコンフリクトファイルとして保持しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="981"/>
+        <location filename="../src/gui/folder.cpp" line="998"/>
         <source>Backup detected</source>
         <translation>バックアップが検出されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="983"/>
+        <location filename="../src/gui/folder.cpp" line="1000"/>
         <source>Normal Synchronisation</source>
         <translation>正常同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="984"/>
+        <location filename="../src/gui/folder.cpp" line="1001"/>
         <source>Keep Local Files as Conflict</source>
         <translation>コンフリクト時にローカルファイルを保持</translation>
     </message>
@@ -3594,8 +3602,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
-        <source>Downloaded, renamed conflicting file</source>
-        <translation>ダウンロードしたコンフリクトしているファイル名を変更</translation>
+        <source>Server version downloaded, copied changed local file into conflict file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
