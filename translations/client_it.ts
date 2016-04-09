@@ -380,7 +380,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="560"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non sincronizzata (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="576"/>
@@ -972,7 +972,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%5 mancanti, %1 di %2, file %3 di %4</translation>
+        <translation>%5 rimanenti, %1 di %2, file %3 di %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
@@ -2959,12 +2959,12 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="743"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile leggere la lista nera dal database locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="776"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile leggere dal registro di sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="822"/>
