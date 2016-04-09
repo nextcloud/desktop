@@ -15,6 +15,7 @@
 #define MIRALL_FOLDERWATCHER_WIN_H
 
 #include <QThread>
+#include <QAtomicInt>
 #include <windows.h>
 
 namespace OCC {
@@ -29,21 +30,33 @@ class WatcherThread : public QThread {
     Q_OBJECT
 public:
     WatcherThread(const QString &path) :
-        QThread(), _path(path), _handle(0) {}
+        QThread(),
+        _path(path),
+        _directory(0),
+        _resultEvent(0),
+        _stopEvent(0),
+        _done(false)
+    {}
 
     ~WatcherThread();
+
+    void stop();
 
 protected:
     void run();
     void watchChanges(size_t fileNotifyBufferSize,
                       bool* increaseBufferSize);
+    void closeHandle();
 
 signals:
     void changed(const QString &path);
 
 private:
     QString _path;
-    HANDLE _handle;
+    HANDLE _directory;
+    HANDLE _resultEvent;
+    HANDLE _stopEvent;
+    QAtomicInt _done;
 };
 
 /**
