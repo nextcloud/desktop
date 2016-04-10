@@ -73,12 +73,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="63"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="83"/>
@@ -380,7 +380,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="560"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>No Sincronizado (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="576"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="137"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Acción a realizar: Notificaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="142"/>
@@ -1535,24 +1535,24 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Creado en %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Cerrando en pocos segundos...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 petición fallida en %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; seleccionado en %2</translation>
     </message>
 </context>
 <context>
@@ -2958,12 +2958,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="743"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo leer la lista de bloqueo de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="776"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>No se ha podido leer desde el registro de sincronización</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="822"/>
@@ -3621,7 +3621,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Versión del servidor descargada, se ha copiado el fichero local cambiado al fichero en conflicto</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
