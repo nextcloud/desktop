@@ -154,15 +154,21 @@ void PropagateRemoteMove::finalize()
 {
     SyncJournalFileRecord oldRecord =
             _propagator->_journal->getFileRecord(_item->_originalFile);
+    // if reading from db failed still continue hoping that deleteFileRecord
+    // reopens the db successfully.
+    // The db is only queried to transfer the content checksum from the old
+    // to the new record. It is not a problem to skip it here.
     _propagator->_journal->deleteFileRecord(_item->_originalFile);
 
     SyncJournalFileRecord record(*_item, _propagator->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
-    record._contentChecksum = oldRecord._contentChecksum;
-    record._contentChecksumType = oldRecord._contentChecksumType;
-    if (record._fileSize != oldRecord._fileSize) {
-        qDebug() << "Warning: file sizes differ on server vs csync_journal: " << record._fileSize << oldRecord._fileSize;
-        record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
+    if (oldRecord.isValid()) {
+        record._contentChecksum = oldRecord._contentChecksum;
+        record._contentChecksumType = oldRecord._contentChecksumType;
+        if (record._fileSize != oldRecord._fileSize) {
+            qDebug() << "Warning: file sizes differ on server vs csync_journal: " << record._fileSize << oldRecord._fileSize;
+            record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
+        }
     }
 
     _propagator->_journal->setFileRecord(record);
