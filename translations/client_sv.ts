@@ -73,12 +73,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="63"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="83"/>
@@ -380,7 +380,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="560"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Inte synkad (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="576"/>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="137"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Åtgärd krävs: Notifieringar</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="142"/>
@@ -445,7 +445,7 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="334"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Du har mottagit %n ny notifiering från %2.</numerusform><numerusform>Du har mottagit %n nya notifieringar från %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="342"/>

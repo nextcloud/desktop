@@ -380,7 +380,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="560"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nincs szinkronizálva (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="576"/>
@@ -723,12 +723,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Normal szinkronizáció</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1004"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Helyi file-ok megtartása konfliktusként</translation>
     </message>
 </context>
 <context>
