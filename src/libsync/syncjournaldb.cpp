@@ -777,7 +777,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
     qlonglong phash = getPHash( filename );
     SyncJournalFileRecord rec;
 
-    if( checkConnect() ) {
+    if( !filename.isEmpty() && checkConnect() ) {
         _getFileRecordQuery->reset_and_clear_bindings();
         _getFileRecordQuery->bindValue(1, QString::number(phash));
 
