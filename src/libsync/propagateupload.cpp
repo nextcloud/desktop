@@ -776,12 +776,16 @@ void PropagateUploadFileQNAM::finalize(const SyncFileItem &copy)
 
     _item->_requestDuration = _duration.elapsed();
 
-    _propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item->_file)));
+    _finished = true;
+
+    if (!_propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item->_file)))) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        return;
+    }
     // Remove from the progress database:
     _propagator->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     _propagator->_journal->commit("upload file start");
 
-    _finished = true;
     done(SyncFileItem::Success);
 }
 

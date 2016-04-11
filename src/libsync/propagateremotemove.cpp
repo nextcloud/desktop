@@ -165,7 +165,10 @@ void PropagateRemoteMove::finalize()
         record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
     }
 
-    _propagator->_journal->setFileRecord(record);
+    if (!_propagator->_journal->setFileRecord(record)) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        return;
+    }
     _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }

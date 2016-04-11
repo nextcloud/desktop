@@ -707,6 +707,7 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 
 void PropagateDirectory::finalize()
 {
+    bool ok = true;
     if (!_item->isEmpty() && _hasError == SyncFileItem::NoStatus) {
         if( !_item->_renameTarget.isEmpty() ) {
             _item->_file = _item->_renameTarget;
@@ -720,13 +721,20 @@ void PropagateDirectory::finalize()
                 }
             }
             SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
-            _propagator->_journal->setFileRecordMetadata(record);
+            ok = _propagator->_journal->setFileRecordMetadata(record);
+            if (!ok) {
+                _item->_status = SyncFileItem::FatalError;
+                _item->_errorString = tr("Error writing metadata to the database");
+                qWarning() << "Error writing to the database for file" << _item->_file;
+            }
         }
     }
     _state = Finished;
     // Just to make sure that the SocketApi will know by looking in
     // SyncEngine::_syncedItems that this folder is done synchronizing.
-    _item->_status = SyncFileItem::Success;
+    if (ok) {
+        _item->_status = SyncFileItem::Success;
+    }
 
     emit itemCompleted(*_item, *this);
     emit finished(_item->_status);
@@ -771,7 +779,13 @@ void CleanupPollsJob::slotPollFinished()
     } else if (job->_item->_status != SyncFileItem::Success) {
         qDebug() << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        _journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file));
+        if (!_journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file))) {
+            qWarning() << "database error";
+            job->_item->_status = SyncFileItem::FatalError;
+            job->_item->_errorString = tr("Error writing metadata to the database");
+            emit aborted(job->_item->_errorString);
+            return;
+        }
     }
     // Continue with the next entry, or finish
     start();

@@ -144,7 +144,10 @@ void PropagateRemoteMkdir::success()
 {
     // save the file id already so we can detect rename or remove
     SyncJournalFileRecord record(*_item, _propagator->_localDir + _item->destination());
-    _propagator->_journal->setFileRecord(record);
+    if (!_propagator->_journal->setFileRecord(record)) {
+        done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+        return;
+    }
 
     done(SyncFileItem::Success);
 }
