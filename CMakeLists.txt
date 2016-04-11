@@ -30,7 +30,7 @@ endif()
 include(Warnings)
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
-include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR} "${CMAKE_CURRENT_BINARY_DIR}/src/mirall/")
+include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 
 # disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
@@ -51,9 +51,7 @@ endif()
 
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
-include(QtVersionAbstraction)
 
-setup_qt()
 
 include(GetGitRevisionDescription)
 
@@ -124,24 +122,6 @@ endif()
 
 if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
-endif()
-
-#### find libs
-#find_package(Qt4 4.7.0 COMPONENTS QtCore QtGui QtXml QtNetwork QtTest QtWebkit REQUIRED )
-#if( UNIX AND NOT APPLE ) # Fdo notifications
-#    find_package(Qt4 4.7.0 COMPONENTS QtDBus REQUIRED )
-#endif()
-
-
-if(HAVE_QT5)
-  if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
-    if (${Qt5Core_VERSION_MINOR} EQUAL "4" OR ${Qt5Core_VERSION_MINOR} GREATER 4)
-    else()
-      message(STATUS "If possible compile me with Qt 5.4 or higher.")
-    endif()
-  endif()
-else()
-  message(STATUS "If possible compile me with Qt 5.4 or higher.")
 endif()
 
 find_package(OpenSSL 1.0.0 REQUIRED)

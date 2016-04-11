@@ -5,6 +5,20 @@ set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
+include(QtVersionAbstraction)
+setup_qt()
+if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
+  if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
+    if (${Qt5Core_VERSION_MINOR} EQUAL "4" OR ${Qt5Core_VERSION_MINOR} GREATER 4)
+    else()
+      message(STATUS "If possible compile me with Qt 5.4 or higher.")
+    endif()
+  endif()
+else()
+  message(STATUS "If possible compile me with Qt 5.4 or higher.")
+endif()
+
+
 if (APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
