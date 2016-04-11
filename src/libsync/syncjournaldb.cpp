@@ -770,7 +770,7 @@ bool SyncJournalDb::deleteFileRecord(const QString& filename, bool recursively)
 }
 
 
-SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
+SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
 {
     QMutexLocker locker(&_mutex);
 
@@ -784,6 +784,8 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
         if (!_getFileRecordQuery->exec()) {
             QString err = _getFileRecordQuery->error();
             qDebug() << "Error creating prepared statement: " << _getFileRecordQuery->lastQuery() << ", Error:" << err;;
+            locker.unlock();
+            close();
             return rec;
         }
 
@@ -806,7 +808,10 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord( const QString& filename )
             }
         } else {
             QString err = _getFileRecordQuery->error();
-            qDebug() << "No journal entry found for " << filename;
+            qDebug() << "No journal entry found for " << filename << "Error: " << err;
+            locker.unlock();
+            close();
+            locker.relock();
         }
         _getFileRecordQuery->reset_and_clear_bindings();
     }

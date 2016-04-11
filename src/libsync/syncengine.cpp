@@ -519,7 +519,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
             // If the 'W' remote permission changed, update the local filesystem
             SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
-            if (prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
+            if (prev.isValid() && prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
                 const bool isReadOnly = !item->_remotePerm.contains('W');
                 FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
@@ -1018,6 +1018,7 @@ void SyncEngine::finalize(bool success)
     _thread.wait();
 
     csync_commit(_csync_ctx);
+    _journal->close();
 
     qDebug() << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished"));
     _stopWatch.stop();

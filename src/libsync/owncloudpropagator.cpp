@@ -762,11 +762,13 @@ void CleanupPollsJob::start()
 
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
-    SyncFileItemPtr item(new SyncFileItem(
-            _journal->getFileRecord(info._file).toSyncFileItem()));
-    PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
-    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
-    job->start();
+    SyncJournalFileRecord record = _journal->getFileRecord(info._file);
+    SyncFileItemPtr item(new SyncFileItem(record.toSyncFileItem()));
+    if (record.isValid()) {
+        PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
+        connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+        job->start();
+    }
 }
 
 void CleanupPollsJob::slotPollFinished()
