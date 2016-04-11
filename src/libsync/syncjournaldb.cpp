@@ -807,13 +807,18 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
                 rec._contentChecksumType = _getFileRecordQuery->baValue(13);
             }
         } else {
-            QString err = _getFileRecordQuery->error();
-            qDebug() << "No journal entry found for " << filename << "Error: " << err;
-            locker.unlock();
-            close();
-            locker.relock();
+            int errId = _getFileRecordQuery->errorId();
+            if( errId != SQLITE_DONE ) { // only do this if the problem is different from SQLITE_DONE
+                QString err = _getFileRecordQuery->error();
+                qDebug() << "No journal entry found for " << filename << "Error: " << err;
+                locker.unlock();
+                close();
+                locker.relock();
+            }
         }
-        _getFileRecordQuery->reset_and_clear_bindings();
+        if (_getFileRecordQuery) {
+            _getFileRecordQuery->reset_and_clear_bindings();
+        }
     }
     return rec;
 }
