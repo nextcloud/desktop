@@ -75,9 +75,11 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     // Create a widget container for the notifications. The ui file defines
     // a scroll area that get a widget with a layout as children
-    QWidget *w = new QWidget(this);
-    _notificationsLayout = new QVBoxLayout(this);
+    QWidget *w = new QWidget;
+    _notificationsLayout = new QVBoxLayout;
     w->setLayout(_notificationsLayout);
+    _notificationsLayout->setAlignment(Qt::AlignTop);
+    _ui->_notifyScroll->setAlignment(Qt::AlignTop);
     _ui->_notifyScroll->setWidget(w);
 
     showLabels();
