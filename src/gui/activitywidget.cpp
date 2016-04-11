@@ -251,7 +251,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
             _notificationsLayout->addWidget(widget);
             // _ui->_notifyScroll->setMinimumHeight( widget->height());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+#endif
             _widgetForNotifId[activity.ident()] = widget;
         }
 
@@ -559,7 +561,7 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
         //: %1 is the number of not synced files.
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
-    _tab->tabBar()->setTabText(_syncIssueTabId, cntText);
+    _tab->setTabText(_syncIssueTabId, cntText);
 }
 
 void ActivitySettings::slotCopyToClipboard()
