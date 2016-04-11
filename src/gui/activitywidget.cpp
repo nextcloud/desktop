@@ -159,7 +159,14 @@ void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode
     }
 
     int accountCount = AccountManager::instance()->accounts().count();
-    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount);
+
+    // hide the activity pane in case there are no accounts enabled.
+    if( _accountsWithoutActivities.count() == accountCount ) {
+        _ui->_headerLabel->hide();
+        _ui->_activityList->hide();
+    }
+    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount
+                          && _widgetForNotifId.count() == 0 ); // do not hide if there are notifications
 
     showLabels();
 }
@@ -322,6 +329,8 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
         scheduleWidgetToRemove(widgetToGo, 0);
     }
+
+    emit hideAcitivityTab(false);
 
     _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
