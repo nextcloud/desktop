@@ -348,6 +348,11 @@ QString SqlQuery::error() const
     return _error;
 }
 
+int SqlQuery::errorId() const
+{
+    return _errId;
+}
+
 QString SqlQuery::lastQuery() const
 {
     return _sql;
