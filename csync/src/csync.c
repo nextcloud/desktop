@@ -548,7 +548,6 @@ int csync_commit(CSYNC *ctx) {
   ctx->remote.read_from_db = 0;
   ctx->read_remote_from_db = true;
   ctx->db_is_empty = false;
-  ctx->ignore_hidden_files = true; // do NOT sync hidden files by default.
 
 
   /* Create new trees */
