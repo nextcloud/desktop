@@ -806,14 +806,13 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
             if( !_getFileRecordQuery->nullValue(13) ) {
                 rec._contentChecksumType = _getFileRecordQuery->baValue(13);
             }
+            _getFileRecordQuery->reset_and_clear_bindings();
         } else {
             QString err = _getFileRecordQuery->error();
             qDebug() << "No journal entry found for " << filename << "Error: " << err;
             locker.unlock();
             close();
-            locker.relock();
         }
-        _getFileRecordQuery->reset_and_clear_bindings();
     }
     return rec;
 }
