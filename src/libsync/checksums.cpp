@@ -17,6 +17,7 @@
 #include "syncfileitem.h"
 #include "propagatorjobs.h"
 #include "account.h"
+#include "configfile.h"
 
 #include <qtconcurrentrun.h>
 
@@ -108,10 +109,10 @@ bool uploadChecksumEnabled()
     return enabled;
 }
 
-bool downloadChecksumEnabled()
+bool downloadChecksumValidationEnabled()
 {
-    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_DOWNLOAD").isEmpty();
-    return enabled;
+    static bool disabledByConfig = ConfigFile().disableDownloadChecksumValidation();
+    return !disabledByConfig;
 }
 
 QByteArray contentChecksumType()

@@ -52,7 +52,7 @@ static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char chunkSizeC[] = "chunkSize";
-static const char transmissionChecksumC[] = "transmissionChecksum";
+static const char disableDownloadChecksumValidationC[] = "disableDownloadChecksumValidation";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -129,18 +129,15 @@ quint64 ConfigFile::chunkSize() const
     return settings.value(QLatin1String(chunkSizeC), 10*1000*1000).toLongLong(); // default to 10 MB
 }
 
-QString ConfigFile::transmissionChecksum() const
+bool ConfigFile::disableDownloadChecksumValidation() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
 
-    QString checksum = settings.value(QLatin1String(transmissionChecksumC), QString()).toString();
-
-    if( checksum.isEmpty() ) {
-        // if the config file setting is empty, maybe the Branding requires it.
-        checksum = Theme::instance()->transmissionChecksum();
+    QVariant value = settings.value(QLatin1String(disableDownloadChecksumValidationC));
+    if (!value.isValid()) {
+        return false;
     }
-
-    return checksum;
+    return value.toBool();
 }
 
 void ConfigFile::setOptionalDesktopNotifications(bool show)

@@ -261,7 +261,7 @@ void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& 
     // Compute the transmission checksum.
     auto computeChecksum = new ComputeChecksum(this);
     if (uploadChecksumEnabled()) {
-        computeChecksum->setChecksumType(_propagator->account()->capabilities().preferredChecksumType());
+        computeChecksum->setChecksumType(_propagator->account()->capabilities().preferredUploadChecksumType());
     } else {
         computeChecksum->setChecksumType(QByteArray());
     }
