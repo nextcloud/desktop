@@ -453,6 +453,11 @@ QString Theme::wizardUrlPostfix() const
     return QString();
 }
 
+QString Theme::wizardUrlHint() const
+{
+    return QString();
+}
+
 
 
 } // end namespace client

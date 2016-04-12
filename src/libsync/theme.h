@@ -286,6 +286,9 @@ public:
     virtual QString wizardUrlPostfix() const;
 
 
+    virtual QString wizardUrlHint() const;
+
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false) const;

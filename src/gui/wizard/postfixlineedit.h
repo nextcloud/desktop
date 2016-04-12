@@ -16,39 +16,39 @@
 #define OCC_POSTFIXLINEEDIT_H
 
 #include <QLineEdit>
+#include <QPaintEvent>
+#include <QPainter>
 
 namespace OCC {
 
 /**
- * @brief A class with a non-removable postfix string.
+ * @brief A lineedit class with a pre-set postfix.
  *
  * Useful e.g. for setting a fixed domain name.
  */
+
 class PostfixLineEdit : public QLineEdit
 {
     Q_OBJECT
 public:
-    PostfixLineEdit(QWidget *parent = 0);
-    /// Sets a non-removeable postfix string
-    void setPostfix(const QString &postfix);
-    /// @return the currently set postfix. Use @ref text() to retrieve the full text.
+    PostfixLineEdit(QWidget *parent);
+
+    /** @brief sets an optional postfix shown greyed out */
+    void setPostfix(const QString& postfix);
+    /** @brief retrives the postfix */
     QString postfix() const;
+    /** @brief retrieves combined text() and postfix() */
+    QString fullText() const;
+
+    /** @brief sets text() from full text, discarding prefix() */
+    void setFullText(const QString &text);
 
 protected:
-    void mouseReleaseEvent(QMouseEvent*) Q_DECL_OVERRIDE;
-    void focusInEvent(QFocusEvent *) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *) Q_DECL_OVERRIDE;
-
-private slots:
-    void slotTextChanged(const QString&);
-
+    void paintEvent(QPaintEvent *pe);
 private:
-    void ensureValidationEngaged();
-    void showPlaceholder();
-    int maxUserInputLength() const;
-    void limitCursorPlacement();
     QString _postfix;
 };
+
 
 } // namespace OCC
 

@@ -48,7 +48,7 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget* parent)
         // default, handled in ui file
         break;
     case Theme::UserIDEmail:
-        _ui.usernameLabel->setText(tr("&E-mail address"));
+        _ui.usernameLabel->setText(tr("&Email"));
         break;
     case Theme::UserIDCustom:
         _ui.usernameLabel->setText(theme->customUserID());
