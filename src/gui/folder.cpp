@@ -753,6 +753,8 @@ void Folder::startSync(const QStringList &pathList)
     quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
     _engine->setNewBigFolderSizeLimit(limit);
 
+    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
