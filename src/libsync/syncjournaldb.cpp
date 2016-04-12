@@ -777,7 +777,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
     qlonglong phash = getPHash( filename );
     SyncJournalFileRecord rec;
 
-    if( checkConnect() ) {
+    if( !filename.isEmpty() && checkConnect() ) {
         _getFileRecordQuery->reset_and_clear_bindings();
         _getFileRecordQuery->bindValue(1, QString::number(phash));
 
@@ -808,10 +808,17 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString& filename)
             }
             _getFileRecordQuery->reset_and_clear_bindings();
         } else {
-            QString err = _getFileRecordQuery->error();
-            qDebug() << "No journal entry found for " << filename << "Error: " << err;
-            locker.unlock();
-            close();
+            int errId = _getFileRecordQuery->errorId();
+            if( errId != SQLITE_DONE ) { // only do this if the problem is different from SQLITE_DONE
+                QString err = _getFileRecordQuery->error();
+                qDebug() << "No journal entry found for " << filename << "Error: " << err;
+                locker.unlock();
+                close();
+                locker.relock();
+            }
+        }
+        if (_getFileRecordQuery) {
+            _getFileRecordQuery->reset_and_clear_bindings();
         }
     }
     return rec;

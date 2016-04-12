@@ -65,9 +65,11 @@ public:
 
     ~SqlQuery();
     QString error() const;
+    int  errorId() const;
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
+
 
     QString stringValue(int index);
     int intValue(int index);
