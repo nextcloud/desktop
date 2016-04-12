@@ -50,11 +50,13 @@ bool SyncFileStatus::sharedWithMe()
 QString SyncFileStatus::toSocketAPIString() const
 {
     QString statusString;
+    bool canBeShared = true;
 
     switch(_tag)
     {
     case StatusNone:
-        statusString = QLatin1String("NONE");
+        statusString = QLatin1String("NOP");
+        canBeShared = false;
         break;
     case StatusSync:
         statusString = QLatin1String("SYNC");
@@ -70,7 +72,7 @@ QString SyncFileStatus::toSocketAPIString() const
         statusString = QLatin1String("ERROR");
         break;
     }
-    if(_sharedWithMe) {
+    if(canBeShared && _sharedWithMe) {
         statusString += QLatin1String("+SWM");
     }
 
