@@ -251,7 +251,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
             _notificationsLayout->addWidget(widget);
             // _ui->_notifyScroll->setMinimumHeight( widget->height());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
+#endif
             _widgetForNotifId[activity.ident()] = widget;
         }
 
@@ -440,32 +442,35 @@ void ActivityWidget::scheduleWidgetToRemove(NotificationWidget *widget, int mill
     if( !widget ) {
         return;
     }
-    // in fife seconds from now, remove the widget.
-    QDateTime removeTime = QDateTime::currentDateTime().addMSecs(milliseconds);
-
-    QPair<QDateTime, NotificationWidget*> removeInfo = qMakePair(removeTime, widget);
-    if( !_widgetsToRemove.contains(removeInfo) ) {
-        _widgetsToRemove.insert( removeInfo );
-        if( !_removeTimer.isActive() ) {
-            _removeTimer.start();
-        }
+    // in five seconds from now, remove the widget.
+    QDateTime removeTime = QDateTime::currentDateTimeUtc().addMSecs(milliseconds);
+    QDateTime &it = _widgetsToRemove[widget];
+    if (!it.isValid() || it > removeTime) {
+        it = removeTime;
+    }
+    if( !_removeTimer.isActive() ) {
+        _removeTimer.start();
     }
 }
 
 // Called every second to see if widgets need to be removed.
 void ActivityWidget::slotCheckToCleanWidgets()
 {
-    // loop over all widgets in the to-remove queue
-    foreach( auto toRemove, _widgetsToRemove ) {
-        QDateTime t = toRemove.first;
-        NotificationWidget *widget = toRemove.second;
+    auto currentTime = QDateTime::currentDateTimeUtc();
+    auto it = _widgetsToRemove.begin();
+    while (it != _widgetsToRemove.end()) {
+        // loop over all widgets in the to-remove queue
+        QDateTime t = it.value();
+        NotificationWidget *widget = it.key();
 
-        if( QDateTime::currentDateTime() > t ) {
+        if( currentTime > t ) {
             // found one to remove!
             Activity::Identifier id = widget->activity().ident();
             _widgetForNotifId.remove(id);
             widget->deleteLater();
-            _widgetsToRemove.remove(toRemove);
+            it = _widgetsToRemove.erase(it);
+        } else {
+            ++it;
         }
     }
 
@@ -559,7 +564,7 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
         //: %1 is the number of not synced files.
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
-    _tab->tabBar()->setTabText(_syncIssueTabId, cntText);
+    _tab->setTabText(_syncIssueTabId, cntText);
 }
 
 void ActivitySettings::slotCopyToClipboard()

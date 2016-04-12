@@ -96,7 +96,7 @@ private:
     QSet<int> _guiLoggedNotifications;
     ActivityList _blacklistedNotifications;
 
-    QSet< QPair<QDateTime, NotificationWidget*> > _widgetsToRemove;
+    QHash<NotificationWidget*, QDateTime> _widgetsToRemove;
     QTimer _removeTimer;
 
     // number of currently running notification requests. If non zero,
