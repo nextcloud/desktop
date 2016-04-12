@@ -126,14 +126,6 @@ endif()
 
 find_package(OpenSSL 1.0.0 REQUIRED)
 
-if(NOT TOKEN_AUTH_ONLY)
-    if (Qt5Core_DIR)
-    find_package(Qt5Keychain REQUIRED)
-    else()
-    find_package(QtKeychain REQUIRED)
-    endif()
-endif()
-
 if(APPLE)
   find_package(Sparkle)
 endif(APPLE)
