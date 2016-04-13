@@ -128,10 +128,4 @@ else()
   )
 endif()
 
-# INSTALL(
-#   FILES
-#     ${csync_HDRS}
-#   DESTINATION
-#     ${INCLUDE_INSTALL_DIR}/${APPLICATION_NAME}
-# )
 

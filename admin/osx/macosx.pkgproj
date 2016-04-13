@@ -497,7 +497,7 @@
 				<key>IDENTIFIER</key>
 				<string>@APPLICATION_REV_DOMAIN_INSTALLER@</string>
 				<key>NAME</key>
-				<string>@APPLICATION_NAME@</string>
+				<string>@APPLICATION_NAME_XML_ESCAPED@</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
@@ -1245,7 +1245,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>@APPLICATION_NAME@ Client</string>
+						<string>@APPLICATION_NAME_XML_ESCAPED@ Client</string>
 					</dict>
 				</array>
 			</dict>
@@ -1445,7 +1445,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>@APPLICATION_NAME@ Installer</string>
+			<string>@APPLICATION_NAME_XML_ESCAPED@ Installer</string>
 			<key>REFERENCE_FOLDER_PATH</key>
 			<string>@CMAKE_INSTALL_DIR@</string>
 		</dict>
