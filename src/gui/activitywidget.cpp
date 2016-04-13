@@ -75,9 +75,11 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     // Create a widget container for the notifications. The ui file defines
     // a scroll area that get a widget with a layout as children
-    QWidget *w = new QWidget(this);
-    _notificationsLayout = new QVBoxLayout(this);
+    QWidget *w = new QWidget;
+    _notificationsLayout = new QVBoxLayout;
     w->setLayout(_notificationsLayout);
+    _notificationsLayout->setAlignment(Qt::AlignTop);
+    _ui->_notifyScroll->setAlignment(Qt::AlignTop);
     _ui->_notifyScroll->setWidget(w);
 
     showLabels();
@@ -157,7 +159,14 @@ void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode
     }
 
     int accountCount = AccountManager::instance()->accounts().count();
-    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount);
+
+    // hide the activity pane in case there are no accounts enabled.
+    if( _accountsWithoutActivities.count() == accountCount ) {
+        _ui->_headerLabel->hide();
+        _ui->_activityList->hide();
+    }
+    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount
+                          && _widgetForNotifId.count() == 0 ); // do not hide if there are notifications
 
     showLabels();
 }
@@ -322,6 +331,8 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
         scheduleWidgetToRemove(widgetToGo, 0);
     }
+
+    emit hideAcitivityTab(false);
 
     _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
