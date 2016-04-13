@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="496"/>
-        <location filename="../src/gui/activitywidget.cpp" line="551"/>
+        <location filename="../src/gui/activitywidget.cpp" line="501"/>
+        <location filename="../src/gui/activitywidget.cpp" line="556"/>
         <source>Server Activity</source>
         <translation>Dejavnost strežnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="502"/>
+        <location filename="../src/gui/activitywidget.cpp" line="507"/>
         <source>Sync Protocol</source>
         <translation>Protokol usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="510"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <source>List of ignored or erroneous files</source>
         <translation>Seznam prezrtih datotek ali datotek z napako</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="514"/>
+        <location filename="../src/gui/activitywidget.cpp" line="519"/>
         <source>Copy</source>
         <translation>Kopiraj</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="520"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiraj seznam opravil v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="557"/>
+        <location filename="../src/gui/activitywidget.cpp" line="562"/>
         <source>Not Synced</source>
         <translation>Ni usklajeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="560"/>
+        <location filename="../src/gui/activitywidget.cpp" line="565"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="576"/>
+        <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Seznam opravil strežnika je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="580"/>
+        <location filename="../src/gui/activitywidget.cpp" line="585"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Seznam opravil usklajevanja je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="583"/>
+        <location filename="../src/gui/activitywidget.cpp" line="588"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Seznam neusklajenih predmetov je kopiran v odložišče.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="593"/>
         <source>Copied to clipboard</source>
         <translation>Kopirano v odložišče</translation>
     </message>
@@ -443,22 +443,22 @@
         <translation>&lt;br/&gt;Za račun %1 možnosti opravil niso omogočene.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <location filename="../src/gui/activitywidget.cpp" line="336"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation>Prejeli ste nova obvestila prek %1, %2 in drugih računov.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <location filename="../src/gui/activitywidget.cpp" line="350"/>
         <source>%1 Notifications - Action Required</source>
         <translation type="unfinished"/>
     </message>
@@ -689,14 +689,14 @@
         <translation>Ni mogoče prebrati sistemske izločitvene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="953"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Dodana je nova mapa, ki presega %1 MB: %2.
 Med nastavitvami jo lahko izberete in označite za prejem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="971"/>
+        <location filename="../src/gui/folder.cpp" line="973"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -705,39 +705,39 @@ Mapa je bila morda odstranjena, ali pa so bile spremenjene nastavitve.
 Ali ste prepričani, da želite izvesti to opravilo?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="975"/>
+        <location filename="../src/gui/folder.cpp" line="977"/>
         <source>Remove All Files?</source>
         <translation>Ali naj bodo odstranjene vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="977"/>
+        <location filename="../src/gui/folder.cpp" line="979"/>
         <source>Remove all files</source>
         <translation>Odstrani vse datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="978"/>
+        <location filename="../src/gui/folder.cpp" line="980"/>
         <source>Keep files</source>
         <translation>Ohrani datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="996"/>
+        <location filename="../src/gui/folder.cpp" line="998"/>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1001"/>
+        <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>Backup detected</source>
         <translation>Varnostna kopija je zaznana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1003"/>
+        <location filename="../src/gui/folder.cpp" line="1005"/>
         <source>Normal Synchronisation</source>
         <translation>Običajno usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1004"/>
+        <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Ohrani krajevne datoteke kot datoteke v sporu</translation>
     </message>

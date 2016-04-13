@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="496"/>
-        <location filename="../src/gui/activitywidget.cpp" line="551"/>
+        <location filename="../src/gui/activitywidget.cpp" line="501"/>
+        <location filename="../src/gui/activitywidget.cpp" line="556"/>
         <source>Server Activity</source>
         <translation>Действия Сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="502"/>
+        <location filename="../src/gui/activitywidget.cpp" line="507"/>
         <source>Sync Protocol</source>
         <translation>Протокол синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="510"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <source>List of ignored or erroneous files</source>
         <translation>Список игнорируемых или ошибочных файлов</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="514"/>
+        <location filename="../src/gui/activitywidget.cpp" line="519"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="520"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Скопировать журнал синхронизации в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="557"/>
+        <location filename="../src/gui/activitywidget.cpp" line="562"/>
         <source>Not Synced</source>
         <translation>Не синхронизировано</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="560"/>
+        <location filename="../src/gui/activitywidget.cpp" line="565"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="576"/>
+        <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Список активности сервера скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="580"/>
+        <location filename="../src/gui/activitywidget.cpp" line="585"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Список активности синхронизации скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="583"/>
+        <location filename="../src/gui/activitywidget.cpp" line="588"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Список несинхронизированных элементов скопирован в буфер обмена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="593"/>
         <source>Copied to clipboard</source>
         <translation>Скопировано в буфер обмена</translation>
     </message>
@@ -443,22 +443,22 @@
         <translation>&lt;br/&gt;У учетной записи %1 не включены события.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <location filename="../src/gui/activitywidget.cpp" line="336"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <location filename="../src/gui/activitywidget.cpp" line="350"/>
         <source>%1 Notifications - Action Required</source>
         <translation type="unfinished"/>
     </message>
@@ -689,14 +689,14 @@
         <translation>Невозможно прочесть системный файл исключений</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="953"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Новый каталог размером более %1 МБ был добавлен: %2.
 Пожалуйста, перейдите в настройки, если хотите скачать его.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="971"/>
+        <location filename="../src/gui/folder.cpp" line="973"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -705,22 +705,22 @@ Are you sure you want to perform this operation?</source>
 Вы действительно хотите выполнить эту операцию?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="975"/>
+        <location filename="../src/gui/folder.cpp" line="977"/>
         <source>Remove All Files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="977"/>
+        <location filename="../src/gui/folder.cpp" line="979"/>
         <source>Remove all files</source>
         <translation>Удалить все файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="978"/>
+        <location filename="../src/gui/folder.cpp" line="980"/>
         <source>Keep files</source>
         <translation>Сохранить файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="996"/>
+        <location filename="../src/gui/folder.cpp" line="998"/>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -729,17 +729,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 Продолжение синхронизации в обычном режиме приведет к тому, что все ваши файлы будут перезаписаны старыми файлами в новом состоянии. Вы желаете оставить ваши локальные файлы как конфликтующие?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1001"/>
+        <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>Backup detected</source>
         <translation>Обнаружена резервная копия</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1003"/>
+        <location filename="../src/gui/folder.cpp" line="1005"/>
         <source>Normal Synchronisation</source>
         <translation>Обычная синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1004"/>
+        <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Сохранить локальные файлы как конфликтующие</translation>
     </message>

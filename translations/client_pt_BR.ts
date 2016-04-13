@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="496"/>
-        <location filename="../src/gui/activitywidget.cpp" line="551"/>
+        <location filename="../src/gui/activitywidget.cpp" line="501"/>
+        <location filename="../src/gui/activitywidget.cpp" line="556"/>
         <source>Server Activity</source>
         <translation>Atividade do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="502"/>
+        <location filename="../src/gui/activitywidget.cpp" line="507"/>
         <source>Sync Protocol</source>
         <translation>Protocolo de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="510"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <source>List of ignored or erroneous files</source>
         <translation>Lista de arquivos ignorados ou errôneos</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="514"/>
+        <location filename="../src/gui/activitywidget.cpp" line="519"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="520"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copiar a lista de atividades para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="557"/>
+        <location filename="../src/gui/activitywidget.cpp" line="562"/>
         <source>Not Synced</source>
         <translation>Não Sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="560"/>
+        <location filename="../src/gui/activitywidget.cpp" line="565"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Não sincronizada (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="576"/>
+        <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>A lista de atividades do servidor tem sido copiados para o clipboard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="580"/>
+        <location filename="../src/gui/activitywidget.cpp" line="585"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>A lista de atividades do servidor foi copiada para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="583"/>
+        <location filename="../src/gui/activitywidget.cpp" line="588"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>A lista de itens não sincronizados foi copiada para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="593"/>
         <source>Copied to clipboard</source>
         <translation>Copiado para área de transferência</translation>
     </message>
@@ -443,22 +443,22 @@
         <translation>&lt;br/&gt;A conta %1 não tem atividades ativadas.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="334"/>
+        <location filename="../src/gui/activitywidget.cpp" line="336"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation><numerusform>Você recebeu %n nova notificação de %2.</numerusform><numerusform>Você recebeu %n notificações de %2.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="342"/>
+        <location filename="../src/gui/activitywidget.cpp" line="344"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation><numerusform>Você recebeu %n nova notificação de %1 e %2.</numerusform><numerusform>Você recebeu %n novas notificações de %1 e %2.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation>Você recebeu novas notificações de %1, %2 e outras contas.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="348"/>
+        <location filename="../src/gui/activitywidget.cpp" line="350"/>
         <source>%1 Notifications - Action Required</source>
         <translation>%1 Notificações - Ação Requerida</translation>
     </message>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -689,14 +689,14 @@
         <translation>Não foi possível ler o sistema de arquivo de exclusão</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="953"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Uma nova pasta maior que %1 MB foi adicionada: %2.
 Por favor, vá nas configurações para selecionar o que você deseja para fazer o download.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="971"/>
+        <location filename="../src/gui/folder.cpp" line="973"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -705,22 +705,22 @@ Isso pode ser porque a pasta foi reconfigurada em silêncio, ou porque todos os 
 Tem certeza de que deseja executar esta operação?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="975"/>
+        <location filename="../src/gui/folder.cpp" line="977"/>
         <source>Remove All Files?</source>
         <translation>Deseja Remover Todos os Arquivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="977"/>
+        <location filename="../src/gui/folder.cpp" line="979"/>
         <source>Remove all files</source>
         <translation>Remover todos os arquivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="978"/>
+        <location filename="../src/gui/folder.cpp" line="980"/>
         <source>Keep files</source>
         <translation>Manter arquivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="996"/>
+        <location filename="../src/gui/folder.cpp" line="998"/>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -729,17 +729,17 @@ Isso pode ser porque um backup foi restaurado no servidor.
 Continuando a sincronização como normal fará com que todos os seus arquivos sejam substituídos por um arquivo mais velho em um estado anterior. Você deseja manter seus locais de arquivos mais recentes como arquivos de conflito?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1001"/>
+        <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>Backup detected</source>
         <translation>Backup detectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1003"/>
+        <location filename="../src/gui/folder.cpp" line="1005"/>
         <source>Normal Synchronisation</source>
         <translation>Sincronização Normal</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1004"/>
+        <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Manter Arquivos Locais como Conflito</translation>
     </message>
@@ -1940,7 +1940,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -1983,7 +1983,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2024,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -2055,7 +2055,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -2081,7 +2081,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -2109,7 +2109,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
 </context>
 <context>
