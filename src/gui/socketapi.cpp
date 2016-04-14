@@ -286,7 +286,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
     Folder* syncFolder = FolderMan::instance()->folderForPath( argument );
     if (!syncFolder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        // DEBUG << "folder offline or not watched:" << argument;
         statusString = QLatin1String("NOP");
     } else {
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
