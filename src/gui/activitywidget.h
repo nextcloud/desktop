@@ -72,7 +72,7 @@ signals:
     void guiLog(const QString&, const QString&);
     void copyToClipboard();
     void rowsInserted();
-    void hideAcitivityTab(bool);
+    void hideActivityTab(bool);
     void newNotificationList(const ActivityList& list);
 
 private slots:

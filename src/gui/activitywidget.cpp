@@ -165,7 +165,7 @@ void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode
         _ui->_headerLabel->hide();
         _ui->_activityList->hide();
     }
-    emit hideAcitivityTab(_accountsWithoutActivities.count() == accountCount
+    emit hideActivityTab(_accountsWithoutActivities.count() == accountCount
                           && _widgetForNotifId.count() == 0 ); // do not hide if there are notifications
 
     showLabels();
@@ -332,7 +332,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         scheduleWidgetToRemove(widgetToGo, 0);
     }
 
-    emit hideAcitivityTab(false);
+    emit hideActivityTab(false);
 
     _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
     _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
@@ -511,7 +511,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _activityWidget = new ActivityWidget(this);
     _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
-    connect(_activityWidget, SIGNAL(hideAcitivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
+    connect(_activityWidget, SIGNAL(hideActivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
     connect(_activityWidget, SIGNAL(guiLog(QString,QString)), this, SIGNAL(guiLog(QString,QString)));
 
     _protocolWidget = new ProtocolWidget(this);
