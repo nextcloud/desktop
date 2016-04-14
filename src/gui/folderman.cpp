@@ -107,6 +107,8 @@ void FolderMan::unloadFolder( Folder *f )
                this, SLOT(slotFolderSyncPaused(Folder*,bool)));
     disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
                _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+    disconnect(f, SIGNAL(watchedFileChangedExternally(QString)),
+               &f->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -145,6 +147,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         // to the signal mapper which maps to the folder alias. The changed path
         // is lost this way, but we do not need it for the current implementation.
         connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
+
         _folderWatchers.insert(folder->alias(), fw);
     }
 
@@ -795,6 +798,8 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, A
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
             _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+    connect(folder, SIGNAL(watchedFileChangedExternally(QString)),
+            &folder->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 
     registerFolderMonitor(folder);
     return folder;

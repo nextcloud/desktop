@@ -578,6 +578,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
     // When no sync is running or it's in the prepare phase, we can
     // always schedule a new sync.
     if (! _engine->isSyncRunning() || _syncResult.status() == SyncResult::SyncPrepare) {
+        emit watchedFileChangedExternally(path);
         emit scheduleToSync(this);
         return;
     }
@@ -601,6 +602,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
 #endif
 
     if (! ownChange) {
+        emit watchedFileChangedExternally(path);
         emit scheduleToSync(this);
     }
 }

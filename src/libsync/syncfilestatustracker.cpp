@@ -81,6 +81,8 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
               this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
             this, SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(started()),
+            SLOT(slotClearDirtyPaths()));
 }
 
 SyncFileStatus SyncFileStatusTracker::rootStatus()
@@ -143,6 +145,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         return SyncFileStatus(SyncFileStatus::StatusWarning);
     }
 
+    if ( _dirtyPaths.contains(fileName) )
+        return SyncFileStatus::StatusSync;
+
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
     if (item) {
         return fileStatus(*item);
@@ -155,6 +160,17 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     }
     // Must be a new file, wait for the filesystem watcher to trigger a sync
     return SyncFileStatus();
+}
+
+void SyncFileStatusTracker::slotPathTouched(const QString& fileName)
+{
+    QString folderPath = _syncEngine->localPath();
+    Q_ASSERT(fileName.startsWith(folderPath));
+
+    QString localPath = fileName.mid(folderPath.size());
+    _dirtyPaths.insert(localPath);
+
+    emit fileStatusChanged(fileName, SyncFileStatus::StatusSync);
 }
 
 void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
@@ -206,6 +222,13 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
     }
 
     emit fileStatusChanged(getSystemDestination(item), fileStatus(item));
+}
+
+void SyncFileStatusTracker::slotClearDirtyPaths()
+{
+    // We just assume that during a sync all dirty statuses will be resolved
+    // one way or the other.
+    _dirtyPaths.clear();
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
