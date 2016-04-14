@@ -158,16 +158,7 @@ void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode
         _accountsWithoutActivities.remove(ast->account()->displayName());
     }
 
-    int accountCount = AccountManager::instance()->accounts().count();
-
-    // hide the activity pane in case there are no accounts enabled.
-    if( _accountsWithoutActivities.count() == accountCount ) {
-        _ui->_headerLabel->hide();
-        _ui->_activityList->hide();
-    }
-    emit hideActivityTab(_accountsWithoutActivities.count() == accountCount
-                          && _widgetForNotifId.count() == 0 ); // do not hide if there are notifications
-
+    checkActivityTabVisibility();
     showLabels();
 }
 
@@ -218,6 +209,22 @@ void ActivityWidget::storeActivityList( QTextStream& ts )
            << qSetFieldWidth(0)
            << endl;
     }
+}
+
+void ActivityWidget::checkActivityTabVisibility()
+{
+    int accountCount = AccountManager::instance()->accounts().count();
+    bool hasAccountsWithActivity =
+            _accountsWithoutActivities.count() != accountCount;
+    bool hasNotifications = !_widgetForNotifId.isEmpty();
+
+    _ui->_headerLabel->setVisible( hasAccountsWithActivity );
+    _ui->_activityList->setVisible( hasAccountsWithActivity );
+
+    _ui->_notifyLabel->setVisible( hasNotifications );
+    _ui->_notifyScroll->setVisible( hasNotifications );
+
+    emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
 }
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
@@ -332,10 +339,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         scheduleWidgetToRemove(widgetToGo, 0);
     }
 
-    emit hideActivityTab(false);
-
-    _ui->_notifyLabel->setHidden(  _widgetForNotifId.isEmpty() );
-    _ui->_notifyScroll->setHidden( _widgetForNotifId.isEmpty() );
+    checkActivityTabVisibility();
 
     int newGuiLogCount = accNotified.count();
 
@@ -611,7 +615,11 @@ void ActivitySettings::slotRemoveAccount( AccountState *ptr )
 
 void ActivitySettings::slotRefresh( AccountState* ptr )
 {
-    QElapsedTimer timer = _timeSinceLastCheck[ptr];
+    // QElapsedTimer isn't actually constructed as invalid.
+    if ( !_timeSinceLastCheck.contains(ptr) ) {
+        _timeSinceLastCheck[ptr].invalidate();
+    }
+    QElapsedTimer & timer = _timeSinceLastCheck[ptr];
 
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
     if( timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
@@ -619,16 +627,12 @@ void ActivitySettings::slotRefresh( AccountState* ptr )
         return;
     }
     if( ptr && ptr->isConnected() ) {
-        if( isVisible() ) {
+        if( isVisible() || !timer.isValid() ) {
             _progressIndicator->startAnimation();
             _activityWidget->slotRefreshActivities( ptr);
         }
         _activityWidget->slotRefreshNotifications(ptr);
-        if( !( _timeSinceLastCheck[ptr].isValid() ) ) {
-            _timeSinceLastCheck[ptr].start();
-        } else {
-            _timeSinceLastCheck[ptr].restart();
-        }
+        timer.start();
     }
 }
 

@@ -60,6 +60,14 @@ public:
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
 
+    /**
+     * Adjusts the activity tab's and some widgets' visibility
+     *
+     * Based on whether activities are enabled and whether notifications are
+     * available.
+     */
+    void checkActivityTabVisibility();
+
 public slots:
     void slotOpenFile(QModelIndex indx);
     void slotRefreshActivities(AccountState* ptr);
