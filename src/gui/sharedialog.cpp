@@ -160,13 +160,23 @@ void ShareDialog::showSharingUi()
 
     auto theme = Theme::instance();
 
+    // There's no difference between being unable to reshare and
+    // being unable to reshare with reshare permission.
+    bool canReshare = _maxSharingPermissions & SharePermissionShare;
+
+    if (!canReshare) {
+        auto label = new QLabel(this);
+        label->setText(tr("The file can not be shared because it was shared without sharing permission."));
+        _ui->shareWidgetsLayout->addWidget(label);
+        return;
+    }
+
     // We only do user/group sharing from 8.2.0
     bool userGroupSharing =
             theme->userGroupSharing()
             && _accountState->account()->serverVersionInt() >= ((8 << 16) + (2 << 8));
 
     bool autoShare = !userGroupSharing;
-
 
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);

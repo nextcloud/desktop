@@ -292,7 +292,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         setShareCheckBoxTitle(true);
     } else {
         // If its clear that resharing is not allowed, display an error
-        if( _maxSharingPermissions == 0 ) {
+        if( !(_maxSharingPermissions & SharePermissionShare) ) {
             displayError(tr("The file can not be shared because it was shared without sharing permission."));
             _ui->checkBox_shareLink->setEnabled(false);
         } else if (_autoShare && _ui->checkBox_shareLink->isEnabled()) {
