@@ -245,33 +245,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   st->etag = NULL;
   st->child_modified = 0;
   st->has_ignored_files = 0;
-
-  /* FIXME: Under which conditions are the following two ifs true and the code
-   * is executed? */
   if (type == CSYNC_FTW_TYPE_FILE ) {
     if (fs->mtime == 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
-
-      tmp = csync_statedb_get_stat_by_hash(ctx, h);
-      if(_last_db_return_error(ctx)) {
-          SAFE_FREE(st);
-          SAFE_FREE(tmp);
-          ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-          return -1;
-      }
-
-      if (tmp == NULL) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - not found in db, IGNORE!", path);
-        st->instruction = CSYNC_INSTRUCTION_IGNORE;
-      } else {
-        SAFE_FREE(st);
-        st = tmp;
-        st->instruction = CSYNC_INSTRUCTION_NONE;
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - tmp non zero, mtime %lu", path, st->modtime );
-        tmp = NULL;
-      }
-      goto fastout; /* Skip copying of the etag. That's an important difference to upstream
-                     * without etags. */
     }
   }
 
@@ -535,7 +511,6 @@ out:
       strncpy(st->remotePerm, fs->remotePerm, REMOTE_PERM_BUF_SIZE);
   }
 
-fastout:  /* target if the file information is read from database into st */
   st->phash = h;
   st->pathlen = len;
   memcpy(st->path, (len ? path : ""), len + 1);
