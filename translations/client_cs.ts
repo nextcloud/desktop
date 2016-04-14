@@ -76,12 +76,12 @@
         <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
         <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <location filename="../src/gui/notificationwidget.ui" line="89"/>
         <source>TextLabel</source>
         <translation>Textový popisek</translation>
     </message>
@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="501"/>
-        <location filename="../src/gui/activitywidget.cpp" line="556"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>Server Activity</source>
         <translation>Aktivita serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="507"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Sync Protocol</source>
         <translation>Protokol synchronizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="526"/>
         <source>List of ignored or erroneous files</source>
         <translation>Seznam ignorovaných nebo poškozených souborů</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="519"/>
+        <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>Copy</source>
         <translation>Kopie</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="520"/>
+        <location filename="../src/gui/activitywidget.cpp" line="531"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopírovat záznam aktivity do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="562"/>
+        <location filename="../src/gui/activitywidget.cpp" line="573"/>
         <source>Not Synced</source>
         <translation>Nesesynchronizováno</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="565"/>
+        <location filename="../src/gui/activitywidget.cpp" line="576"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="581"/>
+        <location filename="../src/gui/activitywidget.cpp" line="592"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>Výpis aktivity serveru byl zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="585"/>
+        <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>Výpis aktivity synchronizace byl zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="599"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>Seznam nesynchronizovaných položek byl zkopírován do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="593"/>
+        <location filename="../src/gui/activitywidget.cpp" line="604"/>
         <source>Copied to clipboard</source>
         <translation>Zkopírováno do schránky</translation>
     </message>
@@ -411,54 +411,54 @@
         <translation>Formulář</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="50"/>
-        <location filename="../src/gui/activitywidget.ui" line="67"/>
+        <location filename="../src/gui/activitywidget.ui" line="26"/>
+        <location filename="../src/gui/activitywidget.ui" line="65"/>
+        <location filename="../src/gui/activitywidget.ui" line="88"/>
         <source>TextLabel</source>
         <translation>Textový popisek</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="133"/>
+        <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
         <translation>Aktivity serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="88"/>
+        <location filename="../src/gui/activitywidget.cpp" line="90"/>
         <source>Copy</source>
         <translation>Kopie</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="89"/>
+        <location filename="../src/gui/activitywidget.cpp" line="91"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopírovat záznam aktivity do schránky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="142"/>
+        <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Účet %1 nemá zapnuté aktivity.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="336"/>
+        <location filename="../src/gui/activitywidget.cpp" line="347"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="355"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="346"/>
+        <location filename="../src/gui/activitywidget.cpp" line="357"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="350"/>
+        <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>%1 Notifications - Action Required</source>
         <translation type="unfinished"/>
     </message>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -867,7 +867,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace s místím adresářem</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -980,7 +980,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 zbývá, %1 ze %2, soubor %3 z %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
@@ -1543,7 +1543,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořen v %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
@@ -1554,13 +1554,13 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 požadave selhal při %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; vybrán na %2</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1940,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -1983,7 +1983,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2024,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -2055,7 +2055,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -2081,7 +2081,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -2109,7 +2109,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2158,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze</translation>
     </message>
 </context>
 <context>
@@ -3008,12 +3008,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="743"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Nelze načíst blacklist z místní databáze</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="776"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Nelze číst ze žurnálu synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="822"/>
@@ -3671,7 +3671,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Stažena verze ze serveru, změněný místní soubor zkopírován do konfliktního souboru</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

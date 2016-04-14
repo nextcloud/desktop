@@ -76,12 +76,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <location filename="../src/gui/notificationwidget.ui" line="89"/>
         <source>TextLabel</source>
         <translation>Tekstlabel</translation>
     </message>
@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="501"/>
-        <location filename="../src/gui/activitywidget.cpp" line="556"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>Server Activity</source>
         <translation>Serveractiviteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="507"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Sync Protocol</source>
         <translation>Synchronisatiegeschiedenis</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="526"/>
         <source>List of ignored or erroneous files</source>
         <translation>Lijst van genegeerde of foutieve bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="519"/>
+        <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>Copy</source>
         <translation>Kopiëren</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="520"/>
+        <location filename="../src/gui/activitywidget.cpp" line="531"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopieer de activiteitenlijst naar het klembord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="562"/>
+        <location filename="../src/gui/activitywidget.cpp" line="573"/>
         <source>Not Synced</source>
         <translation>Niet gesynchroniseerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="565"/>
+        <location filename="../src/gui/activitywidget.cpp" line="576"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Niet gesynchroniseerd (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="581"/>
+        <location filename="../src/gui/activitywidget.cpp" line="592"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>De server activiteitenlijst is gekopieerd naar het klembord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="585"/>
+        <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>De sync activiteitenlijst is gekopieerd naar het klembord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="599"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>De lijst met niet gesyncte objecten is gekopieerd naar het klembord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="593"/>
+        <location filename="../src/gui/activitywidget.cpp" line="604"/>
         <source>Copied to clipboard</source>
         <translation>Gekopieerd naar het klembord</translation>
     </message>
@@ -411,56 +411,56 @@
         <translation>Formulier</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="50"/>
-        <location filename="../src/gui/activitywidget.ui" line="67"/>
+        <location filename="../src/gui/activitywidget.ui" line="26"/>
+        <location filename="../src/gui/activitywidget.ui" line="65"/>
+        <location filename="../src/gui/activitywidget.ui" line="88"/>
         <source>TextLabel</source>
         <translation>Tekstlabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="133"/>
+        <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
         <translation>Serveractiviteiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="88"/>
+        <location filename="../src/gui/activitywidget.cpp" line="90"/>
         <source>Copy</source>
         <translation>Kopiëren</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="89"/>
+        <location filename="../src/gui/activitywidget.cpp" line="91"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopieer de activiteitenlijst naar het klembord.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Actie verwacht: Berichten</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="142"/>
+        <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt;Account %1 heeft geen activiteiten ingeschakeld.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="336"/>
+        <location filename="../src/gui/activitywidget.cpp" line="347"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation><numerusform>U ontving %n nieuw bericht van %2.</numerusform><numerusform>U ontving %n nieuwe berichten van %2.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="355"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="346"/>
+        <location filename="../src/gui/activitywidget.cpp" line="357"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Je hebt nieuwe berichten ontvangen van %1, %2 en andere acounts</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="350"/>
+        <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 Berichten - Actie verwacht</translation>
     </message>
 </context>
 <context>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -1544,12 +1544,12 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Aangemaakt op %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Wordt afgesloten binnen enkele seconden...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
@@ -1941,7 +1941,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -1984,7 +1984,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -2025,7 +2025,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -2056,7 +2056,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -2082,7 +2082,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2110,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -2159,7 +2159,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database</translation>
     </message>
 </context>
 <context>
@@ -3012,7 +3012,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="776"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Niet mogelijk om te lezen uit het synchronisatie verslag.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="822"/>

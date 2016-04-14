@@ -76,12 +76,12 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="63"/>
+        <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/notificationwidget.ui" line="83"/>
+        <location filename="../src/gui/notificationwidget.ui" line="89"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
@@ -346,59 +346,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="501"/>
-        <location filename="../src/gui/activitywidget.cpp" line="556"/>
+        <location filename="../src/gui/activitywidget.cpp" line="512"/>
+        <location filename="../src/gui/activitywidget.cpp" line="567"/>
         <source>Server Activity</source>
         <translation>伺服器活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="507"/>
+        <location filename="../src/gui/activitywidget.cpp" line="518"/>
         <source>Sync Protocol</source>
         <translation>同步協定</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="526"/>
         <source>List of ignored or erroneous files</source>
         <translation>被忽略或者錯誤的檔案列表</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="519"/>
+        <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>Copy</source>
         <translation>複製</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="520"/>
+        <location filename="../src/gui/activitywidget.cpp" line="531"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>複製活動列表到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="562"/>
+        <location filename="../src/gui/activitywidget.cpp" line="573"/>
         <source>Not Synced</source>
         <translation>尚未同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="565"/>
+        <location filename="../src/gui/activitywidget.cpp" line="576"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="581"/>
+        <location filename="../src/gui/activitywidget.cpp" line="592"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>伺服器活動列表已經被複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="585"/>
+        <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>同步活動列表已經被複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="588"/>
+        <location filename="../src/gui/activitywidget.cpp" line="599"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
         <translation>未同步的清單已經被複製到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="593"/>
+        <location filename="../src/gui/activitywidget.cpp" line="604"/>
         <source>Copied to clipboard</source>
         <translation>複製至剪貼簿中</translation>
     </message>
@@ -411,54 +411,54 @@
         <translation>表單</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="20"/>
-        <location filename="../src/gui/activitywidget.ui" line="50"/>
-        <location filename="../src/gui/activitywidget.ui" line="67"/>
+        <location filename="../src/gui/activitywidget.ui" line="26"/>
+        <location filename="../src/gui/activitywidget.ui" line="65"/>
+        <location filename="../src/gui/activitywidget.ui" line="88"/>
         <source>TextLabel</source>
         <translation>文字標籤</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="133"/>
+        <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
         <translation>伺服器活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="88"/>
+        <location filename="../src/gui/activitywidget.cpp" line="90"/>
         <source>Copy</source>
         <translation>複製</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="89"/>
+        <location filename="../src/gui/activitywidget.cpp" line="91"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>複製活動列表到剪貼簿。</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="137"/>
+        <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="142"/>
+        <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
         <translation>&lt;br/&gt; 帳號 %1 尚未啟用紀錄行為功能</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="336"/>
+        <location filename="../src/gui/activitywidget.cpp" line="347"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="344"/>
+        <location filename="../src/gui/activitywidget.cpp" line="355"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="346"/>
+        <location filename="../src/gui/activitywidget.cpp" line="357"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="350"/>
+        <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>%1 Notifications - Action Required</source>
         <translation type="unfinished"/>
     </message>
