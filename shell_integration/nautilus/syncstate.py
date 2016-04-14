@@ -225,10 +225,11 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
             for p in socketConnect.nautilusVFSFile_table:
                 if p == path or p.startswith(path):
                     item = socketConnect.nautilusVFSFile_table[p]['item']
-                    update_items.append(item)
+                    update_items.append(p)
 
-            for item in update_items:
-                item.invalidate_extension_info()
+            for path1 in update_items:
+                socketConnect.nautilusVFSFile_table[path1]['item'].invalidate_extension_info()
+                print "Invalidated: "+path1
 
     # Handles a single line of server response and sets the emblem
     def handle_commands(self, action, args):
@@ -242,7 +243,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                     'NEW+SWM'   : appname +'_sync_shared',
                     'IGNORE+SWM': appname +'_warn_shared',
                     'ERROR+SWM' : appname +'_error_shared',
-                    'NOP'       : appname +'_error'
+                    'NOP'       : ''
                   }
 
         # file = args[0]  # For debug only
