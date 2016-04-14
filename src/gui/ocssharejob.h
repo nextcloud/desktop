@@ -101,7 +101,7 @@ public:
     void createShare(const QString& path, 
                      const Share::ShareType shareType,
                      const QString& shareWith = "",
-                     const Share::Permissions permissions = Share::PermissionRead);
+                     const Share::Permissions permissions = SharePermissionRead);
 
     /**
      * Returns information on the items shared with the current user.

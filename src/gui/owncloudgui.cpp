@@ -870,14 +870,27 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
 
     const auto accountState = folder->accountState();
 
+    // As a first approximation, set the set of permissions that can be granted
+    // either to everything (resharing allowed) or nothing (no resharing).
+    //
+    // The correct value will be found with a propfind from ShareDialog.
+    // (we want to show the dialog directly, not wait for the propfind first)
+    SharePermissions maxSharingPermissions =
+            SharePermissionRead
+            | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
+            | SharePermissionShare;
+    if (!resharingAllowed) {
+        maxSharingPermissions = 0;
+    }
+
+
     ShareDialog *w = 0;
     if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
         qDebug() << Q_FUNC_INFO << "Raising share dialog" << sharePath << localPath;
         w = _shareDialogs[localPath];
     } else {
-        qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath;
-        w = new ShareDialog(accountState, sharePath, localPath, resharingAllowed);
-        w->getShares();
+        qDebug() << Q_FUNC_INFO << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions);
         w->setAttribute( Qt::WA_DeleteOnClose, true );
 
         _shareDialogs[localPath] = w;

@@ -16,6 +16,7 @@
 
 #include "accountfwd.h"
 #include "sharee.h"
+#include "sharepermissions.h"
 
 #include <QObject>
 #include <QDate>
@@ -43,18 +44,7 @@ public:
         TypeRemote = Sharee::Federated
     };
 
-    /**
-     * Possible permissions
-     */
-    enum Permission {
-        PermissionRead   =  1,
-        PermissionUpdate =  2,
-        PermissionCreate =  4,
-        PermissionDelete =  8,
-        PermissionShare  = 16,
-        PermissionDefault = 1 << 30
-    };
-    Q_DECLARE_FLAGS(Permissions, Permission)
+    typedef SharePermissions Permissions;
 
     /*
      * Constructor for shares
@@ -63,7 +53,7 @@ public:
                    const QString& id,
                    const QString& path,
                    const ShareType shareType,
-                   const Permissions permissions = PermissionDefault,
+                   const Permissions permissions = SharePermissionDefault,
                    const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
 
     /**
@@ -208,7 +198,6 @@ private:
     QDate _expireDate;
     QUrl _url;
 };
-Q_DECLARE_OPERATORS_FOR_FLAGS(Share::Permissions)
 
 /**
  * The share manager allows for creating, retrieving and deletion

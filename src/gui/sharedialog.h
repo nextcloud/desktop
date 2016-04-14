@@ -15,11 +15,14 @@
 #define SHAREDIALOG_H
 
 #include "accountstate.h"
+#include "sharepermissions.h"
 
 #include <QPointer>
 #include <QString>
 #include <QDialog>
 #include <QWidget>
+
+class QProgressIndicator;
 
 namespace OCC {
 
@@ -38,27 +41,31 @@ public:
     explicit ShareDialog(QPointer<AccountState> accountState,
                          const QString &sharePath,
                          const QString &localPath,
-                         bool resharingAllowed,
+                         SharePermissions maxSharingPermissions,
                          QWidget *parent = 0);
     ~ShareDialog();
 
-    void getShares();
-
 private slots:
     void done( int r );
+    void slotMaxSharingPermissionsReceived(const QVariantMap &result);
+    void slotMaxSharingPermissionsError();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
     void slotAccountStateChanged(int state);
 
 private:
+
+    void showSharingUi();
+
     Ui::ShareDialog *_ui;
     QPointer<AccountState> _accountState;
     QString _sharePath;
     QString _localPath;
 
-    bool _resharingAllowed;
+    SharePermissions _maxSharingPermissions;
 
     ShareLinkWidget *_linkWidget;
     ShareUserGroupWidget *_userGroupWidget;
+    QProgressIndicator *_progressIndicator;
 };
 
 }

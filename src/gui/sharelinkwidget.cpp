@@ -29,7 +29,7 @@ namespace OCC {
 ShareLinkWidget::ShareLinkWidget(AccountPtr account,
                                  const QString &sharePath,
                                  const QString &localPath,
-                                 bool resharingAllowed,
+                                 SharePermissions maxSharingPermissions,
                                  bool autoShare,
                                  QWidget *parent) :
    QWidget(parent),
@@ -40,7 +40,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _passwordJobRunning(false),
     _manager(NULL),
     _share(NULL),
-    _resharingAllowed(resharingAllowed),
+    _maxSharingPermissions(maxSharingPermissions),
     _autoShare(autoShare),
     _passwordRequired(false)
 {
@@ -292,7 +292,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         setShareCheckBoxTitle(true);
     } else {
         // If its clear that resharing is not allowed, display an error
-        if( !_resharingAllowed ) {
+        if( _maxSharingPermissions == 0 ) {
             displayError(tr("The file can not be shared because it was shared without sharing permission."));
             _ui->checkBox_shareLink->setEnabled(false);
         } else if (_autoShare && _ui->checkBox_shareLink->isEnabled()) {
