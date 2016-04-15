@@ -285,6 +285,13 @@ public:
      */
     virtual QString wizardUrlPostfix() const;
 
+    /**
+     * @brief String that will be shown as long as no text has been entered by the user.
+     *
+     * @return An empty string, unless reimplemented
+     */
+    virtual QString wizardUrlHint() const;
+
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

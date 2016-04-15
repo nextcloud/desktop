@@ -47,6 +47,7 @@ public:
     QColor  wizardHeaderTitleColor() const Q_DECL_OVERRIDE;
     QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
 #endif
+
 private:
 
 

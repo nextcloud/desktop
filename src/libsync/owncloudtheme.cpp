@@ -109,6 +109,7 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
 {
     return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
 }
+
 #endif
 
 QString ownCloudTheme::appName() const

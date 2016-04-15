@@ -12,51 +12,30 @@
  * for more details.
  */
 
-#include <QRegExpValidator>
-#include <QRegExp>
+#include <QStyle>
+#include <QStyleOptionFrame>
+
 #include <QDebug>
 
 #include "postfixlineedit.h"
 
 namespace OCC {
 
-// Helper class
-
-/**
- * @brief A QRegExValidator with no Intermediate validation state.
- *
- * Along with a pre-set text in a lineedit, this enforces a certain text
- * to always be present.
- */
-class StrictRegExpValidator : public QRegExpValidator
-{
-public:
-    explicit StrictRegExpValidator(const QRegExp& rx, QObject *parent = 0) :
-        QRegExpValidator(rx, parent) {}
-
-    virtual QValidator::State validate(QString& input, int& pos) const Q_DECL_OVERRIDE;
-};
-
-
-QValidator::State StrictRegExpValidator::validate(QString &input, int &pos) const
-{
-        QValidator::State state = QRegExpValidator::validate(input, pos);
-        if (state == QValidator::Intermediate)
-            state = QValidator::Invalid;
-        return state;
-}
-
-// Begin of URLLineEdit impl
+const int horizontalMargin(4);
+const int verticalMargin(4);
 
 PostfixLineEdit::PostfixLineEdit(QWidget *parent)
-    : QLineEdit(parent)
+ : QLineEdit(parent)
 {
-    connect(this, SIGNAL(textChanged(const QString&)), SLOT(slotTextChanged(const QString&)));
 }
 
 void PostfixLineEdit::setPostfix(const QString &postfix)
 {
     _postfix = postfix;
+    QFontMetricsF fm(font());
+    QMargins tm = textMargins();
+    tm.setRight(tm.right()+fm.width(_postfix)+verticalMargin);
+    setTextMargins(tm);
 }
 
 QString PostfixLineEdit::postfix() const
@@ -64,70 +43,39 @@ QString PostfixLineEdit::postfix() const
     return _postfix;
 }
 
-void PostfixLineEdit::focusInEvent(QFocusEvent *ev)
+QString PostfixLineEdit::fullText() const
 {
-    QLineEdit::focusInEvent(ev);
-    ensureValidationEngaged();
-    setSelection(0 , maxUserInputLength());
+    return text() + _postfix;
 }
 
-void PostfixLineEdit::focusOutEvent(QFocusEvent *ev)
+void PostfixLineEdit::setFullText(const QString &text)
 {
-    QLineEdit::focusOutEvent(ev);
-    showPlaceholder();
-}
-
-void PostfixLineEdit::slotTextChanged(const QString &)
-{
-    ensureValidationEngaged();
-}
-
-void PostfixLineEdit::mouseReleaseEvent(QMouseEvent *ev)
-{
-    QLineEdit::mouseReleaseEvent(ev);
-    // ensure selections still work
-    if (selectedText().isEmpty()) {
-        limitCursorPlacement();
+    QString prefixString = text;
+    if (prefixString.endsWith(postfix())) {
+        prefixString.chop(postfix().length());
     }
+    qDebug() << prefixString;
+    setText(prefixString);
 }
 
-void PostfixLineEdit::ensureValidationEngaged()
+void PostfixLineEdit::paintEvent(QPaintEvent *pe)
 {
-    if (_postfix.isEmpty())
-        return;
 
-    if (text().isEmpty()) {
-        // also called from setText via slotTextChanged
-        bool old = blockSignals(true);
-        setText(_postfix);
-        blockSignals(old);
-    }
-    if (!validator()) {
-        QRegExp rx(QString("*%1").arg(_postfix));
-        rx.setPatternSyntax(QRegExp::Wildcard);
-        QRegExpValidator *val = new StrictRegExpValidator(rx);
-        setValidator(val);
-    }
-}
+    QLineEdit::paintEvent(pe);
+    QPainter p(this);
 
-void PostfixLineEdit::showPlaceholder()
-{
-    if (text() == _postfix && !placeholderText().isNull()) {
-        setValidator(0);
-        setText(QString());
-    }
-}
+    //
+    p.setPen(palette().color(QPalette::Disabled, QPalette::Text));
+    QFontMetricsF fm(font());
+    int start = rect().right()-fm.width(_postfix);
+    QStyleOptionFrame panel;
+    initStyleOption(&panel);
+    QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
+    r.setTop(r.top()+horizontalMargin-1);
+    QRect postfixRect(r);
 
-int PostfixLineEdit::maxUserInputLength() const
-{
-    return text().length() - _postfix.length();
-}
-
-void PostfixLineEdit::limitCursorPlacement()
-{
-    if (cursorPosition() > maxUserInputLength()) {
-        setCursorPosition(maxUserInputLength());
-    }
+    postfixRect.setLeft(start-verticalMargin);
+    p.drawText(postfixRect, _postfix);
 }
 
 } // namespace OCC
