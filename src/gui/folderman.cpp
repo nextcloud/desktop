@@ -469,11 +469,6 @@ void FolderMan::slotScheduleSync( Folder *f )
     }
     auto alias = f->alias();
 
-    // We want the SocketAPI to already now update so that it can show the EVAL icon
-    // for files/folders. Only do this when not syncing, else we might get a lot
-    // of those notifications.
-    _socketApi->slotUpdateFolderView(f);
-
     qDebug() << "Schedule folder " << alias << " to sync!";
 
     if( ! _scheduleQueue.contains(f) ) {
