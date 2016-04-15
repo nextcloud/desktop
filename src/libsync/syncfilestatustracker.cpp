@@ -77,6 +77,43 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
             this, SLOT(slotItemCompleted(const SyncFileItem&)));
 }
 
+SyncFileStatus SyncFileStatusTracker::rootStatus()
+{
+    /* Possible values for the status:
+    enum SyncFileStatusTag {
+        StatusNone,
+        StatusSync,
+        StatusWarning,
+        StatusUpToDate,
+        StatusError,
+    };
+    */
+    SyncFileStatus status =  SyncFileStatus::StatusUpToDate;
+
+    if( !_syncEngine ) return SyncFileStatus::StatusNone;
+
+    if( _syncEngine->isSyncRunning() ) {
+        status = SyncFileStatus::StatusSync;
+    } else {
+        // sync is not running. Check dirty list and _syncProblems
+        int errs = 0, warns = 0;
+        for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it) {
+            if( it->second == SyncFileStatus::StatusError ) {
+                errs ++;
+                break; // stop if an error found at all.
+            } else {
+                warns ++;
+            }
+        }
+        if( errs ) {
+            status = SyncFileStatus::StatusError;
+        } else if( warns ) {
+            status = SyncFileStatus::StatusWarning;
+        }
+    }
+    return status;
+
+}
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 {
@@ -86,6 +123,11 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         qDebug() << "Removed trailing slash: " << fileName;
     }
 
+    if( fileName.isEmpty() ) {
+        // this is the root sync folder.
+        return rootStatus();
+
+    }
     // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
     // and CSYNC_FILE_EXCLUDE_AND_REMOVE excludes. Even though it's possible
     // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
@@ -96,8 +138,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
         return SyncFileStatus(SyncFileStatus::StatusWarning);
 
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
-    if (item)
+    if (item) {
         return fileStatus(*item);
+    }
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
