@@ -25,10 +25,13 @@ add_custom_target( mac_overlayplugin ALL
 add_dependencies(mac_overlayplugin ${APPLICATION_EXECUTABLE}) # for the ownCloud.icns to be generated
 
 
+# legacy
 INSTALL( DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/SyncStateFinder.osax/Contents
          DESTINATION ${CMAKE_INSTALL_PREFIX}/Library/ScriptingAdditions/SyncStateFinder.osax/ )
+
+# >= 10.10.x
 INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Release/FinderSyncExt.appex
-    DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Plugins
+    DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/PlugIns
     USE_SOURCE_PERMISSIONS)
 endif(APPLE)
 
