@@ -216,6 +216,12 @@ QString Theme::overrideServerUrl() const
     return QString::null;
 }
 
+QString Theme::forceConfigAuthType() const
+{
+    return QString();
+}
+
+
 QString Theme::defaultClientFolder() const
 {
     return appName();

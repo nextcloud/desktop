@@ -211,19 +211,31 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
 {
     auto acc = createAccount();
 
-    acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+    QString authType = settings.value(QLatin1String(authTypeC)).toString();
+    QString overrideUrl = Theme::instance()->overrideServerUrl();
+    if( !overrideUrl.isEmpty() ) {
+        // if there is a overrideUrl, don't even bother reading from the config as all the accounts
+        // must use the overrideUrl
+        acc->setUrl(overrideUrl);
+        auto forceAuth = Theme::instance()->forceConfigAuthType();
+        if (!forceAuth.isEmpty()) {
+            authType = forceAuth;
+        }
+    } else {
+        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+    }
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
-    QString authTypePrefix = settings.value(authTypeC).toString() + "_";
+    QString authTypePrefix = authType + "_";
     Q_FOREACH(QString key, settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
     }
 
-    acc->setCredentials(CredentialsFactory::create(settings.value(QLatin1String(authTypeC)).toString()));
+    acc->setCredentials(CredentialsFactory::create(authType));
 
     // now the cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));

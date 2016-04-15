@@ -130,6 +130,13 @@ public:
     virtual QString overrideServerUrl() const;
 
     /**
+     * This is only usefull when previous version had a different overrideServerUrl
+     * with a different auth type in that case You should then specify "http" or "shibboleth".
+     * Normaly this should be left empty.
+     */
+    virtual QString forceConfigAuthType() const;
+
+    /**
      * The default folder name without path on the server at setup time.
      */
     virtual QString defaultServerFolder() const;
