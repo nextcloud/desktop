@@ -116,7 +116,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
     auto job = new PropfindJob(accountState->account(), _sharePath);
-    job->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:share-permissions");
+    job->setProperties(QList<QByteArray>() << "http://open-collaboration-services.org/ns::share-permissions");
     job->setTimeout(10 * 1000);
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotMaxSharingPermissionsReceived(QVariantMap)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)), SLOT(slotMaxSharingPermissionsError()));
