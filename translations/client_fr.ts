@@ -73,12 +73,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -450,7 +450,7 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Vous avez reçu 1 nouvelle notification de %1 et %2.</numerusform><numerusform>Vous avez reçu %n nouvelles notifications de %1 et %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -1548,7 +1548,7 @@ Les éléments dont la suppression automatique est permise seront supprimés s&a
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Fermeture dans quelques secondes...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
@@ -1940,7 +1940,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -1983,7 +1983,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -2024,7 +2024,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -2055,7 +2055,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -2081,7 +2081,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -2109,7 +2109,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2158,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
 </context>
 <context>
