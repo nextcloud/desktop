@@ -258,8 +258,12 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
             file_stat->mtime = oc_httpdate_parse(value.toUtf8());
             file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
         } else if (property == "getcontentlength") {
-            file_stat->size = value.toLongLong();
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+            bool ok = false;
+            qlonglong ll = value.toLongLong(&ok);
+            if (ok && ll >= 0) {
+                file_stat->size = ll;
+                file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
+            }
         } else if (property == "getetag") {
             file_stat->etag = csync_normalize_etag(value.toUtf8());
             file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
