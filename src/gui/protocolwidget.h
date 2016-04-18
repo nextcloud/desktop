@@ -65,7 +65,6 @@ signals:
 private:
     void setSyncResultStatus(const SyncResult& result );
     void cleanItems( const QString& folder );
-    void computeResyncButtonEnabled();
 
     QTreeWidgetItem* createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item );
 
