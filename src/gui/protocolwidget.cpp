@@ -125,6 +125,8 @@ void ProtocolWidget::cleanItems(const QString& folder)
             delete item;
         }
     }
+    // update the tabtext
+    emit( issueItemCountUpdated(_issueItemView->topLevelItemCount()) );
 }
 
 QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
