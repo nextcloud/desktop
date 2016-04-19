@@ -136,45 +136,40 @@ any time. Use **Account** > **Remove** to delete accounts.
 File Manager Overlay Icons
 --------------------------
 
-The ownCloud sync client makes your system file manager (Explorer on Windows, 
-Finder on Mac and Nautilus on Linux) show so called overlay icons in addition
-to the normal file type icons to indicate the sync state of the individual files.
+The ownCloud sync client provides overlay icons, in addition to the normal file 
+type icons, for your system file manager (Explorer on Windows, Finder on Mac and 
+Nautilus on Linux) to indicate the sync status of your ownCloud files.
 
-The overlay icons are very similar to the tray icon introduced above. However
-there are few things to destinguish between files and directories. 
+The overlay icons are similar to the systray icons introduced above. They 
+behave differently on files and directories according to sync status 
+and errors. 
 
-The overlay icon of an individual file represents it's current sync state: If 
-file is in sync with the server version, a green checkmark is displayed.
+The overlay icon of an individual file indicates its current sync state. If the
+file is in sync with the server version, it displays a green checkmark.
 
-If the file is ignored from sync for example because it's name matches an
-entry of the exclude list, or because it is a symbolic link, the overlay icon
-will be a warning icon.
+If the file is ignored from syncing, for example because it is on your 
+exclude list, or because it is a symbolic link, it displays a warning icon.
 
-If there is an error of happening with a specific file, the overlay will be
-the eye-catching 'Red-X'. This is also shown if the file is blacklisted.
+If there is a sync error, or the file is blacklisted, it displays an 
+eye-catching red X.
 
 If the file is waiting to be synced, or is currently syncing, the overlay 
-icon will be a blue 'cycling icon'.
+icon displays a blue cycling icon.
 
-In case the client is offline, the icons will remain in the state of the 
+When the client is offline, the icons remain in the state of the 
 last successful sync, as long as they are not touched locally. Once a file
-is edited locally, the icon will change to the 'waiting to sync' icon to
-give an impression on which files are changed and need sync.
+is edited locally, the icon will change to the 'waiting to sync' icon.
 
-The overlay icon of a synced directory represents the state of the
-file tree within the directory. If the file tree in the directory contains
-one or more files with errors, the directory will carry a warning icon to 
-indicate that action is required. 
+The overlay icon of a synced directory indicates the status of the files in the 
+directory. If there are any sync errors, the directory is marked with a warning 
+icon.
 
-If the tree contains ignored files that have a warning icon themselves, the 
-parent directories will remain in 'green mode', assuming that they are 
-taken out of sync (ignored) intentionally by the user.
+If the files inside the directory include ignored files that are marked with 
+warning icons, the parent directory remains in green mode.
 
-That means that normal synced directories never have show an error sign. An
-exception to that is the root sync dir. That one can turn red if there is
-an serious error with the account that disturbs syncing at all.
-
-
+Normally-synced directories will not show an error sign, with the exception of 
+that root sync directory. That will turn red if there is a serious error 
+anywhere inside the root directory.
 
 Sharing From Your Desktop
 -------------------------
