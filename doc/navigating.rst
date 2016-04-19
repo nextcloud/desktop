@@ -11,7 +11,7 @@ in the system tray (Windows, KDE), status bar (Mac OS X), or notification area
 .. figure:: images/icon.png
    :alt: Status icon, little cloud with green circle and white checkmark 
 
-The status indicator uses overlay icons to indicate the current status of your 
+The status indicator uses icons to indicate the current status of your 
 synchronization. The green circle with the white checkmark tells you that your 
 synchronization is current and you are connected to your ownCloud server.
 
@@ -24,7 +24,7 @@ The blue icon with the white semi-circles means synchronization is in progress.
    :alt: Status icon, little cloud with yellow circle and vertical parallel 
     lines
 
-The yellow overlay icon with the parallel lines tells you your synchronization 
+The yellow icon with the parallel lines tells you your synchronization 
 has been paused. (Most likely by you.)
 
 .. figure:: images/icon-offline.png
@@ -132,6 +132,49 @@ account, and then follow the account creation wizard. The new account will
 appear as a new tab in the settings dialog, where you can adjust its settings 
 at 
 any time. Use **Account** > **Remove** to delete accounts. 
+
+File Manager Overlay Icons
+--------------------------
+
+The ownCloud sync client makes your system file manager (Explorer on Windows, 
+Finder on Mac and Nautilus on Linux) show so called overlay icons in addition
+to the normal file type icons to indicate the sync state of the individual files.
+
+The overlay icons are very similar to the tray icon introduced above. However
+there are few things to destinguish between files and directories. 
+
+The overlay icon of an individual file represents it's current sync state: If 
+file is in sync with the server version, a green checkmark is displayed.
+
+If the file is ignored from sync for example because it's name matches an
+entry of the exclude list, or because it is a symbolic link, the overlay icon
+will be a warning icon.
+
+If there is an error of happening with a specific file, the overlay will be
+the eye-catching 'Red-X'. This is also shown if the file is blacklisted.
+
+If the file is waiting to be synced, or is currently syncing, the overlay 
+icon will be a blue 'cycling icon'.
+
+In case the client is offline, the icons will remain in the state of the 
+last successful sync, as long as they are not touched locally. Once a file
+is edited locally, the icon will change to the 'waiting to sync' icon to
+give an impression on which files are changed and need sync.
+
+The overlay icon of a synced directory represents the state of the
+file tree within the directory. If the file tree in the directory contains
+one or more files with errors, the directory will carry a warning icon to 
+indicate that action is required. 
+
+If the tree contains ignored files that have a warning icon themselves, the 
+parent directories will remain in 'green mode', assuming that they are 
+taken out of sync (ignored) intentionally by the user.
+
+That means that normal synced directories never have show an error sign. An
+exception to that is the root sync dir. That one can turn red if there is
+an serious error with the account that disturbs syncing at all.
+
+
 
 Sharing From Your Desktop
 -------------------------
