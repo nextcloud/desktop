@@ -309,6 +309,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                     checksumIdentical = strncmp(st->checksum, tmp->checksum, 1000) == 0;
                 }
                 if (checksumIdentical) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", path);
                     st->instruction = CSYNC_INSTRUCTION_NONE;
                     st->should_update_metadata = true;
                     goto out;
@@ -555,7 +556,11 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
   switch (flag) {
     case CSYNC_FTW_FLAG_FILE:
       if (ctx->current == REMOTE_REPLICA) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", file, fs->file_id, fs->size);
+          if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", file, fs->file_id, fs->size);
+          } else {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=UNKNOWN]", file, fs->file_id);
+          }
       } else {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", file, fs->inode, fs->size);
       }
