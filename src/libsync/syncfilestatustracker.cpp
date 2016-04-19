@@ -106,10 +106,9 @@ SyncFileStatus SyncFileStatusTracker::rootStatus()
             }
         }
         if( errs ) {
-            status = SyncFileStatus::StatusError;
-        } else if( warns ) {
-            status = SyncFileStatus::StatusWarning;
+            status = SyncFileStatus::StatusWarning; // some files underneath had errors
         }
+        // Only warnings do not change the root emblem away from ok.
     }
     return status;
 
