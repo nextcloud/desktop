@@ -2210,30 +2210,6 @@ Uporaba ni priporočljiva.</translation>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiraj seznam opravil v odložišče.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Trenutno zaradi predhodnih napak ni prezrta nobena datoteka in ni dejavnih prejemov.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n datoteka je prezrta zaradi predhodnih napak.</numerusform><numerusform>%n datoteki sta prezrti zaradi predhodnih napak.</numerusform><numerusform>%n datoteke so prezrte zaradi predhodnih napak.</numerusform><numerusform>%n datotek je prezrtih zaradi predhodnih napak.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n datoteka je le delno prejeta.</numerusform><numerusform>%n datoteki sta le delno prejeti.</numerusform><numerusform>%n datoteke so le delno prejete.</numerusform><numerusform>%n datotek je le delno prejetih.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Poskusi s ponovnim usklajevanje.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

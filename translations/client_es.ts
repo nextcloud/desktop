@@ -2212,31 +2212,6 @@ No se recomienda usarla.</translation>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copie la lista de actividades al portapapeles</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Actualmente no hay archivos ignorados debido a errores previos y a que no hay descargas en progreso.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n Archivos han sido ignorados debido a errores previos.
-</numerusform><numerusform>%n archivos han sido ignorados debido a errores previos. </numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>€n archivos han sido parcialmente descargados.
-</numerusform><numerusform>%n archivos han sido parcialmente descargados.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Intentar sincronizar de nuevo</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

@@ -2213,34 +2213,6 @@ Nedoporučuje se jí používat.</translation>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopírovat záznam aktivity do schránky.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>V současné době nejsou na černé listině žádné soubory kvůli předchozím chybovým stavům a neprobíhá žádné stahování.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n soubor je ignorován kvůli předchozím chybám.
-</numerusform><numerusform>%n soubory jsou ignorovány kvůli předchozím chybám.
-</numerusform><numerusform>%n souborů je ignorováno kvůli předchozím chybám.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n soubor je částečně stažen.
-</numerusform><numerusform>%n soubory jsou částečně staženy.
-</numerusform><numerusform>%n souborů je částečně staženo.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Zkuste je znovu synchronizovat.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

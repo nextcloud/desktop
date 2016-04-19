@@ -2206,34 +2206,6 @@ It is not advisable to use it.</source>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Копирај активност у клипборд.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Тренутно се, због претходних грешака, ништа не игнорише и нема преузимања у току.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n фајл је игнорисан због претходних грешака.
-</numerusform><numerusform>%n фајла су игнорисана због претходних грешака.
-</numerusform><numerusform>%n фајлова је игнорисано због претходних грешака.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n фајл је делимично преузет.
-</numerusform><numerusform>%n фајла су делимично преузета.
-</numerusform><numerusform>%n фајлова је делимично преузето.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Покушајте да их синхронизујете поново.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

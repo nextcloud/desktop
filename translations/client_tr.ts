@@ -2211,32 +2211,6 @@ Kullanmanız önerilmez.</translation>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Etkinlik listesini panoya kopyala.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>Önceki hatalar nedeniyle hiçbir dosya yolsayılmadı ve süren bir indirme yok.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
-</numerusform><numerusform>önceki hatalardan dolayı %n dosya yoksayıldı.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n dosya kısmen indirildi.
-</numerusform><numerusform>%n dosya kısmen indirildi.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Bunları tekrar eşitlemeyi deneyin.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

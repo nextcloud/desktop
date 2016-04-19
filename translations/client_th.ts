@@ -2211,28 +2211,6 @@ It is not advisable to use it.</source>
         <source>Copy the activity list to the clipboard.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>ปัจจุบันยังไม่มีไฟล์ที่ถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้และไม่มีความคืบหน้าในการดาวน์โหลด</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n ไฟล์จะถูกละเว้นเนื่องจากเกิดข้อผิดพลาดก่อนหน้านี้</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n ไฟล์จะถูกดาวน์โหลดบางส่วน</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>พยายามที่จะประสานข้อมูลเหล่านี้อีกครั้ง</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

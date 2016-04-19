@@ -2213,32 +2213,6 @@ Det är inte lämpligt använda den.</translation>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Kopiera aktivitetslistan till urklipp.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>För närvarande är inga filer ignorerade på grund av föregående fel och inga nerladdningar pågår.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n fil ignorerades på grund av tidigare fel.
-</numerusform><numerusform>%n filer ignorerades på grund av tidigare fel.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n fil är delvis nedladdad.
-</numerusform><numerusform>%n filer är delvis nedladdade.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Försök att synkronisera dessa igen.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>

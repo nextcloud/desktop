@@ -2201,34 +2201,6 @@ It is not advisable to use it.</source>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Скопіювати протокол синхронізації до буферу обміну.</translation>
     </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="238"/>
-        <source>Currently no files are ignored because of previous errors and no downloads are in progress.</source>
-        <translation>На даний час жоден файл не ігнорується, через попередні помилки, та немає активних завантажень.</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="241"/>
-        <source>%n files are ignored because of previous errors.
-</source>
-        <translation><numerusform>%n файл пропущено через попередні помилки.
-</numerusform><numerusform>%n файлів пропущено через попередні помилки.
-</numerusform><numerusform>%n файлів пропущено через попередні помилки.
-</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/protocolwidget.cpp" line="242"/>
-        <source>%n files are partially downloaded.
-</source>
-        <translation><numerusform>%n файлів частково завантажений.
-</numerusform><numerusform>%n файлів частково завантажені.
-</numerusform><numerusform>%n файлів частково завантажено.
-</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="243"/>
-        <source>Try to sync these again.</source>
-        <translation>Спробуйте синхронізувати ще раз.</translation>
-    </message>
 </context>
 <context>
     <name>OCC::ProxyAuthDialog</name>
