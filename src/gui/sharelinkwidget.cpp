@@ -153,6 +153,10 @@ void ShareLinkWidget::setExpireDate(const QDate &date)
 
 void ShareLinkWidget::slotExpireSet()
 {
+    auto date = _share->getExpireDate();
+    if (date.isValid()) {
+        _ui->calendar->setDate(date);
+    }
     _pi_date->stopAnimation();
 }
 
