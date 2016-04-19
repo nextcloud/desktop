@@ -180,9 +180,19 @@ void LinkShare::setExpireDate(const QDate &date)
     job->setExpireDate(getId(), date);
 }
 
-void LinkShare::slotExpireDateSet(const QVariantMap&, const QVariant &value)
+void LinkShare::slotExpireDateSet(const QVariantMap& reply, const QVariant &value)
 {
-    _expireDate = value.toDate();
+    auto data = reply.value("ocs").toMap().value("data").toMap();
+
+    /*
+     * If the reply provides a data back (more REST style)
+     * they use this date.
+     */
+    if (data.value("expiration").isValid()) {
+       _expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+    } else {
+        _expireDate = value.toDate();
+    }
     emit expireDateSet();
 }
 

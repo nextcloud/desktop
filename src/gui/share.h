@@ -190,7 +190,7 @@ signals:
 private slots:
     void slotPasswordSet(const QVariantMap&, const QVariant &value);
     void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
-    void slotExpireDateSet(const QVariantMap&, const QVariant &value);
+    void slotExpireDateSet(const QVariantMap& reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
 
 private:
