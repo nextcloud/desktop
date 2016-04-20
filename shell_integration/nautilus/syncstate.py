@@ -249,7 +249,9 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         # print("Action for " + file + ": " + args[0])  # For debug only
         if action == 'STATUS':
             newState = args[0]
-            emblem = Emblems[newState]
+            emblem = 'NOP' # Show nothing if no emblem si defined.
+            if newState in Emblems:
+                emblem = Emblems[newState]
             filename = ':'.join(args[1:])
 
             if emblem:
