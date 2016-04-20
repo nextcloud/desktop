@@ -29,7 +29,7 @@ class NetrcParser
 public:
     typedef QPair<QString, QString> LoginPair;
 
-    NetrcParser(const QString &fileName = QString::null);
+    NetrcParser(const QString &file = QString());
     bool parse();
     LoginPair find(const QString &machine);
 
@@ -37,7 +37,7 @@ private:
     void tryAddEntryAndClear(QString &machine, LoginPair &pair, bool &isDefault);
     QHash<QString, LoginPair> _entries;
     LoginPair _default;
-    QString _fileName;
+    QString _netrcLocation;
 };
 
 } // namespace OCC

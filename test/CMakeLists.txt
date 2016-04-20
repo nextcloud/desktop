@@ -1,6 +1,7 @@
 include_directories(${CMAKE_BINARY_DIR}/csync ${CMAKE_BINARY_DIR}/csync/src ${CMAKE_BINARY_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/csync/src/)
 include_directories(${CMAKE_SOURCE_DIR}/csync/src/std ${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 
 include(QtVersionAbstraction)
 setup_qt()

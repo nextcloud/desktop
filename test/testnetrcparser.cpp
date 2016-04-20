@@ -29,6 +29,7 @@ private slots:
        netrc.write("machine foo login bar password baz\n");
        netrc.write("machine broken login bar2 dontbelonghere password baz2 extratokens dontcare andanother\n");
        netrc.write("machine\nfunnysplit\tlogin bar3 password baz3\n");
+       netrc.write("machine frob login \"user with spaces\" password 'space pwd'\n");
        QFile netrcWithDefault(testfileWithDefaultC);
        QVERIFY(netrcWithDefault.open(QIODevice::WriteOnly));
        netrcWithDefault.write("machine foo login bar password baz\n");
@@ -47,8 +48,9 @@ private slots:
        NetrcParser parser(testfileC);
        QVERIFY(parser.parse());
        QCOMPARE(parser.find("foo"), qMakePair(QString("bar"), QString("baz")));
-       QCOMPARE(parser.find("broken"), qMakePair(QString("bar2"), QString("baz2")));
+       QCOMPARE(parser.find("broken"), qMakePair(QString("bar2"), QString()));
        QCOMPARE(parser.find("funnysplit"), qMakePair(QString("bar3"), QString("baz3")));
+       QCOMPARE(parser.find("frob"), qMakePair(QString("user with spaces"), QString("space pwd")));
     }
 
     void testEmptyNetrc() {
