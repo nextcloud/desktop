@@ -68,17 +68,13 @@ FolderWizardLocalPath::FolderWizardLocalPath()
     _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
-    registerField(QLatin1String("alias*"), _ui.aliasLineEdit);
-
     QString newAlias = Theme::instance()->appName();
     int count = 0;
     while (FolderMan::instance()->folder(newAlias)) {
         // There is already a folder configured with this name and folder names need to be unique
         newAlias = Theme::instance()->appName() + QString::number(++count);
     }
-    _ui.aliasLineEdit->setText( newAlias );
 
-    _ui.aliasLineEdit->setToolTip(tr("The folder alias is a descriptive name for this sync connection."));
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 }
@@ -108,29 +104,6 @@ bool FolderWizardLocalPath::isComplete() const
     if (!isOk) {
         warnStrings << errorStr;
     }
-
-  // check if the alias is unique.
-  QString alias = _ui.aliasLineEdit->text();
-  if( alias.isEmpty() ) {
-    warnStrings.append( tr("The alias can not be empty. Please provide a descriptive alias word.") );
-    isOk = false;
-  }
-
-  auto map = FolderMan::instance()->map();
-  Folder::Map::const_iterator i = map.constBegin();
-  bool goon = true;
-  while( goon && i != map.constEnd() ) {
-    Folder *f = i.value();
-    if( f ) {
-      qDebug() << "Checking local alias: " << f->alias();
-      if( f->alias() == alias ) {
-        warnStrings.append( tr("The alias <i>%1</i> is already in use. Please pick another alias.").arg(alias) );
-        isOk = false;
-        goon = false;
-      }
-    }
-    i++;
-  }
 
   _ui.warnLabel->setWordWrap(true);
   if( isOk ) {
@@ -169,9 +142,6 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         while (FolderMan::instance()->folder(newAlias)) {
             // There is already a folder configured with this name and folder names need to be unique
             newAlias = pickedDir.dirName() + QString::number(++count);
-        }
-        if( !newAlias.isEmpty() ) {
-            _ui.aliasLineEdit->setText(newAlias);
         }
     }
     emit completeChanged();

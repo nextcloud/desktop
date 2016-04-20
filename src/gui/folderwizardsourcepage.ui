@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>155</height>
+    <height>174</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,23 +44,6 @@
            <string>&amp;Choose...</string>
           </property>
          </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>&amp;Directory alias name:</string>
-          </property>
-          <property name="buddy">
-           <cstring>aliasLineEdit</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="aliasLineEdit"/>
         </item>
        </layout>
       </item>
