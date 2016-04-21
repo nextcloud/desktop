@@ -68,6 +68,12 @@ static inline bool showWarningInSocketApi(const SyncFileItem& item)
         || status == SyncFileItem::Restoration;
 }
 
+static inline bool showSyncInSocketApi( const SyncFileItem& item)
+{
+    const auto inst = item._instruction;
+    return inst == CSYNC_INSTRUCTION_NEW;
+}
+
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
@@ -101,7 +107,7 @@ SyncFileStatus SyncFileStatusTracker::rootStatus()
             if( it->second == SyncFileStatus::StatusError ) {
                 errs ++;
                 break; // stop if an error found at all.
-            } else {
+            } if( it->second == SyncFileStatus::StatusWarning ) {
                 warns ++;
             }
         }
@@ -133,8 +139,11 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
     // it's an acceptable compromize to treat all exclude types the same.
-    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + fileName, _syncEngine->localPath(), _syncEngine->ignoreHiddenFiles()) )
+    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + fileName,
+                                                _syncEngine->localPath(),
+                                                _syncEngine->ignoreHiddenFiles()) ) {
         return SyncFileStatus(SyncFileStatus::StatusWarning);
+    }
 
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
     if (item) {
@@ -143,9 +152,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
-    if (rec.isValid())
+    if (rec.isValid()) {
         return fileStatus(rec.toSyncFileItem());
-
+    }
     // Must be a new file, wait for the filesystem watcher to trigger a sync
     return SyncFileStatus();
 }
@@ -158,11 +167,13 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     foreach (const SyncFileItemPtr &item, items) {
         // qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status;
 
-        if (showErrorInSocketApi(*item))
+        if (showErrorInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
-        else if (showWarningInSocketApi(*item))
+        } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
-
+        } else if( showSyncInSocketApi(*item)) {
+            _syncProblems[item->_file] = SyncFileStatus::StatusSync;
+        }
         emit fileStatusChanged(getSystemDestination(*item), fileStatus(*item));
     }
 
@@ -188,6 +199,9 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         invalidateParentPaths(item.destination());
     } else if (showWarningInSocketApi(item)) {
         _syncProblems[item._file] = SyncFileStatus::StatusWarning;
+    } else if (showSyncInSocketApi(item)) {
+        // new items that were in state sync can now be erased
+        _syncProblems.erase(item._file);
     } else {
         // There is currently no situation where an error status set during discovery/update is fixed by propagation.
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
