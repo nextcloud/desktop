@@ -153,7 +153,7 @@ void help()
     std::cout << "                         Proxy is http://server:port" << std::endl;
     std::cout << "  --trust                Trust the SSL certification." << std::endl;
     std::cout << "  --exclude [file]       Exclude list file" << std::endl;
-    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced folders (selective sync)" << std::endl;
+    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
     std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
@@ -249,10 +249,6 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
  */
 void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 {
-    if (!journal->exists()) {
-        return;
-    }
-
     SqlDatabase db;
     if (!db.openOrCreateReadWrite(journal->databaseFilePath())) {
         return;
