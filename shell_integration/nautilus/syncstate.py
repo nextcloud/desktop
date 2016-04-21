@@ -229,7 +229,6 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
             for path1 in update_items:
                 socketConnect.nautilusVFSFile_table[path1]['item'].invalidate_extension_info()
-                print "Invalidated: "+path1
 
     # Handles a single line of server response and sets the emblem
     def handle_commands(self, action, args):
@@ -250,7 +249,9 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
         # print("Action for " + file + ": " + args[0])  # For debug only
         if action == 'STATUS':
             newState = args[0]
-            emblem = Emblems[newState]
+            emblem = 'NOP' # Show nothing if no emblem si defined.
+            if newState in Emblems:
+                emblem = Emblems[newState]
             filename = ':'.join(args[1:])
 
             if emblem:

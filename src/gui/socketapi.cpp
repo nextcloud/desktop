@@ -274,6 +274,8 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevic
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket)
 {
+    const QString nopString("NOP");
+
     if( !socket ) {
         qDebug() << "No valid socket object.";
         return;
@@ -286,12 +288,18 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
     Folder* syncFolder = FolderMan::instance()->folderForPath( argument );
     if (!syncFolder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        statusString = QLatin1String("NOP");
+        statusString = nopString;
     } else {
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
-        SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
-        statusString = fileStatus.toSocketAPIString();
+        // future: Send more specific states for paused, disconnected etc.
+        if( syncFolder->syncPaused() || !syncFolder->accountState()->isConnected() ) {
+            statusString = nopString;
+        } else {
+            SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
+
+            statusString = fileStatus.toSocketAPIString();
+        }
     }
 
     const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') %  QDir::toNativeSeparators(argument);
