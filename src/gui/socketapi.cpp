@@ -293,16 +293,8 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
 
         // future: Send more specific states for paused, disconnected etc.
-        if( syncFolder->syncPaused() ){
+        if( syncFolder->syncPaused() || !syncFolder->accountState()->isConnected() ) {
             statusString = nopString;
-        } else if( !syncFolder->accountState()->isConnected() ) {
-            if( file.isEmpty() || file == QLatin1String("/") ) {
-                // only the root folder
-                statusString = nopString;
-            } else {
-                // all other files and dirs in unconnected sync
-                statusString = nopString;
-            }
         } else {
             SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 

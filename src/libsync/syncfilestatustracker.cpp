@@ -102,13 +102,11 @@ SyncFileStatus SyncFileStatusTracker::rootStatus()
         status = SyncFileStatus::StatusSync;
     } else {
         // sync is not running. Check dirty list and _syncProblems
-        int errs = 0, warns = 0;
+        int errs = 0;
         for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it) {
             if( it->second == SyncFileStatus::StatusError ) {
                 errs ++;
                 break; // stop if an error found at all.
-            } if( it->second == SyncFileStatus::StatusWarning ) {
-                warns ++;
             }
         }
         if( errs ) {
