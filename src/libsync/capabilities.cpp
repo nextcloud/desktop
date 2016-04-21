@@ -81,28 +81,18 @@ bool Capabilities::isValid() const
     return !_capabilities.isEmpty();
 }
 
-QList<QByteArray> Capabilities::supportedChecksumTypesAdvertised() const
-{
-    return QList<QByteArray>();
-}
-
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
-    auto list = supportedChecksumTypesAdvertised();
-    QByteArray cfgType = ConfigFile().transmissionChecksum().toLatin1();
-    if (!cfgType.isEmpty()) {
-        list.prepend(cfgType);
+    QList<QByteArray> list;
+    foreach (const auto & t, _capabilities["checksums"].toMap()["supportedTypes"].toList()) {
+        list.push_back(t.toByteArray());
     }
     return list;
 }
 
-QByteArray Capabilities::preferredChecksumType() const
+QByteArray Capabilities::preferredUploadChecksumType() const
 {
-    auto list = supportedChecksumTypes();
-    if (list.isEmpty()) {
-        return QByteArray();
-    }
-    return list.first();
+    return _capabilities["checksums"].toMap()["preferredUploadType"].toByteArray();
 }
 
 }

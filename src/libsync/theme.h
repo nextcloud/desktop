@@ -211,14 +211,6 @@ public:
      * to nothing selected
      */
     virtual bool wizardSelectiveSyncDefaultNothing() const;
-    /**
-     * @brief Add an additional checksum header to PUT requests and compare them
-     * if they come with GET requests.
-     * This value sets the checksum type (SHA1, MD5 or Adler32) or is left empty
-     * if no checksumming is wanted. In that case it can still be overwritten in
-     * the client config file.
-     */
-    virtual QString transmissionChecksum() const;
 
     /**
      * Default option for the newBigFolderSizeLimit.

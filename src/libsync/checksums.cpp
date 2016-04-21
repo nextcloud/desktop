@@ -108,12 +108,6 @@ bool uploadChecksumEnabled()
     return enabled;
 }
 
-bool downloadChecksumEnabled()
-{
-    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_DOWNLOAD").isEmpty();
-    return enabled;
-}
-
 QByteArray contentChecksumType()
 {
     static QByteArray type = qgetenv("OWNCLOUD_CONTENT_CHECKSUM_TYPE");

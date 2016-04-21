@@ -46,14 +46,28 @@ public:
     /// returns true if the capabilities are loaded already.
     bool isValid() const;
 
-    /// Returns the checksum types the server explicitly advertises
-    QList<QByteArray> supportedChecksumTypesAdvertised() const;
-
-    /// Like supportedChecksumTypesRaw(), but includes the type from the config
+    /**
+     * Returns the checksum types the server understands.
+     *
+     * When the client uses one of these checksumming algorithms in
+     * the OC-Checksum header of a file upload, the server will use
+     * it to validate that data was transmitted correctly.
+     *
+     * Path: checksums/supportedTypes
+     * Default: []
+     * Possible entries: "Adler32", "MD5", "SHA1"
+     */
     QList<QByteArray> supportedChecksumTypes() const;
 
-    /// Returns the checksum type that should be used for new uploads.
-    QByteArray preferredChecksumType() const;
+    /**
+     * The checksum algorithm that the server recommends for file uploads.
+     * This is just a preference, any algorithm listed in supportedTypes may be used.
+     *
+     * Path: checksums/preferredUploadType
+     * Default: empty, meaning "no preference"
+     * Possible values: empty or any of the supportedTypes
+     */
+    QByteArray preferredUploadChecksumType() const;
 
 private:
     QVariantMap _capabilities;
