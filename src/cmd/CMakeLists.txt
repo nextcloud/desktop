@@ -17,6 +17,9 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
 
+# Need tokenizer for netrc parser
+include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
+
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})
 	qt5_use_modules(${cmd_NAME} Network Sql)

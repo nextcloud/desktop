@@ -16,6 +16,10 @@
 #include <QFile>
 #include <QTextStream>
 
+#include <qtokenizer.h>
+
+#include <QDebug>
+
 #include "netrcparser.h"
 
 namespace OCC {
@@ -28,11 +32,11 @@ QString passwordKeyword = QLatin1String("password");
 
 }
 
-NetrcParser::NetrcParser(const QString &fileName)
-    : _fileName(fileName)
+NetrcParser::NetrcParser(const QString &file)
 {
-    if (_fileName.isEmpty()) {
-       _fileName = QDir::homePath()+QLatin1String("/.netrc");
+    _netrcLocation = file;
+    if (_netrcLocation.isEmpty()) {
+       _netrcLocation = QDir::homePath()+QLatin1String("/.netrc");
     }
 }
 
@@ -49,29 +53,39 @@ void NetrcParser::tryAddEntryAndClear(QString& machine, LoginPair& pair, bool& i
 
 bool NetrcParser::parse()
 {
-    QFile netrc(_fileName);
+    QFile netrc(_netrcLocation);
     if (!netrc.open(QIODevice::ReadOnly)) {
         return false;
     }
+    QString content = netrc.readAll();
 
-    QTextStream ts(&netrc);
+    QStringTokenizer tokenizer(content, " \n\t");
+    tokenizer.setQuoteCharacters("\"'");
+
     LoginPair pair;
     QString machine;
     bool isDefault = false;
-    while (!ts.atEnd()) {
-        QString next;
-        ts >> next;
-        if (next == defaultKeyword) {
+    while (tokenizer.hasNext()) {
+        QString key = tokenizer.next();
+        if (key == defaultKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
             isDefault = true;
+            continue; // don't read a value
         }
-        if (next == machineKeyword) {
+
+        if (!tokenizer.hasNext()) {
+            qDebug() << "error fetching value for" << key;
+            return false;
+        }
+        QString value = tokenizer.next();
+
+        if (key == machineKeyword) {
             tryAddEntryAndClear(machine, pair, isDefault);
-            ts >> machine;
-        } else if (next == loginKeyword) {
-            ts >> pair.first;
-        } else if (next == passwordKeyword) {
-            ts >> pair.second;
+            machine = value;
+        } else if (key == loginKeyword) {
+            pair.first = value;
+        } else if (key == passwordKeyword) {
+            pair.second = value;
         } // ignore unsupported tokens
 
     }
