@@ -139,7 +139,6 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dhandle_t *handle = NULL;
   csync_vio_file_stat_t *file_stat = NULL;
-  ULARGE_INTEGER FileIndex;
   DWORD rem;
 
   handle = (dhandle_t *) dhandle;
