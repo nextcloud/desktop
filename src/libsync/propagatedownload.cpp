@@ -555,9 +555,6 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     connect(validator, SIGNAL(validationFailed(QString)),
             SLOT(slotChecksumFail(QString)));
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
-    if (!downloadChecksumValidationEnabled()) {
-        checksumHeader.clear();
-    }
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 

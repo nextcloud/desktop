@@ -34,9 +34,6 @@ bool parseChecksumHeader(const QByteArray& header, QByteArray* type, QByteArray*
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 bool uploadChecksumEnabled();
 
-/// Checks disableDownloadChecksumValidation from the config file
-bool downloadChecksumValidationEnabled();
-
 /// Checks OWNCLOUD_CONTENT_CHECKSUM_TYPE (default: SHA1)
 QByteArray contentChecksumType();
 

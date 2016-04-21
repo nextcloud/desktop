@@ -114,14 +114,6 @@ public:
     int timeout() const;
     quint64 chunkSize() const;
 
-    /** Whether to disable download checksum validation.
-     *
-     * By default (false) received checksums will be validated. This flag
-     * can disable checksum validation and is intended for debugging purposes
-     * only.
-     */
-    bool disableDownloadChecksumValidation() const;
-
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
