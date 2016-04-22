@@ -1,4 +1,4 @@
-FROM opensuse:42.2
+FROM opensuse:42.1
 
 MAINTAINER Daniel Molkentin <danimo@owncloud.com>
 
@@ -8,8 +8,8 @@ ENV HOME /root
 ENV REFRESHED_AT 20160421
 
 RUN zypper --non-interactive --gpg-auto-import-keys refresh
-RUN zypper --non-interactive --gpg-auto-import-keys ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_42.2/windows:mingw.repo
-RUN zypper --non-interactive --gpg-auto-import-keys ar http://download.opensuse.org/repositories/isv:ownCloud:toolchains:mingw:win32:2.2/openSUSE_Leap_42.2/isv:ownCloud:toolchains:mingw:win32:2.2.repo
+RUN zypper --non-interactive --gpg-auto-import-keys ar http://download.opensuse.org/repositories/windows:/mingw/openSUSE_42.1/windows:mingw.repo
+RUN zypper --non-interactive --gpg-auto-import-keys ar http://download.opensuse.org/repositories/isv:ownCloud:toolchains:mingw:win32:2.2/openSUSE_Leap_42.1/isv:ownCloud:toolchains:mingw:win32:2.2.repo
 RUN zypper --non-interactive --gpg-auto-import-keys install cmake make mingw32-cross-binutils mingw32-cross-cpp mingw32-cross-gcc \
                       mingw32-cross-gcc-c++ mingw32-cross-pkg-config mingw32-filesystem \
                       mingw32-headers mingw32-runtime site-config mingw32-libwebp \
