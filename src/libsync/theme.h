@@ -300,7 +300,7 @@ public:
      *
      * Defaults: "/"
      */
-    QString quotaBaseFolder() const;
+    virtual QString quotaBaseFolder() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
