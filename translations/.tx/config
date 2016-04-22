@@ -46,3 +46,8 @@ trans.hu_HU = client_hu.ts
 trans.sk_SK = client_sk.ts
 trans.th_TH = client_th.ts
 
+[owncloud.client-desktop]
+host = https://www.transifex.com
+source_file = ../mirall.desktop.in
+source_lang = en
+type = DESKTOP
