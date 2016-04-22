@@ -8,3 +8,14 @@ GenericName=Folder Sync
 Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
+
+
+# Translations
+Comment[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
+GenericName[sq]=Njëkohësim Dosjesh
+Name[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
+Icon[sq]=@APPLICATION_EXECUTABLE@
+Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
+GenericName[nl]=Mappen sync
+Name[nl]=@APPLICATION_NAME@ desktop sync client 
+Icon[nl]=@APPLICATION_EXECUTABLE@
