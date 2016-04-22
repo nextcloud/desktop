@@ -156,20 +156,15 @@ eye-catching red X.
 If the file is waiting to be synced, or is currently syncing, the overlay 
 icon displays a blue cycling icon.
 
-When the client is offline, the icons remain in the state of the 
-last successful sync, as long as they are not touched locally. Once a file
-is edited locally, the icon will change to the 'waiting to sync' icon.
+When the client is offline, no icons are shown to reflect that the 
+folder is currently out of sync and no changes are synced to the server. 
 
 The overlay icon of a synced directory indicates the status of the files in the 
 directory. If there are any sync errors, the directory is marked with a warning 
 icon.
 
-If the files inside the directory include ignored files that are marked with 
-warning icons, the parent directory remains in green mode.
-
-Normally-synced directories will not show an error sign, with the exception of 
-that root sync directory. That will turn red if there is a serious error 
-anywhere inside the root directory.
+If a directory includes ignored files that are marked with warning icons 
+that does not change the status of the parent directories.
 
 Sharing From Your Desktop
 -------------------------
