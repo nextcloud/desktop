@@ -291,6 +291,16 @@ public:
      */
     virtual QString wizardUrlHint() const;
 
+    /**
+     * @brief the server folder that should be queried for the quota information
+     *
+     * This can be configured to show the quota infromation for a different
+     * folder than the root. This is the folder on which the client will do
+     * PROPFIND calls to get "quota-available-bytes" and "quota-used-bytes"
+     *
+     * Defaults: "/"
+     */
+    QString quotaBaseFolder() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

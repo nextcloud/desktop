@@ -459,7 +459,8 @@ QString Theme::wizardUrlHint() const
     return QString();
 }
 
-
-
+QString Theme::quotaBaseFolder() const
+{
+    return QLatin1String("/");
+}
 } // end namespace client
-

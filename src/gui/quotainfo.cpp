@@ -17,6 +17,7 @@
 #include "networkjobs.h"
 #include "folderman.h"
 #include "creds/abstractcredentials.h"
+#include <theme.h>
 
 #include <QTimer>
 #include <QDebug>
@@ -82,20 +83,7 @@ bool QuotaInfo::canGetQuota() const
 
 QString QuotaInfo::quotaBaseFolder() const
 {
-    // If there's exactly one folder, use its remote path.
-    // Otherwise use /
-    bool foundOne = false;
-    QString path = "/";
-    for (const auto & folder : FolderMan::instance()->map()) {
-        if (folder->accountState() == _accountState) {
-            if (foundOne)
-                return "/";
-            foundOne = true;
-            path = folder->remotePath();
-        }
-    }
-
-    return path;
+    return Theme::instance()->quotaBaseFolder();
 }
 
 void QuotaInfo::slotCheckQuota()
