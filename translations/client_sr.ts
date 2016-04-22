@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1911,7 +1911,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1944,17 +1944,17 @@ It is not advisable to use it.</source>
         <translation>Фајл није могао бити преузет у потпуности.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="689"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Фајл %1 се не може сачувати јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="730"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="727"/>
         <source>File has changed since discovery</source>
         <translation>Фајл је измењен у међувремену</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="770"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2551,7 +2551,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="427"/>
+        <location filename="../src/gui/socketapi.cpp" line="435"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Подели са %1</translation>
@@ -3047,17 +3047,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="290"/>
+        <location filename="../src/libsync/theme.cpp" line="285"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Верзија %1. За више информација посетите &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="294"/>
+        <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ауторска права оунКлауд (ownCloud), корпорација&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="295"/>
+        <location filename="../src/libsync/theme.cpp" line="290"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дистрибуира %1 под ГНУ општом јавном лиценцом (ОЈЛ) верзија 2.0.&lt;br/&gt;%2 и %2 лого су регистроване марке %1 у САД, другим земљама или обоје&lt;/p&gt;</translation>
     </message>
@@ -3065,17 +3065,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="195"/>
+        <location filename="../src/libsync/checksums.cpp" line="189"/>
         <source>The checksum header is malformed.</source>
         <translation>Заглавље контролне суме је лоше формирано.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="210"/>
+        <location filename="../src/libsync/checksums.cpp" line="204"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="215"/>
+        <location filename="../src/libsync/checksums.cpp" line="209"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Преузети фајл се не поклапа с контролном сумом. Биће настављено.</translation>
     </message>
@@ -3606,7 +3606,7 @@ It is not advisable to use it.</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="276"/>
+        <location filename="../src/libsync/theme.cpp" line="271"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Направљено од ГИТ ревизије &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4 користећи КуТ %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

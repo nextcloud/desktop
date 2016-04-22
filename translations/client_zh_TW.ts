@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1916,7 +1916,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1949,17 +1949,17 @@ It is not advisable to use it.</source>
         <translation>檔案下載無法完成。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="689"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>檔案 %1 無法存檔，因為本地端的檔案名稱已毀損!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="730"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="727"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="770"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2556,7 +2556,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="427"/>
+        <location filename="../src/gui/socketapi.cpp" line="435"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>與 %1 分享</translation>
@@ -3052,17 +3052,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="290"/>
+        <location filename="../src/libsync/theme.cpp" line="285"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;版本 %1. 如欲得知更多資訊，請到此拜訪 &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="294"/>
+        <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;著作權 ownCloud, 組織&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="295"/>
+        <location filename="../src/libsync/theme.cpp" line="290"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3070,17 +3070,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="195"/>
+        <location filename="../src/libsync/checksums.cpp" line="189"/>
         <source>The checksum header is malformed.</source>
         <translation>校驗碼異常。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="210"/>
+        <location filename="../src/libsync/checksums.cpp" line="204"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>校正資料含有未知的型態 &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="215"/>
+        <location filename="../src/libsync/checksums.cpp" line="209"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>下載的檔案驗證失敗，將會被還原</translation>
     </message>
@@ -3611,7 +3611,7 @@ It is not advisable to use it.</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="276"/>
+        <location filename="../src/libsync/theme.cpp" line="271"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;根據Git版本號&lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;在 %3建置， %4 使用了Qt %5，%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

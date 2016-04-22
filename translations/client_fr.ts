@@ -375,7 +375,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non Synchronisé (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="787"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -975,7 +975,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 restant, %1 sur %2, fichier %3 sur %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
@@ -1918,7 +1918,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="727"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -1951,17 +1951,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Le fichier n&apos;a pas pu être téléchargé intégralement.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="689"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="686"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Le fichier %1 n&apos;a pas pu être sauvegardé en raison d&apos;un conflit sur le nom du fichier local !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="730"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="727"/>
         <source>File has changed since discovery</source>
         <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="773"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="770"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2558,7 +2558,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="427"/>
+        <location filename="../src/gui/socketapi.cpp" line="435"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Partager avec %1</translation>
@@ -3054,17 +3054,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="290"/>
+        <location filename="../src/libsync/theme.cpp" line="285"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version %1. Pour plus d&apos;information, visitez &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="294"/>
+        <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="295"/>
+        <location filename="../src/libsync/theme.cpp" line="290"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Distribué par %1 et sous licence GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 et le logo %2  sont des marques enregistrées de %1 aux Etats-Unis, dans d&apos;autres pays, ou les deux.&lt;/p&gt;</translation>
     </message>
@@ -3072,17 +3072,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="195"/>
+        <location filename="../src/libsync/checksums.cpp" line="189"/>
         <source>The checksum header is malformed.</source>
         <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="210"/>
+        <location filename="../src/libsync/checksums.cpp" line="204"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>L&apos;en-tête de la somme de contrôle contenait un type de somme de contrôle inconnu &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/checksums.cpp" line="215"/>
+        <location filename="../src/libsync/checksums.cpp" line="209"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Le fichier téléchargé ne correspond pas à la somme de contrôle, il va être téléchargé à nouveau.</translation>
     </message>
@@ -3613,7 +3613,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="276"/>
+        <location filename="../src/libsync/theme.cpp" line="271"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Construit à partir de la révision Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; du %3, %4 en utilisant Qt %5, %6.&lt;/small&gt;&lt;p&gt;</translation>
     </message>
