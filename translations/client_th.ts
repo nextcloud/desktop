@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>เลือกโฟลเดอร์ปลายทางระยะไกล</translation>
+        <translation>เลือกรีโมทโฟลเดอร์ปลายทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -440,22 +440,22 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>คุณได้รับ %n การแจ้งเตือนใหม่จาก %2</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>คุณได้รับ %n การแจ้งเตือนใหม่จาก %1 และ %2</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>คุณได้รับการแจ้งเตือนใหม่จาก %1, %2 และผู้ใช้อื่นๆ</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 การแจ้งเตือน - จำเป็นต้องดำเนินการ</translation>
     </message>
 </context>
 <context>
@@ -1033,7 +1033,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="191"/>
         <source>Create Remote Folder</source>
-        <translation>สร้างโฟลเดอร์ระยะไกล</translation>
+        <translation>สร้างโฟลเดอร์รีโมท</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="192"/>
@@ -1086,7 +1086,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="474"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>เลือกสิ่งที่จะประสานข้อมูล: คุณสามารถยกเลิกการเลือกโฟลเดอร์ย่อยระยะไกลของหากคุณไม่ต้องการประสานข้อมูล</translation>
+        <translation>เลือกสิ่งที่จะประสานข้อมูล: คุณสามารถยกเลิกการเลือกโฟลเดอร์ย่อยรีโมทของหากคุณไม่ต้องการประสานข้อมูล</translation>
     </message>
 </context>
 <context>
@@ -1791,7 +1791,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="338"/>
         <source>No remote folder specified!</source>
-        <translation>ไม่มีโฟลเดอร์ระยะไกลที่ระบุ!</translation>
+        <translation>ไม่มีโฟลเดอร์รีโมทที่ระบุ!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
@@ -1806,12 +1806,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="373"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>โฟลเดอร์ระยะไกล %1 ถูกสร้างเรียบร้อยแล้ว</translation>
+        <translation>โฟลเดอร์รีโมท %1 ถูกสร้างเรียบร้อยแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>โฟลเดอร์ระยะไกล %1 มีอยู่แล้ว กำลังเชื่อมต่อเพื่อถ่ายโอนข้อมูล</translation>
+        <translation>โฟลเดอร์รีโมทมี %1 อยู่แล้ว กำลังเชื่อมต่อเพื่อถ่ายโอนข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="377"/>
@@ -1827,7 +1827,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="384"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;การสร้างโฟลเดอร์ระยะไกลล้มเหลว ซึ่งอาจมีสาเหตุมาจากการกรอกข้อมูลส่วนตัวเพื่อเข้าใช้งานไม่ถูกต้อง.&lt;/font&gt;&lt;br/&gt;กรุณาย้อนกลับไปแล้วตรวจสอบข้อมูลส่วนตัวของคุณอีกครั้ง.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;การสร้างโฟลเดอร์รีโมทล้มเหลว ซึ่งอาจมีสาเหตุมาจากการกรอกข้อมูลส่วนตัวเพื่อเข้าใช้งานไม่ถูกต้อง.&lt;/font&gt;&lt;br/&gt;กรุณาย้อนกลับไปแล้วตรวจสอบข้อมูลส่วนตัวของคุณอีกครั้ง.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
@@ -2235,12 +2235,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="415"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>เลือกสิ่งที่ต้องการประสานข้อมูล: เลือกโฟลเดอร์ย่อยระยะไกลที่คุณต้องการประสานข้อมูล</translation>
+        <translation>เลือกสิ่งที่ต้องการประสานข้อมูล: เลือกโฟลเดอร์ย่อยของรีโมทที่คุณต้องการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="416"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>เลือกสิ่งที่ต้องการประสานข้อมูล: ยกเลิกการเลือกโฟลเดอร์ย่อยระยะไกลที่คุณต้องการประสานข้อมูล</translation>
+        <translation>เลือกสิ่งที่ต้องการประสานข้อมูล: ยกเลิกการเลือกโฟลเดอร์ย่อยของรีโมทที่คุณต้องการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="422"/>
