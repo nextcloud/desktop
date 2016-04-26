@@ -141,9 +141,9 @@ public:
 
        \sa QStringTokenizer, QByteArrayTokenizer, StringTokenizer, WStringTokenizer
      */
-    QTokenizer(const T& string, const T& delimiters) {
-        d.reset(new QTokenizerPrivate<T, const_iterator>(string, delimiters));
-    }
+    QTokenizer(const T& string, const T& delimiters)
+        : d(new QTokenizerPrivate<T, const_iterator>(string, delimiters))
+    { }
 
     /*!
        Whether or not to return delimiters as tokens
