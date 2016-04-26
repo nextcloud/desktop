@@ -314,7 +314,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             foreach(Folder* folder, map.values()) {
                 //qDebug() << "Folder in overallStatus Message: " << folder << " with name " << folder->alias();
                 QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
-                allStatusStrings += tr("Folder %1: %2").arg(folder->aliasGui(), folderMessage);
+                allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
             }
             trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
@@ -367,7 +367,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             menu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiPath()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), this );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);

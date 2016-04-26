@@ -142,7 +142,7 @@ void Folder::checkLocalPath()
     }
 }
 
-QString Folder::aliasGui() const
+QString Folder::shortGuiRemotePathOrAppName() const
 {
     if (remotePath().length() > 0 && remotePath() != QLatin1String("/")) {
         QString a = QFile(remotePath()).fileName();
@@ -169,7 +169,7 @@ QString Folder::path() const
     return p;
 }
 
-QString Folder::shortGuiPath() const
+QString Folder::shortGuiLocalPath() const
 {
     QString p = _definition.localPath;
     QString home = QDir::homePath();
@@ -975,7 +975,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
            "the files were manually removed.\n"
            "Are you sure you want to perform this operation?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
-                       msg.arg(aliasGui()));
+                       msg.arg(shortGuiLocalPath()));
     msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::AcceptRole);
     if (msgBox.exec() == -1) {
@@ -1001,7 +1001,7 @@ void Folder::slotAboutToRestoreBackup(bool *restore)
            "file in an earlier state. "
            "Do you want to keep your local most recent files as conflict files?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Backup detected"),
-                       msg.arg(aliasGui()));
+                       msg.arg(shortGuiLocalPath()));
     msgBox.addButton(tr("Normal Synchronisation"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep Local Files as Conflict"), QMessageBox::AcceptRole);
 

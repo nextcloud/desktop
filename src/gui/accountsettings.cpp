@@ -335,12 +335,12 @@ void AccountSettings::slotRemoveCurrentFolder()
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
             FolderMan *folderMan = FolderMan::instance();
-            QString aliasGui = folderMan->folder(alias)->aliasGui();
+            QString shortGuiLocalPath = folderMan->folder(alias)->shortGuiLocalPath();
 
             QMessageBox messageBox(QMessageBox::Question,
                                    tr("Confirm Folder Sync Connection Removal"),
                                    tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(aliasGui),
+                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(shortGuiLocalPath),
                                    QMessageBox::NoButton,
                                    this);
             QPushButton* yesButton =

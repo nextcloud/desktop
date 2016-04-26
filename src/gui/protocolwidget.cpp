@@ -167,7 +167,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
 
     columns << timeStr;
     columns << Utility::fileNameForGuiUse(item._originalFile);
-    columns << f->shortGuiPath();
+    columns << f->shortGuiLocalPath();
 
     // If the error string is set, it's prefered because it is a useful user message.
     QString message = item._errorString;
