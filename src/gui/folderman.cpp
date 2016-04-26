@@ -781,7 +781,7 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, A
 {
     auto folder = new Folder(folderDefinition, accountState, this );
 
-    qDebug() << "Adding folder to Folder Map " << folder;
+    qDebug() << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
     if (folder->syncPaused()) {
         _disabledFolders.insert(folder);

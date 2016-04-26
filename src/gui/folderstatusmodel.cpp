@@ -185,11 +185,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
-    case FolderStatusDelegate::FolderPathRole         : return  f->shortGuiPath();
+    case FolderStatusDelegate::FolderPathRole         : return  f->shortGuiLocalPath();
     case FolderStatusDelegate::FolderSecondPathRole   : return  f->remotePath();
     case FolderStatusDelegate::FolderErrorMsg         : return  f->syncResult().errorStrings();
     case FolderStatusDelegate::SyncRunning            : return  f->syncResult().status() == SyncResult::SyncRunning;
-    case FolderStatusDelegate::HeaderRole             : return  f->aliasGui();
+    case FolderStatusDelegate::HeaderRole             : return  f->shortGuiRemotePathOrAppName();
     case FolderStatusDelegate::FolderAliasRole        : return  f->alias();
     case FolderStatusDelegate::FolderSyncPaused       : return  f->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected : return  accountConnected;
