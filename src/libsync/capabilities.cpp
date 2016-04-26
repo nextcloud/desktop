@@ -95,4 +95,15 @@ QByteArray Capabilities::preferredUploadChecksumType() const
     return _capabilities["checksums"].toMap()["preferredUploadType"].toByteArray();
 }
 
+QByteArray Capabilities::uploadChecksumType() const
+{
+    QByteArray preferred = preferredUploadChecksumType();
+    if (!preferred.isEmpty())
+        return preferred;
+    QList<QByteArray> supported = supportedChecksumTypes();
+    if (!supported.isEmpty())
+        return supported.first();
+    return QByteArray();
+}
+
 }
