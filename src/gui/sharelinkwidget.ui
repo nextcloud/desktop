@@ -53,7 +53,7 @@
       <property name="rightMargin">
        <number>0</number>
       </property>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="leftMargin">
          <number>20</number>
@@ -80,7 +80,7 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="leftMargin">
          <number>0</number>
@@ -101,7 +101,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_password">
         <item>
          <widget class="QCheckBox" name="checkBox_password">
@@ -167,7 +167,7 @@
         </item>
        </layout>
       </item>
-      <item row="3" column="0">
+      <item row="1" column="0">
        <widget class="QWidget" name="widget_editing" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_editing">
          <property name="leftMargin">
@@ -222,10 +222,18 @@
     </spacer>
    </item>
   </layout>
-  <zorder>errorLabel</zorder>
-  <zorder>widget_shareLink</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>checkBox_shareLink</tabstop>
+  <tabstop>pushButton_copy</tabstop>
+  <tabstop>checkBox_editing</tabstop>
+  <tabstop>checkBox_password</tabstop>
+  <tabstop>lineEdit_password</tabstop>
+  <tabstop>pushButton_setPassword</tabstop>
+  <tabstop>checkBox_expire</tabstop>
+  <tabstop>calendar</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
