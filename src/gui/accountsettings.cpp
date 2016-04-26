@@ -277,7 +277,6 @@ void AccountSettings::slotFolderWizardAccepted()
     qDebug() << "* Folder wizard completed";
 
     FolderDefinition definition;
-    definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
     definition.localPath    = FolderDefinition::prepareLocalPath(
             folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath   = folderWizard->property("targetPath").toString();

@@ -200,7 +200,7 @@ int FolderMan::setupFolders()
         foreach (const auto& folderAlias, settings->childGroups()) {
             FolderDefinition folderDefinition;
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(folderDefinition, account.data());
+                Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
                 if (f) {
                     slotScheduleSync(f);
                     emit folderSyncStateChange(f);
@@ -777,8 +777,15 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState)
+Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountState* accountState)
 {
+    auto alias = folderDefinition.alias;
+    int count = 0;
+    while (folderDefinition.alias.isEmpty() || _folderMap.contains(folderDefinition.alias)) {
+        // There is already a folder configured with this name and folder names need to be unique
+        folderDefinition.alias = alias + QString::number(++count);
+    }
+
     auto folder = new Folder(folderDefinition, accountState, this );
 
     qDebug() << "Adding folder to Folder Map " << folder;
