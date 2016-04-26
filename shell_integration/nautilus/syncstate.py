@@ -259,6 +259,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
                 if itemStore:
                     if( not itemStore['state'] or newState != itemStore['state'] ):
                         item = itemStore['item']
+                        item.invalidate_extension_info() # clears the old emblem
                         item.add_emblem(emblem)
                         # print("Setting emblem on " + filename + "<>" + emblem + "<>")  # For debug only
                         socketConnect.nautilusVFSFile_table[filename] = {'item': item, 'state':newState}
