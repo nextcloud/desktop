@@ -110,8 +110,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="180"/>
-        <location filename="../src/gui/accountsettings.cpp" line="348"/>
-        <location filename="../src/gui/accountsettings.cpp" line="686"/>
+        <location filename="../src/gui/accountsettings.cpp" line="347"/>
+        <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>Cancel</source>
         <translation>منصرف شدن</translation>
     </message>
@@ -151,92 +151,92 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="290"/>
+        <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>Folder creation failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="291"/>
+        <location filename="../src/gui/accountsettings.cpp" line="290"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="341"/>
+        <location filename="../src/gui/accountsettings.cpp" line="340"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="347"/>
+        <location filename="../src/gui/accountsettings.cpp" line="346"/>
         <source>Remove Folder Sync Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="429"/>
+        <location filename="../src/gui/accountsettings.cpp" line="428"/>
         <source>Sync Running</source>
         <translation>همگام سازی در حال اجراست</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="430"/>
+        <location filename="../src/gui/accountsettings.cpp" line="429"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>عملیات همگام سازی در حال اجراست.&lt;br/&gt;آیا دوست دارید آن را متوقف کنید؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="497"/>
+        <location filename="../src/gui/accountsettings.cpp" line="496"/>
         <source>%1 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="523"/>
+        <location filename="../src/gui/accountsettings.cpp" line="522"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="524"/>
         <source>Connected to %1.</source>
         <translation>متصل به %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="527"/>
+        <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>سرور %1 بصورت موقت خارج از دسترس است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="529"/>
+        <location filename="../src/gui/accountsettings.cpp" line="528"/>
         <source>Signed out from %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="530"/>
         <source>No connection to %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="554"/>
+        <location filename="../src/gui/accountsettings.cpp" line="553"/>
         <source>Log in</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="638"/>
+        <location filename="../src/gui/accountsettings.cpp" line="637"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="678"/>
+        <location filename="../src/gui/accountsettings.cpp" line="677"/>
         <source>Confirm Account Removal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="679"/>
+        <location filename="../src/gui/accountsettings.cpp" line="678"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="685"/>
+        <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>Remove connection</source>
         <translation type="unfinished"/>
     </message>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="145"/>
-        <location filename="../src/gui/accountsettings.cpp" line="556"/>
+        <location filename="../src/gui/accountsettings.cpp" line="555"/>
         <source>Log out</source>
         <translation>خروج</translation>
     </message>
@@ -262,27 +262,27 @@
         <translation>توقف به‌هنگام‌سازی </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="484"/>
+        <location filename="../src/gui/accountsettings.cpp" line="483"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="485"/>
+        <location filename="../src/gui/accountsettings.cpp" line="484"/>
         <source>%1 of %2 in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="494"/>
+        <location filename="../src/gui/accountsettings.cpp" line="493"/>
         <source>Currently there is no storage usage information available.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="536"/>
         <source>No %1 connection configured.</source>
         <translation>بدون %1 اتصال پیکربندی شده.</translation>
     </message>
@@ -747,102 +747,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="884"/>
+        <location filename="../src/gui/folderman.cpp" line="891"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="889"/>
+        <location filename="../src/gui/folderman.cpp" line="896"/>
         <source> (backup %1)</source>
         <translation> (پشتیبان %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1096"/>
+        <location filename="../src/gui/folderman.cpp" line="1103"/>
         <source>Undefined State.</source>
         <translation>موقعیت تعریف نشده</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1099"/>
+        <location filename="../src/gui/folderman.cpp" line="1106"/>
         <source>Waiting to start syncing.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1102"/>
+        <location filename="../src/gui/folderman.cpp" line="1109"/>
         <source>Preparing for sync.</source>
         <translation>آماده سازی برای همگام سازی کردن.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1105"/>
+        <location filename="../src/gui/folderman.cpp" line="1112"/>
         <source>Sync is running.</source>
         <translation>همگام سازی در حال اجراست</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1108"/>
+        <location filename="../src/gui/folderman.cpp" line="1115"/>
         <source>Last Sync was successful.</source>
         <translation>آخرین همگام سازی موفقیت آمیز بود</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1113"/>
+        <location filename="../src/gui/folderman.cpp" line="1120"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1116"/>
+        <location filename="../src/gui/folderman.cpp" line="1123"/>
         <source>Setup Error.</source>
         <translation>خطا در پیکر بندی.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1119"/>
+        <location filename="../src/gui/folderman.cpp" line="1126"/>
         <source>User Abort.</source>
         <translation>خارج کردن کاربر.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1122"/>
+        <location filename="../src/gui/folderman.cpp" line="1129"/>
         <source>Sync is paused.</source>
         <translation>همگام سازی فعلا متوقف شده است</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1128"/>
+        <location filename="../src/gui/folderman.cpp" line="1135"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (همگام‌سازی موقتا متوقف شده است)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1136"/>
+        <location filename="../src/gui/folderman.cpp" line="1143"/>
         <source>No valid folder selected!</source>
         <translation>هیچ پوشه‌ی معتبری انتخاب نشده است!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1154"/>
         <source>The selected path is not a folder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1151"/>
+        <location filename="../src/gui/folderman.cpp" line="1158"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>شما اجازه نوشتن در پوشه های انتخاب شده را ندارید!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1166"/>
+        <location filename="../src/gui/folderman.cpp" line="1173"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1171"/>
+        <location filename="../src/gui/folderman.cpp" line="1178"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1185"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1185"/>
+        <location filename="../src/gui/folderman.cpp" line="1192"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1191"/>
+        <location filename="../src/gui/folderman.cpp" line="1198"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -1850,7 +1850,7 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="474"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt; پوشه همگام سازی محلی %1 با موفقیت ساخته شده است!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
