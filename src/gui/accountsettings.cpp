@@ -197,8 +197,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-    QString alias = _model->data( index, FolderStatusDelegate::FolderAliasRole ).toString();
-    if (alias.isEmpty()) {
+    if (_model->classify(index) != FolderStatusModel::RootFolder) {
         return;
     }
 
