@@ -232,8 +232,7 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
 
     h = CreateFileW( wuri, 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
                      NULL, OPEN_EXISTING,
-                     FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS+
-                     FILE_FLAG_OPEN_REPARSE_POINT+FILE_FLAG_OVERLAPPED,
+                     FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
                      NULL );
     if( h == INVALID_HANDLE_VALUE ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %s", uri );
