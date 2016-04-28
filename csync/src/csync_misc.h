@@ -33,6 +33,7 @@
  * than fmmatch anyway, which does not care for flags.
  **/
 #define FNM_PATHNAME    (1 << 0) /* No wildcard can ever match `/'.  */
+#define FNM_CASEFOLD    (1 << 4) /* Compare without regard to case.  */
 #endif
 
 int csync_fnmatch(__const char *__pattern, __const char *__name, int __flags);

@@ -59,11 +59,12 @@ my $emlpropafter = remoteFileProp("", "test.eml");
 assert($txtpropafter);
 assert($emlpropafter);
 
-# The both files were not uploaded, nothing differs
-assert($txtpropafter->get_property( "getetag" ) eq
+# The txt file is uploaded normally, etag and mtime differ
+assert($txtpropafter->get_property( "getetag" ) ne
        $txtpropbefore->get_property( "getetag" ));
-assert($txtpropafter->get_property( "getlastmodified" ) eq
+assert($txtpropafter->get_property( "getlastmodified" ) ne
        $txtpropbefore->get_property( "getlastmodified" ));
+# The eml was not uploaded, nothing differs
 assert($emlpropafter->get_property( "getetag" ) eq
        $emlpropbefore->get_property( "getetag" ));
 assert($emlpropafter->get_property( "getlastmodified" ) eq
