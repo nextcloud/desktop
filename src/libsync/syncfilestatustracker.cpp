@@ -28,14 +28,15 @@ static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatc
         // qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
         if (problemPath == pathToMatch) {
             return severity;
-        } else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch) && problemPath.at(pathToMatch.size()) == '/') {
-            Q_ASSERT(!pathToMatch.endsWith('/'));
+        } else if (severity == SyncFileStatus::StatusError
+                && problemPath.startsWith(pathToMatch)
+                && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == '/')) {
             return SyncFileStatus::StatusWarning;
         } else if (!problemPath.startsWith(pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
-            // since: "/a/" < "/a/aa" < "/a/aa/aaa" < "/a/ab/aba"
-            // If problemMap keys are ["/a/aa/aaa", "/a/ab/aba"] and pathToMatch == "/a/aa",
-            // lower_bound(pathToMatch) will point to "/a/aa/aaa", and the moment that
+            // since: "a/" < "a/aa" < "a/aa/aaa" < "a/ab/aba"
+            // If problemMap keys are ["a/aa/aaa", "a/ab/aba"] and pathToMatch == "a/aa",
+            // lower_bound(pathToMatch) will point to "a/aa/aaa", and the moment that
             // problemPath.startsWith(pathToMatch) == false, we know that we've looked
             // at everything that interest us.
             break;
@@ -80,39 +81,15 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
 }
 
-SyncFileStatus SyncFileStatusTracker::rootStatus()
+SyncFileItem SyncFileStatusTracker::rootSyncFileItem()
 {
-    /* Possible values for the status:
-    enum SyncFileStatusTag {
-        StatusNone,
-        StatusSync,
-        StatusWarning,
-        StatusUpToDate,
-        StatusError,
-    };
-    */
-    SyncFileStatus status =  SyncFileStatus::StatusUpToDate;
-
-    if( !_syncEngine ) return SyncFileStatus::StatusNone;
-
-    if( _syncEngine->isSyncRunning() ) {
-        status = SyncFileStatus::StatusSync;
-    } else {
-        // sync is not running. Check dirty list and _syncProblems
-        int errs = 0;
-        for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it) {
-            if( it->second == SyncFileStatus::StatusError ) {
-                errs ++;
-                break; // stop if an error found at all.
-            }
-        }
-        if( errs ) {
-            status = SyncFileStatus::StatusWarning; // some files underneath had errors
-        }
-        // Only warnings do not change the root emblem away from ok.
-    }
-    return status;
-
+    SyncFileItem fakeRootItem;
+    // It's is not entirely correct to use the sync's status as we'll show the root folder as
+    // syncing even though no child might end up being propagated, but will give us something
+    // better than always UpToDate for now.
+    fakeRootItem._status = _syncEngine->isSyncRunning() ? SyncFileItem::NoStatus : SyncFileItem::Success;
+    fakeRootItem._isDirectory = true;
+    return fakeRootItem;
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
@@ -124,10 +101,10 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     }
 
     if( fileName.isEmpty() ) {
-        // this is the root sync folder.
-        return rootStatus();
-
+        // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so create one manually.
+        return fileStatus(rootSyncFileItem());
     }
+
     // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
     // and CSYNC_FILE_EXCLUDE_AND_REMOVE excludes. Even though it's possible
     // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
@@ -216,7 +193,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
 {
-    emit fileStatusChanged(_syncEngine->localPath(), rootStatus());
+    emit fileStatusChanged(_syncEngine->localPath(), fileStatus(rootSyncFileItem()));
 }
 
 void SyncFileStatusTracker::slotClearDirtyPaths()

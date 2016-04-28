@@ -51,7 +51,7 @@ private slots:
 
 private:
     SyncFileStatus fileStatus(const SyncFileItem& item);
-    SyncFileStatus rootStatus();
+    SyncFileItem rootSyncFileItem();
 
     void invalidateParentPaths(const QString& path);
     QString getSystemDestination(const SyncFileItem& syncEnginePath);
