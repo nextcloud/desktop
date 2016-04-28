@@ -19,6 +19,7 @@
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
 #include <map>
+#include <QSet>
 
 namespace OCC {
 
@@ -36,12 +37,16 @@ public:
     explicit SyncFileStatusTracker(SyncEngine* syncEngine);
     SyncFileStatus fileStatus(const QString& systemFileName);
 
+public slots:
+    void slotPathTouched(const QString& fileName);
+
 signals:
     void fileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
 
 private slots:
     void slotAboutToPropagate(SyncFileItemVector& items);
     void slotItemCompleted(const SyncFileItem& item);
+    void slotClearDirtyPaths();
 
 private:
     SyncFileStatus fileStatus(const SyncFileItem& item);
@@ -53,6 +58,7 @@ private:
     SyncEngine* _syncEngine;
 
     std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
+    QSet<QString> _dirtyPaths;
 };
 
 }

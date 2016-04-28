@@ -204,6 +204,12 @@ signals:
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder*, bool paused);
 
+    /**
+     * Fires for each change inside this folder that wasn't caused
+     * by sync activity.
+     */
+    void watchedFileChangedExternally(const QString& path);
+
 public slots:
 
      /**
