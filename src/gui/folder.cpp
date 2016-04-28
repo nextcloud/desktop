@@ -96,6 +96,7 @@ Folder::Folder(const FolderDefinition& definition,
     if (!setIgnoredFiles())
         qWarning("Could not read system exclude file");
 
+    connect(_accountState.data(), SIGNAL(isConnectedChanged()), this, SIGNAL(canSyncChanged()));
     connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
     connect(_engine.data(), SIGNAL(treeWalkResult(const SyncFileItemVector&)),
               this, SLOT(slotThreadTreeWalkResult(const SyncFileItemVector&)), Qt::QueuedConnection);
@@ -230,7 +231,7 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->canSync();
+    return !syncPaused() && accountState()->isConnected();
 }
 
 void Folder::setSyncPaused( bool paused )
@@ -249,6 +250,7 @@ void Folder::setSyncPaused( bool paused )
     }
     emit syncPausedChanged(this, paused);
     emit syncStateChange();
+    emit canSyncChanged();
 }
 
 void Folder::setSyncState(SyncResult::Status state)
@@ -686,7 +688,8 @@ void Folder::wipe()
     QFile::remove( stateDbFile + "-wal" );
     QFile::remove( stateDbFile + "-journal" );
 
-    FolderMan::instance()->socketApi()->slotRegisterPath(alias());
+    if (canSync())
+        FolderMan::instance()->socketApi()->slotRegisterPath(alias());
 }
 
 bool Folder::setIgnoredFiles()
