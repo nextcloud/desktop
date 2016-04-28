@@ -72,11 +72,12 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
+            SLOT(slotAboutToPropagate(SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
-            this, SLOT(slotItemCompleted(const SyncFileItem&)));
-    connect(syncEngine, SIGNAL(started()),
-            SLOT(slotClearDirtyPaths()));
+            SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(started()), SLOT(slotClearDirtyPaths()));
+    connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
+    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
 }
 
 SyncFileStatus SyncFileStatusTracker::rootStatus()
@@ -211,6 +212,11 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
     }
 
     emit fileStatusChanged(getSystemDestination(item), fileStatus(item));
+}
+
+void SyncFileStatusTracker::slotSyncEngineRunningChanged()
+{
+    emit fileStatusChanged(_syncEngine->localPath(), rootStatus());
 }
 
 void SyncFileStatusTracker::slotClearDirtyPaths()
