@@ -68,12 +68,6 @@ static inline bool showWarningInSocketApi(const SyncFileItem& item)
         || status == SyncFileItem::Restoration;
 }
 
-static inline bool showSyncInSocketApi( const SyncFileItem& item)
-{
-    const auto inst = item._instruction;
-    return inst == CSYNC_INSTRUCTION_NEW;
-}
-
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
@@ -185,8 +179,6 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
-        } else if( showSyncInSocketApi(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusSync;
         }
         emit fileStatusChanged(getSystemDestination(*item), fileStatus(*item));
     }
@@ -213,9 +205,6 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         invalidateParentPaths(item.destination());
     } else if (showWarningInSocketApi(item)) {
         _syncProblems[item._file] = SyncFileStatus::StatusWarning;
-    } else if (showSyncInSocketApi(item)) {
-        // new items that were in state sync can now be erased
-        _syncProblems.erase(item._file);
     } else {
         // There is currently no situation where an error status set during discovery/update is fixed by propagation.
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
@@ -234,8 +223,10 @@ void SyncFileStatusTracker::slotClearDirtyPaths()
 SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
 {
     // Hack to know if the item was taken from the sync engine (Sync), or from the database (UpToDate)
-    bool waitingForPropagation = item._direction != SyncFileItem::None && item._status == SyncFileItem::NoStatus;
-
+    // Mark any directory in the SyncEngine's items as syncing, this is currently how we mark parent directories
+    // of currently syncing items since the PropagateDirectory job will mark the directorie's SyncFileItem::_status as Success
+    // once all child jobs have been completed.
+    bool waitingForPropagation = (item._isDirectory || item._direction != SyncFileItem::None) && item._status == SyncFileItem::NoStatus;
     SyncFileStatus status(SyncFileStatus::StatusUpToDate);
     if (waitingForPropagation) {
         status.set(SyncFileStatus::StatusSync);
