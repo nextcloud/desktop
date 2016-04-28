@@ -222,6 +222,7 @@ void SelectiveSyncTreeView::slotUpdateDirectories(QStringList list)
         }
     }
 
+    list.sort();
     foreach (QString path, list) {
         auto size = job ? job->_sizes.value(path) : 0;
         path.remove(pathToRemove);

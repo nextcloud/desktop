@@ -107,6 +107,8 @@ void FolderMan::unloadFolder( Folder *f )
                this, SLOT(slotFolderSyncPaused(Folder*,bool)));
     disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
                _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+    disconnect(f, SIGNAL(watchedFileChangedExternally(QString)),
+               &f->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -145,6 +147,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
         // to the signal mapper which maps to the folder alias. The changed path
         // is lost this way, but we do not need it for the current implementation.
         connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
+
         _folderWatchers.insert(folder->alias(), fw);
     }
 
@@ -200,7 +203,7 @@ int FolderMan::setupFolders()
         foreach (const auto& folderAlias, settings->childGroups()) {
             FolderDefinition folderDefinition;
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(folderDefinition, account.data());
+                Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
                 if (f) {
                     slotScheduleSync(f);
                     emit folderSyncStateChange(f);
@@ -777,11 +780,18 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, AccountState* accountState)
+Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountState* accountState)
 {
+    auto alias = folderDefinition.alias;
+    int count = 0;
+    while (folderDefinition.alias.isEmpty() || _folderMap.contains(folderDefinition.alias)) {
+        // There is already a folder configured with this name and folder names need to be unique
+        folderDefinition.alias = alias + QString::number(++count);
+    }
+
     auto folder = new Folder(folderDefinition, accountState, this );
 
-    qDebug() << "Adding folder to Folder Map " << folder;
+    qDebug() << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
     if (folder->syncPaused()) {
         _disabledFolders.insert(folder);
@@ -795,6 +805,8 @@ Folder* FolderMan::addFolderInternal(const FolderDefinition& folderDefinition, A
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
             _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+    connect(folder, SIGNAL(watchedFileChangedExternally(QString)),
+            &folder->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 
     registerFolderMonitor(folder);
     return folder;

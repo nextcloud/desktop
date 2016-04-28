@@ -297,7 +297,10 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                  // zero size in statedb can happen during migration
                  || (tmp->size != 0 && fs->size != tmp->size))) {
 
-            if (fs->size == tmp->size && tmp->checksumTypeId) {
+            // Checksum comparison at this stage is only enabled for .eml files,
+            // check #4754 #4755
+            bool isEmlFile = csync_fnmatch("*.eml", file, FNM_CASEFOLD) == 0;
+            if (isEmlFile && fs->size == tmp->size && tmp->checksumTypeId) {
                 if (ctx->callbacks.checksum_hook) {
                     st->checksum = ctx->callbacks.checksum_hook(
                                 file, tmp->checksumTypeId,

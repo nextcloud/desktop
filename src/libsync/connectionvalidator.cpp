@@ -219,6 +219,7 @@ void ConnectionValidator::slotAuthSuccess()
 void ConnectionValidator::checkServerCapabilities()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
+    job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotCapabilitiesRecieved(QVariantMap)));
     job->start();
 }

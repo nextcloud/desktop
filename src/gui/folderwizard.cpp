@@ -306,6 +306,7 @@ bool FolderWizardRemotePath::selectByPath(QString path)
     }
 
     _ui.folderTreeWidget->setCurrentItem(it);
+    _ui.folderTreeWidget->scrollToItem(it);
     return true;
 }
 
@@ -321,7 +322,9 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         root->setToolTip(0, tr("Choose this to sync the entire account"));
         root->setData(0, Qt::UserRole, "/");
     }
-    foreach (QString path, list) {
+    QStringList sortedList = list;
+    sortedList.sort();
+    foreach (QString path, sortedList) {
         path.remove(webdavFolder);
         QStringList paths = path.split('/');
         if (paths.last().isEmpty()) paths.removeLast();
@@ -374,8 +377,11 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
         path = path.mid(1);
 
     LsColJob *job = runLsColJob(path);
-    // no error handling, no updating, we do this manually
+    // No error handling, no updating, we do this manually
+    // because of extra logic in the typed-path case.
     disconnect(job, 0, this, 0);
+    connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
+            SLOT(slotTypedPathError(QNetworkReply*)));
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotTypedPathFound(QStringList)));
 }
@@ -384,6 +390,21 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList& subpaths)
 {
     slotUpdateDirectories(subpaths);
     selectByPath(_ui.folderEntry->text());
+}
+
+void FolderWizardRemotePath::slotTypedPathError(QNetworkReply* reply)
+{
+    // Ignore 404s, otherwise users will get annoyed by error popups
+    // when not typing fast enough. It's still clear that a given path
+    // was not found, because the 'Next' button is disabled and no entry
+    // is selected in the tree view.
+    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpCode == 404) {
+        showWarn(""); // hides the warning pane
+        return;
+    }
+
+    slotHandleLsColNetworkError(reply);
 }
 
 LsColJob* FolderWizardRemotePath::runLsColJob(const QString& path)

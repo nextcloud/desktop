@@ -71,7 +71,7 @@ assert($emlpropafter->get_property( "getlastmodified" ) eq
        $emlpropbefore->get_property( "getlastmodified" ));
 
 printInfo( "Change content of eml file (but not size)");
-system( "sed -i -e 's/in/IN/' $locDir/test.eml" );
+system( "sleep 1 && sed -i -e 's/in/IN/' $locDir/test.eml" );
 
 csync( );
 

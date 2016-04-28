@@ -67,8 +67,13 @@ void ShibbolethCredentials::setAccount(Account* account)
 {
     AbstractCredentials::setAccount(account);
 
+    // This is for existing saved accounts.
+    if (_user.isEmpty()) {
+        _user = _account->credentialSetting(QLatin1String(userC)).toString();
+    }
+
     // When constructed with a cookie (by the wizard), we usually don't know the
-    // user name yet. Request it now.
+    // user name yet. Request it now from the server.
     if (_ready && _user.isEmpty()) {
         QTimer::singleShot(1234, this, SLOT(slotFetchUser()));
     }

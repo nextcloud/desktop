@@ -69,6 +69,13 @@ public:
      */
     QByteArray preferredUploadChecksumType() const;
 
+    /**
+     * Helper that returns the preferredUploadChecksumType() if set, or one
+     * of the supportedChecksumTypes() if it isn't. May return an empty
+     * QByteArray if no checksum types are supported.
+     */
+    QByteArray uploadChecksumType() const;
+
 private:
     QVariantMap _capabilities;
 };

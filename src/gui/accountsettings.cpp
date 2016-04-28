@@ -197,8 +197,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-    QString alias = _model->data( index, FolderStatusDelegate::FolderAliasRole ).toString();
-    if (alias.isEmpty()) {
+    if (_model->classify(index) != FolderStatusModel::RootFolder) {
         return;
     }
 
@@ -277,7 +276,6 @@ void AccountSettings::slotFolderWizardAccepted()
     qDebug() << "* Folder wizard completed";
 
     FolderDefinition definition;
-    definition.alias        = folderWizard->field(QLatin1String("alias")).toString();
     definition.localPath    = FolderDefinition::prepareLocalPath(
             folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath   = folderWizard->property("targetPath").toString();
@@ -335,12 +333,12 @@ void AccountSettings::slotRemoveCurrentFolder()
         qDebug() << "Remove Folder alias " << alias;
         if( !alias.isEmpty() ) {
             FolderMan *folderMan = FolderMan::instance();
-            QString aliasGui = folderMan->folder(alias)->aliasGui();
+            QString shortGuiLocalPath = folderMan->folder(alias)->shortGuiLocalPath();
 
             QMessageBox messageBox(QMessageBox::Question,
                                    tr("Confirm Folder Sync Connection Removal"),
                                    tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(aliasGui),
+                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(shortGuiLocalPath),
                                    QMessageBox::NoButton,
                                    this);
             QPushButton* yesButton =

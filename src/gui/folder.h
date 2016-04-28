@@ -95,12 +95,12 @@ public:
      * alias or nickname
      */
     QString alias() const;
-    QString aliasGui() const; // since 2.0 we don't want to show aliases anymore, show the path instead
+    QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
 
     /**
-     * short path to display on the GUI  (native separators)
+     * short local path to display on the GUI  (native separators)
      */
-    QString shortGuiPath() const;
+    QString shortGuiLocalPath() const;
 
     /**
      * local folder path
@@ -203,6 +203,12 @@ signals:
     void progressInfo(const ProgressInfo& progress);
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder*, bool paused);
+
+    /**
+     * Fires for each change inside this folder that wasn't caused
+     * by sync activity.
+     */
+    void watchedFileChangedExternally(const QString& path);
 
 public slots:
 

@@ -459,13 +459,6 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
             FolderDefinition folderDefinition;
-            auto alias = Theme::instance()->appName();
-            int count = 0;
-            folderDefinition.alias = alias;
-            while (folderMan->folder(folderDefinition.alias)) {
-                // There is already a folder configured with this name and folder names need to be unique
-                folderDefinition.alias = alias + QString::number(++count);
-            }
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = _remoteFolder;
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();

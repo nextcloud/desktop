@@ -58,6 +58,9 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     header << tr("Size");
 
     _ui->_treeWidget->setHeaderLabels( header );
+    int timestampColumnWidth =
+        _ui->_treeWidget->fontMetrics().width(timeString(QDateTime::currentDateTime()));
+    _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
     _ui->_treeWidget->setColumnCount(5);
     _ui->_treeWidget->setRootIsDecorated(false);
@@ -79,6 +82,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _issueItemView = new QTreeWidget(this);
     header.removeLast();
     _issueItemView->setHeaderLabels( header );
+    timestampColumnWidth =
+            ActivityItemDelegate::rowHeight() // icon
+            + _issueItemView->fontMetrics().width(timeString(QDateTime::currentDateTime()));
+    _issueItemView->setColumnWidth(0, timestampColumnWidth);
     _issueItemView->setColumnWidth(1, 180);
     _issueItemView->setColumnCount(4);
     _issueItemView->setRootIsDecorated(false);
@@ -167,7 +174,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
 
     columns << timeStr;
     columns << Utility::fileNameForGuiUse(item._originalFile);
-    columns << f->shortGuiPath();
+    columns << f->shortGuiLocalPath();
 
     // If the error string is set, it's prefered because it is a useful user message.
     QString message = item._errorString;
