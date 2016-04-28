@@ -50,7 +50,7 @@ private slots:
     void slotClearDirtyPaths();
 
 private:
-    SyncFileStatus fileStatus(const SyncFileItem& item);
+    SyncFileStatus syncFileItemStatus(const SyncFileItem& item);
     SyncFileItem rootSyncFileItem();
 
     void invalidateParentPaths(const QString& path);

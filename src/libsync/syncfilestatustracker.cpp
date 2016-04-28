@@ -102,7 +102,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
     if( fileName.isEmpty() ) {
         // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so create one manually.
-        return fileStatus(rootSyncFileItem());
+        return syncFileItemStatus(rootSyncFileItem());
     }
 
     // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
@@ -122,13 +122,13 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
     if (item) {
-        return fileStatus(*item);
+        return syncFileItemStatus(*item);
     }
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
     if (rec.isValid()) {
-        return fileStatus(rec.toSyncFileItem());
+        return syncFileItemStatus(rec.toSyncFileItem());
     }
     // Must be a new file, wait for the filesystem watcher to trigger a sync
     return SyncFileStatus();
@@ -158,7 +158,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
-        emit fileStatusChanged(getSystemDestination(*item), fileStatus(*item));
+        emit fileStatusChanged(getSystemDestination(*item), syncFileItemStatus(*item));
     }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
@@ -188,12 +188,12 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
     }
 
-    emit fileStatusChanged(getSystemDestination(item), fileStatus(item));
+    emit fileStatusChanged(getSystemDestination(item), syncFileItemStatus(item));
 }
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
 {
-    emit fileStatusChanged(_syncEngine->localPath(), fileStatus(rootSyncFileItem()));
+    emit fileStatusChanged(_syncEngine->localPath(), syncFileItemStatus(rootSyncFileItem()));
 }
 
 void SyncFileStatusTracker::slotClearDirtyPaths()
@@ -203,7 +203,7 @@ void SyncFileStatusTracker::slotClearDirtyPaths()
     _dirtyPaths.clear();
 }
 
-SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
+SyncFileStatus SyncFileStatusTracker::syncFileItemStatus(const SyncFileItem& item)
 {
     // Hack to know if the item was taken from the sync engine (Sync), or from the database (UpToDate)
     // Mark any directory in the SyncEngine's items as syncing, this is currently how we mark parent directories
