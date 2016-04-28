@@ -574,9 +574,6 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         return;
     }
 
-    QVarLengthArray<int, 10> undecidedIndexes;
-    QVector<SubFolderInfo> newSubs;
-
     std::set<QString> selectiveSyncUndecidedSet; // not QSet because it's not sorted
     foreach (const QString &str, selectiveSyncUndecidedList) {
         if (str.startsWith(parentInfo->_path) || parentInfo->_path == QLatin1String("/")) {
@@ -584,10 +581,16 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         }
     }
 
-    newSubs.reserve(list.size() - 1);
-    for (int i = 1;  // skip the parent item (first in the list)
-            i < list.size(); ++i) {
-        const QString &path = list.at(i);
+    QStringList sortedSubfolders = list;
+    // skip the parent item (first in the list)
+    sortedSubfolders.erase(sortedSubfolders.begin());
+    sortedSubfolders.sort();
+
+    QVarLengthArray<int, 10> undecidedIndexes;
+
+    QVector<SubFolderInfo> newSubs;
+    newSubs.reserve(sortedSubfolders.size());
+    foreach (const QString& path, sortedSubfolders) {
         auto relativePath = path.mid(pathToRemove.size());
         if (parentInfo->_folder->isFileExcludedRelative(relativePath)) {
             continue;
