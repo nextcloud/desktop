@@ -322,7 +322,9 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         root->setToolTip(0, tr("Choose this to sync the entire account"));
         root->setData(0, Qt::UserRole, "/");
     }
-    foreach (QString path, list) {
+    QStringList sortedList = list;
+    sortedList.sort();
+    foreach (QString path, sortedList) {
         path.remove(webdavFolder);
         QStringList paths = path.split('/');
         if (paths.last().isEmpty()) paths.removeLast();
