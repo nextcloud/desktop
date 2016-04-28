@@ -85,6 +85,16 @@ sub fromFileName($)
   }
 }
 
+sub setCredentials
+{
+  my ($dav, $user, $passwd) = @_;
+
+  $dav->credentials(-url=> $owncloud, -realm=>"sabre/dav",
+                    -user=> $user, -pass=> $passwd);
+  $dav->credentials(-url=> $owncloud, -realm=>"ownCloud",
+                    -user=> $user, -pass=> $passwd);
+}
+
 
 sub initTesting(;$)
 {
@@ -127,9 +137,7 @@ sub initTesting(;$)
   my $ua = HTTP::DAV::UserAgent->new(keep_alive => 1 );
   $d = HTTP::DAV->new(-useragent => $ua);
 
-  $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-		  -user=> $user,
-		  -pass=> $passwd );
+  setCredentials($d, $user, $passwd);
   # $d->DebugLevel(3);
   $prefix = "t1" unless( defined $prefix );
 
@@ -193,9 +201,7 @@ sub removeRemoteDir($;$)
 
     my $url = testDirUrl() . $dir;
     if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
-	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-			 -user=> $optionsRef->{user},
-			 -pass=> $optionsRef->{passwd} );
+	setCredentials($d, $optionsRef->{user}, $optionsRef->{passwd});
 	if( $optionsRef->{url} ) {
 	    $url = $optionsRef->{url} . $dir;
 	}
@@ -219,9 +225,7 @@ sub createRemoteDir(;$$)
     my $url = testDirUrl() . $dir;
 
     if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
-	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-			 -user=> $optionsRef->{user},
-			 -pass=> $optionsRef->{passwd} );
+	setCredentials($d, $optionsRef->{user}, $optionsRef->{passwd});
 	if( $optionsRef->{url} ) {
 	    $url = $optionsRef->{url} . $dir;
 	}
@@ -396,9 +400,7 @@ sub traverse( $$;$ )
     my %seen;
 
 
-    $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-		    -user=> $user,
-		    -pass=> $passwd );
+    setCredentials($d, $user, $passwd);
     $d->open( $owncloud );
 
     if( my $r = $d->propfind( -url => $url, -depth => 1 ) ) {
@@ -513,9 +515,7 @@ sub put_to_dir( $$;$ )
     my $targetUrl = testDirUrl();
 
     if( $optionsRef && $optionsRef->{user} && $optionsRef->{passwd} ) {
-	$d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-			 -user=> $optionsRef->{user},
-			 -pass=> $optionsRef->{passwd} );
+	setCredentials($d, $optionsRef->{user}, $optionsRef->{passwd});
 	if( $optionsRef->{url} ) {
 	    $targetUrl = $optionsRef->{url};
 	}
@@ -649,9 +649,7 @@ sub moveRemoteFile($$;$)
 {
   my ($from, $to, $no_testdir) = @_;
 
-  $d->credentials( -url=> $owncloud, -realm=>"ownCloud",
-		      -user=> $user,
-		  -pass=> $passwd );
+  setCredentials($d, $user, $passwd);
 
   my $fromUrl = testDirUrl(). $from;
   my $toUrl = testDirUrl() . $to;
@@ -725,9 +723,7 @@ sub createShare($$)
 
     my $dd = HTTP::DAV->new();
 
-    $dd->credentials( -url=> $owncloud, -realm=>"ownCloud",
-	             -user=> $share_user,
-		     -pass=> $share_passwd );
+    setCredentials($dd, $share_user, $share_passwd);
     $dd->open( $owncloud);
 
     # create a remote dir
@@ -769,9 +765,7 @@ sub removeShare($$)
 
     my $dd = HTTP::DAV->new();
 
-    $dd->credentials( -url  => $owncloud, -realm=>"ownCloud",
-	              -user => $share_user,
-		      -pass => $share_passwd );
+    setCredentials($dd, $share_user, $share_passwd);
     $dd->open( $owncloud);
 
     my $ua  = LWP::UserAgent->new(ssl_opts => { verify_hostname => 0 });

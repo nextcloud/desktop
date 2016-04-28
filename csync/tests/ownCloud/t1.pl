@@ -146,9 +146,9 @@ assertLocalAndRemoteDir( '', 0);
 
 # create a true conflict.
 printInfo( "Create a conflict." );
-system( "echo \"This is more stuff\" >> /tmp/kernelcrash.txt" );
+system( "echo \"This is more server stuff\" >> /tmp/kernelcrash.txt" );
 put_to_dir( '/tmp/kernelcrash.txt', 'remoteToLocal1' );
-system( "sleep 2 && touch " . localDir() . "remoteToLocal1/kernelcrash.txt" );
+system( "sleep 2 && echo \"This is more client stuff\" >> " . localDir() . "remoteToLocal1/kernelcrash.txt" );
 csync();
 assertLocalAndRemoteDir( '', 1);
 
