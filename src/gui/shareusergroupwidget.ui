@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>188</height>
+    <height>164</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,11 +15,15 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLineEdit" name="shareeLineEdit">
-     <property name="placeholderText">
-      <string>Share with users or groups ...</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="shareeHorizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="shareeLineEdit">
+       <property name="placeholderText">
+        <string>Share with users or groups ...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="errorLabel">
@@ -50,8 +54,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>441</width>
-        <height>98</height>
+        <width>437</width>
+        <height>94</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3"/>

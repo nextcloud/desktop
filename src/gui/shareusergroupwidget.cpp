@@ -99,6 +99,9 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
     _ui->errorLabel->hide();
+
+    // Setup the sharee search progress indicator
+    _ui->shareeHorizontalLayout->addWidget(&_pi_sharee);
 }
 
 ShareUserGroupWidget::~ShareUserGroupWidget()
@@ -147,6 +150,7 @@ void ShareUserGroupWidget::slotLineEditReturn()
 void ShareUserGroupWidget::searchForSharees()
 {
     _completionTimer.stop();
+    _pi_sharee.startAnimation();
     ShareeModel::ShareeSet blacklist;
 
     // Add the current user to _sharees since we can't share with ourself
@@ -158,7 +162,6 @@ void ShareUserGroupWidget::searchForSharees()
     }
     _ui->errorLabel->hide();
     _completerModel->fetch(_ui->shareeLineEdit->text(), blacklist);
-
 }
 
 void ShareUserGroupWidget::getShares()
@@ -218,6 +221,7 @@ void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 
 void ShareUserGroupWidget::slotShareesReady()
 {
+    _pi_sharee.stopAnimation();
     if (_completerModel->rowCount() == 0) {
         displayError(0, tr("No results for '%1'").arg(_completerModel->currentSearch()));
         return;
@@ -274,6 +278,7 @@ void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex & index)
 
 void ShareUserGroupWidget::displayError(int code, const QString& message)
 {
+    _pi_sharee.stopAnimation();
     qDebug() << "Error from server" << code << message;
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
