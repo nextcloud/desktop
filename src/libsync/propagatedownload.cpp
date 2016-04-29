@@ -704,7 +704,14 @@ void PropagateDownloadFileQNAM::downloadFinished()
         QString renameError;
         QString conflictFileName = FileSystem::makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
-            //If the rename fails, don't replace it.
+            // If the rename fails, don't replace it.
+
+            // If the file is locked, we want to retry this sync when it
+            // becomes available again.
+            if (FileSystem::isFileLocked(fn)) {
+                emit _propagator->seenLockedFile(fn);
+            }
+
             done(SyncFileItem::SoftError, renameError);
             return;
         }
@@ -764,7 +771,14 @@ void PropagateDownloadFileQNAM::downloadFinished()
             _propagator->_journal->commit("download finished");
         }
 
-        _propagator->_anotherSyncNeeded = true;
+        // If the file is locked, we want to retry this sync when it
+        // becomes available again, otherwise try again directly
+        if (FileSystem::isFileLocked(fn)) {
+            emit _propagator->seenLockedFile(fn);
+        } else {
+            _propagator->_anotherSyncNeeded = true;
+        }
+
         done(SyncFileItem::SoftError, error);
         return;
     }

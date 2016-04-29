@@ -933,6 +933,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);

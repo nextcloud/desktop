@@ -143,6 +143,12 @@ signals:
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder);
 
+    /** Emitted when propagation has problems with a locked file.
+     *
+     * Forwarded from OwncloudPropagator::seenLockedFile.
+     */
+    void seenLockedFile(const QString &fileName);
+
 private slots:
     void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);

@@ -54,6 +54,7 @@ set(client_SRCS
     folderwizard.cpp
     generalsettings.cpp
     ignorelisteditor.cpp
+    lockwatcher.cpp
     logbrowser.cpp
     networksettings.cpp
     ocsjob.cpp

@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "filesystem.h"
+#include "lockwatcher.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -44,6 +45,7 @@ FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _currentSyncFolder(0),
     _syncEnabled( true ),
+    _lockWatcher(new LockWatcher),
     _appRestartRequired(false)
 {
     Q_ASSERT(!_instance);
@@ -64,6 +66,9 @@ FolderMan::FolderMan(QObject *parent) :
 
     connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
             SLOT(slotRemoveFoldersForAccount(AccountState*)));
+
+    connect(_lockWatcher.data(), SIGNAL(fileUnlocked(QString)),
+            SLOT(slotScheduleFolderOwningFile(QString)));
 }
 
 FolderMan *FolderMan::instance()
@@ -460,6 +465,11 @@ void FolderMan::slotScheduleAppRestart()
     qDebug() << "## Application restart requested!";
 }
 
+void FolderMan::slotSyncOnceFileUnlocks(const QString& path)
+{
+    _lockWatcher->addFile(path);
+}
+
 /*
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
@@ -741,6 +751,13 @@ void FolderMan::slotServerVersionChanged(Account *account)
                 f->setSyncPaused(true);
             }
         }
+    }
+}
+
+void FolderMan::slotScheduleFolderOwningFile(const QString& path)
+{
+    if (Folder* f = folderForPath(path)) {
+        slotScheduleSync(f);
     }
 }
 

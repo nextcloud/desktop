@@ -369,6 +369,9 @@ signals:
     void progress(const SyncFileItem&, quint64 bytes);
     void finished();
 
+    /** Emitted when propagation has problems with a locked file. */
+    void seenLockedFile(const QString &fileName);
+
 private:
 
     AccountPtr _account;

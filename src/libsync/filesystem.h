@@ -182,6 +182,11 @@ QByteArray OWNCLOUDSYNC_EXPORT calcAdler32( const QString& fileName );
  */
 QString OWNCLOUDSYNC_EXPORT makeConflictFileName(const QString &fn, const QDateTime &dt);
 
+/**
+ * Returns true when a file is locked. (Windows only)
+ */
+bool OWNCLOUDSYNC_EXPORT isFileLocked(const QString& fileName);
+
 }
 
 /** @} */

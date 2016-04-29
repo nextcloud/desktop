@@ -115,6 +115,7 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
+    connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
 }
 
 Folder::~Folder()
