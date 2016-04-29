@@ -546,6 +546,14 @@ void PropagateDownloadFileQNAM::slotGetFinished()
         return;
     }
 
+    if (_tmpFile.size() == 0 && _item->_size > 0) {
+        FileSystem::remove(_tmpFile.fileName());
+        done(SyncFileItem::NormalError,
+             tr("The downloaded file is empty despite the server announced it should have been %1.")
+                .arg(Utility::octetsToString(_item->_size)));
+        return;
+    }
+
     // Do checksum validation for the download. If there is no checksum header, the validator
     // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
