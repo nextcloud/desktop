@@ -31,6 +31,13 @@ use strict;
 
 print "Hello, this is t6, a tester for csync with ownCloud.\n";
 
+# Checking CURL is installed to avoid misleading errors later...
+system(("curl", "--help", ">", "/dev/null"));
+if ($? != 0) {
+   print "CURL is needed for this script, aborting with error\n";
+   exit 1;
+}
+
 initTesting();
 
 sub createPostUpdateScript($)
