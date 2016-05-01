@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -861,7 +861,7 @@ Bunun nedeni sunucuda bir yedeğin geri yüklenmesinden dolayı olabilir. Eşitl
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörü ile senkronize etme</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -1918,7 +1918,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1966,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2007,7 +2007,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2038,7 +2038,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2064,7 +2064,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2092,7 +2092,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2141,7 +2141,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Veritabanına metaveri yazma hatası</translation>
     </message>
 </context>
 <context>
