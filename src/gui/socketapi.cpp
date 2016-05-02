@@ -140,8 +140,10 @@ void SocketApi::slotNewConnection()
     _listeners.append(socket);
 
     foreach( Folder *f, FolderMan::instance()->map() ) {
-        QString message = buildRegisterPathMessage(f->path());
-        sendMessage(socket, message);
+        if (f->canSync()) {
+            QString message = buildRegisterPathMessage(f->path());
+            sendMessage(socket, message);            
+        }
     }
 }
 
@@ -180,6 +182,10 @@ void SocketApi::slotReadSocket()
 
 void SocketApi::slotRegisterPath( const QString& alias )
 {
+    // Make sure not to register twice to each connected client
+    if (_registeredAliases.contains(alias))
+        return;
+
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
         QString message = buildRegisterPathMessage(f->path());
@@ -187,13 +193,20 @@ void SocketApi::slotRegisterPath( const QString& alias )
             sendMessage(socket, message);
         }
     }
+
+    _registeredAliases.insert(alias);
 }
 
 void SocketApi::slotUnregisterPath( const QString& alias )
 {
+    if (!_registeredAliases.contains(alias))
+        return;
+
     Folder *f = FolderMan::instance()->folder(alias);
     if (f)
         broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
+
+    _registeredAliases.remove(alias);
 }
 
 void SocketApi::slotUpdateFolderView(Folder *f)
@@ -274,8 +287,6 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevic
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket)
 {
-    const QString nopString("NOP");
-
     if( !socket ) {
         qDebug() << "No valid socket object.";
         return;
@@ -288,18 +299,12 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
     Folder* syncFolder = FolderMan::instance()->folderForPath( argument );
     if (!syncFolder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        statusString = nopString;
+        statusString = QLatin1String("NOP");
     } else {
         const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
+        SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
 
-        // future: Send more specific states for paused, disconnected etc.
-        if( syncFolder->syncPaused() || !syncFolder->accountState()->isConnected() ) {
-            statusString = nopString;
-        } else {
-            SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
-
-            statusString = fileStatus.toSocketAPIString();
-        }
+        statusString = fileStatus.toSocketAPIString();
     }
 
     const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') %  QDir::toNativeSeparators(argument);

@@ -28,14 +28,15 @@ static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatc
         // qDebug() << Q_FUNC_INFO << pathToMatch << severity << problemPath;
         if (problemPath == pathToMatch) {
             return severity;
-        } else if (severity == SyncFileStatus::StatusError && problemPath.startsWith(pathToMatch) && problemPath.at(pathToMatch.size()) == '/') {
-            Q_ASSERT(!pathToMatch.endsWith('/'));
+        } else if (severity == SyncFileStatus::StatusError
+                && problemPath.startsWith(pathToMatch)
+                && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == '/')) {
             return SyncFileStatus::StatusWarning;
         } else if (!problemPath.startsWith(pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
-            // since: "/a/" < "/a/aa" < "/a/aa/aaa" < "/a/ab/aba"
-            // If problemMap keys are ["/a/aa/aaa", "/a/ab/aba"] and pathToMatch == "/a/aa",
-            // lower_bound(pathToMatch) will point to "/a/aa/aaa", and the moment that
+            // since: "a/" < "a/aa" < "a/aa/aaa" < "a/ab/aba"
+            // If problemMap keys are ["a/aa/aaa", "a/ab/aba"] and pathToMatch == "a/aa",
+            // lower_bound(pathToMatch) will point to "a/aa/aaa", and the moment that
             // problemPath.startsWith(pathToMatch) == false, we know that we've looked
             // at everything that interest us.
             break;
@@ -68,56 +69,27 @@ static inline bool showWarningInSocketApi(const SyncFileItem& item)
         || status == SyncFileItem::Restoration;
 }
 
-static inline bool showSyncInSocketApi( const SyncFileItem& item)
-{
-    const auto inst = item._instruction;
-    return inst == CSYNC_INSTRUCTION_NEW;
-}
-
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
-              this, SLOT(slotAboutToPropagate(SyncFileItemVector&)));
+            SLOT(slotAboutToPropagate(SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
-            this, SLOT(slotItemCompleted(const SyncFileItem&)));
-    connect(syncEngine, SIGNAL(started()),
-            SLOT(slotClearDirtyPaths()));
+            SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(started()), SLOT(slotClearDirtyPaths()));
+    connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
+    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
 }
 
-SyncFileStatus SyncFileStatusTracker::rootStatus()
+SyncFileItem SyncFileStatusTracker::rootSyncFileItem()
 {
-    /* Possible values for the status:
-    enum SyncFileStatusTag {
-        StatusNone,
-        StatusSync,
-        StatusWarning,
-        StatusUpToDate,
-        StatusError,
-    };
-    */
-    SyncFileStatus status =  SyncFileStatus::StatusUpToDate;
-
-    if( !_syncEngine ) return SyncFileStatus::StatusNone;
-
-    if( _syncEngine->isSyncRunning() ) {
-        status = SyncFileStatus::StatusSync;
-    } else {
-        // sync is not running. Check dirty list and _syncProblems
-        int errs = 0;
-        for (auto it = _syncProblems.begin(); it != _syncProblems.end(); ++it) {
-            if( it->second == SyncFileStatus::StatusError ) {
-                errs ++;
-                break; // stop if an error found at all.
-            }
-        }
-        if( errs ) {
-            status = SyncFileStatus::StatusWarning; // some files underneath had errors
-        }
-        // Only warnings do not change the root emblem away from ok.
-    }
-    return status;
-
+    SyncFileItem fakeRootItem;
+    // It's is not entirely correct to use the sync's status as we'll show the root folder as
+    // syncing even though no child might end up being propagated, but will give us something
+    // better than always UpToDate for now.
+    fakeRootItem._status = _syncEngine->isSyncRunning() ? SyncFileItem::NoStatus : SyncFileItem::Success;
+    fakeRootItem._isDirectory = true;
+    return fakeRootItem;
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
@@ -129,10 +101,10 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     }
 
     if( fileName.isEmpty() ) {
-        // this is the root sync folder.
-        return rootStatus();
-
+        // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so create one manually.
+        return syncFileItemStatus(rootSyncFileItem());
     }
+
     // The SyncEngine won't notify us at all for CSYNC_FILE_SILENTLY_EXCLUDED
     // and CSYNC_FILE_EXCLUDE_AND_REMOVE excludes. Even though it's possible
     // that the status of CSYNC_FILE_EXCLUDE_LIST excludes will change if the user
@@ -150,13 +122,13 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
 
     SyncFileItem* item = _syncEngine->findSyncItem(fileName);
     if (item) {
-        return fileStatus(*item);
+        return syncFileItemStatus(*item);
     }
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
     if (rec.isValid()) {
-        return fileStatus(rec.toSyncFileItem());
+        return syncFileItemStatus(rec.toSyncFileItem());
     }
     // Must be a new file, wait for the filesystem watcher to trigger a sync
     return SyncFileStatus();
@@ -185,10 +157,8 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
-        } else if( showSyncInSocketApi(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusSync;
         }
-        emit fileStatusChanged(getSystemDestination(*item), fileStatus(*item));
+        emit fileStatusChanged(getSystemDestination(*item), syncFileItemStatus(*item));
     }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
@@ -213,15 +183,17 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         invalidateParentPaths(item.destination());
     } else if (showWarningInSocketApi(item)) {
         _syncProblems[item._file] = SyncFileStatus::StatusWarning;
-    } else if (showSyncInSocketApi(item)) {
-        // new items that were in state sync can now be erased
-        _syncProblems.erase(item._file);
     } else {
         // There is currently no situation where an error status set during discovery/update is fixed by propagation.
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
     }
 
-    emit fileStatusChanged(getSystemDestination(item), fileStatus(item));
+    emit fileStatusChanged(getSystemDestination(item), syncFileItemStatus(item));
+}
+
+void SyncFileStatusTracker::slotSyncEngineRunningChanged()
+{
+    emit fileStatusChanged(_syncEngine->localPath(), syncFileItemStatus(rootSyncFileItem()));
 }
 
 void SyncFileStatusTracker::slotClearDirtyPaths()
@@ -231,11 +203,13 @@ void SyncFileStatusTracker::slotClearDirtyPaths()
     _dirtyPaths.clear();
 }
 
-SyncFileStatus SyncFileStatusTracker::fileStatus(const SyncFileItem& item)
+SyncFileStatus SyncFileStatusTracker::syncFileItemStatus(const SyncFileItem& item)
 {
     // Hack to know if the item was taken from the sync engine (Sync), or from the database (UpToDate)
-    bool waitingForPropagation = item._direction != SyncFileItem::None && item._status == SyncFileItem::NoStatus;
-
+    // Mark any directory in the SyncEngine's items as syncing, this is currently how we mark parent directories
+    // of currently syncing items since the PropagateDirectory job will mark the directorie's SyncFileItem::_status as Success
+    // once all child jobs have been completed.
+    bool waitingForPropagation = (item._isDirectory || item._direction != SyncFileItem::None) && item._status == SyncFileItem::NoStatus;
     SyncFileStatus status(SyncFileStatus::StatusUpToDate);
     if (waitingForPropagation) {
         status.set(SyncFileStatus::StatusSync);

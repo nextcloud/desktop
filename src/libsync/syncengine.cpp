@@ -1341,7 +1341,7 @@ SyncFileItem* SyncEngine::findSyncItem(const QString &fileName) const
 {
     Q_FOREACH(const SyncFileItemPtr &item, _syncedItems) {
         // Directories will appear in this list as well, and will get their status set once all children have been propagated
-        if ((item->_file == fileName || item->_renameTarget == fileName))
+        if ((item->_file == fileName || (!item->_renameTarget.isEmpty() && item->_renameTarget == fileName)))
             return item.data();
     }
     return 0;

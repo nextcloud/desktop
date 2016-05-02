@@ -77,6 +77,7 @@ private:
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QIODevice* socket);
     QString buildRegisterPathMessage(const QString& path);
 
+    QSet<QString> _registeredAliases;
     QList<QIODevice*> _listeners;
     SocketApiServer _localServer;
 };
