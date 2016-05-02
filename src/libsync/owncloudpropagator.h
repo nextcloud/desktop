@@ -379,6 +379,11 @@ private:
     /** Stores the time since a job touched a file. */
     QHash<QString, QElapsedTimer> _touchedFiles;
     mutable QMutex _touchedFilesMutex;
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    // access to signals which are protected in Qt4
+    friend class PropagateDownloadFileQNAM;
+#endif
 };
 
 
