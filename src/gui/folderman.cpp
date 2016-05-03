@@ -152,8 +152,7 @@ void FolderMan::registerFolderMonitor( Folder *folder )
     }
 
     // register the folder with the socket API
-    if (folder->canSync())
-        _socketApi->slotRegisterPath(folder->alias());
+    _socketApi->slotRegisterPath(folder->alias());
 }
 
 void FolderMan::addMonitorPath( const QString& alias, const QString& path )
@@ -423,17 +422,6 @@ void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
     }
 }
 
-void FolderMan::slotFolderCanSyncChanged()
-{
-    Folder *f = qobject_cast<Folder*>(sender());
-    Q_ASSERT(f);
-    if (f->canSync()) {
-        _socketApi->slotRegisterPath(f->alias());
-    } else {
-        _socketApi->slotUnregisterPath(f->alias());
-    }
-}
-
 // this really terminates the current sync process
 // ie. no questions, no prisoners
 // csync still remains in a stable state, regardless of that.
@@ -551,7 +539,7 @@ void FolderMan::slotAccountStateChanged()
     }
     QString accountName = accountState->account()->displayName();
 
-    if (accountState->isConnected()) {
+    if (accountState->canSync()) {
         qDebug() << "Account" << accountName << "connected, scheduling its folders";
 
         foreach (Folder *f, _folderMap.values()) {
@@ -815,7 +803,6 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountS
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
     connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
-    connect(folder, SIGNAL(canSyncChanged()), SLOT(slotFolderCanSyncChanged()));
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
             _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
     connect(folder, SIGNAL(watchedFileChangedExternally(QString)),

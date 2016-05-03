@@ -131,6 +131,8 @@ public:
 
     /**
      * Returns true when the folder may sync.
+     *
+     * !syncPaused() && accountState->canSync().
      */
     bool canSync() const;
 
@@ -201,7 +203,6 @@ signals:
     void progressInfo(const ProgressInfo& progress);
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder*, bool paused);
-    void canSyncChanged();
 
     /**
      * Fires for each change inside this folder that wasn't caused

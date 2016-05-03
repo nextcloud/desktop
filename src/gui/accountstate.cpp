@@ -95,9 +95,6 @@ void AccountState::setState(State state)
         } else if (oldState == SignedOut && _state == Disconnected) {
             checkConnectivity();
         }
-        if (oldState == Connected || _state == Connected) {
-            emit isConnectedChanged();
-        }
     }
 
     // might not have changed but the underlying _connectionErrors might have
@@ -150,6 +147,11 @@ bool AccountState::isConnected() const
 bool AccountState::isConnectedOrTemporarilyUnavailable() const
 {
     return isConnected() || _state == ServiceUnavailable;
+}
+
+bool AccountState::canSync() const
+{
+    return isConnected();
 }
 
 void AccountState::tagLastSuccessfullETagRequest()

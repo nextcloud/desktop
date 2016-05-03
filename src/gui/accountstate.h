@@ -102,6 +102,9 @@ public:
     bool isConnected() const;
     bool isConnectedOrTemporarilyUnavailable() const;
 
+    /// Returns whether sync actions are allowed to run.
+    bool canSync() const;
+
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
     void checkConnectivity();
@@ -127,7 +130,6 @@ private:
 
 signals:
     void stateChanged(int state);
-    void isConnectedChanged();
 
 protected Q_SLOTS:
     void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors);
