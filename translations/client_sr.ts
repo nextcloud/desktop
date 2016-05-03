@@ -2399,32 +2399,32 @@ It is not advisable to use it.</source>
         <translation>Веза дељења</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>TextLabel</source>
         <translation>Текст ознака</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Set &amp;password </source>
         <translation>Постави &amp;лозинку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Set &amp;expiration date</source>
         <translation>Датум &amp;истека</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="152"/>
         <source>Set password</source>
         <translation>Постави лозинку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>Copy &amp;link</source>
         <translation>Копирај &amp;везу</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="188"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Allow editing</source>
         <translation>уређивање</translation>
     </message>
@@ -2434,29 +2434,29 @@ It is not advisable to use it.</source>
         <translation>&amp;Заштићено лозинком</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Password Protected</source>
         <translation>Заштићено лозинком</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Фајл се не може делити јер је подељен без дозволе за поновно дељење.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="377"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="423"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Јавно дељење з&amp;хтева лозинку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="445"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
         <source>Please Set Password</source>
         <translation>Поставите лозинку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="509"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
         <source>&amp;Share link</source>
         <translation>&amp;Веза дељења</translation>
     </message>
@@ -2556,7 +2556,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="435"/>
+        <location filename="../src/gui/socketapi.cpp" line="436"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Подели са %1</translation>

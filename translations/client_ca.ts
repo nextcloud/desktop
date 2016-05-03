@@ -2402,32 +2402,32 @@ No és aconsellada usar-la.</translation>
         <translation>Comparteix l&apos;enllaç</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Set &amp;password </source>
         <translation>Estableix la &amp;contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Set &amp;expiration date</source>
         <translation>Estableix la data de &amp;venciment</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="152"/>
         <source>Set password</source>
         <translation>Estableix la contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>Copy &amp;link</source>
         <translation>Copia l&apos;en&amp;llaç</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="188"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Allow editing</source>
         <translation>Permetre edició</translation>
     </message>
@@ -2437,29 +2437,29 @@ No és aconsellada usar-la.</translation>
         <translation>Protegit amb contr&amp;asenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Password Protected</source>
         <translation>Protegit amb contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El fitxer no es pot compartir perquè va ser compartit sense permisos de compartició.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="377"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="423"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>La comp&amp;artició pública requereix una contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="445"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
         <source>Please Set Password</source>
         <translation>Establiu la contrasenya</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="509"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
         <source>&amp;Share link</source>
         <translation>Com&amp;parteix l&apos;enllaç</translation>
     </message>
@@ -2559,7 +2559,7 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="435"/>
+        <location filename="../src/gui/socketapi.cpp" line="436"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Comparteix amb %1</translation>

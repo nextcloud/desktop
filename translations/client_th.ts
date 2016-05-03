@@ -2404,32 +2404,32 @@ It is not advisable to use it.</source>
         <translation>แชร์ลิงค์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>TextLabel</source>
         <translation>ป้ายข้อความ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Set &amp;password </source>
         <translation>ตั้ง &amp;รหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Set &amp;expiration date</source>
         <translation>ตั้ง &amp;วันหมดอายุ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="152"/>
         <source>Set password</source>
         <translation>ตั้งรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>Copy &amp;link</source>
         <translation>คัดลอก &amp;ลิงค์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="188"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Allow editing</source>
         <translation>อนุญาตให้แก้ไข</translation>
     </message>
@@ -2439,29 +2439,29 @@ It is not advisable to use it.</source>
         <translation>ป้องกันด้วยรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Password Protected</source>
         <translation>รหัสผ่านถูกป้องกันแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="377"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="423"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="445"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
         <source>Please Set Password</source>
         <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="509"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
         <source>&amp;Share link</source>
         <translation>&amp;แชร์ลิงค์</translation>
     </message>
@@ -2561,7 +2561,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="435"/>
+        <location filename="../src/gui/socketapi.cpp" line="436"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>แชร์กับ %1</translation>

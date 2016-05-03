@@ -2400,32 +2400,32 @@ Ez da gomendagarria erabltzea.</translation>
         <translation>Elkarbanatu lotura</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>TextLabel</source>
         <translation>TestuEtiketa</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Set &amp;password </source>
         <translation>Ezarri &amp;pasahitza</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Set &amp;expiration date</source>
         <translation>Ezarri &amp;muga data</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="152"/>
         <source>Set password</source>
         <translation>Ezarri pasahitza</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>Copy &amp;link</source>
         <translation>Kopiatu &amp;lotura</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="188"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Allow editing</source>
         <translation>Baimendu editatzea</translation>
     </message>
@@ -2435,29 +2435,29 @@ Ez da gomendagarria erabltzea.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Password Protected</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="377"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="423"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="445"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
         <source>Please Set Password</source>
         <translation>Mesedez Ezarri Pasahitza</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="509"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
         <source>&amp;Share link</source>
         <translation type="unfinished"/>
     </message>
@@ -2557,7 +2557,7 @@ Ez da gomendagarria erabltzea.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="435"/>
+        <location filename="../src/gui/socketapi.cpp" line="436"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"/>

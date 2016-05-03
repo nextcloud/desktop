@@ -2398,32 +2398,32 @@ Nie je vhodné ju používať.</translation>
         <translation>Zdieľať linku</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="40"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
         <source>TextLabel</source>
         <translation>Štítok</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Set &amp;password </source>
         <translation>Nastaviť &amp;heslo </translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="128"/>
         <source>Set &amp;expiration date</source>
         <translation>Nastaviť dátum &amp;expirácie</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="115"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="152"/>
         <source>Set password</source>
         <translation>Nastaviť heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>Copy &amp;link</source>
         <translation>Skopírovať  &amp;odkaz</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="188"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Allow editing</source>
         <translation>Povoliť úpravy</translation>
     </message>
@@ -2433,29 +2433,29 @@ Nie je vhodné ju používať.</translation>
         <translation>Ch&amp;rániť heslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="207"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Password Protected</source>
         <translation>Chránené heslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Tento súbor nemožno zdieľať, lebo bol vyzdieľaný bez možnosti ďalšieho zdieľania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="377"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="423"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Verejné z&amp;dieľanie vyžaduje heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="445"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
         <source>Please Set Password</source>
         <translation>Prosím nastavte si heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="509"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
         <source>&amp;Share link</source>
         <translation>&amp;Zdieľať odkaz</translation>
     </message>
@@ -2555,7 +2555,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="435"/>
+        <location filename="../src/gui/socketapi.cpp" line="436"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Zdieľať s %1</translation>
