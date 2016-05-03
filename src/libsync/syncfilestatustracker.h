@@ -46,11 +46,12 @@ signals:
 private slots:
     void slotAboutToPropagate(SyncFileItemVector& items);
     void slotItemCompleted(const SyncFileItem& item);
+    void slotSyncEngineRunningChanged();
     void slotClearDirtyPaths();
 
 private:
-    SyncFileStatus fileStatus(const SyncFileItem& item);
-    SyncFileStatus rootStatus();
+    SyncFileStatus syncFileItemStatus(const SyncFileItem& item);
+    SyncFileItem rootSyncFileItem();
 
     void invalidateParentPaths(const QString& path);
     QString getSystemDestination(const SyncFileItem& syncEnginePath);

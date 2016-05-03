@@ -144,6 +144,7 @@ signals:
 public slots:
     void slotRemoveFolder( Folder* );
     void slotFolderSyncPaused(Folder *, bool paused);
+    void slotFolderCanSyncChanged();
 
     void slotFolderSyncStarted();
     void slotFolderSyncFinished( const SyncResult& );
