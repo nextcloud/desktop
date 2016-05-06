@@ -92,15 +92,11 @@ SyncFileItem SyncFileStatusTracker::rootSyncFileItem()
     return fakeRootItem;
 }
 
-SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
+SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& relativePath)
 {
-    QString fileName = systemFileName.normalized(QString::NormalizationForm_C);
-    if( fileName.endsWith(QLatin1Char('/')) ) {
-        fileName.truncate(fileName.length()-1);
-        qDebug() << "Removed trailing slash: " << fileName;
-    }
+    Q_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
 
-    if( fileName.isEmpty() ) {
+    if (relativePath.isEmpty()) {
         // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so create one manually.
         return syncFileItemStatus(rootSyncFileItem());
     }
@@ -111,22 +107,22 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& systemFileName)
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
     // it's an acceptable compromize to treat all exclude types the same.
-    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + fileName,
+    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
                                                 _syncEngine->localPath(),
                                                 _syncEngine->ignoreHiddenFiles()) ) {
         return SyncFileStatus(SyncFileStatus::StatusWarning);
     }
 
-    if ( _dirtyPaths.contains(fileName) )
+    if ( _dirtyPaths.contains(relativePath) )
         return SyncFileStatus::StatusSync;
 
-    SyncFileItem* item = _syncEngine->findSyncItem(fileName);
+    SyncFileItem* item = _syncEngine->findSyncItem(relativePath);
     if (item) {
         return syncFileItemStatus(*item);
     }
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
-    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(fileName);
+    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(relativePath);
     if (rec.isValid()) {
         return syncFileItemStatus(rec.toSyncFileItem());
     }
@@ -158,7 +154,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
-        emit fileStatusChanged(getSystemDestination(*item), syncFileItemStatus(*item));
+        emit fileStatusChanged(getSystemDestination(item->destination()), syncFileItemStatus(*item));
     }
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
@@ -170,7 +166,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
         SyncFileStatus::SyncFileStatusTag severity = it->second;
         if (severity == SyncFileStatus::StatusError)
             invalidateParentPaths(path);
-        emit fileStatusChanged(_syncEngine->localPath() + path, fileStatus(path));
+        emit fileStatusChanged(getSystemDestination(path), fileStatus(path));
     }
 }
 
@@ -188,7 +184,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
         Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
     }
 
-    emit fileStatusChanged(getSystemDestination(item), syncFileItemStatus(item));
+    emit fileStatusChanged(getSystemDestination(item.destination()), syncFileItemStatus(item));
 }
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
@@ -236,20 +232,19 @@ void SyncFileStatusTracker::invalidateParentPaths(const QString& path)
     QStringList splitPath = path.split('/', QString::SkipEmptyParts);
     for (int i = 0; i < splitPath.size(); ++i) {
         QString parentPath = QStringList(splitPath.mid(0, i)).join(QLatin1String("/"));
-        emit fileStatusChanged(_syncEngine->localPath() + parentPath, fileStatus(parentPath));
+        emit fileStatusChanged(getSystemDestination(parentPath), fileStatus(parentPath));
     }
 }
 
-QString SyncFileStatusTracker::getSystemDestination(const SyncFileItem& item)
+QString SyncFileStatusTracker::getSystemDestination(const QString& relativePath)
 {
-    QString systemFileName = _syncEngine->localPath() + item.destination();
-    // the trailing slash for directories must be appended as the filenames coming in
-    // from the plugins have that too. Otherwise the matching entry item is not found
-    // in the plugin.
-    if( item._type == SyncFileItem::Type::Directory ) {
-        systemFileName += QLatin1Char('/');
+    QString systemPath = _syncEngine->localPath() + relativePath;
+    // SyncEngine::localPath() has a trailing slash, make sure to remove it if the
+    // destination is empty.
+    if( systemPath.endsWith(QLatin1Char('/')) ) {
+        systemPath.truncate(systemPath.length()-1);
     }
-    return systemFileName;
+    return systemPath;
 }
 
 }

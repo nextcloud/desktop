@@ -35,7 +35,7 @@ class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
     Q_OBJECT
 public:
     explicit SyncFileStatusTracker(SyncEngine* syncEngine);
-    SyncFileStatus fileStatus(const QString& systemFileName);
+    SyncFileStatus fileStatus(const QString& relativePath);
 
 public slots:
     void slotPathTouched(const QString& fileName);
@@ -54,7 +54,7 @@ private:
     SyncFileItem rootSyncFileItem();
 
     void invalidateParentPaths(const QString& path);
-    QString getSystemDestination(const SyncFileItem& syncEnginePath);
+    QString getSystemDestination(const QString& relativePath);
 
     SyncEngine* _syncEngine;
 
