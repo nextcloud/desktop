@@ -631,42 +631,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n ander bestand(en) zijn verwijderd.</numerusform><numerusform>%1 en %n andere bestand(en) zijn verwijderd.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="501"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n ander bestand(en) zijn gedownload.</numerusform><numerusform>%1 en %n andere bestand(en) zijn gedownload.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n ander bestand(en) zijn bijgewerkt.</numerusform><numerusform>%1 en %n andere bestand(en) zijn bijgewerkt.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 is hernoemd naar %2 en %n ander bestand(en) is hernoemd.</numerusform><numerusform>%1 is hernoemd naar %2 en %n andere bestand(en) zijn hernoemd.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 is verplaatst naar %2 en %n ander bestand(en) is verplaatst.</numerusform><numerusform>%1 is verplaatst naar %2 en %n andere bestand(en) zijn verplaatst.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n ander bestand(en) hebben een sync conflict.</numerusform><numerusform>%1 en %n andere bestand(en) hebben sync conflicten.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 heeft een sync conflict. Controleer het conflict bestand!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 en %n ander bestand(en) konden niet worden gesynchroniseerd wegens fouten. Bekijk het log voor details.</numerusform><numerusform>%1 en %n andere bestand(en) konden niet worden gesynchroniseerd wegens fouten. Bekijk het log voor details.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="538"/>
@@ -1954,7 +1954,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Het gedownloade bestand is leeg, hoewel de server meldde dat het %1 zou moeten zijn.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
@@ -2386,7 +2386,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>Maximum aantal mogelijke permissies van de server ophalen...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>
@@ -2564,7 +2564,7 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="441"/>
+        <location filename="../src/gui/socketapi.cpp" line="453"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Delen met %1</translation>
@@ -3639,7 +3639,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Serverversie gedownload, gewijzigde lokale bestand gekopieerd in conflictbestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

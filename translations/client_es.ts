@@ -2562,7 +2562,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="441"/>
+        <location filename="../src/gui/socketapi.cpp" line="453"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Compartir con %1</translation>

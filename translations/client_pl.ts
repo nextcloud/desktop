@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 Powiadomień - Wymagana akcja</translation>
     </message>
 </context>
 <context>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -1920,7 +1920,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -1938,17 +1938,17 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Wolne miejsce na dysku jest mniejsze niż %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Plik został usunięty z serwera</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="545"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Ten plik nie mógł być całkowicie pobrany.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
@@ -1968,7 +1968,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2009,7 +2009,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2040,7 +2040,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2066,7 +2066,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2094,7 +2094,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2143,7 +2143,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="782"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2563,7 +2563,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="441"/>
+        <location filename="../src/gui/socketapi.cpp" line="453"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Współdzielone z %1</translation>
