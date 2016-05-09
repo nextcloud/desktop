@@ -31,25 +31,10 @@
 
 using namespace std;
 
-// FIXME: Unify this with OCClientInterface.cpp
-#define BUFSIZE 512
-std::wstring getUserName() {
-    DWORD  len = BUFSIZE;
-    TCHAR  buf[BUFSIZE];
-    if (GetUserName(buf, &len)) {
-        return std::wstring(&buf[0], len);
-    } else {
-        return std::wstring();
-    }
-}
-
 // This code is run in a thread
 void RemotePathChecker::workerThreadLoop()
 {
-    auto pipename = std::wstring(L"\\\\.\\pipe\\");
-    pipename += L"ownCloud\\";
-    pipename += getUserName();
-
+    auto pipename = CommunicationSocket::DefaultPipePath();
     bool connected = false;
     CommunicationSocket socket;
     std::unordered_set<std::wstring> asked;

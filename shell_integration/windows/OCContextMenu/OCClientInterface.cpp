@@ -34,23 +34,9 @@ using namespace std;
 #define PIPE_TIMEOUT  5*1000 //ms
 #define SOCK_BUFFER 4096
 
-// TODO: Unify this with RemotePathChecker.cpp
-#define BUFSIZE 512
-std::wstring getUserName() {
-    DWORD  len = BUFSIZE;
-    TCHAR  buf[BUFSIZE];
-    if (GetUserName(buf, &len)) {
-        return std::wstring(&buf[0], len);
-    } else {
-        return std::wstring();
-    }
-}
-
 OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
 {
-	auto pipename = std::wstring(L"\\\\.\\pipe\\");
-	pipename += L"ownCloud\\";
-	pipename += getUserName();
+	auto pipename = CommunicationSocket::DefaultPipePath();
 
 	CommunicationSocket socket;
 	if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT)) {
