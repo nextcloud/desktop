@@ -31,8 +31,8 @@
 
 using namespace std;
 
+// FIXME: Unify this with OCClientInterface.cpp
 #define BUFSIZE 512
-
 std::wstring getUserName() {
     DWORD  len = BUFSIZE;
     TCHAR  buf[BUFSIZE];
