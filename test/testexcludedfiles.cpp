@@ -26,22 +26,23 @@ private slots:
         bool excludeHidden = true;
         bool keepHidden = false;
 
-        QVERIFY(!excluded.isExcluded("/a/b", "b", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/b~", "b~", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/.b", ".b", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.b", ".b", excludeHidden));
+        bool x = excluded.isExcluded("/a/b", "/a", keepHidden);
+        QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
+        QVERIFY(!excluded.isExcluded("/a/b~", "/a", keepHidden));
+        QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
+        QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
 
         QString path(BIN_PATH);
         path.append("/sync-exclude.lst");
         excluded.addExcludeFilePath(path);
         excluded.reloadExcludes();
 
-        QVERIFY(!excluded.isExcluded("/a/b", "b", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/b~", "b~", keepHidden));
-        QVERIFY(!excluded.isExcluded("/a/.b", ".b", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.Trashes", ".Trashes", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/foo_conflict-bar", "foo_conflict-bar", keepHidden));
-        QVERIFY(excluded.isExcluded("/a/.b", ".b", excludeHidden));
+        QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
+        QVERIFY(excluded.isExcluded("/a/b~", "/a", keepHidden));
+        QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
+        QVERIFY(excluded.isExcluded("/a/.Trashes", "/a", keepHidden));
+        QVERIFY(excluded.isExcluded("/a/foo_conflict-bar", "/a", keepHidden));
+        QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
     }
 };
 
