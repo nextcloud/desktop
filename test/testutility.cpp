@@ -160,5 +160,5 @@ private slots:
     }
 };
 
-QTEST_MAIN(TestUtility)
+QTEST_APPLESS_MAIN(TestUtility)
 #include "testutility.moc"

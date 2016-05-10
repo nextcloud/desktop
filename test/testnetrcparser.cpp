@@ -72,5 +72,5 @@ private slots:
     }
 };
 
-QTEST_MAIN(TestNetrcParser)
+QTEST_APPLESS_MAIN(TestNetrcParser)
 #include "testnetrcparser.moc"

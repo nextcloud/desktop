@@ -170,5 +170,10 @@ private slots:
     }
 };
 
-QTEST_MAIN(TestFolderWatcher)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QTEST_MAIN(TestFolderWatcher)
+#else
+    QTEST_GUILESS_MAIN(TestFolderWatcher)
+#endif
+
 #include "testfolderwatcher.moc"
