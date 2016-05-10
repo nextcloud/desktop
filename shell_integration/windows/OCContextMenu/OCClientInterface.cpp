@@ -71,8 +71,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
 
 void OCClientInterface::ShareObject(const std::wstring &path)
 {
-	auto pipename = std::wstring(L"\\\\.\\pipe\\");
-	pipename += L"ownCloud";
+	auto pipename = CommunicationSocket::DefaultPipePath();
 
 	CommunicationSocket socket;
 	if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT)) {
