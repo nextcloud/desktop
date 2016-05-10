@@ -121,7 +121,9 @@ private slots:
                 // Current requires an X-Server
                 return;
             }
-            QString ver = versionOfInstalledBinary(BIN_PATH);
+            // pass the binary name owncloud to the next call. This brakes branding,
+            // but branding is not supposed to work with this.
+            QString ver = versionOfInstalledBinary(BIN_PATH+QLatin1String("/owncloud"));
 	    qDebug() << "Version of installed ownCloud Binary: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
