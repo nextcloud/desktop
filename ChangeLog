@@ -1,5 +1,28 @@
 ChangeLog
 =========
+version 2.2.0 (release 2016-05-  )
+ * Overlay icons: Refactoring - mainly for performance improvements
+ * Improved error handling with Sync Journal on USB storages (#4632)
+ * Sharing Completion: Improved UI of completion in sharing from desktop. (#3737)
+ * Show server notifications on the client (#3733)
+ * Improved Speed with small files by dynamic parallel request count (#4529)
+ * LockWatcher: Make sure to sync files after apps released exclusive locks on Windows.
+ * Improved handling of Win32 file locks and network files
+ * Workaround Ubuntu 16.04 tray icon bug (#4693)
+ * Removed the Alias field from the folder definition (#4695)
+ * Improved netrc parser (#4691)
+ * Improved user notifications about ignored files and conflicts (#4761, #3222)
+ * Add warnings for old server versions (#4523)
+ * Enable tranportation checksums if the server supports based on server capabilities (#3735)
+
+ * Default Chunk-size changed to 10MB (#4354)
+ * Documentation Improvements, ie. about overlay icons
+ * Translation fixes
+ * Countless other bugfixes
+ * Sqlite Update to recent version
+ * Update of QtKeyChain to support Windows credential store
+ * Packaging of dolphin overlay icon module for bleeding edge distros
+
 version 2.1.1 (release 2016-02-10)
  * UI improvements for HiDPI screens, error messages, RTL languages
  * Fix occurences of "Connection Closed" when a new unauthenticated TCP socket is used
