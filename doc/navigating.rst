@@ -207,6 +207,30 @@ such as files not synced.
 .. figure:: images/client-8.png
    :alt: Activity windows logs all server and client activities.
 
+Server Notifications
+--------------------
+
+Starting with version 2.2.0 the client will display notifications which origin 
+from the server. Notifications require a kind of manual interaction from the 
+user and they are triggered by certain events happening on the server. One 
+example is that somebody created a share from a remote ownCloud for the user
+which has to approved. The notification will be something like "Do you want 
+to accept the share from user Joe on host owncloud.joesdomain.com", and the
+user of the client can either click an Accept- or Decline-button.
+
+The desktop client checks for avialable notifications automatically on a regular
+base.
+
+If a notification is due for the user, it is displayed integrated in the
+activity tab, and the user receives a tray notification to draw attention.
+
+.. figure:: images/client12.png
+   :alt: Activity window with notification.
+
+There is also the Announcement App that allows administrators to create 
+notifications for users. This is a convenient way to send information to 
+all users.
+
 General Window
 --------------
 
