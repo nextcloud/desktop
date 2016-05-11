@@ -180,8 +180,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
     } else if (showWarningInSocketApi(item)) {
         _syncProblems[item._file] = SyncFileStatus::StatusWarning;
     } else {
-        // There is currently no situation where an error status set during discovery/update is fixed by propagation.
-        Q_ASSERT(_syncProblems.find(item._file) == _syncProblems.end());
+        _syncProblems.erase(item._file);
     }
 
     emit fileStatusChanged(getSystemDestination(item.destination()), syncFileItemStatus(item));
