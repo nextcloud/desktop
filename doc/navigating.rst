@@ -62,6 +62,7 @@ This menu provides the following options:
 * Recent Changes, showing latest activities
 * Settings
 * Help menu
+* Pause synchronizations
 * An option to log in or log out of all of your accounts at once
 * Quit ownCloud, logging out and closing the client
 
@@ -83,7 +84,7 @@ have the following features:
 * Connection status, showing which ownCloud server you are connected to, and 
   your ownCloud username.
 * An **Account** button, which contains a dropdown menu with **Add New**, 
-  **Log In/Log Out**, and **Remove**.
+  **Log Out**, and **Remove**.
 * Used and available space on the server.
 * Current synchronization status.
 * **Add Folder Sync Connection** button, which is active only when you have 
@@ -93,26 +94,17 @@ The little button with three dots (the overflow menu) that sits to the right of
 the sync status bar offers four additional options:
 
 * Open Folder
-* Choose What to Sync
+* Choose What to Sync (This appears only when your file tree is collapsed, and 
+  expands the file tree)
 * Pause Sync / Resume Sync
 * Remove folder sync connection
 
-**Open Folder** opens a file explorer window displaying the client-side folder
-that is being synced.
-
-**Choose What to Sync** opens the folder sync tree view. Use this to sync all 
-or only some of the folders in the folder tree.
+**Open Folder** opens your local ownCloud sync folder.
 
 **Pause Sync** pauses sync operations without making any changes to your 
 account. It will continue to update file and folder lists, without 
-downloading or updating files. To stop all sync activity use **Remove Sync**.
-
-**Resume Sync** resumes sync operations.
-
-**Remove Sync** removes the sync connection without removing the account. This 
-stops all sync activity, including file and folder list updates. If you want to 
-synchronize the folder tree again then click the **Add Folder Sync Connection** 
-button, and re-select the folder tree that you want to sync.
+downloading or updating files. To stop all sync activity use **Remove 
+Folder Sync Connection**.
 
 .. figure:: images/client-7.png
    :alt: Extra options for sync operations
@@ -125,12 +117,10 @@ button, and re-select the folder tree that you want to sync.
 Adding New Accounts
 ^^^^^^^^^^^^^^^^^^^
 
-You may configure multiple ownCloud accounts in your desktop sync client. 
-Simply 
+You may configure multiple ownCloud accounts in your desktop sync client. Simply 
 click the **Account** > **Add New** button on any account tab to add a new 
 account, and then follow the account creation wizard. The new account will 
-appear as a new tab in the settings dialog, where you can adjust its settings 
-at 
+appear as a new tab in the settings dialog, where you can adjust its settings at 
 any time. Use **Account** > **Remove** to delete accounts. 
 
 File Manager Overlay Icons
@@ -175,9 +165,7 @@ the ``owncloud-client-nautilus`` plugin.) You can create share links, and share
 with internal ownCloud users the same way as in your ownCloud Web interface.
 
 .. figure:: images/mac-share.png
-   :alt: Sync client integration in Finder on Mac OS X.
-   
-   *Shared ownCloud files in Finder on Mac OS X*
+   :alt: Sync client integration in Windows Explorer.
    
 Right-click your systray icon, hover over the account you want to use, and 
 left-click "Open folder [folder name] to quickly enter your local ownCloud 
@@ -206,30 +194,25 @@ such as files not synced.
 
 .. figure:: images/client-8.png
    :alt: Activity windows logs all server and client activities.
-
+   
 Server Notifications
 --------------------
 
-Starting with version 2.2.0 the client will display notifications which origin 
-from the server. Notifications require a kind of manual interaction from the 
-user and they are triggered by certain events happening on the server. One 
-example is that somebody created a share from a remote ownCloud for the user
-which has to approved. The notification will be something like "Do you want 
-to accept the share from user Joe on host owncloud.joesdomain.com", and the
-user of the client can either click an Accept- or Decline-button.
+Starting with version 2.2.0, the client will display notifications from your 
+ownCloud server that require manual interaction by you. For example, when a 
+user on a remote ownCloud creates a new Federated share for you, you can accept 
+it from your desktop client.
 
-The desktop client checks for avialable notifications automatically on a regular
-base.
-
-If a notification is due for the user, it is displayed integrated in the
-activity tab, and the user receives a tray notification to draw attention.
+The desktop client automatically checks for available notifications 
+automatically on a regular basis. Notifications are displayed in the Server 
+Activity tab, and if you have **Show Desktop Notifications** enabled (General 
+tab) you'll also see a systray notification.
 
 .. figure:: images/client12.png
    :alt: Activity window with notification.
 
-There is also the Announcement App that allows administrators to create 
-notifications for users. This is a convenient way to send information to 
-all users.
+This also displays notifications sent to users by the ownCloud admin via the 
+Announcements app.
 
 General Window
 --------------
