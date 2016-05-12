@@ -1,6 +1,6 @@
 ChangeLog
 =========
-version 2.2.0 (release 2016-05-  )
+version 2.2.0 (release 2016-05-12)
  * Overlay icons: Refactoring - mainly for performance improvements
  * Improved error handling with Sync Journal on USB storages (#4632)
  * Sharing Completion: Improved UI of completion in sharing from desktop. (#3737)
