@@ -1182,15 +1182,18 @@ void SyncEngine::checkForPermission()
                     }
                 }
 
-#if 0 /* We don't like the idea of renaming behind user's back, as the user may be working with the files */
-
-                if (!sourceOK && !destinationOK) {
+#ifdef OWNCLOUD_RESTORE_RENAME /* We don't like the idea of renaming behind user's back, as the user may be working with the files */
+                if (!sourceOK && (!destinationOK || isRename)
+                        // (not for directory because that's more complicated with the contents that needs to be adjusted)
+                        && !(*it)->_isDirectory) {
                     // Both the source and the destination won't allow move.  Move back to the original
                     std::swap((*it)->_file, (*it)->_renameTarget);
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_errorString = tr("Move not allowed, item restored");
                     (*it)->_isRestoration = true;
                     qDebug() << "checkForPermission: MOVING BACK" << (*it)->_file;
+                    // in case something does wrong, we will not do it next time
+                    _journal->avoidRenamesOnNextSync((*it)->_file);
                 } else
 #endif
                 if (!sourceOK || !destinationOK) {
