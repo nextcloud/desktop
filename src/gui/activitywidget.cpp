@@ -248,6 +248,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     QHash<QString, int> accNotified;
     QString listAccountName;
 
+    // Whether a new notification widget was added to the notificationLayout.
+    bool newNotificationShown = false;
+
     foreach( auto activity, list ) {
         if( _blacklistedNotifications.contains(activity)) {
             qDebug() << Q_FUNC_INFO << "Activity in blacklist, skip";
@@ -271,6 +274,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
 #endif
             _widgetForNotifId[activity.ident()] = widget;
+            newNotificationShown = true;
         }
 
         widget->setActivity( activity );
@@ -364,6 +368,10 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
         const QString log = tr("%1 Notifications - Action Required").arg(Theme::instance()->appNameGUI());
         emit guiLog( log, msg);
+    }
+
+    if (newNotificationShown) {
+        emit newNotification();
     }
 }
 
@@ -517,6 +525,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
     connect(_activityWidget, SIGNAL(hideActivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
     connect(_activityWidget, SIGNAL(guiLog(QString,QString)), this, SIGNAL(guiLog(QString,QString)));
+    connect(_activityWidget, SIGNAL(newNotification()), SLOT(slotShowActivityTab()));
 
     _protocolWidget = new ProtocolWidget(this);
     _tab->insertTab(1, _protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
@@ -580,6 +589,13 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
     _tab->setTabText(_syncIssueTabId, cntText);
+}
+
+void ActivitySettings::slotShowActivityTab()
+{
+    if (_activityTabId != -1) {
+        _tab->setCurrentIndex(_activityTabId);
+    }
 }
 
 void ActivitySettings::slotCopyToClipboard()

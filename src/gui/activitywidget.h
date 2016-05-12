@@ -81,7 +81,7 @@ signals:
     void copyToClipboard();
     void rowsInserted();
     void hideActivityTab(bool);
-    void newNotificationList(const ActivityList& list);
+    void newNotification();
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList& list);
@@ -143,6 +143,7 @@ private slots:
     void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
     void slotShowIssueItemCount(int cnt);
+    void slotShowActivityTab();
 
 signals:
     void guiLog(const QString&, const QString&);
