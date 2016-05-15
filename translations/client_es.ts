@@ -218,7 +218,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="552"/>
         <source>Log in</source>
-        <translation>Ingresar</translation>
+        <translation>Iniciar sesión</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="636"/>

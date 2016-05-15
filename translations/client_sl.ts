@@ -2862,7 +2862,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="690"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Le %1 je na voljo, zahtevanih pa je vaj %2 za zagon</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1121"/>
@@ -2892,7 +2892,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
         <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation type="unfinished"/>
+        <translation>Ime datoteke vsebuje neveljavne znake, ki jih ni mogoče uskladiti na vseh okoljih.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3254,7 +3254,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation type="unfinished"/>
+        <translation>Sesuj zdaj</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="616"/>
@@ -3635,7 +3635,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Strežniška različica je prejeta, kopirana v datoteko sporov pa je bila tudi spremenjena krajevna datoteka</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

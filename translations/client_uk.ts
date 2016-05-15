@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="428"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Виконується процедура синхронізації.&lt;br/&gt;Бажаєте відмінити?</translation>
+        <translation>Виконується процедура синхронізації.&lt;br/&gt;Бажаєте зупинити?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="495"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 використовується</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="515"/>
@@ -269,12 +269,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="482"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>Використовується %1 (%3%) з %2. Деякі теки, включаючи мережеві змонтовані чи спільні, можуть мати інші обмеження.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="483"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>Використовується %1 з %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="492"/>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="112"/>
         <source>Signed out</source>
-        <translation>Вимкнутий</translation>
+        <translation>Вийшов</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="114"/>
@@ -344,7 +344,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Серверна активність</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="522"/>
@@ -369,18 +369,18 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="577"/>
         <source>Not Synced</source>
-        <translation>Не сінхронізовано</translation>
+        <translation>Не синхронізовано</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Not Synced (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Список серверних операцій скопійовано до буферу обміну.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="600"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Серверні операції</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="90"/>
@@ -430,7 +430,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Необхідна Дія: Сповіщення</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
@@ -440,22 +440,22 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ви отримали %n нове сповіщення від %2.</numerusform><numerusform>Ви отримали %n нових сповіщень від %2.</numerusform><numerusform>Ви отримали %n нових сповіщень від %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ви отримали %n нове сповіщення від %1 та %2.</numerusform><numerusform>Ви отримали %n нових сповіщень від %1 та %2.</numerusform><numerusform>Ви отримали %n нових сповіщень від %1 та %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Ви отримали нові сповіщення від %1, %2 та інших облікових записів.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 Сповіщень - Необхідна Дія</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="540"/>
         <source>Aborted by the user</source>
-        <translation>Перервано користувачем</translation>
+        <translation>Скасовано користувачем</translation>
     </message>
 </context>
 <context>
@@ -789,12 +789,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1158"/>
         <source>Setup Error.</source>
-        <translation>Помилка установки.</translation>
+        <translation>Помилка встановлення.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>User Abort.</source>
-        <translation>Відмінено користувачем.</translation>
+        <translation>Скасовано користувачем.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1164"/>
@@ -857,7 +857,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізується з локальною текою</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -891,7 +891,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="204"/>
         <source>Signed out</source>
-        <translation>Вимкнутий</translation>
+        <translation>Вийшов</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
@@ -980,7 +980,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>Waiting...</source>
-        <translation>Очикування...</translation>
+        <translation>Очікування...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
@@ -1118,7 +1118,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="292"/>
         <source>Connection Timeout</source>
-        <translation>Тайм-аут З&apos;єднання</translation>
+        <translation>Час з&apos;єднання вичерпано</translation>
     </message>
 </context>
 <context>
@@ -1151,27 +1151,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Запускати при старті Системи</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показувати &amp;сповіщення</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Використовувати &amp;монохромні піктограми</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="59"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Редагувати &amp;ігноровані файли</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="81"/>
         <source>Ask &amp;confirmation before downloading folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Запитувати &amp;підтвердження перед завантаженням тек більших за</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="129"/>
@@ -1363,7 +1363,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="48"/>
         <source>Connection timed out</source>
-        <translation>Час очікування з&apos;єднання перевищено</translation>
+        <translation>Час очікування з&apos;єднання вичерпано</translation>
     </message>
 </context>
 <context>
@@ -1683,7 +1683,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="62"/>
         <source>Enter user credentials</source>
-        <translation>Внести облікові дані</translation>
+        <translation>Вказати облікові дані</translation>
     </message>
 </context>
 <context>
@@ -1892,7 +1892,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="101"/>
         <source>Connection Timeout</source>
-        <translation>Тайм-аут З&apos;єднання</translation>
+        <translation>Час з&apos;єднання вичерпано</translation>
     </message>
 </context>
 <context>
@@ -1916,7 +1916,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="327"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Файл %1 не завантажено, через локальний конфлікт ім&apos;я! </translation>
+        <translation>Файл %1 не може бути завантажено через локальний конфлікт назви файлу! </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="376"/>
@@ -1946,7 +1946,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Файл %1 не збережено, через локальний конфлікт ім&apos;я! </translation>
+        <translation>Файл %1 не збережено через локальний конфлікт назви файлу! </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="742"/>
@@ -2015,7 +2015,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Неможливо видалити %1 через локальний конфлікт імен</translation>
+        <translation>Неможливо видалити %1 через локальний конфлікт назви файлу</translation>
     </message>
 </context>
 <context>
@@ -2023,7 +2023,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="215"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>%1 не можна перейменувати на %2 через локальний конфлікт імен</translation>
+        <translation>%1 не можна перейменувати на %2 через локальний конфлікт назви файлу</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
@@ -2062,7 +2062,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="87"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation>Цю теку не можна перейменувати. Буде повернено старе ім&apos;я.</translation>
+        <translation>Цю теку не можна перейменувати. Буде використано старе ім&apos;я.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="89"/>
@@ -2090,7 +2090,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="289"/>
         <source>File Removed</source>
-        <translation>Файл переміщено</translation>
+        <translation>Файл видалено</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="301"/>
@@ -2230,12 +2230,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="416"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>Виберіть Що Синхронізувати: Виберіть папки на віддаленому сервері, які Ви хотіли б синхронізувати.</translation>
+        <translation>Оберіть що синхронізувати: Оберіть теки на віддаленому сервері, які б ви хотіли синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="417"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Виберіть Що Синхронізувати: Зніміть вибір папок на віддаленому сервері, які Ви не хочете синхронізувати.</translation>
+        <translation>Оберіть що синхронізувати: Зніміть вибір з тек на віддаленому сервері, які ви не хочете синхронізувати.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="423"/>
@@ -2647,7 +2647,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="155"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (самозавірений)</translation>
+        <translation>%1 (самопідписаний)</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="157"/>
@@ -2772,7 +2772,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="128"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
-        <translation>&lt;p&gt; %1 плагін для синхронізації не вдалося завантажити.&lt;br/&gt;Будь ласка, перевірте його інсталяцію!&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Не вдалося завантажити плагін для синхронізації %1.&lt;br/&gt;Будь ласка, перевірте його встановлення!&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="131"/>
@@ -2878,7 +2878,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="179"/>
         <source>Aborted by the user</source>
-        <translation>Перервано користувачем</translation>
+        <translation>Скасовано користувачем</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="425"/>
@@ -3085,7 +3085,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Please sign in</source>
-        <translation>Будь ласка ввійдіть в обліковий запис</translation>
+        <translation>Увійдіть будь ласка</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="317"/>
