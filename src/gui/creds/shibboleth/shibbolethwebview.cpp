@@ -38,7 +38,12 @@ namespace OCC
 
 class UserAgentWebPage : public QWebPage {
  public:
-    UserAgentWebPage(QObject *parent) : QWebPage(parent) {}
+    UserAgentWebPage(QObject *parent) : QWebPage(parent)
+    {
+        if (!qgetenv("OWNCLOUD_SHIBBOLETH_DEBUG").isEmpty()) {
+            settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+        }
+    }
     QString userAgentForUrl(const QUrl &url ) const {
         return QWebPage::userAgentForUrl(url) + " " + Utility::userAgentString();
     }
