@@ -24,11 +24,31 @@
 
 #include <fstream> 
 
-#define BUFSIZE 1024
+#define DEFAULT_BUFLEN 4096
 
 using namespace std;
 
-#define DEFAULT_BUFLEN 4096
+namespace {
+
+std::wstring getUserName() {
+	DWORD  len = DEFAULT_BUFLEN;
+	TCHAR  buf[DEFAULT_BUFLEN];
+	if (GetUserName(buf, &len)) {
+		return std::wstring(&buf[0], len);
+	} else {
+		return std::wstring();
+	}
+}
+
+}
+
+std::wstring CommunicationSocket::DefaultPipePath()
+{
+	auto pipename = std::wstring(L"\\\\.\\pipe\\");
+	pipename += L"ownCloud\\";
+	pipename += getUserName();
+	return pipename;
+}
 
 CommunicationSocket::CommunicationSocket()
     : _pipe(INVALID_HANDLE_VALUE)

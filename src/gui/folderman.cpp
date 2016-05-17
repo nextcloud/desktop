@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "filesystem.h"
+#include "lockwatcher.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -44,6 +45,7 @@ FolderMan::FolderMan(QObject *parent) :
     QObject(parent),
     _currentSyncFolder(0),
     _syncEnabled( true ),
+    _lockWatcher(new LockWatcher),
     _appRestartRequired(false)
 {
     Q_ASSERT(!_instance);
@@ -64,6 +66,9 @@ FolderMan::FolderMan(QObject *parent) :
 
     connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
             SLOT(slotRemoveFoldersForAccount(AccountState*)));
+
+    connect(_lockWatcher.data(), SIGNAL(fileUnlocked(QString)),
+            SLOT(slotScheduleFolderOwningFile(QString)));
 }
 
 FolderMan *FolderMan::instance()
@@ -152,7 +157,8 @@ void FolderMan::registerFolderMonitor( Folder *folder )
     }
 
     // register the folder with the socket API
-    _socketApi->slotRegisterPath(folder->alias());
+    if (folder->canSync())
+        _socketApi->slotRegisterPath(folder->alias());
 }
 
 void FolderMan::addMonitorPath( const QString& alias, const QString& path )
@@ -422,6 +428,17 @@ void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
     }
 }
 
+void FolderMan::slotFolderCanSyncChanged()
+{
+    Folder *f = qobject_cast<Folder*>(sender());
+    Q_ASSERT(f);
+    if (f->canSync()) {
+        _socketApi->slotRegisterPath(f->alias());
+    } else {
+        _socketApi->slotUnregisterPath(f->alias());
+    }
+}
+
 // this really terminates the current sync process
 // ie. no questions, no prisoners
 // csync still remains in a stable state, regardless of that.
@@ -458,6 +475,11 @@ void FolderMan::slotScheduleAppRestart()
 {
     _appRestartRequired = true;
     qDebug() << "## Application restart requested!";
+}
+
+void FolderMan::slotSyncOnceFileUnlocks(const QString& path)
+{
+    _lockWatcher->addFile(path);
 }
 
 /*
@@ -539,7 +561,7 @@ void FolderMan::slotAccountStateChanged()
     }
     QString accountName = accountState->account()->displayName();
 
-    if (accountState->canSync()) {
+    if (accountState->isConnected()) {
         qDebug() << "Account" << accountName << "connected, scheduling its folders";
 
         foreach (Folder *f, _folderMap.values()) {
@@ -744,6 +766,13 @@ void FolderMan::slotServerVersionChanged(Account *account)
     }
 }
 
+void FolderMan::slotScheduleFolderOwningFile(const QString& path)
+{
+    if (Folder* f = folderForPath(path)) {
+        slotScheduleSync(f);
+    }
+}
+
 void FolderMan::slotFolderSyncStarted( )
 {
     qDebug() << ">===================================== sync started for " << _currentSyncFolder->remoteUrl().toString();
@@ -803,6 +832,7 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountS
     connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
     connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
+    connect(folder, SIGNAL(canSyncChanged()), SLOT(slotFolderCanSyncChanged()));
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
             _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
     connect(folder, SIGNAL(watchedFileChangedExternally(QString)),

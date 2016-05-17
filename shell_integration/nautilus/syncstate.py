@@ -21,10 +21,14 @@ import socket
 
 from gi.repository import GObject, Nautilus
 
-print("Initializing owncloud-client-nautilus extension")
-
-# Do not touch the following line.
+# Please do not touch the following line.
+# The reason is that we use a script to adopt this file for branding
+# by replacing this line with the branding app name. If the following
+# line is changed, the script can not match the pattern and fails.
 appname = 'ownCloud'
+
+print("Initializing "+appname+"-client-nautilus extension")
+
 
 def get_local_path(url):
     if url[0:7] == 'file://':
@@ -181,10 +185,10 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         if not syncedFile:
             return items
 
-        # Create an menu item
+        # Create a menu item
         labelStr = "Share with " + appname + "..."
         item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr,
-                tip='Share file %s through ownCloud' % file.get_name())
+                tip='Share file {} through {}'.format(file.get_name(), appname) )
         item.connect("activate", self.menu_share, file)
         items.append(item)
 

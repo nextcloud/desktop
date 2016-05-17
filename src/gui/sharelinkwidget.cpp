@@ -98,17 +98,6 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         return;
     }
 
-    // error label, red box and stuff
-    _ui->errorLabel->setLineWidth(1);
-    _ui->errorLabel->setFrameStyle(QFrame::Plain);
-
-    QPalette errPalette = _ui->errorLabel->palette();
-    errPalette.setColor(QPalette::Active, QPalette::Base, QColor(0xaa, 0x4d, 0x4d));
-    errPalette.setColor(QPalette::Active, QPalette::WindowText, QColor(0xaa, 0xaa, 0xaa));
-
-    _ui->errorLabel->setPalette(errPalette);
-    _ui->errorLabel->setFrameShape(QFrame::Box);
-    _ui->errorLabel->setContentsMargins(QMargins(12,12,12,12));
     _ui->errorLabel->hide();
 
 

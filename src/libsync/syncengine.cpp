@@ -933,6 +933,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -1341,7 +1342,7 @@ SyncFileItem* SyncEngine::findSyncItem(const QString &fileName) const
 {
     Q_FOREACH(const SyncFileItemPtr &item, _syncedItems) {
         // Directories will appear in this list as well, and will get their status set once all children have been propagated
-        if ((item->_file == fileName || item->_renameTarget == fileName))
+        if ((item->_file == fileName || (!item->_renameTarget.isEmpty() && item->_renameTarget == fileName)))
             return item.data();
     }
     return 0;

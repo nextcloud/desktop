@@ -31,13 +31,10 @@
 
 using namespace std;
 
-
 // This code is run in a thread
 void RemotePathChecker::workerThreadLoop()
 {
-    auto pipename = std::wstring(L"\\\\.\\pipe\\");
-    pipename += L"ownCloud";
-
+    auto pipename = CommunicationSocket::DefaultPipePath();
     bool connected = false;
     CommunicationSocket socket;
     std::unordered_set<std::wstring> asked;

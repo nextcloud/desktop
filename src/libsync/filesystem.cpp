@@ -43,6 +43,7 @@ extern "C" {
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "std/c_path.h"
+#include "std/c_string.h"
 }
 
 namespace OCC {
@@ -587,6 +588,40 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
         return false;
     }
     return true;
+}
+
+bool FileSystem::isFileLocked(const QString& fileName)
+{
+#ifdef Q_OS_WIN
+    mbchar_t *wuri = c_utf8_path_to_locale(fileName.toUtf8());
+
+    // Check if file exists
+    DWORD attr = GetFileAttributesW(wuri);
+    if (attr != INVALID_FILE_ATTRIBUTES) {
+        // Try to open the file with as much access as possible..
+        HANDLE win_h = CreateFileW(
+                    wuri,
+                    GENERIC_READ | GENERIC_WRITE,
+                    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                    NULL, OPEN_EXISTING,
+                    FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
+                    NULL);
+
+        c_free_locale_string(wuri);
+        if (win_h == INVALID_HANDLE_VALUE) {
+            /* could not be opened, so locked? */
+            /* 32 == ERROR_SHARING_VIOLATION */
+            return true;
+        } else {
+            CloseHandle(win_h);
+        }
+    } else {
+        c_free_locale_string(wuri);
+    }
+#else
+    Q_UNUSED(fileName);
+#endif
+    return false;
 }
 
 } // namespace OCC

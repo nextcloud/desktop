@@ -150,5 +150,10 @@ using namespace OCC;
     }
 };
 
-QTEST_MAIN(TestChecksumValidator)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QTEST_MAIN(TestChecksumValidator)
+#else
+    QTEST_GUILESS_MAIN(TestChecksumValidator)
+#endif
+
 #include "testchecksumvalidator.moc"

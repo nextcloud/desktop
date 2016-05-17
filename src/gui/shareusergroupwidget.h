@@ -129,6 +129,8 @@ private:
     bool _isFile;
     bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;
+
+    QProgressIndicator _pi_sharee;
 };
 
 }

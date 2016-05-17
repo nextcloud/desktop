@@ -121,11 +121,13 @@ private slots:
                 // Current requires an X-Server
                 return;
             }
-            QString ver = versionOfInstalledBinary(BIN_PATH);
+            // pass the binary name owncloud to the next call. This brakes branding,
+            // but branding is not supposed to work with this.
+            QString ver = versionOfInstalledBinary(BIN_PATH+QLatin1String("/owncloud"));
 	    qDebug() << "Version of installed ownCloud Binary: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
-	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.+" );
+	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.*" );
             QVERIFY( rx.exactMatch(ver));
 	} else {
 	    QVERIFY( versionOfInstalledBinary().isEmpty());
@@ -134,36 +136,29 @@ private slots:
 
     void testTimeAgo()
     {
-        // Both times in local time
+        // Both times in same timezone
         QDateTime d1 = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
         QDateTime d2 = QDateTime::fromString("2015-01-23T09:20:30+01:00", Qt::ISODate);
         QString s = timeAgoInWords(d2, d1);
         QCOMPARE(s, QLatin1String("1 day(s) ago"));
 
-        //
+        // Different timezones
         QDateTime earlyTS = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
-        earlyTS.setTimeSpec(Qt::UTC);
-        QDateTime laterTS = earlyTS.toOffsetFromUtc(3600);
-        laterTS.setTimeSpec(Qt::UTC);
+        QDateTime laterTS = QDateTime::fromString("2015-01-24T09:20:30-01:00", Qt::ISODate);
         s = timeAgoInWords(earlyTS, laterTS);
-        QCOMPARE(s, QLatin1String("1 hour(s) ago"));
+        QCOMPARE(s, QLatin1String("2 hour(s) ago"));
 
+        // 'Now' in whatever timezone
         earlyTS = QDateTime::currentDateTime();
-
-        laterTS.setTimeSpec(Qt::LocalTime);
-        laterTS.setTimeZone( QTimeZone("Pacific/Easter") );
         laterTS = earlyTS;
-
         s = timeAgoInWords(earlyTS, laterTS );
         QCOMPARE(s, QLatin1String("now"));
 
         earlyTS = earlyTS.addSecs(-6);
         s = timeAgoInWords(earlyTS, laterTS );
         QCOMPARE(s, QLatin1String("Less than a minute ago"));
-
-
     }
 };
 
-QTEST_MAIN(TestUtility)
+QTEST_APPLESS_MAIN(TestUtility)
 #include "testutility.moc"

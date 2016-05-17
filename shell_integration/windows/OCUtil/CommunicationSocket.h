@@ -26,6 +26,8 @@
 class __declspec(dllexport) CommunicationSocket
 {
 public:
+	static std::wstring DefaultPipePath();
+
 	CommunicationSocket();
 	~CommunicationSocket();
 

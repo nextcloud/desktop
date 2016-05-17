@@ -100,5 +100,5 @@ private slots:
 
 };
 
-QTEST_MAIN(TestConcatUrl)
+QTEST_APPLESS_MAIN(TestConcatUrl)
 #include "testconcaturl.moc"

@@ -1,7 +1,7 @@
 ## Patches used
 
 There are our patches on top of Qt 5.4.0, which we are currently
-using for our binary packages on Windows and Mac OS. Most of them
+using for our binary packages on Windows and Mac OS X. Most of them
 have been sent upstream and are part of newer Qt releases.
 
 All changes are designed to up upstream, and all those that are
@@ -28,18 +28,26 @@ purpose is outlined in each patches' front matter.
 * 0007-X-Network-Fix-up-previous-corruption-patch.patch
 * 0008-QNAM-Fix-reply-deadlocks-on-server-closing-connectio.patch
 * 0014-Fix-SNI-for-TlsV1_0OrLater-TlsV1_1OrLater-and-TlsV1_.patch
+* 0016-Fix-possible-crash-when-passing-an-invalid-PAC-URL.patch
+* 0011-Make-sure-to-report-correct-NetworkAccessibility.patch
 
-### Upstreamed but not in any release yet (as of 2015-11-16)
+### Part of Qt v5.5.2 (UNRELEASED!)
+* 0009-QNAM-Assign-proper-channel-before-sslErrors-emission.patch
+* 0010-Don-t-let-closed-http-sockets-pass-as-valid-connecti.patch
+* 0012-Make-sure-networkAccessibilityChanged-is-emitted.patch
+
+### Part of Qt v5.6 and later
 * 0009-QNAM-Assign-proper-channel-before-sslErrors-emission.patch
 * 0010-Don-t-let-closed-http-sockets-pass-as-valid-connecti.patch
 * 0011-Make-sure-to-report-correct-NetworkAccessibility.patch
 * 0012-Make-sure-networkAccessibilityChanged-is-emitted.patch
 * 0013-Make-UnknownAccessibility-not-block-requests.patch
-* 0015-Remove-legacy-platform-code-in-QSslSocket-for-OS-X-1.patch
-* 0016-Fix-possible-crash-when-passing-an-invalid-PAC-URL.patch
 * 0019-Ensure-system-tray-icon-is-prepared-even-when-menu-bar.patch
 
-### Not submitted to be part of any release:
+### Part of Qt 5.7 and later
+* 0015-Remove-legacy-platform-code-in-QSslSocket-for-OS-X-1.patch
+
+### Not submitted upstream to be part of any release:
 * 0006-Fix-force-debug-info-with-macx-clang_NOUPSTREAM.patch
 This is only needed if you intent to harvest debugging symbols
 for breakpad.

@@ -56,6 +56,13 @@
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.0"
 
+static inline QString removeTrailingSlash(QString path)
+{
+    Q_ASSERT(path.endsWith(QLatin1Char('/')));
+    path.truncate(path.length()-1);
+    return path;
+}
+
 namespace OCC {
 
 #define DEBUG qDebug() << "SocketApi: "
@@ -67,7 +74,8 @@ SocketApi::SocketApi(QObject* parent)
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
-        + QLatin1String("ownCloud");
+                + QLatin1String("ownCloud") + '\\'
+                + QString::fromLocal8Bit(qgetenv("USERNAME"));
         // TODO: once the windows extension supports multiple
         // client connections, switch back to the theme name
         // See issue #2388
@@ -140,8 +148,10 @@ void SocketApi::slotNewConnection()
     _listeners.append(socket);
 
     foreach( Folder *f, FolderMan::instance()->map() ) {
-        QString message = buildRegisterPathMessage(f->path());
-        sendMessage(socket, message);
+        if (f->canSync()) {
+            QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+            sendMessage(socket, message);            
+        }
     }
 }
 
@@ -180,20 +190,31 @@ void SocketApi::slotReadSocket()
 
 void SocketApi::slotRegisterPath( const QString& alias )
 {
+    // Make sure not to register twice to each connected client
+    if (_registeredAliases.contains(alias))
+        return;
+
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        QString message = buildRegisterPathMessage(f->path());
+        QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
         foreach(QIODevice *socket, _listeners) {
             sendMessage(socket, message);
         }
     }
+
+    _registeredAliases.insert(alias);
 }
 
 void SocketApi::slotUnregisterPath( const QString& alias )
 {
+    if (!_registeredAliases.contains(alias))
+        return;
+
     Folder *f = FolderMan::instance()->folder(alias);
     if (f)
-        broadcastMessage(QLatin1String("UNREGISTER_PATH"), f->path(), QString::null, true );
+        broadcastMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString::null, true );
+
+    _registeredAliases.remove(alias);
 }
 
 void SocketApi::slotUpdateFolderView(Folder *f)
@@ -211,10 +232,11 @@ void SocketApi::slotUpdateFolderView(Folder *f)
                 f->syncResult().status() == SyncResult::Error   ||
                 f->syncResult().status() == SyncResult::SetupError ) {
 
-            broadcastMessage(QLatin1String("STATUS"), f->path() ,
+            QString rootPath = removeTrailingSlash(f->path());
+            broadcastMessage(QLatin1String("STATUS"), rootPath,
                              f->syncEngine().syncFileStatusTracker().fileStatus("").toSocketAPIString());
 
-            broadcastMessage(QLatin1String("UPDATE_VIEW"), f->path() );
+            broadcastMessage(QLatin1String("UPDATE_VIEW"), rootPath);
         } else {
             qDebug() << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
@@ -274,8 +296,6 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevic
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket)
 {
-    const QString nopString("NOP");
-
     if( !socket ) {
         qDebug() << "No valid socket object.";
         return;
@@ -288,18 +308,16 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
     Folder* syncFolder = FolderMan::instance()->folderForPath( argument );
     if (!syncFolder) {
         // this can happen in offline mode e.g.: nothing to worry about
-        statusString = nopString;
+        statusString = QLatin1String("NOP");
     } else {
-        const QString file = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
-
-        // future: Send more specific states for paused, disconnected etc.
-        if( syncFolder->syncPaused() || !syncFolder->accountState()->isConnected() ) {
-            statusString = nopString;
-        } else {
-            SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
-
-            statusString = fileStatus.toSocketAPIString();
+        QString relativePath = QDir::cleanPath(argument).mid(syncFolder->cleanPath().length()+1);
+        if( relativePath.endsWith(QLatin1Char('/')) ) {
+            relativePath.truncate(relativePath.length()-1);
+            qWarning() << "Removed trailing slash for directory: " << relativePath << "Status pushes won't have one.";
         }
+        SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(relativePath);
+
+        statusString = fileStatus.toSocketAPIString();
     }
 
     const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') %  QDir::toNativeSeparators(argument);

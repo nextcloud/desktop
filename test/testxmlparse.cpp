@@ -441,5 +441,10 @@ private slots:
 
 };
 
-QTEST_MAIN(TestXmlParse)
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+    QTEST_MAIN(TestXmlParse)
+#else
+    QTEST_GUILESS_MAIN(TestXmlParse)
+#endif
+
 #include "testxmlparse.moc"
