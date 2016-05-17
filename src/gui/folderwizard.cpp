@@ -68,13 +68,6 @@ FolderWizardLocalPath::FolderWizardLocalPath()
     _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
-    QString newAlias = Theme::instance()->appName();
-    int count = 0;
-    while (FolderMan::instance()->folder(newAlias)) {
-        // There is already a folder configured with this name and folder names need to be unique
-        newAlias = Theme::instance()->appName() + QString::number(++count);
-    }
-
     _ui.warnLabel->setTextFormat(Qt::RichText);
     _ui.warnLabel->hide();
 }
@@ -135,14 +128,6 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
         _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(dir));
-
-        QDir pickedDir(dir);
-        QString newAlias = pickedDir.dirName();
-        int count = 0;
-        while (FolderMan::instance()->folder(newAlias)) {
-            // There is already a folder configured with this name and folder names need to be unique
-            newAlias = pickedDir.dirName() + QString::number(++count);
-        }
     }
     emit completeChanged();
 }
@@ -503,11 +488,13 @@ FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
 
 void FolderWizardSelectiveSync::initializePage()
 {
-    QString alias        = wizard()->field(QLatin1String("alias")).toString();
     QString targetPath   = wizard()->property("targetPath").toString();
     if (targetPath.startsWith('/')) {
         targetPath = targetPath.mid(1);
     }
+    QString alias        = QFileInfo(targetPath).fileName();
+    if (alias.isEmpty())
+        alias = Theme::instance()->appName();
     _treeView->setFolderInfo(targetPath, alias);
     QWizardPage::initializePage();
 }
@@ -520,8 +507,10 @@ bool FolderWizardSelectiveSync::validatePage()
 
 void FolderWizardSelectiveSync::cleanupPage()
 {
-    QString alias        = wizard()->field(QLatin1String("alias")).toString();
     QString targetPath   = wizard()->property("targetPath").toString();
+    QString alias        = QFileInfo(targetPath).fileName();
+    if (alias.isEmpty())
+        alias = Theme::instance()->appName();
     _treeView->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
 }
