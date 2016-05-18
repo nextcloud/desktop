@@ -398,7 +398,7 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     if (isBandwidthLimited()) {
         maxlen = qMin(maxlen, _bandwidthQuota);
         if (maxlen <= 0) {  // no quota
-            qDebug() << "no quota";
+            //qDebug() << "no quota";
             return 0;
         }
         _bandwidthQuota -= maxlen;
