@@ -201,7 +201,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
                 downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
             downloadItem->_direction = SyncFileItem::Down;
-            newJob = new PropagateDownloadFileQNAM(_propagator, downloadItem);
+            newJob = new PropagateDownloadFile(_propagator, downloadItem);
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
@@ -266,11 +266,11 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
             if (item->_direction != SyncFileItem::Up) {
-                auto job = new PropagateDownloadFileQNAM(this, item);
+                auto job = new PropagateDownloadFile(this, item);
                 job->setDeleteExistingFolder(deleteExisting);
                 return job;
             } else {
-                auto job = new PropagateUploadFileQNAM(this, item);
+                auto job = new PropagateUploadFile(this, item);
                 job->setDeleteExisting(deleteExisting);
                 return job;
             }

@@ -103,13 +103,13 @@ private slots:
 };
 
 /**
- * @brief The PropagateDownloadFileQNAM class
+ * @brief The PropagateDownloadFile class
  * @ingroup libsync
  */
-class PropagateDownloadFileQNAM : public PropagateItemJob {
+class PropagateDownloadFile : public PropagateItemJob {
     Q_OBJECT
 public:
-    PropagateDownloadFileQNAM(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
+    PropagateDownloadFile(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _resumeStart(0), _downloadProgress(0), _deleteExisting(false) {}
     void start() Q_DECL_OVERRIDE;
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;

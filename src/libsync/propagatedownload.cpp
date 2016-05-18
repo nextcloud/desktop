@@ -304,7 +304,7 @@ QString GETFileJob::errorString() const
     }
 }
 
-void PropagateDownloadFileQNAM::start()
+void PropagateDownloadFile::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
@@ -418,7 +418,7 @@ void PropagateDownloadFileQNAM::start()
     _job->start();
 }
 
-qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
+qint64 PropagateDownloadFile::committedDiskSpace() const
 {
     if (_state == Running) {
         return qBound(0ULL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
@@ -426,13 +426,13 @@ qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
     return 0;
 }
 
-void PropagateDownloadFileQNAM::setDeleteExistingFolder(bool enabled)
+void PropagateDownloadFile::setDeleteExistingFolder(bool enabled)
 {
     _deleteExisting = enabled;
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
-void PropagateDownloadFileQNAM::slotGetFinished()
+void PropagateDownloadFile::slotGetFinished()
 {
     _propagator->_activeJobList.removeOne(this);
 
@@ -565,14 +565,14 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
-void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
+void PropagateDownloadFile::slotChecksumFail( const QString& errMsg )
 {
     FileSystem::remove(_tmpFile.fileName());
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
-void PropagateDownloadFileQNAM::deleteExistingFolder()
+void PropagateDownloadFile::deleteExistingFolder()
 {
     QString existingDir = _propagator->getFilePath(_item->_file);
     if (!QFileInfo(existingDir).isDir()) {
@@ -653,7 +653,7 @@ static void preserveGroupOwnership(const QString& fileName, const QFileInfo& fi)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
 {
     const auto theContentChecksumType = contentChecksumType();
 
@@ -674,7 +674,7 @@ void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &
     computeChecksum->start(_tmpFile.fileName());
 }
 
-void PropagateDownloadFileQNAM::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
     _item->_contentChecksum = checksum;
     _item->_contentChecksumType = checksumType;
@@ -682,7 +682,7 @@ void PropagateDownloadFileQNAM::contentChecksumComputed(const QByteArray &checks
     downloadFinished();
 }
 
-void PropagateDownloadFileQNAM::downloadFinished()
+void PropagateDownloadFile::downloadFinished()
 {
     QString fn = _propagator->getFilePath(_item->_file);
 
@@ -805,7 +805,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 }
 
-void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
+void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 {
     if (!_job) return;
     _downloadProgress = received;
@@ -813,7 +813,7 @@ void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
 }
 
 
-void PropagateDownloadFileQNAM::abort()
+void PropagateDownloadFile::abort()
 {
     if (_job &&  _job->reply())
         _job->reply()->abort();
