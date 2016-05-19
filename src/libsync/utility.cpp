@@ -35,6 +35,10 @@
 #else
 #include <QStandardPaths>
 #endif
+#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
+#include <QCollator>
+#endif
+
 
 #ifdef Q_OS_UNIX
 #include <sys/statvfs.h>
@@ -539,6 +543,18 @@ QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
 quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
 {
     return _lapTimes.value(lapName, 0);
+}
+
+void Utility::sortFilenames(QStringList& fileNames)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
+    QCollator collator;
+    collator.setNumericMode(true);
+    collator.setCaseSensitivity(Qt::CaseInsensitive);
+    qSort(fileNames.begin(), fileNames.end(), collator);
+#else
+    fileNames.sort(Qt::CaseInsensitive);
+#endif
 }
 
 } // namespace OCC

@@ -584,7 +584,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     QStringList sortedSubfolders = list;
     // skip the parent item (first in the list)
     sortedSubfolders.erase(sortedSubfolders.begin());
-    sortedSubfolders.sort();
+    Utility::sortFilenames(sortedSubfolders);
 
     QVarLengthArray<int, 10> undecidedIndexes;
 

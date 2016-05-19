@@ -136,6 +136,11 @@ namespace Utility
         quint64 durationOfLap( const QString& lapName ) const;
     };
 
+    /**
+     * @brief Sort a QStringList in a way that's appropriate for filenames
+     */
+    OWNCLOUDSYNC_EXPORT void sortFilenames(QStringList& fileNames);
+
 }
 /** @} */ // \addtogroup
 

@@ -323,7 +323,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
         root->setData(0, Qt::UserRole, "/");
     }
     QStringList sortedList = list;
-    sortedList.sort();
+    Utility::sortFilenames(sortedList);
     foreach (QString path, sortedList) {
         path.remove(webdavFolder);
         QStringList paths = path.split('/');
