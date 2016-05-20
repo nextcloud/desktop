@@ -155,10 +155,87 @@ signals:
 };
 
 /**
- * @brief The PropagateUploadFile class
+ * @brief The PropagateUploadFileCommon class is the code common between all chunking algorithms
  * @ingroup libsync
+ *
+ * State Machine:
+ *
+ *   +---> start()  --> (delete job) -------+
+ *   |                                      |
+ *   +--> slotComputeContentChecksum()  <---+
+ *                   |
+ *                   v
+ *    slotComputeTransmissionChecksum()
+ *         |
+ *         v
+ *    slotStartUpload()  -> doStartUpload()
+ *                                  .
+ *                                  .
+ *                                  v
+ *        finalize() or abortWithError()  or startPollJob()
  */
-class PropagateUploadFile : public PropagateItemJob {
+class PropagateUploadFileCommon : public PropagateItemJob {
+    Q_OBJECT
+
+protected:
+    QElapsedTimer _duration;
+    QVector<AbstractNetworkJob*> _jobs; /// network jobs that are currently in transit
+    bool _finished; /// Tells that all the jobs have been finished
+    bool _deleteExisting;
+
+    // measure the performance of checksum calc and upload
+    Utility::StopWatch _stopWatch;
+
+    QByteArray _transmissionChecksum;
+    QByteArray _transmissionChecksumType;
+
+
+public:
+    PropagateUploadFileCommon(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
+        : PropagateItemJob(propagator, item), _finished(false), _deleteExisting(false) {}
+
+    /**
+     * Whether an existing entity with the same name may be deleted before
+     * the upload.
+     *
+     * Default: false.
+     */
+    void setDeleteExisting(bool enabled);
+
+    void start() Q_DECL_OVERRIDE;
+private slots:
+    void slotComputeContentChecksum();
+    // Content checksum computed, compute the transmission checksum
+    void slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum);
+    // transmission checksum computed, prepare the upload
+    void slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum);
+public:
+    virtual void doStartUpload() = 0;
+
+    void startPollJob(const QString& path);
+    void finalize();
+    void abortWithError(SyncFileItem::Status status, const QString &error);
+
+public slots:
+    void abort() Q_DECL_OVERRIDE;
+    void slotJobDestroyed(QObject *job);
+
+private slots:
+    void slotPollFinished();
+
+protected:
+    // Bases headers that need to be sent with every chunk
+    QMap<QByteArray, QByteArray> headers();
+
+};
+
+/**
+ * @ingroup libsync
+ *
+ * Propagation job, impementing the old chunking agorithm
+ *
+ */
+class PropagateUploadFileV1 : public PropagateUploadFileCommon {
     Q_OBJECT
 
 private:
@@ -176,48 +253,21 @@ private:
     int _currentChunk;
     int _chunkCount; /// Total number of chunks for this file
     int _transferId; /// transfer id (part of the url)
-    QElapsedTimer _duration;
-    QVector<AbstractNetworkJob*> _jobs; /// network jobs that are currently in transit
-    bool _finished; // Tells that all the jobs have been finished
-
-    // measure the performance of checksum calc and upload
-    Utility::StopWatch _stopWatch;
-
-    QByteArray _transmissionChecksum;
-    QByteArray _transmissionChecksumType;
-
-    bool _deleteExisting;
 
     quint64 chunkSize() const { return _propagator->chunkSize(); }
 
-public:
-    PropagateUploadFile(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item), _startChunk(0), _currentChunk(0), _chunkCount(0), _transferId(0), _finished(false), _deleteExisting(false) {}
-    void start() Q_DECL_OVERRIDE;
 
-    /**
-     * Whether an existing entity with the same name may be deleted before
-     * the upload.
-     *
-     * Default: false.
-     */
-    void setDeleteExisting(bool enabled);
+
+public:
+    PropagateUploadFileV1(OwncloudPropagator* propagator,const SyncFileItemPtr& item) :
+        PropagateUploadFileCommon(propagator,item) {}
+
+    void doStartUpload() Q_DECL_OVERRIDE;
 
 private slots:
-    void slotPutFinished();
-    void slotPollFinished();
-    void slotUploadProgress(qint64,qint64);
-    void abort() Q_DECL_OVERRIDE;
     void startNextChunk();
-    void finalize(const SyncFileItem&);
-    void slotJobDestroyed(QObject *job);
-    void slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum);
-    void slotComputeTransmissionChecksum(const QByteArray& contentChecksumType, const QByteArray& contentChecksum);
-    void slotComputeContentChecksum();
-
-private:
-    void startPollJob(const QString& path);
-    void abortWithError(SyncFileItem::Status status, const QString &error);
+    void slotPutFinished();
+    void slotUploadProgress(qint64,qint64);
 };
 
 }

@@ -270,7 +270,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 job->setDeleteExistingFolder(deleteExisting);
                 return job;
             } else {
-                auto job = new PropagateUploadFile(this, item);
+                auto job = new PropagateUploadFileV1(this, item); // FIXME, depending on server version, use the other chunking algorithm
                 job->setDeleteExisting(deleteExisting);
                 return job;
             }
