@@ -209,8 +209,6 @@ void PropagateUploadFileQNAM::slotComputeContentChecksum()
         return;
     }
 
-    _propagator->_activeJobList.removeOne(this);
-
     const QString filePath = _propagator->getFilePath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
@@ -274,6 +272,10 @@ void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& 
 
 void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum)
 {
+    // Remove ourselfs from the list of active job, before any posible call to done()
+    // When we start chunks, we will add it again, once for every chunks.
+    _propagator->_activeJobList.removeOne(this);
+
     _transmissionChecksum = transmissionChecksum;
     _transmissionChecksumType = transmissionChecksumType;
 
