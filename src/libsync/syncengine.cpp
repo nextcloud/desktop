@@ -545,6 +545,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
                 item->_isDirectory = isDirectory;
                 _syncItemMap.insert(key, item);
             }
+            item->_isDirectory = isDirectory;
             emit syncItemDiscovered(*item);
             return re;
         }
