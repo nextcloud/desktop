@@ -673,6 +673,8 @@ void SyncEngine::startSync()
     _syncRunning = true;
     _anotherSyncNeeded = false;
 
+    _progressInfo->reset();
+
     if (!QDir(_localPath).exists()) {
         // No _tr, it should only occur in non-mirall
         emit csyncError("Unable to find local sync folder.");
@@ -909,7 +911,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     emit aboutToPropagate(_syncedItems);
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     emit transmissionProgress(*_progressInfo);
-    _progressInfo->start();
+    _progressInfo->startEstimateUpdates();
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
     if( !qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty() ) {

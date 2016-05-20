@@ -685,7 +685,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
         slotRebuildRecentMenus();
     }
 
-    if (progress.hasStarted()
+    if (progress.isUpdatingEstimates()
             && progress.completedFiles() >= progress.totalFiles()
             && progress._currentDiscoveredFolder.isEmpty()) {
         QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));

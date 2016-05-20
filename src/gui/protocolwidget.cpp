@@ -219,7 +219,7 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
 
 void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo& progress )
 {
-    if( !progress.hasStarted() ) {
+    if( !progress.isUpdatingEstimates() ) {
         // The sync is restarting, clean the old items
         cleanItems(folder);
     } else if (progress.completedFiles() >= progress.totalFiles()) {

@@ -915,7 +915,7 @@ void Folder::slotFolderDiscovered(bool, QString folderName)
 // and hand the result over to the progress dispatcher.
 void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 {
-    if( !pi.hasStarted() ) {
+    if( !pi.isUpdatingEstimates() ) {
         // this is the beginning of a sync, set the warning level to 0
         _syncResult.setWarnCount(0);
     }
