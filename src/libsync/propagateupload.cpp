@@ -222,8 +222,9 @@ void PropagateUploadFileQNAM::slotComputeContentChecksum()
     QByteArray contentChecksumType;
     // We currently only do content checksums for the particular .eml case
     // This should be done more generally in the future!
-    if (filePath.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive)) {
-        contentChecksumType = "MD5";
+    if (filePath.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive)
+            || filePath.endsWith(QLatin1String(".msg"), Qt::CaseInsensitive)) {
+        contentChecksumType = "SHA1";
     }
 
     // Maybe the discovery already computed the checksum?
