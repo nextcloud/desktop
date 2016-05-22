@@ -30,7 +30,7 @@ StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_Desc "Z stupce rychl‚ho spuçtØn¡ pro ${AP
 StrCpy $UNINSTALLER_FILE_Detail "Zapisuji odinstal tor"
 StrCpy $UNINSTALLER_REGISTRY_Detail "Zapisuji instal tor do registr…"
 StrCpy $UNINSTALLER_FINISHED_Detail "DokonŸeno"
-StrCpy $UNINSTALL_MESSAGEBOX "Nezd  se, §e ${APPLICATION_NAME} je nainstalov na ve slo§ce '$INSTDIR'.$\n$\nChcete pokraŸovat (nedoporuŸuje se)?"
+StrCpy $UNINSTALL_MESSAGEBOX "Nezd  se, §e ${APPLICATION_NAME} je nainstalov na v adres ýi '$INSTDIR'.$\n$\nChcete pokraŸovat (nedoporuŸuje se)?"
 StrCpy $UNINSTALL_ABORT "Odinstalace zruçena u§ivatelem"
 StrCpy $INIT_NO_QUICK_LAUNCH "Z stupce rychl‚ho spuçtØn¡ (nen¡ k dispozici)"
 StrCpy $INIT_NO_DESKTOP "Z stupce na ploçe (pýep¡çe existuj¡c¡)"
