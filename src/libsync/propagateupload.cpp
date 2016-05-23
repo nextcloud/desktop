@@ -546,8 +546,16 @@ void PropagateUploadFileQNAM::startNextChunk()
                 _transmissionChecksumType, _transmissionChecksum);
     }
 
-    if (! device->prepareAndOpen(_propagator->getFilePath(_item->_file), chunkStart, currentChunkSize)) {
+    const QString fileName = _propagator->getFilePath(_item->_file);
+    if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
+
+        // If the file is currently locked, we want to retry the sync
+        // when it becomes available again.
+        if (FileSystem::isFileLocked(fileName)) {
+            emit _propagator->seenLockedFile(fileName);
+        }
+
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError( SyncFileItem::SoftError, device->errorString() );
         delete device;
