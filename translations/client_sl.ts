@@ -1983,7 +1983,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
 </context>
 <context>
@@ -2382,7 +2382,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>Pridobivanje največjega mogočega števila dovoljenj za souporabo prek strežnika ...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>

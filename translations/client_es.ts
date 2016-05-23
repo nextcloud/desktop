@@ -3568,32 +3568,32 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="314"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n año(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="315"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n Mese(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="316"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n dia(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="317"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n hora(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n minuto(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"/>
+        <translation>%n segundo(s)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="343"/>
