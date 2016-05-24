@@ -548,13 +548,12 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         bool directoryEtagUpdate = isDirectory && file->should_update_metadata;
         bool localMetadataUpdate = !remote && file->should_update_metadata;
         if (!directoryEtagUpdate) {
+            item->_isDirectory = isDirectory;
             if (localMetadataUpdate) {
                 // Hack, we want a local metadata update to happen, but only if the
                 // remote tree doesn't ask us to do some kind of propagation.
-                item->_isDirectory = isDirectory;
                 _syncItemMap.insert(key, item);
             }
-            item->_isDirectory = isDirectory;
             emit syncItemDiscovered(*item);
             return re;
         }
@@ -581,7 +580,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // An upload of an existing file means that the file was left unchanged on the server
             // This counts as a NONE for detecting if all the files on the server were changed
             _hasNoneFiles = true;
-        } else if (!item->_isDirectory) {
+        } else if (!isDirectory) {
             if (std::difftime(file->modtime, file->other.modtime) < 0) {
                 // We are going back on time
                 _backInTimeFiles++;
