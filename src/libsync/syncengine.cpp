@@ -203,6 +203,12 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
 
 }
 
+/**
+ * Check if the item is in the blacklist.
+ * If it should not be sync'ed because of the blacklist, update the item with the error instruction
+ * and proper error message, and return true.
+ * If the item is not in the blacklist, or the blacklist is stale, return false.
+ */
 bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
 {
     if( !_journal ) {
@@ -233,6 +239,9 @@ bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
             return false;
         } else if( item._modtime != entry._lastTryModtime ) {
             qDebug() << item._file << " is blacklisted, but has changed mtime!";
+            return false;
+        } else if( item._renameTarget != entry._renameTarget) {
+            qDebug() << item._file << " is blacklisted, but rename target changed from" << entry._renameTarget;
             return false;
         }
     } else if( item._direction == SyncFileItem::Down ) {
@@ -1247,15 +1256,18 @@ void SyncEngine::checkForPermission()
                     }
                 }
 
-#if 0 /* We don't like the idea of renaming behind user's back, as the user may be working with the files */
-
-                if (!sourceOK && !destinationOK) {
+#ifdef OWNCLOUD_RESTORE_RENAME /* We don't like the idea of renaming behind user's back, as the user may be working with the files */
+                if (!sourceOK && (!destinationOK || isRename)
+                        // (not for directory because that's more complicated with the contents that needs to be adjusted)
+                        && !(*it)->_isDirectory) {
                     // Both the source and the destination won't allow move.  Move back to the original
                     std::swap((*it)->_file, (*it)->_renameTarget);
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_errorString = tr("Move not allowed, item restored");
                     (*it)->_isRestoration = true;
                     qDebug() << "checkForPermission: MOVING BACK" << (*it)->_file;
+                    // in case something does wrong, we will not do it next time
+                    _journal->avoidRenamesOnNextSync((*it)->_file);
                 } else
 #endif
                 if (!sourceOK || !destinationOK) {

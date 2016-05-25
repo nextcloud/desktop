@@ -151,6 +151,7 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
     entry._ignoreDuration = old._ignoreDuration * 5;
     entry._file = item._file;
+    entry._renameTarget = item._renameTarget;
 
     if( item._httpErrorCode == 403 ) {
         qDebug() << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";

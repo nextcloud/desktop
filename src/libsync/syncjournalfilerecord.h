@@ -89,6 +89,7 @@ public:
     time_t     _ignoreDuration;
 
     QString    _file;
+    QString    _renameTarget;
 
     bool isValid() const;
 

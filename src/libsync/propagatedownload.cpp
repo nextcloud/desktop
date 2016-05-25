@@ -654,7 +654,6 @@ static void preserveGroupOwnership(const QString& fileName, const QFileInfo& fi)
 }
 } // end namespace
 
-
 void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
 {
     const auto theContentChecksumType = contentChecksumType();
