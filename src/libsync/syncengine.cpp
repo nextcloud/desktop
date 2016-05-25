@@ -183,6 +183,12 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
 
 }
 
+/**
+ * Check if the item is in the blacklist.
+ * If it should not be sync'ed because of the blacklist, update the item with the error instruction
+ * and proper error message, and return true.
+ * If the item is not in the blacklist, or the blacklist is stale, return false.
+ */
 bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
 {
     if( !_journal ) {
@@ -213,6 +219,9 @@ bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
             return false;
         } else if( item._modtime != entry._lastTryModtime ) {
             qDebug() << item._file << " is blacklisted, but has changed mtime!";
+            return false;
+        } else if( item._renameTarget != entry._renameTarget) {
+            qDebug() << item._file << " is blacklisted, but rename target changed from" << entry._renameTarget;
             return false;
         }
     } else if( item._direction == SyncFileItem::Down ) {
