@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器版本%1過舊，已不支援。繼續的風險請自負。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -375,7 +375,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>未同步(%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
@@ -999,12 +999,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="553"/>
+        <location filename="../src/gui/folderwizard.cpp" line="542"/>
         <source>Add Folder Sync Connection</source>
         <translation>新增資料夾同步功能的連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="555"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Sync Connection</source>
         <translation>新增同步連線</translation>
     </message>
@@ -1022,7 +1022,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>請輸入本地資料夾的路徑</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="126"/>
         <source>Select the source folder</source>
         <translation>選擇來源資料夾</translation>
     </message>
@@ -1030,52 +1030,52 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="191"/>
+        <location filename="../src/gui/folderwizard.cpp" line="176"/>
         <source>Create Remote Folder</source>
         <translation>建立遠端資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192"/>
+        <location filename="../src/gui/folderwizard.cpp" line="177"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>請輸入欲創建在 &apos;%1&apos; 底下的新資料夾名稱:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="221"/>
+        <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
         <translation>資料夾成功建立在%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="232"/>
+        <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Authentication failed accessing %1</source>
         <translation>存取 %1 認証失敗 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="219"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>在 %1 建立資料夾失敗，請手動檢查</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="241"/>
+        <location filename="../src/gui/folderwizard.cpp" line="226"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>取得資料夾清單失敗，錯誤: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="322"/>
+        <location filename="../src/gui/folderwizard.cpp" line="307"/>
         <source>Choose this to sync the entire account</source>
         <translation> 請選擇這個功能用來同步整個帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="451"/>
+        <location filename="../src/gui/folderwizard.cpp" line="436"/>
         <source>This folder is already being synced.</source>
         <translation>這個資料夾已經被同步了。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="453"/>
+        <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>您已經同步了 &lt;i&gt;%1&lt;/i&gt;, 這個資料夾是 &lt;i&gt;%2&lt;/i&gt; 的母資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="457"/>
+        <location filename="../src/gui/folderwizard.cpp" line="442"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>您已經同步了所有的檔案。同步另一個資料夾的功能是&lt;b&gt;不支援&lt;/b&gt; 的。如果您想要同步多個資料夾，請移除目前設定的根目錄資料夾。</translation>
     </message>
@@ -1083,7 +1083,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="495"/>
+        <location filename="../src/gui/folderwizard.cpp" line="480"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>請選擇要同步的內容: 您可以選擇性的挑選您不想同步的子資料夾</translation>
     </message>
@@ -2098,48 +2098,48 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="289"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
         <source>File Removed</source>
         <translation>檔案已移除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="301"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="303"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>本地端的檔案在同步的過程中被更改，此檔案將會被還原。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="313"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="694"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="315"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>本地端的檔案在同步過程中被更改。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="621"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>HTTP連線工作被強制中斷，Qt版本&lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="629"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>檔案已經在本機上修改，但這檔案是只供讀取的分享，您的修改已還原並保存在衝突檔案中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="660"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>缺少輪詢的超連結</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>本地端的檔案在同步過程中被刪除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="709"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>伺服器不承認檔案的最後一個分割檔。(e-tag不存在)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="782"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2543,17 +2543,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="74"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - 驗證</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Reauthentication required</source>
         <translation>要求重新驗證</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>您的認証已經過期了，您必須重新登入才能繼續使用。</translation>
     </message>
@@ -2860,18 +2860,18 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="690"/>
+        <location filename="../src/libsync/syncengine.cpp" line="693"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>目前僅有 %1 可以使用，至少需要 %2 才能開始</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>拒絕此操作，您沒有新增母資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
@@ -2961,79 +2961,79 @@ It is not advisable to use it.</source>
         <translation>檔案名稱編碼是無效的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="635"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>無效的字元，請您重新命名 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="724"/>
+        <location filename="../src/libsync/syncengine.cpp" line="727"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>同步處理日誌無法初始化</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="743"/>
+        <location filename="../src/libsync/syncengine.cpp" line="746"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="776"/>
+        <location filename="../src/libsync/syncengine.cpp" line="779"/>
         <source>Unable to read from the sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="822"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation>同步處理日誌無法開啟</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="876"/>
+        <location filename="../src/libsync/syncengine.cpp" line="879"/>
         <source>File name contains at least one invalid character</source>
         <translation>檔案名稱含有不合法的字元</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1090"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>已忽略。根據 &quot;選擇要同步的項目&quot;的黑名單</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1109"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1148"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>拒絕上傳此檔案，此檔案在伺服器是唯讀檔，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Local files and share folder removed.</source>
         <translation>本地端檔案和共享資料夾已被刪除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1253"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Move not allowed, item restored</source>
         <translation>不允許移動，物件復原中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>不允許移動，因為 %1 是唯讀的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the destination</source>
         <translation>目標</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the source</source>
         <translation>來源</translation>
     </message>
@@ -3566,33 +3566,33 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="314"/>
-        <source>%Ln year(s)</source>
-        <translation>%Ln (年)</translation>
+        <source>%n year(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="315"/>
-        <source>%Ln month(s)</source>
-        <translation>%Ln (月)</translation>
+        <source>%n month(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="316"/>
-        <source>%Ln day(s)</source>
-        <translation>%Ln (日)</translation>
+        <source>%n day(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="317"/>
-        <source>%Ln hour(s)</source>
-        <translation>%Ln (時)</translation>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
-        <source>%Ln minute(s)</source>
-        <translation>%Ln (分)</translation>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
-        <source>%Ln second(s)</source>
-        <translation>%Ln (秒)</translation>
+        <source>%n second(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="343"/>

@@ -1001,12 +1001,12 @@ Om du fortsätter synkningen leder till att dina filer skrivs över av äldre fi
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="553"/>
+        <location filename="../src/gui/folderwizard.cpp" line="542"/>
         <source>Add Folder Sync Connection</source>
         <translation>Lägg till mapp att synka.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="555"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Sync Connection</source>
         <translation>Lägg till anslutning.</translation>
     </message>
@@ -1024,7 +1024,7 @@ Om du fortsätter synkningen leder till att dina filer skrivs över av äldre fi
         <translation>Ange sökvägen till den lokala mappen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="126"/>
         <source>Select the source folder</source>
         <translation>Välj källmapp</translation>
     </message>
@@ -1032,52 +1032,52 @@ Om du fortsätter synkningen leder till att dina filer skrivs över av äldre fi
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="191"/>
+        <location filename="../src/gui/folderwizard.cpp" line="176"/>
         <source>Create Remote Folder</source>
         <translation>Skapa fjärrmapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192"/>
+        <location filename="../src/gui/folderwizard.cpp" line="177"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Ange namnet på den  nya mappen som skall skapas under &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="221"/>
+        <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Mappen skapades på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="232"/>
+        <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Authentication failed accessing %1</source>
         <translation>Autentisering misslyckades att komma åt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="219"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Det gick inte att skapa mappen på %1. Kontrollera manuellt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="241"/>
+        <location filename="../src/gui/folderwizard.cpp" line="226"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Kunde inte lista en mapp. Felkod: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="322"/>
+        <location filename="../src/gui/folderwizard.cpp" line="307"/>
         <source>Choose this to sync the entire account</source>
         <translation>Välj detta för att synka allt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="451"/>
+        <location filename="../src/gui/folderwizard.cpp" line="436"/>
         <source>This folder is already being synced.</source>
         <translation>Denna mappen synkas redan.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="453"/>
+        <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Du synkar redan &lt;i&gt;%1&lt;/i&gt;, vilket är övermapp till &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="457"/>
+        <location filename="../src/gui/folderwizard.cpp" line="442"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Du synkroniserar redan alla dina filer. Synkronisering av en annan mapp stöds &lt;b&gt;ej&lt;/b&gt;. Om du vill synka flera mappar, ta bort den för tillfället konfigurerade rotmappen från synk.</translation>
     </message>
@@ -1085,7 +1085,7 @@ Om du fortsätter synkningen leder till att dina filer skrivs över av äldre fi
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="495"/>
+        <location filename="../src/gui/folderwizard.cpp" line="480"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Välj Vad du vill Synka: Du har även möjlighet att avmarkera mappar på servern som du ej vill synkronisera.</translation>
     </message>
@@ -2100,48 +2100,48 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="289"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
         <source>File Removed</source>
         <translation>Filen Raderad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="301"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="303"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokal fil ändrades under synkningen. Den kommer återupptas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="313"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="694"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="315"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil ändrades under synk.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="621"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Tvinga jobbavbryt vid återställning av HTTP-anslutning med Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="629"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Filen ändrades lokalt men är en del av en endast-läsbar delning. Den återställdes och din editering är i konflikt filen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="660"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>Hämtnings-URL saknas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>Den lokala filen togs bort under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="709"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Servern bekräftade inte senaste leveransen. (Ingen e-tagg fanns)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="782"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2545,17 +2545,17 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="74"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Autentisera</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Reauthentication required</source>
         <translation>Autentisering krävs</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Din session har gått ut. Du måste logga in på nytt för att kunna fortsätta använda klienten.</translation>
     </message>
@@ -2862,18 +2862,18 @@ Det är inte lämpligt använda den.</translation>
         <translation>Filen/Mappen är ignorerad för att den är dold.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="690"/>
+        <location filename="../src/libsync/syncengine.cpp" line="693"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Endast %1 tillgängligt, behöver minst %2 för att starta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till övermappar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
@@ -2963,79 +2963,79 @@ Det är inte lämpligt använda den.</translation>
         <translation>Filnamnskodning är inte giltig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="635"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Otillåtna tecken, var vänlig byt namn på &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="724"/>
+        <location filename="../src/libsync/syncengine.cpp" line="727"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="743"/>
+        <location filename="../src/libsync/syncengine.cpp" line="746"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="776"/>
+        <location filename="../src/libsync/syncengine.cpp" line="779"/>
         <source>Unable to read from the sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="822"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="876"/>
+        <location filename="../src/libsync/syncengine.cpp" line="879"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1090"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkas&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1109"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1148"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte behörig att ladda upp denna fil då den är skrivskyddad på servern, återställer </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Inte behörig att radera, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokala filer och mappar som är delade är borttagna.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1253"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Move not allowed, item restored</source>
         <translation>Det gick inte att genomföra flytten, objektet återställs</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Det gick inte att genomföra flytten då %1 är skrivskyddad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the destination</source>
         <translation>destinationen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the source</source>
         <translation>källan</translation>
     </message>
@@ -3568,33 +3568,33 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="314"/>
-        <source>%Ln year(s)</source>
-        <translation>%Ln år</translation>
+        <source>%n year(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="315"/>
-        <source>%Ln month(s)</source>
-        <translation>%Ln månad(er)</translation>
+        <source>%n month(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="316"/>
-        <source>%Ln day(s)</source>
-        <translation>%Ln dag(ar</translation>
+        <source>%n day(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="317"/>
-        <source>%Ln hour(s)</source>
-        <translation>%Ln timme/timmar</translation>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
-        <source>%Ln minute(s)</source>
-        <translation>%Ln minut(er)</translation>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
-        <source>%Ln second(s)</source>
-        <translation>%Ln sekund(er)</translation>
+        <source>%n second(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="343"/>

@@ -209,8 +209,6 @@ void PropagateUploadFileQNAM::slotComputeContentChecksum()
         return;
     }
 
-    _propagator->_activeJobList.removeOne(this);
-
     const QString filePath = _propagator->getFilePath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
@@ -274,6 +272,10 @@ void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& 
 
 void PropagateUploadFileQNAM::slotStartUpload(const QByteArray& transmissionChecksumType, const QByteArray& transmissionChecksum)
 {
+    // Remove ourselfs from the list of active job, before any posible call to done()
+    // When we start chunks, we will add it again, once for every chunks.
+    _propagator->_activeJobList.removeOne(this);
+
     _transmissionChecksum = transmissionChecksum;
     _transmissionChecksumType = transmissionChecksumType;
 
@@ -398,7 +400,7 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     if (isBandwidthLimited()) {
         maxlen = qMin(maxlen, _bandwidthQuota);
         if (maxlen <= 0) {  // no quota
-            qDebug() << "no quota";
+            //qDebug() << "no quota";
             return 0;
         }
         _bandwidthQuota -= maxlen;
@@ -544,8 +546,16 @@ void PropagateUploadFileQNAM::startNextChunk()
                 _transmissionChecksumType, _transmissionChecksum);
     }
 
-    if (! device->prepareAndOpen(_propagator->getFilePath(_item->_file), chunkStart, currentChunkSize)) {
+    const QString fileName = _propagator->getFilePath(_item->_file);
+    if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
+
+        // If the file is currently locked, we want to retry the sync
+        // when it becomes available again.
+        if (FileSystem::isFileLocked(fileName)) {
+            emit _propagator->seenLockedFile(fileName);
+        }
+
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError( SyncFileItem::SoftError, device->errorString() );
         delete device;

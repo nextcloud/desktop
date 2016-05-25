@@ -997,12 +997,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="553"/>
+        <location filename="../src/gui/folderwizard.cpp" line="542"/>
         <source>Add Folder Sync Connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="555"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Sync Connection</source>
         <translation type="unfinished"/>
     </message>
@@ -1020,7 +1020,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Escriba a ruta ao cartafol local.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="126"/>
         <source>Select the source folder</source>
         <translation>Escolla o cartafol de orixe</translation>
     </message>
@@ -1028,52 +1028,52 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="191"/>
+        <location filename="../src/gui/folderwizard.cpp" line="176"/>
         <source>Create Remote Folder</source>
         <translation>Crear un cartafol remoto</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192"/>
+        <location filename="../src/gui/folderwizard.cpp" line="177"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Introduza o nome do novo cartafol que se creará a seguir «%1»:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="221"/>
+        <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Creouse correctamente o cartafol en %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="232"/>
+        <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Authentication failed accessing %1</source>
         <translation>Non foi posíbel facer a autenticación accedendo a %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="219"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Non foi posíbel crear o cartafol en %1. Compróbeo manualmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="241"/>
+        <location filename="../src/gui/folderwizard.cpp" line="226"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="322"/>
+        <location filename="../src/gui/folderwizard.cpp" line="307"/>
         <source>Choose this to sync the entire account</source>
         <translation>Escolla isto para sincronizar toda a conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="451"/>
+        <location filename="../src/gui/folderwizard.cpp" line="436"/>
         <source>This folder is already being synced.</source>
         <translation>Este cartafol xa está sincronizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="453"/>
+        <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Xa está a sincronizar &lt;i&gt;%1&lt;/i&gt;, é o cartafol pai de &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="457"/>
+        <location filename="../src/gui/folderwizard.cpp" line="442"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
         <translation>Xa se están a sincronizar todos os ficheiros. Isto &lt;b&gt;non&lt;/b&gt; é compatíbel co sincronización doutro cartafol. Se quere sincronizar varios cartafoles, retire a sincronización do cartafol raíz configurado actualmente.</translation>
     </message>
@@ -1081,7 +1081,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="495"/>
+        <location filename="../src/gui/folderwizard.cpp" line="480"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
         <translation>Escolla que sincronizar: Opcionalmente pode deselecionar subcartafoles remotos que non queira sincronizar.</translation>
     </message>
@@ -2094,48 +2094,48 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="289"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
         <source>File Removed</source>
         <translation>Ficheiro retirado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="301"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="303"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>O ficheiro local cambiou durante a sincronización. Retomase.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="313"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="694"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="315"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>O ficheiro local cambiou durante a sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="621"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Forzando a interrupción do traballo na conexión HTTP reiniciandoa con Qt &lt;5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="629"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>O ficheiro foi editado localmente mais é parte dunha compartición de só lectura. O ficheiro foi restaurado e a súa edición atopase no ficheiro de conflitos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="660"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>Non se atopa o URL requirido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>O ficheiro local retirarase durante a sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="709"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="782"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2539,17 +2539,17 @@ Recomendámoslle que non o use.</translation>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="74"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Autenticado</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Reauthentication required</source>
         <translation>É necesario volver autenticarse</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Caducou a sesión. É necesario que volva a acceder para seguir usando o cliente. </translation>
     </message>
@@ -2856,18 +2856,18 @@ Recomendámoslle que non o use.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="690"/>
+        <location filename="../src/libsync/syncengine.cpp" line="693"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2957,79 +2957,79 @@ Recomendámoslle que non o use.</translation>
         <translation>O nome de ficheiro codificado non é correcto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="635"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Caracteres incorrectos, déalle outro nome a «%1»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="724"/>
+        <location filename="../src/libsync/syncengine.cpp" line="727"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Non é posíbel preparar un rexistro de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="743"/>
+        <location filename="../src/libsync/syncengine.cpp" line="746"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="776"/>
+        <location filename="../src/libsync/syncengine.cpp" line="779"/>
         <source>Unable to read from the sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="822"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation>Non foi posíbel abrir o rexistro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="876"/>
+        <location filename="../src/libsync/syncengine.cpp" line="879"/>
         <source>File name contains at least one invalid character</source>
         <translation>O nome de ficheiro contén algún carácter incorrecto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1090"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado por mor da lista negra de «escolla que sincronizar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1109"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1148"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non está permitido o envío xa que o ficheiro é só de lectura no servidor, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non está permitido retiralo, restaurando</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Local files and share folder removed.</source>
         <translation>Retirados os ficheiros locais e o cartafol compartido.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1253"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Move not allowed, item restored</source>
         <translation>Nos está permitido movelo, elemento restaurado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Bon está permitido movelo xa que %1 é só de lectura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the destination</source>
         <translation>o destino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the source</source>
         <translation>a orixe</translation>
     </message>
@@ -3562,33 +3562,33 @@ Recomendámoslle que non o use.</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="314"/>
-        <source>%Ln year(s)</source>
-        <translation>%Ln ano(s)</translation>
+        <source>%n year(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="315"/>
-        <source>%Ln month(s)</source>
-        <translation>%Ln mes(es)</translation>
+        <source>%n month(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="316"/>
-        <source>%Ln day(s)</source>
-        <translation>%Ln día(s)</translation>
+        <source>%n day(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="317"/>
-        <source>%Ln hour(s)</source>
-        <translation>%Ln hora(s)</translation>
+        <source>%n hour(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
-        <source>%Ln minute(s)</source>
-        <translation>%Ln minuto(s)</translation>
+        <source>%n minute(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
-        <source>%Ln second(s)</source>
-        <translation>%Ln segundo(s)</translation>
+        <source>%n second(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="343"/>

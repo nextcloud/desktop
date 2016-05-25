@@ -409,7 +409,7 @@ bool SyncJournalDb::checkConnect()
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
     _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
 
-    QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration "
+    QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget "
                  "FROM blacklist WHERE path=?1");
     if( Utility::fsCasePreserving() ) {
         // if the file system is case preserving we have to check the blacklist
@@ -421,8 +421,8 @@ bool SyncJournalDb::checkConnect()
 
     _setErrorBlacklistQuery.reset(new SqlQuery(_db));
     _setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
-                                "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration) "
-                                "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7)");
+                                "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget) "
+                                "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)");
 
     _getSelectiveSyncListQuery.reset(new SqlQuery(_db));
     _getSelectiveSyncListQuery->prepare("SELECT path FROM selectivesync WHERE type=?1");
@@ -608,6 +608,15 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         query.prepare("ALTER TABLE blacklist ADD COLUMN ignoreDuration INTEGER(8);");
         if( !query.exec() ) {
             sqlFail("updateBlacklistTableStructure: Add ignoreDuration fileid", query);
+            re = false;
+        }
+        commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
+    }
+    if( columns.indexOf(QLatin1String("renameTarget")) == -1 ) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE blacklist ADD COLUMN renameTarget VARCHAR(4096);");
+        if( !query.exec() ) {
+            sqlFail("updateBlacklistTableStructure: Add renameTarget", query);
             re = false;
         }
         commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
@@ -1224,6 +1233,7 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QStrin
                 entry._errorString    = _getErrorBlacklistQuery->stringValue(3);
                 entry._lastTryTime    = _getErrorBlacklistQuery->int64Value(4);
                 entry._ignoreDuration = _getErrorBlacklistQuery->int64Value(5);
+                entry._renameTarget   = _getErrorBlacklistQuery->stringValue(6);
                 entry._file           = file;
             }
             _getErrorBlacklistQuery->reset_and_clear_bindings();
@@ -1335,13 +1345,14 @@ void SyncJournalDb::updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRe
     _setErrorBlacklistQuery->bindValue(5, item._errorString);
     _setErrorBlacklistQuery->bindValue(6, QString::number(item._lastTryTime));
     _setErrorBlacklistQuery->bindValue(7, QString::number(item._ignoreDuration));
+    _setErrorBlacklistQuery->bindValue(8, item._renameTarget);
     if( !_setErrorBlacklistQuery->exec() ) {
         QString bug = _setErrorBlacklistQuery->error();
         qDebug() << "SQL exec blacklistitem insert or replace failed: "<< bug;
     }
     qDebug() << "set blacklist entry for " << item._file << item._retryCount
              << item._errorString << item._lastTryTime << item._ignoreDuration
-             << item._lastTryModtime << item._lastTryEtag;
+             << item._lastTryModtime << item._lastTryEtag << item._renameTarget ;
     _setErrorBlacklistQuery->reset_and_clear_bindings();
 
 }

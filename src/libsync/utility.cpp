@@ -310,17 +310,17 @@ namespace {
         QString description(quint64 value) const
         {
             return QCoreApplication::translate(
-                    "Utiliy", name, 0, QCoreApplication::UnicodeUTF8,
+                    "Utility", name, 0, QCoreApplication::UnicodeUTF8,
                     value);
         }
     };
     Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%Ln year(s)") , 365*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln month(s)") , 30*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln day(s)") , 24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln hour(s)") , 3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln minute(s)") , 60*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%Ln second(s)") , 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n year(s)") , 365*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n month(s)") , 30*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n day(s)") , 24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)") , 3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)") , 60*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n second(s)") , 1000LL },
         { 0, 0 }
     };
 } // anonymous namespace

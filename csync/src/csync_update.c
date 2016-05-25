@@ -270,6 +270,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
     if(_last_db_return_error(ctx)) {
         SAFE_FREE(st);
+        SAFE_FREE(tmp);
         ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
         return -1;
     }

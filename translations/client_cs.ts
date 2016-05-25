@@ -17,7 +17,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Zvolte místní složku na svém počítači k synchronizaci</translation>
+        <translation>Zvolte místní adresář na svém počítači k synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Zvolte vzdálenou cílovou složku</translation>
+        <translation>Zvolte vzdálený cílový adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Složky</translation>
+        <translation>Adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="110"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Neoznačené složky budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
+        <translation>Neoznačené adresáře budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="193"/>
@@ -542,7 +542,7 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="128"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation>Prosím, aktualizujte na poslední verzi serveru a restartujte klienta.</translation>
+        <translation>Aktualizujte prosím na poslední verzi serveru a restartujte klienta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="148"/>
@@ -581,7 +581,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="135"/>
         <source>Local folder %1 does not exist.</source>
-        <translation>Místní složka %1 neexistuje.</translation>
+        <translation>Místní adresář %1 neexistuje.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="138"/>
@@ -695,8 +695,8 @@ Pokud ho chcete stáhnout, přejděte prosím do nastavení a označte ho.</tran
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
-        <translation>Tato synchronizace by smazala všechny soubory ve složce &apos;%1&apos;.
-Toto může být způsobeno změnou v nastavení synchronizace složky nebo tím, že byly všechny soubory ručně odstraněny.
+        <translation>Tato synchronizace by smazala všechny soubory v adresáři &apos;%1&apos;.
+Toto může být způsobeno změnou v nastavení synchronizace adresáře nebo tím, že byly všechny soubory ručně odstraněny.
 Opravdu chcete provést tuto akci?</translation>
     </message>
     <message>
@@ -744,7 +744,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="265"/>
         <source>Could not reset folder state</source>
-        <translation>Nelze obnovit stav složky</translation>
+        <translation>Nelze obnovit stav adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="266"/>
@@ -824,7 +824,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="1193"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Nemáte oprávnění pro zápis do zvolené složky!</translation>
+        <translation>Nemáte oprávnění pro zápis do zvoleného adresáře!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1208"/>
@@ -839,17 +839,17 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Místní adresář %1 je symbolickým obsahem. Cíl odkazu již obsahuje adresář použitý pro synchronizaci adresáře. Vyberte, prosím, jiný!</translation>
+        <translation>Místní adresář %1 je symbolickým obsahem. Cíl odkazu již obsahuje adresář použitý pro synchronizaci adresáře. Vyberte prosím jiný!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1227"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Místní adresář %1 je již obsažen ve složce použité pro synchronizaci. Vyberte, prosím, jiný!</translation>
+        <translation>Místní adresář %1 je již obsažen ve adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1233"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Místní adresář %1 je symbolickým obsahem. Cíl odkazu je již obsažen v adresáři použitém pro synchronizaci. Vyberte, prosím, jiný!</translation>
+        <translation>Místní adresář %1 je symbolickým obsahem. Cíl odkazu je již obsažen v adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
 </context>
 <context>
@@ -1001,12 +1001,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="553"/>
+        <location filename="../src/gui/folderwizard.cpp" line="542"/>
         <source>Add Folder Sync Connection</source>
         <translation>Přidat synchronizaci adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="555"/>
+        <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Sync Connection</source>
         <translation>Přidat synchronizační připojení</translation>
     </message>
@@ -1016,78 +1016,78 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="65"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Kliknutím zvolíte místní složku k synchronizaci.</translation>
+        <translation>Kliknutím zvolíte místní adresář k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="69"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Zadejte cestu k místní složce.</translation>
+        <translation>Zadejte cestu k místnímu adresáři.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="126"/>
         <source>Select the source folder</source>
-        <translation>Zvolte zdrojovou složku</translation>
+        <translation>Zvolte zdrojový adresář</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="191"/>
+        <location filename="../src/gui/folderwizard.cpp" line="176"/>
         <source>Create Remote Folder</source>
-        <translation>Vytvořit vzdálenou složku</translation>
+        <translation>Vytvořit vzdálený adresář</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="192"/>
+        <location filename="../src/gui/folderwizard.cpp" line="177"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Zadejte název nově vytvářené složky níže &apos;%1&apos;:</translation>
+        <translation>Zadejte název nově vytvářeného adresáře níže &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="221"/>
+        <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Složka byla úspěšně vytvořena na %1.</translation>
+        <translation>Adresář byl úspěšně vytvořen na %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="232"/>
+        <location filename="../src/gui/folderwizard.cpp" line="217"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ověření selhalo při připojení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="219"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Na %1 selhalo vytvoření složky. Zkontrolujte to, prosím, ručně.</translation>
+        <translation>Na %1 selhalo vytvoření adresáře. Zkontrolujte to prosím ručně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="241"/>
+        <location filename="../src/gui/folderwizard.cpp" line="226"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Chyba při vypsání adresáře. Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="322"/>
+        <location filename="../src/gui/folderwizard.cpp" line="307"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="451"/>
+        <location filename="../src/gui/folderwizard.cpp" line="436"/>
         <source>This folder is already being synced.</source>
-        <translation>Tato složka je již synchronizována.</translation>
+        <translation>Tento adresář je již synchronizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="453"/>
+        <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Již synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, která je složce &lt;i&gt;%2&lt;/i&gt; nadřazená.</translation>
+        <translation>Již synchronizujete adresář &lt;i&gt;%1&lt;/i&gt;, který je adresáři &lt;i&gt;%2&lt;/i&gt; nadřazený.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="457"/>
+        <location filename="../src/gui/folderwizard.cpp" line="442"/>
         <source>You are already syncing all your files. Syncing another folder is &lt;b&gt;not&lt;/b&gt; supported. If you want to sync multiple folders, please remove the currently configured root folder sync.</source>
-        <translation>Již synchronizujete všechny své soubory. Synchronizování další složky &lt;b&gt;není&lt;/b&gt; podporováno. Pokud chcete synchronizovat více složek, odstraňte prosím synchronizaci aktuální kořenové složky.</translation>
+        <translation>Již synchronizujete všechny své soubory. Synchronizování dalšího adresáře &lt;b&gt;není&lt;/b&gt; podporováno. Pokud chcete synchronizovat více adresářů, odstraňte prosím synchronizaci aktuálního kořenového adresáře.</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="495"/>
+        <location filename="../src/gui/folderwizard.cpp" line="480"/>
         <source>Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Výběr synchronizace: Můžete dodatečně označit podsložky, které si nepřejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Můžete dodatečně označit podadresáře, které si nepřejete synchronizovat.</translation>
     </message>
 </context>
 <context>
@@ -1565,7 +1565,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Nemohu stáhnout aktualizaci. Klikněte, prosím, na &lt;a href=&apos;%1&apos;&gt;tento odkaz&lt;/a&gt; pro ruční stažení aktualizace.</translation>
+        <translation>Nemohu stáhnout aktualizaci. Klikněte prosím na &lt;a href=&apos;%1&apos;&gt;tento odkaz&lt;/a&gt; pro ruční stažení aktualizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1613,7 +1613,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="51"/>
         <source>Setup local folder options</source>
-        <translation>Možnosti nastavení místní složky</translation>
+        <translation>Možnosti nastavení místního adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
@@ -1623,7 +1623,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="139"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 složka &apos;%2&apos; je synchronizována do místní složky &apos;%3&apos;</translation>
+        <translation>%1 adresář &apos;%2&apos; je synchronizován do místního adresáře &apos;%3&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
@@ -1638,7 +1638,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="246"/>
         <source>Local Sync Folder</source>
-        <translation>Místní synchronizovaná složka</translation>
+        <translation>Místní synchronizovaný adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
@@ -1768,7 +1768,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Místní synchronizovaná složka %1 již existuje, nastavuji ji pro synchronizaci.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Místní synchronizovaný adresář %1 již existuje, nastavuji jej pro synchronizaci.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
@@ -1788,12 +1788,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="313"/>
         <source>Could not create local folder %1</source>
-        <translation>Nelze vytvořit místní složku %1</translation>
+        <translation>Nelze vytvořit místní adresář %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="338"/>
         <source>No remote folder specified!</source>
-        <translation>Žádná vzdálená složka nenastavena!</translation>
+        <translation>Není nastaven žádný vzdálený adresář!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
@@ -1803,39 +1803,39 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation>vytvářím složku na ownCloudu: %1</translation>
+        <translation>vytvářím adresář na ownCloudu: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="373"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Vzdálená složka %1 byla úspěšně vytvořena.</translation>
+        <translation>Vzdálený adresář %1 byl úspěšně vytvořen.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Vzdálená složka %1 již existuje. Spojuji ji pro synchronizaci.</translation>
+        <translation>Vzdálený adresář %1 již existuje. Spojuji jej pro synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="377"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation>Vytvoření složky selhalo HTTP chybou %1</translation>
+        <translation>Vytvoření adresáře selhalo s HTTP chybou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="381"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>Vytvoření vzdálené složky selhalo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;br/&gt;Vraťte se, prosím, zpět a zkontrolujte je.&lt;/p&gt;</translation>
+        <translation>Vytvoření vzdáleného adresáře selhalo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;br/&gt;Vraťte se prosím zpět a zkontrolujte je.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="384"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvoření vzdálené složky selhalo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;/font&gt;&lt;br/&gt;Vraťte se, prosím, zpět a zkontrolujte je.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvoření vzdáleného adresáře selhalo, pravděpodobně z důvodu neplatných přihlašovacích údajů.&lt;/font&gt;&lt;br/&gt;Vraťte se prosím zpět a zkontrolujte je.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="390"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation>Vytváření vzdálené složky %1 selhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
+        <translation>Vytváření vzdáleného adresáře %1 selhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="406"/>
@@ -1855,7 +1855,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="431"/>
         <source>Folder rename failed</source>
-        <translation>Přejmenování složky selhalo</translation>
+        <translation>Přejmenování adresáře selhalo</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
@@ -1865,7 +1865,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="474"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Místní synchronizovaná složka %1 byla vytvořena úspěšně!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Místní synchronizovaný adresář %1 byl úspěšně vytvořen!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -1878,7 +1878,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="80"/>
         <source>Skip folders configuration</source>
-        <translation>Přeskočit konfiguraci složek</translation>
+        <translation>Přeskočit konfiguraci adresářů</translation>
     </message>
 </context>
 <context>
@@ -1891,7 +1891,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="42"/>
         <source>Open Local Folder</source>
-        <translation>Otevřít místní složku</translation>
+        <translation>Otevřít místní adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="50"/>
@@ -1953,7 +1953,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation>Stažený soubor je prázdný, přesto že server oznámil, že měl být %1.</translation>
+        <translation>Stažený soubor je prázdný, přestože server oznámil, že měl být %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
@@ -2074,12 +2074,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="87"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
-        <translation>Tato složka nemůže být přejmenována. Byl jí vrácen původní název.</translation>
+        <translation>Tento adresář nemůže být přejmenován. Byl mu vrácen původní název.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="89"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Tato složka nemůže být přejmenována. Přejmenujte jí prosím zpět na Shared.</translation>
+        <translation>Tento adresář nemůže být přejmenován. Přejmenujte jej prosím zpět na Shared.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
@@ -2100,48 +2100,48 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateUploadFileQNAM</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="289"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="291"/>
         <source>File Removed</source>
         <translation>Soubor odebrán</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="301"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="303"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Místní soubor se během synchronizace změnil. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="313"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="694"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="315"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="704"/>
         <source>Local file changed during sync.</source>
         <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="621"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="631"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Vynucené ukončení procesu při resetu HTTP připojení s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="629"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="639"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>Soubor zde byl editován, ale je součástí sdílení pouze pro čtení. Původní soubor byl obnoven a editovaná verze je uložena v konfliktním souboru.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="660"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="670"/>
         <source>Poll URL missing</source>
         <translation>Chybí adresa URL</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>The local file was removed during sync.</source>
         <translation>Místní soubor byl odstraněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="709"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="719"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Server nepotvrdil poslední část dat. (Nebyl nalezen e-tag)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="782"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -2171,7 +2171,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="56"/>
         <source>Folder</source>
-        <translation>Složka</translation>
+        <translation>Adresář</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="57"/>
@@ -2237,17 +2237,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="399"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Neoznačené složky budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
+        <translation>Neoznačené adresáře budou &lt;b&gt;odstraněny&lt;/b&gt; z místního souborového systému a nebudou již synchronizovány na tento počítač</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="416"/>
         <source>Choose What to Sync: Select remote subfolders you wish to synchronize.</source>
-        <translation>Výběr synchronizace: Označte vzdálené podsložky, které si přejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Označte vzdálené podadresáře, které si přejete synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="417"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Výběr synchronizace: Odznačte vzdálené podsložky, které si nepřejete synchronizovat.</translation>
+        <translation>Výběr synchronizace: Odznačte vzdálené podadresáře, které si nepřejete synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="423"/>
@@ -2545,17 +2545,17 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="74"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - ověření</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Reauthentication required</source>
         <translation>Vyžadováno opětovné ověření</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="80"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Vaše sezení vypršelo. Chcete-li pokračovat v práci, musíte se znovu přihlásit.</translation>
     </message>
@@ -2862,18 +2862,18 @@ Nedoporučuje se jí používat.</translation>
         <translation>Soubor/adresář je ignorován, protože je skrytý.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="690"/>
+        <location filename="../src/libsync/syncengine.cpp" line="693"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Je dostupných pouze %1, pro spuštění je potřeba alespoň %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1121"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Není povoleno, protože nemáte oprávnění vytvořit nadřazený adresář</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1128"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1131"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat soubory do tohoto adresáře</translation>
     </message>
@@ -2963,79 +2963,79 @@ Nedoporučuje se jí používat.</translation>
         <translation>Kódování znaků jména soubor je neplatné</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="635"/>
+        <location filename="../src/libsync/syncengine.cpp" line="636"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Neplatné znaky, prosím přejmenujte &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="724"/>
+        <location filename="../src/libsync/syncengine.cpp" line="727"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Nemohu inicializovat synchronizační žurnál.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="743"/>
+        <location filename="../src/libsync/syncengine.cpp" line="746"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Nelze načíst blacklist z místní databáze</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="776"/>
+        <location filename="../src/libsync/syncengine.cpp" line="779"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Nelze číst ze žurnálu synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="822"/>
+        <location filename="../src/libsync/syncengine.cpp" line="825"/>
         <source>Cannot open the sync journal</source>
         <translation>Nelze otevřít synchronizační žurnál</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="876"/>
+        <location filename="../src/libsync/syncengine.cpp" line="879"/>
         <source>File name contains at least one invalid character</source>
         <translation>Jméno souboru obsahuje aelspoň jeden neplatný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1087"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1083"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1090"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení &quot;vybrat co synchronizovat&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1106"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1109"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1148"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1188"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není povoleno, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Local files and share folder removed.</source>
-        <translation>Místní soubory a sdílená složka byly odstraněny.</translation>
+        <translation>Místní soubory a sdílený adresář byly odstraněny.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1253"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Move not allowed, item restored</source>
         <translation>Přesun není povolen, položka obnovena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Přesun není povolen, protože %1 je pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the destination</source>
         <translation>cílové umístění</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1266"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>
@@ -3102,17 +3102,17 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="317"/>
         <source>Folder %1: %2</source>
-        <translation>Složka %1: %2</translation>
+        <translation>Adresář %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>No sync folders configured.</source>
-        <translation>Nejsou nastaveny žádné synchronizované složky.</translation>
+        <translation>Nejsou nastaveny žádné synchronizované adresáře.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="332"/>
         <source>There are no sync folders configured.</source>
-        <translation>Nejsou nastaveny žádné složky pro synchronizaci.</translation>
+        <translation>Nejsou nastaveny žádné adresáře pro synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="340"/>
@@ -3146,12 +3146,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>Managed Folders:</source>
-        <translation>Spravované složky:</translation>
+        <translation>Spravované adresáře:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>Open folder &apos;%1&apos;</source>
-        <translation>Otevřít složku &apos;%1&apos;</translation>
+        <translation>Otevřít adresář &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="342"/>
@@ -3489,7 +3489,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Celý váš účet je synchronizován do místní složky</translation>
+        <translation>Celý váš účet je synchronizován do místního adresáře</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
@@ -3568,33 +3568,33 @@ Nedoporučuje se jí používat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="314"/>
-        <source>%Ln year(s)</source>
-        <translation>%Ln rok(ů)</translation>
+        <source>%n year(s)</source>
+        <translation>%n rok(ů)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="315"/>
-        <source>%Ln month(s)</source>
-        <translation>%Ln měsíc(ů)</translation>
+        <source>%n month(s)</source>
+        <translation>%n měsíc(ů)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="316"/>
-        <source>%Ln day(s)</source>
-        <translation>%Ln dny(ů)</translation>
+        <source>%n day(s)</source>
+        <translation>%n dní</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="317"/>
-        <source>%Ln hour(s)</source>
-        <translation>%Ln hodina(y)</translation>
+        <source>%n hour(s)</source>
+        <translation>%n hodina(y)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="318"/>
-        <source>%Ln minute(s)</source>
-        <translation>%Ln minuta(y)</translation>
+        <source>%n minute(s)</source>
+        <translation>%n minuta(y)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="319"/>
-        <source>%Ln second(s)</source>
-        <translation>%Ln sekunda(y)</translation>
+        <source>%n second(s)</source>
+        <translation>%n sekunda(y)</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="343"/>

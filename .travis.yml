@@ -1,15 +1,21 @@
+sudo: required
+
 language: cpp
+
+services:
+  - docker
+
 branches:
   only:
   - coverity_scan 
 
 before_install:
-- sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/xUbuntu_12.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
-- sudo sh -c "echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/xUbuntu_12.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
-- wget http://download.opensuse.org/repositories/isv:ownCloud:desktop/xUbuntu_12.04/Release.key
+- sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
+- sudo sh -c "echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
+- wget http://download.opensuse.org/repositories/isv:ownCloud:desktop/Ubuntu_14.04/Release.key
 - sudo apt-key add - < Release.key
 - sudo apt-get update
-- sudo apt-get build-dep owncloud-client
+- sudo apt-get -y build-dep owncloud-client
 - checkout=$(git show-ref --head --hash head)
 - cd ../
 - wget https://scan.coverity.com/download/linux-64 --post-data "token=$token&project=owncloud%2Fmirall" -O coverity_tool.tgz

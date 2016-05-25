@@ -127,13 +127,30 @@ void ProgressDispatcher::setProgressInfo(const QString& folder, const ProgressIn
     emit progressInfo( folder, progress );
 }
 
-void ProgressInfo::start()
+ProgressInfo::ProgressInfo()
 {
     connect(&_updateEstimatesTimer, SIGNAL(timeout()), SLOT(updateEstimates()));
+    reset();
+}
+
+void ProgressInfo::reset()
+{
+    _currentItems.clear();
+    _currentDiscoveredFolder.clear();
+    _sizeProgress = Progress();
+    _fileProgress = Progress();
+    _totalSizeOfCompletedJobs = 0;
+    _maxBytesPerSecond = 100000.0;
+    _maxFilesPerSecond = 2.0;
+    _updateEstimatesTimer.stop();
+}
+
+void ProgressInfo::startEstimateUpdates()
+{
     _updateEstimatesTimer.start(1000);
 }
 
-bool ProgressInfo::hasStarted() const
+bool ProgressInfo::isUpdatingEstimates() const
 {
     return _updateEstimatesTimer.isActive();
 }

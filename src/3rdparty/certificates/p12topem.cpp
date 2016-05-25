@@ -28,16 +28,12 @@
  * \return string PEM
  */
 string x509ToString(BIO *o) {
-    int len = 0;
     BUF_MEM *bptr;
-    void* data;
-    string ret = "";
-    
     BIO_get_mem_ptr(o, &bptr);
-    len = bptr->length;
-    data = calloc(len+10, sizeof(char));
+    int len = bptr->length;
+    void* data = calloc(len+10, sizeof(char));
     BIO_read(o, data, len);
-    ret = strdup((char*)data);
+    string ret = std::string(static_cast<char*>(data));
     free(data);
         
     return ret;
