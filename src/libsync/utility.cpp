@@ -310,13 +310,18 @@ namespace {
                     value);
         }
     };
+// QTBUG-3945 and issue #4855: QT_TRANSLATE_NOOP does not work with plural form because lupdate
+// limitation unless we fake more arguments
+// (it must be in the form ("context", "source", "comment", n)
+#undef QT_TRANSLATE_NOOP
+#define QT_TRANSLATE_NOOP(ctx, str, ...) str
     Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%n year(s)") , 365*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n month(s)") , 30*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n day(s)") , 24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)") , 3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)") , 60*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n second(s)") , 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n year(s)" , 0, _) , 365*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _) , 30*24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _) , 24*3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _) , 3600*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _) , 60*1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _ ), 1000LL },
         { 0, 0 }
     };
 } // anonymous namespace
