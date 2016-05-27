@@ -1001,7 +1001,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 void Folder::slotAboutToRestoreBackup(bool *restore)
 {
     QString msg =
-        tr("This sync would reset the files to an erlier time in the sync folder '%1'.\n"
+        tr("This sync would reset the files to an earlier time in the sync folder '%1'.\n"
            "This might be because a backup was restored on the server.\n"
            "Continuing the sync as normal will cause all your files to be overwritten by an older "
            "file in an earlier state. "
