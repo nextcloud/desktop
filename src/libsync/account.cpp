@@ -40,7 +40,6 @@ Account::Account(QObject *parent)
     , _capabilities(QVariantMap())
     , _am(0)
     , _credentials(0)
-    , _treatSslErrorsAsFailure(false)
     , _davPath( Theme::instance()->webDavPath() )
     , _wasMigrated(false)
 {
@@ -329,9 +328,9 @@ void Account::addApprovedCerts(const QList<QSslCertificate> certs)
     _approvedCerts += certs;
 }
 
-void Account::resetSslCertErrorState()
+void Account::resetRejectedCertificates()
 {
-    _treatSslErrorsAsFailure = false;
+    _rejectedCertificates.clear();
 }
 
 void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
@@ -412,8 +411,15 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
                      << error.errorString() << "("<< error.error() << ")" << "\n";
     }
 
-    if( _treatSslErrorsAsFailure ) {
-        // User decided once not to trust. Honor this decision.
+    bool allPreviouslyRejected = true;
+    foreach (const QSslError &error, errors) {
+        if (!_rejectedCertificates.contains(error.certificate())) {
+            allPreviouslyRejected = false;
+        }
+    }
+
+    // If all certs have previously been rejected by the user, don't ask again.
+    if( allPreviouslyRejected ) {
         qDebug() << out << "Certs not trusted by user decision, returning.";
         return;
     }
@@ -436,7 +442,12 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
         // certificate changes.
         reply->ignoreSslErrors(errors);
     } else {
-        _treatSslErrorsAsFailure = true;
+        // Mark all involved certificates as rejected, so we don't ask the user again.
+        foreach (const QSslError &error, errors) {
+            if (!_rejectedCertificates.contains(error.certificate())) {
+                _rejectedCertificates.append(error.certificate());
+            }
+        }
         // if during normal operation, a new certificate was MITM'ed, and the user does not
         // ACK it, the running request must be aborted and the QNAM must be reset, to not
         // treat the new cert as granted. See bug #3283

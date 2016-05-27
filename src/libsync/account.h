@@ -133,7 +133,7 @@ public:
     // Usually when a user explicitly rejects a certificate we don't
     // ask again. After this call, a dialog will again be shown when
     // the next unknown certificate is encountered.
-    void resetSslCertErrorState();
+    void resetRejectedCertificates();
 
     // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
@@ -216,7 +216,10 @@ private:
     QuotaInfo *_quotaInfo;
     QNetworkAccessManager *_am;
     AbstractCredentials* _credentials;
-    bool _treatSslErrorsAsFailure;
+
+    /// Certificates that were explicitly rejected by the user
+    QList<QSslCertificate> _rejectedCertificates;
+
     static QString _configFileName;
     QByteArray _pemCertificate; 
     QString _pemPrivateKey;  
