@@ -23,6 +23,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -79,9 +82,9 @@ Comment[cs_CZ]=@APPLICATION_NAME@ počítačový synchronizační klient
 GenericName[cs_CZ]=Synchronizace adresáře
 Name[cs_CZ]=@APPLICATION_NAME@ počítačový synchronizační klient
 Icon[cs_CZ]=@APPLICATION_EXECUTABLE@
-Comment[ru]=@НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ Клиент синхронизации
+Comment[ru]=Настольный клиент синхронизации @НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ 
 GenericName[ru]=Синхронизация папки
-Name[ru]=@НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ Клиент синхронизации
+Name[ru]=Настольный клиент синхронизации @НАЗВАНИЕ_ПРИЛОЖЕНИЯ@
 Icon[ru]=@ВЫПОЛНЯЕМОЕ_ПРИЛОЖЕНИЕ@
 Comment[sl]=@APPLICATION_NAME@ ‒ Program za usklajevanje datotek z namizjem
 GenericName[sl]=Usklajevanje map
