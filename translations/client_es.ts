@@ -1209,7 +1209,7 @@ Continuar con la sincronización hará que todos los archivos sean sobreescritos
 User: %2
 Account: %3
 </source>
-        <translation>Por favor introduzca %1 contraseña:
+        <translation>Por favor introduzca la contraseña de %1:
 
 Usuario: %2
 Cuenta: %3
