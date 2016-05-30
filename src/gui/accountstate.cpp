@@ -209,6 +209,7 @@ void AccountState::checkConnectivity()
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors)
 {
     if (isSignedOut()) {
+        qDebug() << "Signed out, ignoring" << connectionStatusString(status) << _account->url().toString();
         return;
     }
 
