@@ -72,9 +72,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     _completer->setModel(_completerModel);
     _completer->setCaseSensitivity(Qt::CaseInsensitive);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
-    _completer->setFilterMode(Qt::MatchContains);
-#endif
+    _completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     _ui->shareeLineEdit->setCompleter(_completer);
 
     _manager = new ShareManager(_account, this);
