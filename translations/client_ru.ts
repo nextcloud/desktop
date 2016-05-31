@@ -440,12 +440,12 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Вы получили %n новое уведомление от %2.</numerusform><numerusform>Вы получили %n новых уведомления от %2.</numerusform><numerusform>Вы получили %n новых уведомлений от %2.</numerusform><numerusform>Вы получили %n новых уведомлений от %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Вы получили %n новое уведомление от %1 и %2.</numerusform><numerusform>Вы получили %n новых уведомления от %1 и %2.</numerusform><numerusform>Вы получили %n новых уведомлений от %1 и %2.</numerusform><numerusform>Вы получили %n новых уведомлений от %1 и %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
@@ -631,42 +631,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="494"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и ещё %n другой файл был удалён.</numerusform><numerusform>%1 и ещё %n других файла было удалено.</numerusform><numerusform>%1 и ещё %n других файлов были удалены.</numerusform><numerusform>%1 и ещё %n других файлов были удалены.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="501"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и ещё %n другой файл были скачаны.</numerusform><numerusform>%1 и ещё %n других файла были скачаны.</numerusform><numerusform>%1 и ещё %n других файлов были скачаны.</numerusform><numerusform>%1 и ещё %n других файлов были скачаны.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="508"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и ещё %n другой файл были обновлены.</numerusform><numerusform>%1 и ещё %n других файла были обновлены.</numerusform><numerusform>%1 и ещё %n других файлов были обновлены.</numerusform><numerusform>%1 и ещё %n других файлов были обновлены.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="515"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 был переименован в %2, и ещё %n другой файл был переименован.</numerusform><numerusform>%1 был переименован в %2, и ещё %n других файла были переименованы.</numerusform><numerusform>%1 был переименован в %2, и ещё %n других файлов были переименованы.</numerusform><numerusform>%1 был переименован в %2, и ещё %n других файлов были переименованы.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="522"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 был перемещён в %2, и ещё %n другой файл был перемещён.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="529"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>У %1 и ещё у %n другого файла есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>У %1 есть конфликт синхронизации. Пожалуйста, проверьте конфликтный файл!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="536"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и ещё %n другой файл не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файла не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файлов не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файлов не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="538"/>
@@ -862,7 +862,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизация с локальным каталогом</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -975,7 +975,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Осталось %5, %1 из %2, файл %3 из %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1522,24 +1522,24 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Создано %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Закроется через несколько секунд…</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1: запрос выполнен неудачно в %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; выбрано в %2</translation>
     </message>
 </context>
 <context>
@@ -1684,7 +1684,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Почта</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -1952,7 +1952,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Скачанный файл пуст, хотя сервер заявил, что он должен быть %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="693"/>
@@ -2384,7 +2384,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>Запрос максимально возможных прав для предоставления доступа с сервера…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>
@@ -2974,12 +2974,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="754"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось прочитать файл чёрного списка из локальной базы данных.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось прочитать из журнала синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="833"/>
@@ -3568,32 +3568,32 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n год</numerusform><numerusform>%n года</numerusform><numerusform>%n лет</numerusform><numerusform>%n лет</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n месяц</numerusform><numerusform>%n месяца</numerusform><numerusform>%3 месяцев</numerusform><numerusform>%n месяцев</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n день</numerusform><numerusform>%n дня</numerusform><numerusform>%n дней</numerusform><numerusform>%n дней</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часов</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n минута</numerusform><numerusform>%n минуты</numerusform><numerusform>%n минут</numerusform><numerusform>%n минут</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n секунда</numerusform><numerusform>%n секунды</numerusform><numerusform>%n секунд</numerusform><numerusform>%n секунд</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>
@@ -3637,7 +3637,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Серверная версия скачана, изменённый локальный файл скопирован в файл конфликта.</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

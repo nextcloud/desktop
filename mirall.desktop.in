@@ -32,6 +32,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -65,6 +68,10 @@ Comment[id]=Klien sinkronisasi desktop @APPLICATION_NAME@
 GenericName[id]=Folder Sync
 Name[id]=Klien sync desktop @APPLICATION_NAME@
 Icon[id]=@APPLICATION_EXECUTABLE@
+Comment[is]=@APPLICATION_NAME@ skjáborðsforrit samstillingar
+GenericName[is]=Samstilling möppu
+Name[is]=@APPLICATION_NAME@ skjáborðsforrit samstillingar
+Icon[is]=@APPLICATION_EXECUTABLE@
 Comment[it]=Client di sincronizzazione del desktop di @APPLICATION_NAME@
 GenericName[it]=Sincronizzazione cartella
 Name[it]=Client di sincronizzazione del desktop di @APPLICATION_NAME@
