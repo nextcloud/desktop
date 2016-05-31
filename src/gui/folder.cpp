@@ -320,6 +320,7 @@ void Folder::slotRunEtagJob()
         // sync if it's different.
 
         _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
+        _requestEtagJob->setTimeout(60*1000);
         // check if the etag is different
         QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
