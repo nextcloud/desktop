@@ -218,6 +218,7 @@ void OCUpdater::slotVersionInfoArrived()
 {
     _timeoutWatchdog->stop();
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
     if( reply->error() != QNetworkReply::NoError ) {
         qDebug() << "Failed to reach version check url: " << reply->errorString();
         return;
@@ -258,6 +259,7 @@ void NSISUpdater::slotWriteFile()
 void NSISUpdater::slotDownloadFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         setDownloadState(DownloadFailed);
         return;
