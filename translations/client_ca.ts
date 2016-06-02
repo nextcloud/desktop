@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="76"/>
         <source>Storage space: ...</source>
-        <translation>Espai d&apos;emmagatzematze: ...</translation>
+        <translation>Espai d&apos;emmagatzematge: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="146"/>

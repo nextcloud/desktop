@@ -17,12 +17,12 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Escolha a pasta local no seu computador para sincronizar</translation>
+        <translation>Escolha uma pasta local no seu computador para sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Escolher ...</translation>
+        <translation>&amp;Escolher...</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Selecione a pasta de destino remota</translation>
+        <translation>Selecione uma pasta de destino remota</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="146"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Pastas não selecionadas serão &lt;b&gt;removidas&lt;/b&gt; do seu sistema local de ficheiros e não serão sincronizadas neste computador</translation>
+        <translation>As pastas não selecionadas serão &lt;b&gt;removidas&lt;/b&gt; do seu sistema de ficheiros local e não serão sincronizadas para este computador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="193"/>
@@ -153,12 +153,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Folder creation failed</source>
-        <translation>Falhou a criação da pasta</translation>
+        <translation>Não foi possível criar a pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="289"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Não foi posssível criar a pasta local&lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>&lt;p&gt;Não foi possível criar a pasta local&lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="339"/>
@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="345"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Remover Ligação de Sincronização de Pasta</translation>
+        <translation>Remover Ligação da Sincronização de Pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="427"/>
@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="428"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>A operação de sincronização está a ser executada.&lt;br/&gt;Deseja terminar?</translation>
+        <translation>A operação de sincronização está em execução.&lt;br/&gt;Deseja terminá-la?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="495"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="521"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>A versão %1 do servidor é antiga e já não é suportada! Prossiga por sua conta e risco.</translation>
+        <translation>A versão %1 do servidor é antiga e não é suportada! Prossiga por sua conta e risco.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="523"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="211"/>
         <source>Open folder</source>
-        <translation>Abrir a pasta</translation>
+        <translation>Abrir pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="145"/>
@@ -307,7 +307,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="118"/>
         <source>Service unavailable</source>
-        <translation>Servidor indisponível</translation>
+        <translation>Serviço indisponível</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="120"/>
@@ -344,7 +344,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Server Activity</source>
-        <translation>Actividade do Servidor</translation>
+        <translation>Atividade do Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="522"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
-        <translation>Actividades do Servidor</translation>
+        <translation>Atividades do Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="90"/>
@@ -430,7 +430,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation>Acção necessária: Notificações</translation>
+        <translation>Ação necessária: Notificações</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation>%1 Notificações - Acção Necessária</translation>
+        <translation>%1 Notificações - Ação Necessária</translation>
     </message>
 </context>
 <context>
@@ -473,7 +473,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate :</source>
-        <translation>Certificado :</translation>
+        <translation>Certificado:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="192"/>
         <source>The provided credentials are not correct</source>
-        <translation>As credenciais fornecidas não estão correctas</translation>
+        <translation>As credenciais fornecidas não estão corretas</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="540"/>
         <source>Aborted by the user</source>
-        <translation>Cancelado pelo utilizador</translation>
+        <translation>Abortado pelo utilizador</translation>
     </message>
 </context>
 <context>
@@ -636,7 +636,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 e %n outro ficheiro foram removidos.</numerusform><numerusform>%1 e %n outros ficheiros foram removidos.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro ficheiro foram descarregados.</numerusform><numerusform>%1 e %n outros ficheiros foram descarregados.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="509"/>
@@ -681,7 +681,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="751"/>
         <source>Could not read system exclude file</source>
-        <translation>Não foi possível ler o ficheiro system exclude</translation>
+        <translation>Não foi possível ler o ficheiro excluir do sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="962"/>
@@ -712,7 +712,7 @@ Tem a certeza que deseja realizar esta operação?</translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="987"/>
         <source>Keep files</source>
-        <translation>Manter os ficheiros</translation>
+        <translation>Manter ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1005"/>
@@ -726,7 +726,7 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
     <message>
         <location filename="../src/gui/folder.cpp" line="1010"/>
         <source>Backup detected</source>
-        <translation>Cópia de segurança encontrada</translation>
+        <translation>Detetada cópia de segurança</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
@@ -941,7 +941,7 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
         <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>Transferir %s</translation>
+        <translation>descarregar %s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
@@ -1450,7 +1450,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Largura de Banda de Transferência</translation>
+        <translation>Largura de banda de descarga</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1560,7 +1560,7 @@ por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="141"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>A transferir a versão %1. Por favor, aguarde...</translation>
+        <translation>A descarregar a versão %1. Por favor, aguarde...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1948,7 +1948,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="545"/>
         <source>The file could not be downloaded completely.</source>
-        <translation>Não foi possível transferir o ficheiro na totalidade.</translation>
+        <translation>Não foi possível descarregar o ficheiro na totalidade.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
