@@ -111,9 +111,9 @@ bool OWNCLOUDSYNC_EXPORT rename(const QString& originFileName,
  *
  * @return true if the file's mtime or size are not what is expected.
  */
-bool fileChanged(const QString& fileName,
-                 qint64 previousSize,
-                 time_t previousMtime);
+bool OWNCLOUDSYNC_EXPORT fileChanged(const QString& fileName,
+                                     qint64 previousSize,
+                                     time_t previousMtime);
 
 /**
  * @brief Like !fileChanged() but with verbose logging if the file *did* change.
