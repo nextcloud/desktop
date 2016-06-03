@@ -631,7 +631,7 @@ void Folder::removeFromSettings() const
 {
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
-    settings->remove(_definition.alias);
+    settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
