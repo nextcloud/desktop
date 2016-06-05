@@ -159,8 +159,8 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 1. Assuming you are in the root of the ownCloud Client's source tree, you can
    build an image from this Dockerfile like this::
 
-     cd admin/win32/docker
-     docker build . -t ownCloud-client-win32:<version>
+    cd admin/win/docker
+    docker build . -t owncloud-client-win32:<version>
 
    Replace ``<version>`` by the version of the client you are building, e.g.
    |version| for the release of the client that this document describes.
@@ -174,8 +174,8 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 
 2. From within the source tree Run the docker instance::
 
-     docker run ownCloud-client-win32:<version> -v "$PWD:/home/jenkins/client" \
-                admin/win32/docker/build.sh $(id -u)
+     docker run owncloud-client-win32:<version> -v "$PWD:/home/jenkins/client" \
+     admin/win/docker/build.sh $(id -u)
 
    It will run the build, create an NSIS based installer, as well as run tests.
    You will find the resulting binary in an newly created ``build-win32`` subfolder.
