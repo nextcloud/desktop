@@ -74,7 +74,6 @@ static void teardown(void **state) {
 static void check_csync_init(void **state)
 {
     CSYNC *csync = *state;
-    int rc;
 
     csync_init(csync);
 

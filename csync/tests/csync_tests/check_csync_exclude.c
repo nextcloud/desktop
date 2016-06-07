@@ -30,7 +30,6 @@
 
 static void setup(void **state) {
     CSYNC *csync;
-    int rc;
 
     csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 

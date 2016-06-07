@@ -26,7 +26,6 @@ private slots:
         bool excludeHidden = true;
         bool keepHidden = false;
 
-        bool x = excluded.isExcluded("/a/b", "/a", keepHidden);
         QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
         QVERIFY(!excluded.isExcluded("/a/b~", "/a", keepHidden));
         QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
