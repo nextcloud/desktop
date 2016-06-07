@@ -161,12 +161,4 @@ void GeneralSettings::slotIgnoreFilesEditor()
     }
 }
 
-void GeneralSettings::slotOpenAccountWizard()
-{
-    if (QSystemTrayIcon::isSystemTrayAvailable()) {
-        topLevelWidget()->close();
-    }
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
-}
-
 } // namespace OCC

@@ -44,7 +44,6 @@ private slots:
     void slotToggleOptionalDesktopNotifications(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
-    void slotOpenAccountWizard();
 
 private:
     void loadMiscSettings();
