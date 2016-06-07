@@ -15,7 +15,7 @@ with your computer.
 
 ### Binary packages
 
-* Refer to the download page http://owncloud.org/sync-clients/
+* Refer to the download page https://owncloud.org/install/#install-clients
 
 ### Source code
 

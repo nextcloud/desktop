@@ -20,6 +20,42 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -33,6 +69,10 @@ Comment[de]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de]=Ordner-Synchronisation
 Name[de]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de]=@APPLICATION_EXECUTABLE@
+Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+GenericName[ja_JP]=フォルダ同期
+Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+Icon[ja_JP]=@APPLICATION_EXECUTABLE@
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
 GenericName[en_GB]=Folder Sync
 Name[en_GB]=@APPLICATION_NAME@ desktop sync client 
@@ -49,10 +89,18 @@ Comment[fr]=@APPLICATION_NAME@ synchronisation du client
 GenericName[fr]=Dossier de Synchronisation
 Name[fr]=@APPLICATION_NAME@ synchronisation du client
 Icon[fr]=@APPLICATION_EXECUTABLE@
+Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
+GenericName[he]=סנכון תיקייה
+Name[he]=@APPLICATION_NAME@ לקוח סנכרון שולחן עבודה 
+Icon[he]=@APPLICATION_EXECUTABLE@
 Comment[id]=Klien sinkronisasi desktop @APPLICATION_NAME@
 GenericName[id]=Folder Sync
 Name[id]=Klien sync desktop @APPLICATION_NAME@
 Icon[id]=@APPLICATION_EXECUTABLE@
+Comment[is]=@APPLICATION_NAME@ skjáborðsforrit samstillingar
+GenericName[is]=Samstilling möppu
+Name[is]=@APPLICATION_NAME@ skjáborðsforrit samstillingar
+Icon[is]=@APPLICATION_EXECUTABLE@
 Comment[it]=Client di sincronizzazione del desktop di @APPLICATION_NAME@
 GenericName[it]=Sincronizzazione cartella
 Name[it]=Client di sincronizzazione del desktop di @APPLICATION_NAME@
@@ -76,9 +124,9 @@ Comment[cs_CZ]=@APPLICATION_NAME@ počítačový synchronizační klient
 GenericName[cs_CZ]=Synchronizace adresáře
 Name[cs_CZ]=@APPLICATION_NAME@ počítačový synchronizační klient
 Icon[cs_CZ]=@APPLICATION_EXECUTABLE@
-Comment[ru]=@НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ Клиент синхронизации
+Comment[ru]=Настольный клиент синхронизации @НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ 
 GenericName[ru]=Синхронизация папки
-Name[ru]=@НАЗВАНИЕ_ПРИЛОЖЕНИЯ@ Клиент синхронизации
+Name[ru]=Настольный клиент синхронизации @НАЗВАНИЕ_ПРИЛОЖЕНИЯ@
 Icon[ru]=@ВЫПОЛНЯЕМОЕ_ПРИЛОЖЕНИЕ@
 Comment[sl]=@APPLICATION_NAME@ ‒ Program za usklajevanje datotek z namizjem
 GenericName[sl]=Usklajevanje map
@@ -88,19 +136,26 @@ Comment[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 GenericName[sq]=Njëkohësim Dosjesh
 Name[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 Icon[sq]=@APPLICATION_EXECUTABLE@
-Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
-GenericName[ja_JP]=フォルダ同期
-Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
-Icon[ja_JP]=@APPLICATION_EXECUTABLE@
+Comment[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
+GenericName[tr]=Dosya Senkronizasyonu
+Name[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
+Icon[tr]=@APPLICATION_EXECUTABLE@
+Comment[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
+GenericName[uk]=Синхронізація теки
+Name[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
+Icon[uk]=@APPLICATION_EXECUTABLE@
 Comment[ro]=@APPLICATION_NAME@ client de sincronizare pe desktop
 GenericName[ro]=Sincronizare director
 Name[ro]=@APPLICATION_NAME@ client de sincronizare pe desktop
 Icon[ro]=@APPLICATION_EXECUTABLE@
+Comment[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 GenericName[zh_CN]=文件夹同步
+Name[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
+Icon[zh_CN]=@APPLICATION_EXECUTABLE@
 GenericName[zh_TW]=資料夾同步
-Comment[pt_PT]=@APPLICATION_NAME@ cliente de sincronização para ambiente de trabalho
+Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 GenericName[pt_PT]=Sincronizar Pasta
-Name[pt_PT]=@APPLICATION_NAME@ cliente de sincronização para ambiente de trabalho
+Name[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 Icon[pt_PT]=@APPLICATION_EXECUTABLE@
 Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
 GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์

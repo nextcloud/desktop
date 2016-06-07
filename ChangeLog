@@ -4,6 +4,11 @@ version 2.2.1 (release 2016-05-xx)
  * Fix out of memory error when too many uploads happen (#4611)
  * Fix display errors in progress display (#4803 #4856)
  * LockWatcher: Remember to upload files after they become unlocked (#4865) 
+ * Fix overlay icons for files with umlauts (#4884)
+ * Certs: Re-ask for different cert after rejection (#4898, #4911)
+ * Progress: Don't count items without propagation jobs (#4856, #4910)
+ * Utility: Fix for the translation of minutes, second (#4855)
+ * SyncEngine: invalid the blacklist entry when the rename destination change
 
 version 2.2.0 (release 2016-05-12)
  * Overlay icons: Refactoring - mainly for performance improvements

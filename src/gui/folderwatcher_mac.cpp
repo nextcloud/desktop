@@ -51,6 +51,14 @@ static void callback(
     Q_UNUSED(eventFlags)
     Q_UNUSED(eventIds)
 
+    const FSEventStreamEventFlags c_interestingFlags
+            = kFSEventStreamEventFlagItemCreated // for new folder/file
+            | kFSEventStreamEventFlagItemRemoved // for rm
+            | kFSEventStreamEventFlagItemInodeMetaMod // for mtime change
+            | kFSEventStreamEventFlagItemRenamed // also coming for moves to trash in finder
+            | kFSEventStreamEventFlagItemModified; // for content change
+    //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
+
     qDebug() << "FolderWatcherPrivate::callback by OS X";
 
     QStringList paths;
@@ -62,8 +70,14 @@ static void callback(
         CFIndex pathLength = CFStringGetLength(path);
         qstring.resize(pathLength);
         CFStringGetCharacters(path, CFRangeMake(0, pathLength), reinterpret_cast<UniChar *>(qstring.data()));
+        QString fn = qstring.normalized(QString::NormalizationForm_C);
 
-        paths.append(qstring.normalized(QString::NormalizationForm_C));
+        if (!(eventFlags[i] & c_interestingFlags)) {
+            qDebug() << "Ignoring non-content changes for" << fn;
+            continue;
+        }
+
+        paths.append(fn);
     }
 
     reinterpret_cast<FolderWatcherPrivate*>(clientCallBackInfo)->doNotifyParent(paths);

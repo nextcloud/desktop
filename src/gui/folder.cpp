@@ -320,6 +320,7 @@ void Folder::slotRunEtagJob()
         // sync if it's different.
 
         _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
+        _requestEtagJob->setTimeout(60*1000);
         // check if the etag is different
         QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
         FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
@@ -578,19 +579,10 @@ int Folder::slotWipeErrorBlacklist()
 
 void Folder::slotWatchedPathChanged(const QString& path)
 {
-    // When no sync is running or it's in the prepare phase, we can
-    // always schedule a new sync.
-    if (! _engine->isSyncRunning() || _syncResult.status() == SyncResult::SyncPrepare) {
-        emit watchedFileChangedExternally(path);
-        emit scheduleToSync(this);
-        return;
-    }
-
     // The folder watcher fires a lot of bogus notifications during
     // a sync operation, both for actual user files and the database
     // and log. Therefore we check notifications against operations
     // the sync is doing to filter out our own changes.
-    bool ownChange = false;
 #ifdef Q_OS_MAC
     Q_UNUSED(path)
     // On OSX the folder watcher does not report changes done by our
@@ -600,14 +592,23 @@ void Folder::slotWatchedPathChanged(const QString& path)
     const auto maxNotificationDelay = 15*1000;
     qint64 time = _engine->timeSinceFileTouched(path);
     if (time != -1 && time < maxNotificationDelay) {
-        ownChange = true;
+        return;
     }
 #endif
 
-    if (! ownChange) {
-        emit watchedFileChangedExternally(path);
-        emit scheduleToSync(this);
+    // Check that the mtime actually changed.
+    if (path.startsWith(this->path())) {
+        auto relativePath = path.mid(this->path().size());
+        auto record = _journal.getFileRecord(relativePath);
+        if (record.isValid() && !FileSystem::fileChanged(path, record._fileSize,
+                Utility::qDateTimeToTime_t(record._modtime))) {
+            qDebug() << "Ignoring spurious notification for file" << relativePath;
+            return;  // probably a spurious notification
+        }
     }
+
+    emit watchedFileChangedExternally(path);
+    emit scheduleToSync(this);
 }
 
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
@@ -630,7 +631,7 @@ void Folder::removeFromSettings() const
 {
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
-    settings->remove(_definition.alias);
+    settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
 bool Folder::isFileExcludedAbsolute(const QString& fullPath) const

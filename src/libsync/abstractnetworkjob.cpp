@@ -242,6 +242,7 @@ void AbstractNetworkJob::slotTimeout()
         reply()->abort();
     } else {
         qDebug() << Q_FUNC_INFO << this << "Timeout reply was NULL";
+        deleteLater();
     }
 }
 
