@@ -53,6 +53,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -66,10 +69,10 @@ Comment[de]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de]=Ordner-Synchronisation
 Name[de]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de]=@APPLICATION_EXECUTABLE@
-Comment[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
-GenericName[uk]=Синхронізація теки
-Name[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
-Icon[uk]=@APPLICATION_EXECUTABLE@
+Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+GenericName[ja_JP]=フォルダ同期
+Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+Icon[ja_JP]=@APPLICATION_EXECUTABLE@
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
 GenericName[en_GB]=Folder Sync
 Name[en_GB]=@APPLICATION_NAME@ desktop sync client 
@@ -133,10 +136,14 @@ Comment[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 GenericName[sq]=Njëkohësim Dosjesh
 Name[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 Icon[sq]=@APPLICATION_EXECUTABLE@
-Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
-GenericName[ja_JP]=フォルダ同期
-Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
-Icon[ja_JP]=@APPLICATION_EXECUTABLE@
+Comment[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
+GenericName[tr]=Dosya Senkronizasyonu
+Name[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
+Icon[tr]=@APPLICATION_EXECUTABLE@
+Comment[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
+GenericName[uk]=Синхронізація теки
+Name[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
+Icon[uk]=@APPLICATION_EXECUTABLE@
 Comment[ro]=@APPLICATION_NAME@ client de sincronizare pe desktop
 GenericName[ro]=Sincronizare director
 Name[ro]=@APPLICATION_NAME@ client de sincronizare pe desktop

@@ -853,12 +853,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="45"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix connexions de carpetes sincronitzades</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està sincronitzant amb les carpetes locals</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -999,7 +999,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="542"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Afegeix connexions de carpetes sincronitzades</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="544"/>
@@ -2182,7 +2182,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="78"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Protocol de sincronització local</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="80"/>
