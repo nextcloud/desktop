@@ -557,8 +557,10 @@ void Utility::sortFilenames(QStringList& fileNames)
     collator.setNumericMode(true);
     collator.setCaseSensitivity(Qt::CaseInsensitive);
     qSort(fileNames.begin(), fileNames.end(), collator);
-#else
+#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     fileNames.sort(Qt::CaseInsensitive);
+#else
+    fileNames.sort();
 #endif
 }
 
