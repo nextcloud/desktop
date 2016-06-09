@@ -592,8 +592,8 @@ void PropagateDownloadFileQNAM::deleteExistingFolder()
     QString conflictDir = FileSystem::makeConflictFileName(
             existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
 
-    _propagator->addTouchedFile(existingDir);
-    _propagator->addTouchedFile(conflictDir);
+    emit _propagator->touchedFile(existingDir);
+    emit _propagator->touchedFile(conflictDir);
     QString renameError;
     if (!FileSystem::rename(existingDir, conflictDir, &renameError)) {
         done(SyncFileItem::NormalError, renameError);
@@ -753,7 +753,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 
     QString error;
-    _propagator->addTouchedFile(fn);
+    emit _propagator->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
         qDebug() << Q_FUNC_INFO << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);

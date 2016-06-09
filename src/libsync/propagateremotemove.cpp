@@ -80,8 +80,8 @@ void PropagateRemoteMove::start()
         QString versionString = _propagator->account()->serverVersion();
         if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
             QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
-            _propagator->addTouchedFile(originalFile);
-            _propagator->addTouchedFile(targetFile);
+            emit _propagator->touchedFile(originalFile);
+            emit _propagator->touchedFile(targetFile);
             QString renameError;
             if( FileSystem::rename(targetFile, originalFile, &renameError) ) {
                 done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));

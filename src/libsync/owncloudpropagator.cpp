@@ -542,27 +542,6 @@ void OwncloudPropagator::scheduleNextJob()
     }
 }
 
-void OwncloudPropagator::addTouchedFile(const QString& fn)
-{
-    QString file = QDir::cleanPath(fn);
-
-    QElapsedTimer timer;
-    timer.start();
-
-    QMutexLocker lock(&_touchedFilesMutex);
-    _touchedFiles.insert(file, timer);
-}
-
-qint64 OwncloudPropagator::timeSinceFileTouched(const QString& fn) const
-{
-    QMutexLocker lock(&_touchedFilesMutex);
-    if (! _touchedFiles.contains(fn)) {
-        return -1;
-    }
-
-    return _touchedFiles[fn].elapsed();
-}
-
 AccountPtr OwncloudPropagator::account() const
 {
     return _account;

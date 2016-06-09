@@ -163,7 +163,7 @@ void PropagateLocalMkdir::start()
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
     }
-    _propagator->addTouchedFile(newDirStr);
+    emit _propagator->touchedFile(newDirStr);
     QDir localDir(_propagator->_localDir);
     if (!localDir.mkpath(_item->_file)) {
         done( SyncFileItem::NormalError, tr("could not create folder %1").arg(newDirStr) );
@@ -217,8 +217,8 @@ void PropagateLocalRename::start()
             return;
         }
 
-        _propagator->addTouchedFile(existingFile);
-        _propagator->addTouchedFile(targetFile);
+        emit _propagator->touchedFile(existingFile);
+        emit _propagator->touchedFile(targetFile);
         QString renameError;
         if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
             done(SyncFileItem::NormalError, renameError);

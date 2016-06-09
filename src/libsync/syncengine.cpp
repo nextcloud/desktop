@@ -95,6 +95,10 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
+    _clearTouchedFilesTimer.setSingleShot(true);
+    _clearTouchedFilesTimer.setInterval(30*1000);
+    connect(&_clearTouchedFilesTimer, SIGNAL(timeout()), SLOT(slotClearTouchedFiles()));
+
     _thread.setObjectName("SyncEngine_Thread");
 }
 
@@ -681,6 +685,7 @@ void SyncEngine::startSync()
     s_anySyncRunning = true;
     _syncRunning = true;
     _anotherSyncNeeded = false;
+    _clearTouchedFilesTimer.stop();
 
     _progressInfo->reset();
 
@@ -945,6 +950,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
+    connect(_propagator.data(), SIGNAL(touchedFile(QString)), SLOT(slotAddTouchedFile(QString)));
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -1041,6 +1047,8 @@ void SyncEngine::finalize(bool success)
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
+
+    _clearTouchedFilesTimer.start();
 }
 
 void SyncEngine::slotProgress(const SyncFileItem& item, quint64 current)
@@ -1362,14 +1370,28 @@ SyncFileItem* SyncEngine::findSyncItem(const QString &fileName) const
     return 0;
 }
 
+void SyncEngine::slotAddTouchedFile(const QString& fn)
+{
+    QString file = QDir::cleanPath(fn);
+
+    QElapsedTimer timer;
+    timer.start();
+
+    _touchedFiles.insert(file, timer);
+}
+
+void SyncEngine::slotClearTouchedFiles()
+{
+    _touchedFiles.clear();
+}
+
 qint64 SyncEngine::timeSinceFileTouched(const QString& fn) const
 {
-    // This copy is essential for thread safety.
-    QSharedPointer<OwncloudPropagator> prop = _propagator;
-    if (prop) {
-        return prop->timeSinceFileTouched(fn);
+    if (! _touchedFiles.contains(fn)) {
+        return -1;
     }
-    return -1;
+
+    return _touchedFiles[fn].elapsed();
 }
 
 AccountPtr SyncEngine::account() const

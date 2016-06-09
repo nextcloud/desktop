@@ -157,6 +157,12 @@ private slots:
     void slotDiscoveryJobFinished(int updateResult);
     void slotCleanPollsJobAborted(const QString &error);
 
+    /** Records that a file was touched by a job. */
+    void slotAddTouchedFile(const QString& fn);
+
+    /** Wipes the _touchedFiles hash */
+    void slotClearTouchedFiles();
+
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
 
@@ -256,6 +262,12 @@ private:
     CSyncChecksumHook _checksum_hook;
 
     bool _anotherSyncNeeded;
+
+    /** Stores the time since a job touched a file. */
+    QHash<QString, QElapsedTimer> _touchedFiles;
+
+    /** For clearing the _touchedFiles variable after sync finished */
+    QTimer _clearTouchedFilesTimer;
 };
 
 }

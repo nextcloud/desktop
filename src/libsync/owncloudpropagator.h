@@ -330,18 +330,6 @@ public:
     /** returns the size of chunks in bytes  */
     static quint64 chunkSize();
 
-    /** Records that a file was touched by a job.
-     *
-     * Thread-safe.
-     */
-    void addTouchedFile(const QString& fn);
-
-    /** Get the ms since a file was touched, or -1 if it wasn't.
-     *
-     * Thread-safe.
-     */
-    qint64 timeSinceFileTouched(const QString& fn) const;
-
     AccountPtr account() const;
 
     enum DiskSpaceResult
@@ -377,18 +365,24 @@ signals:
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);
 
+    /** Emitted when propagation touches a file.
+     *
+     * Used to track our own file modifications such that notifications
+     * from the file watcher about these can be ignored.
+     */
+    void touchedFile(const QString &fileName);
+
 private:
 
     AccountPtr _account;
-
-    /** Stores the time since a job touched a file. */
-    QHash<QString, QElapsedTimer> _touchedFiles;
-    mutable QMutex _touchedFilesMutex;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4
     friend class PropagateDownloadFileQNAM;
     friend class PropagateUploadFileQNAM;
+    friend class PropagateLocalMkdir;
+    friend class PropagateLocalRename;
+    friend class PropagateRemoteMove;
 #endif
 };
 
