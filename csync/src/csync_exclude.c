@@ -229,8 +229,12 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     // distinguish files ending in '.' from files without an ending,
     // as '.' is a separator that is not stored internally, so let's
     // not allow to sync those to avoid file loss/ambiguities (#416)
-    if (blen > 1 && (bname[blen-1]== ' ' || bname[blen-1]== '.' )) {
-        match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+    if (blen > 1) {
+        if (bname[blen-1]== ' ') {
+            match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
+        } else if (bname[blen-1]== '.' ) {
+            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        }
         goto out;
     }
 

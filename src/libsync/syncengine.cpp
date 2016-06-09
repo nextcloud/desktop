@@ -437,6 +437,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
         item->_errorString = tr("Filename contains invalid characters that can not be synced cross platform.");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE:
+        item->_errorString = tr("Filename contains trailing spaces.");
+        break;
     case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME:
         item->_errorString = tr("Filename is too long.");
         break;
