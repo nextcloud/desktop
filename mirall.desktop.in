@@ -59,6 +59,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -88,6 +91,10 @@ Comment[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de_DE]=Ordner-Synchronisation
 Name[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de_DE]=@APPLICATION_EXECUTABLE@
+Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
+GenericName[bg_BG]=Синхронизиране на папката
+Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
+Icon[bg_BG]=@APPLICATION_EXECUTABLE@
 Comment[fr]=@APPLICATION_NAME@ synchronisation du client
 GenericName[fr]=Dossier de Synchronisation
 Name[fr]=@APPLICATION_NAME@ synchronisation du client
@@ -115,10 +122,7 @@ Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
 GenericName[nl]=Mappen sync
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
 Icon[nl]=@APPLICATION_EXECUTABLE@
-Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
-GenericName[bg_BG]=Синхронизиране на папката
-Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
-Icon[bg_BG]=@APPLICATION_EXECUTABLE@
+Icon[pl]=@APPLICATION_EXECUTABLE@
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização do computador
 GenericName[pt_BR]=Sincronização de Pasta
 Name[pt_BR]=@APPLICATION_NAME@ cliente de sincronização de desktop
