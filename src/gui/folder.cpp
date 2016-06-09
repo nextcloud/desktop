@@ -118,6 +118,8 @@ Folder::Folder(const FolderDefinition& definition,
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
+    connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
+            SLOT(slotLogPropagationStart()));
 }
 
 Folder::~Folder()
@@ -963,6 +965,11 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
         auto logger = Logger::instance();
         logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
     }
+}
+
+void Folder::slotLogPropagationStart()
+{
+    _fileLog->logLap("Propagation starts");
 }
 
 

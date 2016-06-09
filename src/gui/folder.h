@@ -264,6 +264,8 @@ private slots:
 
     void slotNewBigFolderDiscovered(const QString &);
 
+    void slotLogPropagationStart();
+
 private:
     bool setIgnoredFiles();
 
