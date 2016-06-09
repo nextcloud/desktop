@@ -17,9 +17,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QScopedPointer>
+#include <QElapsedTimer>
 
 #include "syncfileitem.h"
-#include "utility.h"
 
 namespace OCC {
 class SyncFileItem;
@@ -32,9 +32,9 @@ class SyncRunFileLog
 {
 public:
     SyncRunFileLog();
-    void start( const QString& folderPath, const Utility::StopWatch& stopWatch );
+    void start( const QString& folderPath );
     void logItem( const SyncFileItem& item );
-    void close();
+    void finish();
 
 protected:
 
@@ -45,7 +45,7 @@ private:
 
     QScopedPointer<QFile> _file;
     QTextStream _out;
-
+    QElapsedTimer _duration;
 };
 }
 

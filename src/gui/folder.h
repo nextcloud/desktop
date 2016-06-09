@@ -35,6 +35,7 @@ namespace OCC {
 
 class SyncEngine;
 class AccountState;
+class SyncRunFileLog;
 
 /**
  * @brief The FolderDefinition class
@@ -311,6 +312,8 @@ private:
     SyncJournalDb _journal;
 
     ClientProxy   _clientProxy;
+
+    QScopedPointer<SyncRunFileLog> _fileLog;
 };
 
 }

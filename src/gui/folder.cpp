@@ -70,6 +70,7 @@ Folder::Folder(const FolderDefinition& definition,
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
       , _journal(definition.localPath)
+      , _fileLog(new SyncRunFileLog)
 {
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
@@ -370,18 +371,11 @@ void Folder::bubbleUpSyncResult()
     SyncFileItemPtr firstConflictItem;
     SyncFileItemPtr firstItemError;
 
-    SyncRunFileLog syncFileLog;
-
-    syncFileLog.start(path(), _engine->isSyncRunning() ? _engine->stopWatch() : Utility::StopWatch() );
-
     QElapsedTimer timer;
     timer.start();
 
     foreach (const SyncFileItemPtr &item, _syncResult.syncFileItemVector() ) {
-        // Log the item
-        syncFileLog.logItem( *item );
-
-        // and process the item to the gui
+        // Process the item to the gui
         if( item->_status == SyncFileItem::FatalError || item->_status == SyncFileItem::NormalError ) {
             //: this displays an error string (%2) for a file %1
             slotSyncError( tr("%1: %2").arg(item->_file, item->_errorString) );
@@ -446,7 +440,6 @@ void Folder::bubbleUpSyncResult()
             }
         }
     }
-    syncFileLog.close();
 
     qDebug() << "Processing result list and logging took " << timer.elapsed() << " Milliseconds.";
     _syncResult.setWarnCount(ignoredItems);
@@ -762,6 +755,8 @@ void Folder::startSync(const QStringList &pathList)
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
+    _fileLog->start(path());
+
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     // disable events until syncing is done
@@ -825,6 +820,7 @@ void Folder::slotSyncFinished(bool success)
     } else {
         qDebug() << "-> SyncEngine finished without problem.";
     }
+    _fileLog->finish();
     bubbleUpSyncResult();
 
     bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
@@ -931,6 +927,7 @@ void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& jo
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
+    _fileLog->logItem(item);
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
 }
 

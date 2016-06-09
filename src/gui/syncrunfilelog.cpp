@@ -87,7 +87,7 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
 }
 
 
-void SyncRunFileLog::start(const QString &folderPath,  const Utility::StopWatch &stopWatch )
+void SyncRunFileLog::start(const QString &folderPath)
 {
     const qint64 logfileMaxSize = 1024*1024; // 1MiB
 
@@ -108,8 +108,6 @@ void SyncRunFileLog::start(const QString &folderPath,  const Utility::StopWatch 
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
     _out.setDevice( _file.data() );
 
-    QDateTime dt = stopWatch.startTime();
-    QDateTime de = stopWatch.timeOfLap(QLatin1String("Sync Finished"));
 
     if (!exists) {
         // We are creating a new file, add the note.
@@ -122,8 +120,8 @@ void SyncRunFileLog::start(const QString &folderPath,  const Utility::StopWatch 
     }
 
 
-    _out << "#=#=#=# Syncrun started " << dateTimeStr(dt) << " until " << dateTimeStr(de) << " ("
-            << stopWatch.durationOfLap(QLatin1String("Sync Finished")) << " msec)" << endl;
+    _duration.start();
+    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTime()) << endl;
 }
 
 void SyncRunFileLog::logItem( const SyncFileItem& item )
@@ -162,8 +160,10 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     _out << endl;
 }
 
-void SyncRunFileLog::close()
+void SyncRunFileLog::finish()
 {
+    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTime())
+         << " (duration: " << _duration.elapsed() << " msec)" << endl;
     _file->close();
 }
 
