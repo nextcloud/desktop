@@ -62,6 +62,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
@@ -118,6 +121,10 @@ Icon[it]=@APPLICATION_EXECUTABLE@
 Comment[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 GenericName[ko]=폴더 동기화
 Name[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
+Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
+GenericName[hu_HU]=Könyvtár szinkronizálás
+Name[hu_HU]=@APPLICATION_NAME@ asztali szinkr. kliens
+Icon[hu_HU]=@APPLICATION_EXECUTABLE@
 Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
 GenericName[nl]=Mappen sync
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
