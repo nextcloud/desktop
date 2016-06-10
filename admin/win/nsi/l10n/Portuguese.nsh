@@ -20,7 +20,7 @@ StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "A instalar integração para Wi
 StrCpy $OPTION_SECTION_SC_START_MENU_SECTION "Atalho  do progama no Menu Inicial"
 StrCpy $OPTION_SECTION_SC_START_MENU_DetailPrint "A adicionar o atalho de ${APPLICATION_NAME} ao Menu Inicial."
 StrCpy $OPTION_SECTION_SC_DESKTOP_SECTION "Atalho da área de trabalho"
-StrCpy $OPTION_SECTION_SC_DESKTOP_DetailPrint "A criar atalhos da área de trabalho"
+StrCpy $OPTION_SECTION_SC_DESKTOP_DetailPrint "A criar atalhos na área de trabalho"
 StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_SECTION "Atalho de início rápido"
 StrCpy $OPTION_SECTION_SC_QUICK_LAUNCH_DetailPrint "A criar atalho de início rápido"
 StrCpy $OPTION_SECTION_SC_APPLICATION_Desc "O essencial de ${APPLICATION_NAME}."
