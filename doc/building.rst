@@ -174,8 +174,8 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 
 2. From within the source tree Run the docker instance::
 
-     docker run owncloud-client-win32:<version> -v "$PWD:/home/jenkins/client" \
-     admin/win/docker/build.sh $(id -u)
+     docker run -v "$PWD:/home/user/client" owncloud-client-win32:<version> \
+        /home/user/client/admin/win/docker/build.sh client/  $(id -u)
 
    It will run the build, create an NSIS based installer, as well as run tests.
    You will find the resulting binary in an newly created ``build-win32`` subfolder.
