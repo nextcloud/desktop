@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>La versió del servidor %1 és antiga i fora de suport! Continua sota la teva responsabilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="529"/>
@@ -385,12 +385,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="600"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>La llista d&apos;activitat de sincronització s&apos;ha copiat al porta-retalls</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="603"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>La llista d&apos;elements no sincronitzats s&apos;ha copiat al porta-retalls</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="608"/>
@@ -586,7 +586,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="138"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 hauria de ser una carpeta, però no ho és.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="141"/>
