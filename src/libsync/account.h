@@ -214,8 +214,8 @@ private:
     QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
-    QNetworkAccessManager *_am;
-    AbstractCredentials* _credentials;
+    QSharedPointer<QNetworkAccessManager> _am;
+    QSharedPointer<AbstractCredentials> _credentials;
 
     /// Certificates that were explicitly rejected by the user
     QList<QSslCertificate> _rejectedCertificates;
