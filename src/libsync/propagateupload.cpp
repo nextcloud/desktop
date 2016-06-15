@@ -97,7 +97,9 @@ void PUTFileJob::start() {
 }
 
 void PUTFileJob::slotTimeout() {
-    qDebug() << "Timeout" << reply()->request().url();
+    qDebug() << "Timeout" << (reply() ? reply()->request().url() : path());
+    if (!reply())
+        return;
     _errorString =  tr("Connection Timeout");
     reply()->abort();
 }
