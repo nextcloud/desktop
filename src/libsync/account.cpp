@@ -427,6 +427,12 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
         return;
     }
 
+    // SslDialogErrorHandler::handleErrors will run an event loop that might execute
+    // the deleteLater() of the QNAM before we have the chance of unwinding our stack.
+    // Keep a ref here on our stackframe to make sure that it doesn't get deleted before
+    // handleErrors returns.
+    QSharedPointer<QNetworkAccessManager> qnamLock = _am;
+
     if (_sslErrorHandler->handleErrors(errors, reply->sslConfiguration(), &approvedCerts, sharedFromThis())) {
         QSslSocket::addDefaultCaCertificates(approvedCerts);
         addApprovedCerts(approvedCerts);
