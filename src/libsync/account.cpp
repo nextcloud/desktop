@@ -38,8 +38,6 @@ namespace OCC {
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
-    , _am(0)
-    , _credentials(0)
     , _davPath( Theme::instance()->webDavPath() )
     , _wasMigrated(false)
 {
@@ -55,8 +53,6 @@ AccountPtr Account::create()
 
 Account::~Account()
 {
-    delete _credentials;
-    delete _am;
 }
 
 QString Account::davPath() const
@@ -117,14 +113,14 @@ bool Account::changed(AccountPtr other, bool ignoreUrlProtocol) const
         changes = (_url == other->_url);
     }
 
-    changes |= _credentials->changed(other->_credentials);
+    changes |= _credentials->changed(other->credentials());
 
     return changes;
 }
 
 AbstractCredentials *Account::credentials() const
 {
-    return _credentials;
+    return _credentials.data();
 }
 
 void Account::setCredentials(AbstractCredentials *cred)
@@ -135,29 +131,27 @@ void Account::setCredentials(AbstractCredentials *cred)
         jar = _am->cookieJar();
         jar->setParent(0);
 
-        _am->deleteLater();
-    }
-
-    if (_credentials) {
-        credentials()->deleteLater();
+        _am.reset();
     }
 
     // The order for these two is important! Reading the credential's
-    // settings accesses the account as well as account->_credentials
-    _credentials = cred;
+    // settings accesses the account as well as account->_credentials,
+    // so deleteLater must be used.
+    _credentials = QSharedPointer<AbstractCredentials>(cred, &QObject::deleteLater);
     cred->setAccount(this);
 
-    _am = _credentials->getQNAM();
+    _am = QSharedPointer<QNetworkAccessManager>(_credentials->getQNAM(), &QObject::deleteLater);
+
     if (jar) {
         _am->setCookieJar(jar);
     }
-    connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
-    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
             SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
-    connect(_credentials, SIGNAL(fetched()),
+    connect(_credentials.data(), SIGNAL(fetched()),
             SLOT(slotCredentialsFetched()));
-    connect(_credentials, SIGNAL(asked()),
+    connect(_credentials.data(), SIGNAL(asked()),
             SLOT(slotCredentialsAsked()));
 }
 
@@ -196,18 +190,21 @@ void Account::resetNetworkAccessManager()
 
     qDebug() << "Resetting QNAM";
     QNetworkCookieJar* jar = _am->cookieJar();
-    _am->deleteLater();
-    _am = _credentials->getQNAM();
+
+    // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
+    // Make it call deleteLater to make sure that we can return to any QNAM stack frames safely.
+    _am = QSharedPointer<QNetworkAccessManager>(_credentials->getQNAM(), &QObject::deleteLater);
+
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
-    connect(_am, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
+    connect(_am.data(), SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(slotHandleSslErrors(QNetworkReply*,QList<QSslError>)));
-    connect(_am, SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
+    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)),
             SIGNAL(proxyAuthenticationRequired(QNetworkProxy,QAuthenticator*)));
 }
 
 QNetworkAccessManager *Account::networkAccessManager()
 {
-    return _am;
+    return _am.data();
 }
 
 QNetworkReply *Account::headRequest(const QString &relPath)
@@ -459,12 +456,12 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
 
 void Account::slotCredentialsFetched()
 {
-    emit credentialsFetched(_credentials);
+    emit credentialsFetched(_credentials.data());
 }
 
 void Account::slotCredentialsAsked()
 {
-    emit credentialsAsked(_credentials);
+    emit credentialsAsked(_credentials.data());
 }
 
 void Account::handleInvalidCredentials()
