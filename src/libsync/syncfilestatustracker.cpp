@@ -94,11 +94,9 @@ SyncFileItem SyncFileStatusTracker::rootSyncFileItem()
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& relativePath)
 {
-    // normalization is required for OS X to match file names properly
-    QString normalizedRelativePath = relativePath.normalized(QString::NormalizationForm_C);
-    Q_ASSERT(!normalizedRelativePath.endsWith(QLatin1Char('/')));
+    Q_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
 
-    if (normalizedRelativePath.isEmpty()) {
+    if (relativePath.isEmpty()) {
         // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so create one manually.
         return syncFileItemStatus(rootSyncFileItem());
     }
@@ -109,22 +107,22 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& relativePath)
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
     // it's an acceptable compromize to treat all exclude types the same.
-    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + normalizedRelativePath,
+    if( _syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
                                                 _syncEngine->localPath(),
                                                 _syncEngine->ignoreHiddenFiles()) ) {
         return SyncFileStatus(SyncFileStatus::StatusWarning);
     }
 
-    if ( _dirtyPaths.contains(normalizedRelativePath) )
+    if ( _dirtyPaths.contains(relativePath) )
         return SyncFileStatus::StatusSync;
 
-    SyncFileItem* item = _syncEngine->findSyncItem(normalizedRelativePath);
+    SyncFileItem* item = _syncEngine->findSyncItem(relativePath);
     if (item) {
         return syncFileItemStatus(*item);
     }
 
     // If we're not currently syncing that file, look it up in the database to know if it's shared
-    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(normalizedRelativePath);
+    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(relativePath);
     if (rec.isValid()) {
         return syncFileItemStatus(rec.toSyncFileItem());
     }

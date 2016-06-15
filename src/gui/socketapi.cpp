@@ -171,7 +171,9 @@ void SocketApi::slotReadSocket()
     Q_ASSERT(socket);
 
     while(socket->canReadLine()) {
-        QString line = QString::fromUtf8(socket->readLine());
+        // Make sure to normalize the input from the socket to
+        // make sure that the path will match, especially on OS X.
+        QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
         QString command = line.split(":").value(0);
         QString function = QString(QLatin1String("command_")).append(command);
