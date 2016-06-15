@@ -101,10 +101,10 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
 SyncEngine::~SyncEngine()
 {
     abort();
-    _excludedFiles.reset();
-    csync_destroy(_csync_ctx);
     _thread.quit();
     _thread.wait();
+    _excludedFiles.reset();
+    csync_destroy(_csync_ctx);
 }
 
 //Convert an error code from csync to a user readable string.
@@ -1379,13 +1379,13 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::abort()
 {
+    // Sets a flag for the update phase
+    csync_request_abort(_csync_ctx);
     qDebug() << Q_FUNC_INFO << _discoveryMainThread;
     // Aborts the discovery phase job
     if (_discoveryMainThread) {
         _discoveryMainThread->abort();
     }
-    // Sets a flag for the update phase
-    csync_request_abort(_csync_ctx);
     // For the propagator
     if(_propagator) {
         _propagator->abort();
