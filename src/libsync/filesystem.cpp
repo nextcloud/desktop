@@ -496,16 +496,16 @@ QString FileSystem::fileSystemForPath(const QString & path)
 }
 #endif
 
-#define BUFSIZE 1024*1024*10
+#define BUFSIZE qint64(500*1024)  // 500 KiB
 
 static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
 {
-    const qint64 bufSize = BUFSIZE;
-    QByteArray buf(bufSize,0);
+    QFile file(filename);
+    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
+    QByteArray buf(bufSize, Qt::Uninitialized);
     QByteArray arr;
     QCryptographicHash crypto( algo );
 
-    QFile file(filename);
     if (file.open(QIODevice::ReadOnly)) {
         qint64 size;
         while (!file.atEnd()) {
@@ -532,11 +532,11 @@ QByteArray FileSystem::calcSha1( const QString& filename )
 #ifdef ZLIB_FOUND
 QByteArray FileSystem::calcAdler32( const QString& filename )
 {
-    unsigned int adler = adler32(0L, Z_NULL, 0);
-    const qint64 bufSize = BUFSIZE;
-    QByteArray buf(bufSize, 0);
-
     QFile file(filename);
+    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
+    QByteArray buf(bufSize, Qt::Uninitialized);
+
+    unsigned int adler = adler32(0L, Z_NULL, 0);
     if (file.open(QIODevice::ReadOnly)) {
         qint64 size;
         while (!file.atEnd()) {
