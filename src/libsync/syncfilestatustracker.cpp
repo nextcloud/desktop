@@ -76,7 +76,6 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
             SLOT(slotAboutToPropagate(SyncFileItemVector&)));
     connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
             SLOT(slotItemCompleted(const SyncFileItem&)));
-    connect(syncEngine, SIGNAL(started()), SLOT(slotClearDirtyPaths()));
     connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
 }
@@ -156,8 +155,17 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
+        _dirtyPaths.remove(item->destination());
         emit fileStatusChanged(getSystemDestination(item->destination()), syncFileItemStatus(*item));
     }
+
+    // Some metadata status won't trigger files to be synced, make sure that we
+    // push the OK status for dirty files that don't need to be propagated.
+    // Swap into a copy since fileStatus() reads _dirtyPaths to determine the status
+    QSet<QString> oldDirtyPaths;
+    std::swap(_dirtyPaths, oldDirtyPaths);
+    for (auto it = oldDirtyPaths.cbegin(); it != oldDirtyPaths.cend(); ++it)
+        emit fileStatusChanged(getSystemDestination(*it), fileStatus(*it));
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
     // (like an error file being deleted from disk)
@@ -191,13 +199,6 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
 {
     emit fileStatusChanged(_syncEngine->localPath(), syncFileItemStatus(rootSyncFileItem()));
-}
-
-void SyncFileStatusTracker::slotClearDirtyPaths()
-{
-    // We just assume that during a sync all dirty statuses will be resolved
-    // one way or the other.
-    _dirtyPaths.clear();
 }
 
 SyncFileStatus SyncFileStatusTracker::syncFileItemStatus(const SyncFileItem& item)
