@@ -234,6 +234,8 @@ void PropagateUploadFileQNAM::slotComputeContentChecksum()
 
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotComputeTransmissionChecksum(QByteArray,QByteArray)));
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            computeChecksum, SLOT(deleteLater()));
     computeChecksum->start(filePath);
 }
 
@@ -268,6 +270,8 @@ void PropagateUploadFileQNAM::slotComputeTransmissionChecksum(const QByteArray& 
 
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             SLOT(slotStartUpload(QByteArray,QByteArray)));
+    connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
+            computeChecksum, SLOT(deleteLater()));
     const QString filePath = _propagator->getFilePath(_item->_file);
     computeChecksum->start(filePath);
 }
