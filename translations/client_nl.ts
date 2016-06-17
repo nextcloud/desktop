@@ -3570,32 +3570,32 @@ We adviseren deze site niet te gebruiken.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n jaar</numerusform><numerusform>%n jaar</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n maand</numerusform><numerusform>%n maanden</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dag</numerusform><numerusform>%n dagen</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n uur</numerusform><numerusform>%n uur</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuut</numerusform><numerusform>%n minuten</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n seconde</numerusform><numerusform>%n seconden</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>
