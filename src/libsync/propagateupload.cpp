@@ -779,6 +779,8 @@ void PropagateUploadFileQNAM::slotPutFinished()
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
              << _item->_requestDuration;
+    // The job might stay alive for the whole sync, release this tiny bit of memory.
+    _stopWatch.reset();
 
     finalize(*_item);
 }
