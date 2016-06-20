@@ -631,37 +631,37 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n altre fitxer s&apos;ha esborrat.</numerusform><numerusform>%1 i %n altres fitxers s&apos;han esborrat.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n altre fitxer s&apos;han descarregat.</numerusform><numerusform>%1 i %n altres fitxers s&apos;han descarregat.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="509"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n altre fitxer s&apos;han actualitzat.</numerusform><numerusform>%1 i %n altres fitxers s&apos;han actualitzat.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 s&apos;ha reanomenat a %2 i %n altre fitxer s&apos;ha reanomenat.</numerusform><numerusform>%1 s&apos;ha reanomenat a %2 i %n altres fitxers s&apos;han reanomenat.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="523"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 s&apos;ha mogut a %2 i %n altre fitxer s&apos;ha mogut.</numerusform><numerusform>%1 s&apos;ha mogut a %2 i %n altres fitxers s&apos;han mogut.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="530"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 i %n altre fitxer tenen conflictes de sincronització</numerusform><numerusform>%1 i %n altres fitxers tenen conflictes de sincronització</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="532"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 té conflictes de sincronització. Comproveu el fitxer conflictiu!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="537"/>
@@ -727,7 +727,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Sincronització normal</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1013"/>
@@ -1681,7 +1681,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>Correu &amp;electrònic</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -2000,7 +2000,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="169"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>no s&apos;ha pogut crear la carpeta %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
@@ -2018,7 +2018,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut eliminar la carpeta &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
@@ -2479,7 +2479,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="224"/>
         <source>No results for &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha resultats per &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -2855,7 +2855,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer/carpeta s&apos;ha ignorat perquè és ocult.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="701"/>
@@ -2921,7 +2921,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Accés prohibit</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="199"/>
@@ -3507,7 +3507,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="473"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>al futur</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="469"/>

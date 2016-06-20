@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="642"/>
         <source>There are new folders that were not synchronized because they are too big: </source>
-        <translation>Zaznane so mape, ki zaradi prevelike velikosti niso bile usklajene:</translation>
+        <translation>Zaznane so mape, ki zaradi velikosti niso bile usklajene: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="682"/>
