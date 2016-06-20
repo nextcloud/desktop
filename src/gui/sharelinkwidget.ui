@@ -196,6 +196,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton_mail">
+          <property name="text">
+           <string>&amp;Mail link</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pushButton_copy">
           <property name="text">
            <string>Copy &amp;link</string>

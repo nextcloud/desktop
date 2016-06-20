@@ -23,6 +23,7 @@
 #include <QBuffer>
 #include <QClipboard>
 #include <QFileInfo>
+#include <QDesktopServices>
 
 namespace OCC {
 
@@ -52,6 +53,10 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _ui->pushButton_copy->setIcon(QIcon::fromTheme("edit-copy"));
     _ui->pushButton_copy->setEnabled(false);
     connect(_ui->pushButton_copy, SIGNAL(clicked(bool)), SLOT(slotPushButtonCopyLinkPressed()));
+
+    _ui->pushButton_mail->setIcon(QIcon::fromTheme("mail-send"));
+    _ui->pushButton_mail->setEnabled(false);
+    connect(_ui->pushButton_mail, SIGNAL(clicked(bool)), SLOT(slotPushButtonMailLinkPressed()));
 
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
@@ -224,6 +229,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         if (share->getShareType() == Share::TypeLink) {
             _share = qSharedPointerDynamicCast<LinkShare>(share);
             _ui->pushButton_copy->show();
+            _ui->pushButton_mail->show();
 
             _ui->widget_shareLink->show();
             _ui->checkBox_shareLink->setChecked(true);
@@ -268,6 +274,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             }
 
             setShareLink(_share->getLink().toString());
+            _ui->pushButton_mail->setEnabled(true);
             _ui->pushButton_copy->setEnabled(true);
 
             // Connect all shares signals to gui slots
@@ -324,6 +331,7 @@ void ShareLinkWidget::setShareLink( const QString& url )
     if( realUrl.isValid() ) {
         _shareUrl = url;
         _ui->pushButton_copy->setEnabled(true);
+        _ui->pushButton_mail->setEnabled(true);
     } else {
         _shareUrl.clear();
         _ui->_labelShareLink->setText(QString::null);
@@ -339,6 +347,7 @@ void ShareLinkWidget::slotDeleteShareFetched()
     _ui->lineEdit_password->clear();
     _ui->_labelShareLink->clear();
     _ui->pushButton_copy->setEnabled(false);
+    _ui->pushButton_mail->setEnabled(false);
     _ui->widget_shareLink->hide();
     _ui->lineEdit_password->hide();
     _ui->pushButton_setPassword->setEnabled(false);
@@ -368,6 +377,7 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
             _ui->checkBox_editing->setEnabled(false);
             _ui->lineEdit_password->setFocus();
             _ui->pushButton_copy->hide();
+            _ui->pushButton_mail->hide();
             _ui->widget_shareLink->show();
 
             slotCheckBoxPasswordClicked();
@@ -413,6 +423,7 @@ void ShareLinkWidget::slotCreateShareRequiresPassword(const QString& message)
     _ui->lineEdit_password->setEnabled(true);
     _ui->lineEdit_password->setFocus();
     _ui->pushButton_copy->hide();
+    _ui->pushButton_mail->hide();
     _ui->widget_shareLink->show();
     _ui->checkBox_expire->setEnabled(false);
     _ui->checkBox_editing->setEnabled(false);
@@ -471,6 +482,19 @@ void ShareLinkWidget::slotPushButtonCopyLinkPressed()
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(_shareUrl);
 #endif
+}
+
+void ShareLinkWidget::slotPushButtonMailLinkPressed()
+{
+    QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
+
+    QDesktopServices::openUrl(QUrl(QString(
+            "mailto: "
+            "?subject=I shared %1 with you"
+            "&body=%2").arg(
+            fileName,
+            _shareUrl),
+        QUrl::TolerantMode));
 }
 
 void ShareLinkWidget::slotCheckBoxEditingClicked()

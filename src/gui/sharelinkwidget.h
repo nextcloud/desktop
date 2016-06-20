@@ -68,6 +68,7 @@ private slots:
     void slotPasswordReturnPressed();
     void slotPasswordChanged(const QString& newText);
     void slotPushButtonCopyLinkPressed();
+    void slotPushButtonMailLinkPressed();
     void slotCheckBoxEditingClicked();
     void slotPublicUploadSet();
 
