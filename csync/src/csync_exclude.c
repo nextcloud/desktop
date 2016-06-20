@@ -44,6 +44,18 @@
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
+    size_t i = 0;
+
+    // We never want duplicates, so check whether the string is already
+    // in the list first.
+    if (*inList) {
+        for (i = 0; i < (*inList)->count; ++i) {
+            char *pattern = (*inList)->vector[i];
+            if (c_streq(pattern, string)) {
+                return 0;
+            }
+        }
+    }
     return c_strlist_add_grow(inList, string);
 }
 

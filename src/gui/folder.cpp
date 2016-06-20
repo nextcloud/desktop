@@ -695,6 +695,10 @@ void Folder::wipe()
 
 bool Folder::setIgnoredFiles()
 {
+    // Note: Doing this on each sync run and on Folder construction is
+    // unnecessary, because _engine->excludedFiles() persists between
+    // sync runs. This is not a big problem because ExcludedFiles maintains
+    // a QSet of files to load.
     ConfigFile cfg;
     QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
     if( QFile::exists(systemList) ) {

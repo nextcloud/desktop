@@ -42,7 +42,7 @@ ExcludedFiles& ExcludedFiles::instance()
 
 void ExcludedFiles::addExcludeFilePath(const QString& path)
 {
-    _excludeFiles.append(path);
+    _excludeFiles.insert(path);
 }
 
 bool ExcludedFiles::reloadExcludes()
