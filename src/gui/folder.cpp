@@ -113,6 +113,8 @@ Folder::Folder(const FolderDefinition& definition,
 
 Folder::~Folder()
 {
+    // Reset then engine first as it will abort and try to access members of the Folder
+    _engine.reset();
 }
 
 void Folder::checkLocalPath()
