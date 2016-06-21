@@ -141,7 +141,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   return file_stat;
 
 err:
-  SAFE_FREE(file_stat);
+  csync_vio_file_stat_destroy(file_stat);
 
   return NULL;
 }
