@@ -131,7 +131,7 @@ void Account::setCredentials(AbstractCredentials *cred)
         jar = _am->cookieJar();
         jar->setParent(0);
 
-        _am.reset();
+        _am = QSharedPointer<QNetworkAccessManager>();
     }
 
     // The order for these two is important! Reading the credential's
