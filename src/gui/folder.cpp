@@ -46,14 +46,6 @@
 
 namespace OCC {
 
-static void csyncLogCatcher(int /*verbosity*/,
-                        const char */*function*/,
-                        const char *buffer,
-                        void */*userdata*/)
-{
-    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
 
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
@@ -730,8 +722,6 @@ void Folder::startSync(const QStringList &pathList)
     if (proxyDirty()) {
         setProxyDirty(false);
     }
-    csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
     if (isBusy()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";
