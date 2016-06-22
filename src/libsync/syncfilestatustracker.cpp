@@ -164,7 +164,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     // Swap into a copy since fileStatus() reads _dirtyPaths to determine the status
     QSet<QString> oldDirtyPaths;
     std::swap(_dirtyPaths, oldDirtyPaths);
-    for (auto it = oldDirtyPaths.cbegin(); it != oldDirtyPaths.cend(); ++it)
+    for (auto it = oldDirtyPaths.begin(); it != oldDirtyPaths.end(); ++it)
         emit fileStatusChanged(getSystemDestination(*it), fileStatus(*it));
 
     // Make sure to push any status that might have been resolved indirectly since the last sync
