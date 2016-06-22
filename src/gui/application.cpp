@@ -139,6 +139,7 @@ Application::Application(int &argc, char **argv) :
     setupTranslations();
 
     // Setup global excludes
+    qDebug() << "Loading global exclude list";
     ConfigFile cfg;
     ExcludedFiles& excludes = ExcludedFiles::instance();
     excludes.addExcludeFilePath( cfg.excludeFile(ConfigFile::SystemScope) );
@@ -335,6 +336,14 @@ void Application::slotownCloudWizardDone( int res )
     }
 }
 
+static void csyncLogCatcher(int /*verbosity*/,
+                        const char */*function*/,
+                        const char *buffer,
+                        void */*userdata*/)
+{
+    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
+
 void Application::setupLogging()
 {
     // might be called from second instance
@@ -350,6 +359,9 @@ void Application::setupLogging()
                 .arg(property("ui_lang").toString())
                 .arg(_theme->version());
 
+    // Setup CSYNC logging to forward to our own logger
+    csync_set_log_callback( csyncLogCatcher );
+    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 }
 
 void Application::slotUseMonoIconsChanged(bool)

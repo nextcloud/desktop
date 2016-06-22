@@ -121,17 +121,9 @@ void ProtocolWidget::hideEvent(QHideEvent *ev)
 
 void ProtocolWidget::cleanItems(const QString& folder)
 {
-    int itemCnt = _ui->_treeWidget->topLevelItemCount();
-
-    // Limit the number of items
-    while(itemCnt > 2000) {
-        delete _ui->_treeWidget->takeTopLevelItem(itemCnt - 1);
-        itemCnt--;
-    }
-
     // The issue list is a state, clear it and let the next sync fill it
     // with ignored files and propagation errors.
-    itemCnt = _issueItemView->topLevelItemCount();
+    int itemCnt = _issueItemView->topLevelItemCount();
     for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
         QTreeWidgetItem *item = _issueItemView->topLevelItem(cnt);
         QString itemFolder = item->data(2, Qt::UserRole).toString();
@@ -239,6 +231,12 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
             _issueItemView->insertTopLevelItem(0, line);
             emit issueItemCountUpdated(_issueItemView->topLevelItemCount());
         } else {
+            // Limit the number of items
+            int itemCnt = _ui->_treeWidget->topLevelItemCount();
+            while(itemCnt > 2000) {
+                delete _ui->_treeWidget->takeTopLevelItem(itemCnt - 1);
+                itemCnt--;
+            }
             _ui->_treeWidget->insertTopLevelItem(0, line);
         }
     }

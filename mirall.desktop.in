@@ -56,7 +56,56 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
+Comment[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
+GenericName[ar]=مزامنة المجلد
+Name[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
+Icon[ar]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
 Name[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
@@ -85,6 +134,10 @@ Comment[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de_DE]=Ordner-Synchronisation
 Name[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de_DE]=@APPLICATION_EXECUTABLE@
+Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
+GenericName[bg_BG]=Синхронизиране на папката
+Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
+Icon[bg_BG]=@APPLICATION_EXECUTABLE@
 Comment[fr]=@APPLICATION_NAME@ synchronisation du client
 GenericName[fr]=Dossier de Synchronisation
 Name[fr]=@APPLICATION_NAME@ synchronisation du client
@@ -108,14 +161,15 @@ Icon[it]=@APPLICATION_EXECUTABLE@
 Comment[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 GenericName[ko]=폴더 동기화
 Name[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
+Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
+GenericName[hu_HU]=Könyvtár szinkronizálás
+Name[hu_HU]=@APPLICATION_NAME@ asztali szinkr. kliens
+Icon[hu_HU]=@APPLICATION_EXECUTABLE@
 Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
 GenericName[nl]=Mappen sync
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
 Icon[nl]=@APPLICATION_EXECUTABLE@
-Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
-GenericName[bg_BG]=Синхронизиране на папката
-Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
-Icon[bg_BG]=@APPLICATION_EXECUTABLE@
+Icon[pl]=@APPLICATION_EXECUTABLE@
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização do computador
 GenericName[pt_BR]=Sincronização de Pasta
 Name[pt_BR]=@APPLICATION_NAME@ cliente de sincronização de desktop
@@ -136,6 +190,10 @@ Comment[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 GenericName[sq]=Njëkohësim Dosjesh
 Name[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 Icon[sq]=@APPLICATION_EXECUTABLE@
+Comment[sv]=@APPLICATION_NAME@ desktop synkroniseringsklient
+GenericName[sv]=Mappsynk
+Name[sv]=@APPLICATION_NAME@ desktop synk-klient
+Icon[sv]=@APPLICATION_EXECUTABLE@
 Comment[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
 GenericName[tr]=Dosya Senkronizasyonu
 Name[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
@@ -157,6 +215,10 @@ Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 GenericName[pt_PT]=Sincronizar Pasta
 Name[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 Icon[pt_PT]=@APPLICATION_EXECUTABLE@
+Comment[lb]=@APPLICATION_NAME@ Desktop Synchronisatioun Client
+GenericName[lb]=Dossier Dync
+Name[lb]=@APPLICATION_NAME@ Desktop Sync Client
+Icon[lb]=@APPLICATION_EXECUTABLE@
 Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
 GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
 Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป

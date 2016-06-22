@@ -56,6 +56,7 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   SAFE_FREE(file_stat->directDownloadUrl);
   SAFE_FREE(file_stat->directDownloadCookies);
   SAFE_FREE(file_stat->name);
+  SAFE_FREE(file_stat->original_name);
   SAFE_FREE(file_stat);
 }
 

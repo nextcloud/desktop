@@ -46,14 +46,6 @@
 
 namespace OCC {
 
-static void csyncLogCatcher(int /*verbosity*/,
-                        const char */*function*/,
-                        const char *buffer,
-                        void */*userdata*/)
-{
-    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
-}
-
 
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
@@ -124,6 +116,8 @@ Folder::Folder(const FolderDefinition& definition,
 
 Folder::~Folder()
 {
+    // Reset then engine first as it will abort and try to access members of the Folder
+    _engine.reset();
 }
 
 void Folder::checkLocalPath()
@@ -690,6 +684,10 @@ void Folder::wipe()
 
 bool Folder::setIgnoredFiles()
 {
+    // Note: Doing this on each sync run and on Folder construction is
+    // unnecessary, because _engine->excludedFiles() persists between
+    // sync runs. This is not a big problem because ExcludedFiles maintains
+    // a QSet of files to load.
     ConfigFile cfg;
     QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
     if( QFile::exists(systemList) ) {
@@ -721,8 +719,6 @@ void Folder::startSync(const QStringList &pathList)
     if (proxyDirty()) {
         setProxyDirty(false);
     }
-    csync_set_log_callback( csyncLogCatcher );
-    csync_set_log_level( Logger::instance()->isNoop() ? 0 : 11 );
 
     if (isBusy()) {
         qCritical() << "* ERROR csync is still running and new sync requested.";

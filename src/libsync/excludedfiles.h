@@ -16,7 +16,8 @@
 #include "owncloudlib.h"
 
 #include <QObject>
-#include <QStringList>
+#include <QSet>
+#include <QString>
 
 extern "C" {
 #include "std/c_string.h"
@@ -66,7 +67,7 @@ private:
     // This is a pointer to the csync exclude list, its is owned by this class
     // but the pointer can be in a csync_context so that it can itself also query the list.
     c_strlist_t** _excludesPtr;
-    QStringList _excludeFiles;
+    QSet<QString> _excludeFiles;
 };
 
 } // namespace OCC

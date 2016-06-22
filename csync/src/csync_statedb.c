@@ -472,7 +472,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
                 if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                         || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-                    SAFE_FREE(st);
+                    csync_file_stat_free(st);
                     continue;
                 }
 
@@ -481,7 +481,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
             /* store into result list. */
             if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
-                SAFE_FREE(st);
+                csync_file_stat_free(st);
                 ctx->status_code = CSYNC_STATUS_TREE_ERROR;
                 break;
             }

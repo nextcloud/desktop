@@ -443,15 +443,26 @@ restart_sync:
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
+
     // Exclude lists
-    engine.excludedFiles().addExcludeFilePath(ConfigFile::excludeFileFromSystem());
-    if( QFile::exists(options.exclude) )
+
+    bool hasUserExcludeFile = !options.exclude.isEmpty();
+    QString systemExcludeFile = ConfigFile::excludeFileFromSystem();
+
+    // Always try to load the user-provided exclude list if one is specified
+    if ( hasUserExcludeFile ) {
         engine.excludedFiles().addExcludeFilePath(options.exclude);
+    }
+    // Load the system list if available, or if there's no user-provided list
+    if ( !hasUserExcludeFile || QFile::exists(systemExcludeFile) ) {
+        engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
+    }
+
     if (!engine.excludedFiles().reloadExcludes()) {
-        // Always make sure at least one list has been loaded
         qFatal("Cannot load system exclude list or list supplied via --exclude");
         return EXIT_FAILURE;
     }
+
 
     // Have to be done async, else, an error before exec() does not terminate the event loop.
     QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);

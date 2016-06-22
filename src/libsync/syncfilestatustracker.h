@@ -47,7 +47,6 @@ private slots:
     void slotAboutToPropagate(SyncFileItemVector& items);
     void slotItemCompleted(const SyncFileItem& item);
     void slotSyncEngineRunningChanged();
-    void slotClearDirtyPaths();
 
 private:
     SyncFileStatus syncFileItemStatus(const SyncFileItem& item);

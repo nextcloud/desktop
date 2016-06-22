@@ -20,7 +20,7 @@
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
-#include <QHash>
+#include <QMap>
 
 namespace OCC {
 
@@ -121,7 +121,7 @@ namespace Utility
 
     class OWNCLOUDSYNC_EXPORT StopWatch {
     private:
-        QHash<QString, quint64> _lapTimes;
+        QMap<QString, quint64> _lapTimes;
         QDateTime _startTime;
         QElapsedTimer _timer;
     public:

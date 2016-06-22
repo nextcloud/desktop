@@ -44,6 +44,18 @@
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
+    size_t i = 0;
+
+    // We never want duplicates, so check whether the string is already
+    // in the list first.
+    if (*inList) {
+        for (i = 0; i < (*inList)->count; ++i) {
+            char *pattern = (*inList)->vector[i];
+            if (c_streq(pattern, string)) {
+                return 1;
+            }
+        }
+    }
     return c_strlist_add_grow(inList, string);
 }
 
@@ -139,8 +151,10 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
         buf[i] = '\0';
         if (*entry != '#') {
           const char *unescaped = csync_exclude_expand_escapes(entry);
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
           rc = _csync_exclude_add(list, unescaped);
+          if( rc == 0 ) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
+          }
           SAFE_FREE(unescaped);
           if (rc < 0) {
               goto out;

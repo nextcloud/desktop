@@ -269,8 +269,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
 
     if(_last_db_return_error(ctx)) {
-        SAFE_FREE(st);
-        SAFE_FREE(tmp);
+        csync_file_stat_free(st);
+        csync_file_stat_free(tmp);
         ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
         return -1;
     }
@@ -357,7 +357,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
 
         /* tmp might point to malloc mem, so free it here before reusing tmp  */
-        SAFE_FREE(tmp);
+        csync_file_stat_free(tmp);
 
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
@@ -366,7 +366,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
             if(_last_db_return_error(ctx)) {
-                SAFE_FREE(st);
+                csync_file_stat_free(st);
                 ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
                 return -1;
             }
@@ -422,7 +422,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
 
             if(_last_db_return_error(ctx)) {
-                SAFE_FREE(st);
+                csync_file_stat_free(st);
                 ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
                 return -1;
             }
@@ -451,7 +451,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
                     if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, path)) {
-                        SAFE_FREE(st);
+                        csync_file_stat_free(st);
                         return 1;
                     }
                 }
@@ -461,7 +461,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   } else  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
-      SAFE_FREE(st);
+      csync_file_stat_free(st);
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
@@ -525,14 +525,14 @@ out:
   switch (ctx->current) {
     case LOCAL_REPLICA:
       if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
-        SAFE_FREE(st);
+        csync_file_stat_free(st);
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
       if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
-        SAFE_FREE(st);
+        csync_file_stat_free(st);
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
