@@ -749,12 +749,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="926"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(Резервна копія)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="931"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(Резервна копія %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1138"/>
@@ -3515,7 +3515,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="482"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>зараз</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="484"/>

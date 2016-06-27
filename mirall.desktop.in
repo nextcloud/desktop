@@ -113,6 +113,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
 GenericName[ar]=مزامنة المجلد
@@ -181,6 +184,9 @@ Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
 GenericName[nl]=Mappen sync
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
 Icon[nl]=@APPLICATION_EXECUTABLE@
+Comment[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
+GenericName[pl]=Folder Synchronizacji
+Name[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
 Icon[pl]=@APPLICATION_EXECUTABLE@
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização do computador
 GenericName[pt_BR]=Sincronização de Pasta
