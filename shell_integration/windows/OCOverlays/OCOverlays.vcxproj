@@ -119,6 +119,9 @@
       <ModuleDefinitionFile>OCOverlays.def</ModuleDefinitionFile>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\OCUtil</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -157,6 +160,9 @@
       <ModuleDefinitionFile>OCOverlays.def</ModuleDefinitionFile>
       <SubSystem>Windows</SubSystem>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..\OCUtil</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DllMain.cpp" />

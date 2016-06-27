@@ -155,6 +155,7 @@
     <ClInclude Include="CommunicationSocket.h" />
     <ClInclude Include="FileUtil.h" />
     <ClInclude Include="RegistryUtil.h" />
+    <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommunicationSocket.cpp" />
