@@ -367,7 +367,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             menu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), menu );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);
