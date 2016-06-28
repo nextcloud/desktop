@@ -30,6 +30,8 @@ public:
     HttpCredentialsGui(const QString& user, const QString& password, const QString& certificatePath, const QString& certificatePasswd) : HttpCredentials(user, password, certificatePath, certificatePasswd) {}
     void askFromUser() Q_DECL_OVERRIDE;
     Q_INVOKABLE void askFromUserAsync();
+
+    static QString requestAppPasswordText(const Account *account);
 };
 
 } // namespace OCC

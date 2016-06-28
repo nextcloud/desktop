@@ -142,11 +142,15 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
 {
+    auto serverVersion = CheckServerJob::version(info);
+
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
                                         .arg(url.toString())
                                         .arg(Theme::instance()->appNameGUI())
                                         .arg(CheckServerJob::versionString(info))
-                                        .arg(CheckServerJob::version(info)));
+                                        .arg(serverVersion));
+
+    _ocWizard->account()->setServerVersion(serverVersion);
 
     QString p = url.path();
     if (p.endsWith("/status.php")) {
