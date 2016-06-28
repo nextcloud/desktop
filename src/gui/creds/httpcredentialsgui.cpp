@@ -75,9 +75,8 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account* account)
         return QString();
     }
 
-    return tr("<a href=\"%1/index.php/settings/personal#apppasswords\">Click here</a>"
-                " to request an app password from the web interface.")
-        .arg(account->url().toString());
+    return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
+        .arg(account->url().toString() + QLatin1String("/index.php/settings/personal?section=apppasswords"));
 }
 
 
