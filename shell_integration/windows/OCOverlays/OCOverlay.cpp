@@ -110,17 +110,17 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
 	// we order this in terms of likelyhood
 	switch (_state) {
 	case State_OK:
-		*pPriority = 0;
+		*pPriority = 0; break;
 	case State_OKShared:
-		*pPriority = 1;
+		*pPriority = 1; break;
 	case State_Warning:
-		*pPriority = 2;
+		*pPriority = 2; break;
 	case State_Sync:
-		*pPriority = 3;
+		*pPriority = 3; break;
 	case State_Error:
-		*pPriority = 4;
+		*pPriority = 4; break;
 	default:
-		*pPriority = 5;
+		*pPriority = 5; break;
 	}
 
 	return S_OK;
