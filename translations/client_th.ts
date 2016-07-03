@@ -1598,7 +1598,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation>ตรวจสอบการปรับปรุง</translation>
+        <translation>ตรวจสอบการอัพเดท</translation>
     </message>
 </context>
 <context>
@@ -2805,7 +2805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation>การปรับปรุงขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
+        <translation>การอัพเดทขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
