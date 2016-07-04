@@ -1555,8 +1555,7 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Uma nova atualização para %1 está para ser instalada. O atualizador pode solicitar
-por privilégios adicionais durante o processo.</translation>
+        <translation>Uma nova atualização para %1 está para ser instalada. O atualizador pode solicitar por privilégios adicionais durante o processo.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="141"/>

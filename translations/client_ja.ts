@@ -3210,17 +3210,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account synchronization is disabled</source>
-        <translation>アカウントの同期は無効です</translation>
+        <translation>アカウントの同期は無効になっています</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
-        <translation>すべてのフォルダ同期を再開</translation>
+        <translation>すべてのフォルダの同期を再開</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
-        <translation>フォルダ同期を一時停止</translation>
+        <translation>すべてのフォルダの同期を一時停止</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>
@@ -3240,7 +3240,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
         <source>Pause synchronization</source>
-        <translation>同期を停止</translation>
+        <translation>同期を一時停止</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="534"/>
