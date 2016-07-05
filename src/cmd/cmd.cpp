@@ -18,6 +18,7 @@
 #include <QStringList>
 #include <QUrl>
 #include <QFile>
+#include <QFileInfo>
 #include <qdebug.h>
 
 #include "account.h"
@@ -196,10 +197,12 @@ void parseOptions( const QStringList& app_args, CmdOptions *options )
     if (!options->source_dir.endsWith('/')) {
         options->source_dir.append('/');
     }
-    if( !QFile::exists( options->source_dir )) {
+    QFileInfo fi(options->source_dir);
+    if( !fi.exists() ) {
         std::cerr << "Source dir '" << qPrintable(options->source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
+    options->source_dir = fi.absoluteFilePath();
 
     QStringListIterator it(args);
     // skip file name;
