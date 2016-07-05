@@ -631,7 +631,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>&apos;%1&apos; e %n outro(s) ficheiro(s) foram removidos</numerusform><numerusform>&apos;%1&apos; e %n outros ficheiros foram removidos</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; e %n outro(s) ficheiro(s) foram removidos</numerusform><numerusform>&apos;%1&apos; e %n outros ficheiros foram removidos.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="496"/>
