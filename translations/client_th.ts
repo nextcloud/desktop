@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="434"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>การดำเนินการเพื่อประสานข้อมูลกำลังทำงานอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงานหรือไม่?</translation>
+        <translation>กำลังดำเนินการประสานข้อมูลอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงาน?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -656,12 +656,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 และ %n ไฟล์อื่นๆ เกิดปัญหาขณะประสานข้อมูล</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 มีปัญหาขณะประสานข้อมูล กรุณาตรวจสอบไฟล์ที่มีปัญหานั้น</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
@@ -719,22 +719,24 @@ Are you sure you want to perform this operation?</source>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>การประสานข้อมูลในโฟลเดอร์ &apos;%1&apos; นี้จะถูกคืนค่ากลับไปก่อนหน้านนี้
+อาจจะเป็นเพราะการสำรองข้อมูลที่ได้รับการกู้คืนในเซิฟเวอร์
+นี้จะทำให้ไฟล์ทั้งหมดของคุณจะถูกเขียนทับโดยไฟล์เก่าที่มีอยู่ก่อนหน้านี้ คุณต้องการที่จะเก็บไฟล์ล่าสุดของคุณที่เป็นไฟล์ที่มีปัญหา?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>ตรวจพบการสำรองข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1008"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลปกติ</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>เก็บไฟล์ต้นทางเป็นไฟล์ที่มีปัญหา</translation>
     </message>
 </context>
 <context>
@@ -2046,7 +2048,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="94"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation>ไฟล์ถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว  ได้รับการเรียกคืน</translation>
+        <translation>ไฟล์ถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว  ได้รับการกู้คืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="115"/>
@@ -2082,7 +2084,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>ไฟล์ที่ถูกเปลี่ยนชื่อ แต่เป็นส่วนหนึ่งของการแชร์เพื่ออ่านเพียงอย่างเดียว ไฟล์ต้นฉบับจะถูกเรียกคืน</translation>
+        <translation>ไฟล์ที่ถูกเปลี่ยนชื่อ แต่เป็นส่วนหนึ่งของการแชร์เพื่ออ่านเพียงอย่างเดียว ไฟล์ต้นฉบับจะถูกกู้คืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="144"/>
@@ -2121,7 +2123,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>ไฟล์ต้นทางที่ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้อ่านอย่างเดียว มันถูกเรียกคืนและแก้ไขของคุณอยู่ในไฟล์ความขัดแย้ง</translation>
+        <translation>ไฟล์ต้นทางได้ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้สามารถอ่านได้อย่างเดียว มันถูกกู้คืนและการแก้ไขของคุณอยู่ในไฟล์ที่มีปัญหา</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
@@ -2971,7 +2973,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="754"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
@@ -3018,7 +3020,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed, item restored</source>
-        <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
+        <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1276"/>
@@ -3635,7 +3637,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>เซิฟเวอร์ดาวน์โหลดรุ่นใหม่แล้ว ได้ถูกคัดลอก เปลี่ยนแปลงไฟล์ต้นฉบับลงในไฟล์ความขัดแย้ง</translation>
+        <translation>ดาวน์โหลดรุ่นของเซิฟเวอร์แล้ว ได้ถูกคัดลอกและเปลี่ยนแปลงไฟล์ต้นฉบับลงในไฟล์ที่มีปัญหา</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
