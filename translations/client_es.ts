@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Seleccionar</translation>
+        <translation>&amp;Seleccionar...</translation>
     </message>
 </context>
 <context>

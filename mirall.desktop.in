@@ -143,6 +143,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
 GenericName[ar]=مزامنة المجلد
@@ -260,6 +263,10 @@ GenericName[zh_CN]=文件夹同步
 Name[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 Icon[zh_CN]=@APPLICATION_EXECUTABLE@
 GenericName[zh_TW]=資料夾同步
+Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo programa
+GenericName[lt_LT]=Katalogo sinchnorizacija
+Name[lt_LT]=@APPLICATION_NAME@ darbalaukio programa
+Icon[lt_LT]=@APPLICATION_EXECUTABLE@
 Comment[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient
 GenericName[nb_NO]=Mappesynkronisering
 Name[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient 
