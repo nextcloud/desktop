@@ -849,7 +849,8 @@ Folder *FolderMan::folderForPath(const QString &path)
     foreach(Folder* folder, this->map().values()) {
         const QString folderPath = folder->cleanPath()+QLatin1Char('/');
 
-        if(absolutePath.startsWith(folderPath, Qt::CaseInsensitive)) {
+        if(absolutePath.startsWith(folderPath, Utility::isWindows()?
+                    Qt::CaseInsensitive : Qt::CaseSensitive)) {
             //qDebug() << "found folder: " << folder->path() << " for " << absolutePath;
             return folder;
         }
