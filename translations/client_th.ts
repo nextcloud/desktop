@@ -2281,7 +2281,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="247"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะโหลดรายชื่อของโฟลเดอร์ย่อย</translation>
     </message>
 </context>
 <context>
@@ -2385,7 +2385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>คุณใช้สิทธิ์การเรียกข้อมูลจากเซิฟเวอร์สูงสุดแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>
@@ -2857,7 +2857,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์/โฟลเดอร์ ที่ซ่อนอยู่จะถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="701"/>
@@ -2978,7 +2978,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="833"/>
@@ -3210,37 +3210,37 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>บัญชีประสานข้อมูลถูกปิดใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>ทำโฟลเดอร์ทั้งหมดต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>หยุดโฟลเดอร์ทั้งหมดชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลทั้งหมดต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>หยุดการประสานข้อมูลทั้งหมดชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>หยุดการประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="534"/>
@@ -3510,22 +3510,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="473"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>ในอนาคต</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="469"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วันที่ผ่านมา</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="477"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ชั่วโมงที่ผ่านมา</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="482"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>ตอนนี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="484"/>
@@ -3535,7 +3535,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="487"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n นาทีที่ผ่านมา</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="490"/>
@@ -3568,32 +3568,32 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ปี</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n เดือน</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วัน</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ชั่วโมง</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n นาที</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วินาที</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>

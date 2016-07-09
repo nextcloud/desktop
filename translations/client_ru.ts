@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Choose what to sync</source>
-        <translation>Уточнить объекты для синхронизации</translation>
+        <translation>Выбрать объекты для синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="229"/>
