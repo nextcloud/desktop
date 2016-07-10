@@ -436,7 +436,10 @@ restart_sync:
     }
 
     Cmd cmd;
-    SyncJournalDb db(options.source_dir);
+    SyncJournalDb db;
+    // FIXME: Use new MD5 based name
+    db.setDatabaseFilePath(options.source_dir + ".csync_journal.db");
+
     if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(&db, selectiveSyncList);
     }
