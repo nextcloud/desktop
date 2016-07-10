@@ -36,7 +36,7 @@ class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncJournalDb(const QString& path, QObject *parent = 0);
+    explicit SyncJournalDb(QObject *parent = 0);
     virtual ~SyncJournalDb();
 
     // to verify that the record could be queried successfully check

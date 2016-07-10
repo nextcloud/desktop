@@ -61,7 +61,6 @@ Folder::Folder(const FolderDefinition& definition,
       , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
-      , _journal(definition.localPath)
       , _fileLog(new SyncRunFileLog)
 {
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");

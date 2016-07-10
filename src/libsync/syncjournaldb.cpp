@@ -29,7 +29,7 @@
 
 namespace OCC {
 
-SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
+SyncJournalDb::SyncJournalDb( QObject *parent) :
     QObject(parent), _transaction(0)
 {
 
