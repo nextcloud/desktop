@@ -33,13 +33,6 @@ SyncJournalDb::SyncJournalDb(const QString& path, QObject *parent) :
     QObject(parent), _transaction(0)
 {
 
-    _dbFile = path;
-    if( !_dbFile.endsWith('/') ) {
-        _dbFile.append('/');
-    }
-    _dbFile.append(".csync_journal.db");
-
-
 }
 
 bool SyncJournalDb::exists()
