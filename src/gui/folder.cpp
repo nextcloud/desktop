@@ -652,7 +652,7 @@ void Folder::slotTerminateSync()
 // local folder is synced to the same ownCloud.
 void Folder::wipe()
 {
-    QString stateDbFile = path()+QLatin1String(".csync_journal.db");
+    QString stateDbFile = _engine->journal()->databaseFilePath();
 
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
