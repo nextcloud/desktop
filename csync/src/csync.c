@@ -121,7 +121,7 @@ void csync_create(CSYNC **csync, const char *local, const char *remote) {
   *csync = ctx;
 }
 
-void csync_init(CSYNC *ctx) {
+void csync_init(CSYNC *ctx, const char *db_file) {
   assert(ctx);
   /* Do not initialize twice */
 
@@ -131,6 +131,8 @@ void csync_init(CSYNC *ctx) {
   ctx->local.type = LOCAL_REPLICA;
 
   ctx->remote.type = REMOTE_REPLICA;
+
+  ctx->statedb.file = c_strdup(db_file);
 
   c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
   c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
@@ -153,19 +155,11 @@ int csync_update(CSYNC *ctx) {
   }
   ctx->status_code = CSYNC_STATUS_OK;
 
-  /* create/load statedb */
-    rc = asprintf(&ctx->statedb.file, "%s/.csync_journal.db",
-                  ctx->local.uri);
-    if (rc < 0) {
-        ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-        return rc;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Journal: %s", ctx->statedb.file);
-
-    if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
+  /* Path of database file is set in csync_init */
+  if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
       rc = -1;
       return rc;
-    }
+  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 

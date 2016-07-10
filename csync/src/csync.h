@@ -327,7 +327,7 @@ void csync_create(CSYNC **csync, const char *local, const char *remote);
  *
  * @param ctx  The context to initialize.
  */
-void csync_init(CSYNC *ctx);
+void csync_init(CSYNC *ctx, const char *db_file);
 
 /**
  * @brief Update detection
