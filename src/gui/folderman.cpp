@@ -255,9 +255,11 @@ int FolderMan::setupFoldersMigration()
     return _folderMap.size();
 }
 
-bool FolderMan::ensureJournalGone(const QString &localPath)
+bool FolderMan::ensureJournalGone(const QString &localPath, const QString& remoteUrl)
 {
-	// FIXME move this to UI, not libowncloudsync
+    Q_UNUSED(remoteUrl);
+    // FIXME move this to UI, not libowncloudsync
+    // FIXME use the remoteUrl to remove the MD5-journal name
     // remove old .csync_journal file
     QString stateDbFile = localPath+QLatin1String("/.csync_journal.db");
     while (QFile::exists(stateDbFile) && !QFile::remove(stateDbFile)) {
@@ -796,7 +798,8 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
-    if (!ensureJournalGone(folderDefinition.localPath)) {
+    // FIXME journal name
+    if (!ensureJournalGone(folderDefinition.localPath, accountState->account()->url().toString() + folderDefinition.targetPath)) {
         return 0;
     }
 
