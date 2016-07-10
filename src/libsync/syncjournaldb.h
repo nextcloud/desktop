@@ -56,6 +56,8 @@ public:
     void walCheckpoint();
 
     QString databaseFilePath();
+    void setDatabaseFilePath( const QString& dbFile);
+
     static qint64 getPHash(const QString& );
 
     void updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item );

@@ -48,6 +48,11 @@ bool SyncJournalDb::exists()
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
 }
 
+void SyncJournalDb::setDatabaseFilePath( const QString& dbFile)
+{
+    _dbFile = dbFile;
+}
+
 QString SyncJournalDb::databaseFilePath()
 {
     return _dbFile;
