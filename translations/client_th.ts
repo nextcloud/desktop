@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="434"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>การดำเนินการเพื่อประสานข้อมูลกำลังทำงานอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงานหรือไม่?</translation>
+        <translation>กำลังดำเนินการประสานข้อมูลอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงาน?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
@@ -646,27 +646,27 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 และไฟล์อื่นๆอีก %n ไฟล์ได้ถูกเปลี่ยนชื่อเป็น %2</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 และไฟล์อื่นๆอีก %n ไฟล์ได้ถูกย้ายไปยัง %2</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 และ %n ไฟล์อื่นๆ เกิดปัญหาขณะประสานข้อมูล</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 มีปัญหาขณะประสานข้อมูล กรุณาตรวจสอบไฟล์ที่มีปัญหานั้น</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 และไฟล์อื่นๆอีก %n ไฟล์ไม่สามารถประสานข้อมูลเนื่องจากเกิดข้อผิดพลาด กรุณาดูบันทึกสำหรับรายละเอียด</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="533"/>
@@ -719,22 +719,24 @@ Are you sure you want to perform this operation?</source>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>การประสานข้อมูลในโฟลเดอร์ &apos;%1&apos; นี้จะถูกคืนค่ากลับไปก่อนหน้านนี้
+อาจจะเป็นเพราะการสำรองข้อมูลที่ได้รับการกู้คืนในเซิฟเวอร์
+นี้จะทำให้ไฟล์ทั้งหมดของคุณจะถูกเขียนทับโดยไฟล์เก่าที่มีอยู่ก่อนหน้านี้ คุณต้องการที่จะเก็บไฟล์ล่าสุดของคุณที่เป็นไฟล์ที่มีปัญหา?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>ตรวจพบการสำรองข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1008"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลปกติ</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>เก็บไฟล์ต้นทางเป็นไฟล์ที่มีปัญหา</translation>
     </message>
 </context>
 <context>
@@ -861,7 +863,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>กำลังประสานข้อมูลกับโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -974,7 +976,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1322,12 +1324,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="97"/>
         <source>Clear</source>
-        <translation>ล้างข้อมูล</translation>
+        <translation>ล้าง</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation>ล้างข้อมูลบันทึกการเปลี่ยนแปลงที่แสดงอยู่</translation>
+        <translation>ล้างข้อมูลบันทึกที่แสดงอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="104"/>
@@ -1522,24 +1524,24 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>ถูกสร้างแล้วที่ %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>กำลังจะปิดในไม่กี่วินาที ...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 ร้องขอล้มเหลวที่ %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; ได้เลือกแล้วที่ %2</translation>
     </message>
 </context>
 <context>
@@ -1598,7 +1600,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>Update Check</source>
-        <translation>ตรวจสอบการปรับปรุง</translation>
+        <translation>ตรวจสอบการอัพเดท</translation>
     </message>
 </context>
 <context>
@@ -1683,7 +1685,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>และอีเมล</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -2046,7 +2048,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="94"/>
         <source>The file has been removed from a read only share. It was restored.</source>
-        <translation>ไฟล์ถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว  ได้รับการเรียกคืน</translation>
+        <translation>ไฟล์ถูกลบออกจากการแชร์เพื่ออ่านเพียงอย่างเดียว  ได้รับการกู้คืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="115"/>
@@ -2082,7 +2084,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="127"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>ไฟล์ที่ถูกเปลี่ยนชื่อ แต่เป็นส่วนหนึ่งของการแชร์เพื่ออ่านเพียงอย่างเดียว ไฟล์ต้นฉบับจะถูกเรียกคืน</translation>
+        <translation>ไฟล์ที่ถูกเปลี่ยนชื่อ แต่เป็นส่วนหนึ่งของการแชร์เพื่ออ่านเพียงอย่างเดียว ไฟล์ต้นฉบับจะถูกกู้คืน</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="144"/>
@@ -2121,7 +2123,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>ไฟล์ต้นทางที่ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้อ่านอย่างเดียว มันถูกเรียกคืนและแก้ไขของคุณอยู่ในไฟล์ความขัดแย้ง</translation>
+        <translation>ไฟล์ต้นทางได้ถูกแก้ไขแต่เป็นส่วนหนึ่งของการแชร์ให้สามารถอ่านได้อย่างเดียว มันถูกกู้คืนและการแก้ไขของคุณอยู่ในไฟล์ที่มีปัญหา</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
@@ -2279,7 +2281,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="247"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะโหลดรายชื่อของโฟลเดอร์ย่อย</translation>
     </message>
 </context>
 <context>
@@ -2383,7 +2385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>คุณใช้สิทธิ์การเรียกข้อมูลจากเซิฟเวอร์สูงสุดแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>
@@ -2512,17 +2514,17 @@ It is not advisable to use it.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="300"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="302"/>
         <source>create</source>
         <translation>สร้าง</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="303"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="305"/>
         <source>change</source>
         <translation>เปลี่ยนแปลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="306"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="308"/>
         <source>delete</source>
         <translation>ลบ</translation>
     </message>
@@ -2805,7 +2807,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync processing step reconcile failed.</source>
-        <translation>การปรับปรุงขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
+        <translation>การอัพเดทขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -2855,7 +2857,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์/โฟลเดอร์ ที่ซ่อนอยู่จะถูกละเว้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="701"/>
@@ -2971,12 +2973,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="754"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="833"/>
@@ -3018,7 +3020,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1265"/>
         <source>Move not allowed, item restored</source>
-        <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังฟื้นฟูรายการ</translation>
+        <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1276"/>
@@ -3117,25 +3119,26 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="390"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="593"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="544"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Log in...</source>
         <translation>เข้าสู่ระบบ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="595"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="536"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="613"/>
         <source>Log out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>Recent Changes</source>
         <translation>การเปลี่ยนแปลงล่าสุด</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="638"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="656"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>กำลังตรวจสอบการเปลี่ยนแปลงใน &apos;%1&apos;</translation>
     </message>
@@ -3155,27 +3158,27 @@ It is not advisable to use it.</source>
         <translation>เปิด %1 ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>Unknown status</source>
         <translation>สถานะที่ไม่รู้จัก</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="600"/>
         <source>Settings...</source>
         <translation>ตั้งค่า...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="583"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Details...</source>
         <translation>รายละเอียด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="588"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="606"/>
         <source>Help</source>
         <translation>ช่วยเหลือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="590"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="608"/>
         <source>Quit %1</source>
         <translation>ออก %1</translation>
     </message>
@@ -3207,76 +3210,76 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>บัญชีประสานข้อมูลถูกปิดใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>ทำโฟลเดอร์ทั้งหมดต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>หยุดโฟลเดอร์ทั้งหมดชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="497"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลทั้งหมดต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>หยุดการประสานข้อมูลทั้งหมดชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="527"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>หยุดการประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="534"/>
         <source>Log out of all accounts</source>
         <translation>ออกจากระบบของบัญชีทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="542"/>
         <source>Log in to all accounts...</source>
         <translation>เข้าสู่ระบบของบัญชีทั้งหมด...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="599"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="617"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>ความผิดพลาดในขณะนี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="616"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="634"/>
         <source>No items synced recently</source>
         <translation>ไม่มีรายการที่ถูกประสานข้อมูลเมื่อเร็วๆ นี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="643"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="661"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>กำลังประสานข้อมูล %1 จาก %2 (เหลือ %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="648"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="666"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>กำลังประสานข้อมูล %1 (เหลือ %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="668"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="697"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
         <source>Up to date</source>
         <translation>ถึงวันที่</translation>
     </message>
@@ -3507,22 +3510,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/utility.cpp" line="473"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>ในอนาคต</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="469"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วันที่ผ่านมา</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="477"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ชั่วโมงที่ผ่านมา</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="482"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>ตอนนี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="484"/>
@@ -3532,7 +3535,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="487"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n นาทีที่ผ่านมา</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="490"/>
@@ -3565,32 +3568,32 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ปี</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n เดือน</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วัน</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n ชั่วโมง</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n นาที</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%n วินาที</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>
@@ -3634,7 +3637,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>เซิฟเวอร์ดาวน์โหลดรุ่นใหม่แล้ว ได้ถูกคัดลอก เปลี่ยนแปลงไฟล์ต้นฉบับลงในไฟล์ความขัดแย้ง</translation>
+        <translation>ดาวน์โหลดรุ่นของเซิฟเวอร์แล้ว ได้ถูกคัดลอกและเปลี่ยนแปลงไฟล์ต้นฉบับลงในไฟล์ที่มีปัญหา</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>

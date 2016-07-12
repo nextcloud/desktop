@@ -73,7 +73,8 @@ bool Capabilities::shareResharing() const
 
 bool Capabilities::notificationsAvailable() const
 {
-    return _capabilities.contains("notifications");
+    // We require the OCS style API in 9.x, can't deal with the REST one only found in 8.2
+    return _capabilities.contains("notifications") && _capabilities["notifications"].toMap().contains("ocs-endpoints");
 }
 
 bool Capabilities::isValid() const

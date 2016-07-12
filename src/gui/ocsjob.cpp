@@ -47,6 +47,19 @@ void OcsJob::appendPath(const QString &id)
     setPath(path() + QLatin1Char('/') + id);
 }
 
+static QList<QPair<QByteArray, QByteArray>>
+percentEncodeQueryItems(
+        const QList<QPair<QString, QString>> & items)
+{
+    QList<QPair<QByteArray, QByteArray>> result;
+    foreach (const auto& item, items) {
+        result.append(qMakePair(
+            QUrl::toPercentEncoding(item.first),
+            QUrl::toPercentEncoding(item.second)));
+    }
+    return result;
+}
+
 void OcsJob::start()
 {
     QNetworkRequest req;
@@ -57,7 +70,9 @@ void OcsJob::start()
     QBuffer *buffer = new QBuffer;
 
     if (_verb == "GET") {
-        url.setQueryItems(_params);
+        // Note: QUrl::setQueryItems() does not fully percent encode
+        // the query items, see #5042
+        url.setEncodedQueryItems(percentEncodeQueryItems(_params));
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.
         QByteArray postData;
@@ -73,9 +88,9 @@ void OcsJob::start()
     }
 
     //We want json data
-    auto queryItems = url.queryItems();
-    queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    url.setQueryItems(queryItems);
+    auto queryItems = url.encodedQueryItems();
+    queryItems.append(qMakePair(QByteArray("format"), QByteArray("json")));
+    url.setEncodedQueryItems(queryItems);
 
     setReply(davRequest(_verb, url, req, buffer));
     setupConnections(reply());

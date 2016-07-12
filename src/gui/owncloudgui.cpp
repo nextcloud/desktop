@@ -367,7 +367,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             menu->addAction(tr("Managed Folders:"))->setDisabled(true);
         }
 
-        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), this );
+        QAction *action = new QAction( tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), menu );
         connect(action, SIGNAL(triggered()),_folderOpenActionMapper, SLOT(map()));
         _folderOpenActionMapper->setMapping( action, folder->alias() );
         menu->addAction(action);
@@ -399,8 +399,26 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
 
 }
 
+static bool minimalTrayMenu()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_MINIMAL_TRAY_MENU");
+    return !var.isEmpty();
+}
+
 void ownCloudGui::setupContextMenu()
 {
+    // The tray menu is surprisingly problematic. Being able to switch to
+    // a minimal version of it is a useful workaround and testing tool.
+    if (minimalTrayMenu()) {
+        if (!_contextMenu) {
+            _contextMenu.reset(new QMenu());
+            _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
+            _tray->setContextMenu(_contextMenu.data());
+            _contextMenu->addAction(_actionQuit);
+        }
+        return;
+    }
+
     auto accountList = AccountManager::instance()->accounts();
 
     bool isConfigured = (!accountList.isEmpty());

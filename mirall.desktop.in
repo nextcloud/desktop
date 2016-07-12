@@ -101,6 +101,69 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
+GenericName[oc]=Dorsièr de Sincronizacion
+Name[oc]=@APPLICATION_NAME@ sincronizacion del client
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Comment[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
 GenericName[ar]=مزامنة المجلد
@@ -169,6 +232,13 @@ Comment[nl]=@APPLICATION_NAME@ desktop synchronisatie client
 GenericName[nl]=Mappen sync
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
 Icon[nl]=@APPLICATION_EXECUTABLE@
+Comment[et_EE]=@APPLICATION_NAME@ sünkroonimise klient töölauale
+GenericName[et_EE]=Kaustade sünkroonimine
+Name[et_EE]=@APPLICATION_NAME@ sünkroonimise klient töölauale
+Icon[et_EE]=@APPLICATION_EXECUTABLE@
+Comment[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
+GenericName[pl]=Folder Synchronizacji
+Name[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
 Icon[pl]=@APPLICATION_EXECUTABLE@
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização do computador
 GenericName[pt_BR]=Sincronização de Pasta
@@ -211,6 +281,18 @@ GenericName[zh_CN]=文件夹同步
 Name[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 Icon[zh_CN]=@APPLICATION_EXECUTABLE@
 GenericName[zh_TW]=資料夾同步
+Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo programa
+GenericName[lt_LT]=Katalogo sinchnorizacija
+Name[lt_LT]=@APPLICATION_NAME@ darbalaukio programa
+Icon[lt_LT]=@APPLICATION_EXECUTABLE@
+Comment[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient
+GenericName[nb_NO]=Mappesynkronisering
+Name[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient 
+Icon[nb_NO]=@APPLICATION_EXECUTABLE@
+Comment[nn_NO]=@APPLICATION_NAME@ klient for å synkronisera frå skrivebord
+GenericName[nn_NO]=Mappe synkronisering
+Name[nn_NO]=@APPLICATION_NAME@ klient for å synkronisera frå skrivebord
+Icon[nn_NO]=@APPLICATION_EXECUTABLE@
 Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 GenericName[pt_PT]=Sincronizar Pasta
 Name[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC

@@ -2514,17 +2514,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="300"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="302"/>
         <source>create</source>
         <translation>création</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="303"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="305"/>
         <source>change</source>
         <translation>modification</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="306"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="308"/>
         <source>delete</source>
         <translation>suppression</translation>
     </message>
@@ -3121,25 +3121,26 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="390"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="593"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="544"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Log in...</source>
         <translation>Connexion...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="518"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="595"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="536"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="613"/>
         <source>Log out</source>
         <translation>Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="438"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="415"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="456"/>
         <source>Recent Changes</source>
         <translation>Modifications récentes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="638"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="656"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Recherche de modifications dans &apos;%1&apos;</translation>
     </message>
@@ -3159,27 +3160,27 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Ouvrir %1 dans le navigateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="580"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="598"/>
         <source>Unknown status</source>
         <translation>Statut inconnu</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="582"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="600"/>
         <source>Settings...</source>
         <translation>Paramètres...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="583"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Details...</source>
         <translation>Détails...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="588"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="606"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="590"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="608"/>
         <source>Quit %1</source>
         <translation>Quitter %1</translation>
     </message>
@@ -3224,63 +3225,63 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Mettre en pause tous les dossiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="497"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Unpause all synchronization</source>
         <translation>relancer  toutes les synchronisations</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="499"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Unpause synchronization</source>
         <translation>relancer   la synchronisation </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="507"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>Pause all synchronization</source>
         <translation>Mettre en pause tout la synchronisation </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="509"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="527"/>
         <source>Pause synchronization</source>
         <translation>Mettre en pause  la synchronisation </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="516"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="534"/>
         <source>Log out of all accounts</source>
         <translation>Se déconnecter de tous les comptes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="524"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="542"/>
         <source>Log in to all accounts...</source>
         <translation>Se connecter à tous les comptes...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="599"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="617"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Plantage maintenant</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="616"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="634"/>
         <source>No items synced recently</source>
         <translation>Aucun élément synchronisé récemment</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="643"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="661"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synchronisation de %1 sur %2 (%3 restant)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="648"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="666"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronisation de %1 (%2 restant)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="668"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="697"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
         <source>Up to date</source>
         <translation>À jour</translation>
     </message>
