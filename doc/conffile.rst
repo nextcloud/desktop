@@ -7,7 +7,7 @@ On Microsoft Windows systems:
         ``%LOCALAPPDATA%\ownCloud\owncloud.cfg``
 
 On MAC OS X systems:
-        ``$HOME/Library/Application Support/ownCloud``
+        ``$HOME/Library/Application Support/ownCloud/owncloud.cfg``
 
 
 The configuration file contains settings using the Microsoft Windows .ini file
