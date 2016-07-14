@@ -404,6 +404,10 @@ public:
 
     ~CleanupPollsJob();
 
+    /**
+     * Start the job.  After the job is completed, it will emit either finished or aborted, and it
+     * will destroy itself.
+     */
     void start();
 signals:
     void finished();
