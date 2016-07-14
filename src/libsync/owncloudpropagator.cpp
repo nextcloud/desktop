@@ -762,6 +762,7 @@ void CleanupPollsJob::slotPollFinished()
     Q_ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
         emit aborted(job->_item->_errorString);
+        deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
         qDebug() << "There was an error with file " << job->_item->_file << job->_item->_errorString;
@@ -771,6 +772,7 @@ void CleanupPollsJob::slotPollFinished()
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
             emit aborted(job->_item->_errorString);
+            deleteLater();
             return;
         }
     }
