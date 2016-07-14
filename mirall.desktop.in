@@ -164,6 +164,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -288,6 +291,10 @@ Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo programa
 GenericName[lt_LT]=Katalogo sinchnorizacija
 Name[lt_LT]=@APPLICATION_NAME@ darbalaukio programa
 Icon[lt_LT]=@APPLICATION_EXECUTABLE@
+Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
+Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+Icon[th_TH]=@APPLICATION_EXECUTABLE@
 Comment[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient
 GenericName[nb_NO]=Mappesynkronisering
 Name[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient 
@@ -300,11 +307,8 @@ Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 GenericName[pt_PT]=Sincronizar Pasta
 Name[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização para PC
 Icon[pt_PT]=@APPLICATION_EXECUTABLE@
+Icon[km]=@APPLICATION_EXECUTABLE@
 Comment[lb]=@APPLICATION_NAME@ Desktop Synchronisatioun Client
 GenericName[lb]=Dossier Dync
 Name[lb]=@APPLICATION_NAME@ Desktop Sync Client
 Icon[lb]=@APPLICATION_EXECUTABLE@
-Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
-GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
-Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
-Icon[th_TH]=@APPLICATION_EXECUTABLE@
