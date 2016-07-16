@@ -631,42 +631,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila izbrisana.</numerusform><numerusform>%1 in še %n drugi datoteki sta bili izbrisani.</numerusform><numerusform>%1 in še %n druge datoteke so bile izbrisane.</numerusform><numerusform>%1 in še %n drugih datotek je bilo izbrisanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila izbrisana.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili izbrisani.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile izbrisane.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo izbrisanih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila shranjena na disk.</numerusform><numerusform>%1 in še %n drugi datoteki sta bili shranjeni na disk.</numerusform><numerusform>%1 in še %n druge datoteke so bile shranjene na disk.</numerusform><numerusform>%1 in še %n drugih datotek je bilo shranjenih na disk.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila shranjena na disk.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili shranjeni na disk.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile shranjene na disk.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo shranjenih na disk.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>%1 in še %n datoteki sta bili posodobljeni.</numerusform><numerusform>%1 in %n drugih datotek je bilo posodobljenih.</numerusform><numerusform>%1 in %n drugih datotek je bilo posodobljenih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 je bila preimenovana v %2 in %n druga datoteka je bila preimenovana.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugih datotek je bilo preimenovanih.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugih datotek je bilo preimenovanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druga datoteka je bila preimenovana.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druge datoteke so bile preimenovane.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugih datotek je bilo preimenovanih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 je bila premaknjena v %2 in %n druga datoteka je bila premaknjena.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugih datotek je bilo premaknjenih.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugih datotek je bilo premaknjenih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druga datoteka je bila premaknjena.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druge datoteke so bile premaknjene.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugih datotek je bilo premaknjenih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 in %n druga datoteka ima sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugi datoteki imata sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugih datotek ima sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugih datotek ima sinhronizacijski spor.</numerusform></translation>
+        <translation><numerusform>Pri datoteki %1 in še %n drugi datoteki je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 ima sinhronizacijski spor. Preverite datoteko!</translation>
+        <translation>Pri datoteki %1 je zaznan spor usklajevanja. Preverite datoteko!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 in %n druga datoteka ne more biti sinhronizirana zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugi datoteki ne moreta biti sinhronizirani zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugih datotek ne more biti sinhroniziranih zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugih datotek ne more biti sinhroniziranih zaradi napak. Preveri dnevnik napak.</numerusform></translation>
+        <translation><numerusform>Datoteke %1 in še %n druge datoteke ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="533"/>
