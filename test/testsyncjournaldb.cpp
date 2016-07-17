@@ -13,19 +13,15 @@
 
 using namespace OCC;
 
-namespace {
-
-const char testdbC[] = "/tmp";
-}
-
 class TestSyncJournalDB : public QObject
 {
     Q_OBJECT
 
 public:
     TestSyncJournalDB()
-        : _db(testdbC)
     {
+        const QString testdb("/tmp/csync-test.db");
+        _db.setDatabaseFilePath( testdb );
     }
 
     QDateTime dropMsecs(QDateTime time)
@@ -41,6 +37,8 @@ private slots:
 
     void cleanupTestCase()
     {
+        const QString file = _db.databaseFilePath();
+        QFile::remove(file);
     }
 
     void testFileRecord()
