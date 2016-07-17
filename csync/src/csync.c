@@ -132,6 +132,7 @@ void csync_init(CSYNC *ctx, const char *db_file) {
 
   ctx->remote.type = REMOTE_REPLICA;
 
+  SAFE_FREE(ctx->statedb.file);
   ctx->statedb.file = c_strdup(db_file);
 
   c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
