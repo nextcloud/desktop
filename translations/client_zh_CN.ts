@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>Sync Running</source>
-        <translation>同步正在运行</translation>
+        <translation>正在同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="434"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="533"/>
         <source>Signed out from %1.</source>
-        <translation>从 %1 登出</translation>
+        <translation>从 %1 退出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="489"/>
         <source>%1 of %2 in use</source>
-        <translation>已使用 %2，总计 %1%</translation>
+        <translation>使用量 %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="112"/>
         <source>Signed out</source>
-        <translation>已登出</translation>
+        <translation>已退出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="114"/>
@@ -1044,7 +1044,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>文件夹在您的 %1 上不可用。&lt;br/&gt;请点此创建它。</translation>
+        <translation>文件夹在 %1 上创建成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="217"/>
@@ -2136,7 +2136,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>服务器找不到上一分块。(找不到 E-tag)</translation>
+        <translation>服务器未确认上一分块。(找不到 E-tag)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
@@ -2564,7 +2564,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="453"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation>共享给 %1</translation>
+        <translation>使用 %1 共享</translation>
     </message>
 </context>
 <context>
@@ -3087,7 +3087,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="209"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>下载文件娇艳失败，将会回退。</translation>
+        <translation>下载的文件校验失败，将会回退。</translation>
     </message>
 </context>
 <context>
