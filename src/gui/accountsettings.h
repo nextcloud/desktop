@@ -77,7 +77,6 @@ protected slots:
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    void slotOpenInBrowser();
     void slotOpenAccountWizard();
     void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();

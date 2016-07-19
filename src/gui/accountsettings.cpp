@@ -142,10 +142,6 @@ void AccountSettings::createAccountToolbox()
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
 
-    QAction *openInBrowser = new QAction(tr("Open in browser"), this);
-    menu->addAction(openInBrowser);
-    connect(openInBrowser, SIGNAL(triggered(bool)), SLOT(slotOpenInBrowser()));
-
     _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
     menu->addAction(_toggleSignInOutAction);
@@ -192,11 +188,6 @@ void AccountSettings::slotToggleSignInState()
     } else {
         _accountState->signOutByUi();
     }
-}
-
-void AccountSettings::slotOpenInBrowser()
-{
-    QDesktopServices::openUrl(_accountState->account()->url());
 }
 
 void AccountSettings::doExpand()
