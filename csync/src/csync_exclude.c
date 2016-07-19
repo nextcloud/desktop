@@ -246,10 +246,11 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     if (blen > 1) {
         if (bname[blen-1]== ' ') {
             match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
+            goto out;
         } else if (bname[blen-1]== '.' ) {
             match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            goto out;
         }
-        goto out;
     }
 
     if (csync_is_windows_reserved_word(bname)) {
