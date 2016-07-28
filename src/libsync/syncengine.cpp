@@ -725,16 +725,19 @@ void SyncEngine::startSync()
 
     int fileRecordCount = -1;
     if (!_journal->exists()) {
-        qDebug() << "=====sync looks new (no DB exists)";
+        qDebug() << "===== new sync (no sync journal exists)";
     } else {
-        qDebug() << "=====sync with existing DB";
+        qDebug() << "===== sync with existing sync journal";
     }
 
-    qDebug() <<  "=====Using Qt" << qVersion();
+    QString verStr("===== Using Qt ");
+    verStr.append( qVersion() );
+
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
-    qDebug() <<  "=====Using SSL library version"
-             <<  QSslSocket::sslLibraryVersionString().toUtf8().data();
+    verStr.append( " SSL library " ).append(QSslSocket::sslLibraryVersionString().toUtf8().data());
 #endif
+    verStr.append( " on ").append(Utility::platformName());
+    qDebug() << verStr;
 
     fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
 

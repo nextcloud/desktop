@@ -38,6 +38,9 @@
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
 #include <QCollator>
 #endif
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
+#include <QSysInfo>
+#endif
 
 
 #ifdef Q_OS_UNIX
@@ -424,6 +427,25 @@ bool Utility::isBSD()
 #endif
 }
 
+QString Utility::platformName()
+{
+    QString re("Windows");
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+    if( isMac() ) {
+        re = QLatin1String("MacOSX");
+    } else if( isLinux() ) {
+        re = QLatin1String("Linux");
+    } else if( isBSD() ) {
+        re = QLatin1String("BSD");
+    } else if( isUnix() ) {
+        re = QLatin1String("Unix");
+    }
+#else
+    re = QSysInfo::prettyProductName();
+#endif
+    return re;
+}
 
 void Utility::crash()
 {

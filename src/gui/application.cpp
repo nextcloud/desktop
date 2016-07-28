@@ -354,10 +354,11 @@ void Application::setupLogging()
 
     Logger::instance()->enterNextLogFile();
 
-    qDebug() << QString::fromLatin1( "################## %1 %2 (%3) %4").arg(_theme->appName())
+    qDebug() << QString::fromLatin1( "################## %1 %2 (%3) %4 on %5").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(property("ui_lang").toString())
-                .arg(_theme->version());
+                .arg(_theme->version())
+                .arg(Utility::platformName());
 
     // Setup CSYNC logging to forward to our own logger
     csync_set_log_callback( csyncLogCatcher );

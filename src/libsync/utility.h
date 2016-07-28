@@ -91,6 +91,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
     OWNCLOUDSYNC_EXPORT bool isBSD(); // use with care, does not match OS X
 
+    OWNCLOUDSYNC_EXPORT QString platformName();
     // crash helper for --debug
     OWNCLOUDSYNC_EXPORT void crash();
 
