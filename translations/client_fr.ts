@@ -2552,7 +2552,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
         <source>SSL Chipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Vue de débug Chipher SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
