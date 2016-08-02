@@ -75,6 +75,9 @@ public:
     void setSharedThis(AccountPtr sharedThis);
     AccountPtr sharedFromThis();
 
+    /// The user that can be used in dav url
+    QString user() const;
+
     /// The name of the account as shown in the toolbar
     QString displayName() const;
 

@@ -106,6 +106,11 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+MkColJob::MkColJob(AccountPtr account, const QUrl &url, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent), _url(url)
+{
+}
+
 void MkColJob::start()
 {
    // add 'Content-Length: 0' header (see https://github.com/owncloud/client/issues/3256)
@@ -113,7 +118,8 @@ void MkColJob::start()
    req.setRawHeader("Content-Length", "0");
 
    // assumes ownership
-   QNetworkReply *reply = davRequest("MKCOL", path(), req);
+   QNetworkReply *reply = _url.isValid() ?  davRequest("MKCOL", _url, req)
+        : davRequest("MKCOL", path(), req);
    setReply(reply);
    setupConnections(reply);
    AbstractNetworkJob::start();

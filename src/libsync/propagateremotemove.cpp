@@ -27,12 +27,20 @@ MoveJob::MoveJob(AccountPtr account, const QString& path,
     : AbstractNetworkJob(account, path, parent), _destination(destination)
 { }
 
+MoveJob::MoveJob(AccountPtr account, const QUrl& url, const QString &destination,
+                 QMap<QByteArray, QByteArray> extraHeaders, QObject* parent)
+    : AbstractNetworkJob(account, QString(), parent), _destination(destination), _url(url)
+    , _extraHeaders(extraHeaders)
+{ }
 
 void MoveJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("Destination", QUrl::toPercentEncoding(_destination, "/"));
-    setReply(davRequest("MOVE", path(), req));
+    for(auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
+        req.setRawHeader(it.key(), it.value());
+    }
+    setReply(_url.isValid() ? davRequest("MOVE", _url, req) : davRequest("MOVE", path(), req));
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {

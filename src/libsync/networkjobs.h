@@ -170,8 +170,10 @@ private:
  */
 class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob {
     Q_OBJECT
+    QUrl _url; // Only used if the constructor taking a url is taken.
 public:
     explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit MkColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
 signals:

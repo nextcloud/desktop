@@ -72,7 +72,8 @@ void PUTFileJob::start() {
         req.setRawHeader(it.key(), it.value());
     }
 
-    setReply(davRequest("PUT", path(), req, _device.data()));
+    setReply(_url.isValid() ?  davRequest("PUT", _url, req, _device.data())
+        : davRequest("PUT", path(), req, _device.data()));
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {
