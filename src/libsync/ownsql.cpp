@@ -303,6 +303,11 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
                 res = sqlite3_bind_null(_stmt, pos);
             }
             break; }
+        case QVariant::ByteArray: {
+            auto ba = value.toByteArray();
+            res = sqlite3_bind_text(_stmt, pos, ba.constData(), ba.size(), SQLITE_TRANSIENT);
+            break;
+        }
         default: {
             QString str = value.toString();
             // SQLITE_TRANSIENT makes sure that sqlite buffers the data
@@ -312,7 +317,7 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
         }
     }
     if (res != SQLITE_OK) {
-        qDebug() << Q_FUNC_INFO << "ERROR" << value.toString() << res;
+        qDebug() << Q_FUNC_INFO << "ERROR" << value << res;
     }
     Q_ASSERT( res == SQLITE_OK );
 }
