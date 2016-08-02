@@ -321,7 +321,7 @@ public:
         if (_rootJob) {
             _rootJob->abort();
         }
-        emitFinished();
+        emitFinished(SyncFileItem::NormalError);
     }
 
     // timeout in seconds
@@ -349,9 +349,9 @@ public:
 private slots:
 
     /** Emit the finished signal and make sure it is only emitted once */
-    void emitFinished() {
+    void emitFinished(SyncFileItem::Status status) {
         if (!_finishedEmited)
-            emit finished();
+            emit finished(status == SyncFileItem::Success);
         _finishedEmited = true;
     }
 
@@ -360,7 +360,7 @@ private slots:
 signals:
     void itemCompleted(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
-    void finished();
+    void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);

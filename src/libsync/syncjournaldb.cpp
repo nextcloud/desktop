@@ -286,6 +286,13 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
+    // create the checksumtype table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS datafingerprint("
+                        "fingerprint TEXT UNIQUE"
+                        ");");
+    if (!createQuery.exec()) {
+        return sqlFail("Create table datafingerprint", createQuery);
+    }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
                                "major INTEGER(8),"
@@ -436,6 +443,14 @@ bool SyncJournalDb::checkConnect()
     _insertChecksumTypeQuery.reset(new SqlQuery(_db));
     _insertChecksumTypeQuery->prepare("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)");
 
+    _getDataFingerprintQuery.reset(new SqlQuery(_db));
+    _getDataFingerprintQuery->prepare("SELECT fingerprint FROM datafingerprint");
+
+    _setDataFingerprintQuery1.reset(new SqlQuery(_db));
+    _setDataFingerprintQuery1->prepare("DELETE FROM datafingerprint;");
+    _setDataFingerprintQuery2.reset(new SqlQuery(_db));
+    _setDataFingerprintQuery2->prepare("INSERT INTO datafingerprint (fingerprint) VALUES (?1);");
+
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
 
@@ -472,6 +487,9 @@ void SyncJournalDb::close()
     _getChecksumTypeIdQuery.reset(0);
     _getChecksumTypeQuery.reset(0);
     _insertChecksumTypeQuery.reset(0);
+    _getDataFingerprintQuery.reset(0);
+    _setDataFingerprintQuery1.reset(0);
+    _setDataFingerprintQuery2.reset(0);
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
@@ -1602,6 +1620,49 @@ int SyncJournalDb::mapChecksumType(const QByteArray& checksumType)
     return _getChecksumTypeIdQuery->intValue(0);
 }
 
+QByteArray SyncJournalDb::dataFingerprint()
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return QByteArray();
+    }
+
+    _getDataFingerprintQuery->reset_and_clear_bindings();
+    if (!_getDataFingerprintQuery->exec()) {
+        qWarning() << "Error SQL statement dataFingerprint: "
+                   << _getDataFingerprintQuery->lastQuery() << " :"
+                   << _getDataFingerprintQuery->error();
+        return QByteArray();
+    }
+
+    if (!_getDataFingerprintQuery->next()) {
+        return QByteArray();
+    }
+    return _getDataFingerprintQuery->baValue(0);
+}
+
+void SyncJournalDb::setDataFingerprint(const QByteArray &dataFingerprint)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    _setDataFingerprintQuery1->reset_and_clear_bindings();
+    if (!_setDataFingerprintQuery1->exec()) {
+        qWarning() << "Error SQL statement setDataFingerprint1: "
+                   << _setDataFingerprintQuery1->lastQuery() << " :"
+                   << _setDataFingerprintQuery1->error();
+    }
+
+    _setDataFingerprintQuery2->reset_and_clear_bindings();
+    _setDataFingerprintQuery2->bindValue(1, dataFingerprint);
+    if (!_setDataFingerprintQuery2->exec()) {
+        qWarning() << "Error SQL statement setDataFingerprint2: "
+                   << _setDataFingerprintQuery2->lastQuery() << " :"
+                   << _setDataFingerprintQuery2->error();
+    }
+}
 
 void SyncJournalDb::commit(const QString& context, bool startTrans)
 {

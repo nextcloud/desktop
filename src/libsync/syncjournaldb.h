@@ -154,6 +154,12 @@ public:
      */
     QByteArray getChecksumType(int checksumTypeId);
 
+    /**
+     * The data-fingerprint used to detect backup
+     */
+    void setDataFingerprint(const QByteArray &dataFingerprint);
+    QByteArray dataFingerprint();
+
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
@@ -196,6 +202,9 @@ private:
     QScopedPointer<SqlQuery> _getChecksumTypeIdQuery;
     QScopedPointer<SqlQuery> _getChecksumTypeQuery;
     QScopedPointer<SqlQuery> _insertChecksumTypeQuery;
+    QScopedPointer<SqlQuery> _getDataFingerprintQuery;
+    QScopedPointer<SqlQuery> _setDataFingerprintQuery1;
+    QScopedPointer<SqlQuery> _setDataFingerprintQuery2;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

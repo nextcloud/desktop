@@ -915,7 +915,16 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             return;
         }
     }
-    if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2) {
+
+    auto databaseFingerprint = _journal->dataFingerprint();
+    // If databaseFingerprint is null, this means that there was no information in the database
+    // (for example, upgrading from a previous version, or first sync)
+    // Note that an empty ("") fingerprint is valid and means it was empty on the server before.
+    if (!databaseFingerprint.isNull()
+            && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
+        qDebug() << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
+        restoreOldFiles();
+    } else if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2) {
         qDebug() << "All the changes are bringing files in the past, asking the user";
         // this typically happen when a backup is restored on the server
         bool restore = false;
@@ -958,7 +967,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
-    connect(_propagator.data(), SIGNAL(finished()), this, SLOT(slotFinished()), Qt::QueuedConnection);
+    connect(_propagator.data(), SIGNAL(finished(bool)), this, SLOT(slotFinished(bool)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
     connect(_propagator.data(), SIGNAL(touchedFile(QString)), SLOT(slotAddTouchedFile(QString)));
 
@@ -1026,9 +1035,13 @@ void SyncEngine::slotItemCompleted(const SyncFileItem &item, const PropagatorJob
     emit itemCompleted(item, job);
 }
 
-void SyncEngine::slotFinished()
+void SyncEngine::slotFinished(bool success)
 {
     _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
+
+    if (success) {
+        _journal->setDataFingerprint(_discoveryMainThread->_dataFingerprint);
+    }
 
     // emit the treewalk results.
     if( ! _journal->postSyncCleanup( _seenFiles, _temporarilyUnavailablePaths ) ) {
@@ -1037,7 +1050,7 @@ void SyncEngine::slotFinished()
 
     _journal->commit("All Finished.", false);
     emit treeWalkResult(_syncedItems);
-    finalize(true); // FIXME: should it be true if there was errors?
+    finalize(success);
 }
 
 void SyncEngine::finalize(bool success)

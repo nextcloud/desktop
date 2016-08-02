@@ -152,7 +152,7 @@ signals:
 private slots:
     void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
-    void slotFinished();
+    void slotFinished(bool success);
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotDiscoveryJobFinished(int updateResult);
     void slotCleanPollsJobAborted(const QString &error);

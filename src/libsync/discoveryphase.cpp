@@ -210,7 +210,7 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
 
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false)
+    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false), _isRootPath(false)
 {
 }
 
@@ -218,10 +218,15 @@ void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
     LsColJob *lsColJob = new LsColJob(_account, _subPath, this);
-    lsColJob->setProperties(QList<QByteArray>() << "resourcetype" << "getlastmodified"
-                        << "getcontentlength" << "getetag" << "http://owncloud.org/ns:id"
-                        << "http://owncloud.org/ns:downloadURL" << "http://owncloud.org/ns:dDC"
-                        << "http://owncloud.org/ns:permissions");
+
+    QList<QByteArray> props;
+    props << "resourcetype" << "getlastmodified" << "getcontentlength" << "getetag"
+          << "http://owncloud.org/ns:id" << "http://owncloud.org/ns:downloadURL"
+          << "http://owncloud.org/ns:dDC" << "http://owncloud.org/ns:permissions";
+    if (_isRootPath)
+        props << "http://owncloud.org/ns:data-fingerprint";
+
+    lsColJob->setProperties(props);
 
     QObject::connect(lsColJob, SIGNAL(directoryListingIterated(QString,QMap<QString,QString>)),
                      this, SLOT(directoryListingIteratedSlot(QString,QMap<QString,QString>)));
@@ -299,12 +304,14 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
 {
     //qDebug() << Q_FUNC_INFO << _subPath << file << map.count() << map.keys() << _account->davPath() << _lsColJob->reply()->request().url().path();
     if (!_ignoredFirst) {
-        // First result is the directory itself. Maybe should have a better check for that? FIXME
+        // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
             emit firstDirectoryPermissions(map.value("permissions"));
         }
-
+        if (map.contains("data-fingerprint")) {
+            _dataFingerprint = map.value("data-fingerprint").toUtf8();
+        }
     } else {
         // Remove <webDAV-Url>/folder/ from <webDAV-Url>/folder/subfile.txt
         file.remove(0, _lsColJob->reply()->request().url().path().length());
@@ -426,6 +433,11 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
                      this, SIGNAL(etagConcatenation(QString)));
     QObject::connect(_singleDirJob, SIGNAL(etag(QString)),
                      this, SIGNAL(etag(QString)));
+
+    if (!_firstFolderProcessed) {
+        _singleDirJob->setIsRootPath();
+    }
+
     _singleDirJob->start();
 }
 
@@ -441,7 +453,12 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPoint
     _currentDiscoveryDirectoryResult->list = result;
     _currentDiscoveryDirectoryResult->code = 0;
     _currentDiscoveryDirectoryResult->listIndex = 0;
-     _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
+    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
+
+    if (!_firstFolderProcessed) {
+        _firstFolderProcessed = true;
+        _dataFingerprint = _singleDirJob->_dataFingerprint;
+    }
 
     _discoveryJob->_vioMutex.lock();
     _discoveryJob->_vioWaitCondition.wakeAll();
