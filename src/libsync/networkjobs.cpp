@@ -270,6 +270,11 @@ LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+LsColJob::LsColJob(AccountPtr account, const QUrl &url, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent), _url(url)
+{
+}
+
 void LsColJob::setProperties(QList<QByteArray> properties)
 {
     _properties = properties;
@@ -313,7 +318,8 @@ void LsColJob::start()
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    QNetworkReply *reply = davRequest("PROPFIND", path(), req, buf);
+    QNetworkReply *reply = _url.isValid() ?  davRequest("PROPFIND", _url, req, buf)
+        : davRequest("PROPFIND", path(), req, buf);
     buf->setParent(reply);
     setReply(reply);
     setupConnections(reply);

@@ -286,7 +286,8 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon {
 private:
     quint64 _sent; /// amount of data that was already sent
     uint _transferId; /// transfer id (part of the url)
-    int _currentChunk;
+    int _currentChunk; /// Id of the next chunk that will be sent
+    QMap<int, quint64> _serverChunks; // Map chunk number with its size  from the PROPFIND on resume
 
     quint64 chunkSize() const { return _propagator->chunkSize(); }
     /**
@@ -300,10 +301,13 @@ public:
         PropagateUploadFileCommon(propagator,item) {}
 
     void doStartUpload() Q_DECL_OVERRIDE;
-
-private slots:
-    void slotMkColFinished(QNetworkReply::NetworkError);
+private:
+    void startNewUpload();
     void startNextChunk();
+private slots:
+    void slotPropfindFinished();
+    void slotPropfindFinishedWithError();
+    void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
     void slotMoveJobFinished();
     void slotUploadProgress(qint64,qint64);

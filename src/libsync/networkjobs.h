@@ -62,6 +62,7 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob {
     Q_OBJECT
 public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
     QHash<QString, qint64> _sizes;
 
@@ -87,6 +88,7 @@ private slots:
 
 private:
     QList<QByteArray> _properties;
+    QUrl _url; // Used instead of path() if the url is specified in the constructor
 };
 
 /**
