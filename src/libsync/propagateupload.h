@@ -307,6 +307,7 @@ private:
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
+    void slotPropfindIterate(const QString &name, const QMap<QString,QString> &properties);
     void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
     void slotMoveJobFinished();

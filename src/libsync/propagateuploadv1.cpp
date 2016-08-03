@@ -183,8 +183,7 @@ void PropagateUploadFileV1::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    if (err == QNetworkReply::OperationCanceledError && job->reply()->property(owncloudShouldSoftCancelPropertyName).isValid()) {
-        // Abort the job and try again later.
+    if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {        // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
         qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         _propagator->_anotherSyncNeeded = true;

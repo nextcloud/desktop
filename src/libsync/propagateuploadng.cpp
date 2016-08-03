@@ -73,8 +73,6 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
 
  */
 
-
-
 void PropagateUploadFileNG::doStartUpload()
 {
     _duration.start();
@@ -92,22 +90,25 @@ void PropagateUploadFileNG::doStartUpload()
                 this, SLOT(slotPropfindFinishedWithError()));
         connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotJobDestroyed(QObject*)));
         //TODO: port to Qt4
-        connect(job, &LsColJob::directoryListingIterated,
-                [this, url](const QString &name, const QMap<QString,QString> &properties) mutable {
-                    if (name == url.path()) {
-                        return; // skip the info about the path itself
-                    }
-                    bool ok = false;
-                    auto chunkId = name.midRef(name.lastIndexOf('/')+1).toUInt(&ok);
-                    if (ok) {
-                        this->_serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
-                    }
-                });
+        connect(job, SIGNAL(directoryListingIterated(QString,QMap<QString,QString>)),
+                this, SLOT(slotPropfindIterate(QString,QMap<QString,QString>)));
         job->start();
         return;
     }
 
     startNewUpload();
+}
+
+void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<QString,QString> &properties)
+{
+    if (name == chunkUrl().path()) {
+        return; // skip the info about the path itself
+    }
+    bool ok = false;
+    auto chunkId = name.mid(name.lastIndexOf('/')+1).toUInt(&ok);
+    if (ok) {
+        this->_serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
+    }
 }
 
 void PropagateUploadFileNG::slotPropfindFinished()
@@ -122,6 +123,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         _sent += _serverChunks[_currentChunk];
         ++_currentChunk;
     }
+    qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
     startNextChunk();
 }
 
@@ -272,7 +274,7 @@ void PropagateUploadFileNG::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    if (err == QNetworkReply::OperationCanceledError && job->reply()->property(owncloudShouldSoftCancelPropertyName).isValid()) {
+    if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {
         // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
         qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
