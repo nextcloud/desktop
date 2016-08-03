@@ -270,7 +270,13 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 job->setDeleteExistingFolder(deleteExisting);
                 return job;
             } else {
-                auto job = new PropagateUploadFileV1(this, item); // FIXME, depending on server version, use the other chunking algorithm
+                static const bool isNg  = !qgetenv("OWNCLOUD_CHUNK_NG").isEmpty(); // FIXME! use server version
+                PropagateUploadFileCommon *job = 0;
+                if (isNg && item->_size > chunkSize()) {
+                    job = new PropagateUploadFileNG(this, item);
+                } else {
+                    job = new PropagateUploadFileV1(this, item);
+                }
                 job->setDeleteExisting(deleteExisting);
                 return job;
             }
