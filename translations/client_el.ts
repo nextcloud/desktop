@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Η έκδοση του διακομιστή %1 είναι παλιά και δεν υποστηρίζεται! Προχωρείστε με δική σας ευθύνη.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="529"/>
@@ -330,12 +330,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 σε %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 σε %2 (αποσυνδεδεμένο)</translation>
     </message>
 </context>
 <context>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Κατάλογος αρχείων που αγνοούνται ή περιέχουν σφάλματα</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="534"/>
@@ -375,22 +375,22 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Δεν είναι συγχρονισμένα (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος δραστηριοτήτων του διακομιστή έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="600"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος της δραστηριότητας συγχρονισμού έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="603"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος των μη-συγχρονισμένων αρχείων έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="608"/>
@@ -430,12 +430,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται ενέργεια: Ειδοποιήσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Ο λογαριασμός %1 δεν έχει ενεργοποιήσει τις δραστηριότητες.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>

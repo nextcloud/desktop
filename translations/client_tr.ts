@@ -375,7 +375,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation>Senkron edilmedi (%1)</translation>
+        <translation>Eşitlenmedi (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
@@ -430,7 +430,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation>Eylem gerekiyor: Bildirimler</translation>
+        <translation>Eylem Gerekiyor: Bildirimler</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
@@ -440,22 +440,22 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>%2 den %n yeni bildiriminiz var.</numerusform><numerusform>%2 den %n yeni bildiriminiz var.</numerusform></translation>
+        <translation><numerusform>%2 için %n yeni bildiriminiz var.</numerusform><numerusform>%2 için %n yeni bildiriminiz var.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>%2 ve %1 den %n yeni bildiriminiz var.</numerusform><numerusform>%2 ve %1 den %n yeni bildiriminiz var.</numerusform></translation>
+        <translation><numerusform>%2 ve %1 için %n yeni bildiriminiz var.</numerusform><numerusform>%2 ve %1 için %n yeni bildiriminiz var.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation>%2 ve %1 ve diğer hesaplardan %n yeni bildiriminiz var.</translation>
+        <translation>%2, %1 ve diğer hesaplardan %n yeni bildiriminiz var.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation>%1 yeni bildirim - Eylem Gerekiyor</translation>
+        <translation>%1 Bildirim - Eylem Gerekiyor</translation>
     </message>
 </context>
 <context>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -631,42 +631,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>&apos;%1&apos; ve diğer %n dosya kaldırıldı.</numerusform><numerusform>&apos;%1&apos; ve diğer %n dosya kaldırıldı.</numerusform></translation>
+        <translation><numerusform>%1 ve diğer %n dosya kaldırıldı.</numerusform><numerusform>%1 ve diğer %n dosya kaldırıldı.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>&apos;%1&apos; ve diğer %n dosya indirildi.</numerusform><numerusform>&apos;%1&apos; ve diğer %n dosya indirildi.</numerusform></translation>
+        <translation><numerusform>%1 ve diğer %n dosya indirildi.</numerusform><numerusform>%1 ve diğer %n dosya indirildi.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>&apos;%1&apos; ve diğer %n dosya güncellendi.</numerusform><numerusform>&apos;%1&apos; ve diğer %n dosya güncellendi.</numerusform></translation>
+        <translation><numerusform>&apos;%1&apos; ve diğer %n dosya güncellendi.</numerusform><numerusform>%1 ve diğer %n dosya güncellendi.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform><numerusform>%1 %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform></translation>
+        <translation><numerusform>%1, %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform><numerusform>%1, %2 olarak yeniden adlandırıldı ve %n diğer dosyanın adı değiştirildi.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 %2 olarak taşındı ve %n diğer dosya taşındı.</numerusform><numerusform>%1 %2 olarak taşındı ve %n diğer dosya taşındı.</numerusform></translation>
+        <translation><numerusform>%1, %2 konumuna taşındı ve %n diğer dosya taşındı.</numerusform><numerusform>%1, %2 konumuna taşındı ve %n diğer dosya taşındı.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 ve %n diğer dosya eşleşme çakışmasına sahip.</numerusform><numerusform>%1 ve %n diğer dosya eşleşme çakışmasına sahip.</numerusform></translation>
+        <translation><numerusform>%1 ve %n diğer dosya eşitleme çakışması bulunduruyor.</numerusform><numerusform>%1 ve %n diğer dosya eşitleme çakışması bulunduruyor.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 bir eşleşme çakışmasına sahip. Lütfen çakışan dosyayı kontrol edin!</translation>
+        <translation>%1 bir eşitleme çakışması bulunduruyor. Lütfen çakışan dosyayı kontrol edin!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için ayıt dosyasına bakın.</numerusform><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için ayıt dosyasına bakın.</numerusform></translation>
+        <translation><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için ayıt dosyasına bakın.</numerusform><numerusform>%1 ve diğer %n dosya hatalar nedeniyle eşlenemedi. Ayrıntılar için günlük dosyasına bakın.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="533"/>
@@ -861,7 +861,7 @@ Bunun nedeni sunucuda bir yedeğin geri yüklenmesinden dolayı olabilir. Eşitl
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation>Yerel klasörü ile senkronize etme</translation>
+        <translation>Yerel klasör ile eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -974,7 +974,7 @@ Bunun nedeni sunucuda bir yedeğin geri yüklenmesinden dolayı olabilir. Eşitl
         <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%5 kaldı, %2 miktarın %1 kadarı, %4 dosyanın %3 kadarı</translation>
+        <translation>Kalan %5, %1/%2, dosya %3/%4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1522,7 +1522,7 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation>%1 de yaratıldı</translation>
+        <translation>Oluşturulma %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
@@ -1683,7 +1683,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;Email</source>
-        <translation>&amp;Eposta</translation>
+        <translation>&amp;E-posta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -1918,7 +1918,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1966,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="791"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2007,7 +2007,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2038,7 +2038,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2064,7 +2064,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2092,7 +2092,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>
@@ -2141,7 +2141,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>Error writing metadata to the database</source>
-        <translation>Veritabanına metaveri yazma hatası</translation>
+        <translation>Veritabanına üstveri yazma hatası</translation>
     </message>
 </context>
 <context>

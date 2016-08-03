@@ -227,6 +227,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -252,6 +255,7 @@ GenericName[ja_JP]=フォルダ同期
 Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
 Icon[ja_JP]=@APPLICATION_EXECUTABLE@
 GenericName[el]=Συγχρονισμός φακέλου
+Icon[el]=@APPLICATION_EXECUTABLE@
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
 GenericName[en_GB]=Folder Sync
 Name[en_GB]=@APPLICATION_NAME@ desktop sync client 
@@ -331,9 +335,9 @@ Comment[sv]=@APPLICATION_NAME@ desktop synkroniseringsklient
 GenericName[sv]=Mappsynk
 Name[sv]=@APPLICATION_NAME@ desktop synk-klient
 Icon[sv]=@APPLICATION_EXECUTABLE@
-Comment[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
-GenericName[tr]=Dosya Senkronizasyonu
-Name[tr]=@APPLICATION_NAME@ masaüstü senkronizasyon istemcisi
+Comment[tr]=@APPLICATION_NAME@ masaüstü eşitleme istemcisi
+GenericName[tr]=Dosya Eşitleme
+Name[tr]=@APPLICATION_NAME@ masaüstü eşitleme istemcisi
 Icon[tr]=@APPLICATION_EXECUTABLE@
 Comment[uk]=Настільний клієнт синхронізації @APPLICATION_NAME@
 GenericName[uk]=Синхронізація теки
