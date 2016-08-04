@@ -45,6 +45,13 @@ void ExcludedFiles::addExcludeFilePath(const QString& path)
     _excludeFiles.insert(path);
 }
 
+#ifdef WITH_UNIT_TESTING
+void ExcludedFiles::addExcludeExpr(const QString &expr)
+{
+    _csync_exclude_add(_excludesPtr, expr.toLatin1().constData());
+}
+#endif
+
 bool ExcludedFiles::reloadExcludes()
 {
     c_strlist_destroy(*_excludesPtr);

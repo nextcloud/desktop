@@ -78,6 +78,10 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
+    qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
+
+    // Everything in the SyncEngine expects a trailing slash for the localPath.
+    Q_ASSERT(localPath.endsWith(QLatin1Char('/')));
 
     // We need to reconstruct the url because the path needs to be fully decoded, as csync will re-encode the path:
     //  Remember that csync will just append the filename to the path and pass it to the vio plugin.

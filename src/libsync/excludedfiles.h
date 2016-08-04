@@ -57,6 +57,10 @@ public:
             const QString& basePath,
             bool excludeHidden) const;
 
+#ifdef WITH_UNIT_TESTING
+    void addExcludeExpr(const QString &expr);
+#endif
+
 public slots:
     /**
      * Reloads the exclude patterns from the registered paths.
