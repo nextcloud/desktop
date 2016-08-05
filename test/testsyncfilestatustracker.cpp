@@ -124,7 +124,6 @@ private slots:
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "The mkdir completion shouldn't mark it as OK as long as its children aren't done syncing (https://github.com/owncloud/client/issues/4797).", Continue);
         QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
 
@@ -153,7 +152,6 @@ private slots:
         fakeFolder.execUntilItemCompleted("D");
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "The mkdir completion shouldn't mark it as OK as long as its children aren't done syncing (https://github.com/owncloud/client/issues/4797).", Continue);
         QCOMPARE(statusSpy.statusOf("D"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("D/d0"), SyncFileStatus(SyncFileStatus::StatusSync));
 
@@ -179,7 +177,6 @@ private slots:
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusSync));
         // Discovered as remotely removed, pending for local removal.
         QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "C/c1 was removed locally and the parent should ideally reflect this until it's deleted on the server.", Continue);
         QCOMPARE(statusSpy.statusOf("C"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("B/b2"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
@@ -190,7 +187,6 @@ private slots:
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QEXPECT_FAIL("", "Probably same cause as the missing SyncFileStatus::StatusSync for C above.", Continue);
         QCOMPARE(statusSpy.statusOf("C"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -206,11 +202,8 @@ private slots:
 
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
-        // FIXME: Uncomment, fails since A/a1 gets pushed an OK for some reason, but pulls an IGNORE
-        // verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QEXPECT_FAIL("", "We should have received a warning status but didn't yet.", Continue);
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QEXPECT_FAIL("", "We should have received a warning status but didn't yet.", Continue);
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
         QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusWarning));
@@ -283,12 +276,9 @@ private slots:
         fakeFolder.execUntilBeforePropagation();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         // A/a1 and B/b0 should be on the black list for the next few seconds
-        QEXPECT_FAIL("", "Only one blacklist item, we shouldn't be showing SYNC.", Continue);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QEXPECT_FAIL("", "Only one blacklist item, we shouldn't be showing SYNC.", Continue);
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusError));
-        QEXPECT_FAIL("", "Only one blacklist item, we shouldn't be showing SYNC.", Continue);
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("B/b0"), SyncFileStatus(SyncFileStatus::StatusError));
         statusSpy.clear();
@@ -336,20 +326,16 @@ private slots:
         fakeFolder.execUntilBeforePropagation();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "Weird, should be SYNC", Continue);
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "Weird, should be SYNC", Continue);
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusSync));
         QCOMPARE(statusSpy.statusOf("B/b0"), SyncFileStatus(SyncFileStatus::StatusSync));
         statusSpy.clear();
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QEXPECT_FAIL("", "Probably since it didn't get SYNC above.", Continue);
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
-        QEXPECT_FAIL("", "Probably since it didn't get SYNC above.", Continue);
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(statusSpy.statusOf("B/b0"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
 

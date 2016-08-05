@@ -46,19 +46,25 @@ signals:
 private slots:
     void slotAboutToPropagate(SyncFileItemVector& items);
     void slotItemCompleted(const SyncFileItem& item);
+    void slotSyncFinished();
     void slotSyncEngineRunningChanged();
 
 private:
-    SyncFileStatus syncFileItemStatus(const SyncFileItem& item);
-    SyncFileItem rootSyncFileItem();
+    enum SharedFlag { NotShared = 0, Shared };
+    enum PathKnownFlag { PathUnknown = 0, PathKnown };
+    enum EmitStatusChangeFlag { DontEmitStatusChange = 0, EmitStatusChange };
+    SyncFileStatus resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag isShared, PathKnownFlag isPathKnown = PathKnown);
 
     void invalidateParentPaths(const QString& path);
     QString getSystemDestination(const QString& relativePath);
+    void incSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange);
+    void decSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange);
 
     SyncEngine* _syncEngine;
 
     std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
     QSet<QString> _dirtyPaths;
+    QHash<QString, int> _syncCount;
 };
 
 }

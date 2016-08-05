@@ -640,7 +640,6 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
             (sender() == _firstJob.data() && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
         _state = Finished;
-        emit itemCompleted(*_item, *this);
         emit finished(status);
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
@@ -694,13 +693,6 @@ void PropagateDirectory::finalize()
         }
     }
     _state = Finished;
-    // Just to make sure that the SocketApi will know by looking in
-    // SyncEngine::_syncedItems that this folder is done synchronizing.
-    if (ok) {
-        _item->_status = SyncFileItem::Success;
-    }
-
-    emit itemCompleted(*_item, *this);
     emit finished(_item->_status);
 }
 

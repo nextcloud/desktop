@@ -85,8 +85,6 @@ public:
     /* Return true if we detected that another sync is needed to complete the sync */
     bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    SyncFileItem* findSyncItem(const QString &fileName) const;
-
     /** Get the ms since a file was touched, or -1 if it wasn't.
      *
      * Thread-safe.
