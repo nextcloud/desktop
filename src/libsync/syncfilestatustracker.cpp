@@ -150,6 +150,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
 
         if (showErrorInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
+            invalidateParentPaths(item->destination());
         } else if (showWarningInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }

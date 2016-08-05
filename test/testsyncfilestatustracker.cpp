@@ -310,10 +310,8 @@ private slots:
         // The root should show SYNC even though there is an error underneath,
         // since C/c1 is syncing and the SYNC status has priority.
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
-        QEXPECT_FAIL("", "Only one blacklist item underneath, we shouldn't be showing SYNC.", Continue);
         QCOMPARE(statusSpy.statusOf("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusError));
-        QEXPECT_FAIL("", "Only one blacklist item underneath, we shouldn't be showing SYNC.", Continue);
         QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(statusSpy.statusOf("B/b0"), SyncFileStatus(SyncFileStatus::StatusError));
         QCOMPARE(statusSpy.statusOf("C"), SyncFileStatus(SyncFileStatus::StatusSync));
