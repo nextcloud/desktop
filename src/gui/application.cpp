@@ -105,6 +105,12 @@ Application::Application(int &argc, char **argv) :
 {
     _startedAt.start();
 
+#ifdef Q_OS_WIN
+    // Ensure OpenSSL config file is only loaded from app directory
+    QString opensslConf = QCoreApplication::applicationDirPath()+QString("/openssl.cnf");
+    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+#endif
+
 // TODO: Can't set this without breaking current config paths
 //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));

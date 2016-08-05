@@ -272,6 +272,12 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
+#ifdef Q_OS_WIN
+    // Ensure OpenSSL config file is only loaded from app directory
+    QString opensslConf = QCoreApplication::applicationDirPath()+QString("/openssl.cnf");
+    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+#endif
+
     qsrand(QTime::currentTime().msec() * QCoreApplication::applicationPid());
 
     CmdOptions options;
