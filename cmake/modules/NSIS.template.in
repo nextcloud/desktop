@@ -411,6 +411,9 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "@CPACK_RESOURCE_FILE_LICENSE@"
    ;File /oname=NOTES.txt ${NSI_PATH}\RELEASE_NOTES.txt
 
+   ;Qt config:
+   File "${NSI_PATH}\qt.conf"
+
    ;Qt stuff:
    File "${QT_DLL_PATH}\Qt5Core.dll"
    File "${QT_DLL_PATH}\Qt5Gui.dll"
