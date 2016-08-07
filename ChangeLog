@@ -1,7 +1,8 @@
 ChangeLog
 =========
 
-version 2.2.3 (release 2016-07-xx)
+version 2.2.3 (release 2016-08-xx)
+* SyncEngine: Fix detection of backup (#5104)
 * Fix bug with overriding URL in config (#5016)
 * Sharing: Fix bug with file names containing percent encodes (#5042, #5043)
 * Sharing: Permissions for federated shares on servers >=9.1 (#4996, #5001)
