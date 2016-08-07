@@ -242,6 +242,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -343,6 +346,10 @@ Comment[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 GenericName[sq]=Njëkohësim Dosjesh
 Name[sq]=Klient njëkohësimesh @APPLICATION_NAME@ për desktop
 Icon[sq]=@APPLICATION_EXECUTABLE@
+Comment[fi_FI]=@APPLICATION_NAME@ työpöytäsynkronointisovellus
+GenericName[fi_FI]=Kansion synkronointi
+Name[fi_FI]=@APPLICATION_NAME@ työpöytäsynkronointisovellus
+Icon[fi_FI]=@APPLICATION_EXECUTABLE@
 Comment[sv]=@APPLICATION_NAME@ desktop synkroniseringsklient
 GenericName[sv]=Mappsynk
 Name[sv]=@APPLICATION_NAME@ desktop synk-klient
