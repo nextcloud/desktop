@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.2.3 (release 2016-08-xx)
+version 2.2.3 (release 2016-08-08)
 * SyncEngine: Fix detection of backup (#5104)
 * Fix bug with overriding URL in config (#5016)
 * Sharing: Fix bug with file names containing percent encodes (#5042, #5043)
@@ -17,7 +17,6 @@ version 2.2.3 (release 2016-08-xx)
 * Fix small QAction memleak (#5008)
 * Fix crash on shutting down during propagation (#4979)
 * Decrease memory usage during sync #4979
-* Fix a deadlock when shutting down during discovery (#4993)
 * Setup csync logging earlier to get all log output (#4991)
 * Enable Shibboleth debug view with OWNCLOUD_SHIBBOLETH_DEBUG env
 
