@@ -3522,7 +3522,7 @@ Nedoporučuje se jí používat.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="469"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>před %n dnyëm</numerusform><numerusform>před %n dny</numerusform><numerusform>před %n dny</numerusform></translation>
+        <translation><numerusform>před %n dnem</numerusform><numerusform>před %n dny</numerusform><numerusform>před %n dny</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="477"/>
