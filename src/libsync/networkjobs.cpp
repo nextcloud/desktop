@@ -359,7 +359,6 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC) , parent)
     , _subdirFallback(false)
 {
-	_followRedirects = true;
     setIgnoreCredentialFailure(true);
 }
 
