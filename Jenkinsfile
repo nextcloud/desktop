@@ -38,6 +38,21 @@ node('CLIENT') {
 		ctest --output-on-failure'''
 
 
+    stage 'Win32'
+	def win32 = docker.image('deepdiver/docker-owncloud-client-win32:latest')
+	win32.pull() // make sure we have the latest available from Docker Hub
+	win32.inside {
+		sh '''
+		rm -rf build-win32
+		mkdir build-win32
+		cd build-win32
+		../admin/win/download_runtimes.sh
+		cmake .. -DCMAKE_TOOLCHAIN_FILE=../admin/win/Toolchain-mingw32-openSUSE.cmake -DWITH_CRASHREPORTER=ON
+		make -j4
+		make package
+		ctest .
+		'''
+	}
 }
 
 
