@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -1517,18 +1517,18 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvorený o %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Ukončenie o pár sekúnd...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 požiadavka zlyhala o %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
@@ -1914,7 +1914,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -1937,7 +1937,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Súbor bol vymazaný zo servera</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="545"/>
@@ -1962,7 +1962,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="791"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2003,7 +2003,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2034,7 +2034,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2060,7 +2060,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2088,7 +2088,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2137,7 +2137,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2180,7 +2180,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="78"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny protokol synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="80"/>
@@ -2349,7 +2349,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialóg</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2848,12 +2848,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="191"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Nastala chyba počas otvárania priečinka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="194"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri čítaní adresára</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
@@ -2924,7 +2924,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Prístup odmietnutý</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="199"/>
@@ -2979,7 +2979,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno čítať zo synchronizačného žurnálu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="833"/>
@@ -3000,7 +3000,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Nie je dovolené, lebo nemáte oprávnenie pridávať podpriečinky do tohto priečinka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1161"/>
