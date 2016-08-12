@@ -520,7 +520,7 @@ sub put_to_dir( $$;$ )
 	    $targetUrl = $optionsRef->{url};
 	}
     }
-    $d->open($dir);
+    $d->open($targetUrl . $dir);
 
     my $filename = $file;
     $filename =~ s/^.*\///;
