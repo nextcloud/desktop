@@ -387,7 +387,6 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
-      trav.should_update_metadata = cur->should_update_metadata;
       trav.has_ignored_files = cur->has_ignored_files;
       trav.checksum = cur->checksum;
       trav.checksumTypeId = cur->checksumTypeId;

@@ -186,8 +186,6 @@ struct csync_file_stat_s {
   mode_t mode;      /* u32 */
   unsigned int type                   : 4;
   unsigned int child_modified         : 1;
-  unsigned int should_update_metadata : 1; /*specify that the etag, or the remote perm or fileid has
-                                changed and need to be updated on the db even for INSTRUCTION_NONE */
   unsigned int has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
 
   char *destpath;   /* for renames */

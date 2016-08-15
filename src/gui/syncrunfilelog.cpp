@@ -81,6 +81,9 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
         re = "INST_TYPE_CHANGE";
         break;
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        re = "INST_METADATA";
+        break;
     }
 
     return re;

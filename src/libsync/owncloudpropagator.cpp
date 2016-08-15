@@ -206,7 +206,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
             SyncFileItemPtr mkdirItem(new SyncFileItem(*_item));
-            mkdirItem->_instruction = CSYNC_INSTRUCTION_SYNC;
+            mkdirItem->_instruction = CSYNC_INSTRUCTION_NEW;
             mkdirItem->_direction = SyncFileItem::Down;
             newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
             // Also remove the inodes and fileid from the db so no further renames are tried for
@@ -265,20 +265,14 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
             }   //fall through
         case CSYNC_INSTRUCTION_SYNC:
         case CSYNC_INSTRUCTION_CONFLICT:
-            if (item->_isDirectory) {
-                // Should we set the mtime?
-                return 0;
-            }
-            {
-                if (item->_direction != SyncFileItem::Up) {
-                    auto job = new PropagateDownloadFileQNAM(this, item);
-                    job->setDeleteExistingFolder(deleteExisting);
-                    return job;
-                } else {
-                    auto job = new PropagateUploadFileQNAM(this, item);
-                    job->setDeleteExisting(deleteExisting);
-                    return job;
-                }
+            if (item->_direction != SyncFileItem::Up) {
+                auto job = new PropagateDownloadFileQNAM(this, item);
+                job->setDeleteExistingFolder(deleteExisting);
+                return job;
+            } else {
+                auto job = new PropagateUploadFileQNAM(this, item);
+                job->setDeleteExisting(deleteExisting);
+                return job;
             }
         case CSYNC_INSTRUCTION_RENAME:
             if (item->_direction == SyncFileItem::Up) {
@@ -377,7 +371,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 // NOTE: Currently this means that we don't update those etag at all in this sync,
                 //       but it should not be a problem, they will be updated in the next sync.
                 for (int i = 0; i < directories.size(); ++i) {
-                    directories[i].second->_item->_should_update_metadata = false;
+                    if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
+                        directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
                 }
             } else {
                 PropagateDirectory* currentDirJob = directories.top().second;
@@ -677,7 +672,12 @@ void PropagateDirectory::finalize()
             _item->_file = _item->_renameTarget;
         }
 
-        if (_item->_should_update_metadata && _item->_instruction != CSYNC_INSTRUCTION_REMOVE) {
+        // For new directories we always want to update the etag once
+        // the directory has been propagated. Otherwise the directory
+        // could appear locally without being added to the database.
+        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
+            || _item->_instruction == CSYNC_INSTRUCTION_NEW
+            || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
             if (PropagateRemoteMkdir* mkdir = qobject_cast<PropagateRemoteMkdir*>(_firstJob.data())) {
                 // special case from MKDIR, get the fileId from the job there
                 if (_item->_fileId.isEmpty() && !mkdir->_item->_fileId.isEmpty()) {

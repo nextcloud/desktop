@@ -410,11 +410,9 @@ void Folder::bubbleUpSyncResult()
                         firstItemDeleted = item;
                     break;
                 case CSYNC_INSTRUCTION_SYNC:
-                    if (!item->_isDirectory) {
-                        updatedItems++;
-                        if (!firstItemUpdated)
-                            firstItemUpdated = item;
-                    }
+                    updatedItems++;
+                    if (!firstItemUpdated)
+                        firstItemUpdated = item;
                     break;
                 case CSYNC_INSTRUCTION_ERROR:
                     qDebug() << "Got Instruction ERROR. " << _syncResult.errorString();

@@ -52,6 +52,8 @@ public:
     bool updateFileRecordChecksum(const QString& filename,
                                   const QByteArray& contentChecksum,
                                   const QByteArray& contentChecksumType);
+    bool updateLocalMetadata(const QString& filename,
+                             qint64 modtime, quint64 size, quint64 inode);
     bool exists();
     void walCheckpoint();
 
@@ -188,6 +190,7 @@ private:
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
+    QScopedPointer<SqlQuery> _setFileRecordLocalMetadataQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
     QScopedPointer<SqlQuery> _setDownloadInfoQuery;
     QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;

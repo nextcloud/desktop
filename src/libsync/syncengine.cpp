@@ -395,8 +395,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_remotePerm = QByteArray(file->remotePerm);
     }
 
-    item->_should_update_metadata = item->_should_update_metadata || file->should_update_metadata;
-
     /* The flag "serverHasIgnoredFiles" is true if item in question is a directory
      * that has children which are ignored in sync, either because the files are
      * matched by an ignore pattern, or because they are hidden.
@@ -514,10 +512,23 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     int re = 0;
     switch(file->instruction) {
     case CSYNC_INSTRUCTION_NONE: {
-        if (remote && item->_should_update_metadata && !isDirectory && item->_instruction == CSYNC_INSTRUCTION_NONE) {
+        // Any files that are instruction NONE?
+        if (!isDirectory && file->other.instruction == CSYNC_INSTRUCTION_NONE) {
+            _hasNoneFiles = true;
+        }
+        // No syncing or update to be done.
+        return re;
+    }
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        dir = SyncFileItem::None;
+        // For directories, metadata-only updates will be done after all their files are propagated.
+        if (!isDirectory) {
+            item->_isDirectory = isDirectory;
+            emit syncItemDiscovered(*item);
+
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
-            // Or a local inode/mtime change (see localMetadataUpdate below)
+            // Or a local inode/mtime change
 
             // In case of "resolved conflict": there should have been a conflict because they
             // both were new, or both had their local mtime or remote etag modified, but the
@@ -529,47 +540,33 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
             // quick to do and we don't want to create a potentially large number of
             // mini-jobs later on, we just update metadata right now.
 
-            QString filePath = _localPath + item->_file;
+            if (remote) {
+                QString filePath = _localPath + item->_file;
 
-            // Even if the mtime is different on the server, we always want to keep the mtime from
-            // the file system in the DB, this is to avoid spurious upload on the next sync
-            item->_modtime = file->other.modtime;
-            // same for the size
-            item->_size = file->other.size;
+                // Even if the mtime is different on the server, we always want to keep the mtime from
+                // the file system in the DB, this is to avoid spurious upload on the next sync
+                item->_modtime = file->other.modtime;
+                // same for the size
+                item->_size = file->other.size;
 
-            // If the 'W' remote permission changed, update the local filesystem
-            SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
-            if (prev.isValid() && prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
-                const bool isReadOnly = !item->_remotePerm.contains('W');
-                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+                // If the 'W' remote permission changed, update the local filesystem
+                SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
+                if (prev.isValid() && prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
+                    const bool isReadOnly = !item->_remotePerm.contains('W');
+                    FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+                }
+
+                _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
+            } else {
+                // The local tree is walked first and doesn't have all the info from the server.
+                // Update only outdated data from the disk.
+                _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
             }
 
-            _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
-            item->_should_update_metadata = false;
-
-            // Technically we're done with this item. See localMetadataUpdate hack below.
-            _syncItemMap.remove(key);
-        }
-        // Any files that are instruction NONE?
-        if (!isDirectory && file->other.instruction == CSYNC_INSTRUCTION_NONE) {
-            _hasNoneFiles = true;
-        }
-        // We want to still update etags of directories, other NONE
-        // items can be ignored.
-        bool directoryEtagUpdate = isDirectory && file->should_update_metadata;
-        bool localMetadataUpdate = !remote && file->should_update_metadata;
-        if (!directoryEtagUpdate) {
-            item->_isDirectory = isDirectory;
-            if (localMetadataUpdate) {
-                // Hack, we want a local metadata update to happen, but only if the
-                // remote tree doesn't ask us to do some kind of propagation.
-                _syncItemMap.insert(key, item);
-            }
-            emit syncItemDiscovered(*item);
+            // Technically we're done with this item.
             return re;
         }
         break;
-    }
     case CSYNC_INSTRUCTION_RENAME:
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         item->_renameTarget = renameTarget;
@@ -1180,9 +1177,8 @@ void SyncEngine::checkForPermission()
                 if (perms.isNull()) {
                     // No permissions set
                     break;
-                } if (!(*it)->_isDirectory && !perms.contains("W")) {
+                } if (!perms.contains("W")) {
                     qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                    (*it)->_should_update_metadata = true;
                     (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_isRestoration = true;
@@ -1204,7 +1200,6 @@ void SyncEngine::checkForPermission()
                 }
                 if (!perms.contains("D")) {
                     qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                    (*it)->_should_update_metadata = true;
                     (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
                     (*it)->_direction = SyncFileItem::Down;
                     (*it)->_isRestoration = true;
@@ -1223,7 +1218,6 @@ void SyncEngine::checkForPermission()
                             }
 
                             qDebug() << "checkForPermission: RESTORING" << (*it)->_file;
-                            (*it)->_should_update_metadata = true;
 
                             (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
                             (*it)->_direction = SyncFileItem::Down;
@@ -1372,7 +1366,6 @@ void SyncEngine::restoreOldFiles()
             break;
         case CSYNC_INSTRUCTION_REMOVE:
             qDebug() << "restoreOldFiles: RESTORING" << (*it)->_file;
-            (*it)->_should_update_metadata = true;
             (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
             (*it)->_direction = SyncFileItem::Up;
             break;
