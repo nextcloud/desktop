@@ -934,11 +934,20 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     if (totalSize > 0) {
         QString s1 = Utility::octetsToString( completedSize );
         QString s2 = Utility::octetsToString( totalSize );
-        //: Example text: "5 minutes left, 12 MB of 345 MB, file 6 of 7"
-        overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
-            .arg(s1, s2)
-            .arg(currentFile).arg(totalFileCount)
-            .arg( Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta) );
+
+        if (progress.trustEta()) {
+            //: Example text: "5 minutes left, 12 MB of 345 MB, file 6 of 7"
+            overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
+                .arg(s1, s2)
+                .arg(currentFile).arg(totalFileCount)
+                .arg( Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta) );
+
+        } else {
+            //: Example text: "12 MB of 345 MB, file 6 of 7"
+            overallSyncString = tr("%1 of %2, file %3 of %4")
+                .arg(s1, s2)
+                .arg(currentFile).arg(totalFileCount);
+        }
     } else if (totalFileCount > 0) {
         // Don't attempt to estimate the time left if there is no kb to transfer.
         overallSyncString = tr("file %1 of %2") .arg(currentFile).arg(totalFileCount);

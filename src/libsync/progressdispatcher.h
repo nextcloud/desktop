@@ -165,6 +165,22 @@ public:
     Estimates totalProgress() const;
 
     /**
+     * Get the optimistic eta.
+     *
+     * This value is based on the highest observed transfer bandwidth
+     * and files-per-second speed.
+     */
+    quint64 optimisticEta() const;
+
+    /**
+     * Whether the remaining-time estimate is trusted.
+     *
+     * We don't trust it if it is hugely above the optimistic estimate.
+     * See #5046.
+     */
+    bool trustEta() const;
+
+    /**
      * Get the current file completion estimate structure
      */
     Estimates fileProgress(const SyncFileItem &item) const;

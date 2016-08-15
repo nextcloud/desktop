@@ -658,17 +658,28 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
     } else if (progress.totalSize() == 0 ) {
         quint64 currentFile = progress.currentFile();
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
-        _actionStatus->setText( tr("Syncing %1 of %2  (%3 left)")
-            .arg( currentFile ).arg( totalFileCount )
-            .arg( Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta) ) );
+        QString msg;
+        if (progress.trustEta()) {
+            msg = tr("Syncing %1 of %2  (%3 left)")
+                    .arg( currentFile ).arg( totalFileCount )
+                    .arg( Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta) );
+        } else {
+            msg = tr("Syncing %1 of %2")
+                    .arg( currentFile ).arg( totalFileCount );
+        }
+        _actionStatus->setText( msg );
     } else {
         QString totalSizeStr = Utility::octetsToString( progress.totalSize() );
-        _actionStatus->setText( tr("Syncing %1 (%2 left)")
-            .arg( totalSizeStr, Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta) ) );
+        QString msg;
+        if (progress.trustEta()) {
+            msg = tr("Syncing %1 (%2 left)")
+                .arg( totalSizeStr, Utility::durationToDescriptiveString2(progress.totalProgress().estimatedEta) );
+        } else {
+            msg = tr("Syncing %1")
+                .arg( totalSizeStr );
+        }
+        _actionStatus->setText( msg );
     }
-
-
-
 
     _actionRecent->setIcon( QIcon() ); // Fixme: Set a "in-progress"-item eventually.
 

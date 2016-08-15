@@ -279,13 +279,6 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
     // assume the remaining transfer will be done with the highest speed
     // we've seen.
 
-    // This assumes files and transfers finish as quickly as possible
-    // *but* note that maxPerSecond could be serious underestimates
-    // (if we never got to fully excercise transfer or files/second)
-    quint64 optimisticEta =
-            _fileProgress.remaining()  / _maxFilesPerSecond * 1000
-            + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
-
     // Compute a value that is 0 when fps is <=L*max and 1 when fps is >=U*max
     double fps = _fileProgress._progressPerSec;
     double fpsL = 0.5;
@@ -309,9 +302,24 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
 
     double beOptimistic = nearMaxFps * slowTransfer;
     size.estimatedEta = (1.0 - beOptimistic) * size.estimatedEta
-                        + beOptimistic * optimisticEta;
+                        + beOptimistic * optimisticEta();
 
     return size;
+}
+
+quint64 ProgressInfo::optimisticEta() const
+{
+    // This assumes files and transfers finish as quickly as possible
+    // *but* note that maxPerSecond could be serious underestimate
+    // (if we never got to fully excercise transfer or files/second)
+
+    return _fileProgress.remaining() / _maxFilesPerSecond * 1000
+            + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
+}
+
+bool ProgressInfo::trustEta() const
+{
+    return totalProgress().estimatedEta < 100 * optimisticEta();
 }
 
 ProgressInfo::Estimates ProgressInfo::fileProgress(const SyncFileItem &item) const
