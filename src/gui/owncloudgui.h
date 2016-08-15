@@ -57,6 +57,7 @@ signals:
 
 public slots:
     void setupContextMenu();
+    void setupContextMenuIfVisible();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);

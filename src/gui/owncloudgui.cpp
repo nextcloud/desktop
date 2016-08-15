@@ -92,9 +92,9 @@ ownCloudGui::ownCloudGui(Application *parent) :
              this,SLOT(slotSyncStateChange(Folder*)));
 
     connect( AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
-             SLOT(setupContextMenu()));
+             SLOT(setupContextMenuIfVisible()));
     connect( AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
-             SLOT(setupContextMenu()));
+             SLOT(setupContextMenuIfVisible()));
 
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
              SLOT(slotShowTrayMessage(QString,QString)));
@@ -193,7 +193,7 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 void ownCloudGui::slotSyncStateChange( Folder* folder )
 {
     slotComputeOverallSyncStatus();
-    setupContextMenu();
+    setupContextMenuIfVisible();
 
     if( !folder ) {
         return; // Valid, just a general GUI redraw was needed.
@@ -215,7 +215,7 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
 void ownCloudGui::slotFoldersChanged()
 {
     slotComputeOverallSyncStatus();
-    setupContextMenu();
+    setupContextMenuIfVisible();
 }
 
 void ownCloudGui::slotOpenPath(const QString &path)
@@ -225,7 +225,7 @@ void ownCloudGui::slotOpenPath(const QString &path)
 
 void ownCloudGui::slotAccountStateChanged()
 {
-    setupContextMenu();
+    setupContextMenuIfVisible();
     slotComputeOverallSyncStatus();
 }
 
@@ -450,9 +450,13 @@ void ownCloudGui::setupContextMenu()
             _tray->hide();
         }
         _contextMenu->clear();
-        slotRebuildRecentMenus();
     } else {
         _contextMenu.reset(new QMenu());
+
+        // Update the context menu whenever we're about to show it
+        // to the user.
+        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(setupContextMenu()));
+
         _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
         // this must be called only once after creating the context menu, or
         // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
@@ -477,6 +481,8 @@ void ownCloudGui::setupContextMenu()
 #endif
     }
     _contextMenu->setTitle(Theme::instance()->appNameGUI() );
+    slotRebuildRecentMenus();
+
     // We must call deleteLater because we might be called from the press in one of the actions.
     foreach (auto menu, _accountMenus) { menu->deleteLater(); }
     _accountMenus.clear();
@@ -552,6 +558,11 @@ void ownCloudGui::setupContextMenu()
     }
 }
 
+void ownCloudGui::setupContextMenuIfVisible()
+{
+    if (_contextMenu && _contextMenu->isVisible())
+        setupContextMenu();
+}
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 {
@@ -711,7 +722,11 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
         }
         _recentItemsActions.append(action);
 
-        slotRebuildRecentMenus();
+        // Update the "Recent" menu if the context menu is being shown,
+        // otherwise it'll be updated later, when the context menu is opened.
+        if (_contextMenu && _contextMenu->isVisible()) {
+            slotRebuildRecentMenus();
+        }
     }
 
     if (progress.isUpdatingEstimates()
