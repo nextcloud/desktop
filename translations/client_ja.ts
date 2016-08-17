@@ -901,12 +901,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation>既に同期対象のフォルダーのため、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダーの同期設定を削除してください。</translation>
+        <translation>すでに同期対象のフォルダーのため、追加したフォルダーを無効にしました。複数のフォルダーを同期したい場合は、現在設定されているルートフォルダーの同期設定を削除してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Fetching folder list from server...</source>
-        <translation>サーバーからフォルダリストを取得中...</translation>
+        <translation>サーバーからフォルダーリストを取得中...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="832"/>
@@ -1992,7 +1992,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="155"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>ファイル %1 を削除出来ませんでした,エラー : %2</translation>
+        <translation>ファイル %1 を削除できません。エラー: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="163"/>
@@ -2002,7 +2002,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="169"/>
         <source>could not create folder %1</source>
-        <translation>フォルダー %1 を作成できませんでした</translation>
+        <translation>フォルダー %1 を作成できません</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
@@ -2020,7 +2020,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>フォルダ &apos;%1&apos;を削除できません</translation>
+        <translation>フォルダー &apos;%1&apos;を削除できません</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
@@ -2862,7 +2862,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>隠しファイル/フォルダのため無視されました</translation>
+        <translation>隠しファイル/フォルダーのため無視されました</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="701"/>
@@ -3220,12 +3220,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
-        <translation>すべてのフォルダの同期を再開</translation>
+        <translation>すべてのフォルダーの同期を再開</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
-        <translation>すべてのフォルダの同期を一時停止</translation>
+        <translation>すべてのフォルダーの同期を一時停止</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>
