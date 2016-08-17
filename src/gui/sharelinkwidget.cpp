@@ -375,6 +375,7 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
             _ui->checkBox_expire->setEnabled(false);
             _ui->checkBox_editing->setEnabled(false);
+            _ui->lineEdit_password->setEnabled(true);
             _ui->lineEdit_password->setFocus();
             _ui->pushButton_copy->hide();
             _ui->pushButton_mail->hide();
@@ -443,6 +444,7 @@ void ShareLinkWidget::slotCheckBoxPasswordClicked()
         _ui->lineEdit_password->show();
         _ui->pushButton_setPassword->show();
         _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
+        _ui->lineEdit_password->setEnabled(true);
         _ui->lineEdit_password->setFocus();
     } else {
         setPassword(QString());
