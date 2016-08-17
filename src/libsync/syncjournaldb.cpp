@@ -385,6 +385,12 @@ bool SyncJournalDb::checkConnect()
             " SET contentChecksum = ?2, contentChecksumTypeId = ?3"
             " WHERE phash == ?1;");
 
+    _setFileRecordLocalMetadataQuery.reset(new SqlQuery(_db));
+    _setFileRecordLocalMetadataQuery->prepare(
+            "UPDATE metadata"
+            " SET inode=?2, modtime=?3, filesize=?4"
+            " WHERE phash == ?1;");
+ 
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
     _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
                                     "downloadinfo WHERE path=?1" );
@@ -473,6 +479,7 @@ void SyncJournalDb::close()
     _getFileRecordQuery.reset(0);
     _setFileRecordQuery.reset(0);
     _setFileRecordChecksumQuery.reset(0);
+    _setFileRecordLocalMetadataQuery.reset(0);
     _getDownloadInfoQuery.reset(0);
     _setDownloadInfoQuery.reset(0);
     _deleteDownloadInfoQuery.reset(0);
@@ -959,6 +966,40 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString& filename,
 
     qDebug() << query->lastQuery() << phash << contentChecksum
              << contentChecksumType << checksumTypeId;
+
+    query->reset_and_clear_bindings();
+    return true;
+}
+
+bool SyncJournalDb::updateLocalMetadata(const QString& filename,
+                                        qint64 modtime, quint64 size, quint64 inode)
+
+{
+    QMutexLocker locker(&_mutex);
+
+    qlonglong phash = getPHash(filename);
+    if( !checkConnect() ) {
+        qDebug() << "Failed to connect database.";
+        return false;
+    }
+
+    auto & query = _setFileRecordLocalMetadataQuery;
+
+    query->reset_and_clear_bindings();
+    query->bindValue(1, QString::number(phash));
+    query->bindValue(2, inode);
+    query->bindValue(3, modtime);
+    query->bindValue(4, size);
+
+    if( !query->exec() ) {
+        qWarning() << "Error SQL statement updateLocalMetadata: "
+                   << query->lastQuery() <<  " :"
+                   << query->error();
+        return false;
+    }
+
+    qDebug() << query->lastQuery() << phash << inode
+             << modtime << size;
 
     query->reset_and_clear_bindings();
     return true;

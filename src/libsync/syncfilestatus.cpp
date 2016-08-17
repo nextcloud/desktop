@@ -32,7 +32,7 @@ void SyncFileStatus::set(SyncFileStatusTag tag)
     _tag = tag;
 }
 
-SyncFileStatus::SyncFileStatusTag SyncFileStatus::tag()
+SyncFileStatus::SyncFileStatusTag SyncFileStatus::tag() const
 {
     return _tag;
 }
@@ -42,7 +42,7 @@ void SyncFileStatus::setSharedWithMe(bool isShared)
     _sharedWithMe = isShared;
 }
 
-bool SyncFileStatus::sharedWithMe()
+bool SyncFileStatus::sharedWithMe() const
 {
     return _sharedWithMe;
 }

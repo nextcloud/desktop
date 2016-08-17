@@ -41,6 +41,8 @@ endif (MEM_NULL_TESTS)
 add_subdirectory(src)
 
 if (UNIT_TESTING)
+    set(WITH_UNIT_TESTING ON)
+
     find_package(CMocka)
     if (CMOCKA_FOUND)
         include(AddCMockaTest)

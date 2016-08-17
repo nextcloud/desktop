@@ -46,6 +46,8 @@ QString Progress::asResultString( const SyncFileItem& item)
         return QCoreApplication::translate( "progress", "Filesystem access error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "Error");
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        return QCoreApplication::translate( "progress", "Updated local metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate( "progress", "Unknown");
@@ -76,6 +78,8 @@ QString Progress::asActionString( const SyncFileItem &item )
         return QCoreApplication::translate( "progress", "error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "error");
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        return QCoreApplication::translate( "progress", "updating local metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         break;
@@ -159,17 +163,10 @@ static bool shouldCountProgress(const SyncFileItem &item)
 {
     const auto instruction = item._instruction;
 
-    // Don't worry about directories that won't have propagation
-    // jobs associated with them.
-    if (item._isDirectory
-            && (instruction == CSYNC_INSTRUCTION_NONE
-                || instruction == CSYNC_INSTRUCTION_SYNC
-                || instruction == CSYNC_INSTRUCTION_CONFLICT)) {
-        return false;
-    }
-
-    // Skip any ignored or error files, we do nothing with them.
-    if (instruction == CSYNC_INSTRUCTION_IGNORE
+    // Skip any ignored, error or non-propagated files and directories.
+    if (instruction == CSYNC_INSTRUCTION_NONE
+            || instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+            || instruction == CSYNC_INSTRUCTION_IGNORE
             || instruction == CSYNC_INSTRUCTION_ERROR) {
         return false;
     }

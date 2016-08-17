@@ -314,8 +314,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 }
                 if (checksumIdentical) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", path);
-                    st->instruction = CSYNC_INSTRUCTION_NONE;
-                    st->should_update_metadata = true;
+                    st->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                     goto out;
                 }
             }
@@ -341,18 +340,19 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
-        if (metadata_differ) {
-            /* file id or permissions has changed. Which means we need to update them in the DB. */
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
-            st->should_update_metadata = true;
-        }
         /* If it was remembered in the db that the remote dir has ignored files, store
          * that so that the reconciler can make advantage of.
          */
         if( ctx->current == REMOTE_REPLICA ) {
             st->has_ignored_files = tmp->has_ignored_files;
         }
-        st->instruction = CSYNC_INSTRUCTION_NONE;
+        if (metadata_differ) {
+            /* file id or permissions has changed. Which means we need to update them in the DB. */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
+            st->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        } else {
+            st->instruction = CSYNC_INSTRUCTION_NONE;
+        }
     } else {
         enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
 
@@ -488,7 +488,9 @@ out:
           }
       }
   }
-  if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
+  if (st->instruction != CSYNC_INSTRUCTION_NONE
+      && st->instruction != CSYNC_INSTRUCTION_IGNORE
+      && st->instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
       && type != CSYNC_FTW_TYPE_DIR) {
     st->child_modified = 1;
   }
@@ -877,10 +879,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
       if (ctx->current_fs && !ctx->current_fs->child_modified
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
-        ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
-        if (ctx->current == REMOTE_REPLICA) {
-          ctx->current_fs->should_update_metadata = true;
-        }
+          if (ctx->current == REMOTE_REPLICA) {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+          } else {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
+          }
       }
 
       if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
@@ -892,12 +895,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
         /* If a directory has modified files, put the flag on the parent directory as well */
         previous_fs->child_modified = ctx->current_fs->child_modified;
-    }
-
-    if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
-        && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
-        ctx->current_fs->should_update_metadata = true;
     }
 
     ctx->current_fs = previous_fs;
