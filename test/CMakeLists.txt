@@ -42,10 +42,10 @@ owncloud_add_test(FileSystem "")
 owncloud_add_test(ChecksumValidator "")
 
 owncloud_add_test(ExcludedFiles "")
-if(NOT BUILD_WITH_QT4)
+if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
     owncloud_add_test(SyncEngine "syncenginetestutils.h")
     owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
-endif(NOT BUILD_WITH_QT4)
+endif(HAVE_QT5 AND NOT BUILD_WITH_QT4)
 
 SET(FolderMan_SRC ../src/gui/folderman.cpp)
 list(APPEND FolderMan_SRC ../src/gui/folder.cpp )
