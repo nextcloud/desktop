@@ -862,7 +862,7 @@ Ak by ste normálne pokračovali v synchronizácii, skôzobilo by to prepísanie
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujem lokálny priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -906,7 +906,7 @@ Ak by ste normálne pokračovali v synchronizácii, skôzobilo by to prepísanie
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Načítavam zoznam priečinkov zo servera...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="832"/>
