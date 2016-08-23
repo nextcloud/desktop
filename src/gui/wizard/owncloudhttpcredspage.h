@@ -40,7 +40,7 @@ public:
   void cleanupPage() Q_DECL_OVERRIDE;
   bool validatePage() Q_DECL_OVERRIDE;
   int nextId() const Q_DECL_OVERRIDE;
-  void setConnected(bool connected);
+  void setConnected();
   void setErrorString( const QString& err );
 
 Q_SIGNALS:
@@ -53,7 +53,6 @@ private:
 
   Ui_OwncloudHttpCredsPage _ui;
   bool _connected;
-  bool _checking;
   QProgressIndicator* _progressIndi;
   OwncloudWizard* _ocWizard;
 };
