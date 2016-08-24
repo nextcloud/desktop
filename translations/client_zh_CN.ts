@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" version="2.1">
 <context>
     <name>FileSystem</name>
     <message>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="433"/>
         <source>Sync Running</source>
-        <translation>同步正在运行</translation>
+        <translation>正在同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="434"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="533"/>
         <source>Signed out from %1.</source>
-        <translation>从 %1 登出</translation>
+        <translation>从 %1 退出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="489"/>
         <source>%1 of %2 in use</source>
-        <translation>已使用 %2，总计 %1%</translation>
+        <translation>使用量 %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="498"/>
@@ -292,7 +292,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="112"/>
         <source>Signed out</source>
-        <translation>已登出</translation>
+        <translation>已退出</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="114"/>
@@ -752,102 +752,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>一个旧的同步日志 &apos;%1&apos; 被找到，但是不能被移除。请确定没有应用程序正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="926"/>
+        <location filename="../src/gui/folderman.cpp" line="927"/>
         <source> (backup)</source>
         <translation> (备份)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="931"/>
+        <location filename="../src/gui/folderman.cpp" line="932"/>
         <source> (backup %1)</source>
         <translation> (备份 %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>Undefined State.</source>
         <translation>未知状态。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1141"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>Waiting to start syncing.</source>
         <translation>等待启动同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1144"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source>Preparing for sync.</source>
         <translation>准备同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>Sync is running.</source>
         <translation>同步正在运行。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>Last Sync was successful.</source>
         <translation>最后一次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1156"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>上次同步已成功，不过一些文件出现了警告。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1159"/>
         <source>Setup Error.</source>
         <translation>安装失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>User Abort.</source>
         <translation>用户撤销。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1164"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>Sync is paused.</source>
         <translation>同步已暂停。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (同步已暂停)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>No valid folder selected!</source>
         <translation>没有选择有效的文件夹！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
         <translation>选择的路径不是一个文件夹！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1194"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>你没有写入所选文件夹的权限！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1209"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>本地文件夹 %1 是正在使用的同步文件夹，请选择另一个！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地文件夹 %1 包含有正在使用的同步文件夹，请选择另一个！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1220"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>选择的文件夹 %1 是一个符号连接，连接指向的是正在使用的同步文件夹，请选择另一个！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地文件夹 %1 是正在使用的同步文件夹，请选择另一个！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1234"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>选择的文件夹 %1 是一个符号连接，连接指向的是正在使用的同步文件夹，请选择另一个！</translation>
     </message>
@@ -975,7 +975,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>剩余: %5，%1 / %2, 文件数量 %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1044,7 +1044,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="206"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>文件夹在您的 %1 上不可用。&lt;br/&gt;请点此创建它。</translation>
+        <translation>文件夹在 %1 上创建成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="217"/>
@@ -1684,7 +1684,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="51"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;电子邮件</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="61"/>
@@ -2136,7 +2136,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>服务器找不到上一分块。(找不到 E-tag)</translation>
+        <translation>服务器未确认上一分块。(找不到 E-tag)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
@@ -2543,17 +2543,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="81"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - 认证</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
+        <source>SSL Chipher Debug View</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Reauthentication required</source>
         <translation>需要重新认证</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>您的会话已经过期。请重新登录。</translation>
     </message>
@@ -2564,7 +2569,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="453"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
-        <translation>共享给 %1</translation>
+        <translation>使用 %1 共享</translation>
     </message>
 </context>
 <context>
@@ -2866,12 +2871,12 @@ It is not advisable to use it.</source>
         <translation>仅有 %1 有效，至少需要 %2 才能开始</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>你没有权限增加父目录</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>你没有权限增加文件</translation>
     </message>
@@ -2986,54 +2991,54 @@ It is not advisable to use it.</source>
         <translation>无法打开同步日志</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="887"/>
+        <location filename="../src/libsync/syncengine.cpp" line="889"/>
         <source>File name contains at least one invalid character</source>
         <translation>文件名中存在至少一个非法字符</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>已忽略（“选择同步内容”黑名单）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>你没有权限增加子目录</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>无法上传文件，因为服务器端此文件为只读，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1196"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
         <source>Not allowed to remove, restoring</source>
         <translation>无法删除，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1209"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
         <source>Local files and share folder removed.</source>
         <translation>本地文件和共享文件夹已被删除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
         <source>Move not allowed, item restored</source>
         <translation>无法移动，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>无法移动，%1为是只读的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the destination</source>
         <translation>目标</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the source</source>
         <translation>源</translation>
     </message>
@@ -3087,7 +3092,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="209"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>下载文件娇艳失败，将会回退。</translation>
+        <translation>下载的文件校验失败，将会回退。</translation>
     </message>
 </context>
 <context>
@@ -3286,7 +3291,7 @@ It is not advisable to use it.</source>
 </context>
 <context>
     <name>OCC::ownCloudTheme</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;版本 %2，更多信息请访问&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;版权所有 ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</translation>
@@ -3500,7 +3505,7 @@ It is not advisable to use it.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="593"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

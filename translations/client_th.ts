@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="th_TH" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="th_TH" version="2.1">
 <context>
     <name>FileSystem</name>
     <message>
@@ -752,102 +752,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>บนบันทึกการประสานข้อมูลเก่า &apos;%1&apos; แต่ไม่สามารถลบออกได้ กรุณาตรวจสอบให้แน่ใจว่าไม่มีแอพฯ หรือการทำงานใดๆที่ใช้มันอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="926"/>
+        <location filename="../src/gui/folderman.cpp" line="927"/>
         <source> (backup)</source>
         <translation>(สำรองข้อมูล)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="931"/>
+        <location filename="../src/gui/folderman.cpp" line="932"/>
         <source> (backup %1)</source>
         <translation>(สำรองข้อมูล %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>Undefined State.</source>
         <translation>สถานะที่ยังไม่ได้ถูกกำหนด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1141"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>Waiting to start syncing.</source>
         <translation>กำลังรอเริ่มต้นการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1144"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source>Preparing for sync.</source>
         <translation>กำลังเตรียมการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>Sync is running.</source>
         <translation>การประสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>Last Sync was successful.</source>
         <translation>ประสานข้อมูลครั้งล่าสุดเสร็จเรียบร้อยแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1156"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>การประสานข้อมูลสำเร็จ แต่มีคำเตือนในแต่ละไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1159"/>
         <source>Setup Error.</source>
         <translation>เกิดข้อผิดพลาดในการติดตั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>User Abort.</source>
         <translation>ยกเลิกผู้ใช้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1164"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>Sync is paused.</source>
         <translation>การประสานข้อมูลถูกหยุดไว้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (การประสานข้อมูลถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>No valid folder selected!</source>
         <translation>เลือกโฟลเดอร์ไม่ถูกต้อง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
         <translation>เส้นทางที่เลือกไม่ใช่โฟลเดอร์!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1194"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>คุณมีสิทธิ์ที่จะเขียนโฟลเดอร์ที่เลือกนี้!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1209"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>โฟลเดอร์ต้นทาง %1 ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาโฟลเดอร์ต้นทาง %1 ได้ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1220"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>โฟลเดอร์ต้นทาง %1 เป็นการเชื่อมโยงสัญลักษณ์ ลิงค์เป้าหมายมีเนื้อหาโฟลเดอร์ที่ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>เนื้อหาของโฟลเดอร์ต้นทาง %1 ไดถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1234"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>โฟลเดอร์ต้นทาง %1 เป็นการเชื่อมโยงสัญลักษณ์ 
 เป้าหมายของลิงค์มีเนื้อหาที่ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
@@ -1953,7 +1953,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="693"/>
@@ -2545,17 +2545,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="81"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - รับรองความถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
+        <source>SSL Chipher Debug View</source>
+        <translation>ดู SSL Chipher Debug</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Reauthentication required</source>
         <translation>จำเป้นต้องรับรองความถูกต้องอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>เซสชั่นของคุณหมดอายุแล้ว คุณจำเป็นต้องเข้าสู่ระบบใหม่</translation>
     </message>
@@ -2866,12 +2871,12 @@ It is not advisable to use it.</source>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
@@ -2986,54 +2991,54 @@ It is not advisable to use it.</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="887"/>
+        <location filename="../src/libsync/syncengine.cpp" line="889"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1196"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1209"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>
@@ -3286,7 +3291,7 @@ It is not advisable to use it.</source>
 </context>
 <context>
     <name>OCC::ownCloudTheme</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;รุ่น %2 สำหรับข้อมูลเพิ่มเติมดูได้ที่&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt; โดย Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz และอีกหลายคนที่ไม่ได้เอ่ยนาม &lt;/small&gt;&lt;/p&gt;&lt;p&gt; สงวนลิขสิทธิ์ ownCloud, Inc.&lt;/p&gt;&lt;p&gt;ได้รับใบอนุญาตภายใต้ GNU General Public License (GPL) รุ่น 2.0&lt;br/&gt; ownCloud และโลโก้ ownCloud เป็นเครื่องหมายจดทะเบียนการค้าของ ownCloud ในประเทศสหรัฐอเมริกา ประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;</translation>
@@ -3500,7 +3505,7 @@ It is not advisable to use it.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="593"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

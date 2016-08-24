@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="el" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="el" version="2.1">
 <context>
     <name>FileSystem</name>
     <message>
@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Ξεσκεπάζω την ψυχοφθόρα βδελυγμία</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Η έκδοση του διακομιστή %1 είναι παλιά και δεν υποστηρίζεται! Προχωρείστε με δική σας ευθύνη.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="529"/>
@@ -330,12 +330,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 σε %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 σε %2 (αποσυνδεδεμένο)</translation>
     </message>
 </context>
 <context>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Κατάλογος αρχείων που αγνοούνται ή περιέχουν σφάλματα</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="534"/>
@@ -375,22 +375,22 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Δεν είναι συγχρονισμένα (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος δραστηριοτήτων του διακομιστή έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="600"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος της δραστηριότητας συγχρονισμού έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="603"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Ο κατάλογος των μη-συγχρονισμένων αρχείων έχει αντιγραφθεί στο Πρόχειρο</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="608"/>
@@ -430,12 +430,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Απαιτείται ενέργεια: Ειδοποιήσεις</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Ο λογαριασμός %1 δεν έχει ενεργοποιήσει τις δραστηριότητες.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
@@ -750,102 +750,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Βρέθηκε ένα παλαιότερο αρχείο συγχρονισμού &apos;%1&apos;, αλλά δεν μπόρεσε να αφαιρεθεί. Παρακαλώ βεβαιωθείτε ότι καμμία εφαρμογή δεν το χρησιμοποιεί αυτή τη στιγμή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="926"/>
+        <location filename="../src/gui/folderman.cpp" line="927"/>
         <source> (backup)</source>
         <translation>(αντίγραφο ασφαλείας)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="931"/>
+        <location filename="../src/gui/folderman.cpp" line="932"/>
         <source> (backup %1)</source>
         <translation>(αντίγραοφ ασφαλέιας %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>Undefined State.</source>
         <translation>Απροσδιόριστη Κατάσταση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1141"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>Waiting to start syncing.</source>
         <translation>Αναμονή έναρξης συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1144"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source>Preparing for sync.</source>
         <translation>Προετοιμασία για συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>Sync is running.</source>
         <translation>Ο συγχρονισμός εκτελείται.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>Last Sync was successful.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1156"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ο τελευταίος συγχρονισμός ήταν επιτυχής, αλλά υπήρχαν προειδοποιήσεις σε συγκεκριμένα αρχεία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1159"/>
         <source>Setup Error.</source>
         <translation>Σφάλμα Ρύθμισης.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>User Abort.</source>
         <translation>Ματαίωση από Χρήστη.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1164"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>Sync is paused.</source>
         <translation>Παύση συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Παύση συγχρονισμού)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>No valid folder selected!</source>
         <translation>Δεν επιλέχθηκε έγκυρος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
         <translation>Η επιλεγμένη διαδρομή δεν είναι φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1194"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Δεν έχετε δικαιώματα εγγραφής στον επιλεγμένο φάκελο!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1209"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Ο τοπικός φάκελος %1 χρησιμοποιείται ήδη σε μια σύνδεση συγχρονισμού φακέλου. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Ο τοπικός φάκελος %1 περιέχει ήδη ένα φάκελο που χρησιμοποιείται σε μια σύνδεση συγχρονισμού φακέλου. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1220"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Ο τοπικός φάκελος %1 είναι συμβολικός σύνδεσμος. Ο σύνδεσμος που παραπέμπει περιέχει ήδη ένα φάκελο που βρίσκεται σε συγχρονισμό. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Ο τοπικός φάκελος %1 περιέχεται ήδη σε φάκελο που χρησιμοποιείται σε μια σύνδεση συγχρονισμού. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1234"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Ο τοπικός φάκελος %1 είναι συμβολικός σύνδεσμος. Ο σύνδεσμος που παραπέμπει περιέχεται ήδη σε φάκελο που βρίσκεται σε συγχρονισμό. Παρακαλώ επιλέξτε άλλον!</translation>
     </message>
@@ -2543,17 +2543,22 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="81"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Πιστοποίηση</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
+        <source>SSL Chipher Debug View</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Reauthentication required</source>
         <translation>Απαιτείται επανάληψη πιστοποίησης</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Η συνεδρία σας έληξε. Πρέπει να εισέλθετε ξανά για να συνεχίσετε να χρησιμοποιείτε το πρόγραμμα.</translation>
     </message>
@@ -2866,12 +2871,12 @@ It is not advisable to use it.</source>
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε γονικό κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε αρχεία σε αυτόν τον φάκελο</translation>
     </message>
@@ -2986,54 +2991,54 @@ It is not advisable to use it.</source>
         <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="887"/>
+        <location filename="../src/libsync/syncengine.cpp" line="889"/>
         <source>File name contains at least one invalid character</source>
         <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Αγνοήθηκε εξαιτίας της μαύρης λίστας &quot;διάλεξε τι να συγχρονιστεί&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1196"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1209"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
         <source>Local files and share folder removed.</source>
         <translation>Οι τοπικοί φάκελοι και ο φάκελος κοινής χρήσης αφαιρέθηκαν.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
         <source>Move not allowed, item restored</source>
         <translation>Η μετακίνηση δεν επιτρέπεται, το αντικείμενο αποκαταστάθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Η μετακίνηση δεν επιτρέπεται επειδή το %1 είναι μόνο για ανάγνωση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the destination</source>
         <translation>ο προορισμός</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the source</source>
         <translation>η προέλευση</translation>
     </message>
@@ -3286,7 +3291,7 @@ It is not advisable to use it.</source>
 </context>
 <context>
     <name>OCC::ownCloudTheme</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Έκδοση %2. Για περισσότερες πληροφορίες επισκεφθείτε &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Των Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz και άλλων.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Πνευματικά δικαιώματα ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Αδειοδότηση υπό την GNU General Public License (GPL) Έκδοση 2.0&lt;br/&gt;το ownCloud και το λογότυπο ownCloud είναι σήματα κατατεθέντα της ownCloud, Inc. στις Η.Π.Α., σε άλλες χώρες ή και στα δύο&lt;/p&gt;</translation>
@@ -3500,7 +3505,7 @@ It is not advisable to use it.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="593"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>

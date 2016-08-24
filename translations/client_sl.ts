@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sl" version="2.1">
 <context>
     <name>FileSystem</name>
     <message>
@@ -440,12 +440,12 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>Prejeli ste %n novo obvestilo od %2.</numerusform><numerusform>Prejeli ste %n novi obvestili od %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %2.</numerusform></translation>
+        <translation><numerusform>Prejeli ste %n novo obvestilo od %2.</numerusform><numerusform>Prejeli ste %n novi obvestili od %2.</numerusform><numerusform>Prejeli ste %n nova obvestila od %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="359"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>Prejeli ste %n novo obvestilo od %1 in %2.</numerusform><numerusform>Prejeli ste %n novi obvestili od %1 in %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %1 in %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %1 in %2.</numerusform></translation>
+        <translation><numerusform>Prejeli ste %n novo obvestilo od %1 in %2.</numerusform><numerusform>Prejeli ste %n novi obvestili od %1 in %2.</numerusform><numerusform>Prejeli ste %n nova obvestila od %1 in %2.</numerusform><numerusform>Prejeli ste %n novih obvestil od %1 in %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="361"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="365"/>
         <source>%1 Notifications - Action Required</source>
-        <translation>%1 Obvestil - Reakcija je zahtevana</translation>
+        <translation>%1 obvestil ‒ zahtevajo odziv</translation>
     </message>
 </context>
 <context>
@@ -631,42 +631,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="489"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila pobrisana.</numerusform><numerusform>%1 in še %n datoteki sta bili pobrisani.</numerusform><numerusform>%1 in %n drugih datotek je bilo pobrisanih.</numerusform><numerusform>%1 in %n drugih datotek je bilo pobrisanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila izbrisana.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili izbrisani.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile izbrisane.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo izbrisanih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="496"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila naložena.</numerusform><numerusform>%1 in še %n datoteki sta bili naloženi.</numerusform><numerusform>%1 in %n drugih datotek je bilo pobrisanih.</numerusform><numerusform>%1 in %n drugih datotek je bilo pobrisanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila shranjena na disk.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili shranjeni na disk.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile shranjene na disk.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo shranjenih na disk.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="503"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>%1 in še %n datoteki sta bili posodobljeni.</numerusform><numerusform>%1 in %n drugih datotek je bilo posodobljenih.</numerusform><numerusform>%1 in %n drugih datotek je bilo posodobljenih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="510"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 je bila preimenovana v %2 in %n druga datoteka je bila preimenovana.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugih datotek je bilo preimenovanih.</numerusform><numerusform>%1 je bila preimenovana v %2 in %n drugih datotek je bilo preimenovanih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druga datoteka je bila preimenovana.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druge datoteke so bile preimenovane.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugih datotek je bilo preimenovanih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="517"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 je bila premaknjena v %2 in %n druga datoteka je bila premaknjena.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugih datotek je bilo premaknjenih.</numerusform><numerusform>%1 je bila premaknjena v %2 in %n drugih datotek je bilo premaknjenih.</numerusform></translation>
+        <translation><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druga datoteka je bila premaknjena.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druge datoteke so bile premaknjene.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugih datotek je bilo premaknjenih.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="524"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 in %n druga datoteka ima sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugi datoteki imata sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugih datotek ima sinhronizacijski spor.</numerusform><numerusform>%1 in %n drugih datotek ima sinhronizacijski spor.</numerusform></translation>
+        <translation><numerusform>Pri datoteki %1 in še %n drugi datoteki je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="526"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 ima sinhronizacijski spor. Preverite datoteko!</translation>
+        <translation>Pri datoteki %1 je zaznan spor usklajevanja. Preverite datoteko!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 in %n druga datoteka ne more biti sinhronizirana zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugi datoteki ne moreta biti sinhronizirani zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugih datotek ne more biti sinhroniziranih zaradi napak. Preveri dnevnik napak.</numerusform><numerusform>%1 in %n drugih datotek ne more biti sinhroniziranih zaradi napak. Preveri dnevnik napak.</numerusform></translation>
+        <translation><numerusform>Datoteke %1 in še %n druge datoteke ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="533"/>
@@ -719,7 +719,9 @@ Ali ste prepričani, da želite izvesti to opravilo?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Z usklajevanjem bi se datoteke povrnile na predhodni čas usklajevanja mape &apos;%1&apos;.
+To se lahko zgodi, če je na strežniku na primer obnovljena varnostna kopija.
+Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot preimenovane datoteke v usklajevalnem sporu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
@@ -750,102 +752,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, ali je datoteka v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="926"/>
+        <location filename="../src/gui/folderman.cpp" line="927"/>
         <source> (backup)</source>
         <translation>(varnostna kopija)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="931"/>
+        <location filename="../src/gui/folderman.cpp" line="932"/>
         <source> (backup %1)</source>
         <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1141"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>Waiting to start syncing.</source>
         <translation>Čakanje začetek usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1144"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source>Preparing for sync.</source>
         <translation>Poteka priprava za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje je v teku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>Last Sync was successful.</source>
         <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1156"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Zadnje usklajevanje je bilo sicer uspešno, vendar z opozorili za posamezne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1159"/>
         <source>Setup Error.</source>
         <translation>Napaka nastavitve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>User Abort.</source>
         <translation>Uporabniška prekinitev.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1164"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (usklajevanje je v premoru)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>No valid folder selected!</source>
         <translation>Ni izbrane veljavne mape!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
         <translation>Izbrana pot ni mapa!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1194"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ni ustreznih dovoljenj za pisanje v izbrano mapo!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1209"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 že vključuje mapo, ki je določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1220"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je simbolna povezava. Cilj povezave že vsebuje mapo, ki je uporabljena pri povezavi usklajevanja mape. Izberite drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1234"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je simbolna povezava. Cilj povezave že vsebuje mapo, ki je uporabljena pri povezavi usklajevanja mape. Izberite drugo.</translation>
     </message>
@@ -899,7 +901,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="132"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>Dodajanje mape je onemogočeno, ker se usklajojejo vse vaše datoteke. Če želite usklajevati več map, odstranite trenutno nastavljeno korensko mapo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
@@ -973,7 +975,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%5 ostane, %1 od %2, datoteka %3 od %4</translation>
+        <translation>Preostalo še %5, %1 od %2, datoteka %3 od %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
@@ -1674,7 +1676,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="37"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prijava na varen naslov strežnika &lt;em&gt;%1&lt;/em&gt; ni uspela.. Kako želite nadaljevati?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Povezovanje z navedenim naslovom varnega strežnika &lt;em&gt;%1&lt;/em&gt; je spodletelo. Kako želite nadaljevati?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1950,7 +1952,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation>Prenesena datoteka je prazna čeprav je strežnik najavil, da bi morala bi %1.</translation>
+        <translation>Prejeta datoteka je prazna, čeprav je na strežniku objavljena z %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="693"/>
@@ -1978,7 +1980,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="148"/>
         <source>Continue blacklisting:</source>
-        <translation>Nadaljevanje črnega spiska:</translation>
+        <translation>Nadaljuj z blokiranjem prek črnega seznama:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
@@ -2115,7 +2117,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="637"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Vsiljevanje prekinitve posla na prekinitvi povezave HTTP s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
@@ -2244,7 +2246,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="417"/>
         <source>Choose What to Sync: Deselect remote subfolders you do not wish to synchronize.</source>
-        <translation>Izberite, kaj naj se sinhronizira: Izključite oddaljene mape, ki jih ne želite imeti na tem računalniku.</translation>
+        <translation>Izberite, kaj želite uskladiti: Odstranite izbor oddaljenih map, ki jih ne želite imeti na tem računalniku.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="423"/>
@@ -2387,7 +2389,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="169"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče dodeliti v souporabo, ker ni navedenih ustreznih dovoljenj.</translation>
     </message>
 </context>
 <context>
@@ -2445,7 +2447,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="289"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>Datoteke ni mogoče dodeliti v souporabo, ker je ni navedenih ustreznih dovoljenj.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
@@ -2542,17 +2544,22 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="81"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - Overitev</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
+        <source>SSL Chipher Debug View</source>
+        <translation>Pogled razhroščevalnika šifer SSL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Reauthentication required</source>
         <translation>Zahtevano je vnovično overjanje istovetnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Seja je potekla. Ponovno se je treba prijaviti in nadaljevati z uporabo odjemalca.</translation>
     </message>
@@ -2776,7 +2783,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
-        <translation type="unfinished"/>
+        <translation>Nalaganje dnevniške datoteke s CSync je spodletelo. Dnevniška datoteka je okvarjena.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="128"/>
@@ -2865,12 +2872,12 @@ Uporaba ni priporočljiva.</translation>
         <translation>Le %1 je na voljo, zahtevanih pa je vaj %2 za zagon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Dejanje ni dovoljeno, ker ni ustreznih dovoljenj za dodajanje starševske mape</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Dejanje ni dovoljeno, ker ni ustreznih dovoljenj za dodajanje datotek v to mapo</translation>
     </message>
@@ -2902,17 +2909,17 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="121"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nalaganje ali ustvarjanje dnevniške datoteke s CSync je spodletelo. Za to opravilo so zahtevana dovoljenja branja in zapisovanja krajevne mape za usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>CSync failed due to unhandled permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Delovanje CSync je zaradi nerazrešenih dovoljenj spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>CSync tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Ustvarjanje mape s CSync je spodletelo. Mapa že obstaja.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="182"/>
@@ -2952,7 +2959,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
         <source>Stat failed.</source>
-        <translation>Statistika ni uspela.</translation>
+        <translation>Določanje statističnih podatkov je spodletelo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
@@ -2985,54 +2992,54 @@ Uporaba ni priporočljiva.</translation>
         <translation>Ni mogoče odpreti dnevnika usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="887"/>
+        <location filename="../src/libsync/syncengine.cpp" line="889"/>
         <source>File name contains at least one invalid character</source>
         <translation>Ime datoteke vsebuje vsaj en neveljaven znak.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Prezrto, ker je predmet označen na črni listi za usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Dejanje ni dovoljeno! Ni ustreznih dovoljenj za dodajanje podmap v to mapo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ni dovoljeno pošiljati te datoteke, ker ima določena dovoljenja le za branje. Datoteka bo obnovljena na izvorno različico.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1196"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranitev ni dovoljena, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1209"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
         <source>Local files and share folder removed.</source>
         <translation>Krajevne datoteke in mape v souporabi so odstranjene.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
         <source>Move not allowed, item restored</source>
         <translation>Premikanje ni dovoljeno, datoteka bo obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Premikanje ni dovoljeno, ker je nastavljeno določilo %1 le za branje.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the destination</source>
         <translation>cilj</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the source</source>
         <translation>vir</translation>
     </message>
@@ -3194,7 +3201,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Na strežniku računua %1 teče starejša nepodprta različica %2. Z uporabo trenutno nameščenega odjemalca z nepodporo različico strežnika ni varno. Nadaljujete na lastno odgovornost.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
@@ -3285,7 +3292,7 @@ Uporaba ni priporočljiva.</translation>
 </context>
 <context>
     <name>OCC::ownCloudTheme</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Različica %2. Več podrobnosti je zabeleženih na &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Avtorstvo: Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz in drugi.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Avtorske pravice ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Programski paket je objavljen z dovoljenjem GNU General Public License (GPL) Version 2.0.&lt;br/&gt;ownCloud in logotip ownCloud sta blagovni znamki ownCloud v Združenih državah, drugih državah ali oboje.&lt;/p&gt;</translation>
@@ -3499,7 +3506,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="593"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
@@ -3567,32 +3574,32 @@ Uporaba ni priporočljiva.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n leto</numerusform><numerusform>%n leti</numerusform><numerusform>%n let</numerusform><numerusform>%n let</numerusform></translation>
+        <translation><numerusform>%n leto</numerusform><numerusform>%n leti</numerusform><numerusform>%n leta</numerusform><numerusform>%n let</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n mesec</numerusform><numerusform>%n meseca</numerusform><numerusform>%n mesecev</numerusform><numerusform>%n mesecev</numerusform></translation>
+        <translation><numerusform>%n mesec</numerusform><numerusform>%n meseca</numerusform><numerusform>%n meseci</numerusform><numerusform>%n mesecev</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n dan</numerusform><numerusform>%n dneva</numerusform><numerusform>%n dni</numerusform><numerusform>%n dni</numerusform></translation>
+        <translation><numerusform>%n dan</numerusform><numerusform>%n dneva</numerusform><numerusform>%n dnevi</numerusform><numerusform>%n dni</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n ura</numerusform><numerusform>%n uri</numerusform><numerusform>%n ur</numerusform><numerusform>%n ur</numerusform></translation>
+        <translation><numerusform>%n ura</numerusform><numerusform>%n uri</numerusform><numerusform>%n ure</numerusform><numerusform>%n ur</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minut</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minute</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundi</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundi</numerusform><numerusform>%n sekunde</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>

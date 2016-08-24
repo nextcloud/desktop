@@ -863,6 +863,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     _hasNoneFiles = false;
     _hasRemoveFile = false;
+    _hasForwardInTimeFiles = false;
+    _backInTimeFiles = 0;
     bool walkOk = true;
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();

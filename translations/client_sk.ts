@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk_SK" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sk_SK" version="2.1">
 <context>
     <name>FileSystem</name>
     <message>
@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="501"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 sa používa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="521"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Verzia servera %1 je stará a nepodporovaná. Pokračujte na vlastné nebezpečenstvo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="529"/>
@@ -330,12 +330,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 na %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 na %2 (odpojené)</translation>
     </message>
 </context>
 <context>
@@ -344,7 +344,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita servera</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="522"/>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="530"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam ignorovaných alebo chybných súborov</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="534"/>
@@ -375,22 +375,22 @@
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Nezosynchronizované (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="596"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam aktivít servera bol skopírovaný do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="600"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam aktivít synchronizácie bol skopírovaný do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="603"/>
         <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam nesynchronizovaných položiek bol skopírovaný do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="608"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita servera</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="90"/>
@@ -430,12 +430,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="139"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Požaduje sa činnosť: oznámenia</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="144"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;Účet %1 nemá zapnuté aktivity.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="351"/>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -719,7 +719,9 @@ Ste si istý, že chcete pokračovať?</translation>
         <source>This sync would reset the files to an erlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Táto synchronizácia by vrátila súbory v synchronizačnom priečinku „%1“ na starší čas.
+To sa môže stať v prípade, že na vašom serveri bola obnovená záloha.
+Ak by ste normálne pokračovali v synchronizácii, skôzobilo by to prepísanie všetkých vašich súborov ich staršou verziou. Chcete zachovať vaše lokálne, najnovšie súbory ako konfliktné súbory?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
@@ -734,7 +736,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Ponechať lokálne súbory ako konfliktné</translation>
     </message>
 </context>
 <context>
@@ -750,102 +752,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Starý synchronizačný žurnál &apos;%1&apos; nájdený, avšak neodstrániteľný. Prosím uistite sa, že žiadna aplikácia ho práve nevyužíva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="926"/>
+        <location filename="../src/gui/folderman.cpp" line="927"/>
         <source> (backup)</source>
         <translation> (záloha)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="931"/>
+        <location filename="../src/gui/folderman.cpp" line="932"/>
         <source> (backup %1)</source>
         <translation> (záloha %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1138"/>
+        <location filename="../src/gui/folderman.cpp" line="1139"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1141"/>
+        <location filename="../src/gui/folderman.cpp" line="1142"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Čaká sa na začiatok synchronizácie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1144"/>
+        <location filename="../src/gui/folderman.cpp" line="1145"/>
         <source>Preparing for sync.</source>
         <translation>Príprava na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1147"/>
+        <location filename="../src/gui/folderman.cpp" line="1148"/>
         <source>Sync is running.</source>
         <translation>Synchronizácia prebieha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1150"/>
+        <location filename="../src/gui/folderman.cpp" line="1151"/>
         <source>Last Sync was successful.</source>
         <translation>Posledná synchronizácia sa úspešne skončila.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1155"/>
+        <location filename="../src/gui/folderman.cpp" line="1156"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Posledná synchronizácia bola úspešná, ale s varovaniami pre individuálne súbory.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1158"/>
+        <location filename="../src/gui/folderman.cpp" line="1159"/>
         <source>Setup Error.</source>
         <translation>Chyba pri inštalácii.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1161"/>
+        <location filename="../src/gui/folderman.cpp" line="1162"/>
         <source>User Abort.</source>
         <translation>Zrušené používateľom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1164"/>
+        <location filename="../src/gui/folderman.cpp" line="1165"/>
         <source>Sync is paused.</source>
         <translation>Synchronizácia je pozastavená.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1170"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizácia je pozastavená)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1178"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>No valid folder selected!</source>
         <translation>Nebol zvolený platný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1189"/>
+        <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
         <translation>Zvolená cesta nie je priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1194"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnenia pre zápis do daného priečinka!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1209"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1220"/>
+        <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1233"/>
+        <location filename="../src/gui/folderman.cpp" line="1234"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -860,7 +862,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizujem lokálny priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -904,12 +906,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Načítavam zoznam priečinkov zo servera...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="832"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolujú sa zmeny v „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="867"/>
@@ -1515,18 +1517,18 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvorený o %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Ukončenie o pár sekúnd...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="133"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 požiadavka zlyhala o %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="139"/>
@@ -1912,7 +1914,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -1935,7 +1937,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Súbor bol vymazaný zo servera</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="545"/>
@@ -1960,7 +1962,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="791"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2001,7 +2003,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2032,7 +2034,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="245"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2058,7 +2060,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2086,7 +2088,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2135,7 +2137,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2178,7 +2180,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="78"/>
         <source>Local sync protocol</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny protokol synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="80"/>
@@ -2347,7 +2349,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialóg</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="47"/>
@@ -2537,17 +2539,22 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>OCC::ShibbolethWebView</name>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="79"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="81"/>
         <source>%1 - Authenticate</source>
         <translation>%1 - overenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="91"/>
+        <source>SSL Chipher Debug View</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Reauthentication required</source>
         <translation>Vyžaduje sa opätovné overenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="85"/>
+        <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="99"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
         <translation>Platnosť relácie uplynula. Musíte sa znovu prihlásiť, ak chcete pokračovať v používaní klienta.</translation>
     </message>
@@ -2841,12 +2848,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="191"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Nastala chyba počas otvárania priečinka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="194"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri čítaní adresára</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="440"/>
@@ -2860,12 +2867,12 @@ Nie je vhodné ju používať.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2917,7 +2924,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Prístup odmietnutý</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="199"/>
@@ -2972,7 +2979,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="787"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Nemožno čítať zo synchronizačného žurnálu</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="833"/>
@@ -2980,54 +2987,54 @@ Nie je vhodné ju používať.</translation>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="887"/>
+        <location filename="../src/libsync/syncengine.cpp" line="889"/>
         <source>File name contains at least one invalid character</source>
         <translation>Názov súboru obsahuje nevhodný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1091"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorované podľa nastavenia &quot;vybrať čo synchronizovať&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1117"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Nie je dovolené, lebo nemáte oprávnenie pridávať podpriečinky do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1176"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1196"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1209"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokálne súbory a zdieľaný priečinok boli odstránené.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
         <source>Move not allowed, item restored</source>
         <translation>Presunutie nie je dovolené. Položka obnovená.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Presunutie nie je dovolené, pretože %1 je na serveri iba na čítanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the destination</source>
         <translation>cieľ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>
@@ -3037,7 +3044,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Záznam synchronizácie</translation>
     </message>
 </context>
 <context>
@@ -3076,7 +3083,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="204"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Hlavička kontrolného súčtu obsahovala neznámy typ kontrolného súčtu „%1“</translation>
     </message>
     <message>
         <location filename="../src/libsync/checksums.cpp" line="209"/>
@@ -3116,7 +3123,7 @@ Nie je vhodné ju používať.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="544"/>
         <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>Prihlásiť sa...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="394"/>
@@ -3134,7 +3141,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="656"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolujú sa zmeny v „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
@@ -3179,12 +3186,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="271"/>
         <source>Disconnected from %1</source>
-        <translation type="unfinished"/>
+        <translation>Odpojený od %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Nepodporovaná verzia servera</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="237"/>
@@ -3194,7 +3201,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
         <source>Disconnected from accounts:</source>
-        <translation type="unfinished"/>
+        <translation>Odpojené od účtov:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="277"/>
@@ -3204,47 +3211,47 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia účtu je vypnutá</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
         <source>Unpause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť pozastavenie všetkých priečinkov</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="384"/>
         <source>Pause all folders</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť všetky priečinky</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="515"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť pozastavenie všetkej synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="517"/>
         <source>Unpause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Zrušiť pozastavenie synchronizácie</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="525"/>
         <source>Pause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť všetku synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="527"/>
         <source>Pause synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Pozastaviť synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="534"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Odhlásiť sa zo všetkých účtov</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="542"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Prihlásiť sa do všetkých účtov...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="617"/>
@@ -3280,7 +3287,7 @@ Nie je vhodné ju používať.</translation>
 </context>
 <context>
     <name>OCC::ownCloudTheme</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verzia %2. Ďalšie informácie získate na adrese &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Autori Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz a ďalší.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licencované za podmienok GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud a ownCloud Logo sú registrované obchodné známky ownCloud, Inc. v USA, ďalších krajinách, alebo oboje.&lt;/p&gt;</translation>
@@ -3494,7 +3501,7 @@ Nie je vhodné ju používať.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="593"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>
@@ -3504,37 +3511,37 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="473"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>v budúcnosti</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="469"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>pred %n dňom</numerusform><numerusform>pred %n dňami</numerusform><numerusform>pred %n dňami</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="477"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>pred %n hodinou</numerusform><numerusform>pred %n hodinami</numerusform><numerusform>pred %n hodinami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="482"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>teraz</translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="484"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Menej ako pred minútou</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="487"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>pred %n minútou</numerusform><numerusform>pred %n minútami</numerusform><numerusform>pred %n minútami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="490"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Pred istým časom</translation>
     </message>
 </context>
 <context>
@@ -3562,32 +3569,32 @@ Nie je vhodné ju používať.</translation>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="319"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n rokov</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="320"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n mesiac</numerusform><numerusform>%n mesiace</numerusform><numerusform>%n mesiacov</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="321"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n deň</numerusform><numerusform>%n dni</numerusform><numerusform>%n dní</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodín</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minúta</numerusform><numerusform>%n minúty</numerusform><numerusform>%n minút</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="324"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekúnd</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="348"/>
@@ -3631,7 +3638,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Verzia zo servera bola stiahnutá, kópia zmenila lokálny súbor na konfliktný súbor</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
