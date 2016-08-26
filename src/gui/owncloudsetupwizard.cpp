@@ -508,6 +508,10 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
     , _redirects(0)
 {
+    // This job implements special redirect handling to detect redirections
+    // to pages that are indicative of Shibboleth-using servers. Hence we
+    // disable the standard job redirection handling here.
+    _followRedirects = false;
 }
 
 void DetermineAuthTypeJob::start()
