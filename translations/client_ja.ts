@@ -834,12 +834,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1214"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>ローカルフォルダー %1 にはすでに同期フォルダーとして利用されてるフォルダを含んでいます。他のフォルダーを選択してください。</translation>
+        <translation>ローカルフォルダー %1 にはすでに同期フォルダーとして利用されてるフォルダーを含んでいます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1221"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>ローカルフォルダー %1 はシンボリックリンクです。リンク先のフォルダにはすでに同期フォルダーとして利用されているフォルダーを含みます。他のフォルダーを選択してください。</translation>
+        <translation>ローカルフォルダー %1 はシンボリックリンクです。リンク先のフォルダーにはすでに同期フォルダーとして利用されているフォルダーを含みます。他のフォルダーを選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
@@ -2217,7 +2217,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation>プロキシサーバーにユーザー名とパスワードが必要です。</translation>
+        <translation>プロキシサーバーにはユーザー名とパスワードが必要です。</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
