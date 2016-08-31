@@ -1076,11 +1076,14 @@ void FolderStatusModel::slotShowFetchProgress()
             auto idx = it.key();
             auto* info = infoForIndex(idx);
             if (info && info->_fetching) {
-                if (!info->hasLabel()) {
+                bool add = !info->hasLabel();
+                if (add) {
                     beginInsertRows(idx, 0, 0);
-                    endInsertRows();
                 }
                 info->_fetchingLabel = true;
+                if (add) {
+                    endInsertRows();
+                }
             }
             it.remove();
         }
