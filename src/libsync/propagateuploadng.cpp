@@ -35,7 +35,6 @@ namespace OCC {
 
 QUrl PropagateUploadFileNG::chunkUrl(int chunk)
 {
-    // FIXME! we should not use the user from the credential, we should have it in the account
     QString path = QLatin1String("remote.php/dav/uploads/")
         + _propagator->account()->user()
         + QLatin1Char('/') + QString::number(_transferId);
@@ -204,7 +203,8 @@ void PropagateUploadFileNG::startNextChunk()
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
-        QString destination = _propagator->_remoteDir + _item->_file;
+        QString destination =  QLatin1String("remote.php/dav/files/")
+            + _propagator->account()->user() + QLatin1Char('/') + QString::number(_transferId);
         auto headers = PropagateUploadFileCommon::headers();
         auto job = new MoveJob(_propagator->account(), Account::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
