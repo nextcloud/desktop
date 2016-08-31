@@ -379,7 +379,7 @@ private:
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4
     friend class PropagateDownloadFile;
-    friend class PropagateUploadFileQNAM;
+    friend class PropagateUploadFile;
     friend class PropagateLocalMkdir;
     friend class PropagateLocalRename;
     friend class PropagateRemoteMove;
