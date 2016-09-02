@@ -74,7 +74,7 @@ public:
     Folder* setupFolderFromOldConfigFile(const QString &, AccountState *account );
 
     /**
-     * Ensures that a given directory does not contain a .csync_journal.
+     * Ensures that a given directory does not contain a sync journal file.
      *
      * @returns false if the journal could not be removed, true otherwise.
      */

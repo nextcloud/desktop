@@ -257,9 +257,7 @@ int FolderMan::setupFoldersMigration()
 
 bool FolderMan::ensureJournalGone( const QString& journalDbFile )
 {
-    // FIXME move this to UI, not libowncloudsync
-    // FIXME use the remoteUrl to remove the MD5-journal name
-    // remove old .csync_journal file
+    // remove the old journal file
     while (QFile::exists(journalDbFile) && !QFile::remove(journalDbFile)) {
         qDebug() << "Could not remove old db file at" << journalDbFile;
         int ret = QMessageBox::warning(0, tr("Could not reset folder state"),
