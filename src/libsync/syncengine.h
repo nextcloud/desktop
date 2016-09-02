@@ -166,6 +166,8 @@ private slots:
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
 
+    QString journalDbFilePath() const;
+
     static int treewalkLocal( TREE_WALK_FILE*, void *);
     static int treewalkRemote( TREE_WALK_FILE*, void *);
     int treewalkFile( TREE_WALK_FILE*, bool );

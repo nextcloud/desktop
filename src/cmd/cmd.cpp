@@ -271,7 +271,6 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     }
 }
 
-
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
@@ -437,8 +436,6 @@ restart_sync:
 
     Cmd cmd;
     SyncJournalDb db;
-    // FIXME: Use new MD5 based name
-    db.setDatabaseFilePath(options.source_dir + ".csync_journal.db");
 
     if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(&db, selectiveSyncList);

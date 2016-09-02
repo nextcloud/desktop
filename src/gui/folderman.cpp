@@ -815,7 +815,7 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountS
 
     auto folder = new Folder(folderDefinition, accountState, this );
 
-    if (!ensureJournalGone(folder->journalDbFilePath())) {
+    if (!ensureJournalGone(folder->journalDb()->databaseFilePath())) {
         delete folder;
         return 0;
     }
