@@ -90,18 +90,10 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
 #endif
     url_string = Utility::toCSyncScheme(url_string);
 
-    // localPath always has a trailing slash
-    QString dbFile = localPath;
-    dbFile.append( QLatin1String(".csync_"));
-    // FIXME: Make sure this remoteUrlPath is equal to the one calculated in FolderMan::ensureJournalGone
-    // FIXME: Maybe it is better to only allow different hosts, without path component.
-    QString remoteUrlPath = _remoteUrl.toString()+_remotePath;
-    QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
-    dbFile.append( ba.left(6).toHex() );
-
-    _journal->setDatabaseFilePath(dbFile);
-
     csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
+
+    const QString dbFile = _journal->databaseFilePath();
+    Q_ASSERT(!dbFile.isEmpty());
     csync_init(_csync_ctx, dbFile.toUtf8().data());
 
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));

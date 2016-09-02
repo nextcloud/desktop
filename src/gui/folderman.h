@@ -78,7 +78,7 @@ public:
      *
      * @returns false if the journal could not be removed, true otherwise.
      */
-    static bool ensureJournalGone(const QString &path, const QString &remoteUrl);
+    static bool ensureJournalGone(const QString& journalDbFile);
 
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );

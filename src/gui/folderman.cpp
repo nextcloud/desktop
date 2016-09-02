@@ -255,20 +255,18 @@ int FolderMan::setupFoldersMigration()
     return _folderMap.size();
 }
 
-bool FolderMan::ensureJournalGone(const QString &localPath, const QString& remoteUrl)
+bool FolderMan::ensureJournalGone( const QString& journalDbFile )
 {
-    Q_UNUSED(remoteUrl);
     // FIXME move this to UI, not libowncloudsync
     // FIXME use the remoteUrl to remove the MD5-journal name
     // remove old .csync_journal file
-    QString stateDbFile = localPath+QLatin1String("/.csync_journal.db");
-    while (QFile::exists(stateDbFile) && !QFile::remove(stateDbFile)) {
-        qDebug() << "Could not remove old db file at" << stateDbFile;
+    while (QFile::exists(journalDbFile) && !QFile::remove(journalDbFile)) {
+        qDebug() << "Could not remove old db file at" << journalDbFile;
         int ret = QMessageBox::warning(0, tr("Could not reset folder state"),
                                        tr("An old sync journal '%1' was found, "
                                           "but could not be removed. Please make sure "
                                           "that no application is currently using it.")
-                                       .arg(QDir::fromNativeSeparators(QDir::cleanPath(stateDbFile))),
+                                       .arg(QDir::fromNativeSeparators(QDir::cleanPath(journalDbFile))),
                                        QMessageBox::Retry|QMessageBox::Abort);
         if (ret == QMessageBox::Abort) {
             return false;
@@ -798,12 +796,8 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
-    // FIXME journal name
-    if (!ensureJournalGone(folderDefinition.localPath, accountState->account()->url().toString() + folderDefinition.targetPath)) {
-        return 0;
-    }
-
     auto folder = addFolderInternal(folderDefinition, accountState);
+
     if(folder) {
         folder->saveToSettings();
         emit folderSyncStateChange(folder);
@@ -822,6 +816,11 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountS
     }
 
     auto folder = new Folder(folderDefinition, accountState, this );
+
+    if (!ensureJournalGone(folder->journalDbFilePath())) {
+        delete folder;
+        return 0;
+    }
 
     qDebug() << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;

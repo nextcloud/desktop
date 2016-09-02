@@ -81,6 +81,9 @@ Folder::Folder(const FolderDefinition& definition,
 
     _syncResult.setFolder(_definition.alias);
 
+    // initalize the journal with the file path of the journal
+    _journal.setDatabaseFilePath( journalDbFilePath() );
+
     _engine.reset(new SyncEngine(_accountState->account(), path(), remoteUrl(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
@@ -117,6 +120,23 @@ Folder::~Folder()
 {
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
+}
+
+QString Folder::journalDbFilePath() const
+{
+    // localPath always has a trailing slash
+    QString dbFile = path();
+    dbFile.append( QLatin1String(".sync_"));
+    // FIXME: Maybe it is better to only allow different hosts, without path component.
+    QString remoteUrlPath = remoteUrl().toString();
+    if( remotePath() != QLatin1String("/") ) {
+        remoteUrlPath.append(remotePath());
+    }
+    QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
+    dbFile.append( ba.left(6).toHex() );
+    dbFile.append(".db");
+
+    return dbFile;
 }
 
 void Folder::checkLocalPath()

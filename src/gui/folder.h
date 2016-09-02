@@ -164,6 +164,11 @@ public:
      void setDirtyNetworkLimits();
 
      /**
+      * The file path of the journal db file, calculated from remote url
+      */
+     QString journalDbFilePath() const;
+
+     /**
       * Ignore syncing of hidden files or not. This is defined in the
       * folder definition
       */
