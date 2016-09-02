@@ -27,7 +27,7 @@
 #include "csync_log.c"
 #include "c_private.h"
 
-static void setup(void **state) {
+static int setup(void **state) {
     CSYNC *csync;
     int rc;
 
@@ -40,9 +40,11 @@ static void setup(void **state) {
     csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 
     *state = csync;
+    
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = *state;
     int rc;
 
@@ -58,6 +60,8 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
 static void check_log_callback(int verbosity,
@@ -141,11 +145,11 @@ static void check_logging(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_set_log_level),
-        unit_test(check_set_auth_callback),
-        unit_test_setup_teardown(check_logging, setup, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_set_log_level),
+        cmocka_unit_test(check_set_auth_callback),
+        cmocka_unit_test_setup_teardown(check_logging, setup, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }

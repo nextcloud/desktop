@@ -28,15 +28,16 @@
 
 #define EXCLUDE_LIST_FILE SOURCEDIR"/../sync-exclude.lst"
 
-static void setup(void **state) {
+static int setup(void **state) {
     CSYNC *csync;
 
     csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
 
     *state = csync;
+    return 0;
 }
 
-static void setup_init(void **state) {
+static int setup_init(void **state) {
     CSYNC *csync;
     int rc;
 
@@ -58,9 +59,10 @@ static void setup_init(void **state) {
     assert_int_equal(rc, 0);
 
     *state = csync;
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = *state;
     int rc;
 
@@ -73,6 +75,8 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
 static void check_csync_exclude_add(void **state)
@@ -142,6 +146,17 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
     rc = csync_excluded_no_ctx(csync->excludes, "subdir/.csync_journal.db", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    
+    /* also the new form of the database name */
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db.ctmp", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db-shm", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "subdir/.sync_5bdd60bdfcfa.db", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    
 
     /* pattern ]*.directory - ignore and remove */
     rc = csync_excluded_no_ctx(csync->excludes, "my.~directory", CSYNC_FTW_TYPE_FILE);
@@ -364,16 +379,16 @@ static void check_csync_exclude_expand_escapes(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
-        unit_test_setup_teardown(check_csync_exclude_load, setup, teardown),
-        unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
-        unit_test_setup_teardown(check_csync_excluded_traversal, setup_init, teardown),
-        unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
-        unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
-        unit_test_setup_teardown(check_csync_excluded_performance, setup_init, teardown),
-        unit_test(check_csync_exclude_expand_escapes),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_exclude_load, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_excluded_traversal, setup_init, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_excluded_performance, setup_init, teardown),
+        cmocka_unit_test(check_csync_exclude_expand_escapes),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }

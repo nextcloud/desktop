@@ -81,7 +81,7 @@ static void statedb_insert_metadata(sqlite3 *db)
     }
 }
 
-static void setup(void **state)
+static int setup(void **state)
 {
     CSYNC *csync;
     int rc;
@@ -94,7 +94,7 @@ static void setup(void **state)
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
     csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    csync_init(csync);
+    csync_init(csync, TESTDB);
 
     /* Create a new db with metadata */
     sqlite3 *db;
@@ -111,9 +111,11 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
 
     *state = csync;
+    
+    return 0;
 }
 
-static void setup_ftw(void **state)
+static int setup_ftw(void **state)
 {
     CSYNC *csync;
     int rc;
@@ -125,7 +127,7 @@ static void setup_ftw(void **state)
     rc = system("mkdir -p /tmp/check_csync2");
     assert_int_equal(rc, 0);
     csync_create(&csync, "/tmp", "/tmp");
-    csync_init(csync);
+    csync_init(csync, TESTDB);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -139,9 +141,11 @@ static void setup_ftw(void **state)
 
     csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
+    
+    return 0;
 }
 
-static void teardown(void **state)
+static int teardown(void **state)
 {
     CSYNC *csync = *state;
     int rc;
@@ -151,9 +155,11 @@ static void teardown(void **state)
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
-static void teardown_rm(void **state) {
+static int teardown_rm(void **state) {
     int rc;
 
     teardown(state);
@@ -164,6 +170,8 @@ static void teardown_rm(void **state) {
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
+    
+    return 0;
 }
 
 /* create a file stat, caller must free memory */
@@ -430,19 +438,19 @@ static void check_csync_ftw_failing_fn(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_detect_update, setup, teardown_rm),
-        unit_test_setup_teardown(check_csync_detect_update_db_none, setup, teardown),
-        unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
-        unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
-        unit_test_setup_teardown(check_csync_detect_update_db_new, setup, teardown_rm),
-        unit_test_setup_teardown(check_csync_detect_update_null, setup, teardown_rm),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_detect_update, setup, teardown_rm),
+        cmocka_unit_test_setup_teardown(check_csync_detect_update_db_none, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_detect_update_db_new, setup, teardown_rm),
+        cmocka_unit_test_setup_teardown(check_csync_detect_update_null, setup, teardown_rm),
 
-        unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
-        unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),
-        unit_test_setup_teardown(check_csync_ftw_failing_fn, setup_ftw, teardown_rm),
+        cmocka_unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
+        cmocka_unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),
+        cmocka_unit_test_setup_teardown(check_csync_ftw_failing_fn, setup_ftw, teardown_rm),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

@@ -27,7 +27,7 @@
 
 
 
-static void setup(void **state)
+static int setup(void **state)
 {
     CSYNC *csync;
     int rc = 0;
@@ -43,7 +43,7 @@ static void setup(void **state)
     rc = system("mkdir -p /tmp/check_csync");
     assert_int_equal(rc, 0);
     csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
-    csync_init(csync);
+    csync_init(csync, TESTDB);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -55,9 +55,11 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
 
     *state = csync;
+    
+    return 0;
 }
 
-static void setup_db(void **state)
+static int setup_db(void **state)
 {
     char *errmsg;
     int rc = 0;
@@ -93,10 +95,12 @@ static void setup_db(void **state)
     assert_int_equal(rc, SQLITE_OK);
 
     sqlite3_close(db);
+    
+    return 0;
 
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = *state;
     int rc = 0;
 
@@ -110,6 +114,8 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
 
@@ -210,15 +216,15 @@ static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_statedb_query_statement, setup, teardown),
-        unit_test_setup_teardown(check_csync_statedb_drop_tables, setup, teardown),
-        unit_test_setup_teardown(check_csync_statedb_insert_metadata, setup, teardown),
-        unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
-        unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
-        unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_statedb_query_statement, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_drop_tables, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_insert_metadata, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 
