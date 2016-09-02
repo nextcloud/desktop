@@ -153,7 +153,8 @@ By default, the ownCloud Client ignores the following files:
 
 * Files matched by one of the patterns defined in the Ignored Files Editor
 * Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
-* Files starting with ``.csync_journal.db``, as these files are reserved for journalling.
+* Files starting with ``.sync_xxxxxxx.db`` and the old format ``.csync_journal.db``, 
+as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character ``]`` directly followed by
