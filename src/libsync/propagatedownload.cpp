@@ -638,8 +638,9 @@ static void handleRecallFile(const QString &fn)
         QString rpath = makeRecallFileName(fpath);
 
         qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-        QString error;
-        FileSystem::uncheckedRenameReplace(fpath, rpath, &error);
+        // Remove the target first, QFile::copy will not overwrite it.
+        FileSystem::remove(rpath);
+        QFile::copy(fpath, rpath);
     }
 }
 

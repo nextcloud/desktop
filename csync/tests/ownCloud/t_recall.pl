@@ -64,6 +64,10 @@ csync();
 assert( -e glob(localDir().'dir/file2_.sys.admin#recall#-*.dat' ) );
 assert( -e glob(localDir().'dir/file3_.sys.admin#recall#-*.dat' ) );
 
+# verify that the original files still exist
+assert( -e glob(localDir().'dir/file2.dat' ) );
+assert( -e glob(localDir().'dir/file3.dat' ) );
+
 #Remove the recall file
 unlink(localDir() . ".sys.admin#recall#");
 
