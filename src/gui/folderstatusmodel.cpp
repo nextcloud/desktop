@@ -164,7 +164,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         switch(role) {
             case Qt::DisplayRole:
                 if (x->_hasError) {
-                    return tr("Error while loading the list of folders from the server.");
+                    return QVariant(tr("Error while loading the list of folders from the server.")
+                                               + QString("\n") + x->_lastErrorString);
                 } else {
                     return tr("Fetching folder list from server...");
                 }
@@ -498,6 +499,10 @@ bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
     auto info = infoForIndex(parent);
     if (!info || info->_fetched || info->_fetching)
         return false;
+    if (info->_hasError) {
+        // Keep showing the error to the user, it will be hidden when the account reconnects
+        return false;
+    }
     return true;
 }
 
@@ -548,6 +553,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0 ,0);
+        parentInfo->_lastErrorString.clear();
         parentInfo->_hasError = false;
         parentInfo->_fetchingLabel = false;
         endRemoveRows();
@@ -675,6 +681,9 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
+        qDebug() << r->errorString();
+        parentInfo->_lastErrorString = r->errorString();
+
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
