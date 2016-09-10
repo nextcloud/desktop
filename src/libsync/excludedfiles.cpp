@@ -12,6 +12,7 @@
  */
 
 #include "excludedfiles.h"
+#include "utility.h"
 
 #include <QFileInfo>
 
@@ -70,7 +71,7 @@ bool ExcludedFiles::isExcluded(
         const QString& basePath,
         bool excludeHidden) const
 {
-    if (!filePath.startsWith(basePath)) {
+    if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
         return true;
     }
