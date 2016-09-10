@@ -284,10 +284,13 @@ private slots:
 class PropagateUploadFileNG : public PropagateUploadFileCommon {
     Q_OBJECT
 private:
-    quint64 _sent; /// amount of data that was already sent
+    quint64 _sent; /// amount of data (bytes) that was already sent
     uint _transferId; /// transfer id (part of the url)
     int _currentChunk; /// Id of the next chunk that will be sent
-    QMap<int, quint64> _serverChunks; // Map chunk number with its size  from the PROPFIND on resume
+
+    // Map chunk number with its size  from the PROPFIND on resume.
+    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
+    QMap<int, quint64> _serverChunks;
 
     quint64 chunkSize() const { return _propagator->chunkSize(); }
     /**

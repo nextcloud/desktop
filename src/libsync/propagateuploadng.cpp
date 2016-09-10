@@ -88,7 +88,6 @@ void PropagateUploadFileNG::doStartUpload()
         connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
                 this, SLOT(slotPropfindFinishedWithError()));
         connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotJobDestroyed(QObject*)));
-        //TODO: port to Qt4
         connect(job, SIGNAL(directoryListingIterated(QString,QMap<QString,QString>)),
                 this, SLOT(slotPropfindIterate(QString,QMap<QString,QString>)));
         job->start();
@@ -122,6 +121,9 @@ void PropagateUploadFileNG::slotPropfindFinished()
         _sent += _serverChunks[_currentChunk];
         ++_currentChunk;
     }
+    // FIXME: we should make sure that if there is a "hole" and then a few more chunks, on the server
+    // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
+    // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
     qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
     startNextChunk();
 }
@@ -294,7 +296,7 @@ void PropagateUploadFileNG::slotPutFinished()
             errorString = job->reply()->rawHeader("OC-ErrorString");
         }
 
-        // FIXME!  can tth peneunking?
+        // FIXME!  can this happen for the chunks?
         if (_item->_httpErrorCode == 412) {
             // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
@@ -361,6 +363,8 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if(fid.isEmpty()) {
         qWarning() << "Server did not return a OC-FileID" << _item->_file;
+        abortWithError(SyncFileItem::NormalError, tr("Missing File ID from server"));
+        return;
     } else {
         // the old file id should only be empty for new files uploaded
         if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
@@ -372,6 +376,8 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     _item->_etag = getEtagFromReply(job->reply());;
     if (_item->_etag.isEmpty()) {
         qWarning() << "Server did not return an ETAG" << _item->_file;
+        abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
+        return;
     }
     _item->_responseTimeStamp = job->responseTimestamp();
 
