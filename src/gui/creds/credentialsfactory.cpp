@@ -16,7 +16,9 @@
 #include "creds/credentialsfactory.h"
 #include "creds/httpcredentialsgui.h"
 #include "creds/dummycredentials.h"
+#ifndef NO_SHIBBOLETH
 #include "creds/shibbolethcredentials.h"
+#endif
 
 namespace OCC
 {
@@ -31,8 +33,10 @@ AbstractCredentials* create(const QString& type)
         return new HttpCredentialsGui;
     } else if (type == "dummy") {
         return new DummyCredentials;
+#ifndef NO_SHIBBOLETH
     } else if (type == "shibboleth") {
         return new ShibbolethCredentials;
+#endif
     } else {
         qWarning("Unknown credentials type: %s", qPrintable(type));
         return new DummyCredentials;

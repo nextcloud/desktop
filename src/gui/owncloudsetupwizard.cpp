@@ -539,12 +539,15 @@ bool DetermineAuthTypeJob::finished()
         setupConnections(reply());
         return false; // don't discard
     } else {
+#ifndef NO_SHIBBOLETH
         QRegExp shibbolethyWords("SAML|wayf");
 
         shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
         if (redirection.toString().contains(shibbolethyWords)) {
             emit authType(WizardCommon::Shibboleth);
-        } else {
+        } else
+#endif
+        {
             // TODO: Send an error.
             // eh?
             emit authType(WizardCommon::HttpCreds);

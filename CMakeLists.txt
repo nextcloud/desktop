@@ -136,6 +136,13 @@ if(OWNCLOUD_RESTORE_RENAME)
     add_definitions(-DOWNCLOUD_RESTORE_RENAME=1)
 endif()
 
+# Disable shibboleth.
+# So the client can be built without QtWebKit
+option(NO_SHIBBOLETH "Build without Shibboleth support. Allow to build the client without QtWebKit" OFF)
+if(NO_SHIBBOLETH)
+   message("Compiling without shibboleth")
+   add_definitions(-DNO_SHIBBOLETH=1)
+endif()
 
 if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
