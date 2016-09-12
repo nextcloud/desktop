@@ -89,6 +89,7 @@ private:
     QTime _timer;
     QSet<QString> _lastPaths;
     Folder* _folder;
+    QString _canonicalFolderPath;
 
     friend class FolderWatcherPrivate;
 };
