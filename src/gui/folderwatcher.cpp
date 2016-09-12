@@ -41,9 +41,7 @@ FolderWatcher::FolderWatcher(const QString &root, Folder* folder)
     : QObject(folder),
       _folder(folder)
 {
-    _canonicalFolderPath = QFileInfo(root).canonicalFilePath();
-
-    _d.reset(new FolderWatcherPrivate(this, _canonicalFolderPath));
+    _d.reset(new FolderWatcherPrivate(this, root));
 
     _timer.start();
 }
@@ -57,17 +55,10 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
     if( !_folder ) return false;
 
 #ifndef OWNCLOUD_TEST
-    QString relPath = path;
-    if (relPath.startsWith(_canonicalFolderPath)) {
-        relPath = relPath.remove(0, _canonicalFolderPath.length()+1);
-        if (_folder->isFileExcludedRelative(relPath)) {
-            qDebug() << "* Ignoring file" << relPath << "in" << _canonicalFolderPath;
-            return true;
-        }
+    if (_folder->isFileExcludedAbsolute(path)) {
+        qDebug() << "* Ignoring file" << path;
+        return true;
     }
-    // there could be an odd watch event not being inside the _canonicalFolderPath
-    // We will just not ignore it then, who knows.
-
 #endif
     return false;
 }
