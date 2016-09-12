@@ -21,6 +21,7 @@
 #include <qcoreevent.h>
 #include <QFile>
 #include "ownclouddolphinpluginhelper.h"
+#include "config.h"
 
 OwncloudDolphinPluginHelper* OwncloudDolphinPluginHelper::instance()
 {
@@ -67,7 +68,10 @@ void OwncloudDolphinPluginHelper::tryConnect()
         return;
     }
     QString runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-    QString socketPath = runtimeDir + QLatin1String("/ownCloud/socket");
+    runtimeDir.append( QChar('/'));
+    runtimeDir.append( QLatin1String(APPLICATION_SHORTNAME) );
+
+    const QString socketPath = runtimeDir + QLatin1String("/socket");
     _socket.connectToServer(socketPath);
 }
 
