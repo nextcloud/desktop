@@ -628,6 +628,11 @@ void Folder::removeFromSettings() const
     settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
+bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
+{
+    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
+}
+
 bool Folder::isFileExcludedRelative(const QString& relativePath) const
 {
     return _engine->excludedFiles().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);

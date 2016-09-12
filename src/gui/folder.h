@@ -186,6 +186,11 @@ public:
      /**
       * Returns whether a file inside this folder should be excluded.
       */
+     bool isFileExcludedAbsolute(const QString& fullPath) const;
+
+     /**
+      * Returns whether a file inside this folder should be excluded.
+      */
      bool isFileExcludedRelative(const QString& relativePath) const;
 
 signals:
