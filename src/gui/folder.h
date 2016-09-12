@@ -288,6 +288,7 @@ private:
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
+    QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
