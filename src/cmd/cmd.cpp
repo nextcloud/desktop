@@ -29,6 +29,7 @@
 #include "syncengine.h"
 #include "syncjournaldb.h"
 #include "config.h"
+#include "connectionvalidator.h"
 
 #include "cmd.h"
 
@@ -67,6 +68,8 @@ struct CmdOptions {
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
 CmdOptions *opts = 0;
+
+const qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5*1000);
 
 class EchoDisabler
 {
@@ -387,6 +390,23 @@ int main(int argc, char **argv) {
     account->setUrl(url);
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    //obtain capabilities using event loop
+    QEventLoop loop;
+
+    JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QVariantMap &json) {
+        auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
+        qDebug() << "Server capabilities" << caps;
+        account->setCapabilities(caps.toMap());
+        loop.quit();
+    });
+    job->start();
+
+    loop.exec();
+#endif
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
     SyncEngine::minimumFileAgeForUpload = 0;
