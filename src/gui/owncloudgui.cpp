@@ -56,6 +56,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _settingsDialog(new SettingsDialog(this)),
 #endif
     _logBrowser(0),
+    _contextMenuVisible(false),
     _recentActionsMenu(0),
     _qdbusmenuWorkaround(false),
     _folderOpenActionMapper(new QSignalMapper(this)),
@@ -405,6 +406,21 @@ static bool minimalTrayMenu()
     return !var.isEmpty();
 }
 
+
+void ownCloudGui::slotContextMenuAboutToShow()
+{
+    // For some reason on OS X _contextMenu->isVisible returns always false
+    qDebug() << "";
+    _contextMenuVisible = true;
+}
+
+void ownCloudGui::slotContextMenuAboutToHide()
+{
+    // For some reason on OS X _contextMenu->isVisible returns always false
+    qDebug() << "";
+    _contextMenuVisible = false;
+}
+
 void ownCloudGui::setupContextMenu()
 {
     // The tray menu is surprisingly problematic. Being able to switch to
@@ -455,7 +471,14 @@ void ownCloudGui::setupContextMenu()
 
         // Update the context menu whenever we're about to show it
         // to the user.
+#ifdef Q_OS_MAC
+        // https://bugreports.qt.io/browse/QTBUG-54633
+#else
         connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(setupContextMenu()));
+#endif
+        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(slotContextMenuAboutToShow()));
+        connect(_contextMenu.data(), SIGNAL(aboutToHide()), SLOT(slotContextMenuAboutToHide()));
+
 
         _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
         // this must be called only once after creating the context menu, or
@@ -560,8 +583,15 @@ void ownCloudGui::setupContextMenu()
 
 void ownCloudGui::setupContextMenuIfVisible()
 {
-    if (_contextMenu && _contextMenu->isVisible())
+#ifdef Q_OS_MAC
+    // https://bugreports.qt.io/browse/QTBUG-54845
+    if (!_contextMenuVisible) {
         setupContextMenu();
+    }
+#else
+    if (_contextMenuVisible)
+        setupContextMenu();
+#endif
 }
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
@@ -724,9 +754,13 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
 
         // Update the "Recent" menu if the context menu is being shown,
         // otherwise it'll be updated later, when the context menu is opened.
-        if (_contextMenu && _contextMenu->isVisible()) {
+#ifdef Q_OS_MAC
+        // https://bugreports.qt.io/browse/QTBUG-54845
+#else
+        if (_contextMenuVisible) {
             slotRebuildRecentMenus();
         }
+#endif
     }
 
     if (progress.isUpdatingEstimates()

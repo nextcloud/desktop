@@ -58,6 +58,8 @@ signals:
 public slots:
     void setupContextMenu();
     void setupContextMenuIfVisible();
+    void slotContextMenuAboutToShow();
+    void slotContextMenuAboutToHide();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
@@ -102,6 +104,8 @@ private:
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
     QScopedPointer<QMenu> _contextMenu;
+    bool _contextMenuVisible;
+
     QMenu *_recentActionsMenu;
     QVector<QMenu*> _accountMenus;
     bool _qdbusmenuWorkaround;
