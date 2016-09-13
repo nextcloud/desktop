@@ -124,6 +124,11 @@ void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
 
+    _canonicalLocalPath = fi.canonicalFilePath();
+    if( !_canonicalLocalPath.endsWith('/') ) {
+        _canonicalLocalPath.append('/');
+    }
+
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
     } else {
@@ -161,11 +166,7 @@ QString Folder::alias() const
 
 QString Folder::path() const
 {
-    QString p(_definition.localPath);
-    if( ! p.endsWith('/') ) {
-        p.append('/');
-    }
-    return p;
+    return _canonicalLocalPath;
 }
 
 QString Folder::shortGuiLocalPath() const
@@ -198,7 +199,7 @@ void Folder::setIgnoreHiddenFiles(bool ignore)
 
 QString Folder::cleanPath()
 {
-    QString cleanedPath = QDir::cleanPath(_definition.localPath);
+    QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
 
     if(cleanedPath.length() == 3 && cleanedPath.endsWith(":/"))
         cleanedPath.remove(2,1);
@@ -619,6 +620,11 @@ void Folder::removeFromSettings() const
     auto  settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
+}
+
+bool Folder::isFileExcludedAbsolute(const QString& fullPath) const
+{
+    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString& relativePath) const

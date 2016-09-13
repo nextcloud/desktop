@@ -187,6 +187,11 @@ public:
      /**
       * Returns whether a file inside this folder should be excluded.
       */
+     bool isFileExcludedAbsolute(const QString& fullPath) const;
+
+     /**
+      * Returns whether a file inside this folder should be excluded.
+      */
      bool isFileExcludedRelative(const QString& relativePath) const;
 
 signals:
@@ -283,6 +288,7 @@ private:
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
+    QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
