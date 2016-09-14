@@ -23,12 +23,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#ifndef _WIN32
-#include <sys/time.h>
-#else
-#include <sys/utime.h>
-#endif
-#include <time.h>
 
 #include "csync_private.h"
 #include "csync_log.h"
@@ -37,46 +31,11 @@ CSYNC_THREAD int csync_log_level;
 CSYNC_THREAD csync_log_callback csync_log_cb;
 CSYNC_THREAD void *csync_log_userdata;
 
-static int current_timestring(int hires, char *buf, size_t len)
-{
-    char tbuf[64];
-    struct timeval tv;
-    struct tm *tm;
-    time_t t;
-
-    gettimeofday(&tv, NULL);
-    t = (time_t) tv.tv_sec;
-
-    tm = localtime(&t);
-    if (tm == NULL) {
-        return -1;
-    }
-
-    if (hires) {
-        strftime(tbuf, sizeof(tbuf) - 1, "%Y/%m/%d %H:%M:%S", tm);
-        snprintf(buf, len, "%s.%06ld", tbuf, (long) tv.tv_usec);
-    } else {
-        strftime(tbuf, sizeof(tbuf) - 1, "%Y/%m/%d %H:%M:%S", tm);
-        snprintf(buf, len, "%s", tbuf);
-    }
-
-    return 0;
-}
-
 static void csync_log_stderr(int verbosity,
                              const char *function,
                              const char *buffer)
 {
-    char date[64] = {0};
-    int rc;
-
-    rc = current_timestring(1, date, sizeof(date));
-    if (rc == 0) {
-        fprintf(stderr, "[%s, %d] %s:", date+5, verbosity, function);
-    } else {
-        fprintf(stderr, "[%d] %s", verbosity, function);
-    }
-
+    fprintf(stderr, "[%d] %s", verbosity, function);
     fprintf(stderr, "  %s\n", buffer);
 }
 static void csync_log_function(int verbosity,

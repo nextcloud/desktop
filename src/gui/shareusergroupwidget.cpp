@@ -24,8 +24,8 @@
 #include "capabilities.h"
 
 #include "thumbnailjob.h"
-#include "share.h"
 #include "sharee.h"
+#include "sharemanager.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>

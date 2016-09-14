@@ -1,6 +1,9 @@
 
 cmake_minimum_required(VERSION 2.6)
 cmake_policy(VERSION 2.8.0)
+if(POLICY CMP0020)
+  cmake_policy(SET CMP0020 NEW)
+endif()
 
 project(client)
 
@@ -57,7 +60,7 @@ endif()
 
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
-
+include(GenerateExportHeader)
 
 include(GetGitRevisionDescription)
 
@@ -166,6 +169,9 @@ find_package(SQLite3 3.8.0 REQUIRED)
 # On some OS, we want to use our own, not the system sqlite
 if (USE_OUR_OWN_SQLITE3)
     include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
+    if (WIN32)
+        add_definitions(-DSQLITE_API=__declspec\(dllimport\))
+    endif()
 endif()
 
 find_package(ZLIB)
@@ -180,6 +186,7 @@ add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
 if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
+add_definitions( -DNOMINMAX )
 endif( WIN32 )
 
 # Handle Translations, pick all client_* files from trans directory.

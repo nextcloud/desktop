@@ -31,6 +31,10 @@
 #include <QDebug>
 #include <cmath>
 
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#endif
+
 namespace OCC {
 
 // Always coming in with forward slashes.

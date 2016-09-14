@@ -11,8 +11,8 @@
  * for more details.
  */
 
-#ifndef SHARE_H
-#define SHARE_H
+#ifndef SHAREMANAGER_H
+#define SHAREMANAGER_H
 
 #include "accountfwd.h"
 #include "sharee.h"
@@ -127,7 +127,7 @@ private slots:
 class LinkShare : public Share {
     Q_OBJECT
 public:
- 
+
     explicit LinkShare(AccountPtr account,
                        const QString& id,
                        const QString& path,
@@ -154,7 +154,7 @@ public:
      * In case of a server error the serverError signal is emitted.
      */
     void setPublicUpload(bool publicUpload);
-    
+
     /*
      * Set the password
      *
@@ -276,7 +276,6 @@ private:
     AccountPtr _account;
 };
 
-
 }
 
-#endif // SHARE_H
+#endif // SHAREMANAGER_H

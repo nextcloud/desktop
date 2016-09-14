@@ -26,6 +26,12 @@ set(cstdlib_SRCS
   c_time.c
 )
 
+if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
+    list(APPEND cstdlib_SRCS
+        asprintf.c
+    )
+endif()
+
 include_directories(
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CSTDLIB_PRIVATE_INCLUDE_DIRS}
