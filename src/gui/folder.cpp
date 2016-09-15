@@ -123,9 +123,11 @@ Folder::~Folder()
 void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
-
     _canonicalLocalPath = fi.canonicalFilePath();
-    if( !_canonicalLocalPath.endsWith('/') ) {
+    if (_canonicalLocalPath.isEmpty()) {
+        qDebug() << "Broken symlink:" << _definition.localPath;
+        _canonicalLocalPath = _definition.localPath;
+    } else if( !_canonicalLocalPath.endsWith('/') ) {
         _canonicalLocalPath.append('/');
     }
 
