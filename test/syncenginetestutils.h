@@ -18,8 +18,7 @@
 
 static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/webdav/");
 
-namespace {
-QString generateEtag() {
+static QString generateEtag() {
     return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch(), 16);
 }
 
@@ -35,7 +34,6 @@ public:
     QString pathRoot() const { return first(); }
     QString fileName() const { return last(); }
 };
-}
 
 class FileModifier
 {
