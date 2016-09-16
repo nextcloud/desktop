@@ -210,6 +210,13 @@ void PropagateUploadFileNG::startNextChunk()
             + QLatin1String("/remote.php/dav/files/") + _propagator->account()->user()
             + _propagator->_remoteFolder + _item->_file;
         auto headers = PropagateUploadFileCommon::headers();
+
+        // Rename the If-Match header to "OC-If-Destination-Match"
+        // "If-Match applies to the source, but we are interested in comparing the etag of the destination
+        auto ifMatch = headers.take("If-Match");
+        if (!ifMatch.isEmpty()) {
+            headers["OC-If-Destination-Match"] = ifMatch;
+        }
         auto job = new MoveJob(_propagator->account(), Account::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
         _jobs.append(job);
