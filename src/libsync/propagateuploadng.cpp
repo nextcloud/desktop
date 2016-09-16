@@ -205,8 +205,10 @@ void PropagateUploadFileNG::startNextChunk()
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
-        QString destination =  QLatin1String("remote.php/dav/files/")
-            + _propagator->account()->user() + QLatin1Char('/') + QString::number(_transferId);
+        // QString destination = _propagator->_remoteDir + _item->_file;  // FIXME: _remoteDir currently is still using the old webdav path
+        QString destination = _propagator->account()->url().path()
+            + QLatin1String("/remote.php/dav/files/") + _propagator->account()->user()
+            + _propagator->_remoteFolder + _item->_file;
         auto headers = PropagateUploadFileCommon::headers();
         auto job = new MoveJob(_propagator->account(), Account::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
