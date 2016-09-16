@@ -160,10 +160,9 @@ void PropagateUploadFileNG::startNewUpload()
     pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
     _propagator->_journal->setUploadInfo(_item->_file, pi);
     _propagator->_journal->commit("Upload info");
-
-    auto job = new MkColJob(_propagator->account(),
-                            chunkUrl(),
-                            this);
+    QMap<QByteArray, QByteArray> headers;
+    headers["OC-Total-Length"] = QByteArray::number(_item->_size);
+    auto job = new MkColJob(_propagator->account(), chunkUrl(), headers, this);
 
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
             this, SLOT(slotMkColFinished(QNetworkReply::NetworkError)));
@@ -217,6 +216,11 @@ void PropagateUploadFileNG::startNextChunk()
         if (!ifMatch.isEmpty()) {
             headers["OC-If-Destination-Match"] = ifMatch;
         }
+        if (!_transmissionChecksumType.isEmpty()) {
+            headers[checkSumHeaderC] = makeChecksumHeader(
+                _transmissionChecksumType, _transmissionChecksum);
+        }
+
         auto job = new MoveJob(_propagator->account(), Account::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
         _jobs.append(job);
@@ -243,11 +247,14 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
+    QMap<QByteArray, QByteArray> headers;
+    headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
+
     _sent += currentChunkSize;
     QUrl url = chunkUrl(_currentChunk);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob* job = new PUTFileJob(_propagator->account(), url, device, {}, _currentChunk);
+    PUTFileJob* job = new PUTFileJob(_propagator->account(), url, device, headers, _currentChunk);
     _jobs.append(job);
     connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     connect(job, SIGNAL(uploadProgress(qint64,qint64)),
