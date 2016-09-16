@@ -229,10 +229,26 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QVariantMap &json)
     auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
     qDebug() << "Server capabilities" << caps;
     _account->setCapabilities(caps.toMap());
-    reportResult(Connected);
-    return;
+    fetchUser();
 }
 
+void ConnectionValidator::fetchUser()
+{
+
+    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotUserFetched(QVariantMap)));
+    job->start();
+}
+
+void ConnectionValidator::slotUserFetched(const QVariantMap &json)
+{
+    QString user = json.value("ocs").toMap().value("data").toMap().value("id").toString();
+    if (!user.isEmpty()) {
+        _account->setUser(user);
+    }
+    reportResult(Connected);
+}
 
 void ConnectionValidator::reportResult(Status status)
 {

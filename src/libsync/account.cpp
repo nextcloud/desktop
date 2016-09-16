@@ -78,7 +78,12 @@ AccountPtr Account::sharedFromThis()
 
 QString Account::user() const
 {
-    return _credentials->user();
+    return _user.isEmpty() ? _credentials->user() : _user;
+}
+
+void Account::setUser(const QString &user)
+{
+    _user = user;
 }
 
 QString Account::displayName() const

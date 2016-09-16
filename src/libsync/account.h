@@ -77,6 +77,7 @@ public:
 
     /// The user that can be used in dav url
     QString user() const;
+    void setUser(const QString &user);
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -209,6 +210,7 @@ private:
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
+    QString _user;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
