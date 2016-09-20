@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียนข้อมูลเมตาไปยังฐานข้อมูล</translation>
     </message>
@@ -895,7 +895,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>ข้อผิดพลาดในขณะที่โหลดรายชื่อโฟลเดอร์จากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="204"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="205"/>
         <source>Signed out</source>
         <translation>ออกจากระบบ</translation>
     </message>
@@ -905,96 +905,96 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>การเพิ่มโฟลเดอร์ถูกยกเลิกเพราะคุณได้ประสานไฟล์ทั้งหมดของคุณอยู่แล้ว หากคุณต้องการประสานข้อมูลหลายโฟลเดอร์โปรดลบโฟลเดอร์รากกำหนดค่าในปัจจุบัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="170"/>
         <source>Fetching folder list from server...</source>
         <translation>กำลังดึงรายการโฟลเดอร์จากเซิร์ฟเวอร์ ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="832"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="841"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>กำลังตรวจสอบการเปลี่ยนแปลงใน &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="867"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="876"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="916"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="910"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="910"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>อัปโหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="917"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="926"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Waiting...</source>
         <translation>กรุณารอซักครู่...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>กำลังรออีก (%n) โฟลเดอร์...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1001"/>
         <source>Preparing to sync...</source>
         <translation>กำลังเตรียมพร้อมในการประสานข้อมูล</translation>
     </message>
@@ -1956,17 +1956,17 @@ It is not advisable to use it.</source>
         <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="693"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถบันทึกได้เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="741"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="742"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="791"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียนข้อมูลเมตาไปยังฐานข้อมูล</translation>
     </message>
@@ -2452,18 +2452,18 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="435"/>
         <source>Please Set Password</source>
         <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="500"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="501"/>
         <source>&amp;Share link</source>
         <translation>&amp;แชร์ลิงค์</translation>
     </message>
@@ -2871,12 +2871,12 @@ It is not advisable to use it.</source>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
@@ -2981,64 +2981,64 @@ It is not advisable to use it.</source>
         <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="787"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read from the sync journal.</source>
         <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="837"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="889"/>
+        <location filename="../src/libsync/syncengine.cpp" line="893"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1097"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1123"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1202"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1282"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>
@@ -3068,8 +3068,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
-        <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;จดทะเบียนภายใต้ลิขสิทธิ์ของ ownCloud&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="290"/>
@@ -3293,8 +3293,8 @@ It is not advisable to use it.</source>
     <name>OCC::ownCloudTheme</name>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;รุ่น %2 สำหรับข้อมูลเพิ่มเติมดูได้ที่&lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt; โดย Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz และอีกหลายคนที่ไม่ได้เอ่ยนาม &lt;/small&gt;&lt;/p&gt;&lt;p&gt; สงวนลิขสิทธิ์ ownCloud, Inc.&lt;/p&gt;&lt;p&gt;ได้รับใบอนุญาตภายใต้ GNU General Public License (GPL) รุ่น 2.0&lt;br/&gt; ownCloud และโลโก้ ownCloud เป็นเครื่องหมายจดทะเบียนการค้าของ ownCloud ในประเทศสหรัฐอเมริกา ประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

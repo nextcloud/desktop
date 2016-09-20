@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="772"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="773"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -894,7 +894,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Feil ved innlasting av listen av mapper fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="204"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="205"/>
         <source>Signed out</source>
         <translation>Logget ut</translation>
     </message>
@@ -904,96 +904,96 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Du kan ikke legge til en mappe fordi du allerede synkroniserer alle filene dine. Hvis du ønsker å synkronisere individuelle mapper, må du fjerne synkroniseringen av rotmappen som er konfigurert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="170"/>
         <source>Fetching folder list from server...</source>
         <translation>Henter mappeliste fra server..</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="832"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="841"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Ser etter endringer i &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="867"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="876"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="870"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="879"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Synkroniserer %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="897"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="916"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="910"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>nedlasting %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="910"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>opplasting %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="917"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="926"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 av %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="921"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 igjen, %1 av %2, fil %3 of %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
         <source>file %1 of %2</source>
         <translation>fil %1 av %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="993"/>
         <source>Waiting...</source>
         <translation>Venter..</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Venter på %n annen mappe...</numerusform><numerusform>Venter på %n andre mappe(r)...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1001"/>
         <source>Preparing to sync...</source>
         <translation>Forbereder synkronisering...</translation>
     </message>
@@ -1956,17 +1956,17 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Nedlastet fil er tom, selv om serveren annonserte at den skulle være %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="693"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="694"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Fil %1 kan ikke lagres på grunn av lokal konflikt med filnavn.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="741"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="742"/>
         <source>File has changed since discovery</source>
         <translation>Filen er endret siden den ble oppdaget</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="791"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="792"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2452,18 +2452,18 @@ Det er ikke tilrådelig å bruke den.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="366"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Offentlig d&amp;eling krever et passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="434"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="435"/>
         <source>Please Set Password</source>
         <translation>Sett passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="498"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="499"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="500"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="501"/>
         <source>&amp;Share link</source>
         <translation>&amp;Del lenke</translation>
     </message>
@@ -2873,12 +2873,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Bare %1 er tilgjengelig, trenger minst %2 for å begynne</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1134"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å legge til foreldremappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å opprette filer i den mappen</translation>
     </message>
@@ -2983,64 +2983,64 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Kan ikke lese svartelisten fra den lokale databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="787"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Kan ikke lese fra synkroniseringsjournalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="833"/>
+        <location filename="../src/libsync/syncengine.cpp" line="837"/>
         <source>Cannot open the sync journal</source>
         <translation>Kan ikke åpne synkroniseringsjournalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="889"/>
+        <location filename="../src/libsync/syncengine.cpp" line="893"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnavnet inneholder minst ett ulovlig tegn</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1093"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1100"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1097"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorert på grunn av svartelisten &quot;velg hva som skal synkroniseres&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1119"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1123"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å lage undermapper i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1161"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ikke tillatt å laste opp denne filenfordi den er skrivebeskyttet på serveren, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1178"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1202"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ikke tillatt å fjerne, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokale filer og delingsmappe fjernet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1267"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
         <source>Move not allowed, item restored</source>
         <translation>Flytting ikke tillatt, element gjenopprettet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1282"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Flytting ikke tillatt fordi %1 er skrivebeskyttet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>the destination</source>
         <translation>målet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>the source</source>
         <translation>kilden</translation>
     </message>
@@ -3070,8 +3070,8 @@ Det er ikke tilrådelig å bruke den.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
-        <source>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright ownCloud, Incorporated&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="290"/>
@@ -3295,8 +3295,8 @@ Det er ikke tilrådelig å bruke den.</translation>
     <name>OCC::ownCloudTheme</name>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Versjon %2. For mer informasjon gå til &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Av Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz med flere.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, Inc.&lt;/p&gt;&lt;p&gt;Lisensiert under GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud og ownCloud-logo er registrerte varemerker for ownCloud, Inc. i USA, andre land, eller begge deler.&lt;/p&gt;</translation>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud, Inc. in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
