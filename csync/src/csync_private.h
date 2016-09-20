@@ -224,9 +224,6 @@ struct _csync_treewalk_context_s
 };
 typedef struct _csync_treewalk_context_s _csync_treewalk_context;
 
-
-time_t oc_httpdate_parse( const char *date );
-
 void set_errno_from_http_errcode( int err );
 
 /**

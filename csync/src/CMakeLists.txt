@@ -81,6 +81,13 @@ set(csync_HDRS
 # Statically include sqlite
 if (USE_OUR_OWN_SQLITE3)
     list(APPEND csync_SRCS ${SQLITE3_SOURCE})
+    if (WIN32)
+        # We want to export sqlite symbols from the ocsync DLL without
+        # having to patch both sqlite3.h and the amalgation sqlite3.c,
+        # so do the import/export magic manually through the build system.
+        remove_definitions(-DSQLITE_API=__declspec\(dllimport\))
+        add_definitions(-DSQLITE_API=__declspec\(dllexport\))
+    endif()
 endif()
 
 include_directories(
@@ -90,6 +97,12 @@ include_directories(
 
 add_library(${CSYNC_LIBRARY} SHARED ${csync_SRCS})
 #add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})
+
+generate_export_header( ${CSYNC_LIBRARY}
+  BASE_NAME ${CSYNC_LIBRARY}
+  EXPORT_MACRO_NAME OCSYNC_EXPORT
+  EXPORT_FILE_NAME ocsynclib.h
+)
 
 target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
 #target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})

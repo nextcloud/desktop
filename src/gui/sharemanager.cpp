@@ -11,7 +11,7 @@
  * for more details.
  */
 
-#include "share.h"
+#include "sharemanager.h"
 #include "ocssharejob.h"
 #include "account.h"
 
@@ -30,9 +30,9 @@ Q_DECLARE_METATYPE(CreateShare)
 
 namespace OCC {
 
-Share::Share(AccountPtr account, 
-             const QString& id, 
-             const QString& path, 
+Share::Share(AccountPtr account,
+             const QString& id,
+             const QString& path,
              const ShareType shareType,
              const Permissions permissions,
              const QSharedPointer<Sharee> shareWith)
@@ -100,7 +100,7 @@ void Share::slotDeleted()
 
 void Share::slotOcsError(int statusCode, const QString &message)
 {
-    emit serverError(statusCode, message);   
+    emit serverError(statusCode, message);
 }
 
 QUrl LinkShare::getLink() const
@@ -229,7 +229,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
     if (code == 403) {
         emit linkShareRequiresPassword(message);
         return;
-    } 
+    }
 
     //Parse share
     auto data = reply.value("ocs").toMap().value("data").toMap();
@@ -329,7 +329,7 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
             newShare = parseShare(data);
         }
 
-        shares.append(QSharedPointer<Share>(newShare));    
+        shares.append(QSharedPointer<Share>(newShare));
     }
 
     qDebug() << Q_FUNC_INFO << "Sending " << shares.count() << "shares";
@@ -371,7 +371,7 @@ QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data)
     QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
                                              data.value("share_with_displayname").toString(),
                                              (Sharee::Type)data.value("share_type").toInt()));
-    
+
     return QSharedPointer<Share>(new Share(_account,
                                            data.value("id").toString(),
                                            data.value("path").toString(),

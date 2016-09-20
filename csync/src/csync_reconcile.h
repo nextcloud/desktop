@@ -50,7 +50,7 @@
  *
  * @todo Add an argument to set the algorithm to use.
  */
-int csync_reconcile_updates(CSYNC *ctx);
+int OCSYNC_EXPORT csync_reconcile_updates(CSYNC *ctx);
 
 /**
  * }@

@@ -17,7 +17,7 @@
 #include "account.h"
 #include "capabilities.h"
 
-#include "share.h"
+#include "sharemanager.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>

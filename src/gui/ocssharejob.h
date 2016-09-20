@@ -15,7 +15,7 @@
 #define OCSSHAREJOB_H
 
 #include "ocsjob.h"
-#include "share.h"
+#include "sharemanager.h"
 #include <QVector>
 #include <QList>
 #include <QPair>

@@ -70,9 +70,9 @@ set(client_SRCS
     activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
-    share.cpp
     sharedialog.cpp
     sharelinkwidget.cpp
+    sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
     socketapi.cpp
