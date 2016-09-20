@@ -106,7 +106,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
-    connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+    connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
     connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
     checkJob->start();
 }
