@@ -686,14 +686,14 @@ void PropagateDirectory::finalize()
             SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
             ok = _propagator->_journal->setFileRecordMetadata(record);
             if (!ok) {
-                _item->_status = SyncFileItem::FatalError;
+                _hasError = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
                 qWarning() << "Error writing to the database for file" << _item->_file;
             }
         }
     }
     _state = Finished;
-    emit finished(_item->_status);
+    emit finished(_hasError == SyncFileItem::NoStatus ?  SyncFileItem::Success : _hasError);
 }
 
 qint64 PropagateDirectory::committedDiskSpace() const
