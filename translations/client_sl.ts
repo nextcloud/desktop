@@ -3070,7 +3070,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Avtorske pravice ownCloud, GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="290"/>
