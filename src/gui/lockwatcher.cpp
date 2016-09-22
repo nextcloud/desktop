@@ -15,6 +15,7 @@
 #include "filesystem.h"
 
 #include <QTimer>
+#include <QDebug>
 
 using namespace OCC;
 
@@ -30,6 +31,7 @@ LockWatcher::LockWatcher(QObject* parent)
 
 void LockWatcher::addFile(const QString& path)
 {
+    qDebug() << "Watching for lock of" << path << "being released";
     _watchedPaths.insert(path);
 }
 
@@ -39,6 +41,7 @@ void LockWatcher::checkFiles()
 
     foreach (const QString& path, _watchedPaths) {
         if (!FileSystem::isFileLocked(path)) {
+            qDebug() << "Lock of" << path << "was released";
             emit fileUnlocked(path);
             unlocked.insert(path);
         }
