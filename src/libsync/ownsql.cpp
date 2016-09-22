@@ -230,8 +230,12 @@ bool SqlQuery::isPragma()
 
 bool SqlQuery::exec()
 {
+    if (!_stmt) {
+        return false;
+    }
+
     // Don't do anything for selects, that is how we use the lib :-|
-    if(_stmt && !isSelect() && !isPragma() ) {
+    if( !isSelect() && !isPragma() ) {
         int rc, n = 0;
         do {
             rc = sqlite3_step(_stmt);
@@ -376,8 +380,10 @@ void SqlQuery::finish()
 
 void SqlQuery::reset_and_clear_bindings()
 {
-    SQLITE_DO(sqlite3_reset(_stmt));
-    SQLITE_DO(sqlite3_clear_bindings(_stmt));
+    if (_stmt) {
+        SQLITE_DO(sqlite3_reset(_stmt));
+        SQLITE_DO(sqlite3_clear_bindings(_stmt));
+    }
 }
 
 } // namespace OCC
