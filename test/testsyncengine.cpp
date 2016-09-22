@@ -119,6 +119,33 @@ private slots:
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a3.eml"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testRemoteChangeInMovedFolder() {
+        // issue #5192
+        FakeFolder fakeFolder{FileInfo{ QString(), {
+            FileInfo { QStringLiteral("folder"), {
+                FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } },
+                QStringLiteral("folderB")
+            }
+        }}}};
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Edit a file in a moved directory.
+        fakeFolder.remoteModifier().setContents("folder/folderA/file.txt", 'a');
+        fakeFolder.remoteModifier().rename("folder/folderA", "folder/folderB/folderA");
+        fakeFolder.syncOnce();
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto oldState = fakeFolder.currentLocalState();
+        QVERIFY(oldState.find(PathComponents("folder/folderB/folderA/file.txt")));
+        QVERIFY(!oldState.find(PathComponents("folder/folderA/file.txt")));
+
+        // This sync should not remove the file
+        fakeFolder.syncOnce();
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentLocalState(), oldState);
+
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

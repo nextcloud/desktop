@@ -668,6 +668,12 @@ void PropagateDirectory::finalize()
     bool ok = true;
     if (!_item->isEmpty() && _hasError == SyncFileItem::NoStatus) {
         if( !_item->_renameTarget.isEmpty() ) {
+            if(_item->_instruction == CSYNC_INSTRUCTION_RENAME
+                    && _item->_originalFile != _item->_renameTarget) {
+                // Remove the stale entries from the database.
+                _propagator->_journal->deleteFileRecord(_item->_originalFile, true);
+            }
+
             _item->_file = _item->_renameTarget;
         }
 

@@ -14,12 +14,16 @@
 
 #include <QDir>
 #include <QNetworkReply>
+#include <QMap>
 #include <QtTest>
 
 static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/webdav/");
 
-static QString generateEtag() {
+inline QString generateEtag() {
     return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch(), 16);
+}
+inline QByteArray generateFileId() {
+    return QByteArray::number(qrand(), 16);
 }
 
 class PathComponents : public QStringList {
@@ -44,6 +48,7 @@ public:
     virtual void setContents(const QString &relativePath, char contentChar) = 0;
     virtual void appendByte(const QString &relativePath) = 0;
     virtual void mkdir(const QString &relativePath) = 0;
+    virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
 };
 
 class DiskFileModifier : public FileModifier
@@ -85,6 +90,9 @@ public:
     void mkdir(const QString &relativePath) override {
         _rootDir.mkpath(relativePath);
     }
+    void rename(const QString &, const QString &) override {
+        Q_ASSERT(!"not implemented");
+    }
 };
 
 class FileInfo : public FileModifier
@@ -125,6 +133,7 @@ public:
         for (const auto &source : children) {
             auto &dest = this->children[source.name] = source;
             dest.parentPath = p;
+            dest.fixupParentPathRecursively();
         }
     }
 
@@ -154,6 +163,21 @@ public:
 
     void mkdir(const QString &relativePath) override {
         createDir(relativePath);
+    }
+
+    void rename(const QString &oldPath, const QString &newPath) override {
+        const PathComponents newPathComponents{newPath};
+        FileInfo *dir = findInvalidatingEtags(newPathComponents.parentDirComponents());
+        Q_ASSERT(dir);
+        Q_ASSERT(dir->isDir);
+        const PathComponents pathComponents{oldPath};
+        FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
+        Q_ASSERT(parent);
+        FileInfo fi = parent->children.take(pathComponents.fileName());
+        fi.parentPath = dir->path();
+        fi.name = newPathComponents.fileName();
+        fi.fixupParentPathRecursively();
+        dir->children.insert(newPathComponents.fileName(), std::move(fi));
     }
 
     FileInfo *find(const PathComponents &pathComponents, const bool invalidateEtags = false) {
@@ -217,6 +241,7 @@ public:
     bool isShared = false;
     QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
     QString etag = generateEtag();
+    QByteArray fileId = generateFileId();
     qint64 size = 0;
     char contentChar = 'W';
 
@@ -227,6 +252,19 @@ public:
 private:
     FileInfo *findInvalidatingEtags(const PathComponents &pathComponents) {
         return find(pathComponents, true);
+    }
+
+    void fixupParentPathRecursively() {
+        auto p = path();
+        for (auto it = children.begin(); it != children.end(); ++it) {
+            Q_ASSERT(it.key() == it->name);
+            it->parentPath = p;
+            it->fixupParentPathRecursively();
+        }
+    }
+
+    friend inline QDebug operator<<(QDebug dbg, const FileInfo& fi) {
+        return dbg << "{ " << fi.path() << ": " << fi.children;
     }
 };
 
@@ -273,6 +311,7 @@ public:
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
             xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+            xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
             xml.writeEndElement(); // propstat
@@ -282,6 +321,7 @@ public:
         Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
         QString fileName = request.url().path().mid(sRootUrl.path().length());
         const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
+        Q_ASSERT(fileInfo);
 
         writeFileResponse(*fileInfo);
         foreach(const FileInfo &childFileInfo, fileInfo->children)
@@ -380,7 +420,7 @@ public:
     }
 
     Q_INVOKABLE void respond() {
-        // FIXME: setRawHeader("OC-FileId", fileInfo->???);
+        setRawHeader("OC-FileId", fileInfo->fileId);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
         emit metaDataChanged();
         emit finished();
@@ -443,6 +483,7 @@ public:
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileId", fileInfo->fileId);
         emit metaDataChanged();
         if (bytesAvailable())
             emit readyRead();

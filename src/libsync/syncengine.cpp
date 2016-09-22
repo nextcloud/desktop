@@ -868,6 +868,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     bool walkOk = true;
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
+    _renamedFolders.clear();
 
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
