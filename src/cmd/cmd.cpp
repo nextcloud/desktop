@@ -47,6 +47,9 @@
 
 using namespace OCC;
 
+
+static void nullMessageHandler(QtMsgType, const char *) {}
+
 struct CmdOptions {
     QString source_dir;
     QString target_url;
@@ -299,6 +302,11 @@ int main(int argc, char **argv) {
 
     parseOptions( app.arguments(), &options );
 
+    csync_set_log_level(options.silent ? 1 : 11);
+    if (options.silent) {
+        qInstallMsgHandler(nullMessageHandler);
+    }
+
     AccountPtr account = Account::create();
 
     if( !account ) {
@@ -415,7 +423,6 @@ int main(int argc, char **argv) {
     int restartCount = 0;
 restart_sync:
 
-    csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
 
