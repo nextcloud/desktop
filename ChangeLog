@@ -1,6 +1,15 @@
 ChangeLog
 =========
 
+version 2.2.4 (release 2016-09-xx)
+* Dolphin Plugin: Use the Application name for the socket path (#5172)
+* SyncEngine: Fix renaming of folder when file are changed (#5195)
+* Selective Sync: Fix HTTP request loop and show error in view (#5154)
+* ConnectionValidator: properly handle error in status.php request (#5188)
+* Discovery: Set thread priority to low (#5017)
+* ExcludeFiles: Fix when the folder casing is not the same in the settings and in the FS
+* ShareLink: Ensure the password line edit is enabled (#5117)
+
 version 2.2.3 (release 2016-08-08)
 * SyncEngine: Fix detection of backup (#5104)
 * Fix bug with overriding URL in config (#5016)
