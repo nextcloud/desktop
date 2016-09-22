@@ -24,6 +24,7 @@
 #include <QClipboard>
 #include <QFileInfo>
 #include <QDesktopServices>
+#include <QMessageBox>
 
 namespace OCC {
 
@@ -490,13 +491,20 @@ void ShareLinkWidget::slotPushButtonMailLinkPressed()
 {
     QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
 
-    QDesktopServices::openUrl(QUrl(QString(
-            "mailto: "
-            "?subject=I shared %1 with you"
-            "&body=%2").arg(
-            fileName,
-            _shareUrl),
-        QUrl::TolerantMode));
+    if (!QDesktopServices::openUrl(QUrl(QString(
+                "mailto: "
+                "?subject=I shared %1 with you"
+                "&body=%2").arg(
+                fileName,
+                _shareUrl),
+            QUrl::TolerantMode))) {
+        QMessageBox::warning(
+            this,
+            tr("Could not open email client"),
+            tr("There was an error when launching the email client to "
+               "create a new message. Maybe no default email client is "
+               "configured?"));
+    }
 }
 
 void ShareLinkWidget::slotCheckBoxEditingClicked()
