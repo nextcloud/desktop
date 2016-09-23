@@ -56,7 +56,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _settingsDialog(new SettingsDialog(this)),
 #endif
     _logBrowser(0),
-    _contextMenuVisible(false),
+    _contextMenuVisibleOsx(false),
     _recentActionsMenu(0),
     _qdbusmenuWorkaround(false),
     _folderOpenActionMapper(new QSignalMapper(this)),
@@ -93,9 +93,9 @@ ownCloudGui::ownCloudGui(Application *parent) :
              this,SLOT(slotSyncStateChange(Folder*)));
 
     connect( AccountManager::instance(), SIGNAL(accountAdded(AccountState*)),
-             SLOT(setupContextMenuIfVisible()));
+             SLOT(updateContextMenuNeeded()));
     connect( AccountManager::instance(), SIGNAL(accountRemoved(AccountState*)),
-             SLOT(setupContextMenuIfVisible()));
+             SLOT(updateContextMenuNeeded()));
 
     connect( Logger::instance(), SIGNAL(guiLog(QString,QString)),
              SLOT(slotShowTrayMessage(QString,QString)));
@@ -194,7 +194,7 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
 void ownCloudGui::slotSyncStateChange( Folder* folder )
 {
     slotComputeOverallSyncStatus();
-    setupContextMenuIfVisible();
+    updateContextMenuNeeded();
 
     if( !folder ) {
         return; // Valid, just a general GUI redraw was needed.
@@ -216,7 +216,7 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
 void ownCloudGui::slotFoldersChanged()
 {
     slotComputeOverallSyncStatus();
-    setupContextMenuIfVisible();
+    updateContextMenuNeeded();
 }
 
 void ownCloudGui::slotOpenPath(const QString &path)
@@ -226,7 +226,7 @@ void ownCloudGui::slotOpenPath(const QString &path)
 
 void ownCloudGui::slotAccountStateChanged()
 {
-    setupContextMenuIfVisible();
+    updateContextMenuNeeded();
     slotComputeOverallSyncStatus();
 }
 
@@ -400,40 +400,153 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
 
 }
 
-static bool minimalTrayMenu()
-{
-    static QByteArray var = qgetenv("OWNCLOUD_MINIMAL_TRAY_MENU");
-    return !var.isEmpty();
-}
-
-
 void ownCloudGui::slotContextMenuAboutToShow()
 {
     // For some reason on OS X _contextMenu->isVisible returns always false
     qDebug() << "";
-    _contextMenuVisible = true;
+    _contextMenuVisibleOsx = true;
 }
 
 void ownCloudGui::slotContextMenuAboutToHide()
 {
     // For some reason on OS X _contextMenu->isVisible returns always false
     qDebug() << "";
-    _contextMenuVisible = false;
+    _contextMenuVisibleOsx = false;
+}
+
+bool ownCloudGui::contextMenuVisible() const
+{
+#ifdef Q_OS_MAC
+    return _contextMenuVisibleOsx;
+#else
+    return _contextMenu->isVisible();
+#endif
+}
+
+static bool minimalTrayMenu()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_MINIMAL_TRAY_MENU");
+    return !var.isEmpty();
+}
+
+static bool updateWhileVisible()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_TRAY_UPDATE_WHILE_VISIBLE");
+    if (var == "1") {
+        return true;
+    } else if (var == "0") {
+        return false;
+    } else {
+        // triggers bug on OS X: https://bugreports.qt.io/browse/QTBUG-54845
+        // or flickering on Xubuntu
+        return false;
+    }
+}
+
+static QByteArray forceQDBusTrayWorkaround()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_FORCE_QDBUS_TRAY_WORKAROUND");
+    return var;
 }
 
 void ownCloudGui::setupContextMenu()
 {
+    if (_contextMenu) {
+        return;
+    }
+
+    _contextMenu.reset(new QMenu());
+    _contextMenu->setTitle(Theme::instance()->appNameGUI() );
+
+    _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
+
+    // this must be called only once after creating the context menu, or
+    // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
+    _tray->setContextMenu(_contextMenu.data());
+
     // The tray menu is surprisingly problematic. Being able to switch to
     // a minimal version of it is a useful workaround and testing tool.
     if (minimalTrayMenu()) {
-        if (!_contextMenu) {
-            _contextMenu.reset(new QMenu());
-            _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
-            _tray->setContextMenu(_contextMenu.data());
-            _contextMenu->addAction(_actionQuit);
-        }
+        _contextMenu->addAction(_actionQuit);
         return;
     }
+
+    // Enables workarounds for bugs introduced in Qt 5.5.0
+    // In particular QTBUG-47863 #3672 (tray menu fails to update and
+    // becomes unresponsive) and QTBUG-48068 #3722 (click signal is
+    // emitted several times)
+    // The Qt version check intentionally uses 5.0.0 (where platformMenu()
+    // was introduced) instead of 5.5.0 to avoid issues where the Qt
+    // version used to build is different from the one used at runtime.
+    // If we build with 5.6.1 or newer, we can skip this because the
+    // bugs should be fixed there.
+#ifdef Q_OS_LINUX
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)) && (QT_VERSION < QT_VERSION_CHECK(5, 6, 0))
+    if (qVersion() == QByteArray("5.5.0")) {
+        QObject* platformMenu = reinterpret_cast<QObject*>(_tray->contextMenu()->platformMenu());
+        if (platformMenu
+                && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
+            _qdbusmenuWorkaround = true;
+            qDebug() << "Enabled QDBusPlatformMenu workaround";
+        }
+    }
+#endif
+#endif
+
+    if (forceQDBusTrayWorkaround() == "1") {
+        _qdbusmenuWorkaround = true;
+    } else if (forceQDBusTrayWorkaround() == "0") {
+        _qdbusmenuWorkaround = false;
+    }
+
+    // When the qdbusmenuWorkaround is necessary, we can't do on-demand updates
+    // because the workaround is to hide and show the tray icon.
+    if (_qdbusmenuWorkaround) {
+        connect(&_workaroundBatchTrayUpdate, SIGNAL(timeout()), SLOT(updateContextMenu()));
+        _workaroundBatchTrayUpdate.setInterval(30 * 1000);
+        _workaroundBatchTrayUpdate.setSingleShot(true);
+    } else {
+        // Update the context menu whenever we're about to show it
+        // to the user.
+#ifdef Q_OS_MAC
+        // https://bugreports.qt.io/browse/QTBUG-54633
+        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(slotContextMenuAboutToShow()));
+        connect(_contextMenu.data(), SIGNAL(aboutToHide()), SLOT(slotContextMenuAboutToHide()));
+#else
+        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(updateContextMenu()));
+#endif
+    }
+
+    // Populate the context menu now.
+    updateContextMenu();
+}
+
+void ownCloudGui::updateContextMenu()
+{
+    if (minimalTrayMenu()) {
+        return;
+    }
+
+    if (_qdbusmenuWorkaround) {
+        // To make tray menu updates work with these bugs (see setupContextMenu)
+        // we need to hide and show the tray icon. We don't want to do that
+        // while it's visible!
+        if (contextMenuVisible()) {
+            if (!_workaroundBatchTrayUpdate.isActive()) {
+                _workaroundBatchTrayUpdate.start();
+            }
+            return;
+        }
+        _tray->hide();
+    }
+
+    _contextMenu->clear();
+    slotRebuildRecentMenus();
+
+    // We must call deleteLater because we might be called from the press in one of the actions.
+    foreach (auto menu, _accountMenus) { menu->deleteLater(); }
+    _accountMenus.clear();
+
 
     auto accountList = AccountManager::instance()->accounts();
 
@@ -461,54 +574,6 @@ void ownCloudGui::setupContextMenu()
         }
     }
 
-    if ( _contextMenu ) {
-        if (_qdbusmenuWorkaround) {
-            _tray->hide();
-        }
-        _contextMenu->clear();
-    } else {
-        _contextMenu.reset(new QMenu());
-
-        // Update the context menu whenever we're about to show it
-        // to the user.
-#ifdef Q_OS_MAC
-        // https://bugreports.qt.io/browse/QTBUG-54633
-#else
-        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(setupContextMenu()));
-#endif
-        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(slotContextMenuAboutToShow()));
-        connect(_contextMenu.data(), SIGNAL(aboutToHide()), SLOT(slotContextMenuAboutToHide()));
-
-
-        _recentActionsMenu = new QMenu(tr("Recent Changes"), _contextMenu.data());
-        // this must be called only once after creating the context menu, or
-        // it will trigger a bug in Ubuntu's SNI bridge patch (11.10, 12.04).
-        _tray->setContextMenu(_contextMenu.data());
-
-        // Enables workarounds for bugs introduced in Qt 5.5.0
-        // In particular QTBUG-47863 #3672 (tray menu fails to update and
-        // becomes unresponsive) and QTBUG-48068 #3722 (click signal is
-        // emitted several times)
-        // The Qt version check intentionally uses 5.0.0 (where platformMenu()
-        // was introduced) instead of 5.5.0 to avoid issues where the Qt
-        // version used to build is different from the one used at runtime.
-#ifdef Q_OS_LINUX
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-        QObject* platformMenu = reinterpret_cast<QObject*>(_tray->contextMenu()->platformMenu());
-        if (platformMenu
-                && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
-            _qdbusmenuWorkaround = true;
-            qDebug() << "Enabled QDBusPlatformMenu workaround";
-        }
-#endif
-#endif
-    }
-    _contextMenu->setTitle(Theme::instance()->appNameGUI() );
-    slotRebuildRecentMenus();
-
-    // We must call deleteLater because we might be called from the press in one of the actions.
-    foreach (auto menu, _accountMenus) { menu->deleteLater(); }
-    _accountMenus.clear();
     if (accountList.count() > 1) {
         foreach (AccountStatePtr account, accountList) {
             QMenu* accountMenu = new QMenu(account->account()->displayName(), _contextMenu.data());
@@ -581,17 +646,30 @@ void ownCloudGui::setupContextMenu()
     }
 }
 
-void ownCloudGui::setupContextMenuIfVisible()
+void ownCloudGui::updateContextMenuNeeded()
 {
+    // For the workaround case updating while visible is impossible. Instead
+    // occasionally update the menu when it's invisible.
+    if (_qdbusmenuWorkaround) {
+        if (!_workaroundBatchTrayUpdate.isActive()) {
+            _workaroundBatchTrayUpdate.start();
+        }
+        return;
+    }
+
 #ifdef Q_OS_MAC
     // https://bugreports.qt.io/browse/QTBUG-54845
-    if (!_contextMenuVisible) {
-        setupContextMenu();
+    // We cannot update on demand or while visible -> update when invisible.
+    if (!contextMenuVisible()) {
+        updateContextMenu();
     }
 #else
-    if (_contextMenuVisible)
-        setupContextMenu();
+    if (updateWhileVisible() && contextMenuVisible())
+        updateContextMenu();
 #endif
+
+    // If no update was done here, we might update it on-demand due to
+    // the aboutToShow() signal.
 }
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
@@ -754,13 +832,9 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo& 
 
         // Update the "Recent" menu if the context menu is being shown,
         // otherwise it'll be updated later, when the context menu is opened.
-#ifdef Q_OS_MAC
-        // https://bugreports.qt.io/browse/QTBUG-54845
-#else
-        if (_contextMenuVisible) {
+        if (updateWhileVisible() && contextMenuVisible()) {
             slotRebuildRecentMenus();
         }
-#endif
     }
 
     if (progress.isUpdatingEstimates()

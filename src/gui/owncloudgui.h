@@ -24,6 +24,7 @@
 #include <QMenu>
 #include <QSignalMapper>
 #include <QSize>
+#include <QTimer>
 
 namespace OCC {
 
@@ -52,12 +53,16 @@ public:
     static QSize settingsDialogSize() { return QSize(800, 500); }
     void setupOverlayIcons();
 
+    /// Whether the tray menu is visible
+    bool contextMenuVisible() const;
+
 signals:
     void setupProxy();
 
 public slots:
     void setupContextMenu();
-    void setupContextMenuIfVisible();
+    void updateContextMenu();
+    void updateContextMenuNeeded();
     void slotContextMenuAboutToShow();
     void slotContextMenuAboutToHide();
     void slotComputeOverallSyncStatus();
@@ -104,11 +109,15 @@ private:
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
     QScopedPointer<QMenu> _contextMenu;
-    bool _contextMenuVisible;
+
+    // Manually tracking whether the context menu is visible, but only works
+    // on OSX because aboutToHide is not reliable everywhere.
+    bool _contextMenuVisibleOsx;
 
     QMenu *_recentActionsMenu;
     QVector<QMenu*> _accountMenus;
     bool _qdbusmenuWorkaround;
+    QTimer _workaroundBatchTrayUpdate;
     QMap<QString, QPointer<ShareDialog> > _shareDialogs;
 
     QAction *_actionLogin;
