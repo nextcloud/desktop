@@ -117,6 +117,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
+    connect(ui->bigFolderApply, SIGNAL(clicked(bool)), _model, SLOT(slotApplySelectiveSync()));
+    connect(ui->bigFolderSyncAll, SIGNAL(clicked(bool)), _model, SLOT(slotSyncAllPendingBigFolders()));
+    connect(ui->bigFolderSyncNone, SIGNAL(clicked(bool)), _model, SLOT(slotSyncNoPendingBigFolders()));
+
     connect(FolderMan::instance(), SIGNAL(folderListChanged(Folder::Map)), _model, SLOT(resetFolders()));
     connect(this, SIGNAL(folderChanged()), _model, SLOT(resetFolders()));
 
@@ -635,12 +639,13 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 
     if (msg.isEmpty()) {
-        ui->selectiveSyncNotification->setVisible(false);
-        ui->selectiveSyncNotification->setText(QString());
+        ui->selectiveSyncButtons->setVisible(true);
+        ui->bigFolderUi->setVisible(false);
     } else {
-        ui->selectiveSyncNotification->setVisible(true);
         QString wholeMsg = tr("There are new folders that were not synchronized because they are too big: ") + msg;
         ui->selectiveSyncNotification->setText(wholeMsg);
+        ui->selectiveSyncButtons->setVisible(false);
+        ui->bigFolderUi->setVisible(true);
         shouldBeVisible = true;
     }
 

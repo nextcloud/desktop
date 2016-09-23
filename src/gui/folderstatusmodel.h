@@ -107,6 +107,8 @@ public slots:
     void slotUpdateFolderState(Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
+    void slotSyncAllPendingBigFolders();
+    void slotSyncNoPendingBigFolders();
     void slotSetProgress(const ProgressInfo &progress);
 
 private slots:
