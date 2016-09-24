@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="773"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="779"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1911,7 +1911,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="718"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2866,12 +2866,12 @@ It is not advisable to use it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1146"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -2986,54 +2986,54 @@ It is not advisable to use it.</source>
         <translation>Не могу да отворим дневник синхронизације</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="893"/>
+        <location filename="../src/libsync/syncengine.cpp" line="894"/>
         <source>File name contains at least one invalid character</source>
         <translation>Назив садржи бар један недозвољен карактер</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1097"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорисано јер се не налази на листи за синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1123"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Није могуће отпремити овај фајл јер је на серверу само за читање. Враћам</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1202"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1183"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1203"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Није могуће уклањање. Враћам</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Local files and share folder removed.</source>
         <translation>Локални фајлови и дељена фасцикла су уклоњени.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1272"/>
         <source>Move not allowed, item restored</source>
         <translation>Премештање није дозвољено. Ставка је враћена</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1282"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Премештање није дозвољено јер %1 је само за читање</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the destination</source>
         <translation>одредиште</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the source</source>
         <translation>извор</translation>
     </message>

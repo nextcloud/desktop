@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="773"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="779"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -1916,7 +1916,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="718"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2871,12 +2871,12 @@ It is not advisable to use it.</source>
         <translation>%1 しか空き容量がありません、開始するためには少なくとも %2 は必要です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>親フォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1146"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
@@ -2991,54 +2991,54 @@ It is not advisable to use it.</source>
         <translation>同期ジャーナルを開くことができません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="893"/>
+        <location filename="../src/libsync/syncengine.cpp" line="894"/>
         <source>File name contains at least one invalid character</source>
         <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1097"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;同期対象先&quot; ブラックリストにより無視されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1123"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバーでは読み取り専用となっているため、このファイルをアップロードすることはできません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1202"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1183"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1203"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除できないので復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Local files and share folder removed.</source>
         <translation>ローカルファイルと共有フォルダーを削除しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1272"/>
         <source>Move not allowed, item restored</source>
         <translation>移動できないので項目を復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1282"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 は読み取り専用のため移動できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the destination</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the source</source>
         <translation>移動元</translation>
     </message>

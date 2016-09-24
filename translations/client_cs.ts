@@ -522,7 +522,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="773"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="779"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -1918,7 +1918,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="712"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="718"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -2873,12 +2873,12 @@ Nedoporučuje se jí používat.</translation>
         <translation>Je dostupných pouze %1, pro spuštění je potřeba alespoň %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1139"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Není povoleno, protože nemáte oprávnění vytvořit nadřazený adresář</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1145"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1146"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat soubory do tohoto adresáře</translation>
     </message>
@@ -2993,54 +2993,54 @@ Nedoporučuje se jí používat.</translation>
         <translation>Nelze otevřít synchronizační žurnál</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="893"/>
+        <location filename="../src/libsync/syncengine.cpp" line="894"/>
         <source>File name contains at least one invalid character</source>
         <translation>Jméno souboru obsahuje aelspoň jeden neplatný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1097"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1104"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1098"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1105"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení &quot;vybrat co synchronizovat&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1123"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1124"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1166"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1202"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1183"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1203"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není povoleno, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Local files and share folder removed.</source>
         <translation>Místní soubory a sdílený adresář byly odstraněny.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1272"/>
         <source>Move not allowed, item restored</source>
         <translation>Přesun není povolen, položka obnovena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1282"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Přesun není povolen, protože %1 je pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the destination</source>
         <translation>cílové umístění</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1283"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1284"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>
