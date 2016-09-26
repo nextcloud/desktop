@@ -30,6 +30,7 @@
 #include "networkjobs.h"
 #include "sslerrordialog.h"
 #include "accountmanager.h"
+#include "clientproxy.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -128,7 +129,38 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     account->setUrl(url);
     // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
     // when there was a previous account.
-    account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
+    account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+
+    // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
+    if (ClientProxy::isUsingSystemDefault()) {
+        qDebug() << "Trying to look up system proxy";
+        ClientProxy::lookupSystemProxyAsync(account->url(),
+                                            this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
+    } else {
+        // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
+        account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
+        // use a queued invocation so we're as asynchronous as with the other code path
+        QMetaObject::invokeMethod(this, "slotContinueDetermineAuth", Qt::QueuedConnection);
+    }
+}
+
+void OwncloudSetupWizard::slotSystemProxyLookupDone(const QNetworkProxy &proxy)
+{
+    if (proxy.type() != QNetworkProxy::NoProxy) {
+        qDebug() << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+    } else {
+        qDebug() << "No system proxy set by OS";
+    }
+    AccountPtr account = _ocWizard->account();
+    account->networkAccessManager()->setProxy(proxy);
+
+    slotContinueDetermineAuth();
+}
+
+void OwncloudSetupWizard::slotContinueDetermineAuth()
+{
+    AccountPtr account = _ocWizard->account();
+
     // Set fake credentials before we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);
@@ -136,7 +168,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
     connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
     connect(job, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
     connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
-    job->setTimeout(10*1000);
+    job->setTimeout((account->url().scheme() == "https") ? 30*1000 : 10*1000);
     job->start();
 }
 

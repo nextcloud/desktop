@@ -57,7 +57,7 @@ private:
     QUrl _url;
 };
 
-QString printQNetworkProxy(const QNetworkProxy &proxy);
+OWNCLOUDSYNC_EXPORT QString printQNetworkProxy(const QNetworkProxy &proxy);
 
 
 }
