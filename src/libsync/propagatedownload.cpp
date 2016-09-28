@@ -620,30 +620,47 @@ static QString makeRecallFileName(const QString &fn)
     return recallFileName;
 }
 
-static void handleRecallFile(const QString &fn)
+void handleRecallFile(const QString& filePath, const QString& folderPath, SyncJournalDb& journal)
 {
-    qDebug() << "handleRecallFile: " << fn;
+    qDebug() << "handleRecallFile: " << filePath;
 
-    FileSystem::setFileHidden(fn, true);
+    FileSystem::setFileHidden(filePath, true);
 
-    QFile file(fn);
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Could not open recall file" << file.errorString();
         return;
     }
-    QFileInfo existingFile(fn);
-    QDir thisDir = existingFile.dir();
+    QFileInfo existingFile(filePath);
+    QDir baseDir = existingFile.dir();
 
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
         line.chop(1); // remove trailing \n
-        QString fpath = thisDir.filePath(line);
-        QString rpath = makeRecallFileName(fpath);
 
-        qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
+        QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
+        if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
+            qDebug() << "Ignoring recall of " << recalledFile;
+            continue;
+        }
+
+        // Path of the recalled file in the local folder
+        QString localRecalledFile = recalledFile.mid(folderPath.size());
+
+        SyncJournalFileRecord record = journal.getFileRecord(localRecalledFile);
+        if (!record.isValid()) {
+            qDebug() << "No db entry for recall of" << localRecalledFile;
+            continue;
+        }
+
+        qDebug() << "Recalling" << localRecalledFile << "Checksum:" << record._contentChecksumType << record._contentChecksum;
+
+        QString targetPath = makeRecallFileName(recalledFile);
+
+        qDebug() << "Copy recall file: " << recalledFile << " -> " << targetPath;
         // Remove the target first, QFile::copy will not overwrite it.
-        FileSystem::remove(rpath);
-        QFile::copy(fpath, rpath);
+        FileSystem::remove(targetPath);
+        QFile::copy(recalledFile, targetPath);
     }
 }
 
@@ -800,8 +817,10 @@ void PropagateDownloadFile::downloadFinished()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
-    if(_item->_file == QLatin1String(".sys.admin#recall#") || _item->_file.endsWith("/.sys.admin#recall#")) {
-        handleRecallFile(fn);
+    if(!_item->_remotePerm.contains("S")
+            && (_item->_file == QLatin1String(".sys.admin#recall#")
+                || _item->_file.endsWith("/.sys.admin#recall#"))) {
+        handleRecallFile(fn, _propagator->_localDir, *_propagator->_journal);
     }
 
     qint64 duration = _stopwatch.elapsed();

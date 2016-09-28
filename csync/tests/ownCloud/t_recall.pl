@@ -56,6 +56,8 @@ assertLocalAndRemoteDir( '', 0);
 printInfo( "Testing with a .sys.admin#recall#" );
 system("echo 'dir/file2.dat' > ". $tmpdir . ".sys.admin\#recall\#");
 system("echo 'dir/file3.dat' >> ". $tmpdir . ".sys.admin\#recall\#");
+system("echo 'nonexistant' >> ". $tmpdir . ".sys.admin\#recall\#");
+system("echo '/tmp/t_recall/file4.dat' >> ". $tmpdir . ".sys.admin\#recall\#");
 glob_put( "$tmpdir/.sys.admin\#recall\#", "" );
 
 csync();
@@ -67,6 +69,10 @@ assert( -e glob(localDir().'dir/file3_.sys.admin#recall#-*.dat' ) );
 # verify that the original files still exist
 assert( -e glob(localDir().'dir/file2.dat' ) );
 assert( -e glob(localDir().'dir/file3.dat' ) );
+
+assert( !-e glob(localDir().'nonexistant*' ) );
+assert( !-e glob('/tmp/t_recall/file4_.sys.admin#recall#-*.dat' ) );
+assert( -e glob('/tmp/t_recall/file4.dat' ) );
 
 #Remove the recall file
 unlink(localDir() . ".sys.admin#recall#");
