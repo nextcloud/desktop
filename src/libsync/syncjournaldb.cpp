@@ -15,6 +15,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QElapsedTimer>
+
 #include "ownsql.h"
 
 #include <inttypes.h>
@@ -132,7 +133,25 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
-    bool isNewDb = !QFile::exists(_dbFile);
+    bool isNewDb = !FileSystem::fileExists( _dbFile );
+
+    if( isNewDb ) {
+        // check if there is a database with the old naming scheme. This one
+        // is renamed to the new name.
+        const QString dir = _dbFile.left( _dbFile.lastIndexOf(QChar('/')) );
+        const QString oldDbName = dir + QLatin1String("/.csync_journal.db");
+        if( FileSystem::fileExists(oldDbName) ) {
+            QString errString;
+            bool renameOk = FileSystem::rename(oldDbName, _dbFile, &errString);
+
+            if( !renameOk ) {
+                qDebug() << "Database migration failed:" << errString;
+            } else {
+                qDebug() << "Journal successfully migrated from" << oldDbName << "to" << _dbFile;
+                isNewDb = false;
+            }
+        }
+    }
 
     // The database file is created by this call (SQLITE_OPEN_CREATE)
     if( !_db.openOrCreateReadWrite(_dbFile) ) {
