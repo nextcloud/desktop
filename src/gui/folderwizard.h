@@ -49,7 +49,7 @@ class FolderWizardLocalPath : public FormatWarningsWizardPage
 {
     Q_OBJECT
 public:
-    FolderWizardLocalPath();
+    FolderWizardLocalPath(AccountPtr account);
     ~FolderWizardLocalPath();
 
     virtual bool isComplete() const Q_DECL_OVERRIDE;
@@ -63,6 +63,7 @@ protected slots:
 private:
     Ui_FolderWizardSourcePage _ui;
     Folder::Map _folderMap;
+    AccountPtr _account;
 };
 
 

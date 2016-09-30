@@ -105,7 +105,7 @@ public:
      *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, bool forNewDirectory = false);
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl& serverUrl = QUrl(), bool forNewDirectory = false);
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,

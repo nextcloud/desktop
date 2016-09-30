@@ -1172,17 +1172,16 @@ QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNewDirectory)
+QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
 {
     if (path.isEmpty()) {
         return tr("No valid folder selected!");
     }
 
     QFileInfo selFile( path );
-    QString userInput = selFile.canonicalFilePath();
 
     if (!selFile.exists()) {
-        return checkPathValidityForNewFolder(selFile.dir().path(), true);
+        return checkPathValidityForNewFolder(selFile.dir().path(), serverUrl, true);
     }
 
     if( !selFile.isDir() ) {
@@ -1203,37 +1202,41 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, bool forNe
         }
         if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
 
-        if (QDir::cleanPath(f->path()) == QDir::cleanPath(userInput)
-                && QDir::cleanPath(QDir(f->path()).canonicalPath()) == QDir(userInput).canonicalPath()) {
-            return tr("The local folder %1 is already used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(userInput));
-        }
-        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(QDir::cleanPath(userInput)+'/')) {
+        const QString folderDirClean = QDir::cleanPath(folderDir)+'/';
+        const QString userDirClean = QDir::cleanPath(path)+'/';
+        bool differentPathes = QDir::cleanPath(folderDir) != QDir::cleanPath(path);
+
+        if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(userInput));
+                .arg(QDir::toNativeSeparators(path));
         }
 
-        QString absCleanUserFolder = QDir::cleanPath(QDir(userInput).canonicalPath())+'/';
-        if (!forNewDirectory && QDir::cleanPath(folderDir).startsWith(absCleanUserFolder) ) {
-            return tr("The local folder %1 is a symbolic link. "
-                      "The link target already contains a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(userInput));
-        }
+        QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath())+'/';
 
-        if (QDir::cleanPath(QString(userInput)).startsWith( QDir::cleanPath(folderDir)+'/')) {
+        if (differentPathes && userDirClean.startsWith( folderDirClean )) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(userInput));
+                .arg(QDir::toNativeSeparators(path));
         }
 
-        if (absCleanUserFolder.startsWith( QDir::cleanPath(folderDir)+'/')) {
+        if (differentPathes && absCleanUserFolder.startsWith( folderDirClean ) &&
+                absCleanUserFolder != folderDirClean ) {
             return tr("The local folder %1 is a symbolic link. "
                       "The link target is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(userInput));
+                .arg(QDir::toNativeSeparators(path));
+        }
+
+        if( serverUrl.isValid() && absCleanUserFolder == folderDir ) {
+            QUrl folderUrl = f->accountState()->account()->url();
+            QString user = f->accountState()->account()->credentials()->user();
+            folderUrl.setUserName(user);
+
+            if( serverUrl == folderUrl ) {
+                return tr("There is already a sync from the server to this local folder. "
+                          "Please pick another local folder!");
+            }
         }
     }
 
