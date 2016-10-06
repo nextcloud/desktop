@@ -724,7 +724,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Copia de seguretat detectada</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1008"/>
@@ -734,7 +734,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="1009"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Manté els fitxers locals com a conflicte</translation>
     </message>
 </context>
 <context>
@@ -817,7 +817,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1190"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>La ruta seleccionada no és un directori!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1194"/>
@@ -904,7 +904,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="170"/>
         <source>Fetching folder list from server...</source>
-        <translation type="unfinished"/>
+        <translation>Obtenint la llista de carpetes del servidor...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="841"/>
@@ -1006,7 +1006,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="544"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Afegir una connexió de sincronització</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1521,7 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="50"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Creat el %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="99"/>
@@ -1626,12 +1626,12 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="142"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzar el directori &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="147"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Atenció:&lt;/strong&gt; La carpeta local no està buida. Trieu una resolució!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="246"/>
@@ -1741,7 +1741,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="181"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha esgotat el temps d&apos;espera mentres es conectava a %1 a les %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="192"/>
@@ -1931,12 +1931,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="376"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>La descàrrega reduïrà l&apos;espai lliure al disc per sota de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;espai lliure del disc dur es inferior a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
@@ -1946,7 +1946,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="545"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot descarregar el fitxer completament.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="552"/>
@@ -2363,7 +2363,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="98"/>
         <source>%1 Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Compartint amb %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="73"/>
@@ -2378,7 +2378,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
         <source>The server does not allow sharing</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no permet la compartició de fitxers</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="113"/>
@@ -3048,7 +3048,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Registre de sincronització</translation>
     </message>
 </context>
 <context>
@@ -3069,7 +3069,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="289"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="290"/>
@@ -3215,7 +3215,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>La sincronització del compte està deshabilitada</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="379"/>
@@ -3642,7 +3642,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha baixat la versió del servidor i s&apos;ha renomenat el fitxer local com a fitxer de conflicte</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
