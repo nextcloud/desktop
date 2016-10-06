@@ -192,7 +192,8 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
         new_errno = EIO;
         break;
     case 503:           /* Service Unavailable */
-        if (reason == "Storage not available") {
+        // https://github.com/owncloud/core/pull/26145/files
+        if (reason == "Storage not available" || reason == "Storage is temporarily not available") {
             new_errno = ERRNO_STORAGE_UNAVAILABLE;
         } else {
             new_errno = ERRNO_SERVICE_UNAVAILABLE;
