@@ -97,10 +97,10 @@ public:
     /**
       * get an sync state icon
       */
-    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false ) const;
+    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 
     virtual QIcon   folderDisabledIcon() const;
-    virtual QIcon   folderOfflineIcon(bool systray = false) const;
+    virtual QIcon   folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
     virtual QIcon   applicationIcon() const = 0;
 #endif
 
@@ -152,7 +152,7 @@ public:
     virtual QString enforcedLocale() const { return QString::null; }
 
     /** colored, white or black */
-    QString systrayIconFlavor(bool mono) const;
+    QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
 #ifndef TOKEN_AUTH_ONLY
     /**
@@ -304,7 +304,7 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString& name, bool sysTray = false) const;
+    QIcon themeIcon(const QString& name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 #endif
     Theme();
 

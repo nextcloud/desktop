@@ -67,7 +67,7 @@ ownCloudGui::ownCloudGui(Application *parent) :
     _tray->setParent(this);
 
     // for the beginning, set the offline icon until the account was verified
-    _tray->setIcon( Theme::instance()->folderOfflineIcon(true));
+    _tray->setIcon( Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
 
     connect(_tray.data(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             SLOT(slotTrayClicked(QSystemTrayIcon::ActivationReason)));
@@ -262,7 +262,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (!problemAccounts.empty()) {
-        _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+        _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
@@ -289,11 +289,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (allSignedOut) {
-        _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+        _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
         _tray->setToolTip(tr("Please sign in"));
         return;
     } else if (allPaused) {
-        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true));
+        _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true, contextMenuVisible()));
         _tray->setToolTip(tr("Account synchronization is disabled"));
         return;
     }
@@ -323,12 +323,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
             trayMessage = tr("No sync folders configured.");
         }
 
-        QIcon statusIcon = Theme::instance()->syncStateIcon( overallResult.status(), true);
+        QIcon statusIcon = Theme::instance()->syncStateIcon( overallResult.status(), true, contextMenuVisible());
         _tray->setIcon( statusIcon );
         _tray->setToolTip(trayMessage);
     } else {
         // undefined because there are no folders.
-        QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true);
+        QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true, contextMenuVisible());
         _tray->setIcon( icon );
         _tray->setToolTip(tr("There are no sync folders configured."));
     }
@@ -405,6 +405,9 @@ void ownCloudGui::slotContextMenuAboutToShow()
     // For some reason on OS X _contextMenu->isVisible returns always false
     qDebug() << "";
     _contextMenuVisibleOsx = true;
+
+    // Update icon in sys tray, as it might change depending on the context menu state
+    slotComputeOverallSyncStatus();
 }
 
 void ownCloudGui::slotContextMenuAboutToHide()
@@ -412,6 +415,9 @@ void ownCloudGui::slotContextMenuAboutToHide()
     // For some reason on OS X _contextMenu->isVisible returns always false
     qDebug() << "";
     _contextMenuVisibleOsx = false;
+
+    // Update icon in sys tray, as it might change depending on the context menu state
+    slotComputeOverallSyncStatus();
 }
 
 bool ownCloudGui::contextMenuVisible() const
