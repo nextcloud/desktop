@@ -1209,15 +1209,15 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
         if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
+                    .arg(QDir::toNativeSeparators(path));
         }
 
         QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath())+'/';
 
-        if (differentPathes && userDirClean.startsWith( folderDirClean )) {
+        if ( (forNewDirectory || differentPathes) && userDirClean.startsWith( folderDirClean )) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
+                    .arg(QDir::toNativeSeparators(path));
         }
 
         if (differentPathes && absCleanUserFolder.startsWith( folderDirClean ) &&
@@ -1225,8 +1225,17 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
             return tr("The local folder %1 is a symbolic link. "
                       "The link target is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
+                    .arg(QDir::toNativeSeparators(path));
         }
+
+        if (differentPathes && folderDirClean.startsWith(absCleanUserFolder) &&
+                absCleanUserFolder != folderDirClean && !forNewDirectory ) {
+            return tr("The local folder %1 contains a symbolic link. "
+                      "The link target contains an already synced folder "
+                      "Please pick another one!")
+                    .arg(QDir::toNativeSeparators(path));
+        }
+
 
         if( serverUrl.isValid() && absCleanUserFolder == folderDir ) {
             QUrl folderUrl = f->accountState()->account()->url();
