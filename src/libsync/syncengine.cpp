@@ -92,9 +92,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
 
     csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
 
-    const QString dbFile = this->journalDbFilePath();
-    _journal->setDatabaseFilePath( dbFile );
-    Q_ASSERT(!dbFile.isEmpty());
+    const QString dbFile = _journal->databaseFilePath();
     csync_init(_csync_ctx, dbFile.toUtf8().data());
 
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
@@ -114,23 +112,6 @@ SyncEngine::~SyncEngine()
     _thread.wait();
     _excludedFiles.reset();
     csync_destroy(_csync_ctx);
-}
-
-QString SyncEngine::journalDbFilePath() const
-{
-    // localPath always has a trailing slash
-    QString dbFile(_localPath);
-    dbFile.append( QLatin1String(".sync_"));
-    // FIXME: Maybe it is better to only allow different hosts, without path component.
-    QString remoteUrlPath = _remoteUrl.toString();
-    if( _remotePath != QLatin1String("/") ) {
-        remoteUrlPath.append(_remotePath);
-    }
-    QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
-    dbFile.append( ba.left(6).toHex() );
-    dbFile.append(".db");
-
-    return dbFile;
 }
 
 //Convert an error code from csync to a user readable string.

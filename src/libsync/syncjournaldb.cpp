@@ -15,6 +15,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QElapsedTimer>
+#include <QUrl>
 
 #include "ownsql.h"
 
@@ -42,11 +43,27 @@ bool SyncJournalDb::exists()
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
 }
 
+void SyncJournalDb::setAccountParameterForFilePath( const QString& localPath, const QUrl& remoteUrl, const QString& remotePath )
+{
+    // localPath always has a trailing slash
+    _dbFile = localPath;
+    _dbFile.append( QLatin1String(".sync_"));
+    // FIXME: Maybe it is better to only allow different hosts, without path component.
+    QString remoteUrlPath = remoteUrl.toString();
+    if( remotePath != QLatin1String("/") ) {
+        remoteUrlPath.append(remotePath);
+    }
+    QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
+    _dbFile.append( ba.left(6).toHex() );
+    _dbFile.append(".db");
+}
+
+#ifndef NDEBUG
 void SyncJournalDb::setDatabaseFilePath( const QString& dbFile)
 {
     _dbFile = dbFile;
 }
-
+#endif
 QString SyncJournalDb::databaseFilePath()
 {
     return _dbFile;

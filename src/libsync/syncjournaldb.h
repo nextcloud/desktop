@@ -56,7 +56,10 @@ public:
     void walCheckpoint();
 
     QString databaseFilePath();
+#ifndef NDEBUG
     void setDatabaseFilePath( const QString& dbFile);
+#endif
+    void setAccountParameterForFilePath(const QString& localPath, const QUrl &remoteUrl, const QString& remotePath );
 
     static qint64 getPHash(const QString& );
 
