@@ -14,6 +14,7 @@
 
 #include "discoveryphase.h"
 #include <csync_private.h>
+#include <csync_rename.h>
 #include <qdebug.h>
 
 #include <QUrl>
@@ -51,7 +52,7 @@ static bool findPathInList(const QStringList &list, const QString &path)
     return pathSlash.startsWith(*it);
 }
 
-bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
+bool DiscoveryJob::isInSelectiveSyncBlackList(const char *path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -59,13 +60,25 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QString& path) const
     }
 
     // Block if it is in the black list
-    return findPathInList(_selectiveSyncBlackList, path);
+    if (findPathInList(_selectiveSyncBlackList, QString::fromUtf8(path))) {
+        return true;
+    }
 
+    // Also try to adjust the path if there was renames
+    if (csync_rename_count(_csync_ctx)) {
+        QScopedPointer<char, QScopedPointerPodDeleter> adjusted(
+            csync_rename_adjust_path_source(_csync_ctx, path));
+        if (strcmp(adjusted.data(), path) != 0) {
+            return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted.data()));
+        }
+    }
+
+    return false;
 }
 
 int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *path)
 {
-    return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(path);
 }
 
 bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)

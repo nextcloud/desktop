@@ -32,6 +32,8 @@ char OCSYNC_EXPORT *csync_rename_adjust_path(CSYNC *ctx, const char *path);
 char OCSYNC_EXPORT *csync_rename_adjust_path_source(CSYNC *ctx, const char *path);
 void OCSYNC_EXPORT csync_rename_destroy(CSYNC *ctx);
 void OCSYNC_EXPORT csync_rename_record(CSYNC *ctx, const char *from, const char *to);
+/*  Return the amount of renamed item recorded */
+bool OCSYNC_EXPORT csync_rename_count(CSYNC *ctx);
 
 #ifdef __cplusplus
 }

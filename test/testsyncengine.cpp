@@ -7,6 +7,7 @@
 
 #include <QtTest>
 #include "syncenginetestutils.h"
+#include <syncengine.h>
 
 using namespace OCC;
 
@@ -137,8 +138,8 @@ private slots:
         fakeFolder.syncOnce();
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto oldState = fakeFolder.currentLocalState();
-        QVERIFY(oldState.find(PathComponents("folder/folderB/folderA/file.txt")));
-        QVERIFY(!oldState.find(PathComponents("folder/folderA/file.txt")));
+        QVERIFY(oldState.find("folder/folderB/folderA/file.txt"));
+        QVERIFY(!oldState.find("folder/folderA/file.txt"));
 
         // This sync should not remove the file
         fakeFolder.syncOnce();
@@ -146,6 +147,72 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), oldState);
 
     }
+
+    void testSelectiveSyncModevFolder() {
+        // issue #5224
+        FakeFolder fakeFolder{FileInfo{ QString(), {
+            FileInfo { QStringLiteral("parentFolder"), {
+                FileInfo{ QStringLiteral("subFolderA"), { { QStringLiteral("fileA.txt"), 400 } } },
+                FileInfo{ QStringLiteral("subFolderB"), { { QStringLiteral("fileB.txt"), 400 } } }
+            }
+        }}}};
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto expectedServerState = fakeFolder.currentRemoteState();
+
+        // Remove subFolderA with selectiveSync:
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                                {"parentFolder/subFolderA/"});
+        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolderA/");
+
+        fakeFolder.syncOnce();
+
+        {
+            // Nothing changed on the server
+            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
+            // The local state should not have subFolderA
+            auto remoteState = fakeFolder.currentRemoteState();
+            remoteState.remove("parentFolder/subFolderA");
+            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
+        }
+
+        // Rename parentFolder on the server
+        fakeFolder.remoteModifier().rename("parentFolder", "parentFolderRenamed");
+        expectedServerState = fakeFolder.currentRemoteState();
+        fakeFolder.syncOnce();
+
+        {
+            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
+            auto remoteState = fakeFolder.currentRemoteState();
+            // The subFolderA should still be there on the server.
+            QVERIFY(remoteState.find("parentFolderRenamed/subFolderA/fileA.txt"));
+            // But not on the client because of the selective sync
+            remoteState.remove("parentFolderRenamed/subFolderA");
+            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
+        }
+
+        // Rename it again, locally this time.
+        fakeFolder.localModifier().rename("parentFolderRenamed", "parentThirdName");
+        fakeFolder.syncOnce();
+
+        {
+            auto remoteState = fakeFolder.currentRemoteState();
+            // The subFolderA should still be there on the server.
+            QVERIFY(remoteState.find("parentThirdName/subFolderA/fileA.txt"));
+            // But not on the client because of the selective sync
+            remoteState.remove("parentThirdName/subFolderA");
+            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
+
+            expectedServerState = fakeFolder.currentRemoteState();
+            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+            fakeFolder.syncOnce(); // This sync should do nothing
+            QCOMPARE(completeSpy.count(), 0);
+
+            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
+            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
+        }
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

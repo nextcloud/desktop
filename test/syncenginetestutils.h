@@ -28,6 +28,7 @@ inline QByteArray generateFileId() {
 
 class PathComponents : public QStringList {
 public:
+    PathComponents(const char *path) : PathComponents{QString::fromUtf8(path)} {}
     PathComponents(const QString &path) : QStringList{path.split('/', QString::SkipEmptyParts)} { }
     PathComponents(const QStringList &pathComponents) : QStringList{pathComponents} { }
 
@@ -90,8 +91,9 @@ public:
     void mkdir(const QString &relativePath) override {
         _rootDir.mkpath(relativePath);
     }
-    void rename(const QString &, const QString &) override {
-        Q_ASSERT(!"not implemented");
+    void rename(const QString &from, const QString &to) override {
+        QVERIFY(_rootDir.exists(from));
+        QVERIFY(_rootDir.rename(from, to));
     }
 };
 
@@ -457,6 +459,36 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
+class FakeMoveReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+    : QNetworkReply{parent} {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+
+        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
+        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString destPath = request.rawHeader("Destination");
+        Q_ASSERT(destPath.startsWith(sRootUrl.path()));
+        QString dest = destPath.mid(sRootUrl.path().length());
+        remoteRootFileInfo.rename(fileName, dest);
+        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    }
+
+    Q_INVOKABLE void respond() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    void abort() override { }
+    qint64 readData(char *, qint64) override { return 0; }
+};
+
 class FakeGetReply : public QNetworkReply
 {
     Q_OBJECT
@@ -552,6 +584,8 @@ protected:
             return new FakeMkcolReply{_remoteRootFileInfo, op, request, this};
         else if (verb == QLatin1String("DELETE"))
             return new FakeDeleteReply{_remoteRootFileInfo, op, request, this};
+        else if (verb == QLatin1String("MOVE"))
+            return new FakeMoveReply{_remoteRootFileInfo, op, request, this};
         else {
             qDebug() << verb << outgoingData;
             Q_UNREACHABLE();

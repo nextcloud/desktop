@@ -13,6 +13,7 @@
  */
 
 #include "propagateremotemove.h"
+#include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "syncjournalfilerecord.h"
@@ -175,10 +176,45 @@ void PropagateRemoteMove::finalize()
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
+
+    if (_item->_isDirectory) {
+        if (!adjustSelectiveSync(_propagator->_journal, _item->_file, _item->_renameTarget)) {
+            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+            return;
+        }
+    }
+
     _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 
+bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QString &from_, const QString &to_)
+{
+    bool ok;
+    // We only care about preserving the blacklist.   The white list should anyway be empty.
+    // And the undecided list will be repopulated on the next sync, if there is anything too big.
+    QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return false;
+
+    bool changed = false;
+    Q_ASSERT(!from_.endsWith(QLatin1String("/")));
+    Q_ASSERT(!to_.endsWith(QLatin1String("/")));
+    QString from = from_ + QLatin1String("/");
+    QString to = to_ + QLatin1String("/");
+
+    for (auto it = list.begin(); it != list.end(); ++it) {
+        if (it->startsWith(from)) {
+            *it = it->replace(0, from.size(), to);
+            changed = true;
+        }
+    }
+
+    if (changed) {
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, list);
+    }
+    return true;
+}
 
 }
 
