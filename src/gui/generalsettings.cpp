@@ -83,9 +83,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
-    QString themeDir = QString::fromLatin1(":/client/theme/%1/")
-            .arg(Theme::instance()->systrayIconFlavor(true));
-    _ui->monoIconsCheckBox->setVisible(QDir(themeDir).exists());
+    _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
 

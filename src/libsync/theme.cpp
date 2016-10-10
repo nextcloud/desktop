@@ -265,6 +265,12 @@ bool Theme::systrayUseMonoIcons() const
     return _mono;
 }
 
+bool Theme::monoIconsAvailable() const
+{
+    QString themeDir = QString::fromLatin1(":/client/theme/%1/").arg(Theme::instance()->systrayIconFlavor(true));
+    return QDir(themeDir).exists();
+}
+
 QString Theme::updateCheckUrl() const
 {
     return QLatin1String("https://updates.owncloud.com/client/");

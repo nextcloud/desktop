@@ -202,6 +202,11 @@ public:
     bool systrayUseMonoIcons() const;
 
     /**
+     * Check if mono icons are available
+     */
+    bool monoIconsAvailable() const;
+
+    /**
      * @brief Where to check for new Updates.
      */
     virtual QString updateCheckUrl() const;
