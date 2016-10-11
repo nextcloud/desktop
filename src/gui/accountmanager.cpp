@@ -209,6 +209,13 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
 
 AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
 {
+    auto urlConfig = settings.value(QLatin1String(urlC));
+    if (!urlConfig.isValid()) {
+        // No URL probably means a corrupted entry in the account settings
+        qDebug() << "No URL for account " << settings.group();
+        return AccountPtr();
+    }
+
     auto acc = createAccount();
 
     QString authType = settings.value(QLatin1String(authTypeC)).toString();
@@ -220,7 +227,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
         acc->setUrl(overrideUrl);
         authType = forceAuth;
     } else {
-        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+        acc->setUrl(urlConfig.toUrl());
     }
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 
