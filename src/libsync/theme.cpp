@@ -237,6 +237,7 @@ QString Theme::defaultClientFolder() const
 
 QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible ) const
 {
+    Q_UNUSED(sysTrayMenuVisible)
     QString flavor;
     if (mono) {
         flavor = Utility::hasDarkSystray() ? QLatin1String("white") : QLatin1String("black");
