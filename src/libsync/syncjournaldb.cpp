@@ -318,7 +318,9 @@ bool SyncJournalDb::checkConnect()
         createQuery.bindValue(2, MIRALL_VERSION_MINOR);
         createQuery.bindValue(3, MIRALL_VERSION_PATCH);
         createQuery.bindValue(4, MIRALL_VERSION_BUILD);
-        createQuery.exec();
+        if (!createQuery.exec()) {
+            return sqlFail("Update version", createQuery);
+        }
 
     } else {
         int major = versionQuery.intValue(0);
@@ -367,60 +369,84 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getFileRecordQuery.reset(new SqlQuery(_db));
-    _getFileRecordQuery->prepare(
+    if (_getFileRecordQuery->prepare(
             "SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize,"
             "  ignoredChildrenRemote, contentChecksum, contentchecksumtype.name"
             " FROM metadata"
             "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
-            " WHERE phash=?1" );
+            " WHERE phash=?1" )) {
+        return sqlFail("prepare _getFileRecordQuery", *_getFileRecordQuery);
+    }
 
     _setFileRecordQuery.reset(new SqlQuery(_db) );
-    _setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
+    if (_setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
                                  "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
-                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);" );
+                                 "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);" )) {
+        return sqlFail("prepare _setFileRecordQuery", *_setFileRecordQuery);
+    }
 
     _setFileRecordChecksumQuery.reset(new SqlQuery(_db) );
-    _setFileRecordChecksumQuery->prepare(
+    if (_setFileRecordChecksumQuery->prepare(
             "UPDATE metadata"
             " SET contentChecksum = ?2, contentChecksumTypeId = ?3"
-            " WHERE phash == ?1;");
+            " WHERE phash == ?1;")) {
+        return sqlFail("prepare _setFileRecordChecksumQuery", *_setFileRecordChecksumQuery);
+    }
 
     _setFileRecordLocalMetadataQuery.reset(new SqlQuery(_db));
-    _setFileRecordLocalMetadataQuery->prepare(
+    if (_setFileRecordLocalMetadataQuery->prepare(
             "UPDATE metadata"
             " SET inode=?2, modtime=?3, filesize=?4"
-            " WHERE phash == ?1;");
+            " WHERE phash == ?1;")) {
+        return sqlFail("prepare _setFileRecordLocalMetadataQuery", *_setFileRecordLocalMetadataQuery);
+    }
  
     _getDownloadInfoQuery.reset(new SqlQuery(_db) );
-    _getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
-                                    "downloadinfo WHERE path=?1" );
+    if (_getDownloadInfoQuery->prepare( "SELECT tmpfile, etag, errorcount FROM "
+                                    "downloadinfo WHERE path=?1" )) {
+        return sqlFail("prepare _getDownloadInfoQuery", *_getDownloadInfoQuery);
+    }
 
     _setDownloadInfoQuery.reset(new SqlQuery(_db) );
-    _setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
+    if (_setDownloadInfoQuery->prepare( "INSERT OR REPLACE INTO downloadinfo "
                                     "(path, tmpfile, etag, errorcount) "
-                                    "VALUES ( ?1 , ?2, ?3, ?4 )" );
+                                    "VALUES ( ?1 , ?2, ?3, ?4 )" )) {
+        return sqlFail("prepare _setDownloadInfoQuery", *_setDownloadInfoQuery);
+    }
 
     _deleteDownloadInfoQuery.reset(new SqlQuery(_db) );
-    _deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?1" );
+    if (_deleteDownloadInfoQuery->prepare( "DELETE FROM downloadinfo WHERE path=?1" )) {
+        return sqlFail("prepare _deleteDownloadInfoQuery", *_deleteDownloadInfoQuery);
+    }
 
     _getUploadInfoQuery.reset(new SqlQuery(_db));
-    _getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
-                                  "uploadinfo WHERE path=?1" );
+    if (_getUploadInfoQuery->prepare( "SELECT chunk, transferid, errorcount, size, modtime FROM "
+                                  "uploadinfo WHERE path=?1" )) {
+        return sqlFail("prepare _getUploadInfoQuery", *_getUploadInfoQuery);
+    }
 
     _setUploadInfoQuery.reset(new SqlQuery(_db));
-    _setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
+    if (_setUploadInfoQuery->prepare( "INSERT OR REPLACE INTO uploadinfo "
                                   "(path, chunk, transferid, errorcount, size, modtime) "
-                                  "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 )");
+                                  "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 )")) {
+        return sqlFail("prepare _setUploadInfoQuery", *_setUploadInfoQuery);
+    }
 
     _deleteUploadInfoQuery.reset(new SqlQuery(_db));
-    _deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?1" );
+    if (_deleteUploadInfoQuery->prepare("DELETE FROM uploadinfo WHERE path=?1" )) {
+        return sqlFail("prepare _deleteUploadInfoQuery", *_deleteUploadInfoQuery);
+    }
 
 
     _deleteFileRecordPhash.reset(new SqlQuery(_db));
-    _deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?1");
+    if (_deleteFileRecordPhash->prepare("DELETE FROM metadata WHERE phash=?1")) {
+        return sqlFail("prepare _deleteFileRecordPhash", *_deleteFileRecordPhash);
+    }
 
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
-    _deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')");
+    if (_deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')")) {
+        return sqlFail("prepare _deleteFileRecordRecursively", *_deleteFileRecordRecursively);
+    }
 
     QString sql( "SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget "
                  "FROM blacklist WHERE path=?1");
@@ -430,32 +456,50 @@ bool SyncJournalDb::checkConnect()
         sql += QLatin1String(" COLLATE NOCASE");
     }
     _getErrorBlacklistQuery.reset(new SqlQuery(_db));
-    _getErrorBlacklistQuery->prepare(sql);
+    if (_getErrorBlacklistQuery->prepare(sql)) {
+        return sqlFail("prepare _getErrorBlacklistQuery", *_getErrorBlacklistQuery);
+    }
 
     _setErrorBlacklistQuery.reset(new SqlQuery(_db));
-    _setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
+    if (_setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
                                 "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget) "
-                                "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)");
+                                "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)")) {
+        return sqlFail("prepare _setErrorBlacklistQuery", *_setErrorBlacklistQuery);
+    }
 
     _getSelectiveSyncListQuery.reset(new SqlQuery(_db));
-    _getSelectiveSyncListQuery->prepare("SELECT path FROM selectivesync WHERE type=?1");
+    if (_getSelectiveSyncListQuery->prepare("SELECT path FROM selectivesync WHERE type=?1")) {
+        return sqlFail("prepare _getSelectiveSyncListQuery", *_getSelectiveSyncListQuery);
+    }
 
     _getChecksumTypeIdQuery.reset(new SqlQuery(_db));
-    _getChecksumTypeIdQuery->prepare("SELECT id FROM checksumtype WHERE name=?1");
+    if (_getChecksumTypeIdQuery->prepare("SELECT id FROM checksumtype WHERE name=?1")) {
+        return sqlFail("prepare _getChecksumTypeIdQuery", *_getChecksumTypeIdQuery);
+    }
 
     _getChecksumTypeQuery.reset(new SqlQuery(_db));
-    _getChecksumTypeQuery->prepare("SELECT name FROM checksumtype WHERE id=?1");
+    if (_getChecksumTypeQuery->prepare("SELECT name FROM checksumtype WHERE id=?1")) {
+        return sqlFail("prepare _getChecksumTypeQuery", *_getChecksumTypeQuery);
+    }
 
     _insertChecksumTypeQuery.reset(new SqlQuery(_db));
-    _insertChecksumTypeQuery->prepare("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)");
+    if (_insertChecksumTypeQuery->prepare("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)")) {
+        return sqlFail("prepare _insertChecksumTypeQuery", *_insertChecksumTypeQuery);
+    }
 
     _getDataFingerprintQuery.reset(new SqlQuery(_db));
-    _getDataFingerprintQuery->prepare("SELECT fingerprint FROM datafingerprint");
+    if (_getDataFingerprintQuery->prepare("SELECT fingerprint FROM datafingerprint")) {
+        return sqlFail("prepare _getDataFingerprintQuery", *_getDataFingerprintQuery);
+    }
 
     _setDataFingerprintQuery1.reset(new SqlQuery(_db));
-    _setDataFingerprintQuery1->prepare("DELETE FROM datafingerprint;");
+    if (_setDataFingerprintQuery1->prepare("DELETE FROM datafingerprint;")) {
+        return sqlFail("prepare _setDataFingerprintQuery1", *_setDataFingerprintQuery1);
+    }
     _setDataFingerprintQuery2.reset(new SqlQuery(_db));
-    _setDataFingerprintQuery2->prepare("INSERT INTO datafingerprint (fingerprint) VALUES (?1);");
+    if (_setDataFingerprintQuery2->prepare("INSERT INTO datafingerprint (fingerprint) VALUES (?1);")) {
+        return sqlFail("prepare _setDataFingerprintQuery2", *_setDataFingerprintQuery2);
+    }
 
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
