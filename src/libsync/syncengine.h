@@ -202,7 +202,6 @@ private:
     SyncJournalDb *_journal;
     QPointer<DiscoveryMainThread> _discoveryMainThread;
     QSharedPointer <OwncloudPropagator> _propagator;
-    QString _lastDeleted; // if the last item was a path and it has been deleted
 
     // After a sync, only the syncdb entries whose filenames appear in this
     // set will be kept. See _temporarilyUnavailablePaths.
