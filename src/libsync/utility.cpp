@@ -285,9 +285,23 @@ bool Utility::fsCasePreserving()
     if( isWindows() || isMac() ) {
         re = true;
     } else {
-        static bool isTest = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING").toInt();
+        bool isTest = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING").toInt();
         re = isTest;
     }
+    return re;
+}
+
+bool Utility::fileNamesEqual( const QString& fn1, const QString& fn2)
+{
+    const QDir fd1(fn1);
+    const QDir fd2(fn2);
+
+    // Attention: If the path does not exist, canonicalPath returns ""
+    // ONLY use this function with existing pathes.
+    const QString a = fd1.canonicalPath();
+    const QString b =  fd2.canonicalPath();
+    bool re = !a.isEmpty() && QString::compare( a, b,
+                                                fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive) == 0;
     return re;
 }
 
