@@ -1193,6 +1193,10 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
     }
 
     // check if the local directory isn't used yet in another ownCloud sync
+    Qt::CaseSensitivity cs = Qt::CaseSensitive;
+    if( Utility::fsCasePreserving() ) {
+        cs = Qt::CaseInsensitive;
+    }
 
     for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i ) {
         Folder *f = static_cast<Folder*>(i.value());
@@ -1200,13 +1204,13 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
         if( folderDir.isEmpty() ) {
             continue;
         }
-        if( ! folderDir.endsWith(QLatin1Char('/')) ) folderDir.append(QLatin1Char('/'));
+        if( ! folderDir.endsWith(QLatin1Char('/'), cs) ) folderDir.append(QLatin1Char('/'));
 
         const QString folderDirClean = QDir::cleanPath(folderDir)+'/';
         const QString userDirClean = QDir::cleanPath(path)+'/';
-        bool differentPathes = QDir::cleanPath(folderDir) != QDir::cleanPath(path);
+        bool differentPathes = !Utility::fileNamesEqual(QDir::cleanPath(folderDir), QDir::cleanPath(path));
 
-        if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean)) {
+        if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean,cs)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
                     .arg(QDir::toNativeSeparators(path));
@@ -1214,22 +1218,23 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
 
         QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath())+'/';
 
-        if ( (forNewDirectory || differentPathes) && userDirClean.startsWith( folderDirClean )) {
+        if ( (forNewDirectory || differentPathes) && userDirClean.startsWith( folderDirClean, cs )) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                     .arg(QDir::toNativeSeparators(path));
         }
 
-        if (differentPathes && absCleanUserFolder.startsWith( folderDirClean ) &&
-                absCleanUserFolder != folderDirClean ) {
+        bool cleanUserEqualsCleanFolder = Utility::fileNamesEqual(absCleanUserFolder, folderDirClean );
+        if (differentPathes && absCleanUserFolder.startsWith( folderDirClean, cs ) &&
+                ! cleanUserEqualsCleanFolder ) {
             return tr("The local folder %1 is a symbolic link. "
                       "The link target is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                     .arg(QDir::toNativeSeparators(path));
         }
 
-        if (differentPathes && folderDirClean.startsWith(absCleanUserFolder) &&
-                absCleanUserFolder != folderDirClean && !forNewDirectory ) {
+        if (differentPathes && folderDirClean.startsWith(absCleanUserFolder, cs) &&
+                !cleanUserEqualsCleanFolder && !forNewDirectory ) {
             return tr("The local folder %1 contains a symbolic link. "
                       "The link target contains an already synced folder "
                       "Please pick another one!")
@@ -1237,7 +1242,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
         }
 
 
-        if( serverUrl.isValid() && absCleanUserFolder == folderDir ) {
+        if( serverUrl.isValid() && Utility::fileNamesEqual(absCleanUserFolder,folderDir ) ) {
             QUrl folderUrl = f->accountState()->account()->url();
             QString user = f->accountState()->account()->credentials()->user();
             folderUrl.setUserName(user);
