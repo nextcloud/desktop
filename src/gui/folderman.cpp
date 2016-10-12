@@ -1208,6 +1208,8 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
 
         const QString folderDirClean = QDir::cleanPath(folderDir)+'/';
         const QString userDirClean = QDir::cleanPath(path)+'/';
+
+        // folderDir follows sym links, path not.
         bool differentPathes = !Utility::fileNamesEqual(QDir::cleanPath(folderDir), QDir::cleanPath(path));
 
         if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean,cs)) {
@@ -1216,6 +1218,8 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
                     .arg(QDir::toNativeSeparators(path));
         }
 
+        // QDir::cleanPath keeps links
+        // canonicalPath() remove symlinks and uses the symlink targets.
         QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath())+'/';
 
         if ( (forNewDirectory || differentPathes) && userDirClean.startsWith( folderDirClean, cs )) {
@@ -1224,6 +1228,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
                     .arg(QDir::toNativeSeparators(path));
         }
 
+        // both follow symlinks.
         bool cleanUserEqualsCleanFolder = Utility::fileNamesEqual(absCleanUserFolder, folderDirClean );
         if (differentPathes && absCleanUserFolder.startsWith( folderDirClean, cs ) &&
                 ! cleanUserEqualsCleanFolder ) {
@@ -1241,7 +1246,9 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
                     .arg(QDir::toNativeSeparators(path));
         }
 
-
+        // if both pathes are equal, the server url needs to be different
+        // otherwise it would mean that a new connection from the same local folder
+        // to the same account is added which is not wanted. The account must differ.
         if( serverUrl.isValid() && Utility::fileNamesEqual(absCleanUserFolder,folderDir ) ) {
             QUrl folderUrl = f->accountState()->account()->url();
             QString user = f->accountState()->account()->credentials()->user();
