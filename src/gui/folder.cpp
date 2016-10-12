@@ -758,8 +758,6 @@ void Folder::startSync(const QStringList &pathList)
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
-    // disable events until syncing is done
-    // _watcher->setEventsEnabled(false);
     emit syncStarted();
 }
 
@@ -823,9 +821,6 @@ void Folder::slotSyncFinished(bool success)
     bubbleUpSyncResult();
 
     bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
-    // _watcher->setEventsEnabledDelayed(2000);
-
-
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
