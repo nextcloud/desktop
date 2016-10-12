@@ -343,7 +343,7 @@ void Application::slotownCloudWizardDone( int res )
         shouldSetAutoStart = shouldSetAutoStart
                 && QCoreApplication::applicationDirPath().startsWith("/Applications/");
 #endif
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
+        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), shouldSetAutoStart);
     }
 }
 
