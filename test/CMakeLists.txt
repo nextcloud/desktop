@@ -27,7 +27,9 @@ ENDIF()
 
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 if( UNIX AND NOT APPLE )
+  if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
     owncloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
+  endif(HAVE_QT5 AND NOT BUILD_WITH_QT4)
 endif(UNIX AND NOT APPLE)
 
 owncloud_add_test(CSyncSqlite "")
