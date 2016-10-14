@@ -529,7 +529,7 @@ void OwncloudPropagator::scheduleNextJob()
             }
         }
         if (_activeJobList.count() < maximumActiveJob() + likelyFinishedQuicklyCount) {
-            qDebug() <<  "Can pump in another request!";
+            qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
             if (_rootJob->scheduleNextJob()) {
                 QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
             }
