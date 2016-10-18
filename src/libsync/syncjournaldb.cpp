@@ -331,6 +331,15 @@ bool SyncJournalDb::checkConnect()
             qDebug() << Q_FUNC_INFO << "possibleUpgradeFromMirall_1_8_0_or_1 detected!";
             forceRemoteDiscovery = true;
         }
+
+        // There was a bug in versions <2.3.0 that could lead to stale
+        // local files and a remote discovery will fix them.
+        // See #5190 #5242.
+        if( major == 2 && minor < 3) {
+            qDebug() << Q_FUNC_INFO << "upgrade form client < 2.3.0 detected! forcing remote discovery";
+            forceRemoteDiscovery = true;
+        }
+
         // Not comparing the BUILD id here, correct?
         if( !(major == MIRALL_VERSION_MAJOR && minor == MIRALL_VERSION_MINOR && patch == MIRALL_VERSION_PATCH) ) {
             createQuery.prepare("UPDATE version SET major=?1, minor=?2, patch =?3, custom=?4 "
