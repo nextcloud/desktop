@@ -147,6 +147,7 @@ void ProgressInfo::reset()
     _maxBytesPerSecond = 100000.0;
     _maxFilesPerSecond = 2.0;
     _updateEstimatesTimer.stop();
+    _lastCompletedItem = SyncFileItem();
 }
 
 void ProgressInfo::startEstimateUpdates()
