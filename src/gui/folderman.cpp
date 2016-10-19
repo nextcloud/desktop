@@ -215,7 +215,7 @@ int FolderMan::setupFolders()
             if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
                 Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
                 if (f) {
-                    slotScheduleSync(f);
+                    scheduleFolder(f);
                     emit folderSyncStateChange(f);
                 }
             }
@@ -248,7 +248,7 @@ int FolderMan::setupFoldersMigration()
     foreach ( const QString& alias, list ) {
         Folder *f = setupFolderFromOldConfigFile( alias, accountState );
         if( f ) {
-            slotScheduleSync(f);
+            scheduleFolder(f);
             emit folderSyncStateChange(f);
         }
     }
@@ -426,7 +426,7 @@ void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
 
     if (!paused) {
         _disabledFolders.remove(f);
-        slotScheduleSync(f);
+        scheduleFolder(f);
     } else {
         _disabledFolders.insert(f);
     }
@@ -466,11 +466,11 @@ Folder *FolderMan::folder( const QString& alias )
     return 0;
 }
 
-void FolderMan::slotScheduleAllFolders()
+void FolderMan::scheduleAllFolders()
 {
     foreach( Folder *f, _folderMap.values() ) {
         if (f && f->canSync()) {
-            slotScheduleSync( f );
+            scheduleFolder( f );
         }
     }
 }
@@ -490,7 +490,7 @@ void FolderMan::slotSyncOnceFileUnlocks(const QString& path)
   * if a folder wants to be synced, it calls this slot and is added
   * to the queue. The slot to actually start a sync is called afterwards.
   */
-void FolderMan::slotScheduleSync( Folder *f )
+void FolderMan::scheduleFolder( Folder *f )
 {
     if( !f ) {
         qWarning() << "slotScheduleSync called with null folder";
@@ -572,7 +572,7 @@ void FolderMan::slotAccountStateChanged()
             if (f
                     && f->canSync()
                     && f->accountState() == accountState) {
-                slotScheduleSync(f);
+                scheduleFolder(f);
             }
         }
     } else {
@@ -731,7 +731,7 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState* accountState)
     }
 
     foreach (const auto &f, foldersToRemove) {
-        slotRemoveFolder(f);
+        removeFolder(f);
     }
 }
 
@@ -783,7 +783,7 @@ void FolderMan::slotScheduleFolderByTime()
                      << "because it has been" << msecsSinceSync << "ms "
                      << "since the last sync";
 
-            slotScheduleSync(f);
+            scheduleFolder(f);
             continue;
         }
 
@@ -800,7 +800,7 @@ void FolderMan::slotScheduleFolderByTime()
                      << f->syncResult().statusString()
                      << "time since last sync:" << msecsSinceSync;
 
-            slotScheduleSync(f);
+            scheduleFolder(f);
             continue;
         }
 
@@ -914,7 +914,7 @@ QStringList FolderMan::findFileInLocalFolders( const QString& relPath, const Acc
     return re;
 }
 
-void FolderMan::slotRemoveFolder( Folder *f )
+void FolderMan::removeFolder( Folder *f )
 {
     if( !f ) {
         qWarning() << "!! Can not remove null folder";

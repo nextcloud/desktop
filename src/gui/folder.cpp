@@ -940,7 +940,7 @@ void Folder::slotLogPropagationStart()
 
 void Folder::slotScheduleThisFolder()
 {
-    FolderMan::instance()->slotScheduleSync(this);
+    FolderMan::instance()->scheduleFolder(this);
 }
 
 void Folder::scheduleThisFolderSoon()

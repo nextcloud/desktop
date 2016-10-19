@@ -74,6 +74,9 @@ public:
       */
     Folder* addFolder(AccountState* accountState, const FolderDefinition& folderDefinition);
 
+    /** Removes a folder */
+    void removeFolder( Folder* );
+
     /** Returns the folder which the file or directory stored in path is in */
     Folder* folderForPath(const QString& path);
 
@@ -146,6 +149,24 @@ public:
      */
     Folder* currentSyncFolder() const;
 
+    /** Removes all folders */
+    int unloadAndDeleteAllFolders();
+
+    /**
+     * If enabled is set to false, no new folders will start to sync.
+     * The current one will finish.
+     */
+    void setSyncEnabled( bool );
+
+    /** Queues a folder for syncing. */
+    void scheduleFolder(Folder*);
+
+    /** Queues all folders for syncing. */
+    void scheduleAllFolders();
+
+    void setDirtyProxy(bool value = true);
+    void setDirtyNetworkLimits();
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
@@ -159,41 +180,12 @@ signals:
      */
     void scheduleQueueChanged();
 
+    /**
+     * Emitted whenever the list of configured folders changes.
+     */
     void folderListChanged(const Folder::Map &);
 
 public slots:
-    void slotRemoveFolder( Folder* );
-    void slotFolderSyncPaused(Folder *, bool paused);
-    void slotFolderCanSyncChanged();
-
-    void slotFolderSyncStarted();
-    void slotFolderSyncFinished( const SyncResult& );
-
-    /**
-     * Terminates the current folder sync.
-     *
-     * It does not switch the folder to paused state.
-     */
-    void terminateSyncProcess();
-
-    /* delete all folder objects */
-    int unloadAndDeleteAllFolders();
-
-    // if enabled is set to false, no new folders will start to sync.
-    // the current one will finish.
-    void setSyncEnabled( bool );
-
-    void slotScheduleAllFolders();
-
-    void setDirtyProxy(bool value = true);
-    void setDirtyNetworkLimits();
-
-    // slot to add a folder to the syncing queue
-    void slotScheduleSync(Folder*);
-    // slot to schedule an ETag job
-    void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
-    void slotEtagJobDestroyed (QObject*);
-    void slotRunOneEtagJob();
 
     /**
      * Schedules folders of newly connected accounts, terminates and
@@ -214,7 +206,18 @@ public slots:
      */
     void slotSyncOnceFileUnlocks(const QString& path);
 
+    // slot to schedule an ETag job (from Folder only)
+    void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
+
 private slots:
+    void slotFolderSyncPaused(Folder *, bool paused);
+    void slotFolderCanSyncChanged();
+    void slotFolderSyncStarted();
+    void slotFolderSyncFinished( const SyncResult& );
+
+    void slotRunOneEtagJob();
+    void slotEtagJobDestroyed (QObject*);
+
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
@@ -244,6 +247,13 @@ private slots:
     void slotScheduleFolderByTime();
 
 private:
+    /**
+     * Terminates the current folder sync.
+     *
+     * It does not switch the folder to paused state.
+     */
+    void terminateSyncProcess();
+
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */
