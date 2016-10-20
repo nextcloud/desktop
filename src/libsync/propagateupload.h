@@ -208,6 +208,9 @@ public:
     void setDeleteExisting(bool enabled);
 
     void start() Q_DECL_OVERRIDE;
+
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < 100*1024; }
+
 private slots:
     void slotComputeContentChecksum();
     // Content checksum computed, compute the transmission checksum
@@ -260,7 +263,6 @@ private:
     int _transferId; /// transfer id (part of the url)
 
     quint64 chunkSize() const { return _propagator->chunkSize(); }
-
 
 
 public:

@@ -535,7 +535,7 @@ void OwncloudPropagator::scheduleNextJob()
             }
         }
         if (_activeJobList.count() < maximumActiveJob() + likelyFinishedQuicklyCount) {
-            qDebug() <<  "Can pump in another request!";
+            qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
             if (_rootJob->scheduleNextJob()) {
                 QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
             }
@@ -674,6 +674,12 @@ void PropagateDirectory::finalize()
     bool ok = true;
     if (!_item->isEmpty() && _hasError == SyncFileItem::NoStatus) {
         if( !_item->_renameTarget.isEmpty() ) {
+            if(_item->_instruction == CSYNC_INSTRUCTION_RENAME
+                    && _item->_originalFile != _item->_renameTarget) {
+                // Remove the stale entries from the database.
+                _propagator->_journal->deleteFileRecord(_item->_originalFile, true);
+            }
+
             _item->_file = _item->_renameTarget;
         }
 
@@ -692,14 +698,14 @@ void PropagateDirectory::finalize()
             SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
             ok = _propagator->_journal->setFileRecordMetadata(record);
             if (!ok) {
-                _item->_status = SyncFileItem::FatalError;
+                _hasError = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
                 qWarning() << "Error writing to the database for file" << _item->_file;
             }
         }
     }
     _state = Finished;
-    emit finished(_item->_status);
+    emit finished(_hasError == SyncFileItem::NoStatus ?  SyncFileItem::Success : _hasError);
 }
 
 qint64 PropagateDirectory::committedDiskSpace() const

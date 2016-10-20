@@ -29,10 +29,11 @@
 #endif
 
 #ifdef Q_OS_WIN
+#include <windows.h>
 #include <windef.h>
 #include <winbase.h>
 #include <fcntl.h>
-
+#include <io.h>
 #endif
 
 // We use some internals of csync:

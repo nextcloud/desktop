@@ -1,6 +1,5 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
-include(GenerateExportHeader)
 
 configure_file( version.h.in "${CMAKE_CURRENT_BINARY_DIR}/version.h" )
 

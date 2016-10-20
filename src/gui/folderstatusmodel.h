@@ -63,6 +63,7 @@ public:
         bool _fetched; // If we did the LSCOL for this folder already
         bool _fetching; // Whether a LSCOL job is currently running
         bool _hasError; // If the last fetching job ended in an error
+        QString _lastErrorString;
         bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
 
         bool _isUndecided; // undecided folders are the big folders that the user has not accepted yet
@@ -106,6 +107,8 @@ public slots:
     void slotUpdateFolderState(Folder *);
     void slotApplySelectiveSync();
     void resetFolders();
+    void slotSyncAllPendingBigFolders();
+    void slotSyncNoPendingBigFolders();
     void slotSetProgress(const ProgressInfo &progress);
 
 private slots:

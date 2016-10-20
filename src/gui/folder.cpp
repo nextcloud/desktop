@@ -123,6 +123,13 @@ Folder::~Folder()
 void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
+    _canonicalLocalPath = fi.canonicalFilePath();
+    if (_canonicalLocalPath.isEmpty()) {
+        qDebug() << "Broken symlink:" << _definition.localPath;
+        _canonicalLocalPath = _definition.localPath;
+    } else if( !_canonicalLocalPath.endsWith('/') ) {
+        _canonicalLocalPath.append('/');
+    }
 
     if( fi.isDir() && fi.isReadable() ) {
         qDebug() << "Checked local path ok";
@@ -161,11 +168,7 @@ QString Folder::alias() const
 
 QString Folder::path() const
 {
-    QString p(_definition.localPath);
-    if( ! p.endsWith('/') ) {
-        p.append('/');
-    }
-    return p;
+    return _canonicalLocalPath;
 }
 
 QString Folder::shortGuiLocalPath() const
@@ -198,7 +201,7 @@ void Folder::setIgnoreHiddenFiles(bool ignore)
 
 QString Folder::cleanPath()
 {
-    QString cleanedPath = QDir::cleanPath(_definition.localPath);
+    QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
 
     if(cleanedPath.length() == 3 && cleanedPath.endsWith(":/"))
         cleanedPath.remove(2,1);
@@ -755,8 +758,6 @@ void Folder::startSync(const QStringList &pathList)
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
-    // disable events until syncing is done
-    // _watcher->setEventsEnabled(false);
     emit syncStarted();
 }
 
@@ -820,9 +821,6 @@ void Folder::slotSyncFinished(bool success)
     bubbleUpSyncResult();
 
     bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
-    // _watcher->setEventsEnabledDelayed(2000);
-
-
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);

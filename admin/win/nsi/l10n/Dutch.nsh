@@ -1,5 +1,5 @@
 # Auto-generated - do not modify
-StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Toon opmerkingen bij deze uitgave"
+StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Toon opmerkingen bij deze versie"
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Gevonden ${APPLICATION_EXECUTABLE} proces(sen) moet worden gestopt.$\nWilt u dat het installatieprogramma dat voor u doet?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Stoppen ${APPLICATION_EXECUTABLE} processen."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Het te stoppen proces is niet gevonden!"

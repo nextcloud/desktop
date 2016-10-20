@@ -39,7 +39,6 @@
 # include <shlobj.h>
 #else /* _WIN32 */
 # include <pwd.h>
-# include <unistd.h>
 #endif /* _WIN32 */
 
 #include "c_lib.h"

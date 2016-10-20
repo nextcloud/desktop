@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <stdbool.h>
 

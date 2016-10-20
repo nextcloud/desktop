@@ -20,7 +20,9 @@
 #include "wizard/owncloudwizard.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
+#ifndef NO_SHIBBOLETH
 #include "wizard/owncloudshibbolethcredspage.h"
+#endif
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
 
@@ -39,7 +41,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
       _account(0),
       _setupPage(new OwncloudSetupPage(this)),
       _httpCredsPage(new OwncloudHttpCredsPage(this)),
+#ifndef NO_SHIBBOLETH
       _shibbolethCredsPage(new OwncloudShibbolethCredsPage),
+#endif
       _advancedSetupPage(new OwncloudAdvancedSetupPage),
       _resultPage(new OwncloudWizardResultPage),
       _credentialsPage(0),
@@ -48,7 +52,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
+#ifndef NO_SHIBBOLETH
     setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
+#endif
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
 
@@ -61,7 +67,9 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect( this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
     connect( _setupPage, SIGNAL(determineAuthType(QString)), SIGNAL(determineAuthType(QString)));
     connect( _httpCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
+#ifndef NO_SHIBBOLETH
     connect( _shibbolethCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
+#endif
     connect( _advancedSetupPage, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
              SIGNAL(createLocalAndRemoteFolders(QString, QString)));
     connect(this, SIGNAL(customButtonClicked(int)), this, SIGNAL(skipFolderConfiguration()));
@@ -128,9 +136,11 @@ void OwncloudWizard::successfulStep()
         _httpCredsPage->setConnected();
         break;
 
+#ifndef NO_SHIBBOLETH
     case WizardCommon::Page_ShibbolethCreds:
         _shibbolethCredsPage->setConnected();
         break;
+#endif
 
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
@@ -148,9 +158,12 @@ void OwncloudWizard::successfulStep()
 void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
 {
   _setupPage->setAuthType(type);
+#ifndef NO_SHIBBOLETH
   if (type == WizardCommon::Shibboleth) {
     _credentialsPage = _shibbolethCredsPage;
-  } else {
+  } else
+#endif
+  {
     _credentialsPage = _httpCredsPage;
   }
   next();

@@ -21,6 +21,8 @@
 #ifndef _CSYNC_EXCLUDE_H
 #define _CSYNC_EXCLUDE_H
 
+#include "ocsynclib.h"
+
 enum csync_exclude_type_e {
   CSYNC_NOT_EXCLUDED   = 0,
   CSYNC_FILE_SILENTLY_EXCLUDED,
@@ -35,7 +37,7 @@ enum csync_exclude_type_e {
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
 #ifdef WITH_UNIT_TESTING
-int _csync_exclude_add(c_strlist_t **inList, const char *string);
+int OCSYNC_EXPORT _csync_exclude_add(c_strlist_t **inList, const char *string);
 #endif
 
 /**
@@ -46,7 +48,7 @@ int _csync_exclude_add(c_strlist_t **inList, const char *string);
  *
  * @return  0 on success, -1 if an error occurred with errno set.
  */
-int csync_exclude_load(const char *fname, c_strlist_t **list);
+int OCSYNC_EXPORT csync_exclude_load(const char *fname, c_strlist_t **list);
 
 /**
  * @brief Check if the given path should be excluded in a traversal situation.
@@ -72,7 +74,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded_traversal(c_strlist_t *excludes, const char *p
  * @param filetype
  * @return
  */
-CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
+CSYNC_EXCLUDE_TYPE OCSYNC_EXPORT csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
 #endif /* _CSYNC_EXCLUDE_H */
 
 /**

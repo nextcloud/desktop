@@ -22,7 +22,6 @@
 #define _C_TIME_H
 
 #include <time.h>
-#include <sys/time.h>
 
 /**
  * @brief Calculate time difference

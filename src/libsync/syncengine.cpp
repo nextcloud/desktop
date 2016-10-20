@@ -868,6 +868,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     bool walkOk = true;
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
+    _renamedFolders.clear();
 
     if( csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0 ) {
         qDebug() << "Error in local treewalk.";
@@ -1162,7 +1163,7 @@ void SyncEngine::checkForPermission()
                             qDebug() << "Moving of " << (*it)->_file << " canceled because no permission to add parent folder";
                         }
                         (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
-                        (*it)->_status = SyncFileItem::NormalError;
+                        (*it)->_status = SyncFileItem::SoftError;
                         (*it)->_errorString = tr("Not allowed because you don't have permission to add parent folder");
                     }
 

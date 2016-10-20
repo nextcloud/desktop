@@ -46,6 +46,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     _userGroupWidget(NULL),
     _progressIndicator(NULL)
 {
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SharingDialog"); // required as group for saveGeometry call
 

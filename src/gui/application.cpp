@@ -336,9 +336,14 @@ void Application::slotownCloudWizardDone( int res )
         _checkConnectionTimer.start();
         slotCheckConnection();
 
-        // The very first time an account is configured: enabled autostart
-        // TODO: Doing this every time the account wizard finishes will annoy users.
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
+        // If one account is configured: enable autostart
+        bool shouldSetAutoStart = (accountMan->accounts().size() == 1);
+#ifdef Q_OS_MAC
+        // Don't auto start when not being 'installed'
+        shouldSetAutoStart = shouldSetAutoStart
+                && QCoreApplication::applicationDirPath().startsWith("/Applications/");
+#endif
+        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), shouldSetAutoStart);
     }
 }
 

@@ -31,6 +31,11 @@
 #include "csync_time.h"
 #include "vio/csync_vio.h"
 
+#ifndef _WIN32
+#include <unistd.h>
+#include <sys/time.h>
+#endif
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.time"
 #include "csync_log.h"
 
@@ -45,7 +50,13 @@
 
 int csync_gettime(struct timespec *tp)
 {
-#ifdef HAVE_CLOCK_GETTIME
+#if defined(_WIN32)
+	__int64 wintime;
+	GetSystemTimeAsFileTime((FILETIME*)&wintime);
+	wintime -= 116444736000000000ll;  //1jan1601 to 1jan1970
+	tp->tv_sec = wintime / 10000000ll;           //seconds
+	tp->tv_nsec = wintime % 10000000ll * 100;      //nano-seconds
+#elif defined(HAVE_CLOCK_GETTIME)
 	return clock_gettime(CSYNC_CLOCK, tp);
 #else
 	struct timeval tv;
@@ -62,4 +73,11 @@ int csync_gettime(struct timespec *tp)
 
 #undef CSYNC_CLOCK
 
-/* vim: set ts=8 sw=2 et cindent: */
+void csync_sleep(unsigned int msecs)
+{
+#if defined(_WIN32)
+	Sleep(msecs);
+#else
+    usleep(msecs * 1000);
+#endif
+}

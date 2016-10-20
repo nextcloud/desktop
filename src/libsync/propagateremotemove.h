@@ -55,6 +55,12 @@ public:
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
     JobParallelism parallelism() Q_DECL_OVERRIDE { return OCC::PropagatorJob::WaitForFinishedInParentDirectory; }
+
+    /**
+     * Rename the directory in the selective sync list
+     */
+    static bool adjustSelectiveSync(SyncJournalDb *journal, const QString &from, const QString &to);
+
 private slots:
     void slotMoveJobFinished();
     void finalize();

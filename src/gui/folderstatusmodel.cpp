@@ -164,7 +164,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         switch(role) {
             case Qt::DisplayRole:
                 if (x->_hasError) {
-                    return tr("Error while loading the list of folders from the server.");
+                    return QVariant(tr("Error while loading the list of folders from the server.")
+                                               + QString("\n") + x->_lastErrorString);
                 } else {
                     return tr("Fetching folder list from server...");
                 }
@@ -498,6 +499,10 @@ bool FolderStatusModel::canFetchMore(const QModelIndex& parent) const
     auto info = infoForIndex(parent);
     if (!info || info->_fetched || info->_fetching)
         return false;
+    if (info->_hasError) {
+        // Keep showing the error to the user, it will be hidden when the account reconnects
+        return false;
+    }
     return true;
 }
 
@@ -548,6 +553,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0 ,0);
+        parentInfo->_lastErrorString.clear();
         parentInfo->_hasError = false;
         parentInfo->_fetchingLabel = false;
         endRemoveRows();
@@ -675,6 +681,9 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
+        qDebug() << r->errorString();
+        parentInfo->_lastErrorString = r->errorString();
+
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
@@ -1037,6 +1046,77 @@ void FolderStatusModel::resetFolders()
     setAccountState(_accountState);
 }
 
+void FolderStatusModel::slotSyncAllPendingBigFolders()
+{
+    for (int i = 0; i < _folders.count(); ++i) {
+        if (!_folders[i]._fetched) {
+            _folders[i]._folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+            continue;
+        }
+        auto folder = _folders.at(i)._folder;
+
+        bool ok;
+        auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
+        if( !ok ) {
+            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            return;
+        }
+
+        // If this folder had no undecided entries, skip it.
+        if (undecidedList.isEmpty()) {
+            continue;
+        }
+
+        // Remove all undecided folders from the blacklist
+        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        if( !ok ) {
+            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            return;
+        }
+        foreach (const auto& undecidedFolder, undecidedList) {
+            blackList.removeAll(undecidedFolder);
+        }
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+
+        // Add all undecided folders to the white list
+        auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
+        if( !ok ) {
+            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            return;
+        }
+        whiteList += undecidedList;
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, whiteList);
+
+        // Clear the undecided list
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+
+        // Trigger a sync
+        if (folder->isBusy()) {
+            folder->slotTerminateSync();
+        }
+        // The part that changed should not be read from the DB on next sync because there might be new folders
+        // (the ones that are no longer in the blacklist)
+        foreach (const auto &it, undecidedList) {
+            folder->journalDb()->avoidReadFromDbOnNextSync(it);
+        }
+        FolderMan::instance()->slotScheduleSync(folder);
+    }
+
+    resetFolders();
+}
+
+void FolderStatusModel::slotSyncNoPendingBigFolders()
+{
+    for (int i = 0; i < _folders.count(); ++i) {
+        auto folder = _folders.at(i)._folder;
+
+        // clear the undecided list
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+    }
+
+    resetFolders();
+}
+
 void FolderStatusModel::slotNewBigFolder()
 {
     auto f = qobject_cast<Folder *>(sender());
@@ -1067,11 +1147,14 @@ void FolderStatusModel::slotShowFetchProgress()
             auto idx = it.key();
             auto* info = infoForIndex(idx);
             if (info && info->_fetching) {
-                if (!info->hasLabel()) {
+                bool add = !info->hasLabel();
+                if (add) {
                     beginInsertRows(idx, 0, 0);
-                    endInsertRows();
                 }
                 info->_fetchingLabel = true;
+                if (add) {
+                    endInsertRows();
+                }
             }
             it.remove();
         }

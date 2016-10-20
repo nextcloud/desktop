@@ -33,10 +33,10 @@
 #define _CSYNC_H
 
 #include "std/c_private.h"
+#include "ocsynclib.h"
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <config_csync.h>
 
@@ -229,14 +229,14 @@ struct csync_vio_file_stat_s {
   char *original_name; // only set if locale conversion fails
 };
 
-csync_vio_file_stat_t *csync_vio_file_stat_new(void);
-csync_vio_file_stat_t *csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat);
+csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_new(void);
+csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat);
 
-void csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
+void OCSYNC_EXPORT csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
 
-void csync_vio_file_stat_set_file_id( csync_vio_file_stat_t* dst, const char* src );
+void OCSYNC_EXPORT csync_vio_file_stat_set_file_id( csync_vio_file_stat_t* dst, const char* src );
 
-void csync_vio_set_file_id(char* dst, const char *src );
+void OCSYNC_EXPORT csync_vio_set_file_id(char* dst, const char *src );
 
 
 /**
@@ -317,7 +317,7 @@ typedef const char* (*csync_checksum_hook) (
  *
  * @param csync  The context variable to allocate.
  */
-void csync_create(CSYNC **csync, const char *local, const char *remote);
+void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local, const char *remote);
 
 /**
  * @brief Initialize the file synchronizer.
@@ -326,7 +326,7 @@ void csync_create(CSYNC **csync, const char *local, const char *remote);
  *
  * @param ctx  The context to initialize.
  */
-void csync_init(CSYNC *ctx);
+void OCSYNC_EXPORT csync_init(CSYNC *ctx);
 
 /**
  * @brief Update detection
@@ -335,7 +335,7 @@ void csync_init(CSYNC *ctx);
  *
  * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_update(CSYNC *ctx);
+int OCSYNC_EXPORT csync_update(CSYNC *ctx);
 
 /**
  * @brief Reconciliation
@@ -344,7 +344,7 @@ int csync_update(CSYNC *ctx);
  *
  * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_reconcile(CSYNC *ctx);
+int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
 
 /**
  * @brief Re-initializes the csync context
@@ -353,7 +353,7 @@ int csync_reconcile(CSYNC *ctx);
  *
  * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_commit(CSYNC *ctx);
+int OCSYNC_EXPORT csync_commit(CSYNC *ctx);
 
 /**
  * @brief Destroy the csync context
@@ -364,7 +364,7 @@ int csync_commit(CSYNC *ctx);
  *
  * @return  0 on success, less than 0 if an error occurred.
  */
-int csync_destroy(CSYNC *ctx);
+int OCSYNC_EXPORT csync_destroy(CSYNC *ctx);
 
 /**
  * @brief Get the userdata saved in the context.
@@ -386,7 +386,7 @@ void *csync_get_userdata(CSYNC *ctx);
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_set_userdata(CSYNC *ctx, void *userdata);
+int OCSYNC_EXPORT csync_set_userdata(CSYNC *ctx, void *userdata);
 
 /**
  * @brief Get the authentication callback set.
@@ -396,7 +396,7 @@ int csync_set_userdata(CSYNC *ctx, void *userdata);
  * @return              The authentication callback set or NULL if an error
  *                      occurred.
  */
-csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
+csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
 
 /**
  * @brief Set the authentication callback.
@@ -407,7 +407,7 @@ csync_auth_callback csync_get_auth_callback(CSYNC *ctx);
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
+int OCSYNC_EXPORT csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
 
 /**
  * @brief Set the log level.
@@ -416,14 +416,14 @@ int csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
  *
  * @return 0 on success, < 0 if an error occurred.
  */
-int csync_set_log_level(int level);
+int OCSYNC_EXPORT csync_set_log_level(int level);
 
 /**
  * @brief Get the log verbosity
  *
  * @return            The log verbosity, -1 on error.
  */
-int csync_get_log_level(void);
+int OCSYNC_EXPORT csync_get_log_level(void);
 
 /**
  * @brief Get the logging callback set.
@@ -431,7 +431,7 @@ int csync_get_log_level(void);
  * @return              The logging callback set or NULL if an error
  *                      occurred.
  */
-csync_log_callback csync_get_log_callback(void);
+csync_log_callback OCSYNC_EXPORT csync_get_log_callback(void);
 
 /**
  * @brief Set the logging callback.
@@ -440,14 +440,14 @@ csync_log_callback csync_get_log_callback(void);
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_set_log_callback(csync_log_callback cb);
+int OCSYNC_EXPORT csync_set_log_callback(csync_log_callback cb);
 
 /**
  * @brief get the userdata set for the logging callback.
  *
  * @return              The userdata or NULL.
  */
-void *csync_get_log_userdata(void);
+void OCSYNC_EXPORT *csync_get_log_userdata(void);
 
 /**
  * @brief Set the userdata passed to the logging callback.
@@ -456,13 +456,13 @@ void *csync_get_log_userdata(void);
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_set_log_userdata(void *data);
+int OCSYNC_EXPORT csync_set_log_userdata(void *data);
 
 /* Used for special modes or debugging */
-CSYNC_STATUS csync_get_status(CSYNC *ctx);
+CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
 
 /* Used for special modes or debugging */
-int csync_set_status(CSYNC *ctx, int status);
+int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
 
 typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
 
@@ -475,7 +475,7 @@ typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
 /**
  * @brief Walk the remote file tree and call a visitor function for each file.
@@ -486,7 +486,7 @@ int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int fi
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
 
 /**
  * @brief Get the csync status string.
@@ -495,7 +495,7 @@ int csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int f
  *
  * @return               A const pointer to a string with more precise status info.
  */
-const char *csync_get_status_string(CSYNC *ctx);
+const char OCSYNC_EXPORT *csync_get_status_string(CSYNC *ctx);
 
 #ifdef WITH_ICONV
 /**
@@ -505,7 +505,7 @@ const char *csync_get_status_string(CSYNC *ctx);
  *
  * @return              0 on success, or an iconv error number.
  */
-int csync_set_iconv_codec(const char *from);
+int OCSYNC_EXPORT csync_set_iconv_codec(const char *from);
 #endif
 
 /**
@@ -513,24 +513,24 @@ int csync_set_iconv_codec(const char *from);
  *
  * @param ctx           The csync context.
  */
-void csync_request_abort(CSYNC *ctx);
+void OCSYNC_EXPORT csync_request_abort(CSYNC *ctx);
 
 /**
  * @brief Clears the abort flag. Can be called from another thread.
  *
  * @param ctx           The csync context.
  */
-void csync_resume(CSYNC *ctx);
+void OCSYNC_EXPORT csync_resume(CSYNC *ctx);
 
 /**
  * @brief Checks for the abort flag, to be used from the modules.
  *
  * @param ctx           The csync context.
  */
-int  csync_abort_requested(CSYNC *ctx);
+int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
 
-char *csync_normalize_etag(const char *);
-time_t oc_httpdate_parse( const char *date );
+char OCSYNC_EXPORT *csync_normalize_etag(const char *);
+time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
 #ifdef __cplusplus
 }

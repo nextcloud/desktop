@@ -27,7 +27,6 @@
 
 #include <sqlite3.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -53,7 +52,7 @@
 
 #define sqlite_open(A, B) sqlite3_open_v2(A,B, SQLITE_OPEN_READONLY+SQLITE_OPEN_NOMUTEX, NULL)
 
-#define SQLTM_TIME 150000
+#define SQLTM_TIME 150
 #define SQLTM_COUNT 10
 
 #define SQLITE_BUSY_HANDLED(F) if(1) { \
@@ -61,7 +60,7 @@
     do { rc = F ; \
       if( (rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED) ) { \
          n++; \
-         usleep(SQLTM_TIME); \
+         csync_sleep(SQLTM_TIME); \
       } \
     }while( (n < SQLTM_COUNT) && ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED))); \
   }
@@ -519,8 +518,7 @@ c_strlist_t *csync_statedb_query(sqlite3 *db,
     /* compile SQL program into a virtual machine, reattempteing if busy */
     do {
       if (busy_count) {
-        /* sleep 100 msec */
-        usleep(100000);
+        csync_sleep(100);
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_prepare: BUSY counter: %zu", busy_count);
       }
       err = sqlite3_prepare(db, statement, -1, &stmt, &tail);
@@ -547,8 +545,7 @@ c_strlist_t *csync_statedb_query(sqlite3 *db,
             CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Busy counter has reached its maximum. Aborting this sql statement");
             break;
           }
-          /* sleep 100 msec */
-          usleep(100000);
+          csync_sleep(100);
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "sqlite3_step: BUSY counter: %zu", busy_count);
           continue;
         }

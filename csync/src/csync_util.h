@@ -26,9 +26,9 @@
 
 #include "csync_private.h"
 
-const char *csync_instruction_str(enum csync_instructions_e instr);
+const char OCSYNC_EXPORT *csync_instruction_str(enum csync_instructions_e instr);
 
-void csync_memstat_check(void);
+void OCSYNC_EXPORT csync_memstat_check(void);
 
-bool csync_file_locked_or_open( const char *dir, const char *fname);
+bool OCSYNC_EXPORT csync_file_locked_or_open( const char *dir, const char *fname);
 #endif /* _CSYNC_UTIL_H */
