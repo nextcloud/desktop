@@ -210,11 +210,10 @@ void PropagateUploadFileNG::startNextChunk()
             + _propagator->_remoteFolder + _item->_file;
         auto headers = PropagateUploadFileCommon::headers();
 
-        // Rename the If-Match header to "OC-If-Destination-Match"
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
         auto ifMatch = headers.take("If-Match");
         if (!ifMatch.isEmpty()) {
-            headers["OC-If-Destination-Match"] = ifMatch;
+            headers["If"] =  "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
         }
         if (!_transmissionChecksumType.isEmpty()) {
             headers[checkSumHeaderC] = makeChecksumHeader(
