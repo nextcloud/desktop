@@ -241,6 +241,9 @@ To build the most up-to-date version of the client:
    .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
             where ``target`` is a private location, i.e. in parallel to your build
             dir by specifying ``../install``.
+            
+   ..note:: qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/
+
    .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
 
 4. Call ``make``.
