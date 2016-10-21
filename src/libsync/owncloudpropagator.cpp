@@ -270,9 +270,10 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 job->setDeleteExistingFolder(deleteExisting);
                 return job;
             } else {
-                static const bool isNg  = !qgetenv("OWNCLOUD_CHUNK_NG").isEmpty(); // FIXME! use server version
                 PropagateUploadFileCommon *job = 0;
-                if (isNg && item->_size > chunkSize()) {
+                static const auto chunkng = qgetenv("OWNCLOUD_CHUNKING_NG");
+                if (item->_size > chunkSize()
+                        && (account()->capabilities().chunkingNg() || chunkng == "1") && chunkng != "0") {
                     job = new PropagateUploadFileNG(this, item);
                 } else {
                     job = new PropagateUploadFileV1(this, item);

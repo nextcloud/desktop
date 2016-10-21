@@ -107,4 +107,10 @@ QByteArray Capabilities::uploadChecksumType() const
     return QByteArray();
 }
 
+bool Capabilities::chunkingNg() const
+{
+    return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
+}
+
+
 }

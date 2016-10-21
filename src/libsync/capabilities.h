@@ -39,6 +39,7 @@ public:
     bool sharePublicLinkEnforceExpireDate() const;
     int  sharePublicLinkExpireDateDays() const;
     bool shareResharing() const;
+    bool chunkingNg() const;
 
     /// returns true if the capabilities report notifications
     bool notificationsAvailable() const;
