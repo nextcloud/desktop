@@ -157,32 +157,65 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
+    def check_registered_paths(self, filename):
+        topLevelFolder = False
+        internalFile = False
+        for reg_path in socketConnect.registered_paths:
+            if filename == reg_path:
+                topLevelFolder = True
+                break
+            if filename.startswith(reg_path):
+                internalFile = True
+                # you can't have a registered path below another so it is save to break here
+                break
+        return (topLevelFolder, internalFile)
+
     def get_file_items(self, window, files):
+        # Show the menu extension to share a file or folder
+        #
+        # Show if file is OK.
+        # Ignore top level folders.
+        # Also show extension for folders
+        #  if there is a OK or SYNC underneath.
+        # This is only
+
         if len(files) != 1:
             return
         file = files[0]
         items = []
 
-        # Internal or external file?!
-        syncedFile = False
-        for reg_path in socketConnect.registered_paths:
-            topLevelFolder = False
-            filename = get_local_path(file.get_uri())
-            # Check if its a folder (ends with an /), if yes add a "/"
-            # otherwise it will not find the entry in the table
-            if os.path.isdir(filename + "/"):
-                filename += "/"
-                # Check if toplevel folder, we need to ignore those as they cannot be shared
-                if filename == reg_path:
-                    topLevelFolder=True                
-            # Only show the menu extension if the file is synced and the sync
-            # status is ok. Not for ignored files etc.
-            # ignore top level folders
-            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'].startswith('OK'):
-                syncedFile = True
+        filename = get_local_path(file.get_uri())
+        # Check if its a folder (ends with an /), if yes add a "/"
+        # otherwise it will not find the entry in the table
+        isDir = os.path.isdir(filename + "/")
+        if isDir:
+            filename += "/"
 
-        # If it is neither in a synced folder or is a directory
-        if not syncedFile:
+        # Check if toplevel folder, we need to ignore those as they cannot be shared
+        topLevelFolder, internalFile = self.check_registered_paths(filename)
+        if topLevelFolder or not internalFile:
+            return items
+
+        entry = socketConnect.nautilusVFSFile_table.get(filename)
+        if not entry:
+            return items
+
+        shareable = False
+        state = entry['state']
+        state_ok = state.startswith('OK')
+        state_sync = state.startswith('SYNC')
+        if state_ok:
+            shareable = True
+        elif state_sync and isDir:
+            # some file below is OK or SYNC
+            for key, value in socketConnect.nautilusVFSFile_table.items():
+                if key != filename and key.startswith(filename):
+                    state = value['state']
+                    if state.startswith('OK') or state.startswith('SYNC'):
+                        shareable = True
+                        break
+
+        if not shareable:
             return items
 
         # Create a menu item
