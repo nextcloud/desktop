@@ -285,7 +285,8 @@ QString Theme::gitSHA1() const
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("ownCloudTheme::about()",
                    "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
-                   " on %3, %4 using Qt %5, %6</small></p>")
+                   " on %3, %4 using Qt %5, %6")
+
             .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
             .arg(__DATE__).arg(__TIME__)
             .arg(QT_VERSION_STR)
@@ -300,11 +301,11 @@ QString Theme::about() const
     re = tr("<p>Version %1. For more information please visit <a href='%2'>%3</a>.</p>")
             .arg(MIRALL_VERSION_STRING).arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
-
+    
     re += tr("<p>Copyright ownCloud GmbH</p>");
     re += tr("<p>Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
              "%2 and the %2 logo are registered trademarks of %1 in the "
-             "United States, other countries, or both.</p>")
+             "United States, other countries, or both. <br> ")
             .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME);
 
     re += gitSHA1();
