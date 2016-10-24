@@ -22,7 +22,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>@APPLICATION_EXECUTABLE@.app</string>
+									<string>owncloud.app</string>
 									<key>PATH_TYPE</key>
 									<integer>3</integer>
 									<key>PERMISSIONS</key>
@@ -474,14 +474,14 @@
                  <key>POSTINSTALL_PATH</key>
                  <dict>
                          <key>PATH</key>
-                         <string>@CMAKE_CURRENT_BINARY_DIR@/post_install.sh</string>
+                         <string>/Users/jonathankawohl/github/client/admin/osx/post_install.sh</string>
                          <key>PATH_TYPE</key>
                          <integer>0</integer>
                  </dict>
                  <key>PREINSTALL_PATH</key>
                  <dict>
                          <key>PATH</key>
-                         <string>@CMAKE_CURRENT_BINARY_DIR@/pre_install.sh</string>
+                         <string>/Users/jonathankawohl/github/client/admin/osx/pre_install.sh</string>
                          <key>PATH_TYPE</key>
                          <integer>0</integer>
                  </dict>
@@ -495,13 +495,13 @@
 				<key>CONCLUSION_ACTION</key>
 				<integer>0</integer>
 				<key>IDENTIFIER</key>
-				<string>@APPLICATION_REV_DOMAIN_INSTALLER@</string>
+				<string>com.ownCloud.client</string>
 				<key>NAME</key>
-				<string>@APPLICATION_NAME_XML_ESCAPED@</string>
+				<string>ownCloud</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>@MIRALL_VERSION_FULL@</string>
+				<string>2.3.0.0</string>
 			</dict>
 			<key>UUID</key>
 			<string>7D7219B7-1897-48C3-8533-842BDEC46F71</string>
@@ -1029,7 +1029,7 @@
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>VERSION</key>
-				<string>@MIRALL_VERSION_FULL@</string>
+				<string>2.3.0.0</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -1065,12 +1065,12 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>@MAC_INSTALLER_BACKGROUND_FILE@</string>
+					<string>/Users/jonathankawohl/github/client/admin/osx/installer-background.png</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>
 				<key>CUSTOM</key>
-				<integer>@MAC_INSTALLER_DO_CUSTOM_BACKGROUND@</integer>
+				<integer>1</integer>
 				<key>SCALING</key>
 				<integer>0</integer>
 			</dict>
@@ -1245,7 +1245,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>@APPLICATION_NAME_XML_ESCAPED@ Client</string>
+						<string>ownCloud Client</string>
 					</dict>
 				</array>
 			</dict>
@@ -1445,9 +1445,9 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>@APPLICATION_NAME_XML_ESCAPED@ Installer</string>
+			<string>ownCloud Installer</string>
 			<key>REFERENCE_FOLDER_PATH</key>
-			<string>@CMAKE_INSTALL_DIR@</string>
+			<string></string>
 		</dict>
 	</dict>
 	        <key>SHARED_GLOBAL_DATA</key>
