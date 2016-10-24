@@ -87,6 +87,9 @@ To set up your build environment for development using HomeBrew_:
 
    Where ``x.z`` is the current version of Qt 5 that brew has installed
    on your machine.
+4. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
+   make sure you make the same install prefix as later while building the client e.g.  -            
+   ``DCMAKE_INSTALL_PREFIX=/Path/to/client-install``
 
 5. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
