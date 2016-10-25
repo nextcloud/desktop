@@ -606,9 +606,15 @@ bool PropagateDirectory::scheduleNextJob()
         return false;
     }
 
+    // cache the value of first unfinished subjob
     bool stopAtDirectory = false;
-    // FIXME: use the cached value of finished job
-    for (int i = 0; i < _subJobs.count(); ++i) {
+    int i = _firstUnfinishedSubJob;
+    int subJobsCount = _subJobs.count();
+    while (i < subJobsCount && _subJobs.at(i)->_state == Finished) {
+      _firstUnfinishedSubJob = ++i;
+    }
+
+    for (int i = _firstUnfinishedSubJob; i < subJobsCount; ++i) {
         if (_subJobs.at(i)->_state == Finished) {
             continue;
         }
