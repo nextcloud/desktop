@@ -131,14 +131,6 @@ public:
     // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
-    // static helper function
-    static QUrl concatUrlPath(const QUrl &url, const QString &concatPath,
-                              const QList< QPair<QString, QString> > &queryItems = (QList<QPair<QString, QString>>()));
-
-    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
-         with the given parent. If no parent is specified, the caller must destroy the settings */
-    static std::unique_ptr<QSettings> settingsWithGroup(const QString& group, QObject* parent = 0);
-
     // to be called by credentials only
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);

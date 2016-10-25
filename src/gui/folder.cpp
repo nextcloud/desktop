@@ -225,7 +225,7 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
+    return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
 bool Folder::syncPaused() const

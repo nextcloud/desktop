@@ -306,7 +306,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials* credentials)
 
 std::unique_ptr<QSettings> AccountState::settings()
 {
-    auto s = _account->settingsWithGroup(QLatin1String("Accounts"));
+    auto s = Utility::settingsWithGroup(QLatin1String("Accounts"));
     s->beginGroup(_account->id());
     return s;
 }

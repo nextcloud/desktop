@@ -680,7 +680,7 @@ void JsonApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Account::concatUrlPath(account()->url(), path());
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
     QList<QPair<QString, QString> > params = _additionalParams;
     params << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"));
     url.setQueryItems(params);

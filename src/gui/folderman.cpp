@@ -191,7 +191,7 @@ int FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
-    auto settings = Account::settingsWithGroup(QLatin1String("Accounts"));
+    auto settings = Utility::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
         int r = setupFoldersMigration();

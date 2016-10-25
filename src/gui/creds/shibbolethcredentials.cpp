@@ -127,7 +127,7 @@ void ShibbolethCredentials::fetchFromKeychain()
     } else {
         _url = _account->url();
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        job->setSettings(_account->settingsWithGroup(Theme::instance()->appName(), job).release());
+        job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
         job->setInsecureFallback(false);
         job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
@@ -246,7 +246,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
             addToCookieJar(_shibCookie);
         }
         // access
-        job->setSettings(_account->settingsWithGroup(Theme::instance()->appName(), job).release());
+        job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
 
         _ready = true;
         _stillValid = true;
@@ -305,7 +305,7 @@ QByteArray ShibbolethCredentials::shibCookieName()
 void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 {
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setSettings(_account->settingsWithGroup(Theme::instance()->appName(), job).release());
+    job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
@@ -316,7 +316,7 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 void ShibbolethCredentials::removeShibCookie()
 {
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    job->setSettings(_account->settingsWithGroup(Theme::instance()->appName(), job).release());
+    job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
     job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
     job->start();
 }

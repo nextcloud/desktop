@@ -16,6 +16,7 @@
 #include "utility.h"
 
 #include "version.h"
+#include "configfile.h"
 
 // Note:  This file must compile without QtGui
 #include <QCoreApplication>
@@ -584,6 +585,43 @@ void Utility::sortFilenames(QStringList& fileNames)
 #else
     fileNames.sort();
 #endif
+}
+
+QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
+                            const QList< QPair<QString, QString> > &queryItems)
+{
+    QString path = url.path();
+    if (! concatPath.isEmpty()) {
+        // avoid '//'
+        if (path.endsWith('/') && concatPath.startsWith('/')) {
+            path.chop(1);
+        } // avoid missing '/'
+        else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
+            path += QLatin1Char('/');
+        }
+        path += concatPath; // put the complete path together
+    }
+
+    QUrl tmpUrl = url;
+    tmpUrl.setPath(path);
+    if( queryItems.size() > 0 ) {
+        tmpUrl.setQueryItems(queryItems);
+    }
+    return tmpUrl;
+}
+
+Q_GLOBAL_STATIC(QString, g_configFileName)
+
+std::unique_ptr<QSettings> Utility::settingsWithGroup(const QString& group, QObject *parent)
+{
+    if (g_configFileName()->isEmpty()) {
+        // cache file name
+        ConfigFile cfg;
+        *g_configFileName() = cfg.configFile();
+    }
+    std::unique_ptr<QSettings> settings(new QSettings(*g_configFileName(), QSettings::IniFormat, parent));
+    settings->beginGroup(group);
+    return settings;
 }
 
 } // namespace OCC

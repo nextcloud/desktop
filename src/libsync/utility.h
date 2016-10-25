@@ -21,6 +21,10 @@
 #include <QDateTime>
 #include <QElapsedTimer>
 #include <QMap>
+#include <QUrl>
+#include <memory>
+
+class QSettings;
 
 namespace OCC {
 
@@ -142,6 +146,14 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT void sortFilenames(QStringList& fileNames);
 
+    /** Appends concatPath and queryItems to the url */
+    OWNCLOUDSYNC_EXPORT QUrl concatUrlPath(
+            const QUrl &url, const QString &concatPath,
+            const QList< QPair<QString, QString> > &queryItems = (QList<QPair<QString, QString>>()));
+
+    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
+         with the given parent. If no parent is specified, the caller must destroy the settings */
+    OWNCLOUDSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString& group, QObject* parent = 0);
 }
 /** @} */ // \addtogroup
 
