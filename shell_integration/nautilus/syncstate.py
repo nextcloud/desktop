@@ -87,22 +87,17 @@ class SocketConnect(GObject.GObject):
     def _connectToSocketServer(self):
         try:
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            postfix = os.path.join(appname, "socket")
-            sock_file = os.path.join(get_runtime_dir(), postfix)
-            print ("Socket: " + sock_file + " <=> /" + postfix)
-            if sock_file != postfix:
-                try:
-                    print("Socket File: " + sock_file)
-                    self._sock.connect(sock_file)
-                    self.connected = True
-                    print("Setting connected to %r." % self.connected )
-                    self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                    print("Socket watch id: " + str(self._watch_id))
-                    return False  # Don't run again
-                except Exception as e:
-                    print("Could not connect to unix socket. " + str(e))
-            else:
-                print("Sock-File not valid: " + sock_file)
+            sock_file = os.path.join(get_runtime_dir(), appname, "socket")
+            try:
+                print("Socket File: " + sock_file)
+                self._sock.connect(sock_file) # fails if sock_file doesn't exist
+                self.connected = True
+                print("Setting connected to %r." % self.connected )
+                self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
+                print("Socket watch id: " + str(self._watch_id))
+                return False  # Don't run again
+            except Exception as e:
+                print("Could not connect to unix socket. " + str(e))
         except Exception as e:  # Bad habbit
             print("Connect could not be established, try again later.")
             self._sock.close()
