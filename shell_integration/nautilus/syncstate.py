@@ -18,6 +18,7 @@
 import os
 import urllib
 import socket
+import tempfile
 
 from gi.repository import GObject, Nautilus
 
@@ -43,7 +44,7 @@ def get_runtime_dir():
     try:
         return os.environ['XDG_RUNTIME_DIR']
     except KeyError:
-        fallback = '/tmp/runtime-' + os.environ['USER']
+        fallback = os.path.join(tempfile.gettempdir(), 'runtime-' + os.environ['USER'])
         return fallback
 
 
@@ -86,9 +87,9 @@ class SocketConnect(GObject.GObject):
     def _connectToSocketServer(self):
         try:
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            postfix = "/" + appname + "/socket"  # Should use os.path.join instead
-            sock_file = get_runtime_dir() + postfix
-            print ("Socket: " + sock_file + " <=> " + postfix)
+            postfix = os.path.join(appname, "socket")
+            sock_file = os.path.join(get_runtime_dir(), postfix)
+            print ("Socket: " + sock_file + " <=> /" + postfix)
             if sock_file != postfix:
                 try:
                     print("Socket File: " + sock_file)
@@ -187,9 +188,9 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         filename = get_local_path(file.get_uri())
         # Check if its a folder (ends with an /), if yes add a "/"
         # otherwise it will not find the entry in the table
-        isDir = os.path.isdir(filename + "/")
+        isDir = os.path.isdir(filename + os.sep)
         if isDir:
-            filename += "/"
+            filename += os.sep
 
         # Check if toplevel folder, we need to ignore those as they cannot be shared
         topLevelFolder, internalFile = self.check_registered_paths(filename)
@@ -336,7 +337,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
         filename = get_local_path(item.get_uri())
         if item.is_directory():
-            filename += '/'
+            filename += os.sep
 
         inScope = False
         for reg_path in socketConnect.registered_paths:
