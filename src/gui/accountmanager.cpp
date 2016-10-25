@@ -71,8 +71,6 @@ bool AccountManager::restoreFromLegacySettings()
     // try to open the correctly themed settings
     auto settings = Account::settingsWithGroup(Theme::instance()->appName());
 
-    bool migratedCreds = false;
-
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
     if( settings->childKeys().isEmpty() ) {
@@ -102,7 +100,6 @@ bool AccountManager::restoreFromLegacySettings()
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
-                    migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
                     delete oCSettings;
@@ -114,9 +111,6 @@ bool AccountManager::restoreFromLegacySettings()
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         if (auto acc = loadAccountHelper(*settings)) {
-            if (migratedCreds) {
-                acc->setMigrated(true);
-            }
             addAccount(acc);
             return true;
         }

@@ -217,7 +217,6 @@ private:
     QByteArray _pemCertificate; 
     QString _pemPrivateKey;  
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
-    bool _wasMigrated;
     friend class AccountManager;
 };
 

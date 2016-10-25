@@ -39,7 +39,6 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
     , _davPath( Theme::instance()->webDavPath() )
-    , _wasMigrated(false)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }
@@ -449,16 +448,6 @@ void Account::slotCredentialsAsked()
 void Account::handleInvalidCredentials()
 {
     emit invalidCredentials();
-}
-
-bool Account::wasMigrated()
-{
-    return _wasMigrated;
-}
-
-void Account::setMigrated(bool mig)
-{
-    _wasMigrated = mig;
 }
 
 const Capabilities &Account::capabilities() const
