@@ -94,30 +94,6 @@ QString Account::id() const
     return _id;
 }
 
-static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)
-{
-    return (url1.host() != url2.host() ||
-            url1.port() != url2.port() ||
-            url1.path() != url2.path());
-}
-
-bool Account::changed(AccountPtr other, bool ignoreUrlProtocol) const
-{
-    if (!other) {
-        return false;
-    }
-    bool changes = false;
-    if (ignoreUrlProtocol) {
-        changes = isEqualExceptProtocol(_url, other->_url);
-    } else {
-        changes = (_url == other->_url);
-    }
-
-    changes |= _credentials->changed(other->credentials());
-
-    return changes;
-}
-
 AbstractCredentials *Account::credentials() const
 {
     return _credentials.data();

@@ -79,21 +79,6 @@ void ShibbolethCredentials::setAccount(Account* account)
     }
 }
 
-bool ShibbolethCredentials::changed(AbstractCredentials* credentials) const
-{
-    ShibbolethCredentials* other(qobject_cast< ShibbolethCredentials* >(credentials));
-
-    if (!other) {
-        return true;
-    }
-
-    if (_shibCookie != other->_shibCookie || _user != other->_user) {
-        return true;
-    }
-
-    return false;
-}
-
 QString ShibbolethCredentials::authType() const
 {
     return QString::fromLatin1("shibboleth");

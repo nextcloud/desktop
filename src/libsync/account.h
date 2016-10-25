@@ -81,13 +81,6 @@ public:
     /// The internal id of the account.
     QString id() const;
 
-    /**
-     * @brief Checks the Account instance is different from @param other
-     *
-     * @returns true, if credentials or url have changed, false otherwise
-     */
-    bool changed(AccountPtr other, bool ignoreUrlProtocol) const;
-
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
     void setCredentials(AbstractCredentials *cred);

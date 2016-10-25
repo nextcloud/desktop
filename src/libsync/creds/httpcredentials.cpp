@@ -71,21 +71,6 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
 {
 }
 
-bool HttpCredentials::changed(AbstractCredentials* credentials) const
-{
-    HttpCredentials* other(qobject_cast< HttpCredentials* >(credentials));
-
-    if (!other) {
-        return true;
-    }
-
-    if (!other || (other->user() != this->user())) {
-        return true;
-    }
-
-    return false;
-}
-
 QString HttpCredentials::authType() const
 {
     return QString::fromLatin1("http");

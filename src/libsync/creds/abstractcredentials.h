@@ -41,7 +41,6 @@ public:
      */
     virtual void setAccount(Account* account);
 
-    virtual bool changed(AbstractCredentials* credentials) const = 0;
     virtual QString authType() const = 0;
     virtual QString user() const = 0;
     virtual QNetworkAccessManager* getQNAM() const = 0;

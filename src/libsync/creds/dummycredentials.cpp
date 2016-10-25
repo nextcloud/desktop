@@ -17,13 +17,6 @@
 namespace OCC
 {
 
-bool DummyCredentials::changed(AbstractCredentials* credentials) const
-{
-    DummyCredentials* dummy(dynamic_cast< DummyCredentials* >(credentials));
-
-    return dummy == 0;
-}
-
 QString DummyCredentials::authType() const
 {
     return QString::fromLatin1("dummy");
