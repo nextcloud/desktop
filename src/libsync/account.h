@@ -56,10 +56,28 @@ public:
 /**
  * @brief The Account class represents an account on an ownCloud Server
  * @ingroup libsync
+ *
+ * The Account has a name and url. It also has information about credentials,
+ * SSL errors and certificates.
  */
 class OWNCLOUDSYNC_EXPORT Account : public QObject {
     Q_OBJECT
 public:
+    static AccountPtr create();
+    ~Account();
+
+    AccountPtr sharedFromThis();
+
+    /// The name of the account as shown in the toolbar
+    QString displayName() const;
+
+    /// The internal id of the account.
+    QString id() const;
+
+    /** Server url of the account */
+    void setUrl(const QUrl &url);
+    QUrl url() const { return _url; }
+
     /**
      * @brief The possibly themed dav path for the account. It has
      *        a trailing slash.
@@ -69,37 +87,15 @@ public:
     void setDavPath(const QString&s) { _davPath = s; }
     void setNonShib(bool nonShib);
 
-    static AccountPtr create();
-    ~Account();
-
-    void setSharedThis(AccountPtr sharedThis);
-    AccountPtr sharedFromThis();
-
-    /// The name of the account as shown in the toolbar
-    QString displayName() const;
-
-    /// The internal id of the account.
-    QString id() const;
+    /** Returns webdav entry URL, based on url() */
+    QUrl davUrl() const;
 
     /** Holds the accounts credentials */
     AbstractCredentials* credentials() const;
     void setCredentials(AbstractCredentials *cred);
 
-    /** Server url of the account */
-    void setUrl(const QUrl &url);
-    QUrl url() const { return _url; }
 
-    /** Returns webdav entry URL, based on url() */
-    QUrl davUrl() const;
-
-    /** set and retrieve the migration flag: if an account of a branded
-     *  client was migrated from a former ownCloud Account, this is true
-     */
-    void setMigrated(bool mig);
-    bool wasMigrated();
-
-    QList<QNetworkCookie> lastAuthCookies() const;
-
+    // For creating various network requests
     QNetworkReply* headRequest(const QString &relPath);
     QNetworkReply* headRequest(const QUrl &url);
     QNetworkReply* getRequest(const QString &relPath);
@@ -107,6 +103,7 @@ public:
     QNetworkReply* deleteRequest( const QUrl &url);
     QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
     QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
+
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();
@@ -131,17 +128,21 @@ public:
     // pluggable handler
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
-    // to be called by credentials only
+    // To be called by credentials only, for storing username and the like
     QVariant credentialSetting(const QString& key) const;
     void setCredentialSetting(const QString& key, const QVariant &value);
 
+    /** Assign a client certificate */
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
 
-    void setCapabilities(const QVariantMap &caps);
+    /** Access the server capabilities */
     const Capabilities &capabilities() const;
-    void setServerVersion(const QString &version);
+    void setCapabilities(const QVariantMap &caps);
+
+    /** Access the server version */
     QString serverVersion() const;
     int serverVersionInt() const;
+    void setServerVersion(const QString &version);
 
     /** Whether the server is too old.
      *
@@ -156,6 +157,7 @@ public:
     bool serverVersionUnsupported() const;
 
     // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
+    /** Detects a specific bug in older server versions */
     bool rootEtagChangesNotOnlySubFolderEtags();
 
     void clearCookieJar();
@@ -164,12 +166,16 @@ public:
     void resetNetworkAccessManager();
     QNetworkAccessManager* networkAccessManager();
 
-    /// Called by network jobs on credential errors.
+    /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
 signals:
+    /// Emitted whenever there's network activity
     void propagatorNetworkActivity();
+
+    /// Triggered by handleInvalidCredentials()
     void invalidCredentials();
+
     void credentialsFetched(AbstractCredentials* credentials);
     void credentialsAsked(AbstractCredentials* credentials);
 
@@ -188,6 +194,7 @@ protected Q_SLOTS:
 
 private:
     Account(QObject *parent = 0);
+    void setSharedThis(AccountPtr sharedThis);
 
     QWeakPointer<Account> _sharedThis;
     QString _id;

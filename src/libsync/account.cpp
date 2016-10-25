@@ -135,11 +135,6 @@ QUrl Account::davUrl() const
     return Utility::concatUrlPath(url(), davPath());
 }
 
-QList<QNetworkCookie> Account::lastAuthCookies() const
-{
-    return _am->cookieJar()->cookiesForUrl(_url);
-}
-
 void Account::clearCookieJar()
 {
     Q_ASSERT(qobject_cast<CookieJar*>(_am->cookieJar()));
