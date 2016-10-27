@@ -666,12 +666,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="531"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 และไฟล์อื่นๆอีก %n ไฟล์ไม่สามารถประสานข้อมูลเนื่องจากเกิดข้อผิดพลาด กรุณาดูบันทึกสำหรับรายละเอียด</numerusform></translation>
+        <translation><numerusform>%1 และไฟล์อื่นๆอีก %n ไฟล์ไม่สามารถประสานข้อมูลเนื่องจากเกิดข้อผิดพลาด กรุณาดูไฟล์ log สำหรับรายละเอียดเพิ่มเติม</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="533"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 ไม่สามารถประสานข้อมูลเนื่องจากมีข้อผิดพลาด ดูบันทึกสำหรับรายละเอียด</translation>
+        <translation>%1 ไม่สามารถประสานข้อมูลเนื่องจากมีข้อผิดพลาด สามารถดูไฟล์ log สำหรับรายละเอียดเพิ่มเติม</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="539"/>
@@ -1309,7 +1309,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="59"/>
         <source>Log Output</source>
-        <translation>บันทึกข้อมูลผลลัพธ์</translation>
+        <translation>ผลลัพธ์ของไฟล์ log</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="71"/>
@@ -1329,7 +1329,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="98"/>
         <source>Clear the log display.</source>
-        <translation>ล้างข้อมูลบันทึกที่แสดงอยู่</translation>
+        <translation>ล้างข้อมูลไฟล์ log ที่แสดงอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="104"/>
@@ -1339,7 +1339,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="105"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>บันทึกไฟล์บันทึกการเปลี่ยนแปลงไปที่ไฟล์ที่อยู่ดิสก์เพื่อตรวจสอบข้อผิดพลาด</translation>
+        <translation>บันทึกไฟล์ log บนดิสก์เพื่อตรวจสอบข้อผิดพลาด</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="184"/>
@@ -1354,7 +1354,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="194"/>
         <source>Could not write to log file %1</source>
-        <translation>ไม่สามารถเขียนไฟล์บันทึก %1</translation>
+        <translation>ไม่สามารถเขียนไฟล์ log %1</translation>
     </message>
 </context>
 <context>
@@ -1367,7 +1367,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/libsync/logger.cpp" line="191"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation>&lt;nobr&gt;ไฟล์ &apos;%1&apos;&lt;br/&gt;ไม่สามารถเปิดขึ้นมาเพื่อเขียนข้อมูลได้.&lt;br/&gt;&lt;br/&gt;บันทึกผลลัพธ์ &lt;b&gt;ไม่สามารถ&lt;/b&gt; บันทึกข้อมูลได้!&lt;/nobr&gt;</translation>
+        <translation>&lt;nobr&gt;ไฟล์ &apos;%1&apos;&lt;br/&gt;ไม่สามารถเปิดขึ้นมาเพื่อเขียนข้อมูลได้&lt;br/&gt;&lt;br/&gt;ผลลัพธ์ของไฟล์ log &lt;b&gt;ไม่สามารถ&lt;/b&gt; บันทึกข้อมูลได้!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -3048,7 +3048,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>บันทึกการประสานข้อมูล</translation>
+        <translation>การประสานข้อมูลไฟล์ Log</translation>
     </message>
 </context>
 <context>
