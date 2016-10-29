@@ -199,6 +199,9 @@ IF( WIN32 )
       ${CMAKE_CURRENT_BINARY_DIR}/version.rc
       @ONLY)
     set(client_version ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    IF(NOT MSVC)
+        set(client_manifest ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
+    ENDIF()
 ENDIF()
 
 set( final_src
@@ -206,6 +209,7 @@ set( final_src
     ${client_SRCS}
     ${client_UI_SRCS}
     ${client_version}
+    ${client_manifest}
     ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
