@@ -41,7 +41,7 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
     if (chunk >= 0) {
         path += QLatin1Char('/') + QString::number(chunk);
     }
-    return Account::concatUrlPath(_propagator->account()->url(), path);
+    return Utility::concatUrlPath(_propagator->account()->url(), path);
 }
 
 /*
@@ -220,7 +220,7 @@ void PropagateUploadFileNG::startNextChunk()
                 _transmissionChecksumType, _transmissionChecksum);
         }
 
-        auto job = new MoveJob(_propagator->account(), Account::concatUrlPath(chunkUrl(), "/.file"),
+        auto job = new MoveJob(_propagator->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
         _jobs.append(job);
         connect(job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
