@@ -58,7 +58,6 @@ Folder::Folder(const FolderDefinition& definition,
       , _wipeDb(false)
       , _proxyDirty(true)
       , _lastSyncDuration(0)
-      , _forceSyncOnPollTimeout(false)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
       , _journal(definition.localPath)
@@ -112,6 +111,11 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
     connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotLogPropagationStart()));
+
+    _scheduleSelfTimer.setSingleShot(true);
+    _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
+    connect(&_scheduleSelfTimer, SIGNAL(timeout()),
+            SLOT(slotScheduleThisFolder()));
 }
 
 Folder::~Folder()
@@ -221,7 +225,7 @@ QString Folder::remotePath() const
 
 QUrl Folder::remoteUrl() const
 {
-    return Account::concatUrlPath(_accountState->account()->davUrl(), remotePath());
+    return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
 }
 
 bool Folder::syncPaused() const
@@ -275,7 +279,7 @@ void Folder::slotRunEtagJob()
 
     AccountPtr account = _accountState->account();
 
-    if (!_requestEtagJob.isNull()) {
+    if (_requestEtagJob) {
         qDebug() << Q_FUNC_INFO << remoteUrl().toString() << "has ETag job queued, not trying to sync";
         return;
     }
@@ -285,47 +289,15 @@ void Folder::slotRunEtagJob()
         return;
     }
 
-    bool forceSyncIntervalExpired =
-            quint64(_timeSinceLastSyncDone.elapsed()) > ConfigFile().forceSyncInterval();
-    bool syncAgainAfterFail = _consecutiveFailingSyncs > 0 && _consecutiveFailingSyncs < 3;
+    // Do the ordinary etag check for the root folder and schedule a
+    // sync if it's different.
 
-    // There are several conditions under which we trigger a full-discovery sync:
-    // * When a suitably long time has passed since the last sync finished
-    // * When the last sync failed (only a couple of times)
-    // * When the last sync requested another sync to be done (only a couple of times)
-    //
-    // Note that the etag check (see below) and the file watcher may also trigger
-    // syncs.
-    if (forceSyncIntervalExpired
-            || _forceSyncOnPollTimeout
-            || syncAgainAfterFail) {
-
-        if (forceSyncIntervalExpired) {
-            qDebug() << "** Force Sync, because it has been " << _timeSinceLastSyncDone.elapsed() << "ms "
-                     << "since the last sync";
-        }
-        if (_forceSyncOnPollTimeout) {
-            qDebug() << "** Force Sync, because it was requested";
-        }
-        if (syncAgainAfterFail) {
-            qDebug() << "** Force Sync, because the last"
-                     << _consecutiveFailingSyncs << "syncs failed, last status:"
-                     << _syncResult.statusString();
-        }
-        _forceSyncOnPollTimeout = false;
-        emit scheduleToSync(this);
-
-    } else {
-        // Do the ordinary etag check for the root folder and only schedule a real
-        // sync if it's different.
-
-        _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
-        _requestEtagJob->setTimeout(60*1000);
-        // check if the etag is different
-        QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
-        FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
-        // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
-    }
+    _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
+    _requestEtagJob->setTimeout(60*1000);
+    // check if the etag is different when retrieved
+    QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
+    FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
+    // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
 void Folder::etagRetreived(const QString& etag)
@@ -338,7 +310,7 @@ void Folder::etagRetreived(const QString& etag)
     if (_lastEtag != etag) {
         qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
         _lastEtag = etag;
-        emit scheduleToSync(this);
+        slotScheduleThisFolder();
     }
 
     _accountState->tagLastSuccessfullETagRequest();
@@ -598,7 +570,10 @@ void Folder::slotWatchedPathChanged(const QString& path)
     }
 
     emit watchedFileChangedExternally(path);
-    emit scheduleToSync(this);
+
+    // Also schedule this folder for a sync, but only after some delay:
+    // The sync will not upload files that were changed too recently.
+    scheduleThisFolderSoon();
 }
 
 void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
@@ -879,11 +854,10 @@ void Folder::slotSyncFinished(bool success)
     // Maybe force a follow-up sync to take place, but only a couple of times.
     if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3)
     {
-        _forceSyncOnPollTimeout = true;
-        // We will make sure that the poll timer occurs soon enough.
-        // delay 1s, 4s, 9s
-        int c = _consecutiveFollowUpSyncs;
-        QTimer::singleShot(c*c * 1000, this, SLOT(slotRunEtagJob() ));
+        // Sometimes another sync is requested because a local file is still
+        // changing, so wait at least a small amount of time before syncing
+        // the folder again.
+        scheduleThisFolderSoon();
     }
 }
 
@@ -964,7 +938,17 @@ void Folder::slotLogPropagationStart()
     _fileLog->logLap("Propagation starts");
 }
 
+void Folder::slotScheduleThisFolder()
+{
+    FolderMan::instance()->scheduleFolder(this);
+}
 
+void Folder::scheduleThisFolderSoon()
+{
+    if (!_scheduleSelfTimer.isActive()) {
+        _scheduleSelfTimer.start();
+    }
+}
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 {
@@ -988,10 +972,8 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
     *cancel = msgBox.clickedButton() == keepBtn;
     if (*cancel) {
         wipe();
-        // speed up next sync
         _lastEtag.clear();
-        _forceSyncOnPollTimeout = true;
-        QTimer::singleShot(50, this, SLOT(slotRunEtagJob()));
+        slotScheduleThisFolder();
     }
 }
 

@@ -80,17 +80,6 @@ TokenCredentials::TokenCredentials(const QString& user, const QString& password,
 {
 }
 
-bool TokenCredentials::changed(AbstractCredentials* credentials) const
-{
-    TokenCredentials* other(dynamic_cast< TokenCredentials* >(credentials));
-
-    if (!other || (other->user() != this->user())) {
-        return true;
-    }
-
-    return false;
-}
-
 QString TokenCredentials::authType() const
 {
     return QString::fromLatin1("token");

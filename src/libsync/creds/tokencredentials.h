@@ -40,7 +40,6 @@ public:
     TokenCredentials();
     TokenCredentials(const QString& user, const QString& password, const QString &token);
 
-    bool changed(AbstractCredentials* credentials) const Q_DECL_OVERRIDE;
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;

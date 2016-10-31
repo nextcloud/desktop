@@ -785,7 +785,7 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach(const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
-            FolderMan::instance()->slotScheduleSync(folder);
+            FolderMan::instance()->scheduleFolder(folder);
         }
     }
 
@@ -1099,7 +1099,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         foreach (const auto &it, undecidedList) {
             folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
-        FolderMan::instance()->slotScheduleSync(folder);
+        FolderMan::instance()->scheduleFolder(folder);
     }
 
     resetFolders();

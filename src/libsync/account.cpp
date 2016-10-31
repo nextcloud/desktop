@@ -39,7 +39,6 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
     , _davPath( Theme::instance()->webDavPath() )
-    , _wasMigrated(false)
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
 }
@@ -102,30 +101,6 @@ QString Account::id() const
     return _id;
 }
 
-static bool isEqualExceptProtocol(const QUrl &url1, const QUrl &url2)
-{
-    return (url1.host() != url2.host() ||
-            url1.port() != url2.port() ||
-            url1.path() != url2.path());
-}
-
-bool Account::changed(AccountPtr other, bool ignoreUrlProtocol) const
-{
-    if (!other) {
-        return false;
-    }
-    bool changes = false;
-    if (ignoreUrlProtocol) {
-        changes = isEqualExceptProtocol(_url, other->_url);
-    } else {
-        changes = (_url == other->_url);
-    }
-
-    changes |= _credentials->changed(other->credentials());
-
-    return changes;
-}
-
 AbstractCredentials *Account::credentials() const
 {
     return _credentials.data();
@@ -165,12 +140,7 @@ void Account::setCredentials(AbstractCredentials *cred)
 
 QUrl Account::davUrl() const
 {
-    return concatUrlPath(url(), davPath());
-}
-
-QList<QNetworkCookie> Account::lastAuthCookies() const
-{
-    return _am->cookieJar()->cookiesForUrl(_url);
+    return Utility::concatUrlPath(url(), davPath());
 }
 
 void Account::clearCookieJar()
@@ -217,7 +187,7 @@ QNetworkAccessManager *Account::networkAccessManager()
 
 QNetworkReply *Account::headRequest(const QString &relPath)
 {
-    return headRequest(concatUrlPath(url(), relPath));
+    return headRequest(Utility::concatUrlPath(url(), relPath));
 }
 
 QNetworkReply *Account::headRequest(const QUrl &url)
@@ -231,7 +201,7 @@ QNetworkReply *Account::headRequest(const QUrl &url)
 
 QNetworkReply *Account::getRequest(const QString &relPath)
 {
-    return getRequest(concatUrlPath(url(), relPath));
+    return getRequest(Utility::concatUrlPath(url(), relPath));
 }
 
 QNetworkReply *Account::getRequest(const QUrl &url)
@@ -254,7 +224,7 @@ QNetworkReply *Account::deleteRequest( const QUrl &url)
 
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data)
 {
-    return davRequest(verb, concatUrlPath(davUrl(), relPath), req, data);
+    return davRequest(verb, Utility::concatUrlPath(davUrl(), relPath), req, data);
 }
 
 QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
@@ -346,43 +316,6 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 void Account::setUrl(const QUrl &url)
 {
     _url = url;
-}
-
-QUrl Account::concatUrlPath(const QUrl &url, const QString &concatPath,
-                            const QList< QPair<QString, QString> > &queryItems)
-{
-    QString path = url.path();
-    if (! concatPath.isEmpty()) {
-        // avoid '//'
-        if (path.endsWith('/') && concatPath.startsWith('/')) {
-            path.chop(1);
-        } // avoid missing '/'
-        else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
-            path += QLatin1Char('/');
-        }
-        path += concatPath; // put the complete path together
-    }
-
-    QUrl tmpUrl = url;
-    tmpUrl.setPath(path);
-    if( queryItems.size() > 0 ) {
-        tmpUrl.setQueryItems(queryItems);
-    }
-    return tmpUrl;
-}
-
-QString Account::_configFileName;
-
-std::unique_ptr<QSettings> Account::settingsWithGroup(const QString& group, QObject *parent)
-{
-    if (_configFileName.isEmpty()) {
-        // cache file name
-        ConfigFile cfg;
-        _configFileName = cfg.configFile();
-    }
-    std::unique_ptr<QSettings> settings(new QSettings(_configFileName, QSettings::IniFormat, parent));
-    settings->beginGroup(group);
-    return settings;
 }
 
 QVariant Account::credentialSetting(const QString &key) const
@@ -481,16 +414,6 @@ void Account::slotCredentialsAsked()
 void Account::handleInvalidCredentials()
 {
     emit invalidCredentials();
-}
-
-bool Account::wasMigrated()
-{
-    return _wasMigrated;
-}
-
-void Account::setMigrated(bool mig)
-{
-    _wasMigrated = mig;
 }
 
 const Capabilities &Account::capabilities() const

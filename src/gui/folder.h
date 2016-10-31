@@ -178,6 +178,7 @@ public:
      qint64 msecSinceLastSync() const { return _timeSinceLastSyncDone.elapsed(); }
      qint64 msecLastSyncDuration() const { return _lastSyncDuration; }
      int consecutiveFollowUpSyncs() const { return _consecutiveFollowUpSyncs; }
+     int consecutiveFailingSyncs() const { return _consecutiveFailingSyncs; }
 
      /// Saves the folder data in the account's settings.
      void saveToSettings() const;
@@ -194,11 +195,21 @@ public:
       */
      bool isFileExcludedRelative(const QString& relativePath) const;
 
+     /** Calls schedules this folder on the FolderMan after a short delay.
+      *
+      * This should be used in situations where a sync should be triggered
+      * because a local file was modified. Syncs don't upload files that were
+      * modified too recently, and this delay ensures the modification is
+      * far enough in the past.
+      *
+      * The delay doesn't reset with subsequent calls.
+      */
+     void scheduleThisFolderSoon();
+
 signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
-    void scheduleToSync(Folder*);
     void progressInfo(const ProgressInfo& progress);
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder*, bool paused);
@@ -266,6 +277,11 @@ private slots:
 
     void slotLogPropagationStart();
 
+    /** Adds this folder to the list of scheduled folders in the
+     *  FolderMan.
+     */
+    void slotScheduleThisFolder();
+
 private:
     bool setIgnoredFiles();
 
@@ -302,7 +318,6 @@ private:
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
     qint64        _lastSyncDuration;
-    bool          _forceSyncOnPollTimeout;
 
     /// The number of syncs that failed in a row.
     /// Reset when a sync is successful.
@@ -317,6 +332,8 @@ private:
     ClientProxy   _clientProxy;
 
     QScopedPointer<SyncRunFileLog> _fileLog;
+
+    QTimer _scheduleSelfTimer;
 };
 
 }

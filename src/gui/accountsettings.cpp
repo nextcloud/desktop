@@ -321,7 +321,7 @@ void AccountSettings::slotFolderWizardAccepted()
         // The user already accepted the selective sync dialog. everything is in the white list
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
                                              QStringList() << QLatin1String("/"));
-        folderMan->slotScheduleAllFolders();
+        folderMan->scheduleAllFolders();
         emit folderChanged();
     }
 }
@@ -360,7 +360,7 @@ void AccountSettings::slotRemoveCurrentFolder()
                 return;
             }
 
-            folderMan->slotRemoveFolder( folderMan->folder(alias) );
+            folderMan->removeFolder( folderMan->folder(alias) );
             _model->removeRow(row);
 
             // single folder fix to show add-button and hide remove-button
@@ -468,7 +468,7 @@ void AccountSettings::slotSyncCurrentFolderNow()
     QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
 
-    folderMan->slotScheduleSync(folderMan->folder(alias));
+    folderMan->scheduleFolder(folderMan->folder(alias));
 }
 
 void AccountSettings::slotOpenOC()

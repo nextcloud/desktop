@@ -598,7 +598,6 @@ class FakeCredentials : public OCC::AbstractCredentials
     QNetworkAccessManager *_qnam;
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
-    virtual bool changed(AbstractCredentials *) const { return false; }
     virtual QString authType() const { return "test"; }
     virtual QString user() const { return "admin"; }
     virtual QNetworkAccessManager* getQNAM() const { return _qnam; }

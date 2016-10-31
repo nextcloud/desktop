@@ -44,7 +44,7 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()
@@ -69,9 +69,7 @@ bool AccountManager::restore()
 bool AccountManager::restoreFromLegacySettings()
 {
     // try to open the correctly themed settings
-    auto settings = Account::settingsWithGroup(Theme::instance()->appName());
-
-    bool migratedCreds = false;
+    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -102,7 +100,6 @@ bool AccountManager::restoreFromLegacySettings()
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
-                    migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
                     delete oCSettings;
@@ -114,9 +111,6 @@ bool AccountManager::restoreFromLegacySettings()
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         if (auto acc = loadAccountHelper(*settings)) {
-            if (migratedCreds) {
-                acc->setMigrated(true);
-            }
             addAccount(acc);
             return true;
         }
@@ -126,7 +120,7 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save(bool saveCredentials)
 {
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), 2);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
@@ -142,7 +136,7 @@ void AccountManager::save(bool saveCredentials)
 void AccountManager::saveAccount(Account* a)
 {
     qDebug() << "Saving account" << a->url().toString();
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
@@ -154,7 +148,7 @@ void AccountManager::saveAccount(Account* a)
 void AccountManager::saveAccountState(AccountState* a)
 {
     qDebug() << "Saving account state" << a->account()->url().toString();
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
@@ -280,7 +274,7 @@ void AccountManager::deleteAccount(AccountState* account)
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);

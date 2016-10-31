@@ -4,6 +4,7 @@ if( UNIX AND NOT APPLE )
 
     configure_file(syncstate.py syncstate.py COPYONLY)
     configure_file(syncstate.py syncstate_nemo.py COPYONLY)
+    configure_file(syncstate.py syncstate_caja.py COPYONLY)
 
     # Call the setupappname.sh script to set the custom app name.
     set (cmd "${CMAKE_CURRENT_SOURCE_DIR}/setappname.sh")
@@ -18,9 +19,17 @@ if( UNIX AND NOT APPLE )
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                     ERROR_VARIABLE errors OUTPUT_VARIABLE out)
 
+    # Create a caja plugin script from the nautilus one. 
+    # cajacmd copies the syncstate.py and performs string replacement.
+    set (cajacmd "${CMAKE_CURRENT_SOURCE_DIR}/createcajaplugin.sh")
+    execute_process(COMMAND ${cajacmd}
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                    ERROR_VARIABLE errors OUTPUT_VARIABLE out)
+
                                         
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate.py DESTINATION ${DATADIR}/nautilus-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_nemo.py DESTINATION ${DATADIR}/nemo-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/syncstate_caja.py DESTINATION ${DATADIR}/caja-python/extensions RENAME syncstate-${APPLICATION_SHORTNAME}.py)
     
     
 
