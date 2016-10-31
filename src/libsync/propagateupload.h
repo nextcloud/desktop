@@ -289,6 +289,7 @@ private:
     quint64 _sent; /// amount of data (bytes) that was already sent
     uint _transferId; /// transfer id (part of the url)
     int _currentChunk; /// Id of the next chunk that will be sent
+    bool _removeJobError; /// If not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -313,6 +314,7 @@ private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
     void slotPropfindIterate(const QString &name, const QMap<QString,QString> &properties);
+    void slotDeleteJobFinished();
     void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
     void slotMoveJobFinished();

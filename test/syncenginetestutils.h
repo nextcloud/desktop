@@ -297,6 +297,12 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isNull()); // for root, it should be empty
+        const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
+        Q_ASSERT(fileInfo);
+        QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
+
         // Don't care about the request and just return a full propfind
         const QString davUri{QStringLiteral("DAV:")};
         const QString ocUri{QStringLiteral("http://owncloud.org/ns")};
@@ -310,7 +316,7 @@ public:
         auto writeFileResponse = [&](const FileInfo &fileInfo) {
             xml.writeStartElement(davUri, QStringLiteral("response"));
 
-            xml.writeTextElement(davUri, QStringLiteral("href"), "/owncloud/remote.php/webdav/" + fileInfo.path());
+            xml.writeTextElement(davUri, QStringLiteral("href"), prefix + fileInfo.path());
             xml.writeStartElement(davUri, QStringLiteral("propstat"));
             xml.writeStartElement(davUri, QStringLiteral("prop"));
 
@@ -333,11 +339,6 @@ public:
             xml.writeEndElement(); // propstat
             xml.writeEndElement(); // response
         };
-
-        QString fileName = getFilePathFromUrl(request.url());
-        Q_ASSERT(!fileName.isNull()); // for root, it should be empty
-        const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
-        Q_ASSERT(fileInfo);
 
         writeFileResponse(*fileInfo);
         foreach(const FileInfo &childFileInfo, fileInfo->children)
@@ -400,6 +401,7 @@ public:
     }
 
     Q_INVOKABLE void respond() {
+        emit uploadProgress(fileInfo->size, fileInfo->size);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
         setRawHeader("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
@@ -583,6 +585,7 @@ public:
         } while(true);
 
         Q_ASSERT(count > 1); // There should be at least two chunks, otherwise why would we use chunking?
+        QCOMPARE(sourceFolder->children.count(), count); // There should not be holes or extra files
 
         QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
         Q_ASSERT(!fileName.isEmpty());
@@ -750,7 +753,7 @@ public:
     }
 
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
-    FileInfo uploadState() { return _fakeQnam->uploadState(); }
+    FileInfo &uploadState() { return _fakeQnam->uploadState(); }
 
     QStringList &serverErrorPaths() { return _fakeQnam->errorPaths(); }
 

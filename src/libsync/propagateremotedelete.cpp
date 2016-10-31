@@ -22,11 +22,14 @@ DeleteJob::DeleteJob(AccountPtr account, const QString& path, QObject* parent)
     : AbstractNetworkJob(account, path, parent)
 { }
 
+DeleteJob::DeleteJob(AccountPtr account, const QUrl& url, QObject* parent)
+    : AbstractNetworkJob(account, QString(), parent), _url(url)
+{ }
 
 void DeleteJob::start()
 {
     QNetworkRequest req;
-    setReply(davRequest("DELETE", path(), req));
+    setReply(_url.isValid() ? davRequest("DELETE", _url, req) : davRequest("DELETE", path(), req));
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {

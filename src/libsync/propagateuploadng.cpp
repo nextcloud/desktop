@@ -24,6 +24,8 @@
 #include "propagatorjobs.h"
 #include "syncengine.h"
 #include "propagateremotemove.h"
+#include "propagateremotedelete.h"
+
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -56,10 +58,13 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
        startNewUpload() <-+        +----------------------------\
           |               |        |                             \
          MKCOL            + slotPropfindFinishedWithError()     slotPropfindFinished()
-          |                                                       |
-      slotMkColFinished()                                         |
-          |                                                       |
-    +-----+-------------------------------------------------------+
+          |                                                       Is there stale files to remove?
+      slotMkColFinished()                                         |                      |
+          |                                                       no                    yes
+          |                                                       |                      |
+          |                                                       |                  DeleteJob
+          |                                                       |                      |
+    +-----+<------------------------------------------------------+<---  slotDeleteJobFinished()
     |
     +---->  startNextChunk()  ---finished?  --+
                   ^               |          |
@@ -119,12 +124,29 @@ void PropagateUploadFileNG::slotPropfindFinished()
     _sent = 0;
     while (_serverChunks.contains(_currentChunk)) {
         _sent += _serverChunks[_currentChunk];
+        _serverChunks.remove(_currentChunk);
         ++_currentChunk;
     }
-    // FIXME: we should make sure that if there is a "hole" and then a few more chunks, on the server
-    // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
-    // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
+
     qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
+
+    if (!_serverChunks.isEmpty()) {
+        qDebug() << "To Delete" << _serverChunks;
+        _propagator->_activeJobList.append(this);
+        _removeJobError = false;
+
+        // Make sure that if there is a "hole" and then a few more chunks, on the server
+        // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
+        // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
+        for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
+            auto job = new DeleteJob(_propagator->account(), Utility::concatUrlPath(chunkUrl(), QString::number(it.key())), this);
+            QObject::connect(job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
+            _jobs.append(job);
+            job->start();
+        }
+        return;
+    }
+
     startNextChunk();
 }
 
@@ -143,6 +165,38 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
     }
     startNewUpload();
 }
+
+void PropagateUploadFileNG::slotDeleteJobFinished()
+{
+    auto job = qobject_cast<DeleteJob *>(sender());
+    Q_ASSERT(job);
+    _jobs.remove(_jobs.indexOf(job));
+
+    QNetworkReply::NetworkError err = job->reply()->error();
+    if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
+        const int httpStatus = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        SyncFileItem::Status status = classifyError(err, httpStatus);
+        if (status == SyncFileItem::FatalError) {
+            abortWithError(status, job->errorString());
+            return;
+        } else {
+            qWarning() << "DeleteJob errored out" << job->errorString() << job->reply()->url();
+            _removeJobError = true;
+            // Let the other jobs finish
+        }
+    }
+
+    if (_jobs.isEmpty()) {
+        _propagator->_activeJobList.removeOne(this);
+        if (_removeJobError) {
+            // There was an error removing some files, just start over
+            startNewUpload();
+        } else {
+            startNextChunk();
+        }
+    }
+}
+
 
 
 void PropagateUploadFileNG::startNewUpload()
