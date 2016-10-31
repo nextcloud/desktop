@@ -367,12 +367,15 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    if (err != QNetworkReply::NoError || (_item->_httpErrorCode != 201
-            && _item->_httpErrorCode != 204)) {
+    if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &_propagator->_anotherSyncNeeded);
         QString errorString = errorMessage(job->errorString(), job->reply()->readAll());
         abortWithError(status, errorString);
+        return;
+    }
+    if (_item->_httpErrorCode != 201 && _item->_httpErrorCode != 204) {
+        abortWithError(SyncFileItem::NormalError, tr("Unexpected return code from server (%1)").arg(_item->_httpErrorCode));
         return;
     }
 

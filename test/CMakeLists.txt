@@ -47,6 +47,7 @@ owncloud_add_test(ExcludedFiles "")
 if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
     owncloud_add_test(SyncEngine "syncenginetestutils.h")
     owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
+    owncloud_add_test(ChunkingNg "syncenginetestutils.h")
 endif(HAVE_QT5 AND NOT BUILD_WITH_QT4)
 
 SET(FolderMan_SRC ../src/gui/folderman.cpp)

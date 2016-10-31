@@ -18,6 +18,20 @@
 #include <QtTest>
 
 static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/webdav/");
+static const QUrl sRootUrl2("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
+static const QUrl sUploadUrl("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");
+
+inline QString getFilePathFromUrl(const QUrl &url) {
+    QString path = url.path();
+    if (path.startsWith(sRootUrl.path()))
+        return path.mid(sRootUrl.path().length());
+    if (path.startsWith(sRootUrl2.path()))
+        return path.mid(sRootUrl2.path().length());
+    if (path.startsWith(sUploadUrl.path()))
+        return path.mid(sUploadUrl.path().length());
+    return {};
+}
+
 
 inline QString generateEtag() {
     return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch(), 16);
@@ -320,8 +334,8 @@ public:
             xml.writeEndElement(); // response
         };
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isNull()); // for root, it should be empty
         const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
         Q_ASSERT(fileInfo);
 
@@ -368,8 +382,8 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
             fileInfo->size = putPayload.size();
             fileInfo->contentChar = putPayload.at(0);
@@ -410,8 +424,8 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
         fileInfo = remoteRootFileInfo.createDir(fileName);
 
         if (!fileInfo) {
@@ -443,8 +457,8 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
         remoteRootFileInfo.remove(fileName);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
@@ -470,11 +484,10 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
-        QString destPath = request.rawHeader("Destination");
-        Q_ASSERT(destPath.startsWith(sRootUrl.path()));
-        QString dest = destPath.mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
+        QString dest = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
+        Q_ASSERT(!dest.isEmpty());
         remoteRootFileInfo.rename(fileName, dest);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
@@ -503,8 +516,8 @@ public:
         setOperation(op);
         open(QIODevice::ReadOnly);
 
-        Q_ASSERT(request.url().path().startsWith(sRootUrl.path()));
-        QString fileName = request.url().path().mid(sRootUrl.path().length());
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
         fileInfo = remoteRootFileInfo.find(fileName);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
@@ -533,6 +546,78 @@ public:
     }
 };
 
+
+class FakeChunkMoveReply : public QNetworkReply
+{
+    Q_OBJECT
+    FileInfo *fileInfo;
+public:
+    FakeChunkMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
+                       QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+                       QObject *parent) : QNetworkReply{parent} {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+
+        QString source = getFilePathFromUrl(request.url());
+        Q_ASSERT(!source.isEmpty());
+        Q_ASSERT(source.endsWith("/.file"));
+        source = source.left(source.length() - qstrlen("/.file"));
+        auto sourceFolder = uploadsFileInfo.find(source);
+        Q_ASSERT(sourceFolder);
+        Q_ASSERT(sourceFolder->isDir);
+        int count = 0;
+        int size = 0;
+        char payload = '*';
+
+        do {
+            if (!sourceFolder->children.contains(QString::number(count)))
+                break;
+            auto &x = sourceFolder->children[QString::number(count)];
+            Q_ASSERT(!x.isDir);
+            Q_ASSERT(x.size > 0); // There should not be empty chunks
+            size += x.size;
+            payload = x.contentChar;
+            ++count;
+        } while(true);
+
+        Q_ASSERT(count > 1); // There should be at least two chunks, otherwise why would we use chunking?
+
+        QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
+        Q_ASSERT(!fileName.isEmpty());
+
+        if ((fileInfo = remoteRootFileInfo.find(fileName))) {
+            QCOMPARE(request.rawHeader("If"), QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])"));
+            fileInfo->size = size;
+            fileInfo->contentChar = payload;
+        } else {
+            Q_ASSERT(!request.hasRawHeader("If"));
+            // Assume that the file is filled with the same character
+            fileInfo = remoteRootFileInfo.create(fileName, size, payload);
+        }
+
+        if (!fileInfo) {
+            abort();
+            return;
+        }
+        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    }
+
+    Q_INVOKABLE void respond() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
+        setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
+        setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    void abort() override { }
+    qint64 readData(char *, qint64) override { return 0; }
+};
+
+
 class FakeErrorReply : public QNetworkReply
 {
     Q_OBJECT
@@ -559,33 +644,41 @@ public:
 class FakeQNAM : public QNetworkAccessManager
 {
     FileInfo _remoteRootFileInfo;
+    FileInfo _uploadFileInfo;
     QStringList _errorPaths;
 public:
     FakeQNAM(FileInfo initialRoot) : _remoteRootFileInfo{std::move(initialRoot)} { }
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
+    FileInfo &uploadState() { return _uploadFileInfo; }
     QStringList &errorPaths() { return _errorPaths; }
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
                                          QIODevice *outgoingData = 0) {
-        const QString fileName = request.url().path().mid(sRootUrl.path().length());
+        const QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isNull());
         if (_errorPaths.contains(fileName))
             return new FakeErrorReply{op, request, this};
+
+        bool isUpload = request.url().path().startsWith(sUploadUrl.path());
+        FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
         auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == QLatin1String("PROPFIND"))
             // Ignore outgoingData always returning somethign good enough, works for now.
-            return new FakePropfindReply{_remoteRootFileInfo, op, request, this};
+            return new FakePropfindReply{info, op, request, this};
         else if (verb == QLatin1String("GET"))
-            return new FakeGetReply{_remoteRootFileInfo, op, request, this};
+            return new FakeGetReply{info, op, request, this};
         else if (verb == QLatin1String("PUT"))
-            return new FakePutReply{_remoteRootFileInfo, op, request, outgoingData->readAll(), this};
+            return new FakePutReply{info, op, request, outgoingData->readAll(), this};
         else if (verb == QLatin1String("MKCOL"))
-            return new FakeMkcolReply{_remoteRootFileInfo, op, request, this};
+            return new FakeMkcolReply{info, op, request, this};
         else if (verb == QLatin1String("DELETE"))
-            return new FakeDeleteReply{_remoteRootFileInfo, op, request, this};
-        else if (verb == QLatin1String("MOVE"))
-            return new FakeMoveReply{_remoteRootFileInfo, op, request, this};
+            return new FakeDeleteReply{info, op, request, this};
+        else if (verb == QLatin1String("MOVE") && !isUpload)
+            return new FakeMoveReply{info, op, request, this};
+        else if (verb == QLatin1String("MOVE") && isUpload)
+            return new FakeChunkMoveReply{info, _remoteRootFileInfo, op, request, this};
         else {
             qDebug() << verb << outgoingData;
             Q_UNREACHABLE();
@@ -657,6 +750,7 @@ public:
     }
 
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
+    FileInfo uploadState() { return _fakeQnam->uploadState(); }
 
     QStringList &serverErrorPaths() { return _fakeQnam->errorPaths(); }
 
@@ -693,14 +787,16 @@ public:
         QVERIFY(false);
     }
 
-    void execUntilFinished() {
+    bool execUntilFinished() {
         QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
-        QVERIFY(spy.wait());
+        bool ok = spy.wait();
+        Q_ASSERT(ok && "Sync timed out");
+        return spy[0][0].toBool();
     }
 
-    void syncOnce() {
+    bool syncOnce() {
         scheduleSync();
-        execUntilFinished();
+        return execUntilFinished();
     }
 
 private:
