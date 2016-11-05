@@ -994,7 +994,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 de %2, fitxer %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
@@ -1944,27 +1944,27 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer %1 no es pot baixar perquè hi ha un xoc amb el nom d&apos;un fitxer local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>La descàrrega reduïrà l&apos;espai lliure al disc per sota de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;espai lliure del disc dur es inferior a %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha esborrat del servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot descarregar el fitxer completament.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="555"/>
@@ -1979,12 +1979,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer ha canviat des de que es va descobrir</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error en escriure les metadades a la base de dades</translation>
     </message>
 </context>
 <context>
@@ -2120,7 +2120,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="297"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Fitxer eliminat</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="309"/>
@@ -2131,7 +2131,7 @@ No és aconsellada usar-la.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="321"/>
         <location filename="../src/libsync/propagateupload.cpp" line="710"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="637"/>
@@ -2141,7 +2141,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer en conflicte.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
@@ -2151,7 +2151,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="699"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
@@ -2161,7 +2161,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error en escriure les metadades a la base de dades</translation>
     </message>
 </context>
 <context>
@@ -3325,7 +3325,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està sincronitzant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="822"/>

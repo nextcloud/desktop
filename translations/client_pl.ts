@@ -994,7 +994,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 z %2, plik %3 z %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
@@ -1944,27 +1944,27 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Nie można pobrać pliku %1 ze względu na konflikt nazwy pliku lokalnego!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation type="unfinished"/>
+        <translation>Pobranie zmniejszy ilość wolnego miejsca poniżej %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Wolne miejsce na dysku jest mniejsze niż %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Plik został usunięty z serwera</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Ten plik nie mógł być całkowicie pobrany.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="555"/>
@@ -1984,7 +1984,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2120,7 +2120,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="297"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Usunięto plik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="309"/>
@@ -2131,7 +2131,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="321"/>
         <location filename="../src/libsync/propagateupload.cpp" line="710"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="637"/>
@@ -2141,7 +2141,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Został przywrócony i Twoja edycja jest w pliku konfliktu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
@@ -2151,7 +2151,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="699"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
@@ -2161,7 +2161,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="800"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -3325,7 +3325,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizowanie %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="822"/>

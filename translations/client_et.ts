@@ -991,7 +991,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 / %2, fail %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
@@ -1938,7 +1938,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa alla laadida kuna on konflikt kohaliku faili nimega.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
@@ -1953,12 +1953,12 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Fail on serverist kustutatud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Faili täielik allalaadimine ebaõnnestus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="555"/>
@@ -1968,12 +1968,12 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Faili %1 ei saa salvestada kuna on nime konflikt kohaliku failiga!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Faili on pärast avastamist muudetud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
@@ -2114,18 +2114,18 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="297"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Fail eemaldatud</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="309"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail muutus sünkroniseeringu käigus. See taastakse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="321"/>
         <location filename="../src/libsync/propagateupload.cpp" line="710"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail muutus sünkroniseeringu käigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="637"/>
@@ -2135,17 +2135,17 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Faili on lokaalselt muudetud, kuid see on osa kirjutamisõiguseta jagamisest. See on taastatud ning sinu muudatus on konfliktses failis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Küsitluse URL puudub</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="699"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Kohalik fail on eemaldatud sünkroniseeringu käigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
@@ -3319,7 +3319,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sünkroniseerimine %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="822"/>

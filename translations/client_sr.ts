@@ -1939,7 +1939,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се не може преузети јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
@@ -1954,12 +1954,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
         <source>File was deleted from server</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је обрисан са сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="548"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл није могао бити преузет у потпуности.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="555"/>
@@ -1969,12 +1969,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се не може сачувати јер се судара са називом локалног фајла!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
         <source>File has changed since discovery</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је измењен у међувремену</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
@@ -2115,38 +2115,38 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="297"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Фајл уклоњен</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="309"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл је измењен током синхронизације. Биће настављена.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="321"/>
         <location filename="../src/libsync/propagateupload.cpp" line="710"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл измењен током синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="637"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Присили прекид посла код прекида ХТТП везе са КуТ &lt; 5.4.2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="645"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл је измењен локално али је у саставу дељења које је само за читање. Враћен је у претходно стање а измене су у фајлу сукоба.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="676"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Адреса упита недостаје</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="699"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Локални фајл је уклоњен током синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="725"/>
@@ -3320,7 +3320,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизујем %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="822"/>
