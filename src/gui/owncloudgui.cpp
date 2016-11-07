@@ -903,6 +903,9 @@ void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
     foreach (Folder* f, FolderMan::instance()->map()) {
         if (accounts.contains(f->accountState())) {
             f->setSyncPaused(pause);
+            if (pause) {
+                f->slotTerminateSync();
+            }
         }
     }
 }
