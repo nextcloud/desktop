@@ -1225,7 +1225,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bitte Kennwort für %1 eingeben:&lt;br&gt;&lt;br&gt;Benutzer: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1240,7 +1240,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klicken Sie hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
     </message>
 </context>
 <context>
@@ -2446,7 +2446,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mail-Link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="208"/>
@@ -2487,12 +2487,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Die E-Mail Anwendung konnte nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Es ist ein Fehler beim Öffnen der E-Mail Anwendung, zum Erstellen einer neuen Nachricht, aufgetreten. Vielleicht ist keine standardmäßige E-Mail Anwendung konfiguriert?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
@@ -2988,7 +2988,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Dateiname enthält Leerzeichen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
@@ -3315,7 +3315,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisiere %1 von %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
@@ -3343,7 +3343,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %2. Weitere Informationen unter &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz und anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Lizenziert unter den Bedingungen der GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud und das ownCloud Logo sind eingetragene Warenzeichen der ownCloud Inc. in den USA, anderen Ländern, oder beidem.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3710,7 +3710,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Metadaten aktualisiert</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -3752,7 +3752,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>aktualisiere Lokale Metadaten</translation>
     </message>
 </context>
 <context>

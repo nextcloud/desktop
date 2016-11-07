@@ -996,7 +996,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
         <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 of %2, file %3 de %4</translation>
+        <translation>%1 de%2, arquivo %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
@@ -1945,12 +1945,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>O arquivo %1 não pode ser baixado por causa de um confronto local no nome do arquivo!</translation>
+        <translation>O arquivo %1 não pode ser baixado devido a um confronto local no nome do arquivo!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
         <source>The download would reduce free disk space below %1</source>
-        <translation>O download reduziá o espaço livre em disco abaixo de %1</translation>
+        <translation>O download reduzirá o espaço livre em disco abaixo de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
@@ -1975,7 +1975,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>O arquivo %1 não pode ser salvo por causa de um confronto com um nome de arquivo local!</translation>
+        <translation>O arquivo %1 não pode ser salvo devido a um confronto com um nome de arquivo local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="762"/>

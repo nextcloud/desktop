@@ -106,17 +106,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="189"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Alles synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="196"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Niets synchroniseren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="203"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Toepassen handmatige wijzigingen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
@@ -734,7 +734,9 @@ Weet je zeker dat je door wilt gaan?</translation>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Deze synchronisatie zou uw bestanden terug zetten naar een eerdere staat van de synchronisatie map &apos;%1&apos;.
+Dit kan komen doordat een backup is hersteld op de server.
+Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere versie. Wilt u uw lokale meer recente bestanden behouden als conflict bestanden?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="988"/>
@@ -1225,7 +1227,11 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Voer %1 wachtwoord in:
+
+Gebruiker: %2
+Account: %3
+</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1240,7 +1246,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klik hier&lt;/a&gt; om een nieuw app wachtwoord via de web interface op te vragen.</translation>
     </message>
 </context>
 <context>
@@ -2447,7 +2453,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Mailen link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="208"/>
@@ -2488,12 +2494,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Kon e-mailclient niet openen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het starten van de e-mailclient om een nieuw bericht te maken. Misschien is er geen e-mailclient gedefinieerd?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
@@ -2989,7 +2995,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>De bestandsnaam bevat spaties achteraan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
@@ -3316,7 +3322,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseren %1 van %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="800"/>
@@ -3344,7 +3350,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versie %2. Bezoek voor meer informatie bezoek &lt;a href=&quot;%3&quot;&gt;%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Door Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz en anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud, GmbH&lt;/p&gt;&lt;p&gt;Gelicenseerd onder de GNU General Public License (GPL) Versie 2.0&lt;br&gt;ownCloud en het ownCloud logo zijn geregistreerde handelsmerken van ownCloud GmbH in de Verenigde Staten, andere landen, of beide.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3711,7 +3717,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Lokale metadata ge-uploaded</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -3753,7 +3759,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Bijwerken lokale metadata</translation>
     </message>
 </context>
 <context>
