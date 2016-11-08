@@ -80,7 +80,7 @@ private slots:
         quint64 sec = 1000;
         quint64 hour = 3600 * sec;
 
-        QDateTime current = QDateTime::currentDateTime();
+        QDateTime current = QDateTime::currentDateTimeUtc();
 
         QCOMPARE(durationToDescriptiveString2(0), QString("0 second(s)") );
         QCOMPARE(durationToDescriptiveString2(5), QString("0 second(s)") );
