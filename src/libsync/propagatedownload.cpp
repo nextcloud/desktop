@@ -593,7 +593,7 @@ void PropagateDownloadFile::deleteExistingFolder()
     }
 
     QString conflictDir = FileSystem::makeConflictFileName(
-            existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
+            existingDir, Utility::qDateTimeFromTime_t(FileSystem::getModTime(existingDir)));
 
     emit _propagator->touchedFile(existingDir);
     emit _propagator->touchedFile(conflictDir);
@@ -722,7 +722,8 @@ void PropagateDownloadFile::downloadFinished()
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = FileSystem::makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
+        QString conflictFileName = FileSystem::makeConflictFileName(
+                fn, Utility::qDateTimeFromTime_t(FileSystem::getModTime(fn)));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             // If the rename fails, don't replace it.
 

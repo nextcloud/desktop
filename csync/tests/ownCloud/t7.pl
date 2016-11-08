@@ -232,6 +232,37 @@ assertLocalAndRemoteDir( '', 0);
 system("sqlite3 " . localDir().'.csync_journal.db .dump');
 
 
+#######################################################################
+printInfo( "multiple restores of a file create different conflict files" );
+
+system("sleep 1"); #make sure changes have different mtime
+
+system("echo 'modified_1' > ". localDir() . "readonlyDirectory_PERM_M_/canotBeModified_PERM_DVN_.data");
+
+#do the sync
+csync();
+assertCsyncJournalOk(localDir());
+
+system("sleep 1"); #make sure changes have different mtime
+
+system("echo 'modified_2' > ". localDir() . "readonlyDirectory_PERM_M_/canotBeModified_PERM_DVN_.data");
+
+#do the sync
+csync();
+assertCsyncJournalOk(localDir());
+
+# there should be two conflict files
+# TODO check that the conflict file has the right content
+my @conflicts = glob(localDir().'readonlyDirectory_PERM_M_/canotBeModified_PERM_DVN__conflict-*.data' );
+assert( scalar @conflicts == 2 );
+# remove the conflicts for the next assertLocalAndRemoteDir
+system("rm " . localDir().'readonlyDirectory_PERM_M_/canotBeModified_PERM_DVN__conflict-*.data' );
+
+### Both side should still be the same
+assertLocalAndRemoteDir( '', 0);
+
+
+
 cleanup();
 
 
