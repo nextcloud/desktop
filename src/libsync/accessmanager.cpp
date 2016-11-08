@@ -63,6 +63,10 @@ QNetworkReply* AccessManager::createRequest(QNetworkAccessManager::Operation op,
     }
 
     newRequest.setRawHeader(QByteArray("User-Agent"), Utility::userAgentString());
+
+    // Some firewalls reject requests that have a "User-Agent" but no "Accept" header
+    newRequest.setRawHeader(QByteArray("Accept"), "*/*");
+
     QByteArray verb = newRequest.attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension
