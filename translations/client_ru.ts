@@ -1009,7 +1009,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Ожидание %n папки...</numerusform><numerusform>Ожидание %s папок...</numerusform><numerusform>Ожидание %s папок...</numerusform><numerusform>Ожидание %s папок...</numerusform></translation>
+        <translation><numerusform>Ожидание %n папки...</numerusform><numerusform>Ожидание %n папок...</numerusform><numerusform>Ожидание %n папок...</numerusform><numerusform>Ожидание %n папок...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
@@ -2001,7 +2001,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>Файл или папка была удалена из доступа только для чтения, восстановление завершилось с ошибкой: %s</translation>
+        <translation>Файл или папка была удалена из доступа только для чтения, восстановление завершилось с ошибкой: %1</translation>
     </message>
 </context>
 <context>

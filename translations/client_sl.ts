@@ -734,7 +734,9 @@ Ali ste prepričani, da želite izvesti to opravilo?</translation>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Z usklajevanjem bi se datoteke povrnile na predhodni čas usklajevanja mape &apos;%1&apos;.
+To se lahko zgodi, če je na strežniku na primer obnovljena varnostna kopija.
+Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot preimenovane datoteke v usklajevalnem sporu?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="988"/>
@@ -1239,7 +1241,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknite tu&lt;/a&gt; za dodelitev gesla za program prek spletnega vmesnika.</translation>
     </message>
 </context>
 <context>
@@ -2446,7 +2448,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Pošlji povezavo prek elektronske pošte</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="208"/>
@@ -3710,7 +3712,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Posodobljeni krajevni metapodatki</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
