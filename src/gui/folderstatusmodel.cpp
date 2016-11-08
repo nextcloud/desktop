@@ -38,6 +38,12 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
 FolderStatusModel::~FolderStatusModel()
 { }
 
+static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo& lhs, const FolderStatusModel::SubFolderInfo& rhs)
+{
+    return QString::compare(lhs._folder->shortGuiRemotePathOrAppName(),
+                            rhs._folder->shortGuiRemotePathOrAppName(),
+                            Qt::CaseInsensitive) < 0;
+}
 
 void FolderStatusModel::setAccountState(const AccountState* accountState)
 {
@@ -58,7 +64,6 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
         if (f->accountState() != accountState)
             continue;
         SubFolderInfo info;
-        info._pathIdx << _folders.size();
         info._name = f->alias();
         info._path = "/";
         info._folder = f;
@@ -67,6 +72,14 @@ void FolderStatusModel::setAccountState(const AccountState* accountState)
 
         connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
         connect(f, SIGNAL(newBigFolderDiscovered(QString)), this, SLOT(slotNewBigFolder()), Qt::UniqueConnection);
+    }
+
+    // Sort by header text
+    qSort(_folders.begin(), _folders.end(), sortByFolderHeader);
+
+    // Set the root _pathIdx after the sorting
+    for (int i = 0; i < _folders.size(); ++i) {
+        _folders[i]._pathIdx << i;
     }
 
     endResetModel();
