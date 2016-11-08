@@ -388,12 +388,13 @@ QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString& path) cons
     if (slashPos == -1) {
         // first level folder
         for (int i = 0; i < _folders.size(); ++i) {
-            if (_folders.at(i)._folder == f) {
+            auto& info = _folders.at(i);
+            if (info._folder == f) {
                 if( path.isEmpty() ) { // the folder object
                     return index(i, 0);
                 }
-                for (int j = 0; j < _folders.at(i)._subs.size(); ++j) {
-                    const QString subName = _folders.at(i)._subs.at(j)._name;
+                for (int j = 0; j < info._subs.size(); ++j) {
+                    const QString subName = info._subs.at(j)._name;
                     if (subName == path) {
                         return index(j, 0, index(i));
                     }
@@ -999,10 +1000,12 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     }
     if (folderIndex < 0) { return; }
 
+    auto& pi = _folders[folderIndex]._progress;
+
     SyncResult::Status state = f->syncResult().status();
     if (f->syncPaused()) {
         // Reset progress info.
-        _folders[folderIndex]._progress = SubFolderInfo::Progress();
+        pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
         FolderMan* folderMan = FolderMan::instance();
         int pos = folderMan->scheduleQueue().indexOf(f);
@@ -1016,16 +1019,16 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         } else {
             message = tr("Waiting for %n other folder(s)...", "", pos);
         }
-        _folders[folderIndex]._progress = SubFolderInfo::Progress();
-        _folders[folderIndex]._progress._overallSyncString = message;
+        pi = SubFolderInfo::Progress();
+        pi._overallSyncString = message;
     } else if (state == SyncResult::SyncPrepare) {
-        _folders[folderIndex]._progress = SubFolderInfo::Progress();
-        _folders[folderIndex]._progress._overallSyncString = tr("Preparing to sync...");
+        pi = SubFolderInfo::Progress();
+        pi._overallSyncString = tr("Preparing to sync...");
     } else if (state == SyncResult::Problem || state == SyncResult::Success) {
         // Reset the progress info after a sync.
-        _folders[folderIndex]._progress = SubFolderInfo::Progress();
+        pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::Error) {
-        _folders[folderIndex]._progress = SubFolderInfo::Progress();
+        pi = SubFolderInfo::Progress();
     }
 
     // update the icon etc. now
