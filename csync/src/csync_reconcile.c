@@ -65,7 +65,21 @@ static c_rbnode_t *_csync_check_ignored(c_rbtree_t *tree, const char *path, int 
     }
 }
 
-/*
+/**
+ * The main function in the reconcile pass.
+ *
+ * It's called for each entry in the local and remote rbtrees by
+ * csync_reconcile()
+ *
+ * Before the reconcile phase the trees already know about changes
+ * relative to the sync journal. This function's job is to spot conflicts
+ * between local and remote changes and adjust the nodes accordingly.
+ *
+ * See doc/dev/sync-algorithm.md for an overview.
+ *
+ *
+ * Older detail comment:
+ *
  * We merge replicas at the file level. The merged replica contains the
  * superset of files that are on the local machine and server copies of
  * the replica. In the case where the same file is in both the local

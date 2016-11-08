@@ -158,7 +158,19 @@ static bool _csync_mtime_equal(time_t a, time_t b)
     return false;
 }
 
-
+/**
+ * The main function of the discovery/update pass.
+ *
+ * It's called (indirectly) by csync_update(), once for each entity in the
+ * local filesystem and once for each entity in the server data.
+ *
+ * It has two main jobs:
+ * - figure out whether anything happened compared to the sync journal
+ *   and set (primarily) the instruction flag accordingly
+ * - build the ctx->local.tree / ctx->remote.tree
+ *
+ * See doc/dev/sync-algorithm.md for an overview.
+ */
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;

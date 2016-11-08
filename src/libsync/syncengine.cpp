@@ -334,6 +334,16 @@ int SyncEngine::treewalkRemote( TREE_WALK_FILE* file, void *data )
     return static_cast<SyncEngine*>(data)->treewalkFile( file, true );
 }
 
+/**
+ * The main function in the post-reconcile phase.
+ *
+ * Called on each entry in the local and remote trees by
+ * csync_walk_local_tree()/csync_walk_remote_tree().
+ *
+ * It merges the two csync rbtrees into a single map of SyncFileItems.
+ *
+ * See doc/dev/sync-algorithm.md for an overview.
+ */
 int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 {
     if( ! file ) return -1;
