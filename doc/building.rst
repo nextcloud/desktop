@@ -247,7 +247,7 @@ To build the most up-to-date version of the client:
             
    ..note:: qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/
 
-   .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
+   .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/   -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
 
 4. Call ``make``.
 
