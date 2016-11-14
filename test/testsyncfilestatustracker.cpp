@@ -376,6 +376,10 @@ private slots:
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().insert("S/s0");
         fakeFolder.remoteModifier().appendByte("S/s1");
+        fakeFolder.remoteModifier().insert("B/b3");
+        fakeFolder.remoteModifier().find("B/b3")->extraDavProperties
+            = "<oc:share-types><oc:share-type>0</oc:share-type></oc:share-types>";
+
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
         fakeFolder.scheduleSync();
@@ -395,6 +399,8 @@ private slots:
         QEXPECT_FAIL("", "We currently only know if a new file is shared on the second sync, after a PROPFIND.", Continue);
         QCOMPARE(statusSpy.statusOf("S/s0"), sharedUpToDateStatus);
         QCOMPARE(statusSpy.statusOf("S/s1"), sharedUpToDateStatus);
+        QCOMPARE(statusSpy.statusOf("B/b1").sharedWithMe(), false);
+        QCOMPARE(statusSpy.statusOf("B/b3"), sharedUpToDateStatus);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
