@@ -18,6 +18,7 @@
 import os
 import urllib
 import socket
+import tempfile
 
 from gi.repository import GObject, Nautilus
 
@@ -43,7 +44,7 @@ def get_runtime_dir():
     try:
         return os.environ['XDG_RUNTIME_DIR']
     except KeyError:
-        fallback = '/tmp/runtime-' + os.environ['USER']
+        fallback = os.path.join(tempfile.gettempdir(), 'runtime-' + os.environ['USER'])
         return fallback
 
 
@@ -86,22 +87,17 @@ class SocketConnect(GObject.GObject):
     def _connectToSocketServer(self):
         try:
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-            postfix = "/" + appname + "/socket"  # Should use os.path.join instead
-            sock_file = get_runtime_dir() + postfix
-            print ("Socket: " + sock_file + " <=> " + postfix)
-            if sock_file != postfix:
-                try:
-                    print("Socket File: " + sock_file)
-                    self._sock.connect(sock_file)
-                    self.connected = True
-                    print("Setting connected to %r." % self.connected )
-                    self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                    print("Socket watch id: " + str(self._watch_id))
-                    return False  # Don't run again
-                except Exception as e:
-                    print("Could not connect to unix socket. " + str(e))
-            else:
-                print("Sock-File not valid: " + sock_file)
+            sock_file = os.path.join(get_runtime_dir(), appname, "socket")
+            try:
+                print("Socket File: " + sock_file)
+                self._sock.connect(sock_file) # fails if sock_file doesn't exist
+                self.connected = True
+                print("Setting connected to %r." % self.connected )
+                self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
+                print("Socket watch id: " + str(self._watch_id))
+                return False  # Don't run again
+            except Exception as e:
+                print("Could not connect to unix socket. " + str(e))
         except Exception as e:  # Bad habbit
             print("Connect could not be established, try again later.")
             self._sock.close()
@@ -157,32 +153,65 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
+    def check_registered_paths(self, filename):
+        topLevelFolder = False
+        internalFile = False
+        for reg_path in socketConnect.registered_paths:
+            if filename == reg_path:
+                topLevelFolder = True
+                break
+            if filename.startswith(reg_path):
+                internalFile = True
+                # you can't have a registered path below another so it is save to break here
+                break
+        return (topLevelFolder, internalFile)
+
     def get_file_items(self, window, files):
+        # Show the menu extension to share a file or folder
+        #
+        # Show if file is OK.
+        # Ignore top level folders.
+        # Also show extension for folders
+        #  if there is a OK or SYNC underneath.
+        # This is only
+
         if len(files) != 1:
             return
         file = files[0]
         items = []
 
-        # Internal or external file?!
-        syncedFile = False
-        for reg_path in socketConnect.registered_paths:
-            topLevelFolder = False
-            filename = get_local_path(file.get_uri())
-            # Check if its a folder (ends with an /), if yes add a "/"
-            # otherwise it will not find the entry in the table
-            if os.path.isdir(filename + "/"):
-                filename += "/"
-                # Check if toplevel folder, we need to ignore those as they cannot be shared
-                if filename == reg_path:
-                    topLevelFolder=True                
-            # Only show the menu extension if the file is synced and the sync
-            # status is ok. Not for ignored files etc.
-            # ignore top level folders
-            if filename.startswith(reg_path) and topLevelFolder == False and socketConnect.nautilusVFSFile_table[filename]['state'].startswith('OK'):
-                syncedFile = True
+        filename = get_local_path(file.get_uri())
+        # Check if its a folder (ends with an /), if yes add a "/"
+        # otherwise it will not find the entry in the table
+        isDir = os.path.isdir(filename + os.sep)
+        if isDir:
+            filename += os.sep
 
-        # If it is neither in a synced folder or is a directory
-        if not syncedFile:
+        # Check if toplevel folder, we need to ignore those as they cannot be shared
+        topLevelFolder, internalFile = self.check_registered_paths(filename)
+        if topLevelFolder or not internalFile:
+            return items
+
+        entry = socketConnect.nautilusVFSFile_table.get(filename)
+        if not entry:
+            return items
+
+        shareable = False
+        state = entry['state']
+        state_ok = state.startswith('OK')
+        state_sync = state.startswith('SYNC')
+        if state_ok:
+            shareable = True
+        elif state_sync and isDir:
+            # some file below is OK or SYNC
+            for key, value in socketConnect.nautilusVFSFile_table.items():
+                if key != filename and key.startswith(filename):
+                    state = value['state']
+                    if state.startswith('OK') or state.startswith('SYNC'):
+                        shareable = True
+                        break
+
+        if not shareable:
             return items
 
         # Create a menu item
@@ -303,7 +332,7 @@ class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.Info
 
         filename = get_local_path(item.get_uri())
         if item.is_directory():
-            filename += '/'
+            filename += os.sep
 
         inScope = False
         for reg_path in socketConnect.registered_paths:
