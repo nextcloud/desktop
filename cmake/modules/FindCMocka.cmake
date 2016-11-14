@@ -32,7 +32,7 @@ find_library(CMOCKA_LIBRARY
     NAMES
         cmocka
     PATHS
-        ${CMOCKA_ROOT_DIR}/include
+        ${CMOCKA_ROOT_DIR}/lib
 )
 
 if (CMOCKA_LIBRARY)
