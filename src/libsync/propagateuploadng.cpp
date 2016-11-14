@@ -110,7 +110,7 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
     bool ok = false;
     auto chunkId = name.mid(name.lastIndexOf('/')+1).toUInt(&ok);
     if (ok) {
-        this->_serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
+        _serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
     }
 }
 
@@ -126,6 +126,16 @@ void PropagateUploadFileNG::slotPropfindFinished()
         _sent += _serverChunks[_currentChunk];
         _serverChunks.remove(_currentChunk);
         ++_currentChunk;
+    }
+
+    if (_sent > _item->_size) {
+        // Normally this can't happen because the size is xor'ed with the transfer id, and it is
+        // therefore impossible that there is more data on the server than on the file.
+        qWarning() << "Inconsistency while resuming " << _item->_file
+            << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
+            << _item->_size << ")";
+        startNewUpload();
+        return;
     }
 
     qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
@@ -251,14 +261,13 @@ void PropagateUploadFileNG::startNextChunk()
         return;
 
     quint64 fileSize = _item->_size;
-
+    Q_ASSERT(fileSize >= _sent);
     quint64 currentChunkSize = qMin(chunkSize(), fileSize - _sent);
 
-    if (currentChunkSize <= 0) {
+    if (currentChunkSize == 0) {
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
-        // QString destination = _propagator->_remoteDir + _item->_file;  // FIXME: _remoteDir currently is still using the old webdav path
         QString destination = _propagator->account()->url().path()
             + QLatin1String("/remote.php/dav/files/") + _propagator->account()->user()
             + _propagator->_remoteFolder + _item->_file;
@@ -379,7 +388,8 @@ void PropagateUploadFileNG::slotPutFinished()
         return;
     }
 
-    bool finished = _sent >= _item->_size;
+    Q_ASSERT(_sent <= _item->_size);
+    bool finished = _sent == _item->_size;
 
     // Check if the file still exists
     const QString fullFilePath(_propagator->getFilePath(_item->_file));
@@ -397,8 +407,6 @@ void PropagateUploadFileNG::slotPutFinished()
         _propagator->_anotherSyncNeeded = true;
         if( !finished ) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
-            // FIXME:  the legacy code was retrying for a few seconds.
-            //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
             return;
         }
     }
