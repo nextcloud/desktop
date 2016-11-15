@@ -82,10 +82,15 @@ public:
         QFile file{_rootDir.filePath(relativePath)};
         QVERIFY(!file.exists());
         file.open(QFile::WriteOnly);
-        file.write(QByteArray{}.fill(contentChar, size));
+        QByteArray buf(1024, contentChar);
+        for (int x = 0; x < size/buf.size(); ++x) {
+            file.write(buf);
+        }
+        file.write(buf.data(), size % buf.size());
         file.close();
         // Set the mtime 30 seconds in the past, for some tests that need to make sure that the mtime differs.
         OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTime().addSecs(-30)));
+        QCOMPARE(file.size(), size);
     }
     void setContents(const QString &relativePath, char contentChar) override {
         QFile file{_rootDir.filePath(relativePath)};
@@ -792,7 +797,7 @@ public:
 
     bool execUntilFinished() {
         QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
-        bool ok = spy.wait();
+        bool ok = spy.wait(60000);
         Q_ASSERT(ok && "Sync timed out");
         return spy[0][0].toBool();
     }
