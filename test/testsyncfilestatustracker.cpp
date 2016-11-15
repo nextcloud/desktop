@@ -371,7 +371,7 @@ private slots:
 
     void sharedStatus() {
         SyncFileStatus sharedUpToDateStatus(SyncFileStatus::StatusUpToDate);
-        sharedUpToDateStatus.setSharedWithMe(true);
+        sharedUpToDateStatus.setShared(true);
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.remoteModifier().insert("S/s0");
@@ -399,7 +399,7 @@ private slots:
         QEXPECT_FAIL("", "We currently only know if a new file is shared on the second sync, after a PROPFIND.", Continue);
         QCOMPARE(statusSpy.statusOf("S/s0"), sharedUpToDateStatus);
         QCOMPARE(statusSpy.statusOf("S/s1"), sharedUpToDateStatus);
-        QCOMPARE(statusSpy.statusOf("B/b1").sharedWithMe(), false);
+        QCOMPARE(statusSpy.statusOf("B/b1").shared(), false);
         QCOMPARE(statusSpy.statusOf("B/b3"), sharedUpToDateStatus);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

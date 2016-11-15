@@ -17,12 +17,12 @@
 
 namespace OCC {
 SyncFileStatus::SyncFileStatus()
-    :_tag(StatusNone), _sharedWithMe(false)
+    :_tag(StatusNone), _shared(false)
 {
 }
 
 SyncFileStatus::SyncFileStatus(SyncFileStatusTag tag)
-    :_tag(tag), _sharedWithMe(false)
+    :_tag(tag), _shared(false)
 {
 
 }
@@ -37,14 +37,14 @@ SyncFileStatus::SyncFileStatusTag SyncFileStatus::tag() const
     return _tag;
 }
 
-void SyncFileStatus::setSharedWithMe(bool isShared)
+void SyncFileStatus::setShared(bool isShared)
 {
-    _sharedWithMe = isShared;
+    _shared = isShared;
 }
 
-bool SyncFileStatus::sharedWithMe() const
+bool SyncFileStatus::shared() const
 {
-    return _sharedWithMe;
+    return _shared;
 }
 
 QString SyncFileStatus::toSocketAPIString() const
@@ -72,7 +72,7 @@ QString SyncFileStatus::toSocketAPIString() const
         statusString = QLatin1String("ERROR");
         break;
     }
-    if(canBeShared && _sharedWithMe) {
+    if(canBeShared && _shared) {
         statusString += QLatin1String("+SWM");
     }
 
