@@ -91,9 +91,7 @@ static void setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    rc = system("mkdir -p /tmp/check_csync2");
-    assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_create(&csync, "/tmp/check_csync1");
     csync_init(csync);
 
     /* Create a new db with metadata */
@@ -122,9 +120,7 @@ static void setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    rc = system("mkdir -p /tmp/check_csync2");
-    assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp", "/tmp");
+    csync_create(&csync, "/tmp");
     csync_init(csync);
 
     sqlite3 *db = NULL;
@@ -161,8 +157,6 @@ static void teardown_rm(void **state) {
     rc = system("rm -rf /tmp/check_csync");
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync1");
-    assert_int_equal(rc, 0);
-    rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
 }
 

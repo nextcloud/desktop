@@ -20,6 +20,7 @@
 #include "filesystem.h"
 #include <QFile>
 #include <QStringList>
+#include <QDir>
 
 namespace OCC {
 
@@ -101,10 +102,11 @@ void PropagateRemoteMove::start()
         }
     }
 
+    QString destination = QDir::cleanPath(_propagator->account()->url().path() + QLatin1Char('/')
+            + _propagator->account()->davPath() + _propagator->_remoteFolder + _item->_renameTarget);
     _job = new MoveJob(_propagator->account(),
                         _propagator->_remoteFolder + _item->_file,
-                        _propagator->_remoteDir + _item->_renameTarget,
-                        this);
+                        destination, this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
     _propagator->_activeJobList.append(this);
     _job->start();

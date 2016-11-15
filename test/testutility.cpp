@@ -64,14 +64,6 @@ private slots:
         QVERIFY(hasLaunchOnStartup(appName) == false);
     }
 
-    void testToCSyncScheme()
-    {
-        QVERIFY(toCSyncScheme("http://example.com/owncloud/") ==
-                              "owncloud://example.com/owncloud/");
-        QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
-                              "ownclouds://example.com/owncloud/");
-    }
-
     void testDurationToDescriptiveString()
     {
         QLocale::setDefault(QLocale("C"));

@@ -32,7 +32,7 @@
 static void setup(void **state) {
     CSYNC *csync;
 
-    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_create(&csync, "/tmp/check_csync1");
 
     *state = csync;
 }
@@ -41,7 +41,7 @@ static void setup_init(void **state) {
     CSYNC *csync;
     int rc;
 
-    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_create(&csync, "/tmp/check_csync1");
 
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes));
     assert_int_equal(rc, 0);

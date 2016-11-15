@@ -738,7 +738,7 @@ public:
         _account->setCredentials(new FakeCredentials{_fakeQnam});
 
         _journalDb.reset(new OCC::SyncJournalDb(localPath()));
-        _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), sRootUrl, "", _journalDb.get()));
+        _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
 
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync

@@ -475,7 +475,7 @@ restart_sync:
         selectiveSyncFixup(&db, selectiveSyncList);
     }
 
-    SyncEngine engine(account, options.source_dir, QUrl(options.target_url), folder, &db);
+    SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));

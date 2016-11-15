@@ -412,10 +412,12 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
     QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
 }
 
+// ownCloud server  < 7.0 did not had permissions so we need some other euristics
+// to detect wrong doing in a Shared directory
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)
 {
     bool re = false;
-    if( _remoteDir.contains( _account->davPath() + QLatin1String("Shared") ) ) {
+    if( _remoteFolder.startsWith( QLatin1String("Shared") ) ) {
         // The Shared directory is synced as its own sync connection
         re = true;
     } else {

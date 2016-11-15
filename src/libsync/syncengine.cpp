@@ -57,12 +57,11 @@ bool SyncEngine::s_anySyncRunning = false;
 qint64 SyncEngine::minimumFileAgeForUpload = 2000;
 
 SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
-                       const QUrl& remoteURL, const QString& remotePath, OCC::SyncJournalDb* journal)
+                       const QString& remotePath, OCC::SyncJournalDb* journal)
   : _account(account)
   , _needsUpdate(false)
   , _syncRunning(false)
   , _localPath(localPath)
-  , _remoteUrl(remoteURL)
   , _remotePath(remotePath)
   , _journal(journal)
   , _progressInfo(new ProgressInfo)
@@ -83,18 +82,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     Q_ASSERT(localPath.endsWith(QLatin1Char('/')));
 
-    // We need to reconstruct the url because the path needs to be fully decoded, as csync will re-encode the path:
-    //  Remember that csync will just append the filename to the path and pass it to the vio plugin.
-    //  csync_owncloud will then re-encode everything.
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    QString url_string = _remoteUrl.scheme() + QLatin1String("://") + _remoteUrl.authority(QUrl::EncodeDelimiters) + _remoteUrl.path(QUrl::FullyDecoded);
-#else
-    // Qt4 was broken anyway as it did not encode the '#' as it should have done  (it was actually a problem when parsing the path from QUrl::setPath
-    QString url_string = _remoteUrl.toString();
-#endif
-    url_string = Utility::toCSyncScheme(url_string);
-
-    csync_create(&_csync_ctx, localPath.toUtf8().data(), url_string.toUtf8().data());
+    csync_create(&_csync_ctx, localPath.toUtf8().data());
     csync_init(_csync_ctx);
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
@@ -831,7 +819,6 @@ void SyncEngine::startSync()
 
     // This is used for the DiscoveryJob to be able to request the main thread/
     // to read in directory contents.
-    qDebug() << Q_FUNC_INFO << _remotePath << _remoteUrl;
     _discoveryMainThread->setupHooks( discoveryJob, _remotePath);
 
     // Starts the update in a seperate thread
@@ -983,7 +970,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _journal->commit("post treewalk");
 
     _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator (_account, _localPath, _remoteUrl.path(), _remotePath, _journal));
+        new OwncloudPropagator (_account, _localPath, _remotePath, _journal));
     connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),

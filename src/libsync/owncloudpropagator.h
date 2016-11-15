@@ -267,8 +267,7 @@ class OwncloudPropagator : public QObject {
 
 public:
     const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include WebDAV path)
-    const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
+    const QString _remoteFolder; // remote folder, ends with '/'
 
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emitted once
@@ -276,10 +275,8 @@ public:
 
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteDir, const QString &remoteFolder,
-                       SyncJournalDb *progressDb)
+                       const QString &remoteFolder, SyncJournalDb *progressDb)
             : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
-            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
             , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
             , _finishedEmited(false)

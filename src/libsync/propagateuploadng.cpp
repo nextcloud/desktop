@@ -271,6 +271,7 @@ void PropagateUploadFileNG::startNextChunk()
         QString destination = _propagator->account()->url().path()
             + QLatin1String("/remote.php/dav/files/") + _propagator->account()->user()
             + _propagator->_remoteFolder + _item->_file;
+
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination

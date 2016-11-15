@@ -58,7 +58,7 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
     Q_OBJECT
 public:
     SyncEngine(AccountPtr account, const QString &localPath,
-               const QUrl &remoteURL, const QString &remotePath, SyncJournalDb *journal);
+               const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
 
     static QString csyncErrorToString( CSYNC_STATUS);
@@ -196,7 +196,6 @@ private:
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;
-    QUrl _remoteUrl;
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;

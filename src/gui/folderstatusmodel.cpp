@@ -806,25 +806,6 @@ void FolderStatusModel::slotApplySelectiveSync()
     resetFolders();
 }
 
-static QString shortenFilename( Folder *f, const QString& file )
-{
-    // strip off the server prefix from the file name
-    QString shortFile(file);
-    if( shortFile.isEmpty() ) {
-        return QString::null;
-    }
-
-    if(shortFile.startsWith(QLatin1String("ownclouds://")) ||
-            shortFile.startsWith(QLatin1String("owncloud://")) ) {
-        // rip off the whole ownCloud URL.
-        if( f ) {
-            QString remotePathUrl = f->remoteUrl().toString();
-            shortFile.remove(Utility::toCSyncScheme(remotePathUrl));
-        }
-    }
-    return shortFile;
-}
-
 void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 {
     auto par = qobject_cast<QWidget*>(QObject::parent());
@@ -898,7 +879,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         curItemProgress = curItem._size;
     }
 
-    QString itemFileName = shortenFilename(f, curItem._file);
+    QString itemFileName = curItem._file;
     QString kindString = Progress::asActionString(curItem);
 
     QString fileProgressString;

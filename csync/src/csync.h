@@ -317,7 +317,7 @@ typedef const char* (*csync_checksum_hook) (
  *
  * @param csync  The context variable to allocate.
  */
-void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local, const char *remote);
+void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local);
 
 /**
  * @brief Initialize the file synchronizer.

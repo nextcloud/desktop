@@ -44,7 +44,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path);
-    OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
 
     /**
      * @brief compactFormatDouble - formats a double value human readable.

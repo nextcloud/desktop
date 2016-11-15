@@ -243,19 +243,6 @@ QString Utility::compactFormatDouble(double value, int prec, const QString& unit
     return str;
 }
 
-QString Utility::toCSyncScheme(const QString &urlStr)
-{
-
-    QUrl url( urlStr );
-    if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( QLatin1String("owncloud") );
-    } else {
-        // connect SSL!
-        url.setScheme( QLatin1String("ownclouds") );
-    }
-    return url.toString();
-}
-
 QString Utility::escape(const QString &in)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)

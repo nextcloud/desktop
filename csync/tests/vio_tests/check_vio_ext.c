@@ -96,7 +96,7 @@ static void setup_testenv(void **state) {
     statevar *mystate = malloc( sizeof(statevar) );
     mystate->result = NULL;
 
-    csync_create(&(mystate->csync), "/tmp/csync1", "/tmp/csync2");
+    csync_create(&(mystate->csync), "/tmp/csync1");
 
     mystate->csync->replica = LOCAL_REPLICA;
 

@@ -126,7 +126,6 @@ struct csync_s {
   } local;
 
   struct {
-    char *uri;
     c_rbtree_t *tree;
     enum csync_replica_e type;
     int  read_from_db;
