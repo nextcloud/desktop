@@ -106,14 +106,24 @@ MkColJob::MkColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+MkColJob::MkColJob(AccountPtr account, const QUrl &url,
+                   const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent), _url(url), _extraHeaders(extraHeaders)
+{
+}
+
 void MkColJob::start()
 {
    // add 'Content-Length: 0' header (see https://github.com/owncloud/client/issues/3256)
    QNetworkRequest req;
    req.setRawHeader("Content-Length", "0");
+   for(auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
+        req.setRawHeader(it.key(), it.value());
+   }
 
    // assumes ownership
-   QNetworkReply *reply = davRequest("MKCOL", path(), req);
+   QNetworkReply *reply = _url.isValid() ?  davRequest("MKCOL", _url, req)
+        : davRequest("MKCOL", path(), req);
    setReply(reply);
    setupConnections(reply);
    AbstractNetworkJob::start();
@@ -264,6 +274,11 @@ LsColJob::LsColJob(AccountPtr account, const QString &path, QObject *parent)
 {
 }
 
+LsColJob::LsColJob(AccountPtr account, const QUrl &url, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent), _url(url)
+{
+}
+
 void LsColJob::setProperties(QList<QByteArray> properties)
 {
     _properties = properties;
@@ -307,7 +322,8 @@ void LsColJob::start()
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    QNetworkReply *reply = davRequest("PROPFIND", path(), req, buf);
+    QNetworkReply *reply = _url.isValid() ?  davRequest("PROPFIND", _url, req, buf)
+        : davRequest("PROPFIND", path(), req, buf);
     buf->setParent(reply);
     setReply(reply);
     setupConnections(reply);

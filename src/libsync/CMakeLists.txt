@@ -50,6 +50,8 @@ set(libsync_SRCS
     propagatorjobs.cpp
     propagatedownload.cpp
     propagateupload.cpp
+    propagateuploadv1.cpp
+    propagateuploadng.cpp
     propagateremotedelete.cpp
     propagateremotemove.cpp
     propagateremotemkdir.cpp

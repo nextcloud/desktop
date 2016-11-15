@@ -24,8 +24,10 @@ namespace OCC {
  */
 class DeleteJob : public AbstractNetworkJob {
     Q_OBJECT
+    QUrl _url; // Only used if the constructor taking a url is taken.
 public:
     explicit DeleteJob(AccountPtr account, const QString& path, QObject* parent = 0);
+    explicit DeleteJob(AccountPtr account, const QUrl& url, QObject* parent = 0);
 
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE;
