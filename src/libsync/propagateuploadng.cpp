@@ -268,10 +268,8 @@ void PropagateUploadFileNG::startNextChunk()
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
-        QString destination = _propagator->account()->url().path()
-            + QLatin1String("/remote.php/dav/files/") + _propagator->account()->davUser()
-            + _propagator->_remoteFolder + _item->_file;
-
+        QString destination = QDir::cleanPath(_propagator->account()->url().path() + QLatin1Char('/')
+            + _propagator->account()->davPath() + _propagator->_remoteFolder + _item->_file);
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination

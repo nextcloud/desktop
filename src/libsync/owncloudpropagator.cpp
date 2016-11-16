@@ -271,9 +271,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 return job;
             } else {
                 PropagateUploadFileCommon *job = 0;
-                static const auto chunkng = qgetenv("OWNCLOUD_CHUNKING_NG");
-                if (item->_size > chunkSize()
-                        && (account()->capabilities().chunkingNg() || chunkng == "1") && chunkng != "0") {
+                if (item->_size > chunkSize() && account()->capabilities().chunkingNg()) {
                     job = new PropagateUploadFileNG(this, item);
                 } else {
                     job = new PropagateUploadFileV1(this, item);

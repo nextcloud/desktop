@@ -110,6 +110,9 @@ QByteArray Capabilities::uploadChecksumType() const
 
 bool Capabilities::chunkingNg() const
 {
+    static const auto chunkng = qgetenv("OWNCLOUD_CHUNKING_NG");
+    if (chunkng == "0") return false;
+    if (chunkng == "1") return true;
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
