@@ -338,6 +338,7 @@ QString FolderMan::unescapeAlias( const QString& alias )
 
 // filename is the name of the file only, it does not include
 // the configuration directory path
+// WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
 Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountState *accountState )
 {
     Folder *folder = 0;
@@ -408,6 +409,8 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
             //migrate settings
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
             settings.remove(QLatin1String("blackList"));
+            // FIXME: If you remove this codepath, you need to provide another way to do
+            // this via theme.h or the normal FolderMan::setupFolders
         }
 
         folder->saveToSettings();
