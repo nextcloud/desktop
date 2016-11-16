@@ -272,7 +272,7 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
     }
 
     if (isShared)
-        status.setShared(true);
+        status.setSharedWithMe(true);
 
     return status;
 }

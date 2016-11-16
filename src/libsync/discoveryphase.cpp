@@ -20,7 +20,6 @@
 #include <QUrl>
 #include "account.h"
 #include <QFileInfo>
-#include <cstring>
 
 namespace OCC {
 
@@ -237,8 +236,7 @@ void DiscoverySingleDirectoryJob::start()
     QList<QByteArray> props;
     props << "resourcetype" << "getlastmodified" << "getcontentlength" << "getetag"
           << "http://owncloud.org/ns:id" << "http://owncloud.org/ns:downloadURL"
-          << "http://owncloud.org/ns:dDC" << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:share-types";
+          << "http://owncloud.org/ns:dDC" << "http://owncloud.org/ns:permissions";
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
 
@@ -310,25 +308,9 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
             } else {
                 qWarning() << "permissions too large" << v;
             }
-        } else if (property == "share-types" && !value.isEmpty()) {
-            // Since QMap is sorted, "share-types" is always "permissions".
-            if (file_stat->remotePerm[0] == '\0' || !(file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM)) {
-                qWarning() << "Server returned a share type, but no permissions?";
-            } else {
-                // S means shared with me.
-                // But for our purpose, we want to know if the file is shared. It does not matter
-                // if we are the owner or not.
-                // Piggy back on the persmission field 'S'
-                if (!std::strchr(file_stat->remotePerm, 'S')) {
-                    if (std::strlen(file_stat->remotePerm) < sizeof(file_stat->remotePerm)-1) {
-                        std::strcat(file_stat->remotePerm, "S");
-                    } else {
-                        qWarning() << "permissions too large" << file_stat->remotePerm;
-                    }
-                }
-            }
         }
     }
+
     return file_stat;
 }
 
