@@ -537,7 +537,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="756"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -578,7 +578,7 @@
 <context>
     <name>OCC::DeleteJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="42"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="45"/>
         <source>Connection timed out</source>
         <translation>Przekroczono czas odpowiedzi</translation>
     </message>
@@ -765,102 +765,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Stary sync journal &apos;%1&apos; został znaleziony, lecz nie mógł być usunięty. Proszę się upewnić, że żaden program go obecnie nie używa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="961"/>
+        <location filename="../src/gui/folderman.cpp" line="964"/>
         <source> (backup)</source>
         <translation>(kopia zapasowa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="966"/>
+        <location filename="../src/gui/folderman.cpp" line="969"/>
         <source> (backup %1)</source>
         <translation>(kopia zapasowa %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1173"/>
+        <location filename="../src/gui/folderman.cpp" line="1176"/>
         <source>Undefined State.</source>
         <translation>Niezdefiniowany stan</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>Waiting to start syncing.</source>
         <translation>Poczekaj na rozpoczęcie synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1179"/>
+        <location filename="../src/gui/folderman.cpp" line="1182"/>
         <source>Preparing for sync.</source>
         <translation>Przygotowuję do synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1185"/>
         <source>Sync is running.</source>
         <translation>Synchronizacja w toku</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1185"/>
+        <location filename="../src/gui/folderman.cpp" line="1188"/>
         <source>Last Sync was successful.</source>
         <translation>Ostatnia synchronizacja zakończona powodzeniem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1190"/>
+        <location filename="../src/gui/folderman.cpp" line="1193"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Ostatnia synchronizacja udana, ale istnieją ostrzeżenia z pojedynczymi plikami.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1196"/>
         <source>Setup Error.</source>
         <translation>Błąd ustawień.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1196"/>
+        <location filename="../src/gui/folderman.cpp" line="1199"/>
         <source>User Abort.</source>
         <translation>Użytkownik anulował.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1199"/>
+        <location filename="../src/gui/folderman.cpp" line="1202"/>
         <source>Sync is paused.</source>
         <translation>Synchronizacja wstrzymana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1205"/>
+        <location filename="../src/gui/folderman.cpp" line="1208"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (Synchronizacja jest zatrzymana)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1216"/>
         <source>No valid folder selected!</source>
         <translation>Nie wybrano poprawnego folderu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1224"/>
+        <location filename="../src/gui/folderman.cpp" line="1227"/>
         <source>The selected path is not a folder!</source>
         <translation>Wybrana ścieżka nie jest katalogiem!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1228"/>
+        <location filename="../src/gui/folderman.cpp" line="1231"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nie masz uprawnień, aby zapisywać w tym  katalogu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1243"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Wybrany folder lokalny %1 jest już użyty na potrzeby innej synchronizacji. Proszę wybrać inny folder lokalny.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1248"/>
+        <location filename="../src/gui/folderman.cpp" line="1251"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1255"/>
+        <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokalny folder %1 jest dowiązaniem symbolicznym. Cel dowiązania zawiera folder użyty na potrzeby innej synchronizacji. Proszę wybrać inny folder lokalny bądź dowiązanie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1262"/>
+        <location filename="../src/gui/folderman.cpp" line="1265"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokalny folder %1 już zawiera folder użyty na potrzeby synchronizacji. Proszę wybrać inny folder lokalny.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1268"/>
+        <location filename="../src/gui/folderman.cpp" line="1271"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation type="unfinished"/>
     </message>
@@ -1388,7 +1388,7 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
 <context>
     <name>OCC::MoveJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="49"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="57"/>
         <source>Connection timed out</source>
         <translation>Przekroczono czas odpowiedzi</translation>
     </message>
@@ -1918,7 +1918,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="103"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="104"/>
         <source>Connection Timeout</source>
         <translation>Limit czasu połączenia</translation>
     </message>
@@ -1926,7 +1926,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="160"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="161"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation type="unfinished"/>
     </message>
@@ -1934,7 +1934,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -2063,12 +2063,12 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="94"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="97"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Plik został usunięty z zasobu z prawem tylko do odczytu. Został przywrócony.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="115"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -2089,79 +2089,119 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="88"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="96"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Folder ten nie może być zmieniony. Został zmieniony z powrotem do pierwotnej nazwy.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="90"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="98"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Nie wolno zmieniać nazwy tego folderu. Proszę zmień nazwę z powrotem na Shared.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="128"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="136"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Przywrócono oryginalny plik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="145"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="153"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="176"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="182"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="184"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="190"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
-    <name>OCC::PropagateUploadFile</name>
+    <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="297"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation>Usunięto plik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="710"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="637"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="555"/>
+        <source>Error writing metadata to the database</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::PropagateUploadFileNG</name>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="645"/>
-        <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Został przywrócony i Twoja edycja jest w pliku konfliktu</translation>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
+        <source>The local file was removed during sync.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="676"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
+        <source>Unexpected return code from server (%1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="447"/>
+        <source>Missing File ID from server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <source>Missing ETag from server</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::PropagateUploadFileV1</name>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
+        <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
+        <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
         <source>Poll URL missing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="699"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="725"/>
-        <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="800"/>
-        <source>Error writing metadata to the database</source>
-        <translation>Błąd podczas zapisu metadanych do bazy</translation>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>
+        <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

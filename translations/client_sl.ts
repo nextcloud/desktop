@@ -537,7 +537,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="756"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
@@ -578,7 +578,7 @@
 <context>
     <name>OCC::DeleteJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="42"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="45"/>
         <source>Connection timed out</source>
         <translation>Povezava je časovno potekla</translation>
     </message>
@@ -767,102 +767,102 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
         <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, ali je datoteka v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="961"/>
+        <location filename="../src/gui/folderman.cpp" line="964"/>
         <source> (backup)</source>
         <translation>(varnostna kopija)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="966"/>
+        <location filename="../src/gui/folderman.cpp" line="969"/>
         <source> (backup %1)</source>
         <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1173"/>
+        <location filename="../src/gui/folderman.cpp" line="1176"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <location filename="../src/gui/folderman.cpp" line="1179"/>
         <source>Waiting to start syncing.</source>
         <translation>Čakanje začetek usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1179"/>
+        <location filename="../src/gui/folderman.cpp" line="1182"/>
         <source>Preparing for sync.</source>
         <translation>Poteka priprava za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1185"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje je v teku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1185"/>
+        <location filename="../src/gui/folderman.cpp" line="1188"/>
         <source>Last Sync was successful.</source>
         <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1190"/>
+        <location filename="../src/gui/folderman.cpp" line="1193"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Zadnje usklajevanje je bilo sicer uspešno, vendar z opozorili za posamezne datoteke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1196"/>
         <source>Setup Error.</source>
         <translation>Napaka nastavitve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1196"/>
+        <location filename="../src/gui/folderman.cpp" line="1199"/>
         <source>User Abort.</source>
         <translation>Uporabniška prekinitev.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1199"/>
+        <location filename="../src/gui/folderman.cpp" line="1202"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1205"/>
+        <location filename="../src/gui/folderman.cpp" line="1208"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (usklajevanje je v premoru)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1213"/>
+        <location filename="../src/gui/folderman.cpp" line="1216"/>
         <source>No valid folder selected!</source>
         <translation>Ni izbrane veljavne mape!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1224"/>
+        <location filename="../src/gui/folderman.cpp" line="1227"/>
         <source>The selected path is not a folder!</source>
         <translation>Izbrana pot ni mapa!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1228"/>
+        <location filename="../src/gui/folderman.cpp" line="1231"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ni ustreznih dovoljenj za pisanje v izbrano mapo!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1243"/>
+        <location filename="../src/gui/folderman.cpp" line="1246"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1248"/>
+        <location filename="../src/gui/folderman.cpp" line="1251"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 že vključuje mapo, ki je določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1255"/>
+        <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je simbolna povezava. Cilj povezave že vsebuje mapo, ki je uporabljena pri povezavi usklajevanja mape. Izberite drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1262"/>
+        <location filename="../src/gui/folderman.cpp" line="1265"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1268"/>
+        <location filename="../src/gui/folderman.cpp" line="1271"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je simbolna povezava. Cilj povezave že vsebuje mapo, ki je uporabljena pri povezavi usklajevanja mape. Izberite drugo.</translation>
     </message>
@@ -1390,7 +1390,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
 <context>
     <name>OCC::MoveJob</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="49"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="57"/>
         <source>Connection timed out</source>
         <translation>Povezava je potekla</translation>
     </message>
@@ -1920,7 +1920,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PUTFileJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="103"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="104"/>
         <source>Connection Timeout</source>
         <translation>Povezava časovno pretekla</translation>
     </message>
@@ -1928,7 +1928,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="160"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="161"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Neveljaven odziv JSON prek naslova</translation>
     </message>
@@ -1936,7 +1936,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="702"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
@@ -2065,12 +2065,12 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="94"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="97"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Datoteka je bila odstranjena iz mesta v souporabi, vendar je uspešno obnovljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="115"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 204, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
@@ -2091,79 +2091,119 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="88"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="96"/>
         <source>This folder must not be renamed. It is renamed back to its original name.</source>
         <translation>Te mape ni dovoljeno preimenovati, zato bo samodejno preimenovana v izvorno ime.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="90"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="98"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
         <translation>Te mape ni dovoljeno preimenovati. Preimenujte jo nazaj na privzeto vrednost.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="128"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="136"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Datoteka je preimenovana, vendar je označena za souporabo le za branje. Obnovljena je izvirna datoteka.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="145"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="153"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 201, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="176"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="182"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="184"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="190"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
 </context>
 <context>
-    <name>OCC::PropagateUploadFile</name>
+    <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="297"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation>Datoteka je odstranjena</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="309"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena. Usklajena bo, ko bo shranjena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="321"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="710"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="637"/>
-        <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation>Vsiljevanje prekinitve posla na prekinitvi povezave HTTP s Qt &lt; 5.4.2.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="645"/>
-        <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>Datoteka je bila krajevno spremenjena, čeprav je označena le za branje. Izvorna datoteka je obnovljena, narejene spremembe pa so zabeležene v datoteki spora.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="676"/>
-        <source>Poll URL missing</source>
-        <translation>Manjka naslov URL</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="699"/>
-        <source>The local file was removed during sync.</source>
-        <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="725"/>
-        <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>Strežnik ne sprejme zadnjega paketa (ni navedene e-oznake)</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="800"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::PropagateUploadFileNG</name>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
+        <source>The local file was removed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
+        <source>Unexpected return code from server (%1)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="447"/>
+        <source>Missing File ID from server</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <source>Missing ETag from server</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::PropagateUploadFileV1</name>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
+        <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
+        <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
+        <source>Poll URL missing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
+        <source>The local file was removed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
+        <source>Local file changed during sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>
+        <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3345,7 +3385,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Različica %2. Več podrobnosti je mogoče najti na &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Znane težave in pomoč je na voljo na povezavi &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Avtorstvo: Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt in drugi.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Avtorske pravice ownCloud GmbH&lt;/p&gt;&lt;p&gt;Programski paket je objavljen z dovoljenjem GNU General Public License (GPL), različice 2.0.&lt;br/&gt;Znamka in logotip ownCloud sta blagovni znamki družbe ownCloud GmbH v Združenih državah, drugih državah ali obojih.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3754,7 +3794,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="82"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>posodabljanje krajevnih metapodatkov</translation>
     </message>
 </context>
 <context>
