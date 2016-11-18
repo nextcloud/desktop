@@ -1070,6 +1070,11 @@ void SyncEngine::slotFinished(bool success)
     }
 
     _journal->commit("All Finished.", false);
+
+    // Send final progress information even if no
+    // files needed propagation
+    emit transmissionProgress(*_progressInfo);
+
     emit treeWalkResult(_syncedItems);
     finalize(success);
 }
