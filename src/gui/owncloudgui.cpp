@@ -159,7 +159,7 @@ void ownCloudGui::slotOpenSettingsDialog()
         }
     } else {
         qDebug() << "No configured folders yet, starting setup wizard";
-        OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
+        slotNewAccountWizard();
     }
 }
 
@@ -599,6 +599,9 @@ void ownCloudGui::updateContextMenu()
         _contextMenu->addMenu(_recentActionsMenu);
         _contextMenu->addSeparator();
     }
+    if (accountList.isEmpty()) {
+        _contextMenu->addAction(_actionNewAccountWizard);
+    }
     _contextMenu->addAction(_actionSettings);
     if (!Theme::instance()->helpUrl().isEmpty()) {
         _contextMenu->addAction(_actionHelp);
@@ -723,11 +726,13 @@ void ownCloudGui::setupActions()
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled( false );
     _actionSettings = new QAction(tr("Settings..."), this);
+    _actionNewAccountWizard = new QAction(tr("New account..."), this);
     _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled( true );
 
     QObject::connect(_actionRecent, SIGNAL(triggered(bool)), SLOT(slotShowSyncProtocol()));
     QObject::connect(_actionSettings, SIGNAL(triggered(bool)), SLOT(slotShowSettings()));
+    QObject::connect(_actionNewAccountWizard, SIGNAL(triggered(bool)), SLOT(slotNewAccountWizard()));
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, SIGNAL(triggered(bool)), SLOT(slotHelp()));
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
@@ -888,6 +893,11 @@ void ownCloudGui::slotUnpauseAllFolders()
 void ownCloudGui::slotPauseAllFolders()
 {
     setPauseOnAllFoldersHelper(true);
+}
+
+void ownCloudGui::slotNewAccountWizard()
+{
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)));
 }
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)

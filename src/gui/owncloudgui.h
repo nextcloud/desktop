@@ -94,6 +94,7 @@ private slots:
     void slotLogout();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
+    void slotNewAccountWizard();
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
@@ -123,6 +124,7 @@ private:
     QAction *_actionLogin;
     QAction *_actionLogout;
 
+    QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
     QAction *_actionStatus;
     QAction *_actionEstimate;
