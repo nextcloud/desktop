@@ -99,6 +99,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _issueItemView->setRootIsDecorated(false);
     _issueItemView->setTextElideMode(Qt::ElideMiddle);
     _issueItemView->header()->setObjectName("ActivityErrorListHeader");
+    connect(_issueItemView, SIGNAL(itemActivated(QTreeWidgetItem*,int)),
+            SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 }
 
 ProtocolWidget::~ProtocolWidget()
