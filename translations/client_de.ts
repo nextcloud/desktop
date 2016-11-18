@@ -2120,22 +2120,22 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Datei gelöscht</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokale Datei hat sich während der Synchronisation geändert. Die Synchronisation wird wiederaufgenommen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
 </context>
 <context>
@@ -2143,17 +2143,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Auftragsabbruch beim Rücksetzen der HTTP-Verbindung mit QT &lt; 5.4.2 wird erzwungen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
@@ -2176,32 +2176,32 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Auftragsabbruch beim Rücksetzen der HTTP-Verbindung mit QT &lt; 5.4.2 wird erzwungen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Die Datei wurde von einer Nur-Lese-Freigabe lokal bearbeitet. Die Datei wurde wiederhergestellt und Ihre Bearbeitung ist in der Konflikte-Datei.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Poll-URL fehlt</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>Der Server hat den letzten Block nicht bestätigt. (Der E-Tag war nicht vorhanden)</translation>
     </message>
 </context>
 <context>

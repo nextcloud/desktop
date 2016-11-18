@@ -2120,7 +2120,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Fitxer eliminat</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
@@ -2130,12 +2130,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error en escriure les metadades a la base de dades</translation>
     </message>
 </context>
 <context>
@@ -2148,12 +2148,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
@@ -2181,7 +2181,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer s&apos;ha editat localment però és part d&apos;una compartició només de lectura. S&apos;ha restaurat i la vostra edició és en el fitxer en conflicte.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
@@ -2191,12 +2191,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local s&apos;ha eliminat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer local ha canviat durant la sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>

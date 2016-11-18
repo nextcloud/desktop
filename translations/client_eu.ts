@@ -2116,7 +2116,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategia Ezabatua</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
@@ -2126,7 +2126,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokala aldatu da sinkronizazioan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
@@ -2144,12 +2144,12 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokala ezabatu da sinkronizazioan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokala aldatu da sinkronizazioan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
@@ -2187,12 +2187,12 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokala ezabatu da sinkronizazioan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi lokala aldatu da sinkronizazioan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>

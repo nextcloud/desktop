@@ -2118,22 +2118,22 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Súbor zmazaný</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol zmenený počas synchronizácie. Bude obnovený.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
 </context>
 <context>
@@ -2141,17 +2141,17 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Vynútené ukončenie procesu pri resete HTTP pripojení s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol odstránený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
@@ -2174,27 +2174,27 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Vynútené ukončenie procesu pri resete HTTP pripojení s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor bol zmenený, ale je súčasťou zdieľania len na čítanie. Pôvodný súbor bol obnovený a upravená verzia je uložená v konfliktnom súbore.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Chýba URL adresa</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol odstránený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny súbor bol zmenený počas synchronizácie.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>

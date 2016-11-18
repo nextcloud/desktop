@@ -2120,7 +2120,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Usunięto plik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
@@ -2130,12 +2130,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
 </context>
 <context>
@@ -2148,12 +2148,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
@@ -2181,7 +2181,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>Plik był edytowany lokalnie ale jest częścią udziału z prawem tylko do odczytu. Został przywrócony i Twoja edycja jest w pliku konfliktu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
@@ -2191,12 +2191,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Pliki lokalny został usunięty podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>

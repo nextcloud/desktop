@@ -2121,22 +2121,22 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="299"/>
         <source>File Removed</source>
-        <translation type="unfinished"/>
+        <translation>Archivo eliminado</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="311"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Archivo local cambió durante la sincronización. Será actualizado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="323"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="555"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2144,32 +2144,32 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Forzar el trabajo en una conexión HTTP, causará un Reset si Qt&lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="398"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="409"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="440"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Respuesta inesperada del servidor  (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="447"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Perdido archivo ID del servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>Perdido ETag del servidor</translation>
     </message>
 </context>
 <context>
@@ -2177,32 +2177,32 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
-        <translation type="unfinished"/>
+        <translation>Forzar el trabajo en una conexión HTTP, causará un Reset si Qt&lt; 5.4.2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo fue modificado localmente; pero es parte de una carpeta compartida en modo de sólo lectura. Ha sido recuperado y su modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Falta la URL de la encuesta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor no reconoció la última parte. (No había una e-tag presente)</translation>
     </message>
 </context>
 <context>
@@ -3384,7 +3384,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versiòn %2. Para más información visita:&lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para ayuda y fallos conocidos, visita: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
