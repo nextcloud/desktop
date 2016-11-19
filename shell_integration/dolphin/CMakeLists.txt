@@ -49,5 +49,6 @@ target_link_libraries(${OWNCLOUDDOLPHINOVERLAYPLUGIN} KF5::CoreAddons KF5::KIOCo
 set(OWNCLOUDDOLPHINACTIONPLUGIN ${APPLICATION_EXECUTABLE}dolphinactionplugin)
 add_library(${OWNCLOUDDOLPHINACTIONPLUGIN} MODULE ownclouddolphinactionplugin.cpp)
 target_link_libraries(${OWNCLOUDDOLPHINACTIONPLUGIN} KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets ${OWNCLOUDDOLPHINHELPER})
+configure_file(ownclouddolphinactionplugin.desktop.in ownclouddolphinactionplugin.desktop ESCAPE_QUOTES @ONLY)
 install(FILES ownclouddolphinactionplugin.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR} RENAME ${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop)
 install(TARGETS ${OWNCLOUDDOLPHINACTIONPLUGIN} DESTINATION ${KDE_INSTALL_PLUGINDIR})
