@@ -48,7 +48,7 @@ void SyncJournalDb::setAccountParameterForFilePath( const QString& localPath, co
 {
     // localPath always has a trailing slash
     _dbFile = localPath;
-    _dbFile.append( QLatin1String(".sync_"));
+    _dbFile.append( QLatin1String("._sync_"));
     // FIXME: Maybe it is better to only allow different hosts, without path component.
     QString remoteUrlPath = remoteUrl.toString();
     if( remotePath != QLatin1String("/") ) {

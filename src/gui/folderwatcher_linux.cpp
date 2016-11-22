@@ -169,7 +169,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         if (event->len > 0 && event->wd > -1) {
             QByteArray fileName(event->name);
             // qDebug() << Q_FUNC_INFO << event->name;
-            if (fileName.startsWith(".sync_") ||
+            if (fileName.startsWith("._sync_") ||
                     fileName.startsWith(".csync_journal.db") ||
                     fileName.startsWith(".owncloudsync.log")) {
                 // qDebug() << "ignore journal";
