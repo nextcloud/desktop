@@ -232,7 +232,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
     foreach (const auto& folderAlias, settings.childGroups()) {
         FolderDefinition folderDefinition;
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
-            Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
+            Folder* f = addFolderInternal(std::move(folderDefinition), account.data(), false);
             if (f) {
                 f->journalDb()->setMayMigrateDbLocation(mayMigrateOldDb);
                 scheduleFolder(f);
@@ -413,7 +413,7 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition, accountState);
+    folder = addFolderInternal(folderDefinition, accountState, false);
     if (folder) {
         QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
@@ -844,7 +844,7 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
-    auto folder = addFolderInternal(folderDefinition, accountState);
+    auto folder = addFolderInternal(folderDefinition, accountState, true);
 
     if(folder) {
         folder->saveToSettings();
@@ -854,7 +854,9 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
     return folder;
 }
 
-Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountState* accountState)
+Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition,
+                                     AccountState* accountState,
+                                     bool wipeJournal)
 {
     auto alias = folderDefinition.alias;
     int count = 0;
@@ -865,9 +867,11 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition, AccountS
 
     auto folder = new Folder(folderDefinition, accountState, this );
 
-    if (!ensureJournalGone(folder->journalDb()->databaseFilePath())) {
-        delete folder;
-        return 0;
+    if (wipeJournal) {
+        if (!ensureJournalGone(folder->journalDb()->databaseFilePath())) {
+            delete folder;
+            return 0;
+        }
     }
 
     qDebug() << "Adding folder to Folder Map " << folder << folder->alias();
