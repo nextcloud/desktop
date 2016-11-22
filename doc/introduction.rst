@@ -12,7 +12,7 @@ Desktop Sync client enables you to:
 Your files are always automatically synchronized between your ownCloud server 
 and local PC.
 
-Because of various technical issues, desktop sync clients older than 1.7 will 
+Because of various technical issues, desktop sync clients older than 2.2.1 will 
 not allowed to connect and sync with the ownCloud 8.1+ server. It is highly 
 recommended to keep your client updated.
 

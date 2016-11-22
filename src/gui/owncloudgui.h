@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,6 +25,7 @@
 #include <QMenu>
 #include <QSignalMapper>
 #include <QSize>
+#include <QTimer>
 
 namespace OCC {
 
@@ -52,11 +54,18 @@ public:
     static QSize settingsDialogSize() { return QSize(800, 500); }
     void setupOverlayIcons();
 
+    /// Whether the tray menu is visible
+    bool contextMenuVisible() const;
+
 signals:
     void setupProxy();
 
 public slots:
     void setupContextMenu();
+    void updateContextMenu();
+    void updateContextMenuNeeded();
+    void slotContextMenuAboutToShow();
+    void slotContextMenuAboutToHide();
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
@@ -86,6 +95,7 @@ private slots:
     void slotLogout();
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
+    void slotNewAccountWizard();
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);
@@ -101,14 +111,21 @@ private:
     QPointer<LogBrowser>_logBrowser;
        // tray's menu
     QScopedPointer<QMenu> _contextMenu;
+
+    // Manually tracking whether the context menu is visible, but only works
+    // on OSX because aboutToHide is not reliable everywhere.
+    bool _contextMenuVisibleOsx;
+
     QMenu *_recentActionsMenu;
     QVector<QMenu*> _accountMenus;
     bool _qdbusmenuWorkaround;
+    QTimer _workaroundBatchTrayUpdate;
     QMap<QString, QPointer<ShareDialog> > _shareDialogs;
 
     QAction *_actionLogin;
     QAction *_actionLogout;
 
+    QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
     QAction *_actionStatus;
     QAction *_actionEstimate;

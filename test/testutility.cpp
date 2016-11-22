@@ -67,14 +67,6 @@ private slots:
         QVERIFY(hasLaunchOnStartup(appName) == false);
     }
 
-    void testToCSyncScheme()
-    {
-        QVERIFY(toCSyncScheme("http://example.com/owncloud/") ==
-                              "owncloud://example.com/owncloud/");
-        QVERIFY(toCSyncScheme("https://example.com/owncloud/") ==
-                              "ownclouds://example.com/owncloud/");
-    }
-
     void testDurationToDescriptiveString()
     {
         QLocale::setDefault(QLocale("C"));
@@ -83,7 +75,7 @@ private slots:
         quint64 sec = 1000;
         quint64 hour = 3600 * sec;
 
-        QDateTime current = QDateTime::currentDateTime();
+        QDateTime current = QDateTime::currentDateTimeUtc();
 
         QCOMPARE(durationToDescriptiveString2(0), QString("0 second(s)") );
         QCOMPARE(durationToDescriptiveString2(5), QString("0 second(s)") );

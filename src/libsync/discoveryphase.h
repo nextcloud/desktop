@@ -81,6 +81,8 @@ class DiscoverySingleDirectoryJob : public QObject {
     Q_OBJECT
 public:
     explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    // Specify thgat this is the root and we need to check the data-fingerprint
+    void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
     // This is not actually a network job, it is just a job
@@ -100,8 +102,15 @@ private:
     QString _etagConcatenation;
     QString _firstEtag;
     AccountPtr _account;
+    // The first result is for the directory itself and need to be ignored.
+    // This flag is true if it was already ignored.
     bool _ignoredFirst;
+    // Set to true if this is the root path and we need to check the data-fingerprint
+    bool _isRootPath;
     QPointer<LsColJob> _lsColJob;
+
+public:
+    QByteArray _dataFingerprint;
 };
 
 // Lives in main thread. Deleted by the SyncEngine
@@ -115,12 +124,15 @@ class DiscoveryMainThread : public QObject {
     AccountPtr _account;
     DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
     qint64 *_currentGetSizeResult;
+    bool _firstFolderProcessed;
 
 public:
     DiscoveryMainThread(AccountPtr account) : QObject(), _account(account),
-        _currentDiscoveryDirectoryResult(0), _currentGetSizeResult(0)
+        _currentDiscoveryDirectoryResult(0), _currentGetSizeResult(0), _firstFolderProcessed(false)
     { }
     void abort();
+
+    QByteArray _dataFingerprint;
 
 
 public slots:
@@ -162,7 +174,7 @@ class DiscoveryJob : public QObject {
      * return true if the given path should be ignored,
      * false if the path should be synced
      */
-    bool isInSelectiveSyncBlackList(const QString &path) const;
+    bool isInSelectiveSyncBlackList(const char* path) const;
     static int isInSelectiveSyncBlackListCallback(void *, const char *);
     bool checkSelectiveSyncNewFolder(const QString &path);
     static int checkSelectiveSyncNewFolderCallback(void*, const char*);

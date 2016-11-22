@@ -31,14 +31,17 @@
 #include <sys/stat.h>
 
 #ifdef _WIN32
+#include <windows.h>
 #include <windef.h>
 #include <winbase.h>
 #include <wchar.h>
+#else
+#include <unistd.h>
 #endif
 
 #include <errno.h>
 
-#ifdef _WIN32
+#ifdef __MINGW32__
 #define EDQUOT 0
 #define ENODATA 0
 #ifndef S_IRGRP
@@ -65,6 +68,8 @@
 #define nlink_t int
 #define getuid() 0
 #define geteuid() 0
+#elif defined(_WIN32)
+#define mode_t int
 #else
 #include <fcntl.h>
 #endif
@@ -89,8 +94,12 @@ typedef struct stat csync_stat_t;
 #define ENODATA EBADF
 #endif
 
-#if !defined(HAVE_ASPRINTF) && defined(HAVE___MINGW_ASPRINTF)
+#if !defined(HAVE_ASPRINTF)
+#if defined(HAVE___MINGW_ASPRINTF)
 #define asprintf __mingw_asprintf
+#else
+#include "asprintf.h"
+#endif
 #endif
 
 #ifndef HAVE_STRERROR_R

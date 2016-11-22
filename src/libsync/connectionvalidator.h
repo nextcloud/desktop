@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -27,7 +28,7 @@ namespace OCC {
  * This is a job-like class to check that the server is up and that we are connected.
  * There are two entry points: checkServerAndAuth and checkAuthentication
  * checkAuthentication is the quick version that only does the propfind
- * while checkServerAndAuth is doing the 3 calls.
+ * while checkServerAndAuth is doing the 4 calls.
  *
  * We cannot use the capabilites call to test the login and the password because of
  * https://github.com/owncloud/core/issues/12930
@@ -60,7 +61,15 @@ namespace OCC {
   +-> checkServerCapabilities (cloud/capabilities)
         JsonApiJob
         |
-        +-> slotCapabilitiesRecieved --> X
+        +-> slotCapabilitiesRecieved -+
+                                      |
+  +-----------------------------------+
+  |
+  +-> fetchUser
+        PropfindJob
+        |
+        +-> slotUserFetched --> X
+
     \endcode
  */
 class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
@@ -109,10 +118,12 @@ protected slots:
     void slotAuthSuccess();
 
     void slotCapabilitiesRecieved(const QVariantMap&);
+    void slotUserFetched(const QVariantMap &);
 
 private:
     void reportResult(Status status);
     void checkServerCapabilities();
+    void fetchUser();
 
     QStringList _errors;
     AccountPtr   _account;

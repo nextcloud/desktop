@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <stdbool.h>
 
@@ -90,7 +89,7 @@ static int _data_cmp(const void *key, const void *data) {
   return 0;
 }
 
-void csync_create(CSYNC **csync, const char *local, const char *remote) {
+void csync_create(CSYNC **csync, const char *local) {
   CSYNC *ctx;
   size_t len = 0;
 
@@ -103,12 +102,6 @@ void csync_create(CSYNC **csync, const char *local, const char *remote) {
   while(len > 0 && local[len - 1] == '/') --len;
 
   ctx->local.uri = c_strndup(local, len);
-
-  /* remove trailing slashes */
-  len = strlen(remote);
-  while(len > 0 && remote[len - 1] == '/') --len;
-
-  ctx->remote.uri = c_strndup(remote, len);
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -195,7 +188,7 @@ int csync_update(CSYNC *ctx) {
   ctx->current = REMOTE_REPLICA;
   ctx->replica = ctx->remote.type;
 
-  rc = csync_ftw(ctx, ctx->remote.uri, csync_walker, MAX_DEPTH);
+  rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
       if(ctx->status_code == CSYNC_STATUS_OK) {
           ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
@@ -382,7 +375,6 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
-      trav.should_update_metadata = cur->should_update_metadata;
       trav.has_ignored_files = cur->has_ignored_files;
       trav.checksum = cur->checksum;
       trav.checksumTypeId = cur->checksumTypeId;
@@ -576,7 +568,6 @@ int csync_destroy(CSYNC *ctx) {
 
   SAFE_FREE(ctx->statedb.file);
   SAFE_FREE(ctx->local.uri);
-  SAFE_FREE(ctx->remote.uri);
   SAFE_FREE(ctx->error_string);
 
 #ifdef WITH_ICONV

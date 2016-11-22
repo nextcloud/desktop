@@ -50,7 +50,7 @@ private slots:
         QFETCH(QueryItems, query);
         QFETCH(QString, expected);
         QUrl baseUrl("http://example.com" + base);
-        QUrl resultUrl = Account::concatUrlPath(baseUrl, concat, query);
+        QUrl resultUrl = Utility::concatUrlPath(baseUrl, concat, query);
         QString result = QString::fromUtf8(resultUrl.toEncoded());
         QString expectedFull = "http://example.com" + expected;
         QCOMPARE(result, expectedFull);

@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -15,6 +16,7 @@
 #include "filesystem.h"
 
 #include <QTimer>
+#include <QDebug>
 
 using namespace OCC;
 
@@ -30,6 +32,7 @@ LockWatcher::LockWatcher(QObject* parent)
 
 void LockWatcher::addFile(const QString& path)
 {
+    qDebug() << "Watching for lock of" << path << "being released";
     _watchedPaths.insert(path);
 }
 
@@ -39,6 +42,7 @@ void LockWatcher::checkFiles()
 
     foreach (const QString& path, _watchedPaths) {
         if (!FileSystem::isFileLocked(path)) {
+            qDebug() << "Lock of" << path << "was released";
             emit fileUnlocked(path);
             unlocked.insert(path);
         }

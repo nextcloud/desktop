@@ -29,6 +29,7 @@
 #include "syncengine.h"
 #include "syncjournaldb.h"
 #include "config.h"
+#include "connectionvalidator.h"
 
 #include "cmd.h"
 
@@ -41,9 +42,13 @@
 #include <windows.h>
 #else
 #include <termios.h>
+#include <unistd.h>
 #endif
 
 using namespace OCC;
+
+
+static void nullMessageHandler(QtMsgType, const char *) {}
 
 struct CmdOptions {
     QString source_dir;
@@ -67,6 +72,8 @@ struct CmdOptions {
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
 CmdOptions *opts = 0;
+
+const qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5*1000);
 
 class EchoDisabler
 {
@@ -274,6 +281,12 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
+#ifdef Q_OS_WIN
+    // Ensure OpenSSL config file is only loaded from app directory
+    QString opensslConf = QCoreApplication::applicationDirPath()+QString("/openssl.cnf");
+    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+#endif
+
     qsrand(QTime::currentTime().msec() * QCoreApplication::applicationPid());
 
     CmdOptions options;
@@ -287,6 +300,11 @@ int main(int argc, char **argv) {
     ClientProxy clientProxy;
 
     parseOptions( app.arguments(), &options );
+
+    csync_set_log_level(options.silent ? 1 : 11);
+    if (options.silent) {
+        qInstallMsgHandler(nullMessageHandler);
+    }
 
     AccountPtr account = Account::create();
 
@@ -381,13 +399,29 @@ int main(int argc, char **argv) {
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    //obtain capabilities using event loop
+    QEventLoop loop;
+
+    JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QVariantMap &json) {
+        auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
+        qDebug() << "Server capabilities" << caps;
+        account->setCapabilities(caps.toMap());
+        loop.quit();
+    });
+    job->start();
+
+    loop.exec();
+#endif
+
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
     SyncEngine::minimumFileAgeForUpload = 0;
 
     int restartCount = 0;
 restart_sync:
 
-    csync_set_log_level(options.silent ? 1 : 11);
 
     opts = &options;
 
@@ -441,7 +475,7 @@ restart_sync:
         selectiveSyncFixup(&db, selectiveSyncList);
     }
 
-    SyncEngine engine(account, options.source_dir, QUrl(options.target_url), folder, &db);
+    SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));

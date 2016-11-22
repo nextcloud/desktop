@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -47,17 +48,32 @@ void OcsJob::appendPath(const QString &id)
     setPath(path() + QLatin1Char('/') + id);
 }
 
+static QList<QPair<QByteArray, QByteArray>>
+percentEncodeQueryItems(
+        const QList<QPair<QString, QString>> & items)
+{
+    QList<QPair<QByteArray, QByteArray>> result;
+    foreach (const auto& item, items) {
+        result.append(qMakePair(
+            QUrl::toPercentEncoding(item.first),
+            QUrl::toPercentEncoding(item.second)));
+    }
+    return result;
+}
+
 void OcsJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    QUrl url = Account::concatUrlPath(account()->url(), path());
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
     QBuffer *buffer = new QBuffer;
 
     if (_verb == "GET") {
-        url.setQueryItems(_params);
+        // Note: QUrl::setQueryItems() does not fully percent encode
+        // the query items, see #5042
+        url.setEncodedQueryItems(percentEncodeQueryItems(_params));
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.
         QByteArray postData;
@@ -73,9 +89,9 @@ void OcsJob::start()
     }
 
     //We want json data
-    auto queryItems = url.queryItems();
-    queryItems.append(qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")));
-    url.setQueryItems(queryItems);
+    auto queryItems = url.encodedQueryItems();
+    queryItems.append(qMakePair(QByteArray("format"), QByteArray("json")));
+    url.setEncodedQueryItems(queryItems);
 
     setReply(davRequest(_verb, url, req, buffer));
     setupConnections(reply());
@@ -92,7 +108,7 @@ bool OcsJob::finished()
     if (!success) {
         qDebug() << "Could not parse reply to" 
                  << _verb 
-                 << Account::concatUrlPath(account()->url(), path()) 
+                 << Utility::concatUrlPath(account()->url(), path())
                  << _params
                  << ":" << replyData;
     }
@@ -102,7 +118,7 @@ bool OcsJob::finished()
     if (!_passStatusCodes.contains(statusCode)) {
         qDebug() << "Reply to"
                  << _verb
-                 << Account::concatUrlPath(account()->url(), path())
+                 << Utility::concatUrlPath(account()->url(), path())
                  << _params
                  << "has unexpected status code:" << statusCode << replyData;
         emit ocsError(statusCode, message);

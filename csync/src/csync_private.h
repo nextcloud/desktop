@@ -126,7 +126,6 @@ struct csync_s {
   } local;
 
   struct {
-    char *uri;
     c_rbtree_t *tree;
     enum csync_replica_e type;
     int  read_from_db;
@@ -186,8 +185,6 @@ struct csync_file_stat_s {
   mode_t mode;      /* u32 */
   unsigned int type                   : 4;
   unsigned int child_modified         : 1;
-  unsigned int should_update_metadata : 1; /*specify that the etag, or the remote perm or fileid has
-                                changed and need to be updated on the db even for INSTRUCTION_NONE */
   unsigned int has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
 
   char *destpath;   /* for renames */
@@ -225,9 +222,6 @@ struct _csync_treewalk_context_s
     void *userdata;
 };
 typedef struct _csync_treewalk_context_s _csync_treewalk_context;
-
-
-time_t oc_httpdate_parse( const char *date );
 
 void set_errno_from_http_errcode( int err );
 

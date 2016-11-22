@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -52,6 +53,8 @@ public:
     bool updateFileRecordChecksum(const QString& filename,
                                   const QByteArray& contentChecksum,
                                   const QByteArray& contentChecksumType);
+    bool updateLocalMetadata(const QString& filename,
+                             qint64 modtime, quint64 size, quint64 inode);
     bool exists();
     void walCheckpoint();
 
@@ -159,6 +162,12 @@ public:
      */
     QByteArray getChecksumType(int checksumTypeId);
 
+    /**
+     * The data-fingerprint used to detect backup
+     */
+    void setDataFingerprint(const QByteArray &dataFingerprint);
+    QByteArray dataFingerprint();
+
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
@@ -187,6 +196,7 @@ private:
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
+    QScopedPointer<SqlQuery> _setFileRecordLocalMetadataQuery;
     QScopedPointer<SqlQuery> _getDownloadInfoQuery;
     QScopedPointer<SqlQuery> _setDownloadInfoQuery;
     QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;
@@ -201,6 +211,9 @@ private:
     QScopedPointer<SqlQuery> _getChecksumTypeIdQuery;
     QScopedPointer<SqlQuery> _getChecksumTypeQuery;
     QScopedPointer<SqlQuery> _insertChecksumTypeQuery;
+    QScopedPointer<SqlQuery> _getDataFingerprintQuery;
+    QScopedPointer<SqlQuery> _setDataFingerprintQuery1;
+    QScopedPointer<SqlQuery> _setDataFingerprintQuery2;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

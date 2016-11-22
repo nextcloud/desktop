@@ -19,7 +19,6 @@
  */
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 #include "torture.h"
 
@@ -34,10 +33,7 @@ static int setup(void **state) {
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
 
-    rc = system("mkdir -p /tmp/check_csync2");
-    assert_int_equal(rc, 0);
-
-    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_create(&csync, "/tmp/check_csync1");
 
     *state = csync;
     
@@ -54,9 +50,6 @@ static int teardown(void **state) {
     assert_int_equal(rc, 0);
 
     rc = system("rm -rf /tmp/check_csync1");
-    assert_int_equal(rc, 0);
-
-    rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
 
     *state = NULL;

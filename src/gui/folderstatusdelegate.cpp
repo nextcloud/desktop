@@ -295,7 +295,11 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         pBRect.setHeight(barHeight);
         pBRect.setWidth( overallWidth - 2 * margin );
 
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
         QStyleOptionProgressBarV2 pBarOpt;
+#else
+        QStyleOptionProgressBar pBarOpt;
+#endif
 
         pBarOpt.state    = option.state | QStyle::State_Horizontal;
         pBarOpt.minimum  = 0;

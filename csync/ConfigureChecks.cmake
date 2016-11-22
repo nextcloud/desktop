@@ -62,8 +62,4 @@ if (WIN32)
   check_function_exists(__mingw_asprintf HAVE___MINGW_ASPRINTF)
 endif(WIN32)
 
-if (UNIT_TESTING)
-    set(WITH_UNIT_TESTING ON)
-endif (UNIT_TESTING)
-
 set(CSYNC_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} CACHE INTERNAL "csync required system libraries")

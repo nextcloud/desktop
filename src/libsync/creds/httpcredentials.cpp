@@ -71,21 +71,6 @@ HttpCredentials::HttpCredentials(const QString& user, const QString& password, c
 {
 }
 
-bool HttpCredentials::changed(AbstractCredentials* credentials) const
-{
-    HttpCredentials* other(qobject_cast< HttpCredentials* >(credentials));
-
-    if (!other) {
-        return true;
-    }
-
-    if (!other || (other->user() != this->user())) {
-        return true;
-    }
-
-    return false;
-}
-
 QString HttpCredentials::authType() const
 {
     return QString::fromLatin1("http");
@@ -147,7 +132,7 @@ void HttpCredentials::fetchFromKeychain()
     _certificatePath = _account->credentialSetting(QLatin1String(certifPathC)).toString();
     _certificatePasswd = _account->credentialSetting(QLatin1String(certifPasswdC)).toString();
 
-    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
     const QString kck = keychainKey(_account->url().toString(), _user );
 
     QString key = QString::fromLatin1( "%1/data" ).arg( kck );
@@ -229,7 +214,7 @@ void HttpCredentials::invalidateToken()
     }
 
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
     job->setInsecureFallback(true);
@@ -280,7 +265,7 @@ void HttpCredentials::persist()
     _account->setCredentialSetting(QLatin1String(certifPathC), _certificatePath);
     _account->setCredentialSetting(QLatin1String(certifPasswdC), _certificatePasswd);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    auto settings = _account->settingsWithGroup(Theme::instance()->appName());
+    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
 

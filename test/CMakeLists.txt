@@ -27,7 +27,9 @@ ENDIF()
 
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 if( UNIX AND NOT APPLE )
+  if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
     owncloud_add_test(InotifyWatcher "${FolderWatcher_SRC}")
+  endif(HAVE_QT5 AND NOT BUILD_WITH_QT4)
 endif(UNIX AND NOT APPLE)
 
 owncloud_add_test(CSyncSqlite "")
@@ -42,6 +44,11 @@ owncloud_add_test(FileSystem "")
 owncloud_add_test(ChecksumValidator "")
 
 owncloud_add_test(ExcludedFiles "")
+if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
+    owncloud_add_test(SyncEngine "syncenginetestutils.h")
+    owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
+    owncloud_add_test(ChunkingNg "syncenginetestutils.h")
+endif(HAVE_QT5 AND NOT BUILD_WITH_QT4)
 
 SET(FolderMan_SRC ../src/gui/folderman.cpp)
 list(APPEND FolderMan_SRC ../src/gui/folder.cpp )

@@ -200,12 +200,6 @@ the database by comparing the files and their modification times. This process
 ensures that both server and client are synchronized using the appropriate NTP
 time before restarting the client following a database removal.
 
-Pressing ``F5`` while in the Account Settings Dialog enables you to "reset" the
-journal. This function can be used to recreate the journal database.
-
-.. note:: We recommend that you use this function only when advised to do so by
-   ownCloud support staff.
-
 Custom WebDAV Properties
 ------------------------
 

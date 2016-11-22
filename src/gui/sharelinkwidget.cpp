@@ -4,7 +4,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -17,13 +18,14 @@
 #include "account.h"
 #include "capabilities.h"
 
-#include "share.h"
+#include "sharemanager.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
 #include <QClipboard>
 #include <QFileInfo>
 #include <QDesktopServices>
+#include <QMessageBox>
 
 namespace OCC {
 
@@ -375,6 +377,7 @@ void ShareLinkWidget::slotCheckBoxShareLinkClicked()
             _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
             _ui->checkBox_expire->setEnabled(false);
             _ui->checkBox_editing->setEnabled(false);
+            _ui->lineEdit_password->setEnabled(true);
             _ui->lineEdit_password->setFocus();
             _ui->pushButton_copy->hide();
             _ui->pushButton_mail->hide();
@@ -443,6 +446,7 @@ void ShareLinkWidget::slotCheckBoxPasswordClicked()
         _ui->lineEdit_password->show();
         _ui->pushButton_setPassword->show();
         _ui->lineEdit_password->setPlaceholderText(tr("Please Set Password"));
+        _ui->lineEdit_password->setEnabled(true);
         _ui->lineEdit_password->setFocus();
     } else {
         setPassword(QString());
@@ -488,13 +492,20 @@ void ShareLinkWidget::slotPushButtonMailLinkPressed()
 {
     QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
 
-    QDesktopServices::openUrl(QUrl(QString(
-            "mailto: "
-            "?subject=I shared %1 with you"
-            "&body=%2").arg(
-            fileName,
-            _shareUrl),
-        QUrl::TolerantMode));
+    if (!QDesktopServices::openUrl(QUrl(QString(
+                "mailto: "
+                "?subject=I shared %1 with you"
+                "&body=%2").arg(
+                fileName,
+                _shareUrl),
+            QUrl::TolerantMode))) {
+        QMessageBox::warning(
+            this,
+            tr("Could not open email client"),
+            tr("There was an error when launching the email client to "
+               "create a new message. Maybe no default email client is "
+               "configured?"));
+    }
 }
 
 void ShareLinkWidget::slotCheckBoxEditingClicked()

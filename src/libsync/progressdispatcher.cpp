@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -46,6 +47,8 @@ QString Progress::asResultString( const SyncFileItem& item)
         return QCoreApplication::translate( "progress", "Filesystem access error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "Error");
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        return QCoreApplication::translate( "progress", "Updated local metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         return QCoreApplication::translate( "progress", "Unknown");
@@ -76,6 +79,8 @@ QString Progress::asActionString( const SyncFileItem &item )
         return QCoreApplication::translate( "progress", "error");
     case CSYNC_INSTRUCTION_ERROR:
         return QCoreApplication::translate( "progress", "error");
+    case CSYNC_INSTRUCTION_UPDATE_METADATA:
+        return QCoreApplication::translate( "progress", "updating local metadata");
     case CSYNC_INSTRUCTION_NONE:
     case CSYNC_INSTRUCTION_EVAL:
         break;
@@ -143,6 +148,7 @@ void ProgressInfo::reset()
     _maxBytesPerSecond = 100000.0;
     _maxFilesPerSecond = 2.0;
     _updateEstimatesTimer.stop();
+    _lastCompletedItem = SyncFileItem();
 }
 
 void ProgressInfo::startEstimateUpdates()
@@ -159,17 +165,10 @@ static bool shouldCountProgress(const SyncFileItem &item)
 {
     const auto instruction = item._instruction;
 
-    // Don't worry about directories that won't have propagation
-    // jobs associated with them.
-    if (item._isDirectory
-            && (instruction == CSYNC_INSTRUCTION_NONE
-                || instruction == CSYNC_INSTRUCTION_SYNC
-                || instruction == CSYNC_INSTRUCTION_CONFLICT)) {
-        return false;
-    }
-
-    // Skip any ignored or error files, we do nothing with them.
-    if (instruction == CSYNC_INSTRUCTION_IGNORE
+    // Skip any ignored, error or non-propagated files and directories.
+    if (instruction == CSYNC_INSTRUCTION_NONE
+            || instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+            || instruction == CSYNC_INSTRUCTION_IGNORE
             || instruction == CSYNC_INSTRUCTION_ERROR) {
         return false;
     }
@@ -279,13 +278,6 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
     // assume the remaining transfer will be done with the highest speed
     // we've seen.
 
-    // This assumes files and transfers finish as quickly as possible
-    // *but* note that maxPerSecond could be serious underestimates
-    // (if we never got to fully excercise transfer or files/second)
-    quint64 optimisticEta =
-            _fileProgress.remaining()  / _maxFilesPerSecond * 1000
-            + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
-
     // Compute a value that is 0 when fps is <=L*max and 1 when fps is >=U*max
     double fps = _fileProgress._progressPerSec;
     double fpsL = 0.5;
@@ -309,9 +301,24 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
 
     double beOptimistic = nearMaxFps * slowTransfer;
     size.estimatedEta = (1.0 - beOptimistic) * size.estimatedEta
-                        + beOptimistic * optimisticEta;
+                        + beOptimistic * optimisticEta();
 
     return size;
+}
+
+quint64 ProgressInfo::optimisticEta() const
+{
+    // This assumes files and transfers finish as quickly as possible
+    // *but* note that maxPerSecond could be serious underestimate
+    // (if we never got to fully excercise transfer or files/second)
+
+    return _fileProgress.remaining() / _maxFilesPerSecond * 1000
+            + _sizeProgress.remaining() / _maxBytesPerSecond * 1000;
+}
+
+bool ProgressInfo::trustEta() const
+{
+    return totalProgress().estimatedEta < 100 * optimisticEta();
 }
 
 ProgressInfo::Estimates ProgressInfo::fileProgress(const SyncFileItem &item) const

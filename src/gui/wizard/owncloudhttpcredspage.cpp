@@ -30,7 +30,6 @@ OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget* parent)
   : AbstractCredentialsWizardPage(),
     _ui(),
     _connected(false),
-    _checking(false),
     _progressIndi(new QProgressIndicator (this))
 {
     _ui.setupUi(this);
@@ -133,14 +132,20 @@ bool OwncloudHttpCredsPage::validatePage()
 
     if (!_connected) {
         _ui.errorLabel->setVisible(false);
-        _checking = true;
         startSpinner();
+
+        // Reset cookies to ensure the username / password is actually used
+        OwncloudWizard* ocWizard = qobject_cast< OwncloudWizard* >(wizard());
+        ocWizard->account()->clearCookieJar();
+
         emit completeChanged();
         emit connectToOCUrl(field("OCUrl").toString().simplified());
 
         return false;
     } else {
-        _checking = false;
+        // Reset, to require another connection attempt next time
+        _connected = false;
+
         emit completeChanged();
         stopSpinner();
         return true;
@@ -153,9 +158,9 @@ int OwncloudHttpCredsPage::nextId() const
     return WizardCommon::Page_AdvancedSetup;
 }
 
-void OwncloudHttpCredsPage::setConnected( bool comp )
+void OwncloudHttpCredsPage::setConnected()
 {
-    _connected = comp;
+    _connected = true;
     stopSpinner ();
 }
 
@@ -181,7 +186,6 @@ void OwncloudHttpCredsPage::setErrorString(const QString& err)
         _ui.errorLabel->setVisible(true);
         _ui.errorLabel->setText(err);
     }
-    _checking = false;
     emit completeChanged();
     stopSpinner();
 }

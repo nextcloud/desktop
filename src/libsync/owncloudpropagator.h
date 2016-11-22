@@ -195,10 +195,11 @@ public:
     int _jobsFinished; // number of jobs that have completed
     int _runningNow; // number of subJobs running right now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
+    int _firstUnfinishedSubJob;
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _jobsFinished(0), _runningNow(0), _hasError(SyncFileItem::NoStatus)
+        , _firstJob(0), _item(item),  _jobsFinished(0), _runningNow(0), _hasError(SyncFileItem::NoStatus), _firstUnfinishedSubJob(0)
     { }
 
     virtual ~PropagateDirectory() {
@@ -266,8 +267,7 @@ class OwncloudPropagator : public QObject {
 
 public:
     const QString _localDir; // absolute path to the local directory. ends with '/'
-    const QString _remoteDir; // path to the root of the remote. ends with '/'  (include WebDAV path)
-    const QString _remoteFolder; // folder. (same as remoteDir but without the WebDAV path)
+    const QString _remoteFolder; // remote folder, ends with '/'
 
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emitted once
@@ -275,10 +275,8 @@ public:
 
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteDir, const QString &remoteFolder,
-                       SyncJournalDb *progressDb)
+                       const QString &remoteFolder, SyncJournalDb *progressDb)
             : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
-            , _remoteDir((remoteDir.endsWith(QChar('/'))) ? remoteDir : remoteDir+'/' )
             , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
             , _journal(progressDb)
             , _finishedEmited(false)
@@ -321,7 +319,7 @@ public:
         if (_rootJob) {
             _rootJob->abort();
         }
-        emitFinished();
+        emitFinished(SyncFileItem::NormalError);
     }
 
     // timeout in seconds
@@ -349,9 +347,9 @@ public:
 private slots:
 
     /** Emit the finished signal and make sure it is only emitted once */
-    void emitFinished() {
+    void emitFinished(SyncFileItem::Status status) {
         if (!_finishedEmited)
-            emit finished();
+            emit finished(status == SyncFileItem::Success);
         _finishedEmited = true;
     }
 
@@ -360,7 +358,7 @@ private slots:
 signals:
     void itemCompleted(const SyncFileItem &, const PropagatorJob &);
     void progress(const SyncFileItem&, quint64 bytes);
-    void finished();
+    void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */
     void seenLockedFile(const QString &fileName);
@@ -378,11 +376,12 @@ private:
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4
-    friend class PropagateDownloadFileQNAM;
-    friend class PropagateUploadFileQNAM;
+    friend class PropagateDownloadFile;
     friend class PropagateLocalMkdir;
     friend class PropagateLocalRename;
     friend class PropagateRemoteMove;
+    friend class PropagateUploadFileV1;
+    friend class PropagateUploadFileNG;
 #endif
 };
 
@@ -404,6 +403,10 @@ public:
 
     ~CleanupPollsJob();
 
+    /**
+     * Start the job.  After the job is completed, it will emit either finished or aborted, and it
+     * will destroy itself.
+     */
     void start();
 signals:
     void finished();

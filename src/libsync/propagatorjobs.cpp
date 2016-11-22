@@ -15,7 +15,7 @@
 
 #include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
-
+#include "propagateremotemove.h"
 #include "utility.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
@@ -231,6 +231,7 @@ void PropagateLocalRename::start()
     _propagator->_journal->deleteFileRecord(_item->_originalFile);
 
     // store the rename file name in the item.
+    const auto oldFile = _item->_file;
     _item->_file = _item->_renameTarget;
 
     SyncJournalFileRecord record(*_item, targetFile);
@@ -245,9 +246,14 @@ void PropagateLocalRename::start()
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
         }
+    } else {
+        if (!PropagateRemoteMove::adjustSelectiveSync(_propagator->_journal, oldFile, _item->_renameTarget)) {
+            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+            return;
+        }
     }
-    _propagator->_journal->commit("localRename");
 
+    _propagator->_journal->commit("localRename");
 
     done(SyncFileItem::Success);
 }

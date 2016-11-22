@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -24,8 +25,8 @@
 #include "capabilities.h"
 
 #include "thumbnailjob.h"
-#include "share.h"
 #include "sharee.h"
+#include "sharemanager.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -248,10 +249,12 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
     layout->addWidget(indicator);
 
     /*
-     * Don't send the reshare permissions for federataed shares
+     * Don't send the reshare permissions for federated shares for servers <9.1
      * https://github.com/owncloud/core/issues/22122#issuecomment-185637344
+     * https://github.com/owncloud/client/issues/4996
      */
-    if (sharee->type() == Sharee::Federated) {
+    if (sharee->type() == Sharee::Federated
+            && _account->serverVersionInt() < 0x090100) {
         int permissions = SharePermissionRead | SharePermissionUpdate;
         if (!_isFile) {
             permissions |= SharePermissionCreate | SharePermissionDelete;
@@ -335,10 +338,12 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
     connect(_ui->permissionsEdit,  SIGNAL(clicked(bool)), SLOT(slotEditPermissionsChanged()));
 
     /*
-     * We don't show permssion share for federated shares
+     * We don't show permssion share for federated shares with server <9.1
      * https://github.com/owncloud/core/issues/22122#issuecomment-185637344
+     * https://github.com/owncloud/client/issues/4996
      */
-    if (share->getShareType() == Share::TypeRemote) {
+    if (share->getShareType() == Share::TypeRemote
+            && share->account()->serverVersionInt() < 0x090100) {
         _ui->permissionShare->setVisible(false);
         _ui->permissionToolButton->setVisible(false);
     }

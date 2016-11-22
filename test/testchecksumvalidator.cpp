@@ -151,7 +151,13 @@ using namespace OCC;
 };
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QTEST_MAIN(TestChecksumValidator)
+// Qt4 does not have QTEST_GUILESS_MAIN, so we simulate it.
+int main(int argc, char *argv[])
+{
+    QCoreApplication app(argc, argv);
+    TestChecksumValidator tc;
+    return QTest::qExec(&tc, argc, argv);
+}
 #else
     QTEST_GUILESS_MAIN(TestChecksumValidator)
 #endif

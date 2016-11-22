@@ -56,26 +56,13 @@ static uint64_t _hash_of_file(CSYNC *ctx, const char *file) {
 
   if( ctx && file ) {
     path = file;
-    switch (ctx->current) {
-    case LOCAL_REPLICA:
+    if (ctx->current == LOCAL_REPLICA) {
       if (strlen(path) <= strlen(ctx->local.uri)) {
         return 0;
       }
       path += strlen(ctx->local.uri) + 1;
-      break;
-    case REMOTE_REPLICA:
-      if (strlen(path) <= strlen(ctx->remote.uri)) {
-        return 0;
-      }
-      path += strlen(ctx->remote.uri) + 1;
-      break;
-    default:
-      path = NULL;
-      return 0;
-      break;
     }
     len = strlen(path);
-
     h = c_jhash64((uint8_t *) path, len, 0);
   }
   return h;
@@ -158,7 +145,19 @@ static bool _csync_mtime_equal(time_t a, time_t b)
     return false;
 }
 
-
+/**
+ * The main function of the discovery/update pass.
+ *
+ * It's called (indirectly) by csync_update(), once for each entity in the
+ * local filesystem and once for each entity in the server data.
+ *
+ * It has two main jobs:
+ * - figure out whether anything happened compared to the sync journal
+ *   and set (primarily) the instruction flag accordingly
+ * - build the ctx->local.tree / ctx->remote.tree
+ *
+ * See doc/dev/sync-algorithm.md for an overview.
+ */
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, const int type) {
   uint64_t h = 0;
@@ -176,25 +175,12 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
 
   path = file;
-  switch (ctx->current) {
-    case LOCAL_REPLICA:
+  if (ctx->current == LOCAL_REPLICA) {
       if (strlen(path) <= strlen(ctx->local.uri)) {
         ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
         return -1;
       }
       path += strlen(ctx->local.uri) + 1;
-      break;
-    case REMOTE_REPLICA:
-      if (strlen(path) <= strlen(ctx->remote.uri)) {
-        ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-        return -1;
-      }
-      path += strlen(ctx->remote.uri) + 1;
-      break;
-    default:
-      path = NULL;
-      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-      return -1;
   }
 
   len = strlen(path);
@@ -314,8 +300,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 }
                 if (checksumIdentical) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", path);
-                    st->instruction = CSYNC_INSTRUCTION_NONE;
-                    st->should_update_metadata = true;
+                    st->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                     goto out;
                 }
             }
@@ -341,18 +326,19 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", path);
             ctx->remote.read_from_db = true;
         }
-        if (metadata_differ) {
-            /* file id or permissions has changed. Which means we need to update them in the DB. */
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
-            st->should_update_metadata = true;
-        }
         /* If it was remembered in the db that the remote dir has ignored files, store
          * that so that the reconciler can make advantage of.
          */
         if( ctx->current == REMOTE_REPLICA ) {
             st->has_ignored_files = tmp->has_ignored_files;
         }
-        st->instruction = CSYNC_INSTRUCTION_NONE;
+        if (metadata_differ) {
+            /* file id or permissions has changed. Which means we need to update them in the DB. */
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", path);
+            st->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        } else {
+            st->instruction = CSYNC_INSTRUCTION_NONE;
+        }
     } else {
         enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
 
@@ -488,7 +474,9 @@ out:
           }
       }
   }
-  if (st->instruction != CSYNC_INSTRUCTION_NONE && st->instruction != CSYNC_INSTRUCTION_IGNORE
+  if (st->instruction != CSYNC_INSTRUCTION_NONE
+      && st->instruction != CSYNC_INSTRUCTION_IGNORE
+      && st->instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
       && type != CSYNC_FTW_TYPE_DIR) {
     st->child_modified = 1;
   }
@@ -615,16 +603,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
 
 static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
-    const char *path = NULL;
-
-    if( strlen(uri) < strlen(ctx->remote.uri)+1) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "name does not contain remote uri!");
-        return false;
-    }
-
-    path = uri + strlen(ctx->remote.uri)+1;
-
-    if( csync_statedb_get_below_path(ctx, path) < 0 ) {
+    if( csync_statedb_get_below_path(ctx, uri) < 0 ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "StateDB could not be read!");
         return false;
     }
@@ -666,12 +645,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
 
-  if (uri[0] == '\0') {
-    errno = ENOENT;
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    goto error;
-  }
-
   read_from_db = ctx->remote.read_from_db;
 
   // if the etag of this dir is still the same, its content is restored from the
@@ -685,16 +658,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto done;
   }
 
-  const char *uri_for_vio = uri;
-  if (ctx->current == REMOTE_REPLICA) {
-      uri_for_vio += strlen(ctx->remote.uri);
-      if (strlen(uri_for_vio) > 0 && uri_for_vio[0] == '/') {
-          uri_for_vio++; // cut leading slash
-      }
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "URI without fuzz for %s is \"%s\"", uri, uri_for_vio);
-  }
-
-  if ((dh = csync_vio_opendir(ctx, uri_for_vio)) == NULL) {
+  if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
       if (ctx->abort) {
           CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
           ctx->status_code = CSYNC_STATUS_ABORTED;
@@ -740,7 +704,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   }
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
-    size_t ulen = 0;
     int flen;
     int flag;
 
@@ -766,30 +729,16 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    flen = asprintf(&filename, "%s/%s", uri, d_name);
-    if (flen < 0) {
+    if (uri[0] == '\0') {
+      filename = c_strdup(d_name);
+      flen = strlen(d_name);
+    } else {
+      flen = asprintf(&filename, "%s/%s", uri, d_name);
+    }
+    if (flen < 0 || !filename) {
       csync_vio_file_stat_destroy(dirent);
       dirent = NULL;
       ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
-      goto error;
-    }
-
-    /* Create relative path */
-    switch (ctx->current) {
-      case LOCAL_REPLICA:
-        ulen = strlen(ctx->local.uri) + 1;
-        break;
-      case REMOTE_REPLICA:
-        ulen = strlen(ctx->remote.uri) + 1;
-        break;
-      default:
-        break;
-    }
-
-    if (((size_t)flen) < ulen) {
-      csync_vio_file_stat_destroy(dirent);
-      dirent = NULL;
-      ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       goto error;
     }
 
@@ -859,10 +808,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
       if (ctx->current_fs && !ctx->current_fs->child_modified
           && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
-        ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
-        if (ctx->current == REMOTE_REPLICA) {
-          ctx->current_fs->should_update_metadata = true;
-        }
+          if (ctx->current == REMOTE_REPLICA) {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+          } else {
+              ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
+          }
       }
 
       if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
@@ -874,12 +824,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
         /* If a directory has modified files, put the flag on the parent directory as well */
         previous_fs->child_modified = ctx->current_fs->child_modified;
-    }
-
-    if (flag == CSYNC_FTW_FLAG_DIR && ctx->current_fs
-        && (ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL ||
-            ctx->current_fs->instruction == CSYNC_INSTRUCTION_NEW)) {
-        ctx->current_fs->should_update_metadata = true;
     }
 
     ctx->current_fs = previous_fs;

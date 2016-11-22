@@ -58,6 +58,8 @@ int main(int argc, char **argv)
     // not set this envoronment variable)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
+#else
+    qputenv("QT_DEVICE_PIXEL_RATIO", "auto"); // See #4840, #4994
 #endif
 #endif // !Q_OS_WIN
 

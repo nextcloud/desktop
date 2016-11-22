@@ -74,7 +74,7 @@ SocketApi::SocketApi(QObject* parent)
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String("\\\\.\\pipe\\")
-                + QLatin1String("ownCloud") + '\\'
+                + QLatin1String("ownCloud-")
                 + QString::fromLocal8Bit(qgetenv("USERNAME"));
         // TODO: once the windows extension supports multiple
         // client connections, switch back to the theme name

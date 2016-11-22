@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -106,7 +107,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
     connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
-    connect(checkJob, SIGNAL(networkError(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+    connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
     connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
     checkJob->start();
 }
@@ -229,10 +230,26 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QVariantMap &json)
     auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
     qDebug() << "Server capabilities" << caps;
     _account->setCapabilities(caps.toMap());
-    reportResult(Connected);
-    return;
+    fetchUser();
 }
 
+void ConnectionValidator::fetchUser()
+{
+
+    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
+    job->setTimeout(timeoutToUseMsec);
+    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotUserFetched(QVariantMap)));
+    job->start();
+}
+
+void ConnectionValidator::slotUserFetched(const QVariantMap &json)
+{
+    QString user = json.value("ocs").toMap().value("data").toMap().value("id").toString();
+    if (!user.isEmpty()) {
+        _account->setUser(user);
+    }
+    reportResult(Connected);
+}
 
 void ConnectionValidator::reportResult(Status status)
 {

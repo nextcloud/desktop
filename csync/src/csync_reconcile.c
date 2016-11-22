@@ -20,6 +20,7 @@
 
 #include "config_csync.h"
 
+#include <assert.h>
 #include "csync_private.h"
 #include "csync_reconcile.h"
 #include "csync_util.h"
@@ -64,7 +65,21 @@ static c_rbnode_t *_csync_check_ignored(c_rbtree_t *tree, const char *path, int 
     }
 }
 
-/*
+/**
+ * The main function in the reconcile pass.
+ *
+ * It's called for each entry in the local and remote rbtrees by
+ * csync_reconcile()
+ *
+ * Before the reconcile phase the trees already know about changes
+ * relative to the sync journal. This function's job is to spot conflicts
+ * between local and remote changes and adjust the nodes accordingly.
+ *
+ * See doc/dev/sync-algorithm.md for an overview.
+ *
+ *
+ * Older detail comment:
+ *
  * We merge replicas at the file level. The merged replica contains the
  * superset of files that are on the local machine and server copies of
  * the replica. In the case where the same file is in both the local
@@ -130,6 +145,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             break;
             /* file has been removed on the opposite replica */
         case CSYNC_INSTRUCTION_NONE:
+        case CSYNC_INSTRUCTION_UPDATE_METADATA:
             if (cur->has_ignored_files) {
                 /* Do not remove a directory that has ignored files */
                 break;
@@ -181,13 +197,8 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
 
                 if(!other) {
                     cur->instruction = CSYNC_INSTRUCTION_NEW;
-                    if (cur->type == CSYNC_FTW_TYPE_DIR) {
-                        // For new directories we always want to update the etag once
-                        // the directory has been propagated. Otherwise the directory
-                        // could appear locally without being added to the database.
-                        cur->should_update_metadata = true;
-                    }
                 } else if (other->instruction == CSYNC_INSTRUCTION_NONE
+                           || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
                            || cur->type == CSYNC_FTW_TYPE_DIR) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->destpath = c_strdup( cur->path );
@@ -195,7 +206,6 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
                     other->inode = cur->inode;
-                    other->should_update_metadata = true;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
@@ -205,12 +215,12 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                         csync_vio_set_file_id( other->file_id, cur->file_id );
                     }
                     other->inode = cur->inode;
-                    other->should_update_metadata = true;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_NEW) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO=> NEW detected in other tree!");
                     cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                 } else {
+                    assert(other->type != CSYNC_FTW_TYPE_DIR);
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_SYNC;
                 }
@@ -222,13 +232,19 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             break;
         }
     } else {
-        bool is_equal_files = false;
+        bool is_conflict = true;
         /*
      * file found on the other replica
      */
         other = (csync_file_stat_t *) node->data;
 
         switch (cur->instruction) {
+        case CSYNC_INSTRUCTION_UPDATE_METADATA:
+            if (other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && ctx->current == LOCAL_REPLICA) {
+                // Remote wins, the SyncEngine will pick relevant local metadata since the remote tree is walked last.
+                cur->instruction = CSYNC_INSTRUCTION_NONE;
+            }
+            break;
         case CSYNC_INSTRUCTION_EVAL_RENAME:
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
@@ -253,42 +269,39 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             case CSYNC_INSTRUCTION_EVAL:
                 if (other->type == CSYNC_FTW_TYPE_DIR &&
                         cur->type == CSYNC_FTW_TYPE_DIR) {
-                    is_equal_files = (other->modtime == cur->modtime);
+                    // Folders of the same path are always considered equals
+                    is_conflict = false;
                 } else {
-                    is_equal_files = ((other->size == cur->size) && (other->modtime == cur->modtime));
+                    is_conflict = ((other->size != cur->size) || (other->modtime != cur->modtime));
                     // FIXME: do a binary comparision of the file here because of the following
                     // edge case:
                     // The files could still have different content, even though the mtime
                     // and size are the same.
                 }
-                if (is_equal_files) {
-                    /* The files are considered equal. */
-                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                if (ctx->current == REMOTE_REPLICA) {
+                    // If the files are considered equal, only update the DB with the etag from remote
+                    cur->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
-
-                    /* update DB with new etag from remote */
-                    if (ctx->current == LOCAL_REPLICA) {
-                        other->should_update_metadata = true;
-                    } else {
-                        cur->should_update_metadata = true;
-                    }
-                } else if(ctx->current == REMOTE_REPLICA) {
-                        cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
-                        other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
-                        cur->instruction = CSYNC_INSTRUCTION_NONE;
-                        other->instruction = CSYNC_INSTRUCTION_CONFLICT;
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    other->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
                 }
 
                 break;
                 /* file on the other replica has not been modified */
             case CSYNC_INSTRUCTION_NONE:
+            case CSYNC_INSTRUCTION_UPDATE_METADATA:
                 if (cur->type != other->type) {
                     // If the type of the entity changed, it's like NEW, but
                     // needs to delete the other entity first.
                     cur->instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
+                    other->instruction = CSYNC_INSTRUCTION_NONE;
+                } else if (cur->type == CSYNC_FTW_TYPE_DIR) {
+                    cur->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                    other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
                     cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                    other->instruction = CSYNC_INSTRUCTION_NONE;
                 }
                 break;
             case CSYNC_INSTRUCTION_IGNORE:
@@ -310,7 +323,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                      "%-20s %s dir:  %s",
+                      "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
                       cur->path);
@@ -318,7 +331,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         else
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
-                      "%-20s %s file: %s",
+                      "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
                       cur->path);
@@ -329,7 +342,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                      "%-20s %s dir:  %s",
+                      "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
                       cur->path);
@@ -337,7 +350,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         else
         {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-                      "%-20s %s file: %s",
+                      "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
                       cur->path);

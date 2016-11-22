@@ -13,12 +13,14 @@
  */
 
 #include "propagateremotemove.h"
+#include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "syncjournalfilerecord.h"
 #include "filesystem.h"
 #include <QFile>
 #include <QStringList>
+#include <QDir>
 
 namespace OCC {
 
@@ -27,12 +29,20 @@ MoveJob::MoveJob(AccountPtr account, const QString& path,
     : AbstractNetworkJob(account, path, parent), _destination(destination)
 { }
 
+MoveJob::MoveJob(AccountPtr account, const QUrl& url, const QString &destination,
+                 QMap<QByteArray, QByteArray> extraHeaders, QObject* parent)
+    : AbstractNetworkJob(account, QString(), parent), _destination(destination), _url(url)
+    , _extraHeaders(extraHeaders)
+{ }
 
 void MoveJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("Destination", QUrl::toPercentEncoding(_destination, "/"));
-    setReply(davRequest("MOVE", path(), req));
+    for(auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
+        req.setRawHeader(it.key(), it.value());
+    }
+    setReply(_url.isValid() ? davRequest("MOVE", _url, req) : davRequest("MOVE", path(), req));
     setupConnections(reply());
 
     if( reply()->error() != QNetworkReply::NoError ) {
@@ -92,10 +102,11 @@ void PropagateRemoteMove::start()
         }
     }
 
+    QString destination = QDir::cleanPath(_propagator->account()->url().path() + QLatin1Char('/')
+            + _propagator->account()->davPath() + _propagator->_remoteFolder + _item->_renameTarget);
     _job = new MoveJob(_propagator->account(),
                         _propagator->_remoteFolder + _item->_file,
-                        _propagator->_remoteDir + _item->_renameTarget,
-                        this);
+                        destination, this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
     _propagator->_activeJobList.append(this);
     _job->start();
@@ -175,10 +186,45 @@ void PropagateRemoteMove::finalize()
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
+
+    if (_item->_isDirectory) {
+        if (!adjustSelectiveSync(_propagator->_journal, _item->_file, _item->_renameTarget)) {
+            done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
+            return;
+        }
+    }
+
     _propagator->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 
+bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QString &from_, const QString &to_)
+{
+    bool ok;
+    // We only care about preserving the blacklist.   The white list should anyway be empty.
+    // And the undecided list will be repopulated on the next sync, if there is anything too big.
+    QStringList list = journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return false;
+
+    bool changed = false;
+    Q_ASSERT(!from_.endsWith(QLatin1String("/")));
+    Q_ASSERT(!to_.endsWith(QLatin1String("/")));
+    QString from = from_ + QLatin1String("/");
+    QString to = to_ + QLatin1String("/");
+
+    for (auto it = list.begin(); it != list.end(); ++it) {
+        if (it->startsWith(from)) {
+            *it = it->replace(0, from.size(), to);
+            changed = true;
+        }
+    }
+
+    if (changed) {
+        journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, list);
+    }
+    return true;
+}
 
 }
 

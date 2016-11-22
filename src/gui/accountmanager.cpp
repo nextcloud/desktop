@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -44,7 +45,7 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()
@@ -69,9 +70,7 @@ bool AccountManager::restore()
 bool AccountManager::restoreFromLegacySettings()
 {
     // try to open the correctly themed settings
-    auto settings = Account::settingsWithGroup(Theme::instance()->appName());
-
-    bool migratedCreds = false;
+    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -102,7 +101,6 @@ bool AccountManager::restoreFromLegacySettings()
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
-                    migratedCreds = true;
                     settings.reset( oCSettings );
                 } else {
                     delete oCSettings;
@@ -114,9 +112,6 @@ bool AccountManager::restoreFromLegacySettings()
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
         if (auto acc = loadAccountHelper(*settings)) {
-            if (migratedCreds) {
-                acc->setMigrated(true);
-            }
             addAccount(acc);
             return true;
         }
@@ -126,7 +121,7 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save(bool saveCredentials)
 {
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), 2);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
@@ -142,7 +137,7 @@ void AccountManager::save(bool saveCredentials)
 void AccountManager::saveAccount(Account* a)
 {
     qDebug() << "Saving account" << a->url().toString();
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
@@ -154,7 +149,7 @@ void AccountManager::saveAccount(Account* a)
 void AccountManager::saveAccountState(AccountState* a)
 {
     qDebug() << "Saving account state" << a->account()->url().toString();
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
@@ -209,20 +204,25 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
 
 AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
 {
+    auto urlConfig = settings.value(QLatin1String(urlC));
+    if (!urlConfig.isValid()) {
+        // No URL probably means a corrupted entry in the account settings
+        qDebug() << "No URL for account " << settings.group();
+        return AccountPtr();
+    }
+
     auto acc = createAccount();
 
     QString authType = settings.value(QLatin1String(authTypeC)).toString();
     QString overrideUrl = Theme::instance()->overrideServerUrl();
-    if( !overrideUrl.isEmpty() ) {
-        // if there is a overrideUrl, don't even bother reading from the config as all the accounts
-        // must use the overrideUrl
+    QString forceAuth = Theme::instance()->forceConfigAuthType();
+    if(!forceAuth.isEmpty() && !overrideUrl.isEmpty() ) {
+        // If forceAuth is set, this might also mean the overrideURL has changed.
+        // See enterprise issues #1126
         acc->setUrl(overrideUrl);
-        auto forceAuth = Theme::instance()->forceConfigAuthType();
-        if (!forceAuth.isEmpty()) {
-            authType = forceAuth;
-        }
+        authType = forceAuth;
     } else {
-        acc->setUrl(settings.value(QLatin1String(urlC)).toUrl());
+        acc->setUrl(urlConfig.toUrl());
     }
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 
@@ -275,7 +275,7 @@ void AccountManager::deleteAccount(AccountState* account)
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
-    auto settings = Account::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);

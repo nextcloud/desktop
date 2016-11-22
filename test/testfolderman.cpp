@@ -15,8 +15,8 @@
 #include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
+#include "configfile.h"
 #include "creds/httpcredentials.h"
-
 
 using namespace OCC;
 
@@ -51,6 +51,7 @@ private slots:
     {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
         QVERIFY(dir2.mkpath("sub/ownCloud1/folder/f"));

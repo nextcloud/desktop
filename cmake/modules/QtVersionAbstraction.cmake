@@ -1,4 +1,4 @@
-# (c) 2014 Copyright ownCloud, Inc.
+# (c) 2014 Copyright ownCloud GmbH
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING* file.
 
@@ -22,12 +22,18 @@ if( Qt5Core_FOUND )
         find_package(Qt5Test REQUIRED)
     endif()
     if(NOT TOKEN_AUTH_ONLY)
-        find_package(Qt5WebKitWidgets REQUIRED)
-        find_package(Qt5WebKit REQUIRED)
         find_package(Qt5Widgets REQUIRED)
         if(APPLE)
            find_package(Qt5MacExtras REQUIRED)
         endif(APPLE)
+
+        if(NOT NO_SHIBBOLETH)
+            find_package(Qt5WebKitWidgets)
+            find_package(Qt5WebKit)
+            if(NOT Qt5WebKitWidgets_FOUND)
+                message(FATAL_ERROR "Qt5WebKit required for Shibboleth. Use -DNO_SHIBBOLETH=1 to disable it.")
+            endif()
+        endif()
     endif()
 
 else( Qt5Core_FOUND )

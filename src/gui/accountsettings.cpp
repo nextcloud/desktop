@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -117,6 +118,10 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
+    connect(ui->bigFolderApply, SIGNAL(clicked(bool)), _model, SLOT(slotApplySelectiveSync()));
+    connect(ui->bigFolderSyncAll, SIGNAL(clicked(bool)), _model, SLOT(slotSyncAllPendingBigFolders()));
+    connect(ui->bigFolderSyncNone, SIGNAL(clicked(bool)), _model, SLOT(slotSyncNoPendingBigFolders()));
+
     connect(FolderMan::instance(), SIGNAL(folderListChanged(Folder::Map)), _model, SLOT(resetFolders()));
     connect(this, SIGNAL(folderChanged()), _model, SLOT(resetFolders()));
 
@@ -141,10 +146,6 @@ void AccountSettings::createAccountToolbox()
     _addAccountAction = new QAction(tr("Add new"), this);
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, SIGNAL(triggered(bool)), SLOT(slotOpenAccountWizard()));
-
-    QAction *openInBrowser = new QAction(tr("Open in browser"), this);
-    menu->addAction(openInBrowser);
-    connect(openInBrowser, SIGNAL(triggered(bool)), SLOT(slotOpenInBrowser()));
 
     _toggleSignInOutAction = new QAction(tr("Log out"), this);
     connect(_toggleSignInOutAction, SIGNAL(triggered(bool)), SLOT(slotToggleSignInState()));
@@ -192,11 +193,6 @@ void AccountSettings::slotToggleSignInState()
     } else {
         _accountState->signOutByUi();
     }
-}
-
-void AccountSettings::slotOpenInBrowser()
-{
-    QDesktopServices::openUrl(_accountState->account()->url());
 }
 
 void AccountSettings::doExpand()
@@ -326,7 +322,7 @@ void AccountSettings::slotFolderWizardAccepted()
         // The user already accepted the selective sync dialog. everything is in the white list
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
                                              QStringList() << QLatin1String("/"));
-        folderMan->slotScheduleAllFolders();
+        folderMan->scheduleAllFolders();
         emit folderChanged();
     }
 }
@@ -365,7 +361,7 @@ void AccountSettings::slotRemoveCurrentFolder()
                 return;
             }
 
-            folderMan->slotRemoveFolder( folderMan->folder(alias) );
+            folderMan->removeFolder( folderMan->folder(alias) );
             _model->removeRow(row);
 
             // single folder fix to show add-button and hide remove-button
@@ -473,7 +469,7 @@ void AccountSettings::slotSyncCurrentFolderNow()
     QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
 
-    folderMan->slotScheduleSync(folderMan->folder(alias));
+    folderMan->scheduleFolder(folderMan->folder(alias));
 }
 
 void AccountSettings::slotOpenOC()
@@ -644,12 +640,13 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 
     if (msg.isEmpty()) {
-        ui->selectiveSyncNotification->setVisible(false);
-        ui->selectiveSyncNotification->setText(QString());
+        ui->selectiveSyncButtons->setVisible(true);
+        ui->bigFolderUi->setVisible(false);
     } else {
-        ui->selectiveSyncNotification->setVisible(true);
         QString wholeMsg = tr("There are new folders that were not synchronized because they are too big: ") + msg;
         ui->selectiveSyncNotification->setText(wholeMsg);
+        ui->selectiveSyncButtons->setVisible(false);
+        ui->bigFolderUi->setVisible(true);
         shouldBeVisible = true;
     }
 

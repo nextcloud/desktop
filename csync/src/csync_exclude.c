@@ -28,7 +28,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 
 #include "c_lib.h"
 #include "c_private.h"
@@ -37,10 +36,16 @@
 #include "csync_exclude.h"
 #include "csync_misc.h"
 
+#ifdef _WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-#ifndef NDEBUG
+#ifndef WITH_UNIT_TESTING
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
@@ -251,10 +256,11 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     if (blen > 1) {
         if (bname[blen-1]== ' ') {
             match = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
+            goto out;
         } else if (bname[blen-1]== '.' ) {
             match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            goto out;
         }
-        goto out;
     }
 
     if (csync_is_windows_reserved_word(bname)) {

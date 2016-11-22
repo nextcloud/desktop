@@ -70,9 +70,9 @@ set(client_SRCS
     activityitemdelegate.cpp
     selectivesyncdialog.cpp
     settingsdialog.cpp
-    share.cpp
     sharedialog.cpp
     sharelinkwidget.cpp
+    sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
     socketapi.cpp
@@ -94,22 +94,26 @@ set(client_SRCS
     servernotificationhandler.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
-    creds/shibbolethcredentials.cpp
-    creds/shibboleth/shibbolethwebview.cpp
-    creds/shibboleth/shibbolethuserjob.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
     wizard/owncloudsetuppage.cpp
-    wizard/owncloudshibbolethcredspage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
     ../3rdparty/qjson/json.cpp
 )
 
+IF(NOT NO_SHIBBOLETH)
+    list(APPEND client_SRCS
+        creds/shibbolethcredentials.cpp
+        creds/shibboleth/shibbolethwebview.cpp
+        creds/shibboleth/shibbolethuserjob.cpp
+        wizard/owncloudshibbolethcredspage.cpp
+    )
+endif()
 
 set(updater_SRCS
     updater/ocupdater.cpp
@@ -195,6 +199,9 @@ IF( WIN32 )
       ${CMAKE_CURRENT_BINARY_DIR}/version.rc
       @ONLY)
     set(client_version ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
+    IF(NOT MSVC)
+        set(client_manifest ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
+    ENDIF()
 ENDIF()
 
 set( final_src
@@ -202,6 +209,7 @@ set( final_src
     ${client_SRCS}
     ${client_UI_SRCS}
     ${client_version}
+    ${client_manifest}
     ${guiMoc}
     ${client_I18N}
     ${3rdparty_SRC}
@@ -232,6 +240,9 @@ set(ownCloud ${ownCloud_old})
 if (WITH_DBUS)
     set(ADDITIONAL_APP_MODULES DBus)
 endif(WITH_DBUS)
+if (NOT NO_SHIBBOLETH)
+    list(APPEND ADDITIONAL_APP_MODULES WebKitWidgets)
+endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
@@ -250,14 +261,14 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql ${ADDITIONAL_APP_MODULES})
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml Sql ${ADDITIONAL_APP_MODULES})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml WebKitWidgets Sql  ${ADDITIONAL_APP_MODULES})
+    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml Sql  ${ADDITIONAL_APP_MODULES})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})

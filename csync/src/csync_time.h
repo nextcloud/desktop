@@ -26,5 +26,6 @@
 #include "csync_private.h"
 
 int csync_gettime(struct timespec *tp);
+void csync_sleep(unsigned int msecs);
 
 #endif /* _CSYNC_TIME_H */

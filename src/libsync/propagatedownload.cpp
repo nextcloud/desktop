@@ -31,6 +31,10 @@
 #include <QDebug>
 #include <cmath>
 
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#endif
+
 namespace OCC {
 
 // Always coming in with forward slashes.
@@ -99,7 +103,6 @@ void GETFileJob::start() {
     } else {
         // Use direct URL
         setReply(davRequest("GET", _directDownloadUrl, req));
-        _followRedirects = true;  // (follow redirections for the direct download)
     }
     setupConnections(reply());
 
@@ -305,7 +308,7 @@ QString GETFileJob::errorString() const
     }
 }
 
-void PropagateDownloadFileQNAM::start()
+void PropagateDownloadFile::start()
 {
     if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
         return;
@@ -419,7 +422,7 @@ void PropagateDownloadFileQNAM::start()
     _job->start();
 }
 
-qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
+qint64 PropagateDownloadFile::committedDiskSpace() const
 {
     if (_state == Running) {
         return qBound(0ULL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
@@ -427,13 +430,13 @@ qint64 PropagateDownloadFileQNAM::committedDiskSpace() const
     return 0;
 }
 
-void PropagateDownloadFileQNAM::setDeleteExistingFolder(bool enabled)
+void PropagateDownloadFile::setDeleteExistingFolder(bool enabled)
 {
     _deleteExisting = enabled;
 }
 
 const char owncloudCustomSoftErrorStringC[] = "owncloud-custom-soft-error-string";
-void PropagateDownloadFileQNAM::slotGetFinished()
+void PropagateDownloadFile::slotGetFinished()
 {
     _propagator->_activeJobList.removeOne(this);
 
@@ -566,14 +569,14 @@ void PropagateDownloadFileQNAM::slotGetFinished()
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
-void PropagateDownloadFileQNAM::slotChecksumFail( const QString& errMsg )
+void PropagateDownloadFile::slotChecksumFail( const QString& errMsg )
 {
     FileSystem::remove(_tmpFile.fileName());
     _propagator->_anotherSyncNeeded = true;
     done(SyncFileItem::SoftError, errMsg ); // tr("The file downloaded with a broken checksum, will be redownloaded."));
 }
 
-void PropagateDownloadFileQNAM::deleteExistingFolder()
+void PropagateDownloadFile::deleteExistingFolder()
 {
     QString existingDir = _propagator->getFilePath(_item->_file);
     if (!QFileInfo(existingDir).isDir()) {
@@ -590,7 +593,7 @@ void PropagateDownloadFileQNAM::deleteExistingFolder()
     }
 
     QString conflictDir = FileSystem::makeConflictFileName(
-            existingDir, Utility::qDateTimeFromTime_t(_item->_modtime));
+            existingDir, Utility::qDateTimeFromTime_t(FileSystem::getModTime(existingDir)));
 
     emit _propagator->touchedFile(existingDir);
     emit _propagator->touchedFile(conflictDir);
@@ -617,29 +620,47 @@ static QString makeRecallFileName(const QString &fn)
     return recallFileName;
 }
 
-static void handleRecallFile(const QString &fn)
+void handleRecallFile(const QString& filePath, const QString& folderPath, SyncJournalDb& journal)
 {
-    qDebug() << "handleRecallFile: " << fn;
+    qDebug() << "handleRecallFile: " << filePath;
 
-    FileSystem::setFileHidden(fn, true);
+    FileSystem::setFileHidden(filePath, true);
 
-    QFile file(fn);
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         qWarning() << "Could not open recall file" << file.errorString();
         return;
     }
-    QFileInfo existingFile(fn);
-    QDir thisDir = existingFile.dir();
+    QFileInfo existingFile(filePath);
+    QDir baseDir = existingFile.dir();
 
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
         line.chop(1); // remove trailing \n
-        QString fpath = thisDir.filePath(line);
-        QString rpath = makeRecallFileName(fpath);
 
-        qDebug() << "Copy recall file: " << fpath << " -> " << rpath;
-        QString error;
-        FileSystem::uncheckedRenameReplace(fpath, rpath, &error);
+        QString recalledFile = QDir::cleanPath(baseDir.filePath(line));
+        if (!recalledFile.startsWith(folderPath) || !recalledFile.startsWith(baseDir.path())) {
+            qDebug() << "Ignoring recall of " << recalledFile;
+            continue;
+        }
+
+        // Path of the recalled file in the local folder
+        QString localRecalledFile = recalledFile.mid(folderPath.size());
+
+        SyncJournalFileRecord record = journal.getFileRecord(localRecalledFile);
+        if (!record.isValid()) {
+            qDebug() << "No db entry for recall of" << localRecalledFile;
+            continue;
+        }
+
+        qDebug() << "Recalling" << localRecalledFile << "Checksum:" << record._contentChecksumType << record._contentChecksum;
+
+        QString targetPath = makeRecallFileName(recalledFile);
+
+        qDebug() << "Copy recall file: " << recalledFile << " -> " << targetPath;
+        // Remove the target first, QFile::copy will not overwrite it.
+        FileSystem::remove(targetPath);
+        QFile::copy(recalledFile, targetPath);
     }
 }
 
@@ -654,7 +675,7 @@ static void preserveGroupOwnership(const QString& fileName, const QFileInfo& fi)
 }
 } // end namespace
 
-void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
 {
     const auto theContentChecksumType = contentChecksumType();
 
@@ -675,7 +696,7 @@ void PropagateDownloadFileQNAM::transmissionChecksumValidated(const QByteArray &
     computeChecksum->start(_tmpFile.fileName());
 }
 
-void PropagateDownloadFileQNAM::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
     _item->_contentChecksum = checksum;
     _item->_contentChecksumType = checksumType;
@@ -683,7 +704,7 @@ void PropagateDownloadFileQNAM::contentChecksumComputed(const QByteArray &checks
     downloadFinished();
 }
 
-void PropagateDownloadFileQNAM::downloadFinished()
+void PropagateDownloadFile::downloadFinished()
 {
     QString fn = _propagator->getFilePath(_item->_file);
 
@@ -701,7 +722,8 @@ void PropagateDownloadFileQNAM::downloadFinished()
             && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = FileSystem::makeConflictFileName(fn, Utility::qDateTimeFromTime_t(_item->_modtime));
+        QString conflictFileName = FileSystem::makeConflictFileName(
+                fn, Utility::qDateTimeFromTime_t(FileSystem::getModTime(fn)));
         if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
             // If the rename fails, don't replace it.
 
@@ -796,8 +818,10 @@ void PropagateDownloadFileQNAM::downloadFinished()
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
-    if(_item->_file == QLatin1String(".sys.admin#recall#") || _item->_file.endsWith("/.sys.admin#recall#")) {
-        handleRecallFile(fn);
+    if(!_item->_remotePerm.contains("S")
+            && (_item->_file == QLatin1String(".sys.admin#recall#")
+                || _item->_file.endsWith("/.sys.admin#recall#"))) {
+        handleRecallFile(fn, _propagator->_localDir, *_propagator->_journal);
     }
 
     qint64 duration = _stopwatch.elapsed();
@@ -806,7 +830,7 @@ void PropagateDownloadFileQNAM::downloadFinished()
     }
 }
 
-void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
+void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 {
     if (!_job) return;
     _downloadProgress = received;
@@ -814,7 +838,7 @@ void PropagateDownloadFileQNAM::slotDownloadProgress(qint64 received, qint64)
 }
 
 
-void PropagateDownloadFileQNAM::abort()
+void PropagateDownloadFile::abort()
 {
     if (_job &&  _job->reply())
         _job->reply()->abort();

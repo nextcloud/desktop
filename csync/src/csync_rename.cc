@@ -20,6 +20,7 @@
 
 extern "C" {
 #include "csync_private.h"
+#include "csync_rename.h"
 }
 
 #include <map>
@@ -93,5 +94,9 @@ char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
     return c_strdup(path);
 }
 
+bool csync_rename_count(CSYNC *ctx) {
+    csync_rename_s* d = csync_rename_s::get(ctx);
+    return d->folder_renamed_from.size();
+}
 
 }

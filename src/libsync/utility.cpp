@@ -4,7 +4,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -16,6 +17,7 @@
 #include "utility.h"
 
 #include "version.h"
+#include "configfile.h"
 
 // Note:  This file must compile without QtGui
 #include <QCoreApplication>
@@ -37,6 +39,9 @@
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
 #include <QCollator>
+#endif
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
+#include <QSysInfo>
 #endif
 
 
@@ -238,19 +243,6 @@ QString Utility::compactFormatDouble(double value, int prec, const QString& unit
     return str;
 }
 
-QString Utility::toCSyncScheme(const QString &urlStr)
-{
-
-    QUrl url( urlStr );
-    if( url.scheme() == QLatin1String("http") ) {
-        url.setScheme( QLatin1String("owncloud") );
-    } else {
-        // connect SSL!
-        url.setScheme( QLatin1String("ownclouds") );
-    }
-    return url.toString();
-}
-
 QString Utility::escape(const QString &in)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -438,6 +430,25 @@ bool Utility::isBSD()
 #endif
 }
 
+QString Utility::platformName()
+{
+    QString re("Windows");
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+    if( isMac() ) {
+        re = QLatin1String("MacOSX");
+    } else if( isLinux() ) {
+        re = QLatin1String("Linux");
+    } else if( isBSD() ) {
+        re = QLatin1String("BSD");
+    } else if( isUnix() ) {
+        re = QLatin1String("Unix");
+    }
+#else
+    re = QSysInfo::prettyProductName();
+#endif
+    return re;
+}
 
 void Utility::crash()
 {
@@ -576,6 +587,43 @@ void Utility::sortFilenames(QStringList& fileNames)
 #else
     fileNames.sort();
 #endif
+}
+
+QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
+                            const QList< QPair<QString, QString> > &queryItems)
+{
+    QString path = url.path();
+    if (! concatPath.isEmpty()) {
+        // avoid '//'
+        if (path.endsWith('/') && concatPath.startsWith('/')) {
+            path.chop(1);
+        } // avoid missing '/'
+        else if (!path.endsWith('/') && !concatPath.startsWith('/')) {
+            path += QLatin1Char('/');
+        }
+        path += concatPath; // put the complete path together
+    }
+
+    QUrl tmpUrl = url;
+    tmpUrl.setPath(path);
+    if( queryItems.size() > 0 ) {
+        tmpUrl.setQueryItems(queryItems);
+    }
+    return tmpUrl;
+}
+
+Q_GLOBAL_STATIC(QString, g_configFileName)
+
+std::unique_ptr<QSettings> Utility::settingsWithGroup(const QString& group, QObject *parent)
+{
+    if (g_configFileName()->isEmpty()) {
+        // cache file name
+        ConfigFile cfg;
+        *g_configFileName() = cfg.configFile();
+    }
+    std::unique_ptr<QSettings> settings(new QSettings(*g_configFileName(), QSettings::IniFormat, parent));
+    settings->beginGroup(group);
+    return settings;
 }
 
 } // namespace OCC

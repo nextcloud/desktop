@@ -460,7 +460,7 @@ void SelectiveSyncDialog::accept()
             _folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
 
-        folderMan->slotScheduleSync(_folder);
+        folderMan->scheduleFolder(_folder);
     }
     QDialog::accept();
 }

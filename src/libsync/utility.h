@@ -4,7 +4,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -21,6 +22,10 @@
 #include <QDateTime>
 #include <QElapsedTimer>
 #include <QMap>
+#include <QUrl>
+#include <memory>
+
+class QSettings;
 
 namespace OCC {
 
@@ -39,7 +44,6 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path);
-    OWNCLOUDSYNC_EXPORT QString toCSyncScheme(const QString &urlStr);
 
     /**
      * @brief compactFormatDouble - formats a double value human readable.
@@ -91,6 +95,7 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT bool isLinux(); // use with care
     OWNCLOUDSYNC_EXPORT bool isBSD(); // use with care, does not match OS X
 
+    OWNCLOUDSYNC_EXPORT QString platformName();
     // crash helper for --debug
     OWNCLOUDSYNC_EXPORT void crash();
 
@@ -146,6 +151,14 @@ namespace Utility
      */
     OWNCLOUDSYNC_EXPORT void sortFilenames(QStringList& fileNames);
 
+    /** Appends concatPath and queryItems to the url */
+    OWNCLOUDSYNC_EXPORT QUrl concatUrlPath(
+            const QUrl &url, const QString &concatPath,
+            const QList< QPair<QString, QString> > &queryItems = (QList<QPair<QString, QString>>()));
+
+    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
+         with the given parent. If no parent is specified, the caller must destroy the settings */
+    OWNCLOUDSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString& group, QObject* parent = 0);
 }
 /** @} */ // \addtogroup
 

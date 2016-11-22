@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include <string.h>
-#include <unistd.h>
 
 #include "torture.h"
 
@@ -37,7 +36,7 @@ static int setup(void **state) {
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
 
-    csync_create(&csync, "/tmp/check_csync1", "/tmp/check_csync2");
+    csync_create(&csync, "/tmp/check_csync1");
 
     csync->statedb.file = c_strdup( TESTDB );
     *state = csync;

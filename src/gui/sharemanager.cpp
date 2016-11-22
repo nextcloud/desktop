@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -11,7 +12,7 @@
  * for more details.
  */
 
-#include "share.h"
+#include "sharemanager.h"
 #include "ocssharejob.h"
 #include "account.h"
 
@@ -30,9 +31,9 @@ Q_DECLARE_METATYPE(CreateShare)
 
 namespace OCC {
 
-Share::Share(AccountPtr account, 
-             const QString& id, 
-             const QString& path, 
+Share::Share(AccountPtr account,
+             const QString& id,
+             const QString& path,
              const ShareType shareType,
              const Permissions permissions,
              const QSharedPointer<Sharee> shareWith)
@@ -100,7 +101,7 @@ void Share::slotDeleted()
 
 void Share::slotOcsError(int statusCode, const QString &message)
 {
-    emit serverError(statusCode, message);   
+    emit serverError(statusCode, message);
 }
 
 QUrl LinkShare::getLink() const
@@ -229,7 +230,7 @@ void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
     if (code == 403) {
         emit linkShareRequiresPassword(message);
         return;
-    } 
+    }
 
     //Parse share
     auto data = reply.value("ocs").toMap().value("data").toMap();
@@ -329,7 +330,7 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
             newShare = parseShare(data);
         }
 
-        shares.append(QSharedPointer<Share>(newShare));    
+        shares.append(QSharedPointer<Share>(newShare));
     }
 
     qDebug() << Q_FUNC_INFO << "Sending " << shares.count() << "shares";
@@ -344,12 +345,12 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
         url = QUrl(data.value("url").toString());
     } else if (_account->serverVersionInt() >= (8 << 16)) {
         // From ownCloud server version 8 on, a different share link scheme is used.
-        url = QUrl(Account::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString());
+        url = QUrl(Utility::concatUrlPath(_account->url(), QString("index.php/s/%1").arg(data.value("token").toString())).toString());
     } else {
         QList<QPair<QString, QString>> queryArgs;
         queryArgs.append(qMakePair(QString("service"), QString("files")));
         queryArgs.append(qMakePair(QString("t"), data.value("token").toString()));
-        url = QUrl(Account::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString());
+        url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString());
     }
 
     QDate expireDate;
@@ -371,7 +372,7 @@ QSharedPointer<Share> ShareManager::parseShare(const QVariantMap &data)
     QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
                                              data.value("share_with_displayname").toString(),
                                              (Sharee::Type)data.value("share_type").toInt()));
-    
+
     return QSharedPointer<Share>(new Share(_account,
                                            data.value("id").toString(),
                                            data.value("path").toString(),

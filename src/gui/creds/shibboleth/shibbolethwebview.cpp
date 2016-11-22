@@ -3,7 +3,8 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 2 of the License.
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
@@ -20,6 +21,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QSettings>
+#include <QMainWindow>
 
 #include "creds/shibboleth/shibbolethwebview.h"
 #include "creds/shibbolethcredentials.h"
@@ -74,10 +76,23 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget* parent)
     connect(page->networkAccessManager()->cookieJar(),
             SIGNAL(newCookiesForUrl (QList<QNetworkCookie>, QUrl)),
             this, SLOT(onNewCookiesForUrl (QList<QNetworkCookie>, QUrl)));
+
     page->mainFrame()->load(account->url());
     this->setPage(page);
     setWindowTitle(tr("%1 - Authenticate").arg(Theme::instance()->appNameGUI()));
 
+    // Debug view to display the cipher suite
+    if( !qgetenv("OWNCLOUD_SHIBBOLETH_DEBUG").isEmpty() ) {
+        // open an additional window to display some cipher debug info
+        QWebPage *debugPage = new UserAgentWebPage(this);
+        debugPage->mainFrame()->load( QUrl("https://cc.dcsec.uni-hannover.de/"));
+        QWebView *debugView = new QWebView(this);
+        debugView->setPage(debugPage);
+        QMainWindow *window = new QMainWindow(this);
+        window->setWindowTitle(tr("SSL Chipher Debug View"));
+        window->setCentralWidget(debugView);
+        window->show();
+    }
     // If we have a valid cookie, it's most likely expired. We can use this as
     // as a criteria to tell the user why the browser window pops up
     QNetworkCookie shibCookie = ShibbolethCredentials::findShibCookie(_account.data(), ShibbolethCredentials::accountCookies(_account.data()));
@@ -142,7 +157,6 @@ void ShibbolethWebView::slotLoadFinished(bool success)
 
     if (!success) {
         qDebug() << Q_FUNC_INFO << "Could not load Shibboleth login page to log you in.";
-
     }
 }
 
