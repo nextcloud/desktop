@@ -314,7 +314,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
-            PropagateDirectory *delDirJob = dynamic_cast<PropagateDirectory*>(directoriesToRemove.first());
+            PropagateDirectory *delDirJob = qobject_cast<PropagateDirectory*>(directoriesToRemove.first());
 
             if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // already taken care of. (by the removal of the parent directory)
