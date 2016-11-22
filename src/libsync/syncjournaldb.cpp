@@ -151,24 +151,33 @@ bool SyncJournalDb::checkConnect()
         return false;
     }
 
-    bool isNewDb = !FileSystem::fileExists( _dbFile );
+    const QString dir = _dbFile.left( _dbFile.lastIndexOf(QChar('/')) );
+    const QString oldDbName = dir + QLatin1String("/.csync_journal.db");
 
-    if( isNewDb ) {
-        // check if there is a database with the old naming scheme. This one
-        // is renamed to the new name.
-        const QString dir = _dbFile.left( _dbFile.lastIndexOf(QChar('/')) );
-        const QString oldDbName = dir + QLatin1String("/.csync_journal.db");
-        if( FileSystem::fileExists(oldDbName) ) {
-            QString errString;
-            bool renameOk = FileSystem::rename(oldDbName, _dbFile, &errString);
+    bool migrateOldDb = FileSystem::fileExists(oldDbName);
 
-            if( !renameOk ) {
-                qDebug() << "Database migration failed:" << errString;
-            } else {
-                qDebug() << "Journal successfully migrated from" << oldDbName << "to" << _dbFile;
-                isNewDb = false;
+    // Whenever there is an old db file, migrate it to the new db path.
+    // This is done to make switching from older versions to newer versions
+    // work correctly even if the user had previously used a new version
+    // and therefore already has an (outdated) new-style db file.
+    if( migrateOldDb ) {
+        QString error;
+
+        if( FileSystem::fileExists( _dbFile ) ) {
+            if( !FileSystem::remove(_dbFile, &error) ) {
+                qDebug() << "Database migration: Could not remove db file" << _dbFile
+                         << "due to" << error;
+                return false;
             }
         }
+
+        if( !FileSystem::rename(oldDbName, _dbFile, &error) ) {
+            qDebug() << "Database migration: could not rename " << oldDbName
+                     << "to" << _dbFile << ":" << error;
+            return false;
+        }
+
+        qDebug() << "Journal successfully migrated from" << oldDbName << "to" << _dbFile;
     }
 
     // The database file is created by this call (SQLITE_OPEN_CREATE)
@@ -344,7 +353,7 @@ bool SyncJournalDb::checkConnect()
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
-        if (!isNewDb) {
+        if (migrateOldDb) {
             qDebug() << Q_FUNC_INFO << "possibleUpgradeFromMirall_1_5 detected!";
             forceRemoteDiscovery = true;
         }
