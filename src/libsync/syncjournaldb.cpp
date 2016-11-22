@@ -33,7 +33,9 @@
 namespace OCC {
 
 SyncJournalDb::SyncJournalDb( QObject *parent) :
-    QObject(parent), _transaction(0)
+    QObject(parent),
+    _transaction(0),
+    _mayMigrateDbLocation(false)
 {
 
 }
@@ -57,6 +59,16 @@ void SyncJournalDb::setAccountParameterForFilePath( const QString& localPath, co
     QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
     _dbFile.append( ba.left(6).toHex() );
     _dbFile.append(".db");
+}
+
+bool SyncJournalDb::mayMigrateDbLocation() const
+{
+    return _mayMigrateDbLocation;
+}
+
+void SyncJournalDb::setMayMigrateDbLocation(bool migrate)
+{
+    _mayMigrateDbLocation = migrate;
 }
 
 #ifndef NDEBUG
@@ -154,7 +166,7 @@ bool SyncJournalDb::checkConnect()
     const QString dir = _dbFile.left( _dbFile.lastIndexOf(QChar('/')) );
     const QString oldDbName = dir + QLatin1String("/.csync_journal.db");
 
-    bool migrateOldDb = FileSystem::fileExists(oldDbName);
+    bool migrateOldDb = _mayMigrateDbLocation && FileSystem::fileExists(oldDbName);
 
     // Whenever there is an old db file, migrate it to the new db path.
     // This is done to make switching from older versions to newer versions

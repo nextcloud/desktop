@@ -64,6 +64,9 @@ public:
 #endif
     void setAccountParameterForFilePath(const QString& localPath, const QUrl &remoteUrl, const QString& remotePath );
 
+    bool mayMigrateDbLocation() const;
+    void setMayMigrateDbLocation(bool migrate);
+
     static qint64 getPHash(const QString& );
 
     void updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item );
@@ -220,6 +223,12 @@ private:
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      */
     QList<QString> _avoidReadFromDbOnNextSyncFilter;
+
+    /**
+     * Whether to check old journal path (csync_journal.db) and move the file
+     * to its new location, if it exists.
+     */
+    bool _mayMigrateDbLocation;
 };
 
 bool OWNCLOUDSYNC_EXPORT

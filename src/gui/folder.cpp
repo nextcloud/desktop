@@ -46,7 +46,6 @@
 
 namespace OCC {
 
-
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
                QObject* parent)
@@ -204,7 +203,7 @@ void Folder::setIgnoreHiddenFiles(bool ignore)
     _definition.ignoreHiddenFiles = ignore;
 }
 
-QString Folder::cleanPath()
+QString Folder::cleanPath() const
 {
     QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
 
@@ -585,8 +584,33 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 
 void Folder::saveToSettings() const
 {
+    // Remove first to make sure we don't get duplicates
+    removeFromSettings();
+
     auto settings = _accountState->settings();
-    settings->beginGroup(QLatin1String("Folders"));
+
+    // The folder is saved to backwards-compatible "Folders"
+    // section only if it has the migrate flag set (i.e. was in
+    // there before) or if the folder is the only one for the
+    // given target path.
+    // This ensures that older clients will not read a configuration
+    // where two folders for different accounts point at the same
+    // local folders.
+    bool oneAccountOnly = true;
+    foreach (Folder* other, FolderMan::instance()->map()) {
+        if (other != this && other->cleanPath() == this->cleanPath()) {
+            oneAccountOnly = false;
+            break;
+        }
+    }
+
+    bool inFolders = _journal.mayMigrateDbLocation() || oneAccountOnly;
+
+    if (inFolders) {
+        settings->beginGroup(QLatin1String("Folders"));
+    } else {
+        settings->beginGroup(QLatin1String("Multifolders"));
+    }
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
@@ -595,8 +619,11 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    auto  settings = _accountState->settings();
+    auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
+    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->endGroup();
+    settings->beginGroup(QLatin1String("Multifolders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 

@@ -273,6 +273,8 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
+    void setupFoldersHelper(QSettings& settings, AccountStatePtr account, bool mayMigrateOldDb);
+
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;
     QString        _folderConfigPath;

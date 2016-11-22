@@ -111,7 +111,7 @@ public:
     /**
      * wrapper for QDir::cleanPath("Z:\\"), which returns "Z:\\", but we need "Z:" instead
      */
-    QString cleanPath();
+    QString cleanPath() const;
 
     /**
      * remote folder path

@@ -209,24 +209,37 @@ int FolderMan::setupFolders()
             continue;
         }
         settings->beginGroup(id);
+
         settings->beginGroup(QLatin1String("Folders"));
-        foreach (const auto& folderAlias, settings->childGroups()) {
-            FolderDefinition folderDefinition;
-            if (FolderDefinition::load(*settings, folderAlias, &folderDefinition)) {
-                Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
-                if (f) {
-                    scheduleFolder(f);
-                    emit folderSyncStateChange(f);
-                }
-            }
-        }
-        settings->endGroup(); // Folders
+        setupFoldersHelper(*settings, account, true);
+        settings->endGroup();
+
+        // See Folder::saveToSettings for details about why this exists.
+        settings->beginGroup(QLatin1String("Multifolders"));
+        setupFoldersHelper(*settings, account, false);
+        settings->endGroup();
+
         settings->endGroup(); // <account>
     }
 
     emit folderListChanged(_folderMap);
 
     return _folderMap.size();
+}
+
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool mayMigrateOldDb)
+{
+    foreach (const auto& folderAlias, settings.childGroups()) {
+        FolderDefinition folderDefinition;
+        if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
+            Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
+            if (f) {
+                f->journalDb()->setMayMigrateDbLocation(mayMigrateOldDb);
+                scheduleFolder(f);
+                emit folderSyncStateChange(f);
+            }
+        }
+    }
 }
 
 int FolderMan::setupFoldersMigration()
