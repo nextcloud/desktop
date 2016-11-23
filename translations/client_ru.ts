@@ -404,8 +404,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
-        <source>The list of unsynched items has been copied to the clipboard.</source>
-        <translation>Список несинхронизированных элементов скопирован в буфер обмена.</translation>
+        <source>The list of unsynced items has been copied to the clipboard.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -765,102 +765,102 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Найден старый журнал синхронизации &apos;%1&apos;, и он не может быть удалён. Убедитесь что он не открыт в другом приложении.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="964"/>
+        <location filename="../src/gui/folderman.cpp" line="963"/>
         <source> (backup)</source>
         <translation>(бэкап)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="969"/>
+        <location filename="../src/gui/folderman.cpp" line="968"/>
         <source> (backup %1)</source>
         <translation>(бэкап %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1176"/>
+        <location filename="../src/gui/folderman.cpp" line="1175"/>
         <source>Undefined State.</source>
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1179"/>
+        <location filename="../src/gui/folderman.cpp" line="1178"/>
         <source>Waiting to start syncing.</source>
         <translation>Ожидание запуска синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1182"/>
+        <location filename="../src/gui/folderman.cpp" line="1181"/>
         <source>Preparing for sync.</source>
         <translation>Подготовка к синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1185"/>
+        <location filename="../src/gui/folderman.cpp" line="1184"/>
         <source>Sync is running.</source>
         <translation>Идет синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1188"/>
+        <location filename="../src/gui/folderman.cpp" line="1187"/>
         <source>Last Sync was successful.</source>
         <translation>Последняя синхронизация прошла успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1192"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
         <translation>Последняя синхронизация прошла успешно, но были предупреждения для некоторых файлов.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1196"/>
+        <location filename="../src/gui/folderman.cpp" line="1195"/>
         <source>Setup Error.</source>
         <translation>Ошибка установки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1199"/>
+        <location filename="../src/gui/folderman.cpp" line="1198"/>
         <source>User Abort.</source>
         <translation>Отмена пользователем.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1202"/>
+        <location filename="../src/gui/folderman.cpp" line="1201"/>
         <source>Sync is paused.</source>
         <translation>Синхронизация приостановлена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1208"/>
+        <location filename="../src/gui/folderman.cpp" line="1207"/>
         <source>%1 (Sync is paused)</source>
         <translation>%! (синхронизация приостановлена)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1216"/>
+        <location filename="../src/gui/folderman.cpp" line="1215"/>
         <source>No valid folder selected!</source>
         <translation>Не выбран валидный каталог!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1227"/>
+        <location filename="../src/gui/folderman.cpp" line="1226"/>
         <source>The selected path is not a folder!</source>
         <translation>Выбранный путь не является папкой!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1231"/>
+        <location filename="../src/gui/folderman.cpp" line="1230"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>У вас недостаточно прав для записи в выбранный каталог!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1246"/>
+        <location filename="../src/gui/folderman.cpp" line="1245"/>
         <source>The local folder %1 is already used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка %1 уже используется для синхронизации. Пожалуйста выберите другую!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1251"/>
+        <location filename="../src/gui/folderman.cpp" line="1250"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка %1 уже содержит папку, которая используется для синхронизации. Пожалуйста выберите другую!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1258"/>
+        <location filename="../src/gui/folderman.cpp" line="1257"/>
         <source>The local folder %1 is a symbolic link. The link target already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка %1 является символьной ссылкой. Эта ссылка уже содержит папку для синхронизации. Пожалуйста выберите другую!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1265"/>
+        <location filename="../src/gui/folderman.cpp" line="1264"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка %1 уже содержит папку, которая используется для синхронизации. Пожалуйста выберите другую!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1271"/>
+        <location filename="../src/gui/folderman.cpp" line="1270"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локальная папка %1 является символьной ссылкой. Эта ссылка уже содержит папку, которая используется для синхронизации. Пожалуйста укажите другую!</translation>
     </message>
@@ -2157,17 +2157,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="441"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Неожиданный код завершения от сервера (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Отсутствует код файла от сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>Отсутствует ETag с сервера</translation>
     </message>
 </context>
 <context>
@@ -3338,7 +3338,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Новая учётная запись…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="748"/>
@@ -3387,7 +3387,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Версия %2. За известными проблемами и помощью обращайтесь по ссылке &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Авторы: Клаас Фрейтаг, Дэниель Молкентен, Оливье Гоффар, Маркус Гётц, Жан-Кристоф Бошар, и другие.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Авторские права принадлежат ownCloud GmbH&lt;/p&gt;&lt;p&gt;Лицензировано под GNU General Public License (GPL) версии 2.0&lt;br/&gt;ownCloud и логотип ownCloud — зарегистрированные торговые марки ownCloud GmbH в Соединённых Штатах, и/или других странах.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
