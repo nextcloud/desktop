@@ -53,6 +53,8 @@ public:
     QString alias;
     /// path on local machine
     QString localPath;
+    /// path to the journal, usually relative to localPath
+    QString journalPath;
     /// path on remote
     QString targetPath;
     /// whether the folder is paused
@@ -69,6 +71,15 @@ public:
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString& path);
+
+    /// Ensure starting / and no ending /.
+    static QString prepareTargetPath(const QString& path);
+
+    /// journalPath relative to localPath.
+    QString absoluteJournalPath() const;
+
+    /// Returns the relative journal path that's appropriate for this folder and account.
+    QString defaultJournalPath(AccountPtr account);
 };
 
 /**
@@ -206,6 +217,12 @@ public:
       */
      void scheduleThisFolderSoon();
 
+     /**
+      * Migration: When this flag is true, this folder will save to
+      * the backwards-compatible 'Folders' section in the config file.
+      */
+     void setSaveBackwardsCompatible(bool save);
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -334,6 +351,16 @@ private:
     QScopedPointer<SyncRunFileLog> _fileLog;
 
     QTimer _scheduleSelfTimer;
+
+    /**
+     * When the same local path is synced to multiple accounts, only one
+     * of them can be stored in the settings in a way that's compatible
+     * with old clients that don't support it. This flag marks folders
+     * that shall be written in a backwards-compatible way, by being set
+     * on the *first* Folder instance that was configured for each local
+     * path.
+     */
+    bool _saveBackwardsCompatible;
 };
 
 }

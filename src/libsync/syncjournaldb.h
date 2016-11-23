@@ -37,8 +37,16 @@ class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncJournalDb(QObject *parent = 0);
+    explicit SyncJournalDb(const QString& dbFilePath, QObject *parent = 0);
     virtual ~SyncJournalDb();
+
+    /// Create a journal path for a specific configuration
+    static QString makeDbName(const QUrl& remoteUrl,
+                              const QString& remotePath,
+                              const QString& user);
+
+    /// Migrate a csync_journal to the new path, if necessary. Returns false on error
+    static bool maybeMigrateDb(const QString& localPath, const QString& absoluteJournalPath);
 
     // to verify that the record could be queried successfully check
     // with SyncJournalFileRecord::isValid()
@@ -58,14 +66,7 @@ public:
     bool exists();
     void walCheckpoint();
 
-    QString databaseFilePath();
-#ifndef NDEBUG
-    void setDatabaseFilePath( const QString& dbFile);
-#endif
-    void setAccountParameterForFilePath(const QString& localPath, const QUrl &remoteUrl, const QString& remotePath );
-
-    bool mayMigrateDbLocation() const;
-    void setMayMigrateDbLocation(bool migrate);
+    QString databaseFilePath() const;
 
     static qint64 getPHash(const QString& );
 
@@ -223,12 +224,6 @@ private:
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      */
     QList<QString> _avoidReadFromDbOnNextSyncFilter;
-
-    /**
-     * Whether to check old journal path (csync_journal.db) and move the file
-     * to its new location, if it exists.
-     */
-    bool _mayMigrateDbLocation;
 };
 
 bool OWNCLOUDSYNC_EXPORT

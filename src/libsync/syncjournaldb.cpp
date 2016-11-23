@@ -32,12 +32,63 @@
 
 namespace OCC {
 
-SyncJournalDb::SyncJournalDb( QObject *parent) :
+SyncJournalDb::SyncJournalDb(const QString& dbFilePath, QObject *parent) :
     QObject(parent),
-    _transaction(0),
-    _mayMigrateDbLocation(false)
+    _dbFile(dbFilePath),
+    _transaction(0)
 {
 
+}
+
+QString SyncJournalDb::makeDbName(const QUrl& remoteUrl,
+                                  const QString& remotePath,
+                                  const QString& user)
+{
+    QString journalPath = QLatin1String("._sync_");
+
+    QString key = QString::fromUtf8("%1@%2:%3").arg(
+            user,
+            remoteUrl.toString(),
+            remotePath);
+
+    QByteArray ba = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5);
+    journalPath.append( ba.left(6).toHex() );
+    journalPath.append(".db");
+
+    return journalPath;
+}
+
+bool SyncJournalDb::maybeMigrateDb(const QString& localPath, const QString& absoluteJournalPath)
+{
+    const QString oldDbName = localPath + QLatin1String(".csync_journal.db");
+    if( !FileSystem::fileExists(oldDbName) ) {
+        return true;
+    }
+
+    const QString newDbName = absoluteJournalPath;
+
+    // Whenever there is an old db file, migrate it to the new db path.
+    // This is done to make switching from older versions to newer versions
+    // work correctly even if the user had previously used a new version
+    // and therefore already has an (outdated) new-style db file.
+    QString error;
+
+    if( FileSystem::fileExists( newDbName ) ) {
+        if( !FileSystem::remove(newDbName, &error) ) {
+            qDebug() << "Database migration: Could not remove db file" << newDbName
+                     << "due to" << error;
+            return false;
+        }
+    }
+
+    if( !FileSystem::rename(oldDbName, newDbName, &error) ) {
+        qDebug() << "Database migration: could not rename " << oldDbName
+                 << "to" << newDbName << ":" << error;
+        return false;
+    }
+
+    qDebug() << "Journal successfully migrated from" << oldDbName << "to" << newDbName;
+    return true;
 }
 
 bool SyncJournalDb::exists()
@@ -46,38 +97,7 @@ bool SyncJournalDb::exists()
     return (!_dbFile.isEmpty() && QFile::exists(_dbFile));
 }
 
-void SyncJournalDb::setAccountParameterForFilePath( const QString& localPath, const QUrl& remoteUrl, const QString& remotePath )
-{
-    // localPath always has a trailing slash
-    _dbFile = localPath;
-    _dbFile.append( QLatin1String("._sync_"));
-    // FIXME: Maybe it is better to only allow different hosts, without path component.
-    QString remoteUrlPath = remoteUrl.toString();
-    if( remotePath != QLatin1String("/") ) {
-        remoteUrlPath.append(remotePath);
-    }
-    QByteArray ba = QCryptographicHash::hash( remoteUrlPath.toUtf8(), QCryptographicHash::Md5);
-    _dbFile.append( ba.left(6).toHex() );
-    _dbFile.append(".db");
-}
-
-bool SyncJournalDb::mayMigrateDbLocation() const
-{
-    return _mayMigrateDbLocation;
-}
-
-void SyncJournalDb::setMayMigrateDbLocation(bool migrate)
-{
-    _mayMigrateDbLocation = migrate;
-}
-
-#ifndef NDEBUG
-void SyncJournalDb::setDatabaseFilePath( const QString& dbFile)
-{
-    _dbFile = dbFile;
-}
-#endif
-QString SyncJournalDb::databaseFilePath()
+QString SyncJournalDb::databaseFilePath() const
 {
     return _dbFile;
 }
@@ -161,35 +181,6 @@ bool SyncJournalDb::checkConnect()
     if( _dbFile.isEmpty()) {
         qDebug() << "Database filename" + _dbFile + " is empty";
         return false;
-    }
-
-    const QString dir = _dbFile.left( _dbFile.lastIndexOf(QChar('/')) );
-    const QString oldDbName = dir + QLatin1String("/.csync_journal.db");
-
-    bool migrateOldDb = _mayMigrateDbLocation && FileSystem::fileExists(oldDbName);
-
-    // Whenever there is an old db file, migrate it to the new db path.
-    // This is done to make switching from older versions to newer versions
-    // work correctly even if the user had previously used a new version
-    // and therefore already has an (outdated) new-style db file.
-    if( migrateOldDb ) {
-        QString error;
-
-        if( FileSystem::fileExists( _dbFile ) ) {
-            if( !FileSystem::remove(_dbFile, &error) ) {
-                qDebug() << "Database migration: Could not remove db file" << _dbFile
-                         << "due to" << error;
-                return false;
-            }
-        }
-
-        if( !FileSystem::rename(oldDbName, _dbFile, &error) ) {
-            qDebug() << "Database migration: could not rename " << oldDbName
-                     << "to" << _dbFile << ":" << error;
-            return false;
-        }
-
-        qDebug() << "Journal successfully migrated from" << oldDbName << "to" << _dbFile;
     }
 
     // The database file is created by this call (SQLITE_OPEN_CREATE)
@@ -365,10 +356,9 @@ bool SyncJournalDb::checkConnect()
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
     if (!versionQuery.next()) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
-        if (migrateOldDb) {
-            qDebug() << Q_FUNC_INFO << "possibleUpgradeFromMirall_1_5 detected!";
-            forceRemoteDiscovery = true;
-        }
+        qDebug() << Q_FUNC_INFO << "possibleUpgradeFromMirall_1_5 detected!";
+        forceRemoteDiscovery = true;
+
         createQuery.prepare("INSERT INTO version VALUES (?1, ?2, ?3, ?4);");
         createQuery.bindValue(1, MIRALL_VERSION_MAJOR);
         createQuery.bindValue(2, MIRALL_VERSION_MINOR);

@@ -46,6 +46,8 @@
 
 namespace OCC {
 
+const char oldJournalPath[] = ".csync_journal.db";
+
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
                QObject* parent)
@@ -59,7 +61,9 @@ Folder::Folder(const FolderDefinition& definition,
       , _lastSyncDuration(0)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
+      , _journal(_definition.absoluteJournalPath())
       , _fileLog(new SyncRunFileLog)
+      , _saveBackwardsCompatible(false)
 {
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
@@ -78,7 +82,6 @@ Folder::Folder(const FolderDefinition& definition,
     checkLocalPath();
 
     _syncResult.setFolder(_definition.alias);
-    _journal.setAccountParameterForFilePath(path(), remoteUrl(), remotePath());
 
     _engine.reset(new SyncEngine(_accountState->account(), path(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
@@ -604,9 +607,9 @@ void Folder::saveToSettings() const
         }
     }
 
-    bool inFolders = _journal.mayMigrateDbLocation() || oneAccountOnly;
+    bool compatible = _saveBackwardsCompatible || oneAccountOnly;
 
-    if (inFolders) {
+    if (compatible) {
         settings->beginGroup(QLatin1String("Folders"));
     } else {
         settings->beginGroup(QLatin1String("Multifolders"));
@@ -978,6 +981,11 @@ void Folder::scheduleThisFolderSoon()
     }
 }
 
+void Folder::setSaveBackwardsCompatible(bool save)
+{
+    _saveBackwardsCompatible = save;
+}
+
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 {
     ConfigFile cfgFile;
@@ -1030,6 +1038,7 @@ void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
 {
     settings.beginGroup(FolderMan::escapeAlias(folder.alias));
     settings.setValue(QLatin1String("localPath"), folder.localPath);
+    settings.setValue(QLatin1String("journalPath"), folder.journalPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
@@ -1042,6 +1051,7 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     settings.beginGroup(alias);
     folder->alias = FolderMan::unescapeAlias(alias);
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
+    folder->journalPath = settings.value(QLatin1String("journalPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
@@ -1050,6 +1060,9 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     // Old settings can contain paths with native separators. In the rest of the
     // code we assum /, so clean it up now.
     folder->localPath = prepareLocalPath(folder->localPath);
+
+    // Target paths also have a convention
+    folder->targetPath = prepareTargetPath(folder->targetPath);
 
     return true;
 }
@@ -1061,6 +1074,30 @@ QString FolderDefinition::prepareLocalPath(const QString& path)
         p.append(QLatin1Char('/'));
     }
     return p;
+}
+
+QString FolderDefinition::prepareTargetPath(const QString &path)
+{
+    QString p = path;
+    if (p.endsWith(QLatin1Char('/'))) {
+        p.chop(1);
+    }
+    // Doing this second ensures the empty string or "/" come
+    // out as "/".
+    if (!p.startsWith(QLatin1Char('/'))) {
+        p.prepend(QLatin1Char('/'));
+    }
+    return p;
+}
+
+QString FolderDefinition::absoluteJournalPath() const
+{
+    return QDir(localPath).filePath(journalPath);
+}
+
+QString FolderDefinition::defaultJournalPath(AccountPtr account)
+{
+    return SyncJournalDb::makeDbName(account->url(), targetPath, account->credentials()->user());
 }
 
 } // namespace OCC

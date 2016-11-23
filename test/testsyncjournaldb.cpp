@@ -19,9 +19,8 @@ class TestSyncJournalDB : public QObject
 
 public:
     TestSyncJournalDB()
+        : _db("/tmp/csync-test.db")
     {
-        const QString testdb("/tmp/csync-test.db");
-        _db.setDatabaseFilePath( testdb );
     }
 
     QDateTime dropMsecs(QDateTime time)

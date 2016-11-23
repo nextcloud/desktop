@@ -258,8 +258,7 @@ private:
      *  does not set an account on the new folder.
       */
     Folder* addFolderInternal(FolderDefinition folderDefinition,
-                              AccountState* accountState,
-                              bool wipeJournal);
+                              AccountState* accountState);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder( Folder * );
@@ -275,7 +274,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings& settings, AccountStatePtr account, bool mayMigrateOldDb);
+    void setupFoldersHelper(QSettings& settings, AccountStatePtr account, bool backwardsCompatible);
 
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;

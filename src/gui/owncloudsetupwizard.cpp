@@ -496,7 +496,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
             qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
             FolderDefinition folderDefinition;
             folderDefinition.localPath = localFolder;
-            folderDefinition.targetPath = _remoteFolder;
+            folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
             auto f = folderMan->addFolder(account, folderDefinition);

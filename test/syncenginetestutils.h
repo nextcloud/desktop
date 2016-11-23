@@ -737,8 +737,7 @@ public:
         _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
         _account->setCredentials(new FakeCredentials{_fakeQnam});
 
-        _journalDb.reset(new OCC::SyncJournalDb());
-        _journalDb->setDatabaseFilePath(localPath() + "._sync_test.db");
+        _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
 
         // A new folder will update the local file state database on first sync.

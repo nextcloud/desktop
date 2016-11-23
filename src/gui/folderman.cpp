@@ -227,14 +227,27 @@ int FolderMan::setupFolders()
     return _folderMap.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool mayMigrateOldDb)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible)
 {
     foreach (const auto& folderAlias, settings.childGroups()) {
         FolderDefinition folderDefinition;
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
-            Folder* f = addFolderInternal(std::move(folderDefinition), account.data(), false);
+            // Migration: Old settings don't have journalPath
+            if (folderDefinition.journalPath.isEmpty()) {
+                folderDefinition.journalPath = folderDefinition.defaultJournalPath(account->account());
+            }
+            folderDefinition.defaultJournalPath(account->account());
+            // Migration: If an old db is found, move it to the new name.
+            if (backwardsCompatible) {
+                SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
+            }
+
+            Folder* f = addFolderInternal(std::move(folderDefinition), account.data());
             if (f) {
-                f->journalDb()->setMayMigrateDbLocation(mayMigrateOldDb);
+                // Migration: Mark folders that shall be saved in a backwards-compatible way
+                if (backwardsCompatible) {
+                    f->setSaveBackwardsCompatible(true);
+                }
                 scheduleFolder(f);
                 emit folderSyncStateChange(f);
             }
@@ -413,7 +426,7 @@ Folder* FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition, accountState, false);
+    folder = addFolderInternal(folderDefinition, accountState);
     if (folder) {
         QStringList blackList = settings.value( QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
@@ -844,7 +857,26 @@ void FolderMan::slotFolderSyncFinished( const SyncResult& )
 
 Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition& folderDefinition)
 {
-    auto folder = addFolderInternal(folderDefinition, accountState, true);
+    // Choose a db filename
+    auto definition = folderDefinition;
+    definition.journalPath = definition.defaultJournalPath(accountState->account());
+
+    if (!ensureJournalGone(definition.absoluteJournalPath())) {
+        return 0;
+    }
+
+    auto folder = addFolderInternal(definition, accountState);
+
+    // Migration: The first account that's configured for a local folder shall
+    // be saved in a backwards-compatible way.
+    bool oneAccountOnly = true;
+    foreach (Folder* other, FolderMan::instance()->map()) {
+        if (other != folder && other->cleanPath() == folder->cleanPath()) {
+            oneAccountOnly = false;
+            break;
+        }
+    }
+    folder->setSaveBackwardsCompatible(oneAccountOnly);
 
     if(folder) {
         folder->saveToSettings();
@@ -855,8 +887,7 @@ Folder* FolderMan::addFolder(AccountState* accountState, const FolderDefinition&
 }
 
 Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition,
-                                     AccountState* accountState,
-                                     bool wipeJournal)
+                                     AccountState* accountState)
 {
     auto alias = folderDefinition.alias;
     int count = 0;
@@ -866,13 +897,6 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     }
 
     auto folder = new Folder(folderDefinition, accountState, this );
-
-    if (wipeJournal) {
-        if (!ensureJournalGone(folder->journalDb()->databaseFilePath())) {
-            delete folder;
-            return 0;
-        }
-    }
 
     qDebug() << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;
