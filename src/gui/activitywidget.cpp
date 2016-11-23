@@ -617,7 +617,7 @@ void ActivitySettings::slotCopyToClipboard()
         message = tr("The sync activity list has been copied to the clipboard.");
     } else if(idx == 2 ) {
         // issues Widget
-        message = tr("The list of unsynched items has been copied to the clipboard.");
+        message = tr("The list of unsynced items has been copied to the clipboard.");
        _protocolWidget->storeSyncIssues(ts);
     }
 

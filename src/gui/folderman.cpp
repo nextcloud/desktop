@@ -673,12 +673,11 @@ void FolderMan::slotStartScheduledFolderSync()
     }
 
     // Find the first folder in the queue that can be synced.
-    Folder* f = 0;
+    Folder* folder = 0;
     while( !_scheduledFolders.isEmpty() ) {
-        f = _scheduledFolders.dequeue();
-        Q_ASSERT(f);
-
-        if( f->canSync() ) {
+        Folder* g = _scheduledFolders.dequeue();
+        if( g->canSync() ) {
+            folder = g;
             break;
         }
     }
@@ -686,9 +685,9 @@ void FolderMan::slotStartScheduledFolderSync()
     emit scheduleQueueChanged();
 
     // Start syncing this folder!
-    if( f ) {
-        _currentSyncFolder = f;
-        f->startSync( QStringList() );
+    if( folder ) {
+        _currentSyncFolder = folder;
+        folder->startSync( QStringList() );
     }
 }
 
