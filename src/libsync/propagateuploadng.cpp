@@ -38,7 +38,7 @@ namespace OCC {
 QUrl PropagateUploadFileNG::chunkUrl(int chunk)
 {
     QString path = QLatin1String("remote.php/dav/uploads/")
-        + _propagator->account()->user()
+        + _propagator->account()->davUser()
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunk >= 0) {
         path += QLatin1Char('/') + QString::number(chunk);
@@ -269,7 +269,7 @@ void PropagateUploadFileNG::startNextChunk()
         _finished = true;
         // Finish with a MOVE
         QString destination = _propagator->account()->url().path()
-            + QLatin1String("/remote.php/dav/files/") + _propagator->account()->user()
+            + QLatin1String("/remote.php/dav/files/") + _propagator->account()->davUser()
             + _propagator->_remoteFolder + _item->_file;
 
         auto headers = PropagateUploadFileCommon::headers();

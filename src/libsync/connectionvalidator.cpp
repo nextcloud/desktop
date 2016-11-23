@@ -246,7 +246,7 @@ void ConnectionValidator::slotUserFetched(const QVariantMap &json)
 {
     QString user = json.value("ocs").toMap().value("data").toMap().value("id").toString();
     if (!user.isEmpty()) {
-        _account->setUser(user);
+        _account->setDavUser(user);
     }
     reportResult(Connected);
 }

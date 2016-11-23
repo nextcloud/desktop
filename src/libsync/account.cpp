@@ -76,19 +76,19 @@ AccountPtr Account::sharedFromThis()
     return _sharedThis.toStrongRef();
 }
 
-QString Account::user() const
+QString Account::davUser() const
 {
-    return _user.isEmpty() ? _credentials->user() : _user;
+    return _davUser.isEmpty() ? _credentials->user() : _davUser;
 }
 
-void Account::setUser(const QString &user)
+void Account::setDavUser(const QString &newDavUser)
 {
-    _user = user;
+    _davUser = newDavUser;
 }
 
 QString Account::displayName() const
 {
-    QString dn = QString("%1@%2").arg(user(), _url.host());
+    QString dn = QString("%1@%2").arg(davUser(), _url.host());
     int port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         dn.append(QLatin1Char(':'));

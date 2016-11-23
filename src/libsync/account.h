@@ -69,9 +69,14 @@ public:
 
     AccountPtr sharedFromThis();
 
-    /// The user that can be used in dav url
-    QString user() const;
-    void setUser(const QString &user);
+    /**
+     * The user that can be used in dav url.
+     *
+     * This can very well be different frome the login user that's
+     * stored in credentials()->user().
+     */
+    QString davUser() const;
+    void setDavUser(const QString &newDavUser);
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -203,7 +208,7 @@ private:
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
-    QString _user;
+    QString _davUser;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;
