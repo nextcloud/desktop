@@ -31,6 +31,7 @@
 #include "sslerrordialog.h"
 #include "accountmanager.h"
 #include "clientproxy.h"
+#include "filesystem.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -340,8 +341,8 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     } else {
         QString res = tr("Creating local sync folder %1...").arg(localFolder);
         if( fi.mkpath( localFolder ) ) {
+            FileSystem::setFolderMinimumPermissions(localFolder);
             Utility::setupFavLink( localFolder );
-            // FIXME: Create a local sync folder.
             res += tr("ok");
         } else {
             res += tr("failed.");

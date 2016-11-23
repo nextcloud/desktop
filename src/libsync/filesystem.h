@@ -67,6 +67,12 @@ void OWNCLOUDSYNC_EXPORT setFileReadOnly(const QString& filename, bool readonly)
  */
 void OWNCLOUDSYNC_EXPORT setFileReadOnlyWeak(const QString& filename, bool readonly);
 
+/**
+ * @brief Try to set permissions so that other users on the local machine can not
+ * go into the folder.
+ */
+void OWNCLOUDSYNC_EXPORT setFolderMinimumPermissions(const QString& filename);
+
 /** convert a "normal" windows path into a path that can be 32k chars long. */
 QString OWNCLOUDSYNC_EXPORT longWinPath( const QString& inpath );
 
