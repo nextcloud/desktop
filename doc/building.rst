@@ -102,7 +102,7 @@ To set up your build environment for development using HomeBrew_:
    its Common Name as a third parameter (use quotes) to have the package
    signed automatically.
 
-   .. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
+  .. note::  Contrary to earlier versions, ownCloud 1.7 and later are packaged
              as a ``pkg`` installer. Do not call "make package" at any time when
              compiling for OS X, as this will build a disk image, and will not
              work correctly.
