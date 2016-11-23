@@ -203,10 +203,34 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
-    _ocWizard->displayError(tr("Failed to connect to %1 at %2:<br/>%3")
-                            .arg(Theme::instance()->appNameGUI(),
-                                 reply->url().toString(),
-                                 reply->errorString()), checkDowngradeAdvised(reply));
+    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
+
+    // Do this early because reply might be deleted in message box event loop
+    QString msg = tr("Failed to connect to %1 at %2:<br/>%3")
+            .arg(Theme::instance()->appNameGUI(),
+                 reply->url().toString(),
+                 reply->errorString());
+    bool isDowngradeAdvised = checkDowngradeAdvised(reply);
+
+    // If a client cert is needed, nginx sends:
+    // 400 "<html>\r\n<head><title>400 No required SSL certificate was sent</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>400 Bad Request</h1></center>\r\n<center>No required SSL certificate was sent</center>\r\n<hr><center>nginx/1.10.0</center>\r\n</body>\r\n</html>\r\n"
+    // If the IP needs to be added as "trusted domain" in oC, oC sends:
+    // https://gist.github.com/guruz/ab6d11df1873c2ad3932180de92e7d82
+    if (resultCode != 200 && contentType.startsWith("text/")) {
+        // FIXME: Synchronous dialogs are not so nice because of event loop recursion
+        // (we already create a dialog further below)
+        QString serverError = reply->peek(1024*20);
+        qDebug() << serverError;
+        QMessageBox messageBox(_ocWizard);
+        messageBox.setText(serverError);
+        messageBox.addButton(QMessageBox::Ok);
+        messageBox.setTextFormat(Qt::RichText);
+        messageBox.exec();
+    }
+
+    // Displays message inside wizard and possibly also another message box
+    _ocWizard->displayError(msg, isDowngradeAdvised);
 
     // Allow the credentials dialog to pop up again for the same URL.
     // Maybe the user just clicked 'Cancel' by accident or changed his mind.

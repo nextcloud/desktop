@@ -256,6 +256,7 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
 
                 OwncloudConnectionMethodDialog dialog;
                 dialog.setUrl(url);
+                // FIXME: Synchronous dialogs are not so nice because of event loop recursion
                 int retVal = dialog.exec();
 
                 switch (retVal) {

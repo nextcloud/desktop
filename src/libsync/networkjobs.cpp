@@ -463,7 +463,7 @@ bool CheckServerJob::finished()
     }
 
     bool success = false;
-    QByteArray body = reply()->readAll();
+    QByteArray body = reply()->peek(4*1024);
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if( body.isEmpty() || httpStatus != 200) {
         qDebug() << "error: status.php replied " << httpStatus << body;
