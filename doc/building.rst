@@ -68,9 +68,17 @@ To set up your build environment for development using HomeBrew_:
 
 1. Install Xcode
 2. Install Xcode command line tools::
+<<<<<<< HEAD
     xcode-select --install
 
 3. Install homebrew::
+=======
+
+    xcode-select --install
+
+3. Install homebrew::
+
+>>>>>>> ca9ec4625391ae23940b3a62aaa0afe89f3d98e8
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 4. Add the ownCloud repository using the following command::
@@ -100,7 +108,7 @@ To set up your build environment for development using HomeBrew_:
    its Common Name as a third parameter (use quotes) to have the package
    signed automatically.
 
-   .. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
+  .. note::  Contrary to earlier versions, ownCloud 1.7 and later are packaged
              as a ``pkg`` installer. Do not call "make package" at any time when
              compiling for OS X, as this will build a disk image, and will not
              work correctly.
@@ -248,6 +256,10 @@ To build the most up-to-date version of the client:
    ..note:: qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/
 
    .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/   -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
+
+   .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
+
+   qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .
 
 4. Call ``make``.
 
