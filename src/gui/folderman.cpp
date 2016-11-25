@@ -520,6 +520,26 @@ void FolderMan::scheduleFolder( Folder *f )
     startScheduledSyncSoon();
 }
 
+void FolderMan::scheduleFolderNext(Folder* f)
+{
+    auto alias = f->alias();
+    qDebug() << "Schedule folder " << alias << " to sync! Front-of-queue.";
+
+    if( !f->canSync() ) {
+        qDebug() << "Folder is not ready to sync, not scheduled!";
+        return;
+    }
+
+    _scheduledFolders.removeAll(f);
+
+    f->prepareToSync();
+    emit folderSyncStateChange(f);
+    _scheduledFolders.prepend(f);
+    emit scheduleQueueChanged();
+
+    startScheduledSyncSoon();
+}
+
 void FolderMan::slotScheduleETagJob(const QString &/*alias*/, RequestEtagJob *job)
 {
     QObject::connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotEtagJobDestroyed(QObject*)));

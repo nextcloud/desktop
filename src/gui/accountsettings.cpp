@@ -111,7 +111,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
 
     QAction *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
-    connect(syncNowAction, SIGNAL(triggered()), SLOT(slotSyncCurrentFolderNow()));
+    connect(syncNowAction, SIGNAL(triggered()), SLOT(slotScheduleCurrentFolder()));
     addAction(syncNowAction);
 
     connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
@@ -227,6 +227,11 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, SIGNAL(triggered(bool)), this, SLOT(doExpand()));
+    }
+
+    if (!folderPaused) {
+        ac = menu->addAction(tr("Force sync now"));
+        connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotForceSyncCurrentFolder()));
     }
 
     ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
@@ -463,7 +468,7 @@ void AccountSettings::slotEnableCurrentFolder()
     }
 }
 
-void AccountSettings::slotSyncCurrentFolderNow()
+void AccountSettings::slotScheduleCurrentFolder()
 {
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
     if( !selected.isValid() )
@@ -472,6 +477,24 @@ void AccountSettings::slotSyncCurrentFolderNow()
     FolderMan *folderMan = FolderMan::instance();
 
     folderMan->scheduleFolder(folderMan->folder(alias));
+}
+
+void AccountSettings::slotForceSyncCurrentFolder()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( !selected.isValid() )
+        return;
+    QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+    FolderMan *folderMan = FolderMan::instance();
+
+    // Terminate and reschedule any running sync
+    if (Folder* current = folderMan->currentSyncFolder()) {
+        folderMan->terminateSyncProcess();
+        folderMan->scheduleFolder(current);
+    }
+
+    // Insert the selected folder at the front of the queue
+    folderMan->scheduleFolderNext(folderMan->folder(alias));
 }
 
 void AccountSettings::slotOpenOC()

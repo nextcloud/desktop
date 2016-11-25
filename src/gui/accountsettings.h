@@ -71,7 +71,8 @@ public slots:
 protected slots:
     void slotAddFolder();
     void slotEnableCurrentFolder();
-    void slotSyncCurrentFolderNow();
+    void slotScheduleCurrentFolder();
+    void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder();
     void slotFolderWizardAccepted();

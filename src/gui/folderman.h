@@ -161,11 +161,21 @@ public:
     /** Queues a folder for syncing. */
     void scheduleFolder(Folder*);
 
+    /** Puts a folder in the very front of the queue. */
+    void scheduleFolderNext(Folder*);
+
     /** Queues all folders for syncing. */
     void scheduleAllFolders();
 
     void setDirtyProxy(bool value = true);
     void setDirtyNetworkLimits();
+
+    /**
+     * Terminates the current folder sync.
+     *
+     * It does not switch the folder to paused state.
+     */
+    void terminateSyncProcess();
 
 signals:
     /**
@@ -247,12 +257,6 @@ private slots:
     void slotScheduleFolderByTime();
 
 private:
-    /**
-     * Terminates the current folder sync.
-     *
-     * It does not switch the folder to paused state.
-     */
-    void terminateSyncProcess();
 
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
