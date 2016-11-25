@@ -329,8 +329,7 @@ int main(int argc, char **argv) {
     if( !options.target_url.contains( account->davPath() )) {
         options.target_url.append(account->davPath());
     }
-    if (options.target_url.startsWith("http"))
-        options.target_url.replace(0, 4, "owncloud");
+
     QUrl url = QUrl::fromUserInput(options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
@@ -370,14 +369,6 @@ int main(int argc, char **argv) {
              password = queryPassword(user);
          }
      }
-
-    // ### ensure URL is free of credentials
-    if (url.userName().isEmpty()) {
-        url.setUserName(user);
-    }
-    if (url.password().isEmpty()) {
-        url.setPassword(password);
-    }
 
     // take the unmodified url to pass to csync_create()
     QByteArray remUrl = options.target_url.toUtf8();
