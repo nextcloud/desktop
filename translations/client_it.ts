@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;elenco di elementi non sincronizzati è stato copiato negli appunti.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
