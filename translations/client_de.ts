@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation jetzt erzwingen </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
