@@ -478,4 +478,10 @@ QString Theme::quotaBaseFolder() const
 {
     return QLatin1String("/");
 }
+
+bool Theme::dontSyncMountedStorageByDefault() const
+{
+    return false;
+}
+
 } // end namespace client

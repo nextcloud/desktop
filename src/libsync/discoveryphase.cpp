@@ -20,6 +20,9 @@
 #include <QUrl>
 #include "account.h"
 #include <QFileInfo>
+#include "theme.h"
+#include <cstring>
+
 
 namespace OCC {
 
@@ -81,11 +84,19 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *pat
     return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(path);
 }
 
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
+bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *remotePerm)
 {
     // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
         return false;
+    }
+
+    if (Theme::instance()->dontSyncMountedStorageByDefault()) {
+        // 'M' in the permission means that it is unselected by default. (issue #5331)
+        if (std::strchr(remotePerm, 'M')) {
+            emit newBigFolder(path);
+            return true;
+        }
     }
 
     if (_newBigFolderSizeLimit < 0) {
@@ -119,9 +130,9 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path)
+int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path, const char *remotePerm)
 {
-    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
 }
 
 

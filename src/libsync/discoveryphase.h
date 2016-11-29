@@ -176,8 +176,8 @@ class DiscoveryJob : public QObject {
      */
     bool isInSelectiveSyncBlackList(const char* path) const;
     static int isInSelectiveSyncBlackListCallback(void *, const char *);
-    bool checkSelectiveSyncNewFolder(const QString &path);
-    static int checkSelectiveSyncNewFolderCallback(void*, const char*);
+    bool checkSelectiveSyncNewFolder(const QString &path, const char *remotePerm);
+    static int checkSelectiveSyncNewFolderCallback(void* data, const char* path, const char* remotePerm);
 
     // Just for progress
     static void update_job_update_callback (bool local,

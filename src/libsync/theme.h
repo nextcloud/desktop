@@ -302,6 +302,12 @@ public:
      */
     virtual QString quotaBaseFolder() const;
 
+    /**
+     * By default, mounted storage will not be sync'ed (i.e, they will be disabled in the
+     * selective sync
+     */
+    virtual bool dontSyncMountedStorageByDefault() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString& name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
