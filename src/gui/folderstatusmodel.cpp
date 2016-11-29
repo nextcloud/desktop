@@ -527,10 +527,8 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
 
     if (!info || info->_fetched || info->_fetching)
         return;
-
-    info->_hasError = false;
+    info->resetSubs(this, parent);
     info->_fetching = true;
-    info->_fetchingLabel = false;
     QString path = info->_folder->remotePath();
     if (info->_path != QLatin1String("/")) {
         if (!path.endsWith(QLatin1Char('/'))) {
@@ -698,17 +696,16 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
         qDebug() << r->errorString();
         parentInfo->_lastErrorString = r->errorString();
 
+        parentInfo->resetSubs(this, idx);
+
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
-            if (!parentInfo->hasLabel()) {
-                beginInsertRows(idx, 0, 0);
-                endInsertRows();
-            }
+            Q_ASSERT(!parentInfo->hasLabel());
+            beginInsertRows(idx, 0, 0);
             parentInfo->_hasError = true;
+            endInsertRows();
         }
-        parentInfo->_fetching = false;
-        parentInfo->_fetchingLabel = false;
     }
 }
 
