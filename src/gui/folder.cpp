@@ -808,6 +808,9 @@ void Folder::slotSyncFinished(bool success)
     } else if( _syncResult.warnCount() > 0 ) {
         // there have been warnings on the way.
         _syncResult.setStatus(SyncResult::Problem);
+    } else if( _definition.paused ) {
+        // Maybe the sync was terminated because the user paused the folder
+        _syncResult.setStatus(SyncResult::Paused);
     } else {
         _syncResult.setStatus(SyncResult::Success);
     }
