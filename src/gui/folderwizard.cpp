@@ -56,7 +56,7 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
     return ret;
 }
 
-FolderWizardLocalPath::FolderWizardLocalPath(AccountPtr account)
+FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr& account)
     : FormatWarningsWizardPage(),
       _account(account)
 {
@@ -139,7 +139,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 }
 
 // =================================================================================
-FolderWizardRemotePath::FolderWizardRemotePath(AccountPtr account)
+FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr& account)
     : FormatWarningsWizardPage()
     ,_warnWasVisible(false)
     ,_account(account)
@@ -479,7 +479,7 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 
 // ====================================================================================
 
-FolderWizardSelectiveSync::FolderWizardSelectiveSync(AccountPtr account)
+FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr& account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
