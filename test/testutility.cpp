@@ -160,8 +160,10 @@ private slots:
         QVERIFY(fsCasePreserving());
         qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "0");
         QVERIFY(! fsCasePreserving());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
+#endif
     }
 
     void testFileNamesEqual()
