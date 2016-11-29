@@ -123,7 +123,7 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob* job = new PUTFileJob(_propagator->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk);
+    PUTFileJob* job = new PUTFileJob(_propagator->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));

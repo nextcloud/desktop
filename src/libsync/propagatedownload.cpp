@@ -401,7 +401,7 @@ void PropagateDownloadFile::start()
         // Normal job, download from oC instance
         _job = new GETFileJob(_propagator->account(),
                             _propagator->_remoteFolder + _item->_file,
-                            &_tmpFile, headers, expectedEtagForResume, _resumeStart);
+                            &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     } else {
         // We were provided a direct URL, use that one
         qDebug() << Q_FUNC_INFO << "directDownloadUrl given for " << _item->_file << _item->_directDownloadUrl;
@@ -413,7 +413,7 @@ void PropagateDownloadFile::start()
         QUrl url = QUrl::fromUserInput(_item->_directDownloadUrl);
         _job = new GETFileJob(_propagator->account(),
                               url,
-                              &_tmpFile, headers, expectedEtagForResume, _resumeStart);
+                              &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&_propagator->_bandwidthManager);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
