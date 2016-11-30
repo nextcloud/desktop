@@ -106,17 +106,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="189"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>すべてを同期</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="196"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>同期なし</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="203"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>手動による変更を適用</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>今すぐ強制的に同期</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
@@ -410,7 +410,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>同期されていないアイテムのリストがクリップボードにコピーされました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -704,14 +704,14 @@
         <translation>システム上の除外ファイルを読み込めません</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="930"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>新しい %1 MB以上のフォルダーが追加されました: %2
 ダウンロードしたい場合は、設定画面で選択してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="960"/>
+        <location filename="../src/gui/folder.cpp" line="963"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -720,39 +720,39 @@ Are you sure you want to perform this operation?</source>
 本当にこの操作を実行しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="964"/>
+        <location filename="../src/gui/folder.cpp" line="967"/>
         <source>Remove All Files?</source>
         <translation>すべてのファイルを削除しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="966"/>
+        <location filename="../src/gui/folder.cpp" line="969"/>
         <source>Remove all files</source>
         <translation>すべてのファイルを削除</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="967"/>
+        <location filename="../src/gui/folder.cpp" line="970"/>
         <source>Keep files</source>
         <translation>ファイルを残す</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="983"/>
+        <location filename="../src/gui/folder.cpp" line="986"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>この同期により同期フォルダ &apos;%1&apos; のファイルが以前のものに戻されます。 これは、バックアップがサーバー上に復元されたためです。 通常と同じように同期を続けると、すべてのファイルが以前の状態の古いファイルによって上書きされます。最新のローカルファイルを競合ファイルとして保存しますか？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="988"/>
+        <location filename="../src/gui/folder.cpp" line="991"/>
         <source>Backup detected</source>
         <translation>バックアップが検出されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="990"/>
+        <location filename="../src/gui/folder.cpp" line="993"/>
         <source>Normal Synchronisation</source>
         <translation>正常同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="994"/>
         <source>Keep Local Files as Conflict</source>
         <translation>コンフリクト時にローカルファイルを保持</translation>
     </message>
@@ -1937,7 +1937,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="711"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2144,34 +2144,34 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="363"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="361"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>5.4.2 以下のQt でHTTP 接続リセットが強制終了されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="399"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="397"/>
         <source>The local file was removed during sync.</source>
         <translation>ローカルファイルを同期中に削除します。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="410"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="408"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="441"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="439"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>サーバー (%1) からの予期しない戻りコード</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="446"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーからファイルIDの戻りがありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーからETagの戻りがありません</translation>
     </message>
 </context>
 <context>
@@ -2489,7 +2489,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="201"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>メールリンク(&amp;M)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="208"/>
@@ -2530,7 +2530,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>電子メールクライアントを開くことができませんでした</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
@@ -3152,7 +3152,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="304"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
@@ -3342,7 +3342,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>新規アカウント...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="748"/>
@@ -3363,7 +3363,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 の %1 を同期しています</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="806"/>
@@ -3758,7 +3758,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>ローカルメタデータが更新されました</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -3800,7 +3800,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>ローカルメタデータの更新中</translation>
     </message>
 </context>
 <context>

@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
         <source>Error writing metadata to the database</source>
         <translation>Erro ao gravar os metadados para a base de dados</translation>
     </message>
@@ -704,14 +704,14 @@
         <translation>Não foi possível ler o ficheiro excluir do sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="930"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Foi adicionada uma nova pasta maior do que %1 MB: %2.
 Por favor, vá às configurações para a selecionar, se a desejar transferir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="960"/>
+        <location filename="../src/gui/folder.cpp" line="963"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -720,39 +720,39 @@ Isto poderá acontecer porque a pasta foi reconfigurada silenciosamente, ou todo
 Tem a certeza que deseja realizar esta operação?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="964"/>
+        <location filename="../src/gui/folder.cpp" line="967"/>
         <source>Remove All Files?</source>
         <translation>Remover todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="966"/>
+        <location filename="../src/gui/folder.cpp" line="969"/>
         <source>Remove all files</source>
         <translation>Remover todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="967"/>
+        <location filename="../src/gui/folder.cpp" line="970"/>
         <source>Keep files</source>
         <translation>Manter ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="983"/>
+        <location filename="../src/gui/folder.cpp" line="986"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="988"/>
+        <location filename="../src/gui/folder.cpp" line="991"/>
         <source>Backup detected</source>
         <translation>Detetada cópia de segurança</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="990"/>
+        <location filename="../src/gui/folder.cpp" line="993"/>
         <source>Normal Synchronisation</source>
         <translation>Sincronização Normal</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="994"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Manter Ficheiros Locais como Conflito</translation>
     </message>
@@ -1939,7 +1939,7 @@ Não é aconselhada a sua utilização.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="711"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
         <source>Error writing metadata to the database</source>
         <translation>Erro ao escrever a meta-informação par a base de dados</translation>
     </message>
@@ -2146,32 +2146,32 @@ Não é aconselhada a sua utilização.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="363"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="361"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>A forçar aborto no trabalho de redefinição de conexão HTTP com Qt &lt; 5.4.3</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="399"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="397"/>
         <source>The local file was removed during sync.</source>
         <translation>O arquivo local foi removido durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="410"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="408"/>
         <source>Local file changed during sync.</source>
         <translation>Ficheiro local alterado durante a sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="441"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="439"/>
         <source>Unexpected return code from server (%1)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="446"/>
         <source>Missing File ID from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
         <source>Missing ETag from server</source>
         <translation type="unfinished"/>
     </message>

@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Принудительно синхронизовать сейчас</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="765"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
@@ -704,14 +704,14 @@
         <translation>Невозможно прочесть системный файл исключений</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="930"/>
         <source>A new folder larger than %1 MB has been added: %2.
 Please go in the settings to select it if you wish to download it.</source>
         <translation>Новый каталог размером более %1 МБ был добавлен: %2.
 Пожалуйста, перейдите в настройки, если хотите скачать его.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="960"/>
+        <location filename="../src/gui/folder.cpp" line="963"/>
         <source>This sync would remove all the files in the sync folder '%1'.
 This might be because the folder was silently reconfigured, or that all the files were manually removed.
 Are you sure you want to perform this operation?</source>
@@ -720,39 +720,39 @@ Are you sure you want to perform this operation?</source>
 Вы действительно хотите выполнить эту операцию?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="964"/>
+        <location filename="../src/gui/folder.cpp" line="967"/>
         <source>Remove All Files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="966"/>
+        <location filename="../src/gui/folder.cpp" line="969"/>
         <source>Remove all files</source>
         <translation>Удалить все файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="967"/>
+        <location filename="../src/gui/folder.cpp" line="970"/>
         <source>Keep files</source>
         <translation>Сохранить файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="983"/>
+        <location filename="../src/gui/folder.cpp" line="986"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Эта синхронизация собирается сбросить файлы в катлоге &apos;%1&apos; в более ранее состояние. Такое может случиться, если на сервере восстановлена резервная копия. Если продолжать синхронизацию как обычно, то ваши файлы будут перетёрты более старыми версиями. Хотите сохранить ваши локальные свежие файлы в качестве конфликтных?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="988"/>
+        <location filename="../src/gui/folder.cpp" line="991"/>
         <source>Backup detected</source>
         <translation>Обнаружена резервная копия</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="990"/>
+        <location filename="../src/gui/folder.cpp" line="993"/>
         <source>Normal Synchronisation</source>
         <translation>Обычная синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="991"/>
+        <location filename="../src/gui/folder.cpp" line="994"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Сохранить локальные файлы как конфликтующие</translation>
     </message>
@@ -1938,7 +1938,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="711"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
@@ -2145,32 +2145,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="363"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="361"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Принудительная остановка задачи при сбросе HTTP подключения для Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="399"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="397"/>
         <source>The local file was removed during sync.</source>
         <translation>Локальный файл был удалён в процессе синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="410"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="408"/>
         <source>Local file changed during sync.</source>
         <translation>Локальный файл изменился в процессе синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="441"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="439"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Неожиданный код завершения от сервера (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="446"/>
         <source>Missing File ID from server</source>
         <translation>Отсутствует код файла от сервера</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
         <source>Missing ETag from server</source>
         <translation>Отсутствует ETag с сервера</translation>
     </message>
