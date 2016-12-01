@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>บังคับประสานข้อมูลเดี๋ยวนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
@@ -410,7 +410,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>รายชื่อของรายการที่ไม่ได้ประสานข้อมูล ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>

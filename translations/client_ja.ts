@@ -1229,7 +1229,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1 のパスワードを入力してください：&lt;br&gt; &lt;br&gt;ユーザ：%2&lt;br&gt;アカウント：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1244,7 +1244,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してウェブインターフェースからアプリパスワードをリクエストしてください。</translation>
     </message>
 </context>
 <context>
@@ -2535,7 +2535,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>メールクライアントを起動して新しいメッセージを作成するときにエラーが発生しました。デフォルトのメールクライアントが設定されていませんか？</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="533"/>
@@ -3031,7 +3031,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="441"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名末尾にスペースが含まれます。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="444"/>
@@ -3391,7 +3391,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;バージョン %2 詳細については、&lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;をご覧ください。&lt;/p&gt;&lt;p&gt;既知の問題とヘルプは、&lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;をご覧下さい。By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;著作権 ownCloud, Inc.&lt;p&gt;&lt;p&gt;がGNU General Public License (GPL) バージョン2.0 でライセンスされています。&lt;br/&gt;ownCloud 及び ownCloud のロゴはアメリカ合衆国またはその他の国、あるいはその両方における&lt;br&gt; ownCloud, Inc.の登録商標です。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
