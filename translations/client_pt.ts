@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="189"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar todos</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="196"/>
@@ -3344,7 +3344,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Nova conta...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="748"/>
@@ -3365,7 +3365,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>A sincronizar %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="806"/>
