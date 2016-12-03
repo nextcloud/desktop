@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="203"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar alterações manuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Forçar a sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="240"/>
@@ -3154,7 +3154,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="304"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Todos os direitos reservados ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
