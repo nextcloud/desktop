@@ -108,6 +108,11 @@ static bool blacklistCheck(SyncJournalDb* journal, const SyncFileItem& item)
 
     if (newEntry.isValid()) {
         journal->updateErrorBlacklistEntry(newEntry);
+        // Also clear upload info if any so we don't resume from the same transfer-id if there was too many failures (#5344)
+        // (maybe the reason is that the state for this transfer id is broken on the server.)
+        if (newEntry._retryCount > 3) {
+            journal->setUploadInfo(item._file, SyncJournalDb::UploadInfo());
+        }
     } else if (oldEntry.isValid()) {
         journal->wipeErrorBlacklistEntry(item._file);
     }
