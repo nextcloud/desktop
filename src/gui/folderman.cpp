@@ -148,6 +148,7 @@ int FolderMan::unloadAndDeleteAllFolders()
 void FolderMan::registerFolderMonitor( Folder *folder )
 {
     if( !folder ) return;
+    if( !QDir(folder->path()).exists() ) return;
 
     if( !_folderWatchers.contains(folder->alias() ) ) {
         FolderWatcher *fw = new FolderWatcher(folder->path(), folder);
@@ -730,6 +731,10 @@ void FolderMan::slotStartScheduledFolderSync()
 
     // Start syncing this folder!
     if( folder ) {
+        // Safe to call several times, and necessary to try again if
+        // the folder path didn't exist previously.
+        registerFolderMonitor(folder);
+
         _currentSyncFolder = folder;
         folder->startSync( QStringList() );
     }
