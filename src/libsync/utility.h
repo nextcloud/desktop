@@ -105,6 +105,11 @@ namespace Utility
     // if false, the two cases are two different files.
     OWNCLOUDSYNC_EXPORT bool fsCasePreserving();
 
+    // Check if two pathes that MUST exist are equal. This function
+    // uses QDir::canonicalPath() to judge and cares for the systems
+    // case sensitivity.
+    OWNCLOUDSYNC_EXPORT bool fileNamesEqual( const QString& fn1, const QString& fn2);
+
     // Call the given command with the switch --version and rerun the first line
     // of the output.
     // If command is empty, the function calls the running application which, on

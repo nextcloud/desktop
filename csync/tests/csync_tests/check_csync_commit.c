@@ -23,7 +23,7 @@
 
 #include "csync_private.h"
 
-static void setup(void **state) {
+static int setup(void **state) {
     CSYNC *csync;
     int rc;
 
@@ -33,9 +33,11 @@ static void setup(void **state) {
     csync_create(&csync, "/tmp/check_csync1");
 
     *state = csync;
+    
+    return 0;
 }
 
-static void setup_module(void **state) {
+static int setup_module(void **state) {
     CSYNC *csync;
     int rc;
 
@@ -44,11 +46,13 @@ static void setup_module(void **state) {
 
     csync_create(&csync, "/tmp/check_csync1");
 
-    csync_init(csync);
+    csync_init(csync, "foo");
     *state = csync;
+    
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = *state;
     int rc;
 
@@ -61,6 +65,8 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
 static void check_csync_commit(void **state)
@@ -88,10 +94,10 @@ static void check_csync_commit_dummy(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_commit, setup, teardown),
-        unit_test_setup_teardown(check_csync_commit_dummy, setup_module, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_commit, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_commit_dummy, setup_module, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }

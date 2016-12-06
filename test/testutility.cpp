@@ -5,6 +5,9 @@
 */
 
 #include <QtTest>
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+#include <QTemporaryDir>
+#endif
 
 #include "utility.h"
 
@@ -150,6 +153,52 @@ private slots:
         s = timeAgoInWords(earlyTS, laterTS );
         QCOMPARE(s, QLatin1String("Less than a minute ago"));
     }
+
+    void testFsCasePreserving()
+    {
+        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
+        QVERIFY(fsCasePreserving());
+        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "0");
+        QVERIFY(! fsCasePreserving());
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
+        QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
+#endif
+    }
+
+    void testFileNamesEqual()
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+        qDebug() << "*** checking fileNamesEqual function";
+        QTemporaryDir dir;
+        QVERIFY(dir.isValid());
+        QDir dir2(dir.path());
+        QVERIFY(dir2.mkpath("test"));
+        if( !fsCasePreserving() ) {
+        QVERIFY(dir2.mkpath("TEST"));
+        }
+        QVERIFY(dir2.mkpath("test/TESTI"));
+        QVERIFY(dir2.mkpath("TESTI"));
+
+        QString a = dir.path();
+        QString b = dir.path();
+
+        QVERIFY(fileNamesEqual(a, b));
+
+        QVERIFY(fileNamesEqual(a+"/test", b+"/test")); // both exist
+        QVERIFY(fileNamesEqual(a+"/test/TESTI", b+"/test/../test/TESTI")); // both exist
+
+        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
+        QVERIFY(fileNamesEqual(a+"/test", b+"/TEST")); // both exist
+
+        QVERIFY(!fileNamesEqual(a+"/test", b+"/test/TESTI")); // both are different
+
+        dir.remove();
+        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
+#endif
+    }
+
+
 };
 
 QTEST_APPLESS_MAIN(TestUtility)

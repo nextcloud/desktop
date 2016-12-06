@@ -48,10 +48,10 @@ static void check_csync_normalize_etag(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_csync_normalize_etag),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_csync_normalize_etag),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

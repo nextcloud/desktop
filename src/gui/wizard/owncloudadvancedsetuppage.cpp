@@ -125,8 +125,13 @@ void OwncloudAdvancedSetupPage::initializePage()
 void OwncloudAdvancedSetupPage::updateStatus()
 {
     const QString locFolder = localFolder();
+    const QString url = static_cast<OwncloudWizard *>(wizard())->ocUrl();
+    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
+
+    QUrl serverUrl(url);
+    serverUrl.setUserName(user);
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder);
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl);
     _localFolderValid = errorStr.isEmpty();
 
     QString t;

@@ -326,7 +326,7 @@ void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local);
  *
  * @param ctx  The context to initialize.
  */
-void OCSYNC_EXPORT csync_init(CSYNC *ctx);
+void OCSYNC_EXPORT csync_init(CSYNC *ctx, const char *db_file);
 
 /**
  * @brief Update detection

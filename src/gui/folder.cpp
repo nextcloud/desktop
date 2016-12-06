@@ -46,6 +46,7 @@
 
 namespace OCC {
 
+const char oldJournalPath[] = ".csync_journal.db";
 
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
@@ -60,8 +61,9 @@ Folder::Folder(const FolderDefinition& definition,
       , _lastSyncDuration(0)
       , _consecutiveFailingSyncs(0)
       , _consecutiveFollowUpSyncs(0)
-      , _journal(definition.localPath)
+      , _journal(_definition.absoluteJournalPath())
       , _fileLog(new SyncRunFileLog)
+      , _saveBackwardsCompatible(false)
 {
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
@@ -123,6 +125,7 @@ Folder::~Folder()
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
 }
+
 
 void Folder::checkLocalPath()
 {
@@ -203,7 +206,7 @@ void Folder::setIgnoreHiddenFiles(bool ignore)
     _definition.ignoreHiddenFiles = ignore;
 }
 
-QString Folder::cleanPath()
+QString Folder::cleanPath() const
 {
     QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
 
@@ -584,8 +587,33 @@ void Folder::slotThreadTreeWalkResult(const SyncFileItemVector& items)
 
 void Folder::saveToSettings() const
 {
+    // Remove first to make sure we don't get duplicates
+    removeFromSettings();
+
     auto settings = _accountState->settings();
-    settings->beginGroup(QLatin1String("Folders"));
+
+    // The folder is saved to backwards-compatible "Folders"
+    // section only if it has the migrate flag set (i.e. was in
+    // there before) or if the folder is the only one for the
+    // given target path.
+    // This ensures that older clients will not read a configuration
+    // where two folders for different accounts point at the same
+    // local folders.
+    bool oneAccountOnly = true;
+    foreach (Folder* other, FolderMan::instance()->map()) {
+        if (other != this && other->cleanPath() == this->cleanPath()) {
+            oneAccountOnly = false;
+            break;
+        }
+    }
+
+    bool compatible = _saveBackwardsCompatible || oneAccountOnly;
+
+    if (compatible) {
+        settings->beginGroup(QLatin1String("Folders"));
+    } else {
+        settings->beginGroup(QLatin1String("Multifolders"));
+    }
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
@@ -594,8 +622,11 @@ void Folder::saveToSettings() const
 
 void Folder::removeFromSettings() const
 {
-    auto  settings = _accountState->settings();
+    auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
+    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->endGroup();
+    settings->beginGroup(QLatin1String("Multifolders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
@@ -628,12 +659,12 @@ void Folder::slotTerminateSync()
 // local folder is synced to the same ownCloud.
 void Folder::wipe()
 {
-    QString stateDbFile = path()+QLatin1String(".csync_journal.db");
+    QString stateDbFile = _engine->journal()->databaseFilePath();
 
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
-    //Unregister the socket API so it does not keep the .sync_journal file open
+    //Unregister the socket API so it does not keep the ._sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
 
@@ -953,6 +984,11 @@ void Folder::scheduleThisFolderSoon()
     }
 }
 
+void Folder::setSaveBackwardsCompatible(bool save)
+{
+    _saveBackwardsCompatible = save;
+}
+
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
 {
     ConfigFile cfgFile;
@@ -1005,6 +1041,7 @@ void FolderDefinition::save(QSettings& settings, const FolderDefinition& folder)
 {
     settings.beginGroup(FolderMan::escapeAlias(folder.alias));
     settings.setValue(QLatin1String("localPath"), folder.localPath);
+    settings.setValue(QLatin1String("journalPath"), folder.journalPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
@@ -1017,6 +1054,7 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     settings.beginGroup(alias);
     folder->alias = FolderMan::unescapeAlias(alias);
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
+    folder->journalPath = settings.value(QLatin1String("journalPath")).toString();
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
@@ -1025,6 +1063,9 @@ bool FolderDefinition::load(QSettings& settings, const QString& alias,
     // Old settings can contain paths with native separators. In the rest of the
     // code we assum /, so clean it up now.
     folder->localPath = prepareLocalPath(folder->localPath);
+
+    // Target paths also have a convention
+    folder->targetPath = prepareTargetPath(folder->targetPath);
 
     return true;
 }
@@ -1036,6 +1077,30 @@ QString FolderDefinition::prepareLocalPath(const QString& path)
         p.append(QLatin1Char('/'));
     }
     return p;
+}
+
+QString FolderDefinition::prepareTargetPath(const QString &path)
+{
+    QString p = path;
+    if (p.endsWith(QLatin1Char('/'))) {
+        p.chop(1);
+    }
+    // Doing this second ensures the empty string or "/" come
+    // out as "/".
+    if (!p.startsWith(QLatin1Char('/'))) {
+        p.prepend(QLatin1Char('/'));
+    }
+    return p;
+}
+
+QString FolderDefinition::absoluteJournalPath() const
+{
+    return QDir(localPath).filePath(journalPath);
+}
+
+QString FolderDefinition::defaultJournalPath(AccountPtr account)
+{
+    return SyncJournalDb::makeDbName(account->url(), targetPath, account->credentials()->user());
 }
 
 } // namespace OCC

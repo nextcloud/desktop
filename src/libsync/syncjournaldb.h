@@ -37,8 +37,16 @@ class OWNCLOUDSYNC_EXPORT SyncJournalDb : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncJournalDb(const QString& path, QObject *parent = 0);
+    explicit SyncJournalDb(const QString& dbFilePath, QObject *parent = 0);
     virtual ~SyncJournalDb();
+
+    /// Create a journal path for a specific configuration
+    static QString makeDbName(const QUrl& remoteUrl,
+                              const QString& remotePath,
+                              const QString& user);
+
+    /// Migrate a csync_journal to the new path, if necessary. Returns false on error
+    static bool maybeMigrateDb(const QString& localPath, const QString& absoluteJournalPath);
 
     // to verify that the record could be queried successfully check
     // with SyncJournalFileRecord::isValid()
@@ -58,7 +66,8 @@ public:
     bool exists();
     void walCheckpoint();
 
-    QString databaseFilePath();
+    QString databaseFilePath() const;
+
     static qint64 getPHash(const QString& );
 
     void updateErrorBlacklistEntry( const SyncJournalErrorBlacklistRecord& item );

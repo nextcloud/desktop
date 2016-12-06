@@ -56,8 +56,9 @@ QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) co
     return ret;
 }
 
-FolderWizardLocalPath::FolderWizardLocalPath()
-    : FormatWarningsWizardPage()
+FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr& account)
+    : FormatWarningsWizardPage(),
+      _account(account)
 {
     _ui.setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui.localFolderLineEdit);
@@ -89,8 +90,13 @@ void FolderWizardLocalPath::cleanupPage()
 
 bool FolderWizardLocalPath::isComplete() const
 {
+    QUrl serverUrl = _account->url();
+    serverUrl.setUserName( _account->credentials()->user() );
+
     QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()));
+        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl);
+
+
 
     bool isOk = errorStr.isEmpty();
     QStringList warnStrings;
@@ -133,7 +139,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
 }
 
 // =================================================================================
-FolderWizardRemotePath::FolderWizardRemotePath(AccountPtr account)
+FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr& account)
     : FormatWarningsWizardPage()
     ,_warnWasVisible(false)
     ,_account(account)
@@ -473,7 +479,7 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 
 // ====================================================================================
 
-FolderWizardSelectiveSync::FolderWizardSelectiveSync(AccountPtr account)
+FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr& account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
     _treeView = new SelectiveSyncTreeView(account, this);
@@ -527,7 +533,7 @@ void FolderWizardSelectiveSync::cleanupPage()
 
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent),
-    _folderWizardSourcePage(new FolderWizardLocalPath),
+    _folderWizardSourcePage(new FolderWizardLocalPath(account)),
     _folderWizardTargetPage(0),
     _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {

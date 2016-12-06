@@ -16,9 +16,20 @@
 #include "account.h"
 #include "accountstate.h"
 #include "configfile.h"
+#include "creds/httpcredentials.h"
 
 using namespace OCC;
 
+class HttpCredentialsTest : public HttpCredentials {
+public:
+    HttpCredentialsTest(const QString& user, const QString& password)
+        : HttpCredentials(user, password, "", "")
+    {}
+
+    void askFromUser() Q_DECL_OVERRIDE {
+
+    }
+};
 
 static FolderDefinition folderDefinition(const QString &path) {
     FolderDefinition d;
@@ -53,7 +64,13 @@ private slots:
             f.write("hello");
         }
 
-        AccountStatePtr newAccountState(new AccountState(Account::create()));
+        AccountPtr account = Account::create();
+        QUrl url("http://example.de");
+        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
+        account->setCredentials(cred);
+        account->setUrl( url );
+
+        AccountStatePtr newAccountState(new AccountState(account));
         FolderMan *folderman = FolderMan::instance();
         QCOMPARE(folderman, &_fm);
         QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dir.path() + "/sub/ownCloud1")));
@@ -61,6 +78,8 @@ private slots:
 
 
         // those should be allowed
+        // QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
+
         QCOMPARE(folderman->checkPathValidityForNewFolder(dir.path() + "/sub/free"), QString());
         QCOMPARE(folderman->checkPathValidityForNewFolder(dir.path() + "/free2/"), QString());
         // Not an existing directory -> Ok
@@ -71,11 +90,21 @@ private slots:
         // A file -> Error
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/file.txt").isNull());
 
-        // There are folders configured in those folders: -> ERROR
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/ownCloud1").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/ownCloud2/").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/").isNull());
+        // There are folders configured in those folders, url needs to be taken into account: -> ERROR
+        QUrl url2(url);
+        const QString user = account->credentials()->user();
+        url2.setUserName(user);
+
+        // The following both fail because they refer to the same account (user and url)
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/ownCloud1", url2).isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/ownCloud2/", url2).isNull());
+
+        // Now it will work because the account is different
+        QUrl url3("http://anotherexample.org");
+        url3.setUserName("dummy");
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dir.path() + "/sub/ownCloud1", url3), QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dir.path() + "/ownCloud2/", url3), QString());
+
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path()).isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/ownCloud1/folder").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/sub/ownCloud1/folder/f").isNull());
@@ -93,7 +122,12 @@ private slots:
 
         // Not Ok
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link2").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link3").isNull());
+
+        // link 3 points to an existing sync folder. To make it fail, the account must be the same
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link3", url2).isNull());
+        // while with a different account, this is fine
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dir.path() + "/link3", url3), QString());
+
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link4").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dir.path() + "/link3/folder").isNull());
 

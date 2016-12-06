@@ -97,11 +97,11 @@ public:
     Folder* setupFolderFromOldConfigFile(const QString &, AccountState *account );
 
     /**
-     * Ensures that a given directory does not contain a .csync_journal.
+     * Ensures that a given directory does not contain a sync journal file.
      *
      * @returns false if the journal could not be removed, true otherwise.
      */
-    static bool ensureJournalGone(const QString &path);
+    static bool ensureJournalGone(const QString& journalDbFile);
 
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
@@ -128,7 +128,7 @@ public:
      *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, bool forNewDirectory = false);
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl& serverUrl = QUrl(), bool forNewDirectory = false);
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,
@@ -261,7 +261,8 @@ private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */
-    Folder* addFolderInternal(FolderDefinition folderDefinition, AccountState* accountState);
+    Folder* addFolderInternal(FolderDefinition folderDefinition,
+                              AccountState* accountState);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder( Folder * );
@@ -276,6 +277,8 @@ private:
 
     // restarts the application (Linux only)
     void restartApplication();
+
+    void setupFoldersHelper(QSettings& settings, AccountStatePtr account, bool backwardsCompatible);
 
     QSet<Folder*>  _disabledFolders;
     Folder::Map    _folderMap;

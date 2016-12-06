@@ -43,11 +43,11 @@ static void check_csync_memstat(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_csync_instruction_str),
-        unit_test(check_csync_memstat),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_csync_instruction_str),
+        cmocka_unit_test(check_csync_memstat),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

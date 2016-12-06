@@ -50,11 +50,11 @@ static void check_csync_create(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_csync_destroy_null),
-        unit_test(check_csync_create),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_csync_destroy_null),
+        cmocka_unit_test(check_csync_create),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

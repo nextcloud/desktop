@@ -83,7 +83,10 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     Q_ASSERT(localPath.endsWith(QLatin1Char('/')));
 
     csync_create(&_csync_ctx, localPath.toUtf8().data());
-    csync_init(_csync_ctx);
+
+    const QString dbFile = _journal->databaseFilePath();
+    csync_init(_csync_ctx, dbFile.toUtf8().data());
+
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 

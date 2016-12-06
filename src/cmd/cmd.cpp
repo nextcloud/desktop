@@ -278,7 +278,6 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
     }
 }
 
-
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
 
@@ -374,11 +373,20 @@ int main(int argc, char **argv) {
     QByteArray remUrl = options.target_url.toUtf8();
 
     // Find the folder and the original owncloud url
-    QStringList splitted = url.path().split(account->davPath());
+    QStringList splitted = url.path().split("/" + account->davPath());
     url.setPath(splitted.value(0));
 
     url.setScheme(url.scheme().replace("owncloud", "http"));
-    QString folder = splitted.value(1);
+
+    QUrl credentialFreeUrl = url;
+    credentialFreeUrl.setUserName(QString());
+    credentialFreeUrl.setPassword(QString());
+
+    // Remote folders typically start with a / and don't end with one
+    QString folder = "/" + splitted.value(1);
+    if (folder.endsWith("/") && folder != "/") {
+        folder.chop(1);
+    }
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
 
@@ -461,7 +469,9 @@ restart_sync:
     }
 
     Cmd cmd;
-    SyncJournalDb db(options.source_dir);
+    QString dbPath = options.source_dir + SyncJournalDb::makeDbName(credentialFreeUrl, folder, user);
+    SyncJournalDb db(dbPath);
+
     if (!selectiveSyncList.empty()) {
         selectiveSyncFixup(&db, selectiveSyncList);
     }

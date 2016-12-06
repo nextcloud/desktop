@@ -37,8 +37,8 @@ sub assertCsyncJournalOk {
 	my $path = $_[0];
 
     # FIXME: should test also remoteperm but it's not working with owncloud6
-    #     my $cmd = 'sqlite3 ' . $path . '.csync_journal.db "SELECT count(*) from metadata where length(remotePerm) == 0 or length(fileId) == 0"';
-    my $cmd = 'sqlite3 ' . $path . '.csync_journal.db "SELECT count(*) from metadata where length(fileId) == 0"';
+    #     my $cmd = 'sqlite3 ' . $path . '._sync_*.db "SELECT count(*) from metadata where length(remotePerm) == 0 or length(fileId) == 0"';
+    my $cmd = 'sqlite3 ' . $path . '._sync_*.db "SELECT count(*) from metadata where length(fileId) == 0"';
 	my $result = `$cmd`;
 	assert($result == "0");
 }
@@ -170,14 +170,14 @@ assertLocalAndRemoteDir( '', 0);
 
 #######################################################################
 printInfo( "move a directory in a outside read only folder" );
-system("sqlite3 " . localDir().'.csync_journal.db .dump');
+system("sqlite3 " . localDir().'._sync_*.db .dump');
 
 #Missing directory should be restored
 #new directory should be uploaded
 system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_'  );
 
 csync();
-system("sqlite3 " . localDir().'.csync_journal.db .dump');
+system("sqlite3 " . localDir().'._sync_*.db .dump');
 assertCsyncJournalOk(localDir());
 
 # old name restored
@@ -229,7 +229,7 @@ system("rm -r " . localDir(). "readonlyDirectory_PERM_M_/moved_PERM_CK_");
 
 assertLocalAndRemoteDir( '', 0);
 
-system("sqlite3 " . localDir().'.csync_journal.db .dump');
+system("sqlite3 " . localDir().'._sync_*.db .dump');
 
 
 #######################################################################

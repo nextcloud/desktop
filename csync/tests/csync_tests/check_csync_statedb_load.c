@@ -26,7 +26,7 @@
 
 #define TESTDB "/tmp/check_csync1/test.db"
 
-static void setup(void **state) {
+static int setup(void **state) {
     CSYNC *csync;
     int rc;
 
@@ -47,9 +47,11 @@ static void setup(void **state) {
 
     rc = sqlite3_close(db);
     assert_int_equal(rc, SQLITE_OK);
+
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = *state;
     int rc;
 
@@ -60,6 +62,8 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    
+    return 0;
 }
 
 static void check_csync_statedb_load(void **state)
@@ -116,11 +120,11 @@ static void check_csync_statedb_close(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_statedb_load, setup, teardown),
-        unit_test_setup_teardown(check_csync_statedb_close, setup, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_statedb_load, setup, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_close, setup, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

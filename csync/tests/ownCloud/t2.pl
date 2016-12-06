@@ -176,7 +176,7 @@ assertLocalAndRemoteDir( 'remoteToLocal1', 1);
 
 printInfo("simulate a owncloud 5 update by removing all the fileid");
 ## simulate a owncloud 5 update by removing all the fileid
-system( "sqlite3 " . localDir() . ".csync_journal.db \"UPDATE metadata SET fileid='';\"");
+system( "sqlite3 " . localDir() . "._sync_*.db \"UPDATE metadata SET fileid='';\"");
 #refresh the ids
 csync();
 assertLocalAndRemoteDir( 'remoteToLocal1', 1);

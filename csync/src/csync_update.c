@@ -704,8 +704,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   }
 
   while ((dirent = csync_vio_readdir(ctx, dh))) {
-    const char *path = NULL;
-    size_t ulen = 0;
     int flen;
     int flag;
 
@@ -742,35 +740,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       dirent = NULL;
       ctx->status_code = CSYNC_STATUS_MEMORY_ERROR;
       goto error;
-    }
-
-    /* Create relative path: For local replica, we need to remove the base path.  */
-    path = filename;
-    if (ctx->current == LOCAL_REPLICA) {
-        ulen = strlen(ctx->local.uri) + 1;
-        if (((size_t)flen) < ulen) {
-            csync_vio_file_stat_destroy(dirent);
-            dirent = NULL;
-            ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-            goto error;
-        }
-        path += ulen;
-    }
-
-
-    /* skip ".csync_journal.db" and ".csync_journal.db.ctmp" */
-    /* Isn't this done via csync_exclude already? */
-    if (c_streq(path, ".csync_journal.db")
-            || c_streq(path, ".csync_journal.db.ctmp")
-            || c_streq(path, ".csync_journal.db.ctmp-journal")
-            || c_streq(path, ".csync-progressdatabase")
-            || c_streq(path, ".csync_journal.db-shm")
-            || c_streq(path, ".csync_journal.db-wal")
-            || c_streq(path, ".csync_journal.db-journal")) {
-        csync_vio_file_stat_destroy(dirent);
-        dirent = NULL;
-        SAFE_FREE(filename);
-        continue;
     }
 
     /* Only for the local replica we have to stat(), for the remote one we have all data already */
