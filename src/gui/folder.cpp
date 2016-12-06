@@ -823,7 +823,7 @@ void Folder::slotSyncFinished(bool success)
     _fileLog->finish();
     bubbleUpSyncResult();
 
-    bool anotherSyncNeeded = _engine->isAnotherSyncNeeded();
+    auto anotherSyncNeeded = _engine->isAnotherSyncNeeded();
 
     if (_csyncError) {
         _syncResult.setStatus(SyncResult::Error);
@@ -874,7 +874,7 @@ void Folder::slotSyncFinished(bool success)
     _timeSinceLastSyncDone.restart();
 
     // Increment the follow-up sync counter if necessary.
-    if (anotherSyncNeeded) {
+    if (anotherSyncNeeded == ImmediateFollowUp) {
         _consecutiveFollowUpSyncs++;
         qDebug() << "another sync was requested by the finished sync, this has"
                  << "happened" << _consecutiveFollowUpSyncs << "times";
@@ -883,7 +883,7 @@ void Folder::slotSyncFinished(bool success)
     }
 
     // Maybe force a follow-up sync to take place, but only a couple of times.
-    if (anotherSyncNeeded && _consecutiveFollowUpSyncs <= 3)
+    if (anotherSyncNeeded == ImmediateFollowUp && _consecutiveFollowUpSyncs <= 3)
     {
         // Sometimes another sync is requested because a local file is still
         // changing, so wait at least a small amount of time before syncing

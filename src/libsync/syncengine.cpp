@@ -73,7 +73,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
   , _downloadLimit(0)
   , _newBigFolderSizeLimit(-1)
   , _checksum_hook(journal)
-  , _anotherSyncNeeded(false)
+  , _anotherSyncNeeded(NoFollowUpSync)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
@@ -695,12 +695,13 @@ void SyncEngine::startSync()
     Q_ASSERT(!_syncRunning);
     s_anySyncRunning = true;
     _syncRunning = true;
-    _anotherSyncNeeded = false;
+    _anotherSyncNeeded = NoFollowUpSync;
     _clearTouchedFilesTimer.stop();
 
     _progressInfo->reset();
 
     if (!QDir(_localPath).exists()) {
+        _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
         emit csyncError("Unable to find local sync folder.");
         finalize(false);
@@ -714,6 +715,7 @@ void SyncEngine::startSync()
         qDebug() << "There are" << freeBytes << "bytes available at" << _localPath
                  << "and at least" << minFree << "are required";
         if (freeBytes < minFree) {
+            _anotherSyncNeeded = DelayedFollowUp;
             emit csyncError(tr("Only %1 are available, need at least %2 to start",
                                "Placeholders are postfixed with file sizes using Utility::octetsToString()").arg(
                                 Utility::octetsToString(freeBytes),
@@ -1050,7 +1052,9 @@ void SyncEngine::slotItemCompleted(const SyncFileItem &item, const PropagatorJob
 
 void SyncEngine::slotFinished(bool success)
 {
-    _anotherSyncNeeded = _anotherSyncNeeded || _propagator->_anotherSyncNeeded;
+    if (_propagator->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+        _anotherSyncNeeded = ImmediateFollowUp;
+    }
 
     if (success) {
         _journal->setDataFingerprint(_discoveryMainThread->_dataFingerprint);
@@ -1173,7 +1177,7 @@ void SyncEngine::checkForPermission()
                             // be restored. Do that in the next sync by not considering as a rename
                             // but delete and upload. It will then be restored if needed.
                             _journal->avoidRenamesOnNextSync((*it)->_file);
-                            _anotherSyncNeeded = true;
+                            _anotherSyncNeeded = ImmediateFollowUp;
                             qDebug() << "Moving of " << (*it)->_file << " canceled because no permission to add parent folder";
                         }
                         (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
@@ -1330,7 +1334,7 @@ void SyncEngine::checkForPermission()
                     //  At this point we would need to go back to the propagate phase on both remote to take
                     //  the decision.
                     _journal->avoidRenamesOnNextSync((*it)->_file);
-                    _anotherSyncNeeded = true;
+                    _anotherSyncNeeded = ImmediateFollowUp;
 
 
                     if ((*it)->_isDirectory) {

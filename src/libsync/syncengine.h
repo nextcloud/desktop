@@ -49,6 +49,13 @@ class SyncJournalDb;
 class OwncloudPropagator;
 class PropagatorJob;
 
+enum AnotherSyncNeeded
+{
+    NoFollowUpSync,
+    ImmediateFollowUp, // schedule this again immediately (limited amount of times)
+    DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
+};
+
 /**
  * @brief The SyncEngine class
  * @ingroup libsync
@@ -82,8 +89,8 @@ public:
     Utility::StopWatch &stopWatch() { return _stopWatch; }
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
-    /* Return true if we detected that another sync is needed to complete the sync */
-    bool isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+    /* Returns whether another sync is needed to complete the sync */
+    AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
     /** Get the ms since a file was touched, or -1 if it wasn't.
      *
@@ -259,7 +266,7 @@ private:
     /// Hook for computing checksums from csync_update
     CSyncChecksumHook _checksum_hook;
 
-    bool _anotherSyncNeeded;
+    AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
     QHash<QString, QElapsedTimer> _touchedFiles;

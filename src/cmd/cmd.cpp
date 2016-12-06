@@ -507,7 +507,7 @@ restart_sync:
 
     app.exec();
 
-    if (engine.isAnotherSyncNeeded()) {
+    if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
         if (restartCount < options.restartTimes) {
             restartCount++;
             qDebug() << "Restarting Sync, because another sync is needed" << restartCount;

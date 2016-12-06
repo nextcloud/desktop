@@ -833,18 +833,20 @@ void FolderMan::slotScheduleFolderByTime()
             continue;
         }
 
-        // Retry a couple of times after failure
-        bool syncAgainAfterFail = f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3;
-        qint64 syncAgainAfterFailDelay = 10 * 1000; // 10s for the first retry-after-fail
+        // Retry a couple of times after failure; or regularly if requested
+        bool syncAgain =
+                (f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3)
+                || f->syncEngine().isAnotherSyncNeeded() == DelayedFollowUp;
+        qint64 syncAgainDelay = 10 * 1000; // 10s for the first retry-after-fail
         if (f->consecutiveFailingSyncs() > 1)
-            syncAgainAfterFailDelay = 60 * 1000; // 60s for each further attempt
-        if (syncAgainAfterFail
-                && msecsSinceSync > syncAgainAfterFailDelay) {
+            syncAgainDelay = 60 * 1000; // 60s for each further attempt
+        if (syncAgain
+                && msecsSinceSync > syncAgainDelay) {
             qDebug() << "** scheduling folder" << f->alias()
-                     << "because the last"
-                     << f->consecutiveFailingSyncs() << "syncs failed, last status:"
-                     << f->syncResult().statusString()
-                     << "time since last sync:" << msecsSinceSync;
+                     << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
+                     << ", anotherSyncNeeded" << f->syncEngine().isAnotherSyncNeeded()
+                     << ", last status:" << f->syncResult().statusString()
+                     << ", time since last sync:" << msecsSinceSync;
 
             scheduleFolder(f);
             continue;
