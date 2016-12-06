@@ -1,30 +1,27 @@
-From f3cd07c11e0b7327ffc629f48a89c8c457cdba75 Mon Sep 17 00:00:00 2001
+From 96c34ce85136cbdc16ef83effa8a13137f7ae4c5 Mon Sep 17 00:00:00 2001
 From: Jocelyn Turcotte <jturcotte@woboq.com>
 Date: Fri, 6 Mar 2015 16:12:37 +0100
-Subject: [PATCH] Fix -force-debug-info with macx-clang
+Subject: [PATCH] [NOUPSTREAM] Fix -force-debug-info with macx-clang
 
 ---
  mkspecs/common/clang.conf | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/mkspecs/common/clang.conf b/mkspecs/common/clang.conf
-index 2c29bb8..110d380 100644
+index e003b94..e9b3291 100644
 --- a/mkspecs/common/clang.conf
 +++ b/mkspecs/common/clang.conf
-@@ -20,11 +20,13 @@ QMAKE_CFLAGS_ISYSTEM             = -isystem
- QMAKE_CFLAGS_PRECOMPILE          = -x c-header -c ${QMAKE_PCH_INPUT} -o ${QMAKE_PCH_OUTPUT}
+@@ -21,11 +21,13 @@ QMAKE_CFLAGS_PRECOMPILE          = -x c-header -c ${QMAKE_PCH_INPUT} -o ${QMAKE_
  QMAKE_CFLAGS_USE_PRECOMPILE      = -Xclang -include-pch -Xclang ${QMAKE_PCH_OUTPUT}
  QMAKE_CFLAGS_LTCG                = -flto
+ QMAKE_CFLAGS_DISABLE_LTCG        = -fno-lto
 +QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO = $$QMAKE_CFLAGS_OPTIMIZE -g
  
  QMAKE_CXXFLAGS_PRECOMPILE        = -x c++-header -c ${QMAKE_PCH_INPUT} -o ${QMAKE_PCH_OUTPUT}
  QMAKE_CXXFLAGS_USE_PRECOMPILE    = $$QMAKE_CFLAGS_USE_PRECOMPILE
  QMAKE_CXXFLAGS_LTCG              = $$QMAKE_CFLAGS_LTCG
- QMAKE_CXXFLAGS_CXX11             = -std=c++11
+ QMAKE_CXXFLAGS_DISABLE_LTCG      = $$QMAKE_CFLAGS_DISABLE_LTCG
 +QMAKE_CXXFLAGS_RELEASE_WITH_DEBUGINFO = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
- 
- QMAKE_LFLAGS_CXX11      =
- QMAKE_LFLAGS_LTCG       = $$QMAKE_CFLAGS_LTCG
--- 
-2.2.0
-
+ QMAKE_CXXFLAGS_CXX11             = -std=c++11
+ QMAKE_CXXFLAGS_CXX14             = -std=c++1y
+ QMAKE_CXXFLAGS_CXX1Z             = -std=c++1z

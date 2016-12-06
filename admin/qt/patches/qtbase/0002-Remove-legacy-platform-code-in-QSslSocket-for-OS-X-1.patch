@@ -1,7 +1,7 @@
-From 06818f6d1c602aa3c4f9356324866432d2dd0195 Mon Sep 17 00:00:00 2001
+From e6bccb1f0d8ca59acb1ffdac74a823c06346e7f3 Mon Sep 17 00:00:00 2001
 From: Daniel Molkentin <daniel@molkentin.de>
 Date: Mon, 16 Nov 2015 15:02:37 +0100
-Subject: [PATCH 1/2] Remove legacy platform code in QSslSocket for OS X < 10.5
+Subject: [PATCH] Remove legacy platform code in QSslSocket for OS X < 10.5
 
 This avoids manual symbol lookups and makes the code more readable.
 Mark identical code.
@@ -16,20 +16,18 @@ Reviewed-by: Markus Goetz (Woboq GmbH) <markus@woboq.com>
 Conflicts:
 	src/network/ssl/qsslsocket_openssl.cpp
 ---
- src/network/ssl/qsslsocket_openssl.cpp | 83 +++++++++++-----------------------
+ src/network/ssl/qsslsocket_openssl.cpp | 81 +++++++++++-----------------------
  src/network/ssl/qsslsocket_p.h         |  6 +--
- 2 files changed, 28 insertions(+), 61 deletions(-)
+ 2 files changed, 26 insertions(+), 61 deletions(-)
 
 diff --git a/src/network/ssl/qsslsocket_openssl.cpp b/src/network/ssl/qsslsocket_openssl.cpp
-index 13fc534..7d0fe00 100644
+index 82644c1..415f147 100644
 --- a/src/network/ssl/qsslsocket_openssl.cpp
 +++ b/src/network/ssl/qsslsocket_openssl.cpp
-@@ -69,14 +69,19 @@
- #include <QtCore/qvarlengtharray.h>
- #include <QLibrary> // for loading the security lib for the CA store
+@@ -76,14 +76,17 @@
  
-+#include <string.h>
-+
+ #include <string.h>
+ 
 +#ifdef Q_OS_DARWIN
 +#  include <private/qcore_mac_p.h>
 +#endif
@@ -50,7 +48,7 @@ index 13fc534..7d0fe00 100644
      PtrCertOpenSystemStoreW QSslSocketPrivate::ptrCertOpenSystemStoreW = 0;
      PtrCertFindCertificateInStore QSslSocketPrivate::ptrCertFindCertificateInStore = 0;
      PtrCertCloseStore QSslSocketPrivate::ptrCertCloseStore = 0;
-@@ -482,23 +487,7 @@ void QSslSocketPrivate::ensureCiphersAndCertsLoaded()
+@@ -509,23 +512,7 @@ void QSslSocketPrivate::ensureCiphersAndCertsLoaded()
  
  #ifndef QT_NO_LIBRARY
      //load symbols needed to receive certificates from system store
@@ -59,23 +57,23 @@ index 13fc534..7d0fe00 100644
 -    if (securityLib.load()) {
 -        ptrSecCertificateCopyData = (PtrSecCertificateCopyData) securityLib.resolve("SecCertificateCopyData");
 -        if (!ptrSecCertificateCopyData)
--            qWarning("could not resolve symbols in security library"); // should never happen
+-            qCWarning(lcSsl, "could not resolve symbols in security library"); // should never happen
 -
 -        ptrSecTrustSettingsCopyCertificates = (PtrSecTrustSettingsCopyCertificates) securityLib.resolve("SecTrustSettingsCopyCertificates");
 -        if (!ptrSecTrustSettingsCopyCertificates) { // method was introduced in Leopard, use legacy method if it's not there
 -            ptrSecTrustCopyAnchorCertificates = (PtrSecTrustCopyAnchorCertificates) securityLib.resolve("SecTrustCopyAnchorCertificates");
 -            if (!ptrSecTrustCopyAnchorCertificates)
--                qWarning("could not resolve symbols in security library"); // should never happen
+-                qCWarning(lcSsl, "could not resolve symbols in security library"); // should never happen
 -        }
 -    } else {
--        qWarning("could not load security library");
+-        qCWarning(lcSsl, "could not load security library");
 -    }
 -#elif defined(Q_OS_WIN)
 +#if defined(Q_OS_WIN)
      HINSTANCE hLib = LoadLibraryW(L"Crypt32");
      if (hLib) {
  #if defined(Q_OS_WINCE)
-@@ -635,40 +624,22 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
+@@ -693,40 +680,22 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
      timer.start();
  #endif
      QList<QSslCertificate> systemCerts;
@@ -101,7 +99,7 @@ index 13fc534..7d0fe00 100644
 -                data = ptrSecCertificateCopyData(cfCert);
 -
 -                if (data == NULL) {
--                    qWarning("error retrieving a CA certificate from the system store");
+-                    qCWarning(lcSsl, "error retrieving a CA certificate from the system store");
 -                } else {
 -                    QByteArray rawCert = QByteArray::fromRawData((const char *)CFDataGetBytePtr(data), CFDataGetLength(data));
 -                    systemCerts.append(QSslCertificate::fromData(rawCert, QSsl::Der));
@@ -127,15 +125,15 @@ index 13fc534..7d0fe00 100644
 -        }
 -        else {
 -           // no detailed error handling here
--           qWarning("could not retrieve system CA certificates");
+-           qCWarning(lcSsl, "could not retrieve system CA certificates");
          }
      }
  #elif defined(Q_OS_WIN)
 diff --git a/src/network/ssl/qsslsocket_p.h b/src/network/ssl/qsslsocket_p.h
-index 6e7a2c5..c1a6f05 100644
+index d651971..17cc7b4 100644
 --- a/src/network/ssl/qsslsocket_p.h
 +++ b/src/network/ssl/qsslsocket_p.h
-@@ -145,11 +145,7 @@ public:
+@@ -151,11 +151,7 @@ public:
      static bool isMatchingHostname(const QSslCertificate &cert, const QString &peerName);
      Q_AUTOTEST_EXPORT static bool isMatchingHostname(const QString &cn, const QString &hostname);
  
@@ -148,6 +146,3 @@ index 6e7a2c5..c1a6f05 100644
      static PtrCertOpenSystemStoreW ptrCertOpenSystemStoreW;
      static PtrCertFindCertificateInStore ptrCertFindCertificateInStore;
      static PtrCertCloseStore ptrCertCloseStore;
--- 
-1.9.1
-

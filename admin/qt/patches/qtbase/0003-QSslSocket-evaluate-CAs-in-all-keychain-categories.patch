@@ -1,7 +1,7 @@
-From 6b9366e7748857f14d5b0f92ced70c08ab5235b7 Mon Sep 17 00:00:00 2001
+From 9d1120db0973ea7741b13a6555b20ae61f6d037e Mon Sep 17 00:00:00 2001
 From: Daniel Molkentin <danimo@owncloud.com>
 Date: Wed, 25 Nov 2015 12:37:27 +0100
-Subject: [PATCH 2/2] QSslSocket: evaluate CAs in all keychain categories
+Subject: [PATCH] QSslSocket: evaluate CAs in all keychain categories
 
 This will make sure that certs in the domainUser (login),
 and domainAdmin (per machine) keychain are being picked up
@@ -15,7 +15,7 @@ it will be accepted.
 [ChangeLog][Platform Specific Changes] OS X now accepts trusted
         certificates from the login and system keychains.
 
-(Backport of fe3a84138e266c425f11353f7d8dc28a588af89e to Qt 5.4)
+(Backport of fe3a84138e266c425f11353f7d8dc28a588af89e)
 
 Task-number: QTBUG-32898
 Change-Id: Ia23083d5af74388eeee31ba07239735cbbe64368
@@ -29,10 +29,10 @@ Reviewed-by: Markus Goetz (Woboq GmbH) <markus@woboq.com>
  create mode 100644 src/network/ssl/qsslsocket_mac_shared.cpp
 
 diff --git a/src/network/ssl/qsslsocket.cpp b/src/network/ssl/qsslsocket.cpp
-index 8887f47..6347c20 100644
+index 549906a..7b202b0 100644
 --- a/src/network/ssl/qsslsocket.cpp
 +++ b/src/network/ssl/qsslsocket.cpp
-@@ -1446,6 +1446,10 @@ QList<QSslCertificate> QSslSocket::defaultCaCertificates()
+@@ -1508,6 +1508,10 @@ QList<QSslCertificate> QSslSocket::defaultCaCertificates()
      returned by defaultCaCertificates(). You can replace that database
      with your own with setDefaultCaCertificates().
  
@@ -198,10 +198,10 @@ index 0000000..60fea4c
 +
 +QT_END_NAMESPACE
 diff --git a/src/network/ssl/qsslsocket_openssl.cpp b/src/network/ssl/qsslsocket_openssl.cpp
-index 7d0fe00..7415e32 100644
+index 415f147..7a3cb42 100644
 --- a/src/network/ssl/qsslsocket_openssl.cpp
 +++ b/src/network/ssl/qsslsocket_openssl.cpp
-@@ -71,14 +71,6 @@
+@@ -76,14 +76,6 @@
  
  #include <string.h>
  
@@ -216,15 +216,15 @@ index 7d0fe00..7415e32 100644
  QT_BEGIN_NAMESPACE
  
  #if defined(Q_OS_WIN)
-@@ -616,6 +608,7 @@ void QSslSocketPrivate::resetDefaultCiphers()
-     setDefaultCiphers(defaultCiphers);
+@@ -672,6 +664,7 @@ void QSslSocketPrivate::resetDefaultEllipticCurves()
+     setDefaultSupportedEllipticCurves(curves);
  }
  
 +#ifndef Q_OS_DARWIN // Apple implementation in qsslsocket_mac_shared.cpp
  QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
  {
      ensureInitialized();
-@@ -624,25 +617,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
+@@ -680,25 +673,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
      timer.start();
  #endif
      QList<QSslCertificate> systemCerts;
@@ -251,7 +251,7 @@ index 7d0fe00..7415e32 100644
      if (ptrCertOpenSystemStoreW && ptrCertFindCertificateInStore && ptrCertCloseStore) {
          HCERTSTORE hSystemStore;
  #if defined(Q_OS_WINCE)
-@@ -719,6 +694,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
+@@ -775,6 +750,7 @@ QList<QSslCertificate> QSslSocketPrivate::systemCaCertificates()
  
      return systemCerts;
  }
@@ -260,10 +260,10 @@ index 7d0fe00..7415e32 100644
  void QSslSocketBackendPrivate::startClientEncryption()
  {
 diff --git a/src/network/ssl/ssl.pri b/src/network/ssl/ssl.pri
-index 384e149..9546f18 100644
+index 29c47cd..8eb605b 100644
 --- a/src/network/ssl/ssl.pri
 +++ b/src/network/ssl/ssl.pri
-@@ -45,7 +45,9 @@ contains(QT_CONFIG, openssl) | contains(QT_CONFIG, openssl-linked) {
+@@ -62,7 +62,9 @@ contains(QT_CONFIG, openssl) | contains(QT_CONFIG, openssl-linked) {
                 ssl/qsslsocket_openssl.cpp \
                 ssl/qsslsocket_openssl_symbols.cpp
  
@@ -274,6 +274,3 @@ index 384e149..9546f18 100644
  
      # Add optional SSL libs
      # Static linking of OpenSSL with msvc:
--- 
-1.9.1
-
