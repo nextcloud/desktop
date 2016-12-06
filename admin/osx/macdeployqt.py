@@ -40,7 +40,6 @@ QT_PLUGINS = [
     'imageformats/libqico.dylib',
     'imageformats/libqjpeg.dylib',
     'imageformats/libqsvg.dylib',
-    'imageformats/libqmng.dylib',
 ]
 
 QT_PLUGINS_SEARCH_PATH=[
