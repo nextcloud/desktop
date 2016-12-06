@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="768"/>
         <source>Error writing metadata to the database</source>
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
@@ -1939,7 +1939,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="714"/>
         <source>Error writing metadata to the database</source>
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
@@ -1995,17 +1995,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="125"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="130"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Wiederherstellung fehlgeschlagen: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="148"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="153"/>
         <source>Continue blacklisting:</source>
         <translation>Blacklisting fortsetzen:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="246"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Eine Datei oder ein Ordner wurde von einer Nur-Lese-Freigabe wiederhergestellt, aber die Wiederherstellung ist mit folgendem Fehler fehlgeschlagen: %1</translation>
     </message>

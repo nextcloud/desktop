@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="768"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
@@ -1939,7 +1939,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="714"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
@@ -1995,17 +1995,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="125"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="130"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Η Αποκατάσταση Απέτυχε: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="148"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="153"/>
         <source>Continue blacklisting:</source>
         <translation>Συνέχιση αποκλεισμού:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="246"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Ένα αρχείο ή ένας κατάλογος αφαιρέθηκε από ένα διαμοιρασμένο κατάλογο μόνο για ανάγνωση, αλλά η επαναφορά απέτυχε: %1</translation>
     </message>

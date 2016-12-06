@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="768"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
@@ -1939,7 +1939,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="714"/>
         <source>Error writing metadata to the database</source>
         <translation>寫入後設資料(metadata) 時發生錯誤</translation>
     </message>
@@ -1995,17 +1995,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="125"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="130"/>
         <source>; Restoration Failed: %1</source>
         <translation>; 重新儲存失敗 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="148"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="153"/>
         <source>Continue blacklisting:</source>
         <translation>持續的黑名單列表:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="246"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>檔案或目錄已經從只供讀取的分享中被移除，但是復原失敗: %1</translation>
     </message>

@@ -542,7 +542,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="763"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="768"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -1941,7 +1941,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="709"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="714"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -1997,17 +1997,17 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="125"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="130"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Obnovení selhalo: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="148"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="153"/>
         <source>Continue blacklisting:</source>
         <translation>Pokračovat v blacklistingu:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="246"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Soubor nebo adresář by odebrán ze sdílení pouze pro čtení, ale jeho obnovení selhalo: %1</translation>
     </message>
