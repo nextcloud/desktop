@@ -370,7 +370,7 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
             } else {
                 PropagateUploadFileCommon *job = 0;
                 if (item->_size > chunkSize() && account()->capabilities().chunkingNg()) {
-                    job = new PropagateUploadFileNG(this, item);
+                    job = new PropagateUploadFileNG(this, item, account()->capabilities().requestMaxDurationDC());
                 } else {
                     job = new PropagateUploadFileV1(this, item);
                 }
@@ -547,6 +547,18 @@ quint64 OwncloudPropagator::chunkSize()
     return chunkSize;
 }
 
+quint64 OwncloudPropagator::maxChunkSize()
+{
+    static uint chunkSize;
+    if (!chunkSize) {
+        chunkSize = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE").toUInt();
+        if (chunkSize == 0) {
+            ConfigFile cfg;
+            chunkSize = cfg.maxChunkSize();
+        }
+    }
+    return chunkSize;
+}
 
 bool OwncloudPropagator::localFileNameClash( const QString& relFile )
 {

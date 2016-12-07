@@ -130,4 +130,12 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
     return list;
 }
 
+quint64 Capabilities::requestMaxDurationDC() const
+{
+    QByteArray requestMaxDurationDC = _capabilities["dav"].toMap()["max_single_upload_request_duration_msec"].toByteArray();
+    if (!requestMaxDurationDC.isEmpty())
+        return requestMaxDurationDC.toLongLong();
+    return 0;
+}
+
 }

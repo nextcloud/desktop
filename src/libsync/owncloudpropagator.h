@@ -279,7 +279,6 @@ public:
     SyncJournalDb * const _journal;
     bool _finishedEmited; // used to ensure that finished is only emitted once
 
-
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
                        const QString &remoteFolder, SyncJournalDb *progressDb)
@@ -357,6 +356,7 @@ public:
 
     /** returns the size of chunks in bytes  */
     static quint64 chunkSize();
+    static quint64 maxChunkSize();
 
     AccountPtr account() const;
 

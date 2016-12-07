@@ -115,6 +115,8 @@ public:
 
     int timeout() const;
     quint64 chunkSize() const;
+    quint64 maxChunkSize() const;
+    quint64 minChunkSize() const;
 
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);

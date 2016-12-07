@@ -304,6 +304,24 @@ private:
     uint _transferId; /// transfer id (part of the url)
     int _currentChunk; /// Id of the next chunk that will be sent
     bool _removeJobError; /// If not null, there was an error removing the job
+    quint64 _lastChunkSize; /// current chunk size
+
+    /*
+    * This is value in ms obtained from the server.
+    *
+    * Dynamic Chunking attribute the maximum number of miliseconds that single request below chunk size can take
+    * This value should be based on heuristics with default value 10000ms, time it takes to transfer 10MB chunk on 1MB/s upload link.
+    *
+    * Suggested solution will be to evaluate max(SNR, MORD) where:
+    * > SNR - Slow network request, so time it will take to transmit default chunking sized request at specific low upload bandwidth
+    * > MORD - Maximum observed request time, so double the time of maximum observed RTT of the very small PUT request (e.g. 1kB) to the system
+    *
+    * Exemplary, syncing 100MB files, with chunking size 10MB, will cause sync of 10 PUT requests which max evaluation was set to <max_single_upload_request_duration_msec>
+    *
+    * Dynamic chunking client algorithm is specified in the ownCloud documentation and uses <max_single_upload_request_duration_msec> to estimate if given
+    * bandwidth allows higher chunk sizes (because of high goodput)
+    */
+    quint64 _requestMaxDuration;
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -311,6 +329,12 @@ private:
     QMap<int, ServerChunkInfo> _serverChunks;
 
     quint64 chunkSize() const { return propagator()->chunkSize(); }
+    quint64 maxChunkSize() const { return propagator()->maxChunkSize(); }
+
+    quint64 getRequestMaxDurationDC(){
+        return _requestMaxDuration;
+    }
+
     /**
      * Return the URL of a chunk.
      * If chunk == -1, returns the URL of the parent folder containing the chunks
@@ -318,10 +342,11 @@ private:
     QUrl chunkUrl(int chunk = -1);
 
 public:
-    PropagateUploadFileNG(OwncloudPropagator* propagator,const SyncFileItemPtr& item) :
-        PropagateUploadFileCommon(propagator,item) {}
+    PropagateUploadFileNG(OwncloudPropagator* propagator,const SyncFileItemPtr& item, const quint64& requestMaxDuration) :
+        PropagateUploadFileCommon(propagator,item), _lastChunkSize(0), _requestMaxDuration(requestMaxDuration) {}
 
     void doStartUpload() Q_DECL_OVERRIDE;
+
 private:
     void startNewUpload();
     void startNextChunk();

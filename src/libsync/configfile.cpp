@@ -53,6 +53,7 @@ static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char chunkSizeC[] = "chunkSize";
+static const char maxChunkSizeC[] = "maxChunkSizeC";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -128,6 +129,18 @@ quint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(chunkSizeC), 10*1000*1000).toLongLong(); // default to 10 MB
+}
+
+quint64 ConfigFile::maxChunkSize() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(maxChunkSizeC), 50*1000*1000).toLongLong(); // default to 50 MB
+}
+
+quint64 ConfigFile::minChunkSize() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(maxChunkSizeC), 1000*1000).toLongLong(); // default to 1 MB
 }
 
 void ConfigFile::setOptionalDesktopNotifications(bool show)

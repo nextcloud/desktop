@@ -32,7 +32,7 @@
 #include <QDir>
 #include <cmath>
 #include <cstring>
-
+#include <cmath>
 namespace OCC {
 
 QUrl PropagateUploadFileNG::chunkUrl(int chunk)
@@ -272,7 +272,41 @@ void PropagateUploadFileNG::startNextChunk()
     quint64 fileSize = _item->_size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
 
-    quint64 currentChunkSize = qMin(chunkSize(), fileSize - _sent);
+    quint64 currentChunkSize = chunkSize();
+
+    // this will check if getRequestMaxDurationDC is set to 0 or not
+    double requestMaxDurationDC = (double) getRequestMaxDurationDC();
+    if (requestMaxDurationDC != 0) {
+        // this if first chunked file request, so it can start with default size of chunkSize()
+        // if _lastChunkSize != 0 it means that we already have send one request
+        if(_lastChunkSize != 0){
+            //TODO: this is done step by step for debugging purposes
+
+            //get last request timestamp
+            double lastChunkLap = (double) _stopWatch.durationOfLap(QLatin1String("ChunkDuration"));
+
+            //get duration of the request
+            double requestDuration = (double) _stopWatch.addLapTime(QLatin1String("ChunkDuration")) - lastChunkLap;
+
+            // calculate natural logarithm
+            double correctionParameter = log(requestMaxDurationDC / requestDuration) - 1;
+
+            // If logarithm is smaller or equal zero, it means that we exceeded max request duration
+            // If exceeded it will use currentChunkSize = chunkSize()
+            // If did not exceeded, we will increase the chunk size
+            // motivation for logarithm is specified in the dynamic chunking documentation
+            // TODO: give link to documentation
+            if (correctionParameter>0){
+                currentChunkSize = qMin(_lastChunkSize + (qint64) correctionParameter*chunkSize(), maxChunkSize());
+            }
+        }
+
+        //remember the value of last chunk size
+        _lastChunkSize = currentChunkSize;
+    }
+
+    // prevent situation that chunk size is bigger then required one to send
+    currentChunkSize = qMin(currentChunkSize, fileSize - _sent);
 
     if (currentChunkSize == 0) {
         ASSERT(_jobs.isEmpty());
