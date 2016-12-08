@@ -61,13 +61,15 @@ public:
   void postOptionalGuiLog(const QString& title, const QString& message);
   void postGuiMessage(const QString& title, const QString& message);
 
+  void setLogWindowActivated(bool activated);
   void setLogFile( const QString & name );
   void setLogExpire( int expire );
   void setLogDir( const QString& dir );
   void setLogFlush( bool flush );
 
 signals:
-  void newLog(const QString&);
+  void logWindowLog(const QString&);
+
   void guiLog(const QString&, const QString&);
   void guiMessage(const QString&, const QString&);
   void optionalGuiLog(const QString&, const QString&);
@@ -80,7 +82,7 @@ private:
   ~Logger();
   QList<Log> _logs;
   bool       _showTime;
-  bool       _doLogging;
+  bool       _logWindowActivated;
   QFile       _logFile;
   bool        _doFileFlush;
   int         _logExpire;

@@ -19,6 +19,8 @@
 #include <QThread>
 #include <qmetaobject.h>
 
+#include "csync.h"
+
 namespace OCC {
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
@@ -48,6 +50,14 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
 }
 #endif
 
+static void csyncLogCatcher(int /*verbosity*/,
+                        const char * /*function*/,
+                        const char *buffer,
+                        void * /*userdata*/)
+{
+    Logger::instance()->csyncLog( QString::fromUtf8(buffer) );
+}
+
 Logger *Logger::instance()
 {
     static Logger log;
@@ -55,7 +65,7 @@ Logger *Logger::instance()
 }
 
 Logger::Logger( QObject* parent) : QObject(parent),
-  _showTime(true), _doLogging(false), _doFileFlush(false), _logExpire(0)
+  _showTime(true), _logWindowActivated(false), _doFileFlush(false), _logExpire(0)
 {
 #ifndef NO_MSG_HANDLER
 #if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
@@ -117,12 +127,8 @@ bool Logger::isNoop() const
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     return false;
 #else
-    static auto signal = QMetaMethod::fromSignal(&Logger::newLog);
-    if (isSignalConnected(signal)) {
-        return false;
-    }
     QMutexLocker lock(const_cast<QMutex *>(&_mutex));
-    return !_logstream;
+    return !_logstream && !_logWindowActivated;
 #endif
 }
 
@@ -136,7 +142,7 @@ void Logger::doLog(const QString& msg)
             if( _doFileFlush ) _logstream->flush();
         }
     }
-    emit newLog(msg);
+    emit logWindowLog(msg);
 }
 
 void Logger::csyncLog( const QString& message )
@@ -164,9 +170,24 @@ void Logger::mirallLog( const QString& message )
     Logger::instance()->log( log_ );
 }
 
+void Logger::setLogWindowActivated(bool activated)
+{
+    QMutexLocker locker(&_mutex);
+
+    // Setup CSYNC logging to forward to our own logger
+    csync_set_log_callback(csyncLogCatcher);
+    csync_set_log_level(11);
+
+    _logWindowActivated = activated;
+}
+
 void Logger::setLogFile(const QString & name)
 {
     QMutexLocker locker(&_mutex);
+
+    // Setup CSYNC logging to forward to our own logger
+    csync_set_log_callback(csyncLogCatcher);
+    csync_set_log_level(11);
 
     if( _logstream ) {
         _logstream.reset(0);
