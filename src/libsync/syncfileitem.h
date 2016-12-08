@@ -138,7 +138,7 @@ public:
     QString _file;
     QString _renameTarget;
     Type _type BITFIELD(3);
-    Direction _direction BITFIELD(2);
+    Direction _direction BITFIELD(3);
     bool _isDirectory BITFIELD(1);
     bool _serverHasIgnoredFiles BITFIELD(1);
 
