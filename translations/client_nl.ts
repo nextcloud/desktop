@@ -849,12 +849,12 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Lokale map %1 bevat een symbolische link. De doellink bevat een map die al is gesynchroniseerd. Kies een andere!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Er wordt vanaf de server al naar deze lokale map gesynchroniseerd. Kies een andere lokale map!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1314"/>

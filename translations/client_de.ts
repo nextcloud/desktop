@@ -848,12 +848,12 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Der lokale Ordner %1 beinhaltet einen symbolischer Link. Das Ziel des Links beinhaltet bereits einen synchronisierten Ordner. Bitte wählen Sie einen anderen lokalen Ordner aus!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Es exisitiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wählen Sie ein anderes lokales Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1314"/>

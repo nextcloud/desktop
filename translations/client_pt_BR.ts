@@ -849,12 +849,12 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>A pasta local %1 contém um link simbólico. O destino do link contém uma pasta já sincronizados. Por favor, escolha uma outra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Já existe uma sincronização do servidor para esta pasta local. Por favor, escolha uma outra pasta local!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1314"/>
