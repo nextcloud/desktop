@@ -849,12 +849,12 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Krajevna mapa %1 vsebuje simbolno povezavo. Ciljno mesto povezave že vključuje mapo, ki se usklajuje. Izbrati je treba drugo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Za to krajevno pot je že ustvarjeno mesto za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1314"/>

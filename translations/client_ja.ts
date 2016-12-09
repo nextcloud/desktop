@@ -847,12 +847,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1341"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダ %1 にはシンボリックリンクが含まれています。リンク先には既に同期されたフォルダが含まれているため、別のフォルダを選択してください！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>既に同期されたフォルダがあります。別のフォルダを選択してください！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1314"/>
