@@ -1362,17 +1362,17 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
         <translation>Zapisz plik dziennika do pliku na dysku w celu debugowania.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="184"/>
+        <location filename="../src/gui/logbrowser.cpp" line="185"/>
         <source>Save log file</source>
         <translation>Zapisz plik dziennika</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Could not write to log file %1</source>
         <translation>Błąd zapisu pliku logu %1</translation>
     </message>
@@ -1380,12 +1380,12 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="190"/>
+        <location filename="../src/libsync/logger.cpp" line="211"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="191"/>
+        <location filename="../src/libsync/logger.cpp" line="212"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Plik &apos;%1&apos;&lt;br&gt;nie może zostać otwarty do zapisu.&lt;br/&gt;&lt;br/&gt;Dane wyjściowe dziennika &lt;b&gt;nie&lt;/b&gt; mogą być zapisane!&lt;/nobr&gt;</translation>
     </message>
@@ -3594,7 +3594,7 @@ Kliknij</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>

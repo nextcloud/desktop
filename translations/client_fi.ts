@@ -1360,17 +1360,17 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
         <translation>Tallenna loki tiedostoon virheenetsintää varten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="184"/>
+        <location filename="../src/gui/logbrowser.cpp" line="185"/>
         <source>Save log file</source>
         <translation>Tallenna lokitiedosto</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Could not write to log file %1</source>
         <translation>Lokitiedostoon %1 kirjoittaminen epäonnistui</translation>
     </message>
@@ -1378,12 +1378,12 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="190"/>
+        <location filename="../src/libsync/logger.cpp" line="211"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="191"/>
+        <location filename="../src/libsync/logger.cpp" line="212"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Tiedostoa &apos;%1&apos;&lt;br/&gt;ei voida avata kirjoittamista varten.&lt;br/&gt;&lt;br/&gt;Lokitulostusta&lt;b&gt;ei&lt;/b&gt;pystytä tallentamaan!&lt;/nobr&gt;</translation>
     </message>
@@ -3590,7 +3590,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>

@@ -1364,17 +1364,17 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
         <translation>Guardar el archivo de registro a un archivo en disco para depuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="184"/>
+        <location filename="../src/gui/logbrowser.cpp" line="185"/>
         <source>Save log file</source>
         <translation>Guardar archivo de registro</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Could not write to log file %1</source>
         <translation>No se ha podido escribir en el archivo de registro %1</translation>
     </message>
@@ -1382,12 +1382,12 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="190"/>
+        <location filename="../src/libsync/logger.cpp" line="211"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="191"/>
+        <location filename="../src/libsync/logger.cpp" line="212"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;El archivo &apos;%1&apos;&lt;br/&gt;no se puede abrir para escritura.&lt;br/&gt;&lt;br/&gt;¡El archivo de registro &lt;b&gt;no&lt;/b&gt; se puede guardar!&lt;/nobr&gt;</translation>
     </message>
@@ -3594,7 +3594,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

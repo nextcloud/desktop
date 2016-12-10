@@ -1364,17 +1364,17 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
         <translation>Shrani dnevniško datoteko na disk za nadaljnje razhroščevanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="184"/>
+        <location filename="../src/gui/logbrowser.cpp" line="185"/>
         <source>Save log file</source>
         <translation>Shrani dnevniško datoteko</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Could not write to log file %1</source>
         <translation>Ni mogoče pisati v dnevniško datoteko %1</translation>
     </message>
@@ -1382,12 +1382,12 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="190"/>
+        <location filename="../src/libsync/logger.cpp" line="211"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="191"/>
+        <location filename="../src/libsync/logger.cpp" line="212"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;Datoteke &apos;%1&apos;&lt;br/&gt;ni mogoče odpreti za pisanje.&lt;br/&gt;&lt;br/&gt;Dnevniškega zapisa &lt;b&gt;ni mogoče&lt;/b&gt; shraniti!&lt;/nobr&gt;</translation>
     </message>
@@ -3595,7 +3595,7 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

@@ -1362,17 +1362,17 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
         <translation>Guarde o ficheiro de registo no disco para depuração.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="184"/>
+        <location filename="../src/gui/logbrowser.cpp" line="185"/>
         <source>Save log file</source>
         <translation>Guardar ficheiro de registo</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="194"/>
+        <location filename="../src/gui/logbrowser.cpp" line="195"/>
         <source>Could not write to log file %1</source>
         <translation>Não foi possível gravar no ficheiro de registo %1</translation>
     </message>
@@ -1380,12 +1380,12 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="190"/>
+        <location filename="../src/libsync/logger.cpp" line="211"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="191"/>
+        <location filename="../src/libsync/logger.cpp" line="212"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;O ficheiro &apos;%1&apos;&lt;br/&gt;não pode ser aberto para gravação.&lt;br/&gt;&lt;br/&gt;O ficheiro de registo de saída &lt;b&gt;não&lt;/b&gt; pode ser guardado!&lt;/nobr&gt;</translation>
     </message>
@@ -3593,7 +3593,7 @@ Não é aconselhada a sua utilização.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="593"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>
