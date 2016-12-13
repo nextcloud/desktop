@@ -68,17 +68,9 @@ To set up your build environment for development using HomeBrew_:
 
 1. Install Xcode
 2. Install Xcode command line tools::
-<<<<<<< HEAD
     xcode-select --install
 
 3. Install homebrew::
-=======
-
-    xcode-select --install
-
-3. Install homebrew::
-
->>>>>>> ca9ec4625391ae23940b3a62aaa0afe89f3d98e8
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 4. Add the ownCloud repository using the following command::
