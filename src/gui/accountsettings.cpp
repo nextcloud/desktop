@@ -214,8 +214,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     tv->setCurrentIndex(index);
+    QString alias = _model->data( index, FolderStatusDelegate::FolderAliasRole ).toString();
     bool folderPaused = _model->data( index, FolderStatusDelegate::FolderSyncPaused).toBool();
     bool folderConnected = _model->data( index, FolderStatusDelegate::FolderAccountConnected ).toBool();
+    auto folderMan = FolderMan::instance();
 
     QMenu *menu = new QMenu(tv);
     menu->setAttribute(Qt::WA_DeleteOnClose);
@@ -231,6 +233,10 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (!folderPaused) {
         ac = menu->addAction(tr("Force sync now"));
+        if (folderMan->currentSyncFolder() == folderMan->folder(alias)) {
+            ac->setText(tr("Restart sync"));
+        }
+        ac->setEnabled(folderConnected);
         connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotForceSyncCurrentFolder()));
     }
 
