@@ -97,6 +97,14 @@ bool SqlDatabase::openOrCreateReadWrite( const QString& filename )
     }
 
     if( !checkDb() ) {
+        // When disk space is low, checking the db may fail even though it's fine.
+        qint64 freeSpace = Utility::freeDiskSpace(filename);
+        if (freeSpace < 1000000) {
+            qDebug() << "Consistency check failed, disk space is low, aborting" << freeSpace;
+            close();
+            return false;
+        }
+
         qDebug() << "Consistency check failed, removing broken db" << filename;
         close();
         QFile::remove(filename);
