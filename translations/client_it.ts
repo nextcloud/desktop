@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Riavvia sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
