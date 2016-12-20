@@ -65,9 +65,6 @@ Folder::Folder(const FolderDefinition& definition,
       , _fileLog(new SyncRunFileLog)
       , _saveBackwardsCompatible(false)
 {
-    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
-    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
-
     qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();

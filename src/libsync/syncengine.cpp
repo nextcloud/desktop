@@ -78,6 +78,8 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
+    qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
+    qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     Q_ASSERT(localPath.endsWith(QLatin1Char('/')));
