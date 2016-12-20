@@ -83,7 +83,7 @@ To set up your build environment for development using HomeBrew_:
 
 3. Add Qt from brew to the path::
 
-    export PATH=/usr/local/Cellar/qt5/5.x.y/bin/qmake
+    export PATH=/usr/local/Cellar/qt5/5.x.y/bin:$PATH
 
    Where ``x.z`` is the current version of Qt 5 that brew has installed
    on your machine.
