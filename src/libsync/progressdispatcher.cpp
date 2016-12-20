@@ -145,8 +145,12 @@ void ProgressInfo::reset()
     _sizeProgress = Progress();
     _fileProgress = Progress();
     _totalSizeOfCompletedJobs = 0;
-    _maxBytesPerSecond = 100000.0;
-    _maxFilesPerSecond = 2.0;
+
+    // Historically, these starting estimates were way lower, but that lead
+    // to gross overestimation of ETA when a good estimate wasn't available.
+    _maxBytesPerSecond = 2000000.0; // 2 MB/s
+    _maxFilesPerSecond = 10.0;
+
     _updateEstimatesTimer.stop();
     _lastCompletedItem = SyncFileItem();
 }
