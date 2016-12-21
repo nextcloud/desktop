@@ -70,7 +70,9 @@ bool SqlDatabase::openHelper( const QString& filename, int sqliteFlags )
 
 bool SqlDatabase::checkDb()
 {
-    SqlQuery quick_check("PRAGMA quick_check;", *this);
+    // quick_check can fail with a disk IO error when diskspace is low
+    SqlQuery quick_check(*this);
+    quick_check.prepare("PRAGMA quick_check;", /*allow_failure=*/true);
     if( !quick_check.exec() ) {
         qDebug() << "Error running quick_check on database";
         return false;
@@ -199,7 +201,7 @@ SqlQuery::SqlQuery(const QString& sql, SqlDatabase& db)
     prepare(sql);
 }
 
-int SqlQuery::prepare( const QString& sql)
+int SqlQuery::prepare( const QString& sql, bool allow_failure )
 {
     QString s(sql);
     _sql = s.trimmed();
@@ -221,7 +223,7 @@ int SqlQuery::prepare( const QString& sql)
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
-            Q_ASSERT(!"SQLITE Prepare error");
+            Q_ASSERT(allow_failure || !"SQLITE Prepare error");
         }
     }
     return _errId;

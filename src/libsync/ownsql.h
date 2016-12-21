@@ -80,7 +80,7 @@ public:
     bool isSelect();
     bool isPragma();
     bool exec();
-    int  prepare( const QString& sql );
+    int  prepare( const QString& sql, bool allow_failure = false );
     bool next();
     void bindValue(int pos, const QVariant& value);
     QString lastQuery() const;
