@@ -553,6 +553,13 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 AccountState *OwncloudSetupWizard::applyAccountChanges()
 {
     AccountPtr newAccount = _ocWizard->account();
+
+    // Detach the account that is going to be saved from the
+    // wizard to ensure it doesn't accidentally get modified
+    // later (such as from running cleanup such as
+    // AbstractCredentialsWizardPage::cleanupPage())
+    _ocWizard->setAccount(AccountManager::createAccount());
+
     auto manager = AccountManager::instance();
 
     auto newState = manager->addAccount(newAccount);
