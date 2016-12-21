@@ -42,6 +42,9 @@ public:
     bool shareResharing() const;
     bool chunkingNg() const;
 
+    /// disable parallel upload in chunking
+    bool chunkingParallelUploadDisabled() const;
+
     /// returns true if the capabilities report notifications
     bool notificationsAvailable() const;
 

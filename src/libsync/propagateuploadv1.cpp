@@ -134,17 +134,24 @@ void PropagateUploadFileV1::startNextChunk()
     _currentChunk++;
 
     bool parallelChunkUpload = true;
-    QByteArray env = qgetenv("OWNCLOUD_PARALLEL_CHUNK");
-    if (!env.isEmpty()) {
-        parallelChunkUpload = env != "false" && env != "0";
+
+    if (_propagator->account()->capabilities().chunkingParallelUploadDisabled()) {
+        // Server may also disable parallel chunked upload for any higher version
+        parallelChunkUpload = false;
     } else {
-        int versionNum = _propagator->account()->serverVersionInt();
-        if (versionNum < 0x080003) {
-            // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
-            // internal sever errors (#2743, #2938)
-            parallelChunkUpload = false;
+        QByteArray env = qgetenv("OWNCLOUD_PARALLEL_CHUNK");
+        if (!env.isEmpty()) {
+            parallelChunkUpload = env != "false" && env != "0";
+        } else {
+            int versionNum = _propagator->account()->serverVersionInt();
+            if (versionNum < 0x080003) {
+                // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
+                // internal sever errors (#2743, #2938)
+                parallelChunkUpload = false;
+            }
         }
     }
+
 
     if (_currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
