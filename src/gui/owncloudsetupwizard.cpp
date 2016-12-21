@@ -207,10 +207,15 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
     QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
     // Do this early because reply might be deleted in message box event loop
-    QString msg = tr("Failed to connect to %1 at %2:<br/>%3")
+    QString msg;
+    if (!_ocWizard->account()->url().isValid()) {
+        msg = tr("Invalid URL");
+    } else {
+        msg = tr("Failed to connect to %1 at %2:<br/>%3")
             .arg(Theme::instance()->appNameGUI(),
                  reply->url().toString(),
                  reply->errorString());
+    }
     bool isDowngradeAdvised = checkDowngradeAdvised(reply);
 
     // If a client cert is needed, nginx sends:
