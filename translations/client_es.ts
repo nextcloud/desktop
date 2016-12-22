@@ -2185,32 +2185,32 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="190"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="197"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Forzar el trabajo en una conexión HTTP, causará un Reset si Qt&lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="198"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="205"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
         <translation>El archivo fue modificado localmente; pero es parte de una carpeta compartida en modo de sólo lectura. Ha sido recuperado y su modificación está en el archivo de conflicto.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="229"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="236"/>
         <source>Poll URL missing</source>
         <translation>Falta la URL de la encuesta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="263"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="270"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="278"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="285"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>El servidor no reconoció la última parte. (No había una e-tag presente)</translation>
     </message>
