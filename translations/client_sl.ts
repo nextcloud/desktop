@@ -1940,7 +1940,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="161"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Neveljaven odziv JSON prek naslova</translation>
+        <translation>Neveljaven odziv JSON preverjanja naslova URL</translation>
     </message>
 </context>
 <context>
@@ -2198,7 +2198,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="236"/>
         <source>Poll URL missing</source>
-        <translation>Manjka naslov URL</translation>
+        <translation>Preveri manjkajoči naslov URL</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="259"/>
