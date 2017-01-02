@@ -224,8 +224,7 @@ private:
     QList<QSslCertificate> _rejectedCertificates;
 
     static QString _configFileName;
-    QByteArray _pemCertificate; 
-    QString _pemPrivateKey;  
+
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     friend class AccountManager;
 };

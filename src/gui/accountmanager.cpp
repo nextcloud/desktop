@@ -237,7 +237,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
 
     acc->setCredentials(CredentialsFactory::create(authType));
 
-    // now the cert, it is in the general group
+    // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));
     acc->setApprovedCerts(QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray()));
     settings.endGroup();

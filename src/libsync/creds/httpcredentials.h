@@ -17,7 +17,8 @@
 #define MIRALL_CREDS_HTTP_CREDENTIALS_H
 
 #include <QMap>
-
+#include <QSslCertificate>
+#include <QSslKey>
 #include "creds/abstractcredentials.h"
 
 class QNetworkReply;
@@ -25,6 +26,8 @@ class QAuthenticator;
 
 namespace QKeychain {
 class Job;
+class WritePasswordJob;
+class ReadPasswordJob;
 }
 
 namespace OCC
@@ -33,10 +36,10 @@ namespace OCC
 class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 {
     Q_OBJECT
-
+    friend class HttpCredentialsAccessManager;
 public:
     explicit HttpCredentials();
-    HttpCredentials(const QString& user, const QString& password, const QString& certificatePath,  const QString& certificatePasswd);
+    HttpCredentials(const QString& user, const QString& password, const QSslCertificate& certificate = QSslCertificate(), const QSslKey& key = QSslKey());
 
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
@@ -50,15 +53,19 @@ public:
     void forgetSensitiveData() Q_DECL_OVERRIDE;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
-    QString certificatePath() const;
-    QString certificatePasswd() const;
 
     // To fetch the user name as early as possible
     void setAccount(Account* account) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply*, QAuthenticator*);
+
+    void slotReadClientCertPEMJobDone(QKeychain::Job*);
+    void slotReadClientKeyPEMJobDone(QKeychain::Job*);
     void slotReadJobDone(QKeychain::Job*);
+
+    void slotWriteClientCertPEMJobDone(QKeychain::Job*);
+    void slotWriteClientKeyPEMJobDone(QKeychain::Job*);
     void slotWriteJobDone(QKeychain::Job*);
     void clearQNAMCache();
 
@@ -66,12 +73,11 @@ protected:
     QString _user;
     QString _password;
     QString _previousPassword;
+
     QString _fetchErrorString;
     bool _ready;
-
-private:
-    QString _certificatePath;
-    QString _certificatePasswd;
+    QSslKey _clientSslKey;
+    QSslCertificate _clientSslCertificate;
 };
 
 } // namespace OCC

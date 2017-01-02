@@ -17,6 +17,8 @@
 #define MIRALL_OWNCLOUD_WIZARD_H
 
 #include <QWizard>
+#include <QSslKey>
+#include <QSslCertificate>
 
 #include "wizard/owncloudwizardcommon.h"
 #include "accountfwd.h"
@@ -63,11 +65,10 @@ public:
     void displayError( const QString&, bool retryHTTPonly);
     AbstractCredentials* getCredentials() const;
 
-    void raiseCertificatePopup();
-    QByteArray ownCloudCertificate;
-    QString ownCloudPrivateKey;
-    QString ownCloudCertificatePath;
-    QString ownCloudCertificatePasswd;
+    // FIXME: Can those be local variables?
+    // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
+    QSslKey _clientSslKey;
+    QSslCertificate _clientSslCertificate;
 
 public slots:
     void setAuthType(WizardCommon::AuthType type);

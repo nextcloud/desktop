@@ -103,9 +103,6 @@ struct csync_s {
 
   } callbacks;
   c_strlist_t *excludes;
-
-  // needed for SSL client certificate support
-  struct csync_client_certs_s *clientCerts;
   
   struct {
     char *file;

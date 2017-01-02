@@ -121,7 +121,7 @@ QString queryPassword(const QString &user)
 class HttpCredentialsText : public HttpCredentials {
 public:
     HttpCredentialsText(const QString& user, const QString& password)
-        : HttpCredentials(user, password, "", ""), // FIXME: not working with client certs yet (qknight)
+        : HttpCredentials(user, password), // FIXME: not working with client certs yet (qknight)
           _sslTrusted(false)
     {}
 

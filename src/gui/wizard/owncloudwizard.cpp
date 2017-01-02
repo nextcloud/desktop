@@ -224,11 +224,4 @@ AbstractCredentials* OwncloudWizard::getCredentials() const
   return 0;
 }
 
-// outputs the signal needed to authenticate a certificate
-void OwncloudWizard::raiseCertificatePopup()
-{
-    emit needCertificate();
-}
-
-
 } // end namespace

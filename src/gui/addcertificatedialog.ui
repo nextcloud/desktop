@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>462</width>
-    <height>186</height>
+    <height>188</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="labelCertificateFile">
        <property name="text">
-        <string>Certificate :</string>
+        <string>Certificate &amp; Key (pkcs12) :</string>
        </property>
       </widget>
      </item>

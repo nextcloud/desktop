@@ -21,13 +21,13 @@
 #include <QMessageBox>
 #include <QSsl>
 #include <QSslCertificate>
+#include <QNetworkAccessManager>
 
 #include "QProgressIndicator.h"
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "../3rdparty/certificates/p12topem.h"
 #include "theme.h"
 #include "account.h"
 
@@ -71,7 +71,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
 
     addCertDial = new AddCertificateDialog(this);
-    connect(_ocWizard,SIGNAL(needCertificate()),this,SLOT(slotAskSSLClientCertificate()));
 }
 
 void OwncloudSetupPage::setServerUrl( const QString& newUrl )
@@ -269,7 +268,10 @@ void OwncloudSetupPage::setErrorString( const QString& err, bool retryHTTPonly )
                     }
                     break;
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
-                    slotAskSSLClientCertificate();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
+                    addCertDial->show();
+                    connect(addCertDial, SIGNAL(accepted()),this,SLOT(slotCertificateAccepted()));
+#endif
                     break;
                 case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
@@ -302,12 +304,6 @@ void OwncloudSetupPage::stopSpinner()
     _progressIndi->stopAnimation();
 }
 
-void OwncloudSetupPage::slotAskSSLClientCertificate()
-{
-    addCertDial->show();
-    connect(addCertDial, SIGNAL(accepted()),this,SLOT(slotCertificateAccepted()));
-}
-
 QString subjectInfoHelper(const QSslCertificate& cert, const QByteArray &qa)
 {
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
@@ -320,36 +316,40 @@ QString subjectInfoHelper(const QSslCertificate& cert, const QByteArray &qa)
 //called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
-    QSslCertificate sslCertificate;
-
-    resultP12ToPem certif = p12ToPem(addCertDial->getCertificatePath().toStdString() , addCertDial->getCertificatePasswd().toStdString());
-    if(certif.ReturnCode){
-        QString s = QString::fromStdString(certif.Certificate);
-        QByteArray ba = s.toLocal8Bit();
-
-        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(ba, QSsl::Pem);
-        sslCertificate = sslCertificateList.takeAt(0);
-
-        _ocWizard->ownCloudCertificate = ba;
-        _ocWizard->ownCloudPrivateKey = certif.PrivateKey.c_str();
-        _ocWizard->ownCloudCertificatePath = addCertDial->getCertificatePath();
-        _ocWizard->ownCloudCertificatePasswd = addCertDial->getCertificatePasswd();
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
+    QList<QSslCertificate> clientCaCertificates;
+    QFile certFile(addCertDial->getCertificatePath());
+    certFile.open(QFile::ReadOnly);
+    if(QSslCertificate::importPkcs12(&certFile,
+                                         &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
+                                            &clientCaCertificates,
+                                            addCertDial->getCertificatePasswd().toLocal8Bit())){
         AccountPtr acc = _ocWizard->account();
-        acc->setCertificate(_ocWizard->ownCloudCertificate, _ocWizard->ownCloudPrivateKey);
-        addCertDial->reinit();
+
+        // to re-create the session ticket because we added a key/cert
+        acc->setSslConfiguration(QSslConfiguration());
+        QSslConfiguration sslConfiguration = acc->getOrCreateSslConfig();
+
+        // We're stuffing the certificate into the configuration form here. Later the
+        // cert will come via the HttpCredentials
+        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
+        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
+        acc->setSslConfiguration(sslConfiguration);
+
+        // Make sure TCP connections get re-established
+        acc->networkAccessManager()->clearAccessCache();
+
+        addCertDial->reinit(); // FIXME: Why not just have this only created on use?
         validatePage();
     } else {
-        QString message;
-        message = certif.Comment.c_str();
-        addCertDial->showErrorMessage(message);
+        addCertDial->showErrorMessage("Could not load certificate");
         addCertDial->show();
     }
+#endif
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()
 {
-    delete addCertDial;
 }
 
 } // namespace OCC

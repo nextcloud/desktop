@@ -18,7 +18,6 @@
 #include "configfile.h"
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
-#include "../3rdparty/certificates/p12topem.h"
 #include "capabilities.h"
 #include "theme.h"
 
@@ -242,12 +241,6 @@ QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNet
     return _am->sendCustomRequest(req, verb, data);
 }
 
-void Account::setCertificate(const QByteArray certficate, const QString privateKey)
-{
-    _pemCertificate=certficate;
-    _pemPrivateKey=privateKey;
-}
-
 void Account::setSslConfiguration(const QSslConfiguration &config)
 {
     _sslConfiguration = config;
@@ -264,31 +257,7 @@ QSslConfiguration Account::getOrCreateSslConfig()
     // if setting the client certificate fails, you will probably get an error similar to this:
     //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
     QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
-    QSslCertificate sslClientCertificate;
     
-    ConfigFile cfgFile;
-    if(!cfgFile.certificatePath().isEmpty() && !cfgFile.certificatePasswd().isEmpty()) {
-        resultP12ToPem certif = p12ToPem(cfgFile.certificatePath().toStdString(), cfgFile.certificatePasswd().toStdString());
-        QString s = QString::fromStdString(certif.Certificate);
-        QByteArray ba = s.toLocal8Bit();
-        this->setCertificate(ba, QString::fromStdString(certif.PrivateKey));
-    }
-    if((!_pemCertificate.isEmpty())&&(!_pemPrivateKey.isEmpty())) {
-        // Read certificates
-        QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(_pemCertificate, QSsl::Pem);
-        if(sslCertificateList.length() != 0) {
-            sslClientCertificate = sslCertificateList.takeAt(0);
-        }
-        // Read key from file
-        QSslKey privateKey(_pemPrivateKey.toLocal8Bit(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey , "");
-
-        // SSL configuration
-        sslConfig.setCaCertificates(QSslSocket::systemCaCertificates());
-        sslConfig.setLocalCertificate(sslClientCertificate);
-        sslConfig.setPrivateKey(privateKey);
-        qDebug() << "Added SSL client certificate to the query";
-    }
-
 #if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     // Try hard to re-use session for different requests
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);

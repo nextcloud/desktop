@@ -44,11 +44,6 @@
 extern "C" {
 #endif
 
-struct csync_client_certs_s {
-  char *certificatePath;
-  char *certificatePasswd;
-};  
-  
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 

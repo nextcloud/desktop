@@ -144,7 +144,12 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    qDebug() << Q_FUNC_INFO << reply->error() << reply->errorString();
+    qDebug() << Q_FUNC_INFO << reply->error() << reply->errorString() << reply->peek(1024);
+    if (reply && !_account->credentials()->ready()) {
+        // This could be needed for SSL client certificates
+        // We need to load them from keychain and try
+        reportResult( CredentialsMissingOrWrong );
+    } else
     if( reply && ! _account->credentials()->stillValid(reply)) {
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     }  else {

@@ -29,8 +29,11 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) 
     connect(ui->btnClientSideTLS, SIGNAL(clicked(bool)), this, SLOT(returnClientSideTLS()));
     connect(ui->btnBack, SIGNAL(clicked(bool)), this, SLOT(returnBack()));
 
-    // DM: TLS Client Cert GUI support disabled for now
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
+    // We support only from Qt 5.4.x because of https://doc.qt.io/qt-5/qsslcertificate.html#importPkcs12
     ui->btnClientSideTLS->hide();
+#endif
 }
 
 void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)

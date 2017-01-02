@@ -472,7 +472,7 @@ bool CheckServerJob::finished()
         QVariantMap status = QtJson::parse(QString::fromUtf8(body), success).toMap();
         // empty or invalid response
         if (!success || status.isEmpty()) {
-            qDebug() << "status.php from server is not valid JSON!";
+            qDebug() << "status.php from server is not valid JSON!" << body << reply()->request().url();
         }
 
         qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
