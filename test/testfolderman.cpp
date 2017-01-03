@@ -23,7 +23,7 @@ using namespace OCC;
 class HttpCredentialsTest : public HttpCredentials {
 public:
     HttpCredentialsTest(const QString& user, const QString& password)
-        : HttpCredentials(user, password, "", "")
+        : HttpCredentials(user, password)
     {}
 
     void askFromUser() Q_DECL_OVERRIDE {
