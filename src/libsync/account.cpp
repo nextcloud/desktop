@@ -148,10 +148,14 @@ QUrl Account::davUrl() const
     return Utility::concatUrlPath(url(), davPath());
 }
 
+/**
+ * clear all cookies. (Session cookies or not)
+ */
 void Account::clearCookieJar()
 {
     Q_ASSERT(qobject_cast<CookieJar*>(_am->cookieJar()));
-    static_cast<CookieJar*>(_am->cookieJar())->clearSessionCookies();
+    static_cast<CookieJar*>(_am->cookieJar())->setAllCookies(QList<QNetworkCookie>());
+    emit wantsAccountSaved(this);
 }
 
 /*! This shares our official cookie jar (containing all the tasty
