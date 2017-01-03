@@ -214,6 +214,17 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
     auto acc = createAccount();
 
     QString authType = settings.value(QLatin1String(authTypeC)).toString();
+
+    // There was an account-type saving bug when 'skip folder config' was used
+    // See #5408. This attempts to fix up the "dummy" authType
+    if (authType == QLatin1String("dummy")) {
+        if (settings.contains(QLatin1String("http_user"))) {
+            authType = "http";
+        } else if (settings.contains(QLatin1String("shibboleth_shib_user"))) {
+            authType = "shibboleth";
+        }
+    }
+
     QString overrideUrl = Theme::instance()->overrideServerUrl();
     QString forceAuth = Theme::instance()->forceConfigAuthType();
     if(!forceAuth.isEmpty() && !overrideUrl.isEmpty() ) {
