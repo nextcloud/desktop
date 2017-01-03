@@ -482,9 +482,8 @@ void FolderWizardRemotePath::showWarn( const QString& msg ) const
 FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr& account)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _treeView = new SelectiveSyncTreeView(account, this);
-    layout->addWidget(new QLabel(tr("Choose What to Sync: You can optionally deselect remote subfolders you do not wish to synchronize.")));
-    layout->addWidget(_treeView);
+    _selectiveSync = new SelectiveSyncWidget(account, this);
+    layout->addWidget(_selectiveSync);
 }
 
 FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
@@ -501,13 +500,13 @@ void FolderWizardSelectiveSync::initializePage()
     QString alias        = QFileInfo(targetPath).fileName();
     if (alias.isEmpty())
         alias = Theme::instance()->appName();
-    _treeView->setFolderInfo(targetPath, alias);
+    _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::initializePage();
 }
 
 bool FolderWizardSelectiveSync::validatePage()
 {
-    wizard()->setProperty("selectiveSyncBlackList", QVariant(_treeView->createBlackList()));
+    wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
     return true;
 }
 
@@ -517,7 +516,7 @@ void FolderWizardSelectiveSync::cleanupPage()
     QString alias        = QFileInfo(targetPath).fileName();
     if (alias.isEmpty())
         alias = Theme::instance()->appName();
-    _treeView->setFolderInfo(targetPath, alias);
+    _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
 }
 
