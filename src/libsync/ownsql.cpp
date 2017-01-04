@@ -223,7 +223,11 @@ int SqlQuery::prepare( const QString& sql, bool allow_failure )
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
-            Q_ASSERT(allow_failure || !"SQLITE Prepare error");
+            if (!allow_failure) {
+                qFatal("SQLITE Prepare error: %s in %s",
+                       _error.toLocal8Bit().data(),
+                       sql.toLocal8Bit().data());
+            }
         }
     }
     return _errId;
