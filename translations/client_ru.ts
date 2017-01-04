@@ -1761,134 +1761,139 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Успешное подключение к %1: %2 версия %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="210"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Не удалось подключиться к %1 в %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="242"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="247"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Превышено время ожидания соединения к %1 на %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Попытка соединиться с %1 на %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Запрос авторизации с сервера перенаправлен на  &apos;%1&apos;. Ссылка не верна, сервер не настроен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Обнаружен не верный ответ на авторизованный запрос WebDAV</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Доступ запрещён сервером. Чтобы доказать, что у Вас есть права доступа, &lt;a href=&quot;%1&quot;&gt;нажмите здесь&lt;/a&gt; для входа через Ваш браузер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Локальный каталог синхронизации %1 уже существует, используем его для синхронизации.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="366"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Creating local sync folder %1...</source>
         <translation>Создание локальной папки синхронизации %1... </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>ok</source>
         <translation>ок</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="372"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="377"/>
         <source>failed.</source>
         <translation>не удалось.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>Could not create local folder %1</source>
         <translation>Не удалось создать локальный каталог синхронизации %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
         <source>No remote folder specified!</source>
         <translation>Не указан удалённый каталог!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
         <source>Error: %1</source>
         <translation>Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>создание каталога на ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="434"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="439"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Удалённый каталог %1 успешно создан.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="441"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Удалённый каталог %1 уже существует. Подключение к нему для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="440"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="443"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Создание каталога завершилось с HTTP-ошибкой %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="447"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Не удалось создать удаленный каталог, так как представленные параметры доступа неверны!&lt;br/&gt;Пожалуйста, вернитесь назад и проверьте учетные данные.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Не удалось создать удаленный каталог, возможно, указанные учетные данные неверны.&lt;/font&gt;&lt;br/&gt;Вернитесь назад и проверьте учетные данные.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Удаленный каталог %1 не создан из-за ошибки &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Установлено соединение синхронизации %1 к удалённому каталогу %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="477"/>
         <source>Successfully connected to %1!</source>
         <translation>Соединение с  %1 установлено успешно!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="484"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Не удалось соединиться с %1. Попробуйте снова.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
         <source>Folder rename failed</source>
         <translation>Ошибка переименования каталога</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Невозможно удалить каталог и создать его резервную копию, каталог или файл в ней открыт в другой программе. Закройте каталог или файл и нажмите &quot;Повторить попытку&quot;, либо прервите мастер настройки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="535"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="540"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальный каталог синхронизации %1 успешно создан!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>

@@ -1760,134 +1760,139 @@ Nie je vhodné ju používať.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="210"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="214"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Zlyhalo spojenie s %1 o %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="242"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="247"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Časový limit vypršal pri pokuse o pripojenie k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="253"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="258"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="300"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Overená požiadavka na server bola presmerovaná na &apos;%1&apos;. URL je zlá, server nie je správne nakonfigurovaný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="327"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Neplatná odpoveď na overenú webdav požiadavku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="313"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="318"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Prístup zamietnutý serverom. Po overení správnych prístupových práv, &lt;a href=&quot;%1&quot;&gt;kliknite sem&lt;/a&gt; a otvorte službu v svojom prezerači.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="364"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="366"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="371"/>
         <source>Creating local sync folder %1...</source>
         <translation>Vytváranie lokálneho synchronizačného priečinka %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="370"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="375"/>
         <source>ok</source>
         <translation>v poriadku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="372"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="377"/>
         <source>failed.</source>
         <translation>neúspešné.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="379"/>
         <source>Could not create local folder %1</source>
         <translation>Nemožno vytvoriť lokálny priečinok %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="399"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="404"/>
         <source>No remote folder specified!</source>
         <translation>Vzdialený priečinok nie je nastavený!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="405"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
         <source>Error: %1</source>
         <translation>Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="418"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>vytváram priečinok v ownCloude: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="434"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="439"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Vzdialený priečinok %1 bol úspešne vytvorený.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="441"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Vzdialený priečinok %1 už existuje. Prebieha jeho pripájanie pre synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="440"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="443"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Vytváranie priečinka skončilo s HTTP chybovým kódom %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="447"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Proces vytvárania vzdialeného priečinka zlyhal, lebo použité prihlasovacie údaje nie sú správne!&lt;br/&gt;Prosím skontrolujte si vaše údaje a skúste to znovu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="450"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Synchronizačné spojenie z %1 do vzdialeného priečinka %2 bolo práve nastavené.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="477"/>
         <source>Successfully connected to %1!</source>
         <translation>Úspešne pripojené s %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="484"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Pripojenie k %1 nemohlo byť iniciované. Prosím skontrolujte to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="497"/>
         <source>Folder rename failed</source>
         <translation>Premenovanie priečinka zlyhalo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Nemožno odstrániť a zazálohovať priečinok, pretože priečinok alebo súbor je otvorený v inom programe. Prosím zatvorte priečinok nebo súbor a skúste to znovu alebo zrušte akciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="535"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="540"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
