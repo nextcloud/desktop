@@ -23,20 +23,20 @@
 class OCContextMenuFactory : public IClassFactory
 {
 public:
-	// IUnknown
-	IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
-	IFACEMETHODIMP_(ULONG) AddRef();
-	IFACEMETHODIMP_(ULONG) Release();
+    // IUnknown
+    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
+    IFACEMETHODIMP_(ULONG) AddRef();
+    IFACEMETHODIMP_(ULONG) Release();
 
-	// IClassFactory
-	IFACEMETHODIMP CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv);
-	IFACEMETHODIMP LockServer(BOOL fLock);
+    // IClassFactory
+    IFACEMETHODIMP CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv);
+    IFACEMETHODIMP LockServer(BOOL fLock);
 
-	OCContextMenuFactory();
+    OCContextMenuFactory();
 
 private:
-	~OCContextMenuFactory();
-	long m_cRef;
+    ~OCContextMenuFactory();
+    long m_cRef;
 };
 
 #endif //OCCONTEXTMENUFACTORY_H

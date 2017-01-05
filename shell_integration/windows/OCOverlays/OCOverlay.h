@@ -21,22 +21,22 @@ class OCOverlay : public IShellIconOverlayIdentifier
 
 {
 public:
-	OCOverlay(int state);
+    OCOverlay(int state);
 
-	IFACEMETHODIMP_(ULONG) AddRef();
-	IFACEMETHODIMP GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
-	IFACEMETHODIMP GetPriority(int *pPriority);
-	IFACEMETHODIMP IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib);
-	IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
+    IFACEMETHODIMP_(ULONG) AddRef();
+    IFACEMETHODIMP GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pIndex, DWORD *pdwFlags);
+    IFACEMETHODIMP GetPriority(int *pPriority);
+    IFACEMETHODIMP IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib);
+    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
     IFACEMETHODIMP_(ULONG) Release();
 
 protected:
     ~OCOverlay();
 
 private:
-	bool _IsOverlaysEnabled();
+    bool _IsOverlaysEnabled();
     long _referenceCount;
-	int _state;
+    int _state;
 };
 
 #endif

@@ -22,65 +22,65 @@ using namespace std;
 
 bool FileUtil::IsChildFile(const wchar_t* rootFolder, vector<wstring>* files)
 {
-	for(vector<wstring>::iterator it = files->begin(); it != files->end(); it++)
-	{
-		wstring file = *it;
+    for(vector<wstring>::iterator it = files->begin(); it != files->end(); it++)
+    {
+        wstring file = *it;
 
-		size_t found = file.find(rootFolder);
+        size_t found = file.find(rootFolder);
 
-		if(found != string::npos)
-		{
-			return true;	
-		}
-	}
+        if(found != string::npos)
+        {
+            return true;    
+        }
+    }
 
-	return false;
+    return false;
 }
 
 bool FileUtil::IsChildFile(const wchar_t* rootFolder, const wchar_t* file)
 {
-	wstring* f = new wstring(file);
+    wstring* f = new wstring(file);
 
-	size_t found = f->find(rootFolder);
+    size_t found = f->find(rootFolder);
 
-	if(found != string::npos)
-	{
-		return true;	
-	}
-	
-	return false;
+    if(found != string::npos)
+    {
+        return true;    
+    }
+    
+    return false;
 }
 
 bool FileUtil::IsChildFileOfRoot(std::vector<std::wstring>* files) 
 {
-	wstring* rootFolder = new wstring();
-	bool needed = false;
+    wstring* rootFolder = new wstring();
+    bool needed = false;
 
-	if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_FILTER_FOLDER, rootFolder))
-	{
-		if(IsChildFile(rootFolder->c_str(), files))
-		{
-			needed = true;
-		}
-	}
+    if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_FILTER_FOLDER, rootFolder))
+    {
+        if(IsChildFile(rootFolder->c_str(), files))
+        {
+            needed = true;
+        }
+    }
 
-	delete rootFolder;
-	return needed;
+    delete rootFolder;
+    return needed;
 }
 
 bool FileUtil::IsChildFileOfRoot(const wchar_t* filePath)
 {
-	wstring* rootFolder = new wstring();
-	bool needed = false;
-	
-	if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_FILTER_FOLDER, rootFolder))
-	{
-		if(FileUtil::IsChildFile(rootFolder->c_str(), filePath))
-		{
-			needed = true;
-		}
-	}
+    wstring* rootFolder = new wstring();
+    bool needed = false;
+    
+    if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_FILTER_FOLDER, rootFolder))
+    {
+        if(FileUtil::IsChildFile(rootFolder->c_str(), filePath))
+        {
+            needed = true;
+        }
+    }
 
-	delete rootFolder;
-	return needed;
+    delete rootFolder;
+    return needed;
 }

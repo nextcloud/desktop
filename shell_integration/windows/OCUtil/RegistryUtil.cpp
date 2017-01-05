@@ -22,49 +22,49 @@ using namespace std;
 
 bool RegistryUtil::ReadRegistry(const wchar_t* key, const wchar_t* name, int* result)
 {
-	wstring* strResult = new wstring();
+    wstring* strResult = new wstring();
 
-	if(!ReadRegistry(key, name, strResult))
-	{
-		return false;
-	}
+    if(!ReadRegistry(key, name, strResult))
+    {
+        return false;
+    }
 
-	*result = stoi( strResult->c_str() );
+    *result = stoi( strResult->c_str() );
 
-	return true;
+    return true;
 }
 
 bool RegistryUtil::ReadRegistry(const wchar_t* key, const wchar_t* name, wstring* result)
 {
-	HRESULT hResult;
+    HRESULT hResult;
 
-	HKEY rootKey = NULL;
+    HKEY rootKey = NULL;
 
-	hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CURRENT_USER, (LPCWSTR)key, NULL, KEY_READ, &rootKey));
+    hResult = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CURRENT_USER, (LPCWSTR)key, NULL, KEY_READ, &rootKey));
 
-	if(!SUCCEEDED(hResult))
-	{
-		return false;
-	}
+    if(!SUCCEEDED(hResult))
+    {
+        return false;
+    }
 
-	wchar_t value[SIZE];
-	DWORD value_length = SIZE;
-	
+    wchar_t value[SIZE];
+    DWORD value_length = SIZE;
+    
     hResult = RegQueryValueEx(rootKey, (LPCWSTR)name, NULL, NULL, (LPBYTE)value, &value_length );
 
-	if(!SUCCEEDED(hResult))
-	{
-		return false;
-	}
+    if(!SUCCEEDED(hResult))
+    {
+        return false;
+    }
 
-	result->append(value);
+    result->append(value);
 
-	HRESULT hResult2 = RegCloseKey(rootKey);
+    HRESULT hResult2 = RegCloseKey(rootKey);
 
-	if (!SUCCEEDED(hResult2))
-	{
-		return false;
-	}
+    if (!SUCCEEDED(hResult2))
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }

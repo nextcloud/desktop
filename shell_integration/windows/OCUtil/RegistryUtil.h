@@ -24,12 +24,12 @@
 class __declspec(dllexport) RegistryUtil
 {
 public:
-	RegistryUtil();
+    RegistryUtil();
 
-	~RegistryUtil();
+    ~RegistryUtil();
 
-	static bool ReadRegistry(const wchar_t*,  const wchar_t*, int*);
-	static bool ReadRegistry(const wchar_t*,  const wchar_t*, std::wstring*);
+    static bool ReadRegistry(const wchar_t*,  const wchar_t*, int*);
+    static bool ReadRegistry(const wchar_t*,  const wchar_t*, std::wstring*);
 };
 
 #endif

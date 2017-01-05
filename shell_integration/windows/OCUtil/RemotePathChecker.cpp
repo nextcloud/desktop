@@ -40,7 +40,7 @@ void RemotePathChecker::workerThreadLoop()
     std::unordered_set<std::wstring> asked;
 
     while(!_stop) {
-		Sleep(50);
+        Sleep(50);
 
         if (!connected) {
             asked.clear();
@@ -72,14 +72,14 @@ void RemotePathChecker::workerThreadLoop()
 
         std::wstring response;
         while (!_stop && socket.ReadLine(&response)) {
-			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
-				wstring responsePath = response.substr(14); // length of REGISTER_PATH:
+            if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+                wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
-				{   std::unique_lock<std::mutex> lock(_mutex);
-					_watchedDirectories.push_back(responsePath);
-				}
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
-			} else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
+                {   std::unique_lock<std::mutex> lock(_mutex);
+                    _watchedDirectories.push_back(responsePath);
+                }
+                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
+            } else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
                 {   std::unique_lock<std::mutex> lock(_mutex);
@@ -98,7 +98,7 @@ void RemotePathChecker::workerThreadLoop()
                     // Assume that we won't need this at this point, UNREGISTER_PATH is rare
                     _oldCache.clear();
                 }
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
+                SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"STATUS:")) ||
                     StringUtil::begins_with(response, wstring(L"BROADCAST:"))) {
 
@@ -128,9 +128,9 @@ void RemotePathChecker::workerThreadLoop()
                 if (changed) {
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
                 }
-			}
-			else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
-				std::unique_lock<std::mutex> lock(_mutex);
+            }
+            else if (StringUtil::begins_with(response, wstring(L"UPDATE_VIEW"))) {
+                std::unique_lock<std::mutex> lock(_mutex);
                 // Keep the old states to continue having something to display while the new state is
                 // requested from the client, triggered by clearing _cache.
                 _oldCache.insert(_cache.cbegin(), _cache.cend());
@@ -144,20 +144,20 @@ void RemotePathChecker::workerThreadLoop()
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, it->first.data(), NULL);
                 }
             }
-		}
+        }
 
-		if (socket.Event() == INVALID_HANDLE_VALUE) {
-			std::unique_lock<std::mutex> lock(_mutex);
-			_cache.clear();
+        if (socket.Event() == INVALID_HANDLE_VALUE) {
+            std::unique_lock<std::mutex> lock(_mutex);
+            _cache.clear();
             _oldCache.clear();
-			_watchedDirectories.clear();
-			_connected = connected = false;
-		}
+            _watchedDirectories.clear();
+            _connected = connected = false;
+        }
 
-		if (_stop) return;
+        if (_stop) return;
 
-		HANDLE handles[2] = { _newQueries, socket.Event() };
-		WaitForMultipleObjects(2, handles, false, 0);
+        HANDLE handles[2] = { _newQueries, socket.Event() };
+        WaitForMultipleObjects(2, handles, false, 0);
     }
 }
 
@@ -166,7 +166,7 @@ void RemotePathChecker::workerThreadLoop()
 RemotePathChecker::RemotePathChecker()
     : _connected(false)
     , _newQueries(CreateEvent(NULL, true, true, NULL))
-	, _thread([this]{ this->workerThreadLoop(); })
+    , _thread([this]{ this->workerThreadLoop(); })
 {
 }
 
@@ -217,25 +217,25 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
 
 RemotePathChecker::FileState RemotePathChecker::_StrToFileState(const std::wstring &str)
 {
-	if (str == L"NOP" || str == L"NONE") {
-		return StateNone;
-	} else if (str == L"SYNC" || str == L"NEW") {
-		return StateSync;
-	} else if (str == L"SYNC+SWM" || str == L"NEW+SWM") {
-		return StateSync;
-	} else if (str == L"OK") {
-		return StateOk;
-	} else if (str == L"OK+SWM") {
-		return StateOkSWM;
-	} else if (str == L"IGNORE") {
-		return StateWarning;
-	} else if (str == L"IGNORE+SWM") {
-		return StateWarning;
-	} else if (str == L"ERROR") {
-		return StateError;
-	} else if (str == L"ERROR+SWM") {
-		return StateError;
-	}
+    if (str == L"NOP" || str == L"NONE") {
+        return StateNone;
+    } else if (str == L"SYNC" || str == L"NEW") {
+        return StateSync;
+    } else if (str == L"SYNC+SWM" || str == L"NEW+SWM") {
+        return StateSync;
+    } else if (str == L"OK") {
+        return StateOk;
+    } else if (str == L"OK+SWM") {
+        return StateOkSWM;
+    } else if (str == L"IGNORE") {
+        return StateWarning;
+    } else if (str == L"IGNORE+SWM") {
+        return StateWarning;
+    } else if (str == L"ERROR") {
+        return StateError;
+    } else if (str == L"ERROR+SWM") {
+        return StateError;
+    }
 
-	return StateNone;
+    return StateNone;
 }

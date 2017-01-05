@@ -26,22 +26,22 @@
 class __declspec(dllexport) CommunicationSocket
 {
 public:
-	static std::wstring DefaultPipePath();
+    static std::wstring DefaultPipePath();
 
-	CommunicationSocket();
-	~CommunicationSocket();
+    CommunicationSocket();
+    ~CommunicationSocket();
 
-	bool Connect(const std::wstring& pipename);
-	bool Close();
+    bool Connect(const std::wstring& pipename);
+    bool Close();
 
-	bool SendMsg(const wchar_t*) const;
-	bool ReadLine(std::wstring*);
+    bool SendMsg(const wchar_t*) const;
+    bool ReadLine(std::wstring*);
 
     HANDLE Event() { return _pipe; }
 
-private:	
-	HANDLE _pipe;
-	std::vector<char> _buffer;
+private:    
+    HANDLE _pipe;
+    std::vector<char> _buffer;
     bool _connected;
 };
 

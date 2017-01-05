@@ -20,7 +20,7 @@
 extern long dllReferenceCount;
 
 OCOverlayFactory::OCOverlayFactory(int state)
-	: _referenceCount(1), _state(state)
+    : _referenceCount(1), _state(state)
 {
     InterlockedIncrement(&dllReferenceCount);
 }
@@ -32,7 +32,7 @@ OCOverlayFactory::~OCOverlayFactory()
 
 IFACEMETHODIMP OCOverlayFactory::QueryInterface(REFIID riid, void **ppv)
 {
-	HRESULT hResult = S_OK;
+    HRESULT hResult = S_OK;
 
     if (IsEqualIID(IID_IUnknown, riid) || 
         IsEqualIID(IID_IClassFactory, riid))
@@ -66,20 +66,20 @@ IFACEMETHODIMP_(ULONG) OCOverlayFactory::Release()
 }
 
 IFACEMETHODIMP OCOverlayFactory::CreateInstance(
-	IUnknown *pUnkOuter, REFIID riid, void **ppv)
+    IUnknown *pUnkOuter, REFIID riid, void **ppv)
 {
-	HRESULT hResult = CLASS_E_NOAGGREGATION;
+    HRESULT hResult = CLASS_E_NOAGGREGATION;
 
     if (pUnkOuter != NULL) { return hResult; }
 
-	hResult = E_OUTOFMEMORY;
+    hResult = E_OUTOFMEMORY;
     OCOverlay *lrOverlay = new (std::nothrow) OCOverlay(_state);
-	if (!lrOverlay) { return hResult; }
+    if (!lrOverlay) { return hResult; }
 
     hResult = lrOverlay->QueryInterface(riid, ppv);
-	lrOverlay->Release();
+    lrOverlay->Release();
 
-	return hResult;
+    return hResult;
 }
 
 IFACEMETHODIMP OCOverlayFactory::LockServer(BOOL fLock)

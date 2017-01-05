@@ -27,21 +27,21 @@
 
 class __declspec(dllexport) RemotePathChecker {
 public:
-	enum FileState {
-		// Order synced with OCOverlay
-		StateError = 0,
-		StateOk, StateOkSWM,
-		StateSync,
-		StateWarning,
-		StateNone
-	};
-	RemotePathChecker();
+    enum FileState {
+        // Order synced with OCOverlay
+        StateError = 0,
+        StateOk, StateOkSWM,
+        StateSync,
+        StateWarning,
+        StateNone
+    };
+    RemotePathChecker();
     ~RemotePathChecker();
-	std::vector<std::wstring> WatchedDirectories();
-	bool IsMonitoredPath(const wchar_t* filePath, int* state);
+    std::vector<std::wstring> WatchedDirectories();
+    bool IsMonitoredPath(const wchar_t* filePath, int* state);
 
 private:
-	FileState _StrToFileState(const std::wstring &str);
+    FileState _StrToFileState(const std::wstring &str);
     std::mutex _mutex;
     std::atomic<bool> _stop;
 
@@ -61,7 +61,7 @@ private:
     //std::condition_variable _newQueries;
     HANDLE _newQueries;
 
-	std::thread _thread;
+    std::thread _thread;
     void workerThreadLoop();
 };
 

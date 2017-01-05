@@ -26,12 +26,12 @@ extern long g_cDllRef;
 
 OCContextMenuFactory::OCContextMenuFactory() : m_cRef(1)
 {
-	InterlockedIncrement(&g_cDllRef);
+    InterlockedIncrement(&g_cDllRef);
 }
 
 OCContextMenuFactory::~OCContextMenuFactory()
 {
-	InterlockedDecrement(&g_cDllRef);
+    InterlockedDecrement(&g_cDllRef);
 }
 
 
@@ -39,22 +39,22 @@ OCContextMenuFactory::~OCContextMenuFactory()
 
 IFACEMETHODIMP OCContextMenuFactory::QueryInterface(REFIID riid, void **ppv)
 {
-	static const QITAB qit[] =	{ QITABENT(OCContextMenuFactory, IClassFactory), { 0 },	};
-	return QISearch(this, qit, riid, ppv);
+    static const QITAB qit[] =  { QITABENT(OCContextMenuFactory, IClassFactory), { 0 }, };
+    return QISearch(this, qit, riid, ppv);
 }
 
 IFACEMETHODIMP_(ULONG) OCContextMenuFactory::AddRef()
 {
-	return InterlockedIncrement(&m_cRef);
+    return InterlockedIncrement(&m_cRef);
 }
 
 IFACEMETHODIMP_(ULONG) OCContextMenuFactory::Release()
 {
-	ULONG cRef = InterlockedDecrement(&m_cRef);
-	if (0 == cRef) {
-		delete this;
-	}
-	return cRef;
+    ULONG cRef = InterlockedDecrement(&m_cRef);
+    if (0 == cRef) {
+        delete this;
+    }
+    return cRef;
 }
 
 
@@ -62,30 +62,30 @@ IFACEMETHODIMP_(ULONG) OCContextMenuFactory::Release()
 
 IFACEMETHODIMP OCContextMenuFactory::CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv)
 {
-	HRESULT hr = CLASS_E_NOAGGREGATION;
+    HRESULT hr = CLASS_E_NOAGGREGATION;
 
-	// pUnkOuter is used for aggregation. We do not support it in the sample.
-	if (pUnkOuter == NULL) {
-		hr = E_OUTOFMEMORY;
+    // pUnkOuter is used for aggregation. We do not support it in the sample.
+    if (pUnkOuter == NULL) {
+        hr = E_OUTOFMEMORY;
 
-		// Create the COM component.
-		OCContextMenu *pExt = new (std::nothrow) OCContextMenu();
-		if (pExt) {
-			// Query the specified interface.
-			hr = pExt->QueryInterface(riid, ppv);
-			pExt->Release();
-		}
-	}
+        // Create the COM component.
+        OCContextMenu *pExt = new (std::nothrow) OCContextMenu();
+        if (pExt) {
+            // Query the specified interface.
+            hr = pExt->QueryInterface(riid, ppv);
+            pExt->Release();
+        }
+    }
 
-	return hr;
+    return hr;
 }
 
 IFACEMETHODIMP OCContextMenuFactory::LockServer(BOOL fLock)
 {
-	if (fLock)	{
-		InterlockedIncrement(&g_cDllRef);
-	} else {
-		InterlockedDecrement(&g_cDllRef);
-	}
-	return S_OK;
+    if (fLock)  {
+        InterlockedIncrement(&g_cDllRef);
+    } else {
+        InterlockedDecrement(&g_cDllRef);
+    }
+    return S_OK;
 }

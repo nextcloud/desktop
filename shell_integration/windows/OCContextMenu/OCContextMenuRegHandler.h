@@ -23,16 +23,16 @@
 class __declspec(dllexport) OCContextMenuRegHandler
 {
 public:
-	static HRESULT MakeRegistryEntries(const CLSID& clsid, PCWSTR fileType);
-	static HRESULT RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid);
-	static HRESULT RemoveRegistryEntries(PCWSTR friendlyName);
-	static HRESULT UnregisterCOMObject(const CLSID& clsid);
+    static HRESULT MakeRegistryEntries(const CLSID& clsid, PCWSTR fileType);
+    static HRESULT RegisterCOMObject(PCWSTR modulePath, PCWSTR friendlyName, const CLSID& clsid);
+    static HRESULT RemoveRegistryEntries(PCWSTR friendlyName);
+    static HRESULT UnregisterCOMObject(const CLSID& clsid);
 
-	static HRESULT RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFriendlyName, PCWSTR pszThreadModel);
-	static HRESULT UnregisterInprocServer(const CLSID& clsid);
+    static HRESULT RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFriendlyName, PCWSTR pszThreadModel);
+    static HRESULT UnregisterInprocServer(const CLSID& clsid);
 
-	static HRESULT RegisterShellExtContextMenuHandler(PCWSTR pszFileType, const CLSID& clsid, PCWSTR pszFriendlyName);
-	static HRESULT UnregisterShellExtContextMenuHandler(PCWSTR pszFileType, PCWSTR pszFriendlyName);
+    static HRESULT RegisterShellExtContextMenuHandler(PCWSTR pszFileType, const CLSID& clsid, PCWSTR pszFriendlyName);
+    static HRESULT UnregisterShellExtContextMenuHandler(PCWSTR pszFileType, PCWSTR pszFriendlyName);
 };
 
 #endif //OCCONTEXTMENUREGHANDLER_H

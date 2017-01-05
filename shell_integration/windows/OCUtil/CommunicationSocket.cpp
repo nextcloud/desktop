@@ -31,23 +31,23 @@ using namespace std;
 namespace {
 
 std::wstring getUserName() {
-	DWORD  len = DEFAULT_BUFLEN;
-	TCHAR  buf[DEFAULT_BUFLEN];
-	if (GetUserName(buf, &len)) {
-		return std::wstring(&buf[0], len);
-	} else {
-		return std::wstring();
-	}
+    DWORD  len = DEFAULT_BUFLEN;
+    TCHAR  buf[DEFAULT_BUFLEN];
+    if (GetUserName(buf, &len)) {
+        return std::wstring(&buf[0], len);
+    } else {
+        return std::wstring();
+    }
 }
 
 }
 
 std::wstring CommunicationSocket::DefaultPipePath()
 {
-	auto pipename = std::wstring(L"\\\\.\\pipe\\");
-	pipename += L"ownCloud-";
-	pipename += getUserName();
-	return pipename;
+    auto pipename = std::wstring(L"\\\\.\\pipe\\");
+    pipename += L"ownCloud-";
+    pipename += getUserName();
+    return pipename;
 }
 
 CommunicationSocket::CommunicationSocket()
@@ -57,23 +57,23 @@ CommunicationSocket::CommunicationSocket()
 
 CommunicationSocket::~CommunicationSocket()
 {
-	Close();
+    Close();
 }
 
 bool CommunicationSocket::Close()
 {
-	if (_pipe == INVALID_HANDLE_VALUE) {
-		return false;
-	}
-	CloseHandle(_pipe);
-	_pipe = INVALID_HANDLE_VALUE;
-	return true;
+    if (_pipe == INVALID_HANDLE_VALUE) {
+        return false;
+    }
+    CloseHandle(_pipe);
+    _pipe = INVALID_HANDLE_VALUE;
+    return true;
 }
 
 
 bool CommunicationSocket::Connect(const std::wstring &pipename)
 {
-	_pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+    _pipe = CreateFile(pipename.data(), GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     if (_pipe == INVALID_HANDLE_VALUE) {
         return false;
@@ -84,7 +84,7 @@ bool CommunicationSocket::Connect(const std::wstring &pipename)
 
 bool CommunicationSocket::SendMsg(const wchar_t* message) const
 {
-	auto utf8_msg = StringUtil::toUtf8(message);
+    auto utf8_msg = StringUtil::toUtf8(message);
 
     DWORD numBytesWritten = 0;
     auto result = WriteFile( _pipe, utf8_msg.c_str(), DWORD(utf8_msg.size()), &numBytesWritten, NULL);
@@ -92,7 +92,7 @@ bool CommunicationSocket::SendMsg(const wchar_t* message) const
     if (result) {
         return true;
     } else {
-		const_cast<CommunicationSocket*>(this)->Close();
+        const_cast<CommunicationSocket*>(this)->Close();
 
         return false;
     }
@@ -100,9 +100,9 @@ bool CommunicationSocket::SendMsg(const wchar_t* message) const
 
 bool CommunicationSocket::ReadLine(wstring* response)
 {
-	if (!response) {
-		return false;
-	}
+    if (!response) {
+        return false;
+    }
 
     response->clear();
 
@@ -110,7 +110,7 @@ bool CommunicationSocket::ReadLine(wstring* response)
         return false;
     }
 
-	while (true) {
+    while (true) {
         int lbPos = 0;
         auto it = std::find(_buffer.begin() + lbPos, _buffer.end(), '\n');
         if (it != _buffer.end()) {
@@ -121,24 +121,24 @@ bool CommunicationSocket::ReadLine(wstring* response)
 
         std::array<char, 128> resp_utf8;
         DWORD numBytesRead = 0;
-		DWORD totalBytesAvailable = 0;
+        DWORD totalBytesAvailable = 0;
 
-		if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
-			Close();
-			return false;
-		}
-		if (totalBytesAvailable == 0) {
-			return false;
-		}
+        if (!PeekNamedPipe(_pipe, NULL, 0, 0, &totalBytesAvailable, 0)) {
+            Close();
+            return false;
+        }
+        if (totalBytesAvailable == 0) {
+            return false;
+        }
 
-		if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL)) {
+        if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, NULL)) {
             Close();
             return false;
         }
         if (numBytesRead <= 0) {
             return false;
         }
-		_buffer.insert(_buffer.end(), resp_utf8.begin(), resp_utf8.begin()+numBytesRead);
+        _buffer.insert(_buffer.end(), resp_utf8.begin(), resp_utf8.begin()+numBytesRead);
         continue;
-	}
+    }
 }

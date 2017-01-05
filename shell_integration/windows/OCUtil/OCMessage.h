@@ -23,20 +23,20 @@ class __declspec(dllexport) OCMessage
 {
 public:
     OCMessage(void);
-	~OCMessage(void);
+    ~OCMessage(void);
 
-	bool InitFromMessage(const std::wstring*);
+    bool InitFromMessage(const std::wstring*);
 
-	std::wstring* GetCommand();
-	std::wstring* GetValue();
+    std::wstring* GetCommand();
+    std::wstring* GetValue();
 
-	void SetCommand(std::wstring*);
-	void SetValue(std::wstring*);
+    void SetCommand(std::wstring*);
+    void SetValue(std::wstring*);
 
 private:
 
     std::wstring* _command;
-	std::wstring* _value;
+    std::wstring* _value;
 };
 
 #endif

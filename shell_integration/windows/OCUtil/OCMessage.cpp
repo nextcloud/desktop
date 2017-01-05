@@ -25,8 +25,8 @@ using namespace std;
 
 OCMessage::OCMessage(void)
 {
-	_command = new wstring();
-	_value = new wstring();
+    _command = new wstring();
+    _value = new wstring();
 }
 
 OCMessage::~OCMessage(void)
@@ -35,40 +35,40 @@ OCMessage::~OCMessage(void)
 
 bool OCMessage::InitFromMessage(const wstring* message)
 {
-	if(message->length() == 0)
-	{
-		return false;
-	}
-	
-	if(!ParserUtil::GetItem(COMMAND, message, _command))
-	{
-		return false;
-	}
+    if(message->length() == 0)
+    {
+        return false;
+    }
+    
+    if(!ParserUtil::GetItem(COMMAND, message, _command))
+    {
+        return false;
+    }
 
-	if(!ParserUtil::GetItem(VALUE, message, _value))
-	{
-		return false;
-	}
+    if(!ParserUtil::GetItem(VALUE, message, _value))
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
-	
+    
 std::wstring* OCMessage::GetCommand()
 {
-	return _command;
+    return _command;
 }
 
 std::wstring* OCMessage::GetValue()
 {
-	return _value;
+    return _value;
 }
 
 void OCMessage::SetCommand(std::wstring* command)
 {
-	_command = command;
+    _command = command;
 }
 
 void OCMessage::SetValue(std::wstring* value)
 {
-	_value = value;
+    _value = value;
 }

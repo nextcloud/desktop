@@ -18,20 +18,20 @@
 #pragma once
 
 enum State {
-	State_Error = 0,
-	State_OK, State_OKShared,
-	State_Sync, 
-	State_Warning
+    State_Error = 0,
+    State_OK, State_OKShared,
+    State_Sync, 
+    State_Warning
 };
 
 class OCOverlayFactory : public IClassFactory
 {
 public:
-	OCOverlayFactory(int state);
+    OCOverlayFactory(int state);
 
-	IFACEMETHODIMP_(ULONG) AddRef();
+    IFACEMETHODIMP_(ULONG) AddRef();
     IFACEMETHODIMP CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppv);
-	IFACEMETHODIMP LockServer(BOOL fLock);
+    IFACEMETHODIMP LockServer(BOOL fLock);
     IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
     IFACEMETHODIMP_(ULONG) Release();
 
@@ -40,7 +40,7 @@ protected:
 
 private:
     long _referenceCount;
-	int _state;
+    int _state;
 };
 
 #endif
