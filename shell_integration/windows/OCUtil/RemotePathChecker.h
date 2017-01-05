@@ -52,7 +52,6 @@ private:
     std::queue<std::wstring> _pending;
 
     std::unordered_map<std::wstring, FileState> _cache;
-    std::unordered_map<std::wstring, FileState> _oldCache;
     std::vector<std::wstring> _watchedDirectories;
     bool _connected;
 
