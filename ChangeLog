@@ -1,6 +1,45 @@
 ChangeLog
 =========
 
+version 2.3.0 (2017-0x-xx)
+* WiP!
+* WiP Switch Windows and OS X build to 5.6.2
+* WiP Performance improvements for exclude detection
+* Switch to new ownCloud server WebDAV endpoint
+* Chunking NG: New file upload chunking algorithmn for ownCloud server 9.2
+* Allow to sync a folder to multiple different servers (Filename change from .csync_journal.db to _sync_$HASH.db)
+* Conflicts: Use the local mtime for the conflict file name (#5273)
+* "Sync now" menu item
+* SSL Client certificate support improved (Show UI, Store keys in keychain)
+* Propagator: Upload more small files in parallel
+* Sync Engine: Read data-fingerprint property to detect backups (#2325)
+* GUI: Show link to ceate an app password/token for syncing
+* Share dialog: Add 'Mail link' button
+* Caja file manager plugin
+* Make "backup detected" message to not trigger in wrong cases
+* SyncEngine: Fix renaming of folder when file are changed (#5192)
+* Fix reconnect bug if status.php intermittently returns wrong data (#5188)
+* Improve sync scheduling (#5317)
+* Overlay icons: Improvements in correctnes
+* Tray menu: Only update on demand to fix Linux desktop integration glitches
+* Progress: Better time/bandwidth estimations
+* Network: Follow certain HTTP redirects (#2791)
+* Network: Remove all cookies (including load balancers etc) when logging out
+* Discovery thread: Low priority
+* owncloudsync.log: Write during propagation
+* Better error message for files with trailing spaces on Windows
+* Excludes: Consider files in hidden folders excluded (#5163)
+* Allow sync directory to be a symlinked directory
+* Add manifest file on Windows to make the application UAC aware
+* macOS: Improve monochrome tray icons
+* Don't blacklist 507 Insufficent Storage #5346 (#5424)
+* Shibboleth bugfixes
+* Fixes with regards to low disk space
+* A ton of other bugfixes
+* Refactorings
+* Improved documentation
+* Crash fixes
+
 version 2.2.4 (release 2016-09-27)
 * Dolphin Plugin: Use the Application name for the socket path (#5172)
 * SyncEngine: Fix renaming of folder when file are changed (#5195)
