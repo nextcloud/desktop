@@ -24,6 +24,7 @@
 #include <KIOCore/kfileitem.h>
 #include <KIOCore/KFileItemListProperties>
 #include <QtWidgets/QAction>
+#include <QtCore/QDir>
 #include <QtCore/QTimer>
 #include "ownclouddolphinpluginhelper.h"
 
@@ -43,7 +44,8 @@ public:
         auto url = urls.first();
         if (!url.isLocalFile())
             return {};
-        auto localFile = url.toLocalFile();
+        QDir localPath(url.toLocalFile());
+        auto localFile = localPath.canonicalPath();
 
         const auto paths = helper->paths();
         if (!std::any_of(paths.begin(), paths.end(), [&](const QString &s) {

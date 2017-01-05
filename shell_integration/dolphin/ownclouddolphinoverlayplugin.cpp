@@ -21,6 +21,7 @@
 #include <KPluginFactory>
 #include <QtNetwork/QLocalSocket>
 #include <KIOCore/kfileitem.h>
+#include <QDir>
 #include <QTimer>
 #include "ownclouddolphinpluginhelper.h"
 
@@ -46,7 +47,8 @@ public:
             return QStringList();
         if (!url.isLocalFile())
             return QStringList();
-        const QByteArray localFile = url.toLocalFile().toUtf8();
+        QDir localPath(url.toLocalFile());
+        const QByteArray localFile = localPath.canonicalPath().toUtf8();
 
         helper->sendCommand(QByteArray("RETRIEVE_FILE_STATUS:" + localFile + "\n"));
 
