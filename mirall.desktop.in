@@ -620,6 +620,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -754,7 +757,10 @@ Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข�
 GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
 Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
 Icon[th_TH]=@APPLICATION_EXECUTABLE@
+Comment[es_MX]=Cliente de escritorio para  sincronziación de @APPLICATION_NAME@
 GenericName[es_MX]=Sincronización de Carpetas
+Name[es_MX]=Cliente de escritorio para  sincronziación de @APPLICATION_NAME@
+Icon[es_MX]=@APPLICATION_EXECUTABLE@
 Comment[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient
 GenericName[nb_NO]=Mappesynkronisering
 Name[nb_NO]=@APPLICATION_NAME@ skrivebordssynkroniseringsklient 
