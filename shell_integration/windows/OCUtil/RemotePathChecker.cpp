@@ -120,16 +120,23 @@ void RemotePathChecker::workerThreadLoop()
                 auto state = _StrToFileState(responseStatus);
                 bool wasAsked = asked.erase(responsePath) > 0;
 
-                bool changed = false;
+                bool updateView = false;
                 {   std::unique_lock<std::mutex> lock(_mutex);
-                    bool wasCached = _cache.find(responsePath) != _cache.end();
-                    if (wasAsked || wasCached) {
-                        auto &it = _cache[responsePath];
-                        changed = (it != state);
-                        it = state;
+                    auto it = _cache.find(responsePath);
+                    if (it == _cache.end()) {
+                        // The client only approximates requested files, if the bloom
+                        // filter becomes saturated after navigating multiple directories we'll start getting
+                        // status pushes that we never requested and fill our cache. Ignore those.
+                        if (!wasAsked) {
+                            continue;
+                        }
+                        it = _cache.insert(make_pair(responsePath, StateNone)).first;
                     }
+
+                    updateView = it->second != state;
+                    it->second = state;
                 }
-                if (changed) {
+                if (updateView) {
                     SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
                 }
             }
