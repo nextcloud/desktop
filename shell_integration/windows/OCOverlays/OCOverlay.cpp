@@ -126,17 +126,19 @@ IFACEMETHODIMP OCOverlay::GetPriority(int *pPriority)
     return S_OK;
 }
 
- IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
+IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
 {
     RemotePathChecker* checker = getGlobalChecker();
-    auto watchedDirectories = checker->WatchedDirectories();
+    std::shared_ptr<const std::vector<std::wstring>> watchedDirectories = checker->WatchedDirectories();
 
-    wstring wpath(pwszPath);
-    wpath.append(L"\\");
-    vector<wstring>::iterator it;
+    if (watchedDirectories->empty()) {
+        return MAKE_HRESULT(S_FALSE, 0, 0);
+    }
+
     bool watched = false;
-    for (it = watchedDirectories.begin(); it != watchedDirectories.end(); ++it) {
-        if (StringUtil::begins_with(wpath, *it)) {
+    size_t pathLength = wcslen(pwszPath);
+    for (auto it = watchedDirectories->begin(); it != watchedDirectories->end(); ++it) {
+        if (StringUtil::isDescendantOf(pwszPath, pathLength, *it)) {
             watched = true;
         }
     }
@@ -166,20 +168,3 @@ IFACEMETHODIMP OCOverlay::GetOverlayInfo(PWSTR pwszIconFile, int cchMax, int *pI
 
     return S_OK;
 }
-
-
-bool OCOverlay::_IsOverlaysEnabled()
-{
-    //int enable;
-    bool success = false;
-
-    //if(RegistryUtil::ReadRegistry(REGISTRY_ROOT_KEY, REGISTRY_ENABLE_OVERLAY, &enable))
-    //{
-    //  if(enable) {
-    //      success = true;
-    //  }
-    //}
-
-    return success;
-}
-

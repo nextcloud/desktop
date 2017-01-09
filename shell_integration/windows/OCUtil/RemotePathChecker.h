@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <queue>
 #include <thread>
+#include <memory>
 #include <mutex>
 #include <atomic>
 #include <condition_variable>
@@ -37,7 +38,7 @@ public:
     };
     RemotePathChecker();
     ~RemotePathChecker();
-    std::vector<std::wstring> WatchedDirectories();
+    std::shared_ptr<const std::vector<std::wstring>> WatchedDirectories() const;
     bool IsMonitoredPath(const wchar_t* filePath, int* state);
 
 private:
@@ -52,7 +53,9 @@ private:
     std::queue<std::wstring> _pending;
 
     std::unordered_map<std::wstring, FileState> _cache;
-    std::vector<std::wstring> _watchedDirectories;
+    // The vector is const since it will be accessed from multiple threads through OCOverlay::IsMemberOf.
+    // Each modification needs to be made onto a copy and then atomically replaced in the shared_ptr.
+    std::shared_ptr<const std::vector<std::wstring>> _watchedDirectories;
     bool _connected;
 
 

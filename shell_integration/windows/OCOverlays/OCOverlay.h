@@ -34,7 +34,6 @@ protected:
     ~OCOverlay();
 
 private:
-    bool _IsOverlaysEnabled();
     long _referenceCount;
     int _state;
 };

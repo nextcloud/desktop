@@ -29,6 +29,21 @@ public:
         return input.size() >= match.size()
             && std::equal(match.begin(), match.end(), input.begin());
     }
+
+    static bool isDescendantOf(const std::wstring& child, const std::wstring& parent) {
+        return isDescendantOf(child.c_str(), child.size(), parent.c_str(), parent.size());
+    }
+
+    static bool isDescendantOf(PCWSTR child, size_t childLength, const std::wstring& parent) {
+        return isDescendantOf(child, childLength, parent.c_str(), parent.size());
+    }
+
+    static bool isDescendantOf(PCWSTR child, size_t childLength, PCWSTR parent, size_t parentLength) {
+        if (!parentLength)
+            return false;
+        return (childLength == parentLength || childLength > parentLength && (child[parentLength] == L'\\' || child[parentLength - 1] == L'\\'))
+            && wcsncmp(child, parent, parentLength) == 0;
+    }
 };
 
 #endif // STRINGUTIL_H

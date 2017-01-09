@@ -75,25 +75,30 @@ void RemotePathChecker::workerThreadLoop()
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
-                {   std::unique_lock<std::mutex> lock(_mutex);
-                    _watchedDirectories.push_back(responsePath);
-                }
-                // We don't keep track of all files and can't know which file is currently visible to the user,
-                // but at least reload the root dir + itself so that any shortcut to the root is updated without
-                // the user needing to navigate.
+                auto sharedPtrCopy = atomic_load(&_watchedDirectories);
+                auto vectorCopy = make_shared<vector<wstring>>(*sharedPtrCopy);
+                vectorCopy->push_back(responsePath);
+                atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
+
+                // We don't keep track of all files and can't know which file is currently visible
+                // to the user, but at least reload the root dir so that any shortcut to the root
+                // is updated without the user needing to refresh.
                 SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
+                auto sharedPtrCopy = atomic_load(&_watchedDirectories);
+                auto vectorCopy = make_shared<vector<wstring>>(*sharedPtrCopy);
+                vectorCopy->erase(
+                    std::remove(vectorCopy->begin(), vectorCopy->end(), responsePath),
+                    vectorCopy->end());
+                atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
+
                 vector<wstring> removedPaths;
                 {   std::unique_lock<std::mutex> lock(_mutex);
-                    _watchedDirectories.erase(
-                        std::remove(_watchedDirectories.begin(), _watchedDirectories.end(), responsePath),
-                        _watchedDirectories.end());
-
                     // Remove any item from the cache
                     for (auto it = _cache.begin(); it != _cache.end() ; ) {
-                        if (StringUtil::begins_with(it->first, responsePath)) {
+                        if (StringUtil::isDescendantOf(it->first, responsePath)) {
                             removedPaths.emplace_back(move(it->first));
                             it = _cache.erase(it);
                         } else {
@@ -143,8 +148,8 @@ void RemotePathChecker::workerThreadLoop()
         }
 
         if (socket.Event() == INVALID_HANDLE_VALUE) {
+            atomic_store(&_watchedDirectories, make_shared<const vector<wstring>>());
             std::unique_lock<std::mutex> lock(_mutex);
-            _watchedDirectories.clear();
             _connected = connected = false;
 
             // Swap to make a copy of the cache under the mutex and clear the one stored.
@@ -167,7 +172,8 @@ void RemotePathChecker::workerThreadLoop()
 
 
 RemotePathChecker::RemotePathChecker()
-    : _connected(false)
+    : _watchedDirectories(make_shared<const vector<wstring>>())
+    , _connected(false)
     , _newQueries(CreateEvent(NULL, true, true, NULL))
     , _thread([this]{ this->workerThreadLoop(); })
 {
@@ -182,10 +188,9 @@ RemotePathChecker::~RemotePathChecker()
     CloseHandle(_newQueries);
 }
 
-vector<wstring> RemotePathChecker::WatchedDirectories()
+std::shared_ptr<const std::vector<std::wstring>> RemotePathChecker::WatchedDirectories() const
 {
-    std::unique_lock<std::mutex> lock(_mutex);
-    return _watchedDirectories;
+    return atomic_load(&_watchedDirectories);
 }
 
 bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)

@@ -152,8 +152,9 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
     OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
     bool skip = true;
+    size_t selectedFileLength = wcslen(m_szSelectedFile);
     for (const std::wstring path : info.watchedDirectories) {
-        if (StringUtil::begins_with(std::wstring(m_szSelectedFile), path)) {
+        if (StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, path)) {
             skip = false;
             break;
         }
