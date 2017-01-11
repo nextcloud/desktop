@@ -175,15 +175,13 @@ void SocketApi::slotReadSocket()
         // make sure that the path will match, especially on OS X.
         QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
-        QString command = line.split(":").value(0);
-        QString function = QString(QLatin1String("command_")).append(command);
-
-        QString functionWithArguments = function + QLatin1String("(QString,QIODevice*)");
-        int indexOfMethod = this->metaObject()->indexOfMethod(functionWithArguments.toAscii());
+        QByteArray command = line.split(":").value(0).toAscii();
+        QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
+        int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
         QString argument = line.remove(0, command.length()+1);
         if(indexOfMethod != -1) {
-            QMetaObject::invokeMethod(this, function.toAscii(), Q_ARG(QString, argument), Q_ARG(QIODevice*, socket));
+            staticMetaObject.method(indexOfMethod).invoke(this, Q_ARG(QString, argument), Q_ARG(QIODevice*, socket));
         } else {
             DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
