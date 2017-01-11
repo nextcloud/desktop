@@ -115,7 +115,7 @@ void FolderMan::unloadFolder( Folder *f )
     disconnect(f, SIGNAL(syncPausedChanged(Folder*,bool)),
                this, SLOT(slotFolderSyncPaused(Folder*,bool)));
     disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
-               _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+               _socketApi.data(), SLOT(broadcastStatusPushMessage(const QString &, SyncFileStatus)));
     disconnect(f, SIGNAL(watchedFileChangedExternally(QString)),
                &f->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 }
@@ -938,7 +938,7 @@ Folder* FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     connect(folder, SIGNAL(syncPausedChanged(Folder*,bool)), SLOT(slotFolderSyncPaused(Folder*,bool)));
     connect(folder, SIGNAL(canSyncChanged()), SLOT(slotFolderCanSyncChanged()));
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
-            _socketApi.data(), SLOT(slotFileStatusChanged(const QString &, SyncFileStatus)));
+            _socketApi.data(), SLOT(broadcastStatusPushMessage(const QString &, SyncFileStatus)));
     connect(folder, SIGNAL(watchedFileChangedExternally(QString)),
             &folder->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
 

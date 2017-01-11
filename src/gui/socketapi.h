@@ -35,6 +35,7 @@ namespace OCC {
 
 class SyncFileStatus;
 class Folder;
+class SocketListener;
 
 /**
  * @brief The SocketApi class
@@ -60,25 +61,25 @@ signals:
 private slots:
     void slotNewConnection();
     void onLostConnection();
+    void slotSocketDestroyed(QObject* obj);
     void slotReadSocket();
-    void slotFileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
+    void broadcastStatusPushMessage(const QString& systemPath, SyncFileStatus fileStatus);
 
 private:
-    void sendMessage(QIODevice* socket, const QString& message, bool doWait = false);
-    void broadcastMessage(const QString& verb, const QString &path, const QString &status = QString::null, bool doWait = false);
+    void broadcastMessage(const QString& msg, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevice* socket);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket);
-    Q_INVOKABLE void command_SHARE(const QString& localFile, QIODevice* socket);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketListener* listener);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketListener* listener);
+    Q_INVOKABLE void command_SHARE(const QString& localFile, SocketListener* listener);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, QIODevice* socket);
+    Q_INVOKABLE void command_VERSION(const QString& argument, SocketListener* listener);
 
-    Q_INVOKABLE void command_SHARE_STATUS(const QString& localFile, QIODevice *socket);
-    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, QIODevice* socket);
+    Q_INVOKABLE void command_SHARE_STATUS(const QString& localFile, SocketListener* listener);
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, SocketListener* listener);
     QString buildRegisterPathMessage(const QString& path);
 
     QSet<QString> _registeredAliases;
-    QList<QIODevice*> _listeners;
+    QList<SocketListener> _listeners;
     SocketApiServer _localServer;
 };
 

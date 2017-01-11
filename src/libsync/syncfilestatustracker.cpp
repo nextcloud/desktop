@@ -254,7 +254,7 @@ void SyncFileStatusTracker::slotSyncFinished()
 
 void SyncFileStatusTracker::slotSyncEngineRunningChanged()
 {
-    emit fileStatusChanged(_syncEngine->localPath(), resolveSyncAndErrorStatus(QString(), NotShared));
+    emit fileStatusChanged(getSystemDestination(QString()), resolveSyncAndErrorStatus(QString(), NotShared));
 }
 
 SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag isShared, PathKnownFlag isPathKnown)
