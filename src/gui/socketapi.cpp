@@ -298,11 +298,6 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, QIODevic
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice* socket)
 {
-    if( !socket ) {
-        qDebug() << "No valid socket object.";
-        return;
-    }
-
     qDebug() << Q_FUNC_INFO << argument;
 
     QString statusString;
@@ -328,11 +323,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, QIODevice*
 
 void SocketApi::command_SHARE(const QString& localFile, QIODevice* socket)
 {
-    if (!socket) {
-        qDebug() << Q_FUNC_INFO << "No valid socket object.";
-        return;
-    }
-
     qDebug() << Q_FUNC_INFO << localFile;
 
     auto theme = Theme::instance();
@@ -395,11 +385,6 @@ void SocketApi::command_VERSION(const QString&, QIODevice* socket)
 
 void SocketApi::command_SHARE_STATUS(const QString &localFile, QIODevice *socket)
 {
-    if (!socket) {
-        qDebug() << Q_FUNC_INFO << "No valid socket object.";
-        return;
-    }
-
     qDebug() << Q_FUNC_INFO << localFile;
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
