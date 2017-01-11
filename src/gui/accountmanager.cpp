@@ -235,6 +235,9 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
     } else {
         acc->setUrl(urlConfig.toUrl());
     }
+
+    qDebug() << "Account for" << acc->url() << "using auth type" << authType;
+
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 
     // We want to only restore settings for that auth type and the user value
