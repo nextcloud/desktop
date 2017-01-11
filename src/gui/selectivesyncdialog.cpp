@@ -62,7 +62,7 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     , _inserting(false)
     , _folderTree(new QTreeWidget(this))
 {
-    _loading = new QLabel(tr("Loading ..."), this);
+    _loading = new QLabel(tr("Loading ..."), _folderTree);
 
     auto layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
