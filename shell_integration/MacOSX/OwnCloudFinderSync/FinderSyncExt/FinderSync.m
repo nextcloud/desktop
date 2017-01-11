@@ -155,9 +155,13 @@
 {
 	_shareMenuTitle = nil;
 	
+	[_registeredDirectories removeAllObjects];
+	// For some reason the FIFinderSync cache doesn't seem to be cleared for the root item when
+	// we reset the directoryURLs (seen on macOS 10.12 at least).
+	// First setting it to the FS root and then setting it to nil seems to work around the issue.
+	[FIFinderSyncController defaultController].directoryURLs = [NSSet setWithObject:[NSURL fileURLWithPath:@"/"]];
 	// This will tell Finder that this extension isn't attached to any directory
 	// until we can reconnect to the sync client.
-	[_registeredDirectories removeAllObjects];
 	[FIFinderSyncController defaultController].directoryURLs = nil;
 }
 
