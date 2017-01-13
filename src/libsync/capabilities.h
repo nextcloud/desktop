@@ -81,6 +81,25 @@ public:
      */
     QByteArray uploadChecksumType() const;
 
+    /**
+     * List of HTTP error codes should be guaranteed to eventually reset
+     * failing chunked uploads.
+     *
+     * The resetting works by tracking UploadInfo::errorCount.
+     *
+     * Note that other error codes than the ones listed here may reset the
+     * upload as well.
+     *
+     * Motivation: See #5344. They should always be reset on 412 (possibly
+     * checksum error), but broken servers may also require resets on
+     * unusual error codes such as 503.
+     *
+     * Path: dav/httpErrorCodesThatResetFailingChunkedUploads
+     * Default: []
+     * Example: [503, 500]
+     */
+    QList<int> httpErrorCodesThatResetFailingChunkedUploads() const;
+
 private:
     QVariantMap _capabilities;
 };

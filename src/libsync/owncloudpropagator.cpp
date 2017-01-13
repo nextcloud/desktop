@@ -99,7 +99,7 @@ int OwncloudPropagator::hardMaximumActiveJob()
 
 /** Updates, creates or removes a blacklist entry for the given item.
  *
- * Returns whether the file is in the blacklist now.
+ * Returns whether the error should be suppressed.
  */
 static bool blacklistCheck(SyncJournalDb* journal, const SyncFileItem& item)
 {
@@ -108,16 +108,13 @@ static bool blacklistCheck(SyncJournalDb* journal, const SyncFileItem& item)
 
     if (newEntry.isValid()) {
         journal->updateErrorBlacklistEntry(newEntry);
-        // Also clear upload info if any so we don't resume from the same transfer-id if there was too many failures (#5344)
-        // (maybe the reason is that the state for this transfer id is broken on the server.)
-        if (newEntry._retryCount > 3) {
-            journal->setUploadInfo(item._file, SyncJournalDb::UploadInfo());
-        }
     } else if (oldEntry.isValid()) {
         journal->wipeErrorBlacklistEntry(item._file);
     }
 
-    return newEntry.isValid();
+    // In some cases we add errors to the blacklist for tracking, but don't
+    // want to actively suppress them.
+    return newEntry.isValid() && newEntry._ignoreDuration > 0;
 }
 
 void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
@@ -144,10 +141,12 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     switch( status ) {
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
-        // do not blacklist in case of soft error or fatal error.
-        break;
     case SyncFileItem::NormalError:
-        if (blacklistCheck(_propagator->_journal, *_item) && _item->_hasBlacklistEntry) {
+        // For normal errors, we blacklist aggressively, otherwise only on
+        // explicit request.
+        if ((status == SyncFileItem::NormalError || _item->_errorMayBeBlacklisted)
+                && blacklistCheck(_propagator->_journal, *_item)
+                && _item->_hasBlacklistEntry) {
             // do not error if the item was, and continues to be, blacklisted
             status = SyncFileItem::FileIgnored;
             _item->_errorString.prepend(tr("Continue blacklisting:") + " ");

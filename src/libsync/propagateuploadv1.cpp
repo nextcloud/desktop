@@ -101,6 +101,7 @@ void PropagateUploadFileV1::startNextChunk()
         // if there's only one chunk, it's the final one
         isFinalChunk = true;
     }
+    qDebug() << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
 
     if (isFinalChunk && !_transmissionChecksumType.isEmpty()) {
         headers[checkSumHeaderC] = makeChecksumHeader(
@@ -215,11 +216,16 @@ void PropagateUploadFileV1::slotPutFinished()
         }
 
         if (_item->_httpErrorCode == 412) {
-            // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
+            // Precondition Failed: Either an etag or a checksum mismatch.
+
+            // Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
             _propagator->_journal->avoidReadFromDbOnNextSync(_item->_file);
             _propagator->_anotherSyncNeeded = true;
         }
+
+        // Ensure errors that should eventually reset the chunked upload are tracked.
+        checkResettingErrors();
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &_propagator->_anotherSyncNeeded);
@@ -304,6 +310,7 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
+        pi._errorCount = 0; // successful chunk upload resets
         _propagator->_journal->setUploadInfo(_item->_file, pi);
         _propagator->_journal->commit("Upload info");
         startNextChunk();

@@ -373,13 +373,8 @@ void PropagateUploadFileNG::slotPutFinished()
             errorString = job->reply()->rawHeader("OC-ErrorString");
         }
 
-        // FIXME!  can this happen for the chunks?
-        if (_item->_httpErrorCode == 412) {
-            // Precondition Failed:   Maybe the bad etag is in the database, we need to clear the
-            // parent folder etag so we won't read from DB next sync.
-            _propagator->_journal->avoidReadFromDbOnNextSync(_item->_file);
-            _propagator->_anotherSyncNeeded = true;
-        }
+        // Ensure errors that should eventually reset the chunked upload are tracked.
+        checkResettingErrors();
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &_propagator->_anotherSyncNeeded);
@@ -416,6 +411,12 @@ void PropagateUploadFileNG::slotPutFinished()
             _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
             _item->_hasBlacklistEntry = false;
         }
+
+        // Reset the error count on successful chunk upload
+        auto uploadInfo = _propagator->_journal->getUploadInfo(_item->_file);
+        uploadInfo._errorCount = 0;
+        _propagator->_journal->setUploadInfo(_item->_file, uploadInfo);
+        _propagator->_journal->commit("Upload info");
     }
     startNextChunk();
 }
@@ -429,6 +430,18 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (err != QNetworkReply::NoError) {
+        if (_item->_httpErrorCode == 412) {
+            // Precondition Failed: Either an etag or a checksum mismatch.
+
+            // Maybe the bad etag is in the database, we need to clear the
+            // parent folder etag so we won't read from DB next sync.
+            _propagator->_journal->avoidReadFromDbOnNextSync(_item->_file);
+            _propagator->_anotherSyncNeeded = true;
+        }
+
+        // Ensure errors that should eventually reset the chunked upload are tracked.
+        checkResettingErrors();
+
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &_propagator->_anotherSyncNeeded);
         QString errorString = errorMessage(job->errorString(), job->reply()->readAll());

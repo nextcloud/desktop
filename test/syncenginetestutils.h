@@ -64,6 +64,7 @@ public:
     virtual void appendByte(const QString &relativePath) = 0;
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
+    virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
 };
 
 class DiskFileModifier : public FileModifier
@@ -113,6 +114,9 @@ public:
     void rename(const QString &from, const QString &to) override {
         QVERIFY(_rootDir.exists(from));
         QVERIFY(_rootDir.rename(from, to));
+    }
+    void setModTime(const QString &relativePath, const QDateTime &modTime) override {
+        OCC::FileSystem::setModTime(_rootDir.filePath(relativePath), OCC::Utility::qDateTimeToTime_t(modTime));
     }
 };
 
@@ -199,6 +203,12 @@ public:
         fi.name = newPathComponents.fileName();
         fi.fixupParentPathRecursively();
         dir->children.insert(newPathComponents.fileName(), std::move(fi));
+    }
+
+    void setModTime(const QString &relativePath, const QDateTime &modTime) override {
+        FileInfo *file = findInvalidatingEtags(relativePath);
+        Q_ASSERT(file);
+        file->lastModified = modTime;
     }
 
     FileInfo *find(const PathComponents &pathComponents, const bool invalidateEtags = false) {
@@ -641,6 +651,7 @@ public:
 
     Q_INVOKABLE void respond() {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 500);
+        setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
         emit finished();
     }

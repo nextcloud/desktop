@@ -493,6 +493,27 @@ void PropagateUploadFileCommon::slotPollFinished()
     finalize();
 }
 
+void PropagateUploadFileCommon::checkResettingErrors()
+{
+    if (_item->_httpErrorCode == 412
+            || _propagator->account()->capabilities().httpErrorCodesThatResetFailingChunkedUploads()
+                   .contains(_item->_httpErrorCode)) {
+        auto uploadInfo = _propagator->_journal->getUploadInfo(_item->_file);
+        uploadInfo._errorCount += 1;
+        if (uploadInfo._errorCount > 3) {
+            qDebug() << "Reset transfer of" << _item->_file
+                     << "due to repeated error" << _item->_httpErrorCode;
+            uploadInfo = SyncJournalDb::UploadInfo();
+        } else {
+            qDebug() << "Error count for maybe-reset error" << _item->_httpErrorCode
+                     << "on file" << _item->_file
+                     << "is" << uploadInfo._errorCount;
+        }
+        _propagator->_journal->setUploadInfo(_item->_file, uploadInfo);
+        _propagator->_journal->commit("Upload info");
+    }
+}
+
 void PropagateUploadFileCommon::slotJobDestroyed(QObject* job)
 {
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job) , _jobs.end());

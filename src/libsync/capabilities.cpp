@@ -121,4 +121,13 @@ bool Capabilities::chunkingParallelUploadDisabled() const
     return _capabilities["dav"].toMap()["chunkingParallelUploadDisabled"].toBool();
 }
 
+QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
+{
+    QList<int> list;
+    foreach (const auto & t, _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList()) {
+        list.push_back(t.toInt());
+    }
+    return list;
+}
+
 }

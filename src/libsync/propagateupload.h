@@ -232,6 +232,13 @@ private slots:
     void slotPollFinished();
 
 protected:
+    /**
+     * Checks whether the current error is one that should reset the whole
+     * transfer if it happens too often. If so: Bump UploadInfo::errorCount
+     * and maybe perform the reset.
+     */
+    void checkResettingErrors();
+
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
 
