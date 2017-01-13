@@ -154,6 +154,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
             _jobs.append(job);
             job->start();
         }
+        _serverChunks.clear();
         return;
     }
 
