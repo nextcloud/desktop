@@ -86,7 +86,7 @@ private:
  * @brief Class that uses an ownCloud proprietary XML format to fetch update information
  * @ingroup gui
  */
-class OCUpdater : public QObject, public Updater
+class OCUpdater : public Updater
 {
     Q_OBJECT
 public:
@@ -94,7 +94,7 @@ public:
                          Downloading, DownloadComplete,
                          DownloadFailed, DownloadTimedOut,
                          UpdateOnlyAvailableThroughSystem };
-    explicit OCUpdater(const QUrl &url, QObject *parent = 0);
+    explicit OCUpdater(const QUrl &url);
 
     bool performUpdate();
 
@@ -141,7 +141,7 @@ class NSISUpdater : public OCUpdater {
     Q_OBJECT
 public:
     enum UpdateState { NoUpdate = 0, UpdateAvailable, UpdateFailed };
-    explicit NSISUpdater(const QUrl &url, QObject *parent = 0);
+    explicit NSISUpdater(const QUrl &url);
     bool handleStartup() Q_DECL_OVERRIDE;
 private slots:
     void slotSetSeenVersion();
@@ -167,7 +167,7 @@ private:
 class PassiveUpdateNotifier : public OCUpdater {
     Q_OBJECT
 public:
-    explicit PassiveUpdateNotifier(const QUrl &url, QObject *parent = 0);
+    explicit PassiveUpdateNotifier(const QUrl &url);
     bool handleStartup() Q_DECL_OVERRIDE { return false; }
     void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
 

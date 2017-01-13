@@ -87,6 +87,10 @@ Updater *Updater::create()
     if (updateBaseUrl.isEmpty()) {
         updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
     }
+    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+        qDebug() << "Not a valid updater URL, will not do update check";
+        return 0;
+    }
     updateBaseUrl = addQueryParams(updateBaseUrl);
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
     updateBaseUrl.addQueryItem( QLatin1String("sparkle"), QLatin1String("true"));

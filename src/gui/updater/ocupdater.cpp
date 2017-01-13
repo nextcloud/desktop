@@ -19,6 +19,7 @@
 
 #include "updater/ocupdater.h"
 
+#include <QObject>
 #include <QtCore>
 #include <QtNetwork>
 #include <QtGui>
@@ -43,9 +44,8 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent) :
     connect( &_updateCheckTimer, SIGNAL(timeout()),
              this, SLOT(slotTimerFired()) );
 
-    // Note: the sparkle-updater is not an OCUpdater and thus the dynamic_cast
-    // returns NULL. Clever detail.
-    if (OCUpdater *updater = dynamic_cast<OCUpdater*>(Updater::instance())) {
+    // Note: the sparkle-updater is not an OCUpdater
+    if (OCUpdater *updater = qobject_cast<OCUpdater*>(Updater::instance())) {
         connect(updater,  SIGNAL(newUpdateAvailable(QString,QString)),
                 this,     SIGNAL(updaterAnnouncement(QString,QString)) );
         connect(updater, SIGNAL(requestRestart()), SIGNAL(requestRestart()));
@@ -76,14 +76,17 @@ void UpdaterScheduler::slotTimerFired()
         return;
     }
 
-    Updater::instance()->backgroundCheckForUpdate();
+    Updater *updater = Updater::instance();
+    if (updater) {
+        updater->backgroundCheckForUpdate();
+    }
 }
 
 
 /* ----------------------------------------------------------------- */
 
-OCUpdater::OCUpdater(const QUrl &url, QObject *parent) :
-    QObject(parent)
+OCUpdater::OCUpdater(const QUrl &url) :
+    Updater()
   , _updateUrl(url)
   , _state(Unknown)
   , _accessManager(new AccessManager(this))
@@ -242,8 +245,8 @@ void OCUpdater::slotTimedOut()
 
 ////////////////////////////////////////////////////////////////////////
 
-NSISUpdater::NSISUpdater(const QUrl &url, QObject *parent)
-    : OCUpdater(url, parent)
+NSISUpdater::NSISUpdater(const QUrl &url)
+    : OCUpdater(url)
     , _showFallbackMessage(false)
 {
 }
@@ -421,8 +424,8 @@ void NSISUpdater::slotSetSeenVersion()
 
 ////////////////////////////////////////////////////////////////////////
 
-PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url, QObject *parent)
-    : OCUpdater(url, parent)
+PassiveUpdateNotifier::PassiveUpdateNotifier(const QUrl &url)
+    : OCUpdater(url)
 {
     // remember the version of the currently running binary. On Linux it might happen that the
     // package management updates the package while the app is running. This is detected in the

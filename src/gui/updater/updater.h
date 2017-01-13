@@ -21,7 +21,8 @@ class QUrl;
 
 namespace OCC {
 
-class Updater {
+class Updater : public QObject {
+    Q_OBJECT
 public:
     struct Helper {
         static qint64 stringVersionToInt(const QString& version);
@@ -37,6 +38,7 @@ public:
 
 protected:
     static QString clientVersion();
+    Updater() : QObject(0) {}
 
 private:
     static QString getSystemInfo();

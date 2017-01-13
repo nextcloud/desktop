@@ -107,7 +107,8 @@ int main(int argc, char **argv)
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered
-    if (Updater::instance()->handleStartup()) {
+    Updater *updater = Updater::instance();
+    if ( updater && updater->handleStartup()) {
         return true;
     }
 
