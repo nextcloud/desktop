@@ -3,6 +3,8 @@ set(CMAKE_AUTOMOC TRUE)
 
 add_subdirectory(updater)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+
 #TODO Move resources files
 qt_add_resources(MIRALL_RC_SRC ../../client.qrc)
 if ( IS_DIRECTORY ${OEM_THEME_DIR} )

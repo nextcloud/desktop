@@ -2,6 +2,7 @@ include_directories(${CMAKE_BINARY_DIR}/csync ${CMAKE_BINARY_DIR}/csync/src ${CM
 include_directories(${CMAKE_SOURCE_DIR}/csync/src/)
 include_directories(${CMAKE_SOURCE_DIR}/csync/src/std ${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 
 include(QtVersionAbstraction)
 setup_qt()
