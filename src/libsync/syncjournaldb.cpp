@@ -64,8 +64,12 @@ bool SyncJournalDb::maybeMigrateDb(const QString& localPath, const QString& abso
     if( !FileSystem::fileExists(oldDbName) ) {
         return true;
     }
+    const QString oldDbNameShm = oldDbName + "-shm";
+    const QString oldDbNameWal = oldDbName + "-wal";
 
     const QString newDbName = absoluteJournalPath;
+    const QString newDbNameShm = newDbName + "-shm";
+    const QString newDbNameWal = newDbName + "-wal";
 
     // Whenever there is an old db file, migrate it to the new db path.
     // This is done to make switching from older versions to newer versions
@@ -80,10 +84,34 @@ bool SyncJournalDb::maybeMigrateDb(const QString& localPath, const QString& abso
             return false;
         }
     }
+    if( FileSystem::fileExists( newDbNameWal ) ) {
+        if( !FileSystem::remove(newDbNameWal, &error) ) {
+            qDebug() << "Database migration: Could not remove db WAL file" << newDbNameWal
+                     << "due to" << error;
+            return false;
+        }
+    }
+    if( FileSystem::fileExists( newDbNameShm ) ) {
+        if( !FileSystem::remove(newDbNameShm, &error) ) {
+            qDebug() << "Database migration: Could not remove db SHM file" << newDbNameShm
+                     << "due to" << error;
+            return false;
+        }
+    }
 
     if( !FileSystem::rename(oldDbName, newDbName, &error) ) {
         qDebug() << "Database migration: could not rename " << oldDbName
                  << "to" << newDbName << ":" << error;
+        return false;
+    }
+    if( !FileSystem::rename(oldDbNameWal, newDbNameWal, &error) ) {
+        qDebug() << "Database migration: could not rename " << oldDbNameWal
+                 << "to" << newDbNameWal << ":" << error;
+        return false;
+    }
+    if( !FileSystem::rename(oldDbNameShm, newDbNameShm, &error) ) {
+        qDebug() << "Database migration: could not rename " << oldDbNameShm
+                 << "to" << newDbNameShm << ":" << error;
         return false;
     }
 
