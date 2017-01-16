@@ -267,6 +267,15 @@ public:
         return (parentPath.isEmpty() ? QString() : (parentPath + '/')) + name;
     }
 
+    void fixupParentPathRecursively() {
+        auto p = path();
+        for (auto it = children.begin(); it != children.end(); ++it) {
+            Q_ASSERT(it.key() == it->name);
+            it->parentPath = p;
+            it->fixupParentPathRecursively();
+        }
+    }
+
     QString name;
     bool isDir = true;
     bool isShared = false;
@@ -283,15 +292,6 @@ public:
 private:
     FileInfo *findInvalidatingEtags(const PathComponents &pathComponents) {
         return find(pathComponents, true);
-    }
-
-    void fixupParentPathRecursively() {
-        auto p = path();
-        for (auto it = children.begin(); it != children.end(); ++it) {
-            Q_ASSERT(it.key() == it->name);
-            it->parentPath = p;
-            it->fixupParentPathRecursively();
-        }
     }
 
     friend inline QDebug operator<<(QDebug dbg, const FileInfo& fi) {
@@ -791,6 +791,7 @@ public:
         QDir rootDir{_tempDir.path()};
         FileInfo rootTemplate;
         fromDisk(rootDir, rootTemplate);
+        rootTemplate.fixupParentPathRecursively();
         return rootTemplate;
     }
 
@@ -834,7 +835,7 @@ public:
 
     bool execUntilFinished() {
         QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
-        bool ok = spy.wait(60000);
+        bool ok = spy.wait(3600000);
         Q_ASSERT(ok && "Sync timed out");
         return spy[0][0].toBool();
     }
@@ -867,8 +868,8 @@ private:
             if (diskChild.isDir()) {
                 QDir subDir = dir;
                 subDir.cd(diskChild.fileName());
-                templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName()});
-                fromDisk(subDir, templateFi.children.last());
+                FileInfo &subFi = templateFi.children[diskChild.fileName()] = FileInfo{diskChild.fileName()};
+                fromDisk(subDir, subFi);
             } else {
                 QFile f{diskChild.filePath()};
                 f.open(QFile::ReadOnly);
