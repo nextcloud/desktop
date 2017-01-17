@@ -46,8 +46,6 @@
 
 namespace OCC {
 
-const char oldJournalPath[] = ".csync_journal.db";
-
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
                QObject* parent)
