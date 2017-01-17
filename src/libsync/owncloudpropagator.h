@@ -56,11 +56,9 @@ class OwncloudPropagator;
  */
 class PropagatorJob : public QObject {
     Q_OBJECT
-private:
-    OwncloudPropagator *_propagator;
 
 public:
-    explicit PropagatorJob(OwncloudPropagator* propagator) : _propagator(propagator), _state(NotYetStarted) {}
+    explicit PropagatorJob(OwncloudPropagator* propagator);
 
     enum JobState {
         NotYetStarted,

@@ -573,9 +573,16 @@ OwncloudPropagator::DiskSpaceResult OwncloudPropagator::diskSpaceCheck() const
 
 // ================================================================================
 
+PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
+    : QObject(propagator)
+    , _state(NotYetStarted)
+{
+
+}
+
 OwncloudPropagator *PropagatorJob::propagator() const
 {
-    return _propagator;
+    return qobject_cast<OwncloudPropagator*>(parent());
 }
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
