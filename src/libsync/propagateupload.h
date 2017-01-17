@@ -269,7 +269,7 @@ private:
     int _chunkCount; /// Total number of chunks for this file
     int _transferId; /// transfer id (part of the url)
 
-    quint64 chunkSize() const { return _propagator->chunkSize(); }
+    quint64 chunkSize() const { return propagator()->chunkSize(); }
 
 
 public:
@@ -302,7 +302,7 @@ private:
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     QMap<int, quint64> _serverChunks;
 
-    quint64 chunkSize() const { return _propagator->chunkSize(); }
+    quint64 chunkSize() const { return propagator()->chunkSize(); }
     /**
      * Return the URL of a chunk.
      * If chunk == -1, returns the URL of the parent folder containing the chunks

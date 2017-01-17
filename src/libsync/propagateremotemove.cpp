@@ -71,12 +71,12 @@ bool MoveJob::finished()
 
 void PropagateRemoteMove::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     qDebug() << Q_FUNC_INFO << _item->_file << _item->_renameTarget;
 
-    QString targetFile(_propagator->getFilePath(_item->_renameTarget));
+    QString targetFile(propagator()->getFilePath(_item->_renameTarget));
 
     if (_item->_file == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
@@ -87,11 +87,11 @@ void PropagateRemoteMove::start()
         // Before owncloud 7, there was no permissions system. At the time all the shared files were
         // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happened
 
-        QString versionString = _propagator->account()->serverVersion();
+        QString versionString = propagator()->account()->serverVersion();
         if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
-            QString originalFile(_propagator->getFilePath(QLatin1String("Shared")));
-            emit _propagator->touchedFile(originalFile);
-            emit _propagator->touchedFile(targetFile);
+            QString originalFile(propagator()->getFilePath(QLatin1String("Shared")));
+            emit propagator()->touchedFile(originalFile);
+            emit propagator()->touchedFile(targetFile);
             QString renameError;
             if( FileSystem::rename(targetFile, originalFile, &renameError) ) {
                 done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
@@ -102,13 +102,13 @@ void PropagateRemoteMove::start()
         }
     }
 
-    QString destination = QDir::cleanPath(_propagator->account()->url().path() + QLatin1Char('/')
-            + _propagator->account()->davPath() + _propagator->_remoteFolder + _item->_renameTarget);
-    _job = new MoveJob(_propagator->account(),
-                        _propagator->_remoteFolder + _item->_file,
+    QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
+            + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_renameTarget);
+    _job = new MoveJob(propagator()->account(),
+                        propagator()->_remoteFolder + _item->_file,
                         destination, this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
-    _propagator->_activeJobList.append(this);
+    propagator()->_activeJobList.append(this);
     _job->start();
 
 }
@@ -121,7 +121,7 @@ void PropagateRemoteMove::abort()
 
 void PropagateRemoteMove::slotMoveJobFinished()
 {
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 
@@ -140,7 +140,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
         }
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-                                                    &_propagator->_anotherSyncNeeded);
+                                                    &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }
@@ -164,14 +164,14 @@ void PropagateRemoteMove::slotMoveJobFinished()
 void PropagateRemoteMove::finalize()
 {
     SyncJournalFileRecord oldRecord =
-            _propagator->_journal->getFileRecord(_item->_originalFile);
+            propagator()->_journal->getFileRecord(_item->_originalFile);
     // if reading from db failed still continue hoping that deleteFileRecord
     // reopens the db successfully.
     // The db is only queried to transfer the content checksum from the old
     // to the new record. It is not a problem to skip it here.
-    _propagator->_journal->deleteFileRecord(_item->_originalFile);
+    propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    SyncJournalFileRecord record(*_item, _propagator->getFilePath(_item->_renameTarget));
+    SyncJournalFileRecord record(*_item, propagator()->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
     if (oldRecord.isValid()) {
         record._contentChecksum = oldRecord._contentChecksum;
@@ -182,19 +182,19 @@ void PropagateRemoteMove::finalize()
         }
     }
 
-    if (!_propagator->_journal->setFileRecord(record)) {
+    if (!propagator()->_journal->setFileRecord(record)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
 
     if (_item->_isDirectory) {
-        if (!adjustSelectiveSync(_propagator->_journal, _item->_file, _item->_renameTarget)) {
+        if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
         }
     }
 
-    _propagator->_journal->commit("Remote Rename");
+    propagator()->_journal->commit("Remote Rename");
     done(SyncFileItem::Success);
 }
 

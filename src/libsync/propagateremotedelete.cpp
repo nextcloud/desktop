@@ -58,16 +58,16 @@ bool DeleteJob::finished()
 
 void PropagateRemoteDelete::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     qDebug() << Q_FUNC_INFO << _item->_file;
 
-    _job = new DeleteJob(_propagator->account(),
-                         _propagator->_remoteFolder + _item->_file,
+    _job = new DeleteJob(propagator()->account(),
+                         propagator()->_remoteFolder + _item->_file,
                          this);
     connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
-    _propagator->_activeJobList.append(this);
+    propagator()->_activeJobList.append(this);
     _job->start();
 }
 
@@ -79,7 +79,7 @@ void PropagateRemoteDelete::abort()
 
 void PropagateRemoteDelete::slotDeleteJobFinished()
 {
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 
@@ -99,7 +99,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         }
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-                                                    &_propagator->_anotherSyncNeeded);
+                                                    &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }
@@ -120,8 +120,8 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         return;
     }
 
-    _propagator->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
-    _propagator->_journal->commit("Remote Remove");
+    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
+    propagator()->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }
 

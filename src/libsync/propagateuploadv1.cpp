@@ -40,7 +40,7 @@ void PropagateUploadFileV1::doStartUpload()
     _startChunk = 0;
     _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16);
 
-    const SyncJournalDb::UploadInfo progressInfo = _propagator->_journal->getUploadInfo(_item->_file);
+    const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
     if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime ) {
         _startChunk = progressInfo._chunk;
@@ -57,7 +57,7 @@ void PropagateUploadFileV1::doStartUpload()
 
 void PropagateUploadFileV1::startNextChunk()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     if (! _jobs.isEmpty() &&  _currentChunk + _startChunk >= _chunkCount - 1) {
@@ -75,7 +75,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _item->_file;
 
-    UploadDevice *device = new UploadDevice(&_propagator->_bandwidthManager);
+    UploadDevice *device = new UploadDevice(&propagator()->_bandwidthManager);
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
@@ -108,14 +108,14 @@ void PropagateUploadFileV1::startNextChunk()
                 _transmissionChecksumType, _transmissionChecksum);
     }
 
-    const QString fileName = _propagator->getFilePath(_item->_file);
+    const QString fileName = propagator()->getFilePath(_item->_file);
     if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
         if (FileSystem::isFileLocked(fileName)) {
-            emit _propagator->seenLockedFile(fileName);
+            emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError( SyncFileItem::SoftError, device->errorString() );
@@ -124,19 +124,19 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob* job = new PUTFileJob(_propagator->account(), _propagator->_remoteFolder + path, device, headers, _currentChunk, this);
+    PUTFileJob* job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
     connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
     connect(job, SIGNAL(uploadProgress(qint64,qint64)), device, SLOT(slotJobUploadProgress(qint64,qint64)));
     connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotJobDestroyed(QObject*)));
     job->start();
-    _propagator->_activeJobList.append(this);
+    propagator()->_activeJobList.append(this);
     _currentChunk++;
 
     bool parallelChunkUpload = true;
 
-    if (_propagator->account()->capabilities().chunkingParallelUploadDisabled()) {
+    if (propagator()->account()->capabilities().chunkingParallelUploadDisabled()) {
         // Server may also disable parallel chunked upload for any higher version
         parallelChunkUpload = false;
     } else {
@@ -144,7 +144,7 @@ void PropagateUploadFileV1::startNextChunk()
         if (!env.isEmpty()) {
             parallelChunkUpload = env != "false" && env != "0";
         } else {
-            int versionNum = _propagator->account()->serverVersionInt();
+            int versionNum = propagator()->account()->serverVersionInt();
             if (versionNum < 0x080003) {
                 // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
                 // internal sever errors (#2743, #2938)
@@ -160,7 +160,7 @@ void PropagateUploadFileV1::startNextChunk()
         parallelChunkUpload = false;
     }
 
-    if (parallelChunkUpload && (_propagator->_activeJobList.count() < _propagator->maximumActiveJob())
+    if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveJob())
             && _currentChunk < _chunkCount ) {
         startNextChunk();
     }
@@ -181,7 +181,7 @@ void PropagateUploadFileV1::slotPutFinished()
              << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
              << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     if (_finished) {
         // We have sent the finished signal already. We don't need to handle any remaining jobs
@@ -220,15 +220,15 @@ void PropagateUploadFileV1::slotPutFinished()
 
             // Maybe the bad etag is in the database, we need to clear the
             // parent folder etag so we won't read from DB next sync.
-            _propagator->_journal->avoidReadFromDbOnNextSync(_item->_file);
-            _propagator->_anotherSyncNeeded = true;
+            propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
+            propagator()->_anotherSyncNeeded = true;
         }
 
         // Ensure errors that should eventually reset the chunked upload are tracked.
         checkResettingErrors();
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-                                                    &_propagator->_anotherSyncNeeded);
+                                                    &propagator()->_anotherSyncNeeded);
         abortWithError(status, errorString);
         return;
     }
@@ -259,19 +259,19 @@ void PropagateUploadFileV1::slotPutFinished()
     bool finished = etag.length() > 0;
 
     // Check if the file still exists
-    const QString fullFilePath(_propagator->getFilePath(_item->_file));
+    const QString fullFilePath(propagator()->getFilePath(_item->_file));
     if( !FileSystem::fileExists(fullFilePath) ) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         } else {
-            _propagator->_anotherSyncNeeded = true;
+            propagator()->_anotherSyncNeeded = true;
         }
     }
 
     // Check whether the file changed since discovery.
     if (! FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
-        _propagator->_anotherSyncNeeded = true;
+        propagator()->_anotherSyncNeeded = true;
         if( !finished ) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
@@ -294,7 +294,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
         // Deletes an existing blacklist entry on successful chunk upload
         if (_item->_hasBlacklistEntry) {
-            _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
+            propagator()->_journal->wipeErrorBlacklistEntry(_item->_file);
             _item->_hasBlacklistEntry = false;
         }
 
@@ -311,8 +311,8 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._transferid = _transferId;
         pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
         pi._errorCount = 0; // successful chunk upload resets
-        _propagator->_journal->setUploadInfo(_item->_file, pi);
-        _propagator->_journal->commit("Upload info");
+        propagator()->_journal->setUploadInfo(_item->_file, pi);
+        propagator()->_journal->commit("Upload info");
         startNextChunk();
         return;
     }

@@ -132,7 +132,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         }
     }
 
-    if( _propagator->_abortRequested.fetchAndAddRelaxed(0) &&
+    if( propagator()->_abortRequested.fetchAndAddRelaxed(0) &&
             (status == SyncFileItem::NormalError || status == SyncFileItem::FatalError)) {
         // an abort request is ongoing. Change the status to Soft-Error
         status = SyncFileItem::SoftError;
@@ -145,7 +145,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         // For normal errors, we blacklist aggressively, otherwise only on
         // explicit request.
         if ((status == SyncFileItem::NormalError || _item->_errorMayBeBlacklisted)
-                && blacklistCheck(_propagator->_journal, *_item)
+                && blacklistCheck(propagator()->_journal, *_item)
                 && _item->_hasBlacklistEntry) {
             // do not error if the item was, and continues to be, blacklisted
             status = SyncFileItem::FileIgnored;
@@ -156,10 +156,10 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     case SyncFileItem::Restoration:
         if( _item->_hasBlacklistEntry ) {
             // wipe blacklist entry.
-            _propagator->_journal->wipeErrorBlacklistEntry(_item->_file);
+            propagator()->_journal->wipeErrorBlacklistEntry(_item->_file);
             // remove a blacklist entry in case the file was moved.
             if( _item->_originalFile != _item->_file ) {
-                _propagator->_journal->wipeErrorBlacklistEntry(_item->_originalFile);
+                propagator()->_journal->wipeErrorBlacklistEntry(_item->_originalFile);
             }
         }
         break;
@@ -186,7 +186,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
 {
     PropagateItemJob *newJob = NULL;
 
-    if( httpStatusCode == 403 && _propagator->isInSharedDirectory(_item->_file )) {
+    if( httpStatusCode == 403 && propagator()->isInSharedDirectory(_item->_file )) {
         if( !_item->_isDirectory ) {
             SyncFileItemPtr downloadItem(new SyncFileItem(*_item));
             if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW
@@ -205,18 +205,18 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
                 downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
             downloadItem->_direction = SyncFileItem::Down;
-            newJob = new PropagateDownloadFile(_propagator, downloadItem);
+            newJob = new PropagateDownloadFile(propagator(), downloadItem);
         } else {
             // Directories are harder to recover.
             // But just re-create the directory, next sync will be able to recover the files
             SyncFileItemPtr mkdirItem(new SyncFileItem(*_item));
             mkdirItem->_instruction = CSYNC_INSTRUCTION_NEW;
             mkdirItem->_direction = SyncFileItem::Down;
-            newJob = new PropagateLocalMkdir(_propagator, mkdirItem);
+            newJob = new PropagateLocalMkdir(propagator(), mkdirItem);
             // Also remove the inodes and fileid from the db so no further renames are tried for
             // this item.
-            _propagator->_journal->avoidRenamesOnNextSync(_item->_file);
-            _propagator->_anotherSyncNeeded = true;
+            propagator()->_journal->avoidRenamesOnNextSync(_item->_file);
+            propagator()->_anotherSyncNeeded = true;
         }
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
@@ -573,6 +573,11 @@ OwncloudPropagator::DiskSpaceResult OwncloudPropagator::diskSpaceCheck() const
 
 // ================================================================================
 
+OwncloudPropagator *PropagatorJob::propagator() const
+{
+    return _propagator;
+}
+
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
 {
     // If any of the non-finished sub jobs is not parallel, we have to wait
@@ -688,7 +693,7 @@ void PropagateDirectory::finalize()
             if(_item->_instruction == CSYNC_INSTRUCTION_RENAME
                     && _item->_originalFile != _item->_renameTarget) {
                 // Remove the stale entries from the database.
-                _propagator->_journal->deleteFileRecord(_item->_originalFile, true);
+                propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
             }
 
             _item->_file = _item->_renameTarget;
@@ -706,8 +711,8 @@ void PropagateDirectory::finalize()
                     _item->_fileId = mkdir->_item->_fileId;
                 }
             }
-            SyncJournalFileRecord record(*_item,  _propagator->_localDir + _item->_file);
-            ok = _propagator->_journal->setFileRecordMetadata(record);
+            SyncJournalFileRecord record(*_item,  propagator()->_localDir + _item->_file);
+            ok = propagator()->_journal->setFileRecordMetadata(record);
             if (!ok) {
                 _hasError = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");

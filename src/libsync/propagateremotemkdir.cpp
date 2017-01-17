@@ -23,19 +23,19 @@ namespace OCC {
 
 void PropagateRemoteMkdir::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     qDebug() << Q_FUNC_INFO << _item->_file;
 
-    _propagator->_activeJobList.append(this);
+    propagator()->_activeJobList.append(this);
 
     if (!_deleteExisting) {
         return slotStartMkcolJob();
     }
 
-    _job = new DeleteJob(_propagator->account(),
-                         _propagator->_remoteFolder + _item->_file,
+    _job = new DeleteJob(propagator()->account(),
+                         propagator()->_remoteFolder + _item->_file,
                          this);
     connect(_job, SIGNAL(finishedSignal()), SLOT(slotStartMkcolJob()));
     _job->start();
@@ -43,13 +43,13 @@ void PropagateRemoteMkdir::start()
 
 void PropagateRemoteMkdir::slotStartMkcolJob()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0))
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
     qDebug() << Q_FUNC_INFO << _item->_file;
 
-    _job = new MkColJob(_propagator->account(),
-                        _propagator->_remoteFolder + _item->_file,
+    _job = new MkColJob(propagator()->account(),
+                        propagator()->_remoteFolder + _item->_file,
                         this);
     connect(_job, SIGNAL(finished(QNetworkReply::NetworkError)), this, SLOT(slotMkcolJobFinished()));
     _job->start();
@@ -68,7 +68,7 @@ void PropagateRemoteMkdir::setDeleteExisting(bool enabled)
 
 void PropagateRemoteMkdir::slotMkcolJobFinished()
 {
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     Q_ASSERT(_job);
 
@@ -83,7 +83,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // This happens when the directory already exists. Nothing to do.
     } else if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-                                                    &_propagator->_anotherSyncNeeded);
+                                                    &propagator()->_anotherSyncNeeded);
         auto errorString = _job->reply()->errorString();
         if (_job->reply()->hasRawHeader("OC-ErrorString")) {
             errorString = _job->reply()->rawHeader("OC-ErrorString");
@@ -109,7 +109,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         // So we must get the file id using a PROPFIND
         // This is required so that we can detect moves even if the folder is renamed on the server
         // while files are still uploading
-        _propagator->_activeJobList.append(this);
+        propagator()->_activeJobList.append(this);
         auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
         propfindJob->setProperties(QList<QByteArray>() << "getetag" << "http://owncloud.org/ns:id");
         QObject::connect(propfindJob, SIGNAL(result(QVariantMap)), this, SLOT(propfindResult(QVariantMap)));
@@ -123,7 +123,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
 void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 {
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
     if (result.contains("getetag")) {
         _item->_etag = result["getetag"].toByteArray();
     }
@@ -136,15 +136,15 @@ void PropagateRemoteMkdir::propfindResult(const QVariantMap &result)
 void PropagateRemoteMkdir::propfindError()
 {
     // ignore the PROPFIND error
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
     done(SyncFileItem::Success);
 }
 
 void PropagateRemoteMkdir::success()
 {
     // save the file id already so we can detect rename or remove
-    SyncJournalFileRecord record(*_item, _propagator->_localDir + _item->destination());
-    if (!_propagator->_journal->setFileRecord(record)) {
+    SyncJournalFileRecord record(*_item, propagator()->_localDir + _item->destination());
+    if (!propagator()->_journal->setFileRecord(record)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }

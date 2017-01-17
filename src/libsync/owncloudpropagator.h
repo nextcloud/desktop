@@ -56,7 +56,7 @@ class OwncloudPropagator;
  */
 class PropagatorJob : public QObject {
     Q_OBJECT
-protected:
+private:
     OwncloudPropagator *_propagator;
 
 public:
@@ -126,6 +126,8 @@ signals:
 
     void progress(const SyncFileItem& item, quint64 bytes);
 
+protected:
+    OwncloudPropagator *propagator() const;
 };
 
 

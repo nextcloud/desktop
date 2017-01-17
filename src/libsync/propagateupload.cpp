@@ -193,18 +193,18 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
-    _propagator->_activeJobList.append(this);
+    propagator()->_activeJobList.append(this);
 
     if (!_deleteExisting) {
         return slotComputeContentChecksum();
     }
 
-    auto job = new DeleteJob(_propagator->account(),
-                             _propagator->_remoteFolder + _item->_file,
+    auto job = new DeleteJob(propagator()->account(),
+                             propagator()->_remoteFolder + _item->_file,
                              this);
     _jobs.append(job);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotComputeContentChecksum()));
@@ -214,11 +214,11 @@ void PropagateUploadFileCommon::start()
 
 void PropagateUploadFileCommon::slotComputeContentChecksum()
 {
-    if (_propagator->_abortRequested.fetchAndAddRelaxed(0)) {
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
-    const QString filePath = _propagator->getFilePath(_item->_file);
+    const QString filePath = propagator()->getFilePath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
     // change during the checksum calculation
@@ -256,7 +256,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
 
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
-            _propagator->account()->capabilities().supportedChecksumTypes();
+            propagator()->account()->capabilities().supportedChecksumTypes();
     if (supportedTransmissionChecksums.contains(contentChecksumType)) {
         slotStartUpload(contentChecksumType, contentChecksum);
         return;
@@ -265,7 +265,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
     // Compute the transmission checksum.
     auto computeChecksum = new ComputeChecksum(this);
     if (uploadChecksumEnabled()) {
-        computeChecksum->setChecksumType(_propagator->account()->capabilities().uploadChecksumType());
+        computeChecksum->setChecksumType(propagator()->account()->capabilities().uploadChecksumType());
     } else {
         computeChecksum->setChecksumType(QByteArray());
     }
@@ -274,7 +274,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
             SLOT(slotStartUpload(QByteArray,QByteArray)));
     connect(computeChecksum, SIGNAL(done(QByteArray,QByteArray)),
             computeChecksum, SLOT(deleteLater()));
-    const QString filePath = _propagator->getFilePath(_item->_file);
+    const QString filePath = propagator()->getFilePath(_item->_file);
     computeChecksum->start(filePath);
 }
 
@@ -282,7 +282,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
 {
     // Remove ourselfs from the list of active job, before any posible call to done()
     // When we start chunks, we will add it again, once for every chunks.
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     _transmissionChecksum = transmissionChecksum;
     _transmissionChecksumType = transmissionChecksumType;
@@ -293,7 +293,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
         _item->_contentChecksumType = transmissionChecksumType;
     }
 
-    const QString fullFilePath = _propagator->getFilePath(_item->_file);
+    const QString fullFilePath = propagator()->getFilePath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -307,7 +307,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
 
     _item->_modtime = FileSystem::getModTime(fullFilePath);
     if( prevModtime != _item->_modtime ) {
-        _propagator->_anotherSyncNeeded = true;
+        propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
         return;
     }
@@ -319,7 +319,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
     // That usually indicates a file that is still being changed
     // or not yet fully copied to the destination.
     if (fileIsStillChanging(*_item)) {
-        _propagator->_anotherSyncNeeded = true;
+        propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("Local file changed during sync."));
         return;
     }
@@ -464,16 +464,16 @@ void UploadDevice::setChoked(bool b) {
 
 void PropagateUploadFileCommon::startPollJob(const QString& path)
 {
-    PollJob* job = new PollJob(_propagator->account(), path, _item,
-                               _propagator->_journal, _propagator->_localDir, this);
+    PollJob* job = new PollJob(propagator()->account(), path, _item,
+                               propagator()->_journal, propagator()->_localDir, this);
     connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
     info._url = path;
     info._modtime = _item->_modtime;
-    _propagator->_journal->setPollInfo(info);
-    _propagator->_journal->commit("add poll info");
-    _propagator->_activeJobList.append(this);
+    propagator()->_journal->setPollInfo(info);
+    propagator()->_journal->commit("add poll info");
+    propagator()->_activeJobList.append(this);
     job->start();
 }
 
@@ -482,7 +482,7 @@ void PropagateUploadFileCommon::slotPollFinished()
     PollJob *job = qobject_cast<PollJob *>(sender());
     Q_ASSERT(job);
 
-    _propagator->_activeJobList.removeOne(this);
+    propagator()->_activeJobList.removeOne(this);
 
     if (job->_item->_status != SyncFileItem::Success) {
         _finished = true;
@@ -496,9 +496,9 @@ void PropagateUploadFileCommon::slotPollFinished()
 void PropagateUploadFileCommon::checkResettingErrors()
 {
     if (_item->_httpErrorCode == 412
-            || _propagator->account()->capabilities().httpErrorCodesThatResetFailingChunkedUploads()
+            || propagator()->account()->capabilities().httpErrorCodesThatResetFailingChunkedUploads()
                    .contains(_item->_httpErrorCode)) {
-        auto uploadInfo = _propagator->_journal->getUploadInfo(_item->_file);
+        auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount += 1;
         if (uploadInfo._errorCount > 3) {
             qDebug() << "Reset transfer of" << _item->_file
@@ -509,8 +509,8 @@ void PropagateUploadFileCommon::checkResettingErrors()
                      << "on file" << _item->_file
                      << "is" << uploadInfo._errorCount;
         }
-        _propagator->_journal->setUploadInfo(_item->_file, uploadInfo);
-        _propagator->_journal->commit("Upload info");
+        propagator()->_journal->setUploadInfo(_item->_file, uploadInfo);
+        propagator()->_journal->commit("Upload info");
     }
 }
 
@@ -572,13 +572,13 @@ void PropagateUploadFileCommon::finalize()
     _item->_requestDuration = _duration.elapsed();
     _finished = true;
 
-    if (!_propagator->_journal->setFileRecord(SyncJournalFileRecord(*_item, _propagator->getFilePath(_item->_file)))) {
+    if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, propagator()->getFilePath(_item->_file)))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
     // Remove from the progress database:
-    _propagator->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
-    _propagator->_journal->commit("upload file start");
+    propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
+    propagator()->_journal->commit("upload file start");
 
     done(SyncFileItem::Success);
 }
