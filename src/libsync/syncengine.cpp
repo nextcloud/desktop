@@ -440,7 +440,23 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_errorString = tr("File is listed on the ignore list.");
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
-        item->_errorString = tr("Filename contains invalid characters that can not be synced cross platform.");
+        if (item->_file.endsWith('.')) {
+            item->_errorString = tr("File names ending with a period are not supported on this file system.");
+        } else {
+            char invalid = '\0';
+            foreach(char x, QByteArray("\\:?*\"<>|")) {
+                if (item->_file.contains(x)) {
+                    invalid = x;
+                    break;
+                }
+            }
+            if (invalid) {
+                item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
+                    .arg(QLatin1Char(invalid));
+            } else {
+                item->_errorString = tr("The file name is a reserved name on this file system.");
+            }
+        }
         break;
     case CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE:
         item->_errorString = tr("Filename contains trailing spaces.");
