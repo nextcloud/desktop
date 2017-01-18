@@ -46,7 +46,7 @@ namespace OCC {
  * in the database.  But in case of error, we need to remove the entries from the database of the files
  * that were deleted.
  *
- * \a path is relative to _propagator->_localDir + _item->_file and should start with a slash
+ * \a path is relative to propagator()->_localDir + _item->_file and should start with a slash
  */
 bool PropagateLocalRemove::removeRecursively(const QString& path)
 {
