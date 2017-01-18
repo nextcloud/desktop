@@ -49,7 +49,6 @@ the Linux operating system do not perform any updates on their own. The client
 will inform you (``Settings -> General -> Updates``) when an update is 
 available.
 
-
 Preventing Automatic Updates
 ----------------------------
 
@@ -110,24 +109,8 @@ To prevent automatic updates and disallow manual overrides:
 Preventing Automatic Updates in Mac OS X Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can disable the automatic update mechanism in Mac OS X operating systems
-using the system-wide ``.plist`` file.  To access this file:
-
-1. Go to this directory::
-
- 	/Library/Preferences/
-
-2. Locate and open the following file::
-
- 	com.owncloud.desktopclient.plist
-
-3. Add a new root level item of type ``bool``.
-
-4. Name the item ``skipUpdateCheck``.
-
-5. Set the item to ``true``.
-
-Alternatively, you can copy the file
+You can disable the automatic update mechanism, in the Mac OS X operating system,
+by copying the file
 ``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist``
 to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
 
