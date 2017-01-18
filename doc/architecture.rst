@@ -77,7 +77,7 @@ a synchronization process.
 
 Before the 1.3.0 release of the Desktop Client, the synchronization process
 might create false conflict files if time deviates. Original and changed files
-conflict only in their timestamp, but not in their content. This behaviour was
+conflict only in their timestamp, but not in their content. This behavior was
 changed to employ a binary check if files differ.
 
 Like files, directories also hold a unique ID that changes whenever one of the

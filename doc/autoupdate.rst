@@ -3,7 +3,7 @@ The Automatic Updater
 =====================
 
 The Automatic Updater ensures that you always have the 
-latest features and bugfixes for your ownCloud synchronization client.
+latest features and bug fixes for your ownCloud synchronization client.
 
 The Automatic Updater updates only on Mac OS X and Windows computers; Linux 
 users only need to use their normal package managers. However, on Linux systems 

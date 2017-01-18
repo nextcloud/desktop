@@ -54,7 +54,7 @@ distribution. Make sure the repositories for source packages are enabled.
 Mac OS X
 --------
 
-In additon to needing XCode (along with the command line tools), developing in
+In addition to needing XCode (along with the command line tools), developing in
 the Mac OS X environment requires extra dependencies.  You can install these
 dependencies through MacPorts_ or Homebrew_.  These dependencies are required
 only on the build machine, because non-standard libs are deployed in the app

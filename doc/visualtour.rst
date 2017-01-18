@@ -138,7 +138,7 @@ Network
 
 .. index:: proxy settings, SOCKS, bandwith, throttling, limiting
 
-This tab consollidates ``Proxy Settings`` and ``Bandwith Limiting``:
+This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:
 
 .. image:: images/settings_network.png
    :scale: 50 %
@@ -152,7 +152,7 @@ Proxy Settings
   On Linux, this will only pick up the value of the variable ``http_proxy``.
 * ``Specify proxy manually as``: Allows to specify custom proxy settings.
   If you require to go through a HTTP(S) proxy server such as Squid or Microsoft
-  Forefront TMG, pick ``HTTP(S)``. ``SOCKSv5`` on the other hand is particulary
+  Forefront TMG, pick ``HTTP(S)``. ``SOCKSv5`` on the other hand is particularly
   useful in special company LAN setups, or in combination with the OpenSSH
   dynamic application level forwarding feature (see ``ssh -D``).
 * ``Host``: Enter the host name or IP address of your proxy server, followed
