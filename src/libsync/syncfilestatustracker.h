@@ -51,20 +51,22 @@ private slots:
     void slotSyncEngineRunningChanged();
 
 private:
-    enum SharedFlag { NotShared = 0, Shared };
+    enum SharedFlag { UnknownShared, NotShared, Shared };
     enum PathKnownFlag { PathUnknown = 0, PathKnown };
-    enum EmitStatusChangeFlag { DontEmitStatusChange = 0, EmitStatusChange };
-    SyncFileStatus resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag isShared, PathKnownFlag isPathKnown = PathKnown);
+    SyncFileStatus resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag sharedState, PathKnownFlag isPathKnown = PathKnown);
 
     void invalidateParentPaths(const QString& path);
     QString getSystemDestination(const QString& relativePath);
-    void incSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange);
-    void decSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange);
+    void incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedState);
+    void decSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedState);
 
     SyncEngine* _syncEngine;
 
     std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
     QSet<QString> _dirtyPaths;
+    // Counts the number direct children currently being synced (has unfinished propagation jobs).
+    // We'll show a file/directory as SYNC as long as its sync count is > 0.
+    // A directory that starts/ends propagation will in turn increase/decrease its own parent by 1.
     QHash<QString, int> _syncCount;
 };
 

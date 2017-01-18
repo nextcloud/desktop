@@ -28,6 +28,24 @@ public:
         }
         return SyncFileStatus();
     }
+
+    bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
+        QFileInfo firstFile(_syncEngine.localPath(), firstPath);
+        QFileInfo secondFile(_syncEngine.localPath(), secondPath);
+        // Start from the end to get the latest status
+        int i = size() - 1;
+        for (; i >= 0; --i) {
+            if (QFileInfo(at(i)[0].toString()) == secondFile)
+                break;
+            else if (QFileInfo(at(i)[0].toString()) == firstFile)
+                return false;
+        }
+        for (; i >= 0; --i) {
+            if (QFileInfo(at(i)[0].toString()) == firstFile)
+                return true;
+        }
+        return false;
+    }
 };
 
 class TestSyncFileStatusTracker : public QObject
@@ -367,6 +385,28 @@ private slots:
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/a1"), SyncFileStatus(SyncFileStatus::StatusError));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/a"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+    }
+
+    // Even for status pushes immediately following each other, macOS
+    // can sometimes have 1s delays between updates, so make sure that
+    // children are marked as OK before their parents do.
+    void childOKEmittedBeforeParent() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.localModifier().appendByte("B/b1");
+        fakeFolder.remoteModifier().appendByte("C/c1");
+        StatusPushSpy statusSpy(fakeFolder.syncEngine());
+
+        fakeFolder.syncOnce();
+        verifyThatPushMatchesPull(fakeFolder, statusSpy);
+        QVERIFY(statusSpy.statusEmittedBefore("B/b1", "B"));
+        QVERIFY(statusSpy.statusEmittedBefore("C/c1", "C"));
+        QVERIFY(statusSpy.statusEmittedBefore("B", ""));
+        QVERIFY(statusSpy.statusEmittedBefore("C", ""));
+        QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("C"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
+        QCOMPARE(statusSpy.statusOf("C/c1"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
     }
 
     void sharedStatus() {
