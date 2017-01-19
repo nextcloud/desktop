@@ -2653,7 +2653,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="455"/>
+        <location filename="../src/gui/socketapi.cpp" line="508"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation type="unfinished"/>
@@ -2947,23 +2947,23 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Kansiota lukiessa tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="452"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Tiedosto/kansi ohitetaan, koska se on piilotettu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="719"/>
+        <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Vain %1 on käytettävissä, käynnistymiseen tarvitaan %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Ei sallittu, koska käyttöoikeutesi eivät riitä ylätason kansion lisäämiseen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1192"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ei sallittu, koska käyttöoikeutesi eivät riitä tiedostojen lisäämiseen kyseiseen kansioon</translation>
     </message>
@@ -2981,11 +2981,6 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="180"/>
         <source>Aborted by the user</source>
         <translation>Keskeytetty käyttäjän toimesta</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="443"/>
-        <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation>Tiedoston nimi sisältää virheellisiä merkkejä, joita ei voi synkronoida alustariippumattomasti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -3038,99 +3033,114 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <translation>Tiedosto on ohituslistalla.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="446"/>
+        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <source>File names ending with a period are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="457"/>
+        <source>The file name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="462"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>Filename is too long.</source>
         <translation>Tiedoston nimi on liian pitkä.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="458"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Stat failed.</source>
         <translation>Stat epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="485"/>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
         <source>Filename encoding is not valid</source>
         <translation>Tiedostonimen merkistökoodaus ei ole kelvollista</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="659"/>
+        <location filename="../src/libsync/syncengine.cpp" line="675"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Virheellisiä merkkejä, anna uusi nimi kohteelle &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="756"/>
+        <location filename="../src/libsync/syncengine.cpp" line="772"/>
         <source>Unable to initialize a sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="775"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="812"/>
+        <location filename="../src/libsync/syncengine.cpp" line="828"/>
         <source>Unable to read from the sync journal.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Cannot open the sync journal</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="914"/>
+        <location filename="../src/libsync/syncengine.cpp" line="930"/>
         <source>File name contains at least one invalid character</source>
         <translation>Tiedoston nimi sisältää ainakin yhden virheellisen merkin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1144"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1160"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1167"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1186"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ei sallittu, koska oikeutesi eivät riitä alikansioiden lisäämiseen kyseiseen kansioon</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Poistaminen ei ole sallittua, palautetaan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1275"/>
         <source>Local files and share folder removed.</source>
         <translation>Paikalliset tiedostot ja jakokansio poistettu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1315"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1331"/>
         <source>Move not allowed, item restored</source>
         <translation>Siirtäminen ei ole sallittua, kohde palautettu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1342"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Siirto ei ole sallittu, koska %1 on &quot;vain luku&quot;-tilassa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the destination</source>
         <translation>kohde</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the source</source>
         <translation>lähde</translation>
     </message>

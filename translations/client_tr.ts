@@ -2655,7 +2655,7 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="455"/>
+        <location filename="../src/gui/socketapi.cpp" line="508"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>%1 ile paylaş</translation>
@@ -2949,23 +2949,23 @@ Kullanmanız önerilmez.</translation>
         <translation>Klasör okunurken hata oluştu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="452"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Dosya/Klasör gizli olduğu için yoksayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="719"/>
+        <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Sadece %1 mevcut, Çalıştırmak için en az %2 gerekmektedir</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Üst dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1192"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Bu klasöre dosya ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
@@ -2983,11 +2983,6 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="180"/>
         <source>Aborted by the user</source>
         <translation>Kullanıcı tarafından iptal edildi</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="443"/>
-        <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation>Dosya adı platformlar arası eşitleme yapılamayacak geçersiz karakterler içeriyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -3040,99 +3035,114 @@ Kullanmanız önerilmez.</translation>
         <translation>Dosya yoksayma listesinde.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="446"/>
+        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <source>File names ending with a period are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="457"/>
+        <source>The file name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="462"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>Filename is too long.</source>
         <translation>Dosya adı çok uzun.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="458"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Stat failed.</source>
         <translation>Durum alma başarısız.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="485"/>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
         <source>Filename encoding is not valid</source>
         <translation>Dosya adı kodlaması geçerli değil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="659"/>
+        <location filename="../src/libsync/syncengine.cpp" line="675"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Geçersiz karakterler, lütfen &quot;%1&quot; yerine yeni bir isim girin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="756"/>
+        <location filename="../src/libsync/syncengine.cpp" line="772"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Bir eşitleme günlüğü başlatılamadı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="775"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Yerel veritabanından kara liste okunamadı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="812"/>
+        <location filename="../src/libsync/syncengine.cpp" line="828"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Eşitleme günlüğünden okunamadı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Cannot open the sync journal</source>
         <translation>Eşitleme günlüğü açılamıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="914"/>
+        <location filename="../src/libsync/syncengine.cpp" line="930"/>
         <source>File name contains at least one invalid character</source>
         <translation>Dosya adı en az bir geçersiz karakter içeriyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1144"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1160"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1167"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;Eşitlenecekleri seçin&quot; kara listesinde olduğundan yoksayıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1186"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Bu dizine alt dizin ekleme yetkiniz olmadığından izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Sunucuda salt okunur olduğundan, bu dosya yüklenemedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Kaldırmaya izin verilmedi, geri alınıyor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1275"/>
         <source>Local files and share folder removed.</source>
         <translation>Yerel dosyalar ve paylaşım klasörü kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1315"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1331"/>
         <source>Move not allowed, item restored</source>
         <translation>Taşımaya izin verilmedi, öge geri alındı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1342"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 salt okunur olduğundan taşımaya izin verilmedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the destination</source>
         <translation>hedef</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the source</source>
         <translation>kaynak</translation>
     </message>

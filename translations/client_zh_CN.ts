@@ -2655,7 +2655,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="455"/>
+        <location filename="../src/gui/socketapi.cpp" line="508"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>使用 %1 共享</translation>
@@ -2949,23 +2949,23 @@ It is not advisable to use it.</source>
         <translation>读取目录时出错</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="452"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>已忽略隐藏的文件和文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="719"/>
+        <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>仅有 %1 有效，至少需要 %2 才能开始</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>你没有权限增加父目录</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1192"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>你没有权限增加文件</translation>
     </message>
@@ -2983,11 +2983,6 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/syncengine.cpp" line="180"/>
         <source>Aborted by the user</source>
         <translation>用户撤销</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="443"/>
-        <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation>文件包含无效字符无法跨平台同步。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -3040,99 +3035,114 @@ It is not advisable to use it.</source>
         <translation>文件在忽略列表中。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="446"/>
+        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <source>File names ending with a period are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="457"/>
+        <source>The file name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="462"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>Filename is too long.</source>
         <translation>文件名过长。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="458"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Stat failed.</source>
         <translation>状态失败。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="485"/>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
         <source>Filename encoding is not valid</source>
         <translation>文件名编码无效</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="659"/>
+        <location filename="../src/libsync/syncengine.cpp" line="675"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>无效的字符，请更改为 “%1”</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="756"/>
+        <location filename="../src/libsync/syncengine.cpp" line="772"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>无法初始化同步日志</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="775"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>无法从本地数据库读取黑名单</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="812"/>
+        <location filename="../src/libsync/syncengine.cpp" line="828"/>
         <source>Unable to read from the sync journal.</source>
         <translation>无法读取同步日志。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Cannot open the sync journal</source>
         <translation>无法打开同步日志</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="914"/>
+        <location filename="../src/libsync/syncengine.cpp" line="930"/>
         <source>File name contains at least one invalid character</source>
         <translation>文件名中存在至少一个非法字符</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1144"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1160"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1167"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>已忽略（“选择同步内容”黑名单）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1186"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>你没有权限增加子目录</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>无法上传文件，因为服务器端此文件为只读，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
         <source>Not allowed to remove, restoring</source>
         <translation>无法删除，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1275"/>
         <source>Local files and share folder removed.</source>
         <translation>本地文件和共享文件夹已被删除。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1315"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1331"/>
         <source>Move not allowed, item restored</source>
         <translation>无法移动，正在回退</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1342"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>无法移动，%1为是只读的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the destination</source>
         <translation>目标</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the source</source>
         <translation>源</translation>
     </message>

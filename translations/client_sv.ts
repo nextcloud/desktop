@@ -2658,7 +2658,7 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="455"/>
+        <location filename="../src/gui/socketapi.cpp" line="508"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Dela med %1</translation>
@@ -2952,23 +2952,23 @@ Det är inte lämpligt använda den.</translation>
         <translation>Fel vid mappinläsning.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="452"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Filen/Mappen är ignorerad för att den är dold.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="719"/>
+        <location filename="../src/libsync/syncengine.cpp" line="735"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Endast %1 tillgängligt, behöver minst %2 för att starta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1185"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till övermappar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1192"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1208"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till filer i den mappen.</translation>
     </message>
@@ -2986,11 +2986,6 @@ Det är inte lämpligt använda den.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="180"/>
         <source>Aborted by the user</source>
         <translation>Avbruten av användare</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="443"/>
-        <source>Filename contains invalid characters that can not be synced cross platform.</source>
-        <translation>Filnamnet innehåller otillåtna tecken som inte kan synkroniseras till andra plattformar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="168"/>
@@ -3043,99 +3038,114 @@ Det är inte lämpligt använda den.</translation>
         <translation>Filen är listad i ignorerings listan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="446"/>
+        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <source>File names ending with a period are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="454"/>
+        <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="457"/>
+        <source>The file name is a reserved name on this file system.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="462"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Filnamn innehåller mellanslag i slutet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="449"/>
+        <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>Filename is too long.</source>
         <translation>Filnamnet är för långt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="458"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Stat failed.</source>
         <translation>Stat misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="485"/>
+        <location filename="../src/libsync/syncengine.cpp" line="501"/>
         <source>Filename encoding is not valid</source>
         <translation>Filnamnskodning är inte giltig</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="659"/>
+        <location filename="../src/libsync/syncengine.cpp" line="675"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Otillåtna tecken, var vänlig byt namn på &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="756"/>
+        <location filename="../src/libsync/syncengine.cpp" line="772"/>
         <source>Unable to initialize a sync journal.</source>
         <translation>Kan inte initialisera en synk journal. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="775"/>
+        <location filename="../src/libsync/syncengine.cpp" line="791"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Kunde inte läsa svartlistan från den lokala databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="812"/>
+        <location filename="../src/libsync/syncengine.cpp" line="828"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Kunde inte läsa från synk-journalen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <location filename="../src/libsync/syncengine.cpp" line="873"/>
         <source>Cannot open the sync journal</source>
         <translation>Kunde inte öppna synk journalen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="914"/>
+        <location filename="../src/libsync/syncengine.cpp" line="930"/>
         <source>File name contains at least one invalid character</source>
         <translation>Filnamnet innehåller minst ett ogiltigt tecken</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1144"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1151"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1160"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1167"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorerad eftersom den är svartlistad i &quot;välj vad som ska synkas&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1170"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1186"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Otillåtet eftersom du inte har rättigheter att lägga till undermappar i den mappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1211"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Inte behörig att ladda upp denna fil då den är skrivskyddad på servern, återställer </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1227"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1246"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1243"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1262"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Inte behörig att radera, återställer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1275"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokala filer och mappar som är delade är borttagna.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1315"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1331"/>
         <source>Move not allowed, item restored</source>
         <translation>Det gick inte att genomföra flytten, objektet återställs</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1342"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Det gick inte att genomföra flytten då %1 är skrivskyddad</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the destination</source>
         <translation>destinationen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
         <source>the source</source>
         <translation>källan</translation>
     </message>
