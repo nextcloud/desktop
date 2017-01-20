@@ -37,6 +37,10 @@ Operating system:
 
 OS language:
 
+Qt version used by client package (Linux only, see also Settings dialog):
+
+Client package (From ownCloud or distro) (Linux only):
+
 Installation path of client:
 
 ### Logs
