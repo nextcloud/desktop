@@ -315,7 +315,10 @@ public:
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull()); // for root, it should be empty
         const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
-        Q_ASSERT(fileInfo);
+        if (!fileInfo) {
+            QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
+            return;
+        }
         QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
 
         // Don't care about the request and just return a full propfind
@@ -372,6 +375,13 @@ public:
         emit metaDataChanged();
         if (bytesAvailable())
             emit readyRead();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respond404() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
+        setError(InternalServerError, "Not Found");
+        emit metaDataChanged();
         emit finished();
     }
 

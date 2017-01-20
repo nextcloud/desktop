@@ -178,6 +178,65 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 0); // The last sync cleaned the chunks
     }
 
+    void testModifyLocalFileWhileUploading() {
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 150 * 1000 * 1000; // 150 MB
+
+        fakeFolder.localModifier().insert("A/a0", size);
+
+        // middle of the sync, modify the file
+        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
+                                    [&](const ProgressInfo &progress) {
+                if (progress.completedSize() > (progress.totalSize() / 2 )) {
+                    fakeFolder.localModifier().setContents("A/a0", 'B');
+                    fakeFolder.localModifier().appendByte("A/a0");
+                    QObject::disconnect(con);
+                }
+        });
+
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // There should be a followup sync
+        QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), ImmediateFollowUp);
+
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1); // We did not clean the chunks at this point
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+
+        // Now we make a new sync which should upload the file for good.
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size+1);
+
+        // A different chunk id was used, and the previous one is removed
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
+    }
+
+
+    void testResumeServerDeletedChunks() {
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 300 * 1000 * 1000; // 300 MB
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+
+        // Delete the chunks on the server
+        fakeFolder.uploadState().children.clear();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+
+        // A different chunk id was used
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)
