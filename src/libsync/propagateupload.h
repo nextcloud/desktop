@@ -300,7 +300,8 @@ private:
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
-    QMap<int, quint64> _serverChunks;
+    struct ServerChunkInfo { quint64 size; QString originalName; };
+    QMap<int, ServerChunkInfo> _serverChunks;
 
     quint64 chunkSize() const { return propagator()->chunkSize(); }
     /**

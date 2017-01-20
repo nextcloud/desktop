@@ -589,9 +589,10 @@ public:
         char payload = '*';
 
         do {
-            if (!sourceFolder->children.contains(QString::number(count)))
+            QString chunkName = QString::number(count).rightJustified(8, '0');
+            if (!sourceFolder->children.contains(chunkName))
                 break;
-            auto &x = sourceFolder->children[QString::number(count)];
+            auto &x = sourceFolder->children[chunkName];
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;

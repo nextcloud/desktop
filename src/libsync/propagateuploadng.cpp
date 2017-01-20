@@ -41,7 +41,8 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
         + propagator()->account()->davUser()
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunk >= 0) {
-        path += QLatin1Char('/') + QString::number(chunk);
+        // We need to do add leading 0 because the server orders the chunk alphabetically
+        path += QLatin1Char('/') + QString::number(chunk).rightJustified(8, '0');
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -108,9 +109,11 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
         return; // skip the info about the path itself
     }
     bool ok = false;
-    auto chunkId = name.mid(name.lastIndexOf('/')+1).toUInt(&ok);
+    QString chunkName = name.mid(name.lastIndexOf('/')+1);
+    auto chunkId = chunkName.toUInt(&ok);
     if (ok) {
-        _serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
+        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toULongLong(), chunkName };
+        _serverChunks[chunkId] = chunkinfo;
     }
 }
 
@@ -123,7 +126,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
     _currentChunk = 0;
     _sent = 0;
     while (_serverChunks.contains(_currentChunk)) {
-        _sent += _serverChunks[_currentChunk];
+        _sent += _serverChunks[_currentChunk].size;
         _serverChunks.remove(_currentChunk);
         ++_currentChunk;
     }
@@ -141,7 +144,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
     qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
 
     if (!_serverChunks.isEmpty()) {
-        qDebug() << "To Delete" << _serverChunks;
+        qDebug() << "To Delete" << _serverChunks.keys();
         propagator()->_activeJobList.append(this);
         _removeJobError = false;
 
@@ -149,7 +152,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
-            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), QString::number(it.key())), this);
+            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), it->originalName), this);
             QObject::connect(job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
             _jobs.append(job);
             job->start();
