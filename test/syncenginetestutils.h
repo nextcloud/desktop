@@ -524,7 +524,8 @@ class FakeGetReply : public QNetworkReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    QByteArray payload;
+    char payload;
+    int size;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
     : QNetworkReply{parent} {
@@ -540,8 +541,9 @@ public:
     }
 
     Q_INVOKABLE void respond() {
-        payload.fill(fileInfo->contentChar, fileInfo->size);
-        setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
+        payload = fileInfo->contentChar;
+        size = fileInfo->size;
+        setHeader(QNetworkRequest::ContentLengthHeader, size);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -553,12 +555,12 @@ public:
     }
 
     void abort() override { }
-    qint64 bytesAvailable() const override { return payload.size() + QIODevice::bytesAvailable(); }
+    qint64 bytesAvailable() const override { return size + QIODevice::bytesAvailable(); }
 
     qint64 readData(char *data, qint64 maxlen) override {
-        qint64 len = std::min(qint64{payload.size()}, maxlen);
-        strncpy(data, payload.constData(), len);
-        payload.remove(0, len);
+        qint64 len = std::min(qint64{size}, maxlen);
+        std::fill_n(data, len, payload);
+        size -= len;
         return len;
     }
 };
@@ -607,7 +609,12 @@ public:
         Q_ASSERT(!fileName.isEmpty());
 
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
-            QCOMPARE(request.rawHeader("If"), QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])"));
+            QVERIFY(request.hasRawHeader("If")); // The client should put this header
+            if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") +
+                                                "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
+                QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
+                return;
+            }
             fileInfo->size = size;
             fileInfo->contentChar = payload;
         } else {
@@ -628,6 +635,13 @@ public:
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
         setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respondPreconditionFailed() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        setError(InternalServerError, "Precondition Failed");
         emit metaDataChanged();
         emit finished();
     }
