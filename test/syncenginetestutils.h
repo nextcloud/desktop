@@ -586,7 +586,7 @@ public:
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
         int size = 0;
-        char payload = '*';
+        char payload = '\0';
 
         do {
             if (!sourceFolder->children.contains(QString::number(count)))
@@ -595,6 +595,7 @@ public:
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
+            Q_ASSERT(!payload || payload == x.contentChar);
             payload = x.contentChar;
             ++count;
         } while(true);

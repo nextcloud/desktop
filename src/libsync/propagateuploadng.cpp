@@ -97,6 +97,12 @@ void PropagateUploadFileNG::doStartUpload()
                 this, SLOT(slotPropfindIterate(QString,QMap<QString,QString>)));
         job->start();
         return;
+    } else if (progressInfo._valid) {
+        // The upload info is stale. remove the stale chunks on the server
+        _transferId = progressInfo._transferid;
+        // Fire and forget. Any error will be ignored.
+        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        // startNewUpload will reset the _transferId and the UploadInfo in the db.
     }
 
     startNewUpload();
