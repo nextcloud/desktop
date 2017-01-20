@@ -3039,17 +3039,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="444"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Os nomes de arquivos que terminam com um ponto não são suportados neste sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="454"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Os nomes de arquivos que contêm o caractere &apos;%1&apos; não são suportados neste sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo é um nome reservado neste sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="462"/>
