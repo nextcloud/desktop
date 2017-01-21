@@ -2158,32 +2158,32 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Vsiljevanje prekinitve posla na prekinitvi povezave HTTP s Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="393"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="396"/>
         <source>The local file was removed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="407"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="453"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Napaka: nepričakovan odziv s strežnika (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
         <source>Missing File ID from server</source>
         <translation>Na strežniku manjka ID datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Missing ETag from server</source>
         <translation>Na strežniku manjka ETag datoteke</translation>
     </message>

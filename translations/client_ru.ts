@@ -2155,32 +2155,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Принудительная остановка задачи при сбросе HTTP подключения для Qt &lt; 5.4.2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="393"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="396"/>
         <source>The local file was removed during sync.</source>
         <translation>Локальный файл был удалён в процессе синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="407"/>
         <source>Local file changed during sync.</source>
         <translation>Локальный файл изменился в процессе синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="453"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Неожиданный код завершения от сервера (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
         <source>Missing File ID from server</source>
         <translation>Отсутствует код файла от сервера</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Missing ETag from server</source>
         <translation>Отсутствует ETag с сервера</translation>
     </message>

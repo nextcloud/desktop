@@ -2156,32 +2156,32 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Auftragsabbruch beim Rücksetzen der HTTP-Verbindung mit QT &lt; 5.4.2 wird erzwungen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="393"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="396"/>
         <source>The local file was removed during sync.</source>
         <translation>Die lokale Datei wurde während der Synchronisation gelöscht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="407"/>
         <source>Local file changed during sync.</source>
         <translation>Eine lokale Datei wurde während der Synchronisation geändert.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="453"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Unerwarteter Rückgabe-Code Antwort vom Server (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
         <source>Missing File ID from server</source>
         <translation>Fehlende Datei-ID vom Server</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Missing ETag from server</source>
         <translation>Fehlender ETag vom Server</translation>
     </message>
@@ -3038,7 +3038,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="444"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Dateinamen enden mit einem Periode, die in diesem Dateisystem nicht unterstützt wird.</translation>
+        <translation>Dateinamen enden mit einem Punkt, die in diesem Dateisystem nicht unterstützt wird.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="454"/>
