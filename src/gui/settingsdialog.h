@@ -58,6 +58,7 @@ public slots:
     void showActivityPage();
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState );
+    void slotAccountAvatarChanged();
 
 protected:
     void reject() Q_DECL_OVERRIDE;
@@ -73,11 +74,17 @@ private:
 
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
+    QAction *createActionWithIcon(const QIcon& icon, const QString& text, const QString& iconPath = QString());
+
     Ui::SettingsDialog * const _ui;
 
     QActionGroup* _actionGroup;
     // Maps the actions from the action group to the corresponding widgets
     QHash<QAction*, QWidget*> _actionGroupWidgets;
+
+    // Maps the action in the dialog to their according account. Needed in
+    // case the account avatar changes
+    QHash<Account*, QAction*> _actionForAccount;
 
     QToolBar* _toolBar;
 
