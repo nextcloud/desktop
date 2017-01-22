@@ -119,6 +119,7 @@ protected slots:
 
     void slotCapabilitiesRecieved(const QVariantMap&);
     void slotUserFetched(const QVariantMap &);
+    void slotAvatarPixmap(const QPixmap&);
 
 private:
     void reportResult(Status status);

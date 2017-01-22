@@ -90,6 +90,16 @@ void Account::setDavUser(const QString &newDavUser)
     _davUser = newDavUser;
 }
 
+QPixmap Account::avatar() const
+{
+    return _avatarPixmap;
+}
+void Account::setAvatar(const QPixmap& pixmap)
+{
+    _avatarPixmap = pixmap;
+    emit accountChangedAvatar();
+}
+
 QString Account::displayName() const
 {
     QString dn = QString("%1@%2").arg(_credentials->user(), _url.host());
