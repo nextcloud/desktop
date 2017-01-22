@@ -27,6 +27,7 @@
 #include <QMutex>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QPixmap>
 
 #include "json.h"
 
@@ -584,6 +585,42 @@ bool PropfindJob::finished()
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
         emit finishedWithError(reply());
     }
+    return true;
+}
+
+/*********************************************************************************************/
+
+AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+{
+    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+}
+
+void AvatarJob::start()
+{
+    QNetworkRequest req;
+    setReply(davRequest("GET", _avatarUrl, req));
+    setupConnections(reply());
+    AbstractNetworkJob::start();
+}
+
+bool AvatarJob::finished()
+{
+    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    QPixmap avPixmap;
+
+    if (http_result_code == 200) {
+
+        QByteArray pngData = reply()->readAll();
+        if( pngData.size() ) {
+
+            if( avPixmap.loadFromData(pngData) ) {
+                qDebug() << "Retrieved Avatar pixmap!";
+            }
+        }
+    }
+    emit(avatarPixmap(avPixmap));
     return true;
 }
 
