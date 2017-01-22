@@ -751,7 +751,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folder.cpp" line="1022"/>
         <source>Backup detected</source>
-        <translation>Sauvegarde détecté</translation>
+        <translation>Sauvegarde détectée</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1024"/>
@@ -3336,12 +3336,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="619"/>
         <source>Unpause all synchronization</source>
-        <translation>relancer  toutes les synchronisations</translation>
+        <translation>Relancer toutes les synchronisations</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="621"/>
         <source>Unpause synchronization</source>
-        <translation>relancer   la synchronisation </translation>
+        <translation>Relancer la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="629"/>
@@ -3351,7 +3351,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="631"/>
         <source>Pause synchronization</source>
-        <translation>Mettre en pause  la synchronisation </translation>
+        <translation>Mettre en pause la synchronisation </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="638"/>
