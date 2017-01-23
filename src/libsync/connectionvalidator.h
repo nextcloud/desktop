@@ -68,7 +68,10 @@ namespace OCC {
   +-> fetchUser
         PropfindJob
         |
-        +-> slotUserFetched --> X
+        +-> slotUserFetched
+              AvatarJob
+              |
+              +-> slotAvatarPixmap --> reportResult()
 
     \endcode
  */
