@@ -40,6 +40,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QWidgetAction>
+#include <QPainter>
+#include <QPainterPath>
 
 namespace {
   const char TOOLBAR_CSS[] =
@@ -53,6 +55,23 @@ namespace {
 
 
 namespace OCC {
+
+static QIcon circleMask( const QPixmap& avatar )
+{
+    int dim = avatar.width();
+
+    QPixmap fixedImage(dim, dim);
+    fixedImage.fill(Qt::transparent);
+
+    QPainter imgPainter(&fixedImage);
+    QPainterPath clip;
+    clip.addEllipse(0, 0, dim, dim);
+    imgPainter.setClipPath(clip);
+    imgPainter.drawPixmap(0, 0, dim, dim, avatar);
+    imgPainter.end();
+
+    return QIcon(fixedImage);
+}
 
 //
 // Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
@@ -203,7 +222,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
                                                     actionText);
     } else {
-        QIcon icon(avatar);
+        QIcon icon = circleMask(avatar);
         accountAction = createActionWithIcon(icon, actionText);
     }
 
@@ -234,7 +253,7 @@ void SettingsDialog::slotAccountAvatarChanged()
         if( action ) {
             QPixmap pix = account->avatar();
             if( !pix.isNull() ) {
-                action->setIcon( QIcon(pix) );
+                action->setIcon( circleMask(pix) );
             }
         }
     }
