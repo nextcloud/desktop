@@ -2154,32 +2154,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>5.4.2 以下のQt でHTTP 接続リセットが強制終了されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="393"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="396"/>
         <source>The local file was removed during sync.</source>
         <translation>ローカルファイルを同期中に削除します。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="407"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="453"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>サーバー (%1) からの予期しない戻りコード</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
         <source>Missing File ID from server</source>
         <translation>サーバーからファイルIDの戻りがありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Missing ETag from server</source>
         <translation>サーバーからETagの戻りがありません</translation>
     </message>

@@ -2158,32 +2158,32 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="362"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="365"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>บังคับให้ยกเลิกงานในการตั้งค่าการเชื่อมต่อ HTTP กับ Qt &lt; 5.4.2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="393"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="396"/>
         <source>The local file was removed during sync.</source>
         <translation>ไฟล์ต้นทางถูกลบออกในระหว่างการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="404"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="407"/>
         <source>Local file changed during sync.</source>
         <translation>ไฟล์ต้นทางถูกเปลี่ยนแปลงขณะกำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="453"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="456"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>มีรหัสข้อผิดพลาดตอบกลับมาจากเซิร์ฟเวอร์ (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
         <source>Missing File ID from server</source>
         <translation>ไฟล์ไอดีได้หายไปจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="473"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="476"/>
         <source>Missing ETag from server</source>
         <translation>ETag ได้หายไปจากเซิร์ฟเวอร์</translation>
     </message>
@@ -3038,17 +3038,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="444"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อไฟล์ที่ลงท้ายด้วยระยะเวลา ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="454"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อไฟล์ที่มีตัวอักษร &apos;%1&apos; ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="457"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="462"/>
