@@ -255,6 +255,7 @@ void ConnectionValidator::slotUserFetched(const QVariantMap &json)
         _account->setDavUser(user);
 
         AvatarJob *job = new AvatarJob(_account, this);
+        job->setTimeout(20*1000);
         QObject::connect(job, SIGNAL(avatarPixmap(QPixmap)), this, SLOT(slotAvatarPixmap(QPixmap)));
 
         job->start();
