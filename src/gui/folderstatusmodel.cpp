@@ -981,7 +981,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     auto& pi = _folders[folderIndex]._progress;
 
     SyncResult::Status state = f->syncResult().status();
-    if (f->syncPaused()) {
+    if (!f->canSync()) {
         // Reset progress info.
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
