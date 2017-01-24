@@ -692,10 +692,9 @@ bool Folder::setIgnoredFiles()
     // a QSet of files to load.
     ConfigFile cfg;
     QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
-    if( QFile::exists(systemList) ) {
-        qDebug() << "==== adding system ignore list to csync:" << systemList;
-        _engine->excludedFiles().addExcludeFilePath(systemList);
-    }
+    qDebug() << "==== adding system ignore list to csync:" << systemList;
+    _engine->excludedFiles().addExcludeFilePath(systemList);
+
     QString userList = cfg.excludeFile(ConfigFile::UserScope);
     if( QFile::exists(userList) ) {
         qDebug() << "==== adding user defined ignore list to csync:" << userList;
@@ -739,6 +738,8 @@ void Folder::startSync(const QStringList &pathList)
     qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
+    _fileLog->start(path());
+
     if (!setIgnoredFiles())
     {
         slotSyncError(tr("Could not read system exclude file"));
@@ -754,8 +755,6 @@ void Folder::startSync(const QStringList &pathList)
     _engine->setNewBigFolderSizeLimit(limit);
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
-
-    _fileLog->start(path());
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
