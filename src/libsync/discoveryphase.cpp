@@ -90,13 +90,14 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *
     if (_syncOptions._confirmExternalStorage && std::strchr(remotePerm, 'M')) {
         // 'M' in the permission means external storage.
 
+        /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
+         * root of a mounted storage has 'M', all sub entries have 'm' */
+
         // Only allow it if the white list contains exactly this path (not parents)
         // We want to ask confirmation for external storage even if the parents where selected
         if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
             return false;
         }
-
-        // FIXME! if the parent folder has 'M': return false
 
         emit newBigFolder(path);
         return true;
@@ -340,7 +341,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            emit firstDirectoryPermissions(map.value("permissions"));
+            auto perm = map.value("permissions");
+            emit firstDirectoryPermissions(perm);
+            _isExternalStorage = perm.contains(QLatin1Char('M'));
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
@@ -362,6 +365,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         file_stat->name = strdup(file.toUtf8());
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
             qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+        }
+        if (_isExternalStorage) {
+            /* All the entries in a external storage have 'M' in their permission. However, for all
+               purposes in the desktop client, we only need to know about the mount points.
+               So replace the 'M' by a 'm' for every sub entries in an external storage */
+            std::replace(std::begin(file_stat->remotePerm), std::end(file_stat->remotePerm),
+                         'M', 'm');
         }
 
         QStringRef fileRef(&file);
