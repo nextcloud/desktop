@@ -748,10 +748,12 @@ void Folder::startSync(const QStringList &pathList)
 
     setDirtyNetworkLimits();
 
+    SyncOptions opt;
     ConfigFile cfgFile;
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
-    _engine->setNewBigFolderSizeLimit(limit);
+    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
+    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+    _engine->setSyncOptions(opt);
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 

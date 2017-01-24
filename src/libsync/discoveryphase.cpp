@@ -86,20 +86,29 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *pat
 
 bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *remotePerm)
 {
-    // If this path or the parent is in the white list, then we do not block this file
+
+    if (_syncOptions._confirmExternalStorage && std::strchr(remotePerm, 'M')) {
+        // 'M' in the permission means external storage.
+
+        // Only allow it if the white list contains exactly this path (not parents)
+        // We want to ask confirmation for external storage even if the parents where selected
+        if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
+            return false;
+        }
+
+        // FIXME! if the parent folder has 'M': return false
+
+        emit newBigFolder(path);
+        return true;
+    }
+
+   // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
         return false;
     }
 
-    if (Theme::instance()->dontSyncMountedStorageByDefault()) {
-        // 'M' in the permission means that it is unselected by default. (issue #5331)
-        if (std::strchr(remotePerm, 'M')) {
-            emit newBigFolder(path);
-            return true;
-        }
-    }
-
-    if (_newBigFolderSizeLimit < 0) {
+    auto limit = _syncOptions._newBigFolderSizeLimit;
+    if (limit < 0) {
         // no limit, everything is allowed;
         return false;
     }
@@ -113,7 +122,6 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *
         _vioWaitCondition.wait(&_vioMutex);
     }
 
-    auto limit = _newBigFolderSizeLimit;
     if (result >= limit) {
         // we tell the UI there is a new folder
         emit newBigFolder(path);

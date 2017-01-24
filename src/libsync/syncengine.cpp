@@ -71,7 +71,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
   , _backInTimeFiles(0)
   , _uploadLimit(0)
   , _downloadLimit(0)
-  , _newBigFolderSizeLimit(-1)
   , _checksum_hook(journal)
   , _anotherSyncNeeded(NoFollowUpSync)
 {
@@ -830,7 +829,7 @@ void SyncEngine::startSync()
         return;
     }
 
-    discoveryJob->_newBigFolderSizeLimit = _newBigFolderSizeLimit;
+    discoveryJob->_syncOptions = _syncOptions;
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),

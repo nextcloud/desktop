@@ -106,6 +106,8 @@ void GeneralSettings::loadMiscSettings()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
+    _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
+    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -138,6 +140,7 @@ void GeneralSettings::saveMiscSettings()
 
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
                                         _ui->newFolderLimitSpinBox->value());
+    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

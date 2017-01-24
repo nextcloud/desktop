@@ -220,6 +220,17 @@ public:
     virtual qint64 newBigFolderSizeLimit() const;
 
     /**
+     * Hide the checkbox that says "Ask for confirmation before synchronizing folders larger than X MB"
+     * in the account wizard
+     */
+    virtual bool wizardHideFolderSizeLimitCheckbox() const;
+    /**
+     * Hide the checkbox that says "Ask for confirmation before synchronizing external storages"
+     * in the account wizard
+     */
+    virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
+
+    /**
      * Alternative path on the server that provides access to the webdav capabilities
      *
      * Attention: Make sure that this string does NOT have a leading slash and that
@@ -302,11 +313,6 @@ public:
      */
     virtual QString quotaBaseFolder() const;
 
-    /**
-     * By default, mounted storage will not be sync'ed (i.e, they will be disabled in the
-     * selective sync
-     */
-    virtual bool dontSyncMountedStorageByDefault() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

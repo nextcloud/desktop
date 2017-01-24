@@ -275,6 +275,15 @@ qint64 Theme::newBigFolderSizeLimit() const
     return 500;
 }
 
+bool Theme::wizardHideExternalStorageConfirmationCheckbox() const
+{
+    return false;
+}
+
+bool Theme::wizardHideFolderSizeLimitCheckbox() const
+{
+    return false;
+}
 
 QString Theme::gitSHA1() const
 {
@@ -479,9 +488,5 @@ QString Theme::quotaBaseFolder() const
     return QLatin1String("/");
 }
 
-bool Theme::dontSyncMountedStorageByDefault() const
-{
-    return false;
-}
 
 } // end namespace client

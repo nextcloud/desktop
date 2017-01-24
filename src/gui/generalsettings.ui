@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>706</width>
+    <width>785</width>
     <height>523</height>
    </rect>
   </property>
@@ -53,13 +53,6 @@
       <string>Advanced</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QPushButton" name="ignoredFilesButton">
-        <property name="text">
-         <string>Edit &amp;Ignored Files</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1" colspan="2">
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
@@ -73,12 +66,25 @@
         </property>
        </spacer>
       </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="crashreporterCheckBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>S&amp;how crash reporter</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0" colspan="3">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QCheckBox" name="newFolderLimitCheckBox">
           <property name="text">
-           <string>Ask &amp;confirmation before downloading folders larger than</string>
+           <string>Ask for confirmation before synchronizing folders larger than</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -98,7 +104,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>MB</string>
+           <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
           </property>
          </widget>
         </item>
@@ -117,20 +123,7 @@
         </item>
        </layout>
       </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="crashreporterCheckBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>S&amp;how crash reporter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
+      <item row="3" column="2">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <spacer name="horizontalSpacer_5">
@@ -146,6 +139,20 @@
          </spacer>
         </item>
        </layout>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="ignoredFilesButton">
+        <property name="text">
+         <string>Edit &amp;Ignored Files</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QCheckBox" name="newExternalStorage">
+        <property name="text">
+         <string>Ask for confirmation before synchronizing external storages</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -34,6 +34,15 @@ class Account;
  * if the files are new, or changed.
  */
 
+struct SyncOptions {
+    /** Maximum size (in Bytes) a folder can have without asking for confirmation.
+     * -1 means infinite */
+    qint64 _newBigFolderSizeLimit = -1;
+    /** If a confirmation should be asked for external storages */
+    bool _confirmExternalStorage = false;
+};
+
+
 /**
  * @brief The FileStatPointer class
  * @ingroup libsync
@@ -197,7 +206,7 @@ class DiscoveryJob : public QObject {
 
 public:
     explicit DiscoveryJob(CSYNC *ctx, QObject* parent = 0)
-            : QObject(parent), _csync_ctx(ctx), _newBigFolderSizeLimit(-1) {
+            : QObject(parent), _csync_ctx(ctx) {
         // We need to forward the log property as csync uses thread local
         // and updates run in another thread
         _log_callback = csync_get_log_callback();
@@ -207,7 +216,7 @@ public:
 
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    qint64 _newBigFolderSizeLimit;
+    SyncOptions _syncOptions;
     Q_INVOKABLE void start();
 signals:
     void finished(int result);
