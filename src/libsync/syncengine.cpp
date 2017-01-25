@@ -268,11 +268,11 @@ bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
     return true;
 }
 
-void SyncEngine::deleteStaleDownloadInfos()
+void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
-    foreach(const SyncFileItemPtr &it, _syncedItems) {
+    foreach(const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
                 && it->_type == SyncFileItem::File)
         {
@@ -290,11 +290,11 @@ void SyncEngine::deleteStaleDownloadInfos()
     }
 }
 
-void SyncEngine::deleteStaleUploadInfos()
+void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> upload_file_paths;
-    foreach(const SyncFileItemPtr &it, _syncedItems) {
+    foreach(const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
                 && it->_type == SyncFileItem::File)
         {
@@ -315,11 +315,11 @@ void SyncEngine::deleteStaleUploadInfos()
     }
 }
 
-void SyncEngine::deleteStaleErrorBlacklistEntries()
+void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems)
 {
     // Find all blacklisted paths that we want to preserve.
     QSet<QString> blacklist_file_paths;
-    foreach(const SyncFileItemPtr &it, _syncedItems) {
+    foreach(const SyncFileItemPtr &it, syncItems) {
         if (it->_hasBlacklistEntry)
             blacklist_file_paths.insert(it->_file);
     }
@@ -754,7 +754,6 @@ void SyncEngine::startSync()
         qDebug() << "Could not determine free space available at" << _localPath;
     }
 
-    _syncedItems.clear();
     _syncItemMap.clear();
     _needsUpdate = false;
 
@@ -922,12 +921,12 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     csync_commit(_csync_ctx);
 
     // The map was used for merging trees, convert it to a list:
-    _syncedItems = _syncItemMap.values().toVector();
+    SyncFileItemVector syncItems = _syncItemMap.values().toVector();
     _syncItemMap.clear(); // free memory
 
     // Adjust the paths for the renames.
-    for (SyncFileItemVector::iterator it = _syncedItems.begin();
-            it != _syncedItems.end(); ++it) {
+    for (SyncFileItemVector::iterator it = syncItems.begin();
+            it != syncItems.end(); ++it) {
         (*it)->_file = adjustRenamedPath((*it)->_file);
     }
 
@@ -935,7 +934,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (_account->serverVersionInt() < 0x080100) {
         // Server version older than 8.1 don't support these character in filename.
         static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
-        for (auto it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+        for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
             if ((*it)->_direction == SyncFileItem::Up &&
                     (*it)->destination().contains(invalidCharRx)) {
                 (*it)->_errorString  = tr("File name contains at least one invalid character");
@@ -947,7 +946,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!_hasNoneFiles && _hasRemoveFile) {
         qDebug() << Q_FUNC_INFO << "All the files are going to be changed, asking the user";
         bool cancel = false;
-        emit aboutToRemoveAllFiles(_syncedItems.first()->_direction, &cancel);
+        emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
         if (cancel) {
             qDebug() << Q_FUNC_INFO << "Abort sync";
             finalize(false);
@@ -962,7 +961,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!databaseFingerprint.isNull()
             && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qDebug() << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
-        restoreOldFiles();
+        restoreOldFiles(syncItems);
     } else if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2 && _account->serverVersionInt() < 0x090100) {
         // The server before ownCloud 9.1 did not have the data-fingerprint property. So in that
         // case we use heuristics to detect restored backup.  This is disabled with newer version
@@ -972,18 +971,18 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         bool restore = false;
         emit aboutToRestoreBackup(&restore);
         if (restore) {
-            restoreOldFiles();
+            restoreOldFiles(syncItems);
         }
     }
 
     // Sort items per destination
-    std::sort(_syncedItems.begin(), _syncedItems.end());
+    std::sort(syncItems.begin(), syncItems.end());
 
     // make sure everything is allowed
-    checkForPermission();
+    checkForPermission(syncItems);
 
     // To announce the beginning of the sync
-    emit aboutToPropagate(_syncedItems);
+    emit aboutToPropagate(syncItems);
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     emit transmissionProgress(*_progressInfo);
     _progressInfo->startEstimateUpdates();
@@ -1016,16 +1015,16 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
 
-    deleteStaleDownloadInfos();
-    deleteStaleUploadInfos();
-    deleteStaleErrorBlacklistEntries();
+    deleteStaleDownloadInfos(syncItems);
+    deleteStaleUploadInfos(syncItems);
+    deleteStaleErrorBlacklistEntries(syncItems);
     _journal->commit("post stale entry removal");
 
     // Emit the started signal only after the propagator has been set up.
     if (_needsUpdate)
         emit(started());
 
-    _propagator->start(_syncedItems);
+    _propagator->start(syncItems);
 
     qDebug() << "<<#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished"));
 }
@@ -1098,7 +1097,6 @@ void SyncEngine::slotFinished(bool success)
     // files needed propagation
     emit transmissionProgress(*_progressInfo);
 
-    emit treeWalkResult(_syncedItems);
     finalize(success);
 }
 
@@ -1148,13 +1146,13 @@ QString SyncEngine::adjustRenamedPath(const QString& original)
  * Make sure that we are allowed to do what we do by checking the permissions and the selective sync list
  *
  */
-void SyncEngine::checkForPermission()
+void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 {
     bool selectiveListOk;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &selectiveListOk);
     std::sort(selectiveSyncBlackList.begin(), selectiveSyncBlackList.end());
 
-    for (SyncFileItemVector::iterator it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+    for (SyncFileItemVector::iterator it = syncItems.begin(); it != syncItems.end(); ++it) {
         if ((*it)->_direction != SyncFileItem::Up) {
             // Currently we only check server-side permissions
             continue;
@@ -1171,7 +1169,7 @@ void SyncEngine::checkForPermission()
             (*it)->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
 
             if ((*it)->_isDirectory) {
-                for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
+                for (SyncFileItemVector::iterator it_next = it + 1; it_next != syncItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
                     it = it_next;
                     (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
                     (*it)->_status = SyncFileItem::FileIgnored;
@@ -1196,7 +1194,7 @@ void SyncEngine::checkForPermission()
                     (*it)->_status = SyncFileItem::NormalError;
                     (*it)->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
 
-                    for (SyncFileItemVector::iterator it_next = it + 1; it_next != _syncedItems.end() && (*it_next)->destination().startsWith(path); ++it_next) {
+                    for (SyncFileItemVector::iterator it_next = it + 1; it_next != syncItems.end() && (*it_next)->destination().startsWith(path); ++it_next) {
                         it = it_next;
                         if ((*it)->_instruction == CSYNC_INSTRUCTION_RENAME) {
                             // The file was most likely moved in this directory.
@@ -1256,7 +1254,7 @@ void SyncEngine::checkForPermission()
                     if ((*it)->_isDirectory) {
                         // restore all sub items
                         for (SyncFileItemVector::iterator it_next = it + 1;
-                             it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
+                             it_next != syncItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
                             it = it_next;
 
                             if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE) {
@@ -1282,12 +1280,12 @@ void SyncEngine::checkForPermission()
                     // underneath, propagator sees that.
                     if( (*it)->_isDirectory ) {
                         // put a more descriptive message if a top level share dir really is removed.
-                        if( it == _syncedItems.begin() || !(path.startsWith((*(it-1))->_file)) ) {
+                        if( it == syncItems.begin() || !(path.startsWith((*(it-1))->_file)) ) {
                             (*it)->_errorString = tr("Local files and share folder removed.");
                         }
 
                         for (SyncFileItemVector::iterator it_next = it + 1;
-                             it_next != _syncedItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
+                             it_next != syncItems.end() && (*it_next)->_file.startsWith(path); ++it_next) {
                             it = it_next;
                         }
                     }
@@ -1366,7 +1364,7 @@ void SyncEngine::checkForPermission()
 
                     if ((*it)->_isDirectory) {
                         for (SyncFileItemVector::iterator it_next = it + 1;
-                             it_next != _syncedItems.end() && (*it_next)->destination().startsWith(path); ++it_next) {
+                             it_next != syncItems.end() && (*it_next)->destination().startsWith(path); ++it_next) {
                             it = it_next;
                             (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                             (*it)->_status = SyncFileItem::NormalError;
@@ -1395,7 +1393,7 @@ QByteArray SyncEngine::getPermissions(const QString& file) const
     return _remotePerms.value(file);
 }
 
-void SyncEngine::restoreOldFiles()
+void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
 {
     /* When the server is trying to send us lots of file in the past, this means that a backup
        was restored in the server.  In that case, we should not simply overwrite the newer file
@@ -1403,7 +1401,7 @@ void SyncEngine::restoreOldFiles()
        upload the client file. But we still downloaded the old file in a conflict file just in case
     */
 
-    for (auto it = _syncedItems.begin(); it != _syncedItems.end(); ++it) {
+    for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
         if ((*it)->_direction != SyncFileItem::Down)
             continue;
 

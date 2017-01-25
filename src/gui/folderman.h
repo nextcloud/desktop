@@ -106,7 +106,7 @@ public:
     /** Creates a new and empty local directory. */
     bool startFromScratch( const QString& );
 
-    QString statusToString(SyncResult, bool paused ) const;
+    QString statusToString(SyncResult::Status, bool paused ) const;
 
     static SyncResult accountStatus( const QList<Folder*> &folders );
 

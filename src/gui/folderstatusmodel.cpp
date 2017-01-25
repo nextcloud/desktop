@@ -1012,18 +1012,10 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     // update the icon etc. now
     slotUpdateFolderState(f);
 
-    if (state == SyncResult::Success) {
-        foreach (const SyncFileItemPtr &i, f->syncResult().syncFileItemVector()) {
-            if (i->_isDirectory && (i->_instruction == CSYNC_INSTRUCTION_NEW
-                    || i->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                    || i->_instruction == CSYNC_INSTRUCTION_REMOVE
-                    || i->_instruction == CSYNC_INSTRUCTION_RENAME)) {
-                // There is a new or a removed folder. reset all data
-                auto & info = _folders[folderIndex];
-                info.resetSubs(this, index(folderIndex));
-                return;
-            }
-        }
+    if (state == SyncResult::Success && f->syncResult().folderStructureWasChanged()) {
+        // There is a new or a removed folder. reset all data
+        auto & info = _folders[folderIndex];
+        info.resetSubs(this, index(folderIndex));
     }
 }
 

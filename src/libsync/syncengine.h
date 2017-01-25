@@ -123,9 +123,6 @@ signals:
     // after each item completed by a job (successful or not)
     void itemCompleted(const SyncFileItemPtr&);
 
-    // after sync is done
-    void treeWalkResult(const SyncFileItemVector&);
-
     void transmissionProgress( const ProgressInfo& progress );
 
     void finished(bool success);
@@ -179,13 +176,13 @@ private:
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.
-    void deleteStaleDownloadInfos();
+    void deleteStaleDownloadInfos(const SyncFileItemVector &syncItems);
 
     // Removes stale uploadinfos from the journal.
-    void deleteStaleUploadInfos();
+    void deleteStaleUploadInfos(const SyncFileItemVector &syncItems);
 
     // Removes stale error blacklist entries from the journal.
-    void deleteStaleErrorBlacklistEntries();
+    void deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems);
 
     // cleanup and emit the finished signal
     void finalize(bool success);
@@ -194,10 +191,6 @@ private:
 
     // Must only be acessed during update and reconcile
     QMap<QString, SyncFileItemPtr> _syncItemMap;
-
-    // should be called _syncItems (present tense). It's the items from the _syncItemMap but
-    // sorted and re-adjusted based on permissions.
-    SyncFileItemVector _syncedItems;
 
     AccountPtr _account;
     CSYNC *_csync_ctx;
@@ -240,13 +233,13 @@ private:
      * check if we are allowed to propagate everything, and if we are not, adjust the instructions
      * to recover
      */
-    void checkForPermission();
+    void checkForPermission(SyncFileItemVector &syncItems);
     QByteArray getPermissions(const QString& file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
      */
-    void restoreOldFiles();
+    void restoreOldFiles(SyncFileItemVector &syncItems);
 
     bool _hasNoneFiles; // true if there is at least one file which was not changed on the server
     bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE

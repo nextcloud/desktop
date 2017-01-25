@@ -286,8 +286,6 @@ private slots:
     void etagRetreived(const QString &);
     void etagRetreivedFromSyncEngine(const QString &);
 
-    void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done
-
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &);
@@ -302,7 +300,7 @@ private slots:
 private:
     bool setIgnoredFiles();
 
-    void bubbleUpSyncResult();
+    void showSyncResultPopup();
 
     void checkLocalPath();
 
@@ -325,8 +323,6 @@ private:
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
-    QStringList  _errors;
-    bool         _csyncError;
     bool         _csyncUnavail;
     bool         _wipeDb;
     bool         _proxyDirty;

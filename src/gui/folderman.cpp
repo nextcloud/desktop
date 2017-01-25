@@ -1121,7 +1121,7 @@ void FolderMan::setDirtyNetworkLimits()
 
 SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
 {
-    SyncResult overallResult(SyncResult::Undefined);
+    SyncResult overallResult;
 
     int cnt = folders.count();
 
@@ -1235,10 +1235,10 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     return overallResult;
 }
 
-QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
+QString FolderMan::statusToString( SyncResult::Status syncStatus, bool paused ) const
 {
     QString folderMessage;
-    switch( syncStatus.status() ) {
+    switch( syncStatus ) {
     case SyncResult::Undefined:
         folderMessage = tr( "Undefined State." );
         break;
