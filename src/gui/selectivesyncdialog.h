@@ -26,40 +26,50 @@ namespace OCC {
 class Folder;
 
 /**
- * @brief The SelectiveSyncTreeView class
+ * @brief The SelectiveSyncWidget contains a folder tree with labels
  * @ingroup gui
  */
-class SelectiveSyncTreeView : public QTreeWidget {
+class SelectiveSyncWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit SelectiveSyncTreeView(AccountPtr account, QWidget* parent = 0);
+    explicit SelectiveSyncWidget(AccountPtr account, QWidget* parent = 0);
 
     /// Returns a list of blacklisted paths, each including the trailing /
     QStringList createBlackList(QTreeWidgetItem* root = 0) const;
+
+    /** Returns the oldBlackList passed into setFolderInfo(), except that
+     *  a "/" entry is expanded to all top-level folder names.
+     */
     QStringList oldBlackList() const;
 
     // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = 0);
-    void refreshFolders();
 
     // oldBlackList is a list of excluded paths, each including a trailing /
     void setFolderInfo(const QString &folderPath, const QString &rootName,
                        const QStringList &oldBlackList = QStringList());
 
     QSize sizeHint() const Q_DECL_OVERRIDE;
+
 private slots:
     void slotUpdateDirectories(QStringList);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem*,int);
     void slotLscolFinishedWithError(QNetworkReply*);
 private:
+    void refreshFolders();
     void recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path, qint64 size);
+
+    AccountPtr _account;
+
     QString _folderPath;
     QString _rootName;
     QStringList _oldBlackList;
+
     bool _inserting; // set to true when we are inserting new items on the list
-    AccountPtr _account;
     QLabel *_loading;
+
+    QTreeWidget *_folderTree;
 };
 
 /**
@@ -85,9 +95,9 @@ public:
 
 private:
 
-    void init(const AccountPtr &account, const QString &label);
+    void init(const AccountPtr &account);
 
-    SelectiveSyncTreeView *_treeView;
+    SelectiveSyncWidget *_selectiveSync;
 
     Folder *_folder;
     QPushButton *_okButton;
