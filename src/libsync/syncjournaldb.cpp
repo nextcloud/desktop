@@ -1370,21 +1370,22 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 }
 
-bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
+QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
 {
     QMutexLocker locker(&_mutex);
+    QVector<uint> ids;
 
     if (!checkConnect()) {
-        return false;
+        return ids;
     }
 
     SqlQuery query(_db);
-    query.prepare("SELECT path FROM uploadinfo");
+    query.prepare("SELECT path,transferid FROM uploadinfo");
 
     if (!query.exec()) {
         QString err = query.error();
         qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
-        return false;
+        return ids;
     }
 
     QStringList superfluousPaths;
@@ -1393,10 +1394,12 @@ bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
         const QString file = query.stringValue(0);
         if (!keep.contains(file)) {
             superfluousPaths.append(file);
+            ids.append(query.intValue(1));
         }
     }
 
-    return deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
+    deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
+    return ids;
 }
 
 SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QString& file )

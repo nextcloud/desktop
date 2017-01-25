@@ -315,7 +315,10 @@ public:
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull()); // for root, it should be empty
         const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
-        Q_ASSERT(fileInfo);
+        if (!fileInfo) {
+            QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
+            return;
+        }
         QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
 
         // Don't care about the request and just return a full propfind
@@ -372,6 +375,13 @@ public:
         emit metaDataChanged();
         if (bytesAvailable())
             emit readyRead();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respond404() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
+        setError(InternalServerError, "Not Found");
+        emit metaDataChanged();
         emit finished();
     }
 
@@ -524,7 +534,8 @@ class FakeGetReply : public QNetworkReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    QByteArray payload;
+    char payload;
+    int size;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
     : QNetworkReply{parent} {
@@ -540,8 +551,9 @@ public:
     }
 
     Q_INVOKABLE void respond() {
-        payload.fill(fileInfo->contentChar, fileInfo->size);
-        setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
+        payload = fileInfo->contentChar;
+        size = fileInfo->size;
+        setHeader(QNetworkRequest::ContentLengthHeader, size);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -553,12 +565,12 @@ public:
     }
 
     void abort() override { }
-    qint64 bytesAvailable() const override { return payload.size() + QIODevice::bytesAvailable(); }
+    qint64 bytesAvailable() const override { return size + QIODevice::bytesAvailable(); }
 
     qint64 readData(char *data, qint64 maxlen) override {
-        qint64 len = std::min(qint64{payload.size()}, maxlen);
-        strncpy(data, payload.constData(), len);
-        payload.remove(0, len);
+        qint64 len = std::min(qint64{size}, maxlen);
+        std::fill_n(data, len, payload);
+        size -= len;
         return len;
     }
 };
@@ -586,7 +598,7 @@ public:
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
         int size = 0;
-        char payload = '*';
+        char payload = '\0';
 
         do {
             QString chunkName = QString::number(count).rightJustified(8, '0');
@@ -596,6 +608,7 @@ public:
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
+            Q_ASSERT(!payload || payload == x.contentChar);
             payload = x.contentChar;
             ++count;
         } while(true);
@@ -607,7 +620,12 @@ public:
         Q_ASSERT(!fileName.isEmpty());
 
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
-            QCOMPARE(request.rawHeader("If"), QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])"));
+            QVERIFY(request.hasRawHeader("If")); // The client should put this header
+            if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") +
+                                                "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
+                QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
+                return;
+            }
             fileInfo->size = size;
             fileInfo->contentChar = payload;
         } else {
@@ -628,6 +646,13 @@ public:
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
         setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respondPreconditionFailed() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        setError(InternalServerError, "Precondition Failed");
         emit metaDataChanged();
         emit finished();
     }

@@ -23,6 +23,7 @@
 #include "syncfilestatus.h"
 #include "csync_private.h"
 #include "filesystem.h"
+#include "propagateremotedelete.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -301,7 +302,16 @@ void SyncEngine::deleteStaleUploadInfos()
     }
 
     // Delete from journal.
-    _journal->deleteStaleUploadInfos(upload_file_paths);
+    auto ids = _journal->deleteStaleUploadInfos(upload_file_paths);
+
+    // Delete the stales chunk on the server.
+    if (account()->capabilities().chunkingNg()) {
+        foreach (uint transferId, ids) {
+            QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/")
+                + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
+            (new DeleteJob(account(), url, this))->start();
+        }
+    }
 }
 
 void SyncEngine::deleteStaleErrorBlacklistEntries()
