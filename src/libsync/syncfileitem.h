@@ -179,15 +179,10 @@ public:
     QString              _directDownloadCookies;
 
     struct {
-        quint64     _size;
-        time_t      _modtime;
-        QByteArray  _etag;
-        QByteArray  _fileId;
         quint64     _other_size;
         time_t      _other_modtime;
         QByteArray  _other_etag;
         QByteArray  _other_fileId;
-        enum csync_instructions_e _instruction BITFIELD(16);
         enum csync_instructions_e _other_instruction BITFIELD(16);
     } log;
 };

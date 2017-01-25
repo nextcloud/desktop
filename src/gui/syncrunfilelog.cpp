@@ -146,17 +146,17 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     const QChar L = QLatin1Char('|');
     _out << ts << L;
     _out << QString::number(item._requestDuration) << L;
-    if( item.log._instruction != CSYNC_INSTRUCTION_RENAME ) {
+    if( item._instruction != CSYNC_INSTRUCTION_RENAME ) {
         _out << item._file << L;
     } else {
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
-    _out << instructionToStr( item.log._instruction ) << L;
+    _out << instructionToStr( item._instruction ) << L;
     _out << directionToStr( item._direction ) << L;
-    _out << QString::number(item.log._modtime) << L;
-    _out << item.log._etag << L;
-    _out << QString::number(item.log._size) << L;
-    _out << item.log._fileId << L;
+    _out << QString::number(item._modtime) << L;
+    _out << item._etag << L;
+    _out << QString::number(item._size) << L;
+    _out << item._fileId << L;
     _out << item._status << L;
     _out << item._errorString << L;
     _out << QString::number(item._httpErrorCode) << L;

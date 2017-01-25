@@ -653,12 +653,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     _needsUpdate = true;
 
-    item->log._etag          = file->etag;
-    item->log._fileId        = file->file_id;
-    item->log._instruction   = file->instruction;
-    item->log._modtime       = file->modtime;
-    item->log._size          = file->size;
-
     item->log._other_etag        = file->other.etag;
     item->log._other_fileId      = file->other.file_id;
     item->log._other_instruction = file->other.instruction;
