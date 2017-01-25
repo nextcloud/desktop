@@ -86,7 +86,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
-
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)

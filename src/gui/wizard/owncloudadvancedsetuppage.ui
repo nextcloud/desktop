@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1099</width>
-    <height>636</height>
+    <width>912</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -226,6 +226,12 @@
      <item row="0" column="1" colspan="2">
       <widget class="QWidget" name="widget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
@@ -262,6 +268,9 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
           <item row="0" column="0">
            <spacer name="horizontalSpacer_4">
             <property name="orientation">
@@ -272,7 +281,7 @@
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
+              <width>10</width>
               <height>20</height>
              </size>
             </property>
@@ -290,10 +299,10 @@
             <item>
              <widget class="QSpinBox" name="confSpinBox">
               <property name="maximum">
-               <number>1000000000</number>
+               <number>999999</number>
               </property>
               <property name="value">
-               <number>500</number>
+               <number>99</number>
               </property>
              </widget>
             </item>

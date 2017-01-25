@@ -421,7 +421,7 @@ QPixmap Theme::wizardHeaderBanner() const
     if (!c.isValid())
         return QPixmap();
 
-    QPixmap pix(QSize(600, 78));
+    QPixmap pix(QSize(750, 78));
     pix.fill(wizardHeaderBackgroundColor());
     return pix;
 }
