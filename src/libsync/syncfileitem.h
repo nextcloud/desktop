@@ -202,5 +202,6 @@ typedef QVector<SyncFileItemPtr> SyncFileItemVector;
 }
 
 Q_DECLARE_METATYPE(OCC::SyncFileItem)
+Q_DECLARE_METATYPE(OCC::SyncFileItemPtr)
 
 #endif // SYNCFILEITEM_H

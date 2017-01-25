@@ -250,7 +250,7 @@ signals:
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const SyncFileItem & item);
+    void itemCompleted(const QString &folder, const SyncFileItemPtr & item);
 
 protected:
     void setProgressInfo(const QString& folder, const ProgressInfo& progress);

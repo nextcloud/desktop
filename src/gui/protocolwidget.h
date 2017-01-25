@@ -52,7 +52,7 @@ public:
 
 public slots:
     void slotProgressInfo( const QString& folder, const ProgressInfo& progress );
-    void slotItemCompleted( const QString& folder, const SyncFileItem& item);
+    void slotItemCompleted( const QString& folder, const SyncFileItemPtr& item);
     void slotOpenFile( QTreeWidgetItem* item, int );
 
 protected:

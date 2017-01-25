@@ -818,15 +818,15 @@ public:
     }
 
     void execUntilItemCompleted(const QString &relativePath) {
-        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItem &)));
+        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         QElapsedTimer t;
         t.start();
         while (t.elapsed() < 5000) {
             spy.clear();
             QVERIFY(spy.wait());
             for(const QList<QVariant> &args : spy) {
-                auto item = args[0].value<OCC::SyncFileItem>();
-                if (item.destination() == relativePath)
+                auto item = args[0].value<OCC::SyncFileItemPtr>();
+                if (item->destination() == relativePath)
                     return;
             }
         }

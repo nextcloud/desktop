@@ -46,7 +46,7 @@ signals:
 
 private slots:
     void slotAboutToPropagate(SyncFileItemVector& items);
-    void slotItemCompleted(const SyncFileItem& item);
+    void slotItemCompleted(const SyncFileItemPtr& item);
     void slotSyncFinished();
     void slotSyncEngineRunningChanged();
 

@@ -77,8 +77,8 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
 {
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&)),
-            SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItemPtr&)),
+            SLOT(slotItemCompleted(const SyncFileItemPtr&)));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
     connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
@@ -223,28 +223,28 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     }
 }
 
-void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
+void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
 {
     // qDebug() << Q_FUNC_INFO << item.destination() << item._status << item._instruction;
 
-    if (showErrorInSocketApi(item)) {
-        _syncProblems[item._file] = SyncFileStatus::StatusError;
-        invalidateParentPaths(item.destination());
-    } else if (showWarningInSocketApi(item)) {
-        _syncProblems[item._file] = SyncFileStatus::StatusWarning;
+    if (showErrorInSocketApi(*item)) {
+        _syncProblems[item->_file] = SyncFileStatus::StatusError;
+        invalidateParentPaths(item->destination());
+    } else if (showWarningInSocketApi(*item)) {
+        _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
     } else {
-        _syncProblems.erase(item._file);
+        _syncProblems.erase(item->_file);
     }
 
-    SharedFlag sharedFlag = item._remotePerm.contains("S") ? Shared : NotShared;
-    if (item._instruction != CSYNC_INSTRUCTION_NONE
-        && item._instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
-        && item._instruction != CSYNC_INSTRUCTION_IGNORE
-        && item._instruction != CSYNC_INSTRUCTION_ERROR) {
+    SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+    if (item->_instruction != CSYNC_INSTRUCTION_NONE
+        && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
+        && item->_instruction != CSYNC_INSTRUCTION_IGNORE
+        && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
         // decSyncCount calls *must* be symetric with incSyncCount calls in slotAboutToPropagate
-        decSyncCountAndEmitStatusChanged(item.destination(), sharedFlag);
+        decSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
     } else {
-        emit fileStatusChanged(getSystemDestination(item.destination()), resolveSyncAndErrorStatus(item.destination(), sharedFlag));
+        emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
     }
 }
 

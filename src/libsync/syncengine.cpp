@@ -77,6 +77,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
   , _anotherSyncNeeded(NoFollowUpSync)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
+    qRegisterMetaType<SyncFileItemPtr>("SyncFileItemPtr");
     qRegisterMetaType<SyncFileItem::Status>("SyncFileItem::Status");
     qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
@@ -1004,8 +1005,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator (_account, _localPath, _remotePath, _journal));
-    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &)));
+    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
+            this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(finished(bool)), this, SLOT(slotFinished(bool)), Qt::QueuedConnection);
@@ -1061,15 +1062,15 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     }
 }
 
-void SyncEngine::slotItemCompleted(const SyncFileItem &item)
+void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
 {
-    const char * instruction_str = csync_instruction_str(item._instruction);
-    qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
+    const char * instruction_str = csync_instruction_str(item->_instruction);
+    qDebug() << Q_FUNC_INFO << item->_file << instruction_str << item->_status << item->_errorString;
 
-    _progressInfo->setProgressComplete(item);
+    _progressInfo->setProgressComplete(*item);
 
-    if (item._status == SyncFileItem::FatalError) {
-        emit csyncError(item._errorString);
+    if (item->_status == SyncFileItem::FatalError) {
+        emit csyncError(item->_errorString);
     }
 
     emit transmissionProgress(*_progressInfo);

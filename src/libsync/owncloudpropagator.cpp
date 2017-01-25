@@ -172,7 +172,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     _item->_status = status;
 
-    emit itemCompleted(*_item);
+    emit itemCompleted(_item);
     emit finished(status);
 }
 
@@ -403,8 +403,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->append(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItem &)),
-            this, SIGNAL(itemCompleted(const SyncFileItem &)));
+    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
+            this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
     connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
