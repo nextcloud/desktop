@@ -47,7 +47,6 @@ namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
-class PropagatorJob;
 
 enum AnotherSyncNeeded
 {
@@ -122,7 +121,7 @@ signals:
     void aboutToPropagate(SyncFileItemVector&);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const SyncFileItem&, const PropagatorJob&);
+    void itemCompleted(const SyncFileItem&);
 
     // after sync is done
     void treeWalkResult(const SyncFileItemVector&);
@@ -156,7 +155,7 @@ signals:
 
 private slots:
     void slotRootEtagReceived(const QString &);
-    void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
+    void slotItemCompleted(const SyncFileItem& item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotDiscoveryJobFinished(int updateResult);

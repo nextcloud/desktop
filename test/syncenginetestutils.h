@@ -818,7 +818,7 @@ public:
     }
 
     void execUntilItemCompleted(const QString &relativePath) {
-        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItem &)));
         QElapsedTimer t;
         t.start();
         while (t.elapsed() < 5000) {

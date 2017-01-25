@@ -77,7 +77,7 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
 {
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
+    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&)),
             SLOT(slotItemCompleted(const SyncFileItem&)));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
     connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));

@@ -38,7 +38,7 @@ class TestSyncEngine : public QObject
 private slots:
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.remoteModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -47,7 +47,7 @@ private slots:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.localModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -56,7 +56,7 @@ private slots:
 
     void testDirDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.remoteModifier().mkdir("Y");
         fakeFolder.remoteModifier().mkdir("Z");
         fakeFolder.remoteModifier().insert("Z/d0");
@@ -69,7 +69,7 @@ private slots:
 
     void testDirUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.localModifier().mkdir("Y");
         fakeFolder.localModifier().mkdir("Z");
         fakeFolder.localModifier().insert("Z/d0");
@@ -82,7 +82,7 @@ private slots:
 
     void testLocalDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -91,7 +91,7 @@ private slots:
 
     void testRemoteDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         fakeFolder.localModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -107,7 +107,7 @@ private slots:
         // fakeFolder.syncOnce();
         fakeFolder.syncOnce();
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
         // Touch the file without changing the content, shouldn't upload
         fakeFolder.localModifier().setContents("a1.eml", 'A');
         // Change the content/size
@@ -204,7 +204,7 @@ private slots:
             QCOMPARE(fakeFolder.currentLocalState(), remoteState);
 
             expectedServerState = fakeFolder.currentRemoteState();
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &)));
             fakeFolder.syncOnce(); // This sync should do nothing
             QCOMPARE(completeSpy.count(), 0);
 

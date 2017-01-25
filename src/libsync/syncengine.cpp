@@ -1004,8 +1004,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator (_account, _localPath, _remotePath, _journal));
-    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItem &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),
             this, SLOT(slotProgress(const SyncFileItem &,quint64)));
     connect(_propagator.data(), SIGNAL(finished(bool)), this, SLOT(slotFinished(bool)), Qt::QueuedConnection);
@@ -1061,7 +1061,7 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     }
 }
 
-void SyncEngine::slotItemCompleted(const SyncFileItem &item, const PropagatorJob &job)
+void SyncEngine::slotItemCompleted(const SyncFileItem &item)
 {
     const char * instruction_str = csync_instruction_str(item._instruction);
     qDebug() << Q_FUNC_INFO << item._file << instruction_str << item._status << item._errorString;
@@ -1073,7 +1073,7 @@ void SyncEngine::slotItemCompleted(const SyncFileItem &item, const PropagatorJob
     }
 
     emit transmissionProgress(*_progressInfo);
-    emit itemCompleted(item, job);
+    emit itemCompleted(item);
 }
 
 void SyncEngine::slotFinished(bool success)

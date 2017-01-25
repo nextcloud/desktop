@@ -102,8 +102,8 @@ Folder::Folder(const FolderDefinition& definition,
             SLOT(slotAboutToRestoreBackup(bool*)));
     connect(_engine.data(), SIGNAL(folderDiscovered(bool,QString)), this, SLOT(slotFolderDiscovered(bool,QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
-    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &)),
+            this, SLOT(slotItemCompleted(const SyncFileItem &)));
     connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
     connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
@@ -917,14 +917,14 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 }
 
 // a item is completed: count the errors and forward to the ProgressDispatcher
-void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& job)
+void Folder::slotItemCompleted(const SyncFileItem &item)
 {
     if (Progress::isWarningKind(item._status)) {
         // Count all error conditions.
         _syncResult.setWarnCount(_syncResult.warnCount()+1);
     }
     _fileLog->logItem(item);
-    emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
+    emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
 }
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF)

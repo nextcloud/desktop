@@ -172,7 +172,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     _item->_status = status;
 
-    emit itemCompleted(*_item, *this);
+    emit itemCompleted(*_item);
     emit finished(status);
 }
 
@@ -221,7 +221,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &, const PropagatorJob &)),
+            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
                     this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &)));
             QMetaObject::invokeMethod(newJob, "start");
         }
@@ -403,8 +403,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->append(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItem &)),
+            this, SIGNAL(itemCompleted(const SyncFileItem &)));
     connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
