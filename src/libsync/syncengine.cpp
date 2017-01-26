@@ -407,6 +407,8 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     }
     if (file->remotePerm && file->remotePerm[0]) {
         item->_remotePerm = QByteArray(file->remotePerm);
+        if (remote)
+            _remotePerms[item->_file] = item->_remotePerm;
     }
 
     /* The flag "serverHasIgnoredFiles" is true if item in question is a directory
@@ -435,10 +437,6 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     if (!renameTarget.isEmpty()) {
         // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
         _seenFiles.insert(renameTarget);
-    }
-
-    if (remote && file->remotePerm && file->remotePerm[0]) {
-        _remotePerms[item->_file] = file->remotePerm;
     }
 
     switch(file->error_status) {
@@ -894,6 +892,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _hasForwardInTimeFiles = false;
     _backInTimeFiles = 0;
     bool walkOk = true;
+    _remotePerms.clear();
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
@@ -1111,6 +1110,10 @@ void SyncEngine::finalize(bool success)
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
+    _remotePerms.clear();
+    _seenFiles.clear();
+    _temporarilyUnavailablePaths.clear();
+    _renamedFolders.clear();
 
     _clearTouchedFilesTimer.start();
 }
