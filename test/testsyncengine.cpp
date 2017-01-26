@@ -213,6 +213,17 @@ private slots:
         }
     }
 
+    void abortAfterFailedMkdir() {
+        FakeFolder fakeFolder{FileInfo{}};
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        fakeFolder.serverErrorPaths().append("NewFolder");
+        fakeFolder.localModifier().mkdir("NewFolder");
+        // This should be aborted and would otherwise fail in FileInfo::create.
+        fakeFolder.localModifier().insert("NewFolder/NewFile");
+        fakeFolder.syncOnce();
+        QCOMPARE(finishedSpy.size(), 1);
+        QCOMPARE(finishedSpy.first().first().toBool(), false);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
