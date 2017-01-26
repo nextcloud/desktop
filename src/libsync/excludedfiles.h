@@ -58,7 +58,7 @@ public:
             const QString& basePath,
             bool excludeHidden) const;
 
-#ifdef WITH_UNIT_TESTING
+#ifdef WITH_TESTING
     void addExcludeExpr(const QString &expr);
 #endif
 

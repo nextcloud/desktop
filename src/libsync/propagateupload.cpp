@@ -224,7 +224,9 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // change during the checksum calculation
     _item->_modtime = FileSystem::getModTime(filePath);
 
+#ifdef WITH_TESTING
     _stopWatch.start();
+#endif
 
     QByteArray checksumType = contentChecksumType();
 
@@ -251,8 +253,10 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
     _item->_contentChecksum = contentChecksum;
     _item->_contentChecksumType = contentChecksumType;
 
+#ifdef WITH_TESTING
     _stopWatch.addLapTime(QLatin1String("ContentChecksum"));
     _stopWatch.start();
+#endif
 
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
@@ -299,7 +303,9 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
+#ifdef WITH_TESTING
     _stopWatch.addLapTime(QLatin1String("TransmissionChecksum"));
+#endif
 
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could

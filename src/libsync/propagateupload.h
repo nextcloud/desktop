@@ -188,7 +188,9 @@ protected:
     bool _deleteExisting;
 
     // measure the performance of checksum calc and upload
+#ifdef WITH_TESTING
     Utility::StopWatch _stopWatch;
+#endif
 
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;

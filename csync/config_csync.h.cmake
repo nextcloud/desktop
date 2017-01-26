@@ -26,4 +26,4 @@
 #cmakedefine HAVE___MINGW_ASPRINTF 1
 #cmakedefine HAVE_ASPRINTF 1
 
-#cmakedefine WITH_UNIT_TESTING 1
+#cmakedefine WITH_TESTING 1

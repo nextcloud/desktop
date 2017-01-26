@@ -483,6 +483,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     }
     _item->_responseTimeStamp = job->responseTimestamp();
 
+#ifdef WITH_TESTING
     // performance logging
     quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
@@ -491,6 +492,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
              << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
+#endif
     finalize();
 }
 

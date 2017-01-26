@@ -339,6 +339,7 @@ void PropagateUploadFileV1::slotPutFinished()
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
     }
 
+#ifdef WITH_TESTING
     // performance logging
     quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
@@ -347,6 +348,7 @@ void PropagateUploadFileV1::slotPutFinished()
              << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
+#endif
 
     finalize();
 }

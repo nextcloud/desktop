@@ -45,7 +45,7 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-#ifndef WITH_UNIT_TESTING
+#ifndef WITH_TESTING
 static
 #endif
 int _csync_exclude_add(c_strlist_t **inList, const char *string) {
