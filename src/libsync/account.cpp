@@ -169,6 +169,12 @@ void Account::lendCookieJarTo(QNetworkAccessManager *guest)
     jar->setParent(oldParent); // takes it back
 }
 
+QString Account::cookieJarPath()
+{
+    ConfigFile cfg;
+    return cfg.configPath() + "/cookies" + id() + ".db";
+}
+
 void Account::resetNetworkAccessManager()
 {
     if (!_credentials || !_am) {

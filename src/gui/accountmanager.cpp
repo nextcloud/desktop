@@ -196,8 +196,8 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
     if (acc->_am) {
         CookieJar* jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
         if (jar) {
-            qDebug() << "Saving cookies.";
-            jar->save();
+            qDebug() << "Saving cookies." << acc->cookieJarPath();
+            jar->save(acc->cookieJarPath());
         }
     }
 }
@@ -288,6 +288,8 @@ void AccountManager::deleteAccount(AccountState* account)
     if (it == _accounts.end()) { return; }
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
+
+    QFile::remove(account->account()->cookieJarPath());
 
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
