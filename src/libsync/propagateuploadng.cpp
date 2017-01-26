@@ -80,7 +80,6 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
 
 void PropagateUploadFileNG::doStartUpload()
 {
-    _duration.start();
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
@@ -485,11 +484,11 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     _item->_responseTimeStamp = job->responseTimestamp();
 
     // performance logging
-    _item->_requestDuration = _stopWatch.stop();
+    quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-             << _item->_requestDuration;
+             << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
     finalize();

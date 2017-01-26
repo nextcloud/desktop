@@ -145,7 +145,7 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
 
     const QChar L = QLatin1Char('|');
     _out << ts << L;
-    _out << QString::number(item._requestDuration) << L;
+    _out << L;
     if( item._instruction != CSYNC_INSTRUCTION_RENAME ) {
         _out << item._file << L;
     } else {

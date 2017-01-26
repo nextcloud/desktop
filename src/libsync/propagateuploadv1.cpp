@@ -49,7 +49,6 @@ void PropagateUploadFileV1::doStartUpload()
     }
 
     _currentChunk = 0;
-    _duration.start();
 
     emit progress(*_item, 0);
     startNextChunk();
@@ -341,11 +340,11 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     // performance logging
-    _item->_requestDuration = _stopWatch.stop();
+    quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-             << _item->_requestDuration;
+             << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
 

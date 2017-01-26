@@ -104,7 +104,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         return;
     }
 
-    _item->_requestDuration = _job->duration();
     _item->_responseTimeStamp = _job->responseTimestamp();
 
     // A 404 reply is also considered a success here: We want to make sure

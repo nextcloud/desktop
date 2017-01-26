@@ -68,7 +68,7 @@ public:
          _serverHasIgnoredFiles(false), _hasBlacklistEntry(false),
          _errorMayBeBlacklisted(false), _status(NoStatus),
         _isRestoration(false),
-        _httpErrorCode(0), _requestDuration(0), _affectedItems(1),
+        _httpErrorCode(0), _affectedItems(1),
         _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
     {
     }
@@ -160,7 +160,6 @@ public:
     quint16              _httpErrorCode;
     QString              _errorString; // Contains a string only in case of error
     QByteArray           _responseTimeStamp;
-    quint64              _requestDuration;
     quint32              _affectedItems; // the number of affected items by the operation on this item.
      // usually this value is 1, but for removes on dirs, it might be much higher.
 

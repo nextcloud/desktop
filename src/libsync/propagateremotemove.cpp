@@ -145,7 +145,6 @@ void PropagateRemoteMove::slotMoveJobFinished()
         return;
     }
 
-    _item->_requestDuration = _job->duration();
     _item->_responseTimeStamp = _job->responseTimestamp();
 
     if (_item->_httpErrorCode != 201 ) {

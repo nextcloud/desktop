@@ -569,7 +569,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
-    _item->_requestDuration = _duration.elapsed();
     _finished = true;
 
     if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, propagator()->getFilePath(_item->_file)))) {

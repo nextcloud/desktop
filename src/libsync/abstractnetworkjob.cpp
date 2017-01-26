@@ -172,7 +172,6 @@ void AbstractNetworkJob::slotFinished()
 
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
-    _duration = _durationTimer.elapsed();
 
     if (_followRedirects) {
         // ### the qWarnings here should be exported via displayErrors() so they
@@ -206,11 +205,6 @@ void AbstractNetworkJob::slotFinished()
     }
 }
 
-quint64 AbstractNetworkJob::duration()
-{
-    return _duration;
-}
-
 QByteArray AbstractNetworkJob::responseTimestamp()
 {
     return _responseTimestamp;
@@ -224,8 +218,6 @@ AbstractNetworkJob::~AbstractNetworkJob()
 void AbstractNetworkJob::start()
 {
     _timer.start();
-    _durationTimer.start();
-    _duration = 0;
 
     const QUrl url = account()->url();
     const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());

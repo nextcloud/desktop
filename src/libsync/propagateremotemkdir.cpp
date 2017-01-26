@@ -99,7 +99,6 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         return;
     }
 
-    _item->_requestDuration = _job->duration();
     _item->_responseTimeStamp = _job->responseTimestamp();
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 

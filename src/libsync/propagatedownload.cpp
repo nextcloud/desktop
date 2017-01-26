@@ -520,7 +520,6 @@ void PropagateDownloadFile::slotGetFinished()
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
     }
-    _item->_requestDuration = job->duration();
     _item->_responseTimeStamp = job->responseTimestamp();
 
     _tmpFile.close();

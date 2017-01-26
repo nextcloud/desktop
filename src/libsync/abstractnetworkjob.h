@@ -55,7 +55,6 @@ public:
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
     QByteArray responseTimestamp();
-    quint64 duration();
 
     qint64 timeoutMsec() { return _timer.interval(); }
 
@@ -82,8 +81,6 @@ protected:
     int maxRedirects() const { return 10; }
     virtual bool finished() = 0;
     QByteArray    _responseTimestamp;
-    QElapsedTimer _durationTimer;
-    quint64       _duration;
     bool          _timedout;  // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
