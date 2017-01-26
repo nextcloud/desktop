@@ -99,7 +99,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *
             return false;
         }
 
-        emit newBigFolder(path);
+        emit newBigFolder(path, true);
         return true;
     }
 
@@ -125,7 +125,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *
 
     if (result >= limit) {
         // we tell the UI there is a new folder
-        emit newBigFolder(path);
+        emit newBigFolder(path, false);
         return true;
     } else {
         // it is not too big, put it in the white list (so we will not do more query for the children)

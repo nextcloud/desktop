@@ -229,7 +229,7 @@ signals:
     void doGetSizeSignal(const QString &path, qint64 *result);
 
     // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder);
+    void newBigFolder(const QString &folder, bool isExternal);
 };
 
 }

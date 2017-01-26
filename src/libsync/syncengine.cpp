@@ -835,8 +835,8 @@ void SyncEngine::startSync()
     connect(discoveryJob, SIGNAL(folderDiscovered(bool,QString)),
             this, SIGNAL(folderDiscovered(bool,QString)));
 
-    connect(discoveryJob, SIGNAL(newBigFolder(QString)),
-            this, SIGNAL(newBigFolder(QString)));
+    connect(discoveryJob, SIGNAL(newBigFolder(QString,bool)),
+            this, SIGNAL(newBigFolder(QString,bool)));
 
 
     // This is used for the DiscoveryJob to be able to request the main thread/

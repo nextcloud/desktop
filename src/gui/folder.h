@@ -290,7 +290,7 @@ private slots:
 
     void slotEmitFinishedDelayed();
 
-    void slotNewBigFolderDiscovered(const QString &);
+    void slotNewBigFolderDiscovered(const QString &, bool isExternal);
 
     void slotLogPropagationStart();
 

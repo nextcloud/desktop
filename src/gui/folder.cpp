@@ -104,7 +104,8 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
             this, SLOT(slotItemCompleted(const SyncFileItem &, const PropagatorJob &)));
-    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString,bool)),
+            this, SLOT(slotNewBigFolderDiscovered(QString,bool)));
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
     connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotLogPropagationStart()));
@@ -930,7 +931,7 @@ void Folder::slotItemCompleted(const SyncFileItem &item, const PropagatorJob& jo
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item, job);
 }
 
-void Folder::slotNewBigFolderDiscovered(const QString &newF)
+void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 {
     auto newFolder = newF;
     if (!newFolder.endsWith(QLatin1Char('/'))) {
@@ -955,9 +956,11 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
             emit newBigFolderDiscovered(newFolder);
         }
-        QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
-                             "Please go in the settings to select it if you wish to download it.")
-                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF);
+        QString message = !isExternal ?
+            (tr("A new folder larger than %1 MB has been added: %2.\n")
+                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF))
+            : (tr("A folder from an external storage has been added.\n"));
+        message += tr("Please go in the settings to select it if you wish to download it.");
 
         auto logger = Logger::instance();
         logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
