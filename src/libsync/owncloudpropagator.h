@@ -192,12 +192,11 @@ public:
 
     SyncFileItemPtr _item;
 
-    int _runningNow; // number of subJobs running right now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
-        , _item(item), _runningNow(0), _hasError(SyncFileItem::NoStatus)
+        , _item(item), _hasError(SyncFileItem::NoStatus)
     { }
 
     virtual ~PropagateDirectory() {
@@ -232,7 +231,6 @@ private slots:
             connect(next, SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
-            _runningNow++;
         }
         return next->scheduleNextJob();
     }

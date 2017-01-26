@@ -676,12 +676,10 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
         _hasError = status;
     }
-    _runningNow--;
 
     // We finished processing all the jobs
     // check if we finished
     if (!_firstJob && _subJobs.isEmpty()) {
-        Q_ASSERT(!_runningNow); // how can we be finished if there are still jobs running now
         finalize();
     } else {
         emit ready();
