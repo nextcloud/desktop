@@ -260,7 +260,6 @@ int FolderMan::setupFoldersMigration()
 {
     ConfigFile cfg;
     QDir storageDir(cfg.configPath());
-    storageDir.mkpath(QLatin1String("folders"));
     _folderConfigPath = cfg.configPath() + QLatin1String("folders");
 
     qDebug() << "* Setup folders from " << _folderConfigPath << "(migration)";
