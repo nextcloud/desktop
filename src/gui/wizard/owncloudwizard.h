@@ -59,6 +59,7 @@ public:
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
 

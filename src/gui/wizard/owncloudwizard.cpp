@@ -108,6 +108,10 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
     return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
+bool OwncloudWizard::isConfirmBigFolderChecked() const
+{
+    return _advancedSetupPage->isConfirmBigFolderChecked();
+}
 
 QString OwncloudWizard::ocUrl() const
 {

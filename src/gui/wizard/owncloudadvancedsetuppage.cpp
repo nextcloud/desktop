@@ -215,6 +215,11 @@ QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
     return _selectiveSyncBlacklist;
 }
 
+bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
+{
+    return _ui.rSyncEverything->isChecked() && _ui.confCheckBoxSize->isChecked();
+}
+
 bool OwncloudAdvancedSetupPage::validatePage()
 {
     if(!_created) {
