@@ -29,6 +29,14 @@ Q_DECLARE_METATYPE(QPersistentModelIndex)
 namespace OCC {
 
 static const char propertyParentIndexC[] = "oc_parentIndex";
+static const char propertyPermissionMap[] = "oc_permissionMap";
+
+static QString removeTrailingSlash(const QString &s) {
+    if (s.endsWith('/')) {
+        return s.left(s.size() - 1);
+    }
+    return s;
+}
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
     :QAbstractItemModel(parent), _accountState(0), _dirty(false)
@@ -162,7 +170,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
-            return QFileIconProvider().icon(QFileIconProvider::Folder);
+            return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         case Qt::ForegroundRole:
             if (x._isUndecided) {
                 return QColor(Qt::red);
@@ -368,6 +376,9 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
         if (parentInfo->hasLabel()) {
             return 0;
         }
+        if (index.row() >= parentInfo->_subs.size()) {
+            return 0;
+        }
         return &parentInfo->_subs[index.row()];
     } else {
         if (index.row() >= _folders.count()) {
@@ -537,12 +548,15 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size" << "http://owncloud.org/ns:permissions");
     job->setTimeout(60 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
             this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
+    connect(job, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+            this, SLOT(slotGatherPermissions(const QString&, const QMap<QString,QString>&)));
+
     job->start();
 
     QPersistentModelIndex persistentIndex(parent);
@@ -551,6 +565,20 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     // Show 'fetching data...' hint after a while.
     _fetchingItems[persistentIndex].start();
     QTimer::singleShot(1000, this, SLOT(slotShowFetchProgress()));
+}
+
+void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString,QString> &map)
+{
+    auto it = map.find("permissions");
+    if (it == map.end())
+        return;
+
+    auto job = sender();
+    auto permissionMap = job->property(propertyPermissionMap).toMap();
+    job->setProperty(propertyPermissionMap, QVariant()); // avoid a detach of the map while it is modified
+    Q_ASSERT(!href.endsWith(QLatin1Char('/'))); // LsColXMLParser::parse removes the trailing slash before calling us.
+    permissionMap[href] = *it;
+    job->setProperty(propertyPermissionMap, permissionMap);
 }
 
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
@@ -598,6 +626,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
             selectiveSyncUndecidedSet.insert(str);
         }
     }
+    const auto permissionMap = job->property(propertyPermissionMap).toMap();
 
     QStringList sortedSubfolders = list;
     // skip the parent item (first in the list)
@@ -618,8 +647,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        auto size = job ? job->_sizes.value(path) : 0;
-        newInfo._size = size;
+        newInfo._size = job->_sizes.value(path);
+        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
         newInfo._name = relativePath.split('/', QString::SkipEmptyParts).last();
 

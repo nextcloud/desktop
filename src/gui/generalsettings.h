@@ -45,13 +45,14 @@ private slots:
     void slotToggleOptionalDesktopNotifications(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
+    void loadMiscSettings();
 
 private:
-    void loadMiscSettings();
 
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QPointer<SyncLogDialog> _syncLogDialog;
+    bool _currentlyLoading = false;
 };
 
 

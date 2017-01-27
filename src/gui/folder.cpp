@@ -101,7 +101,8 @@ Folder::Folder(const FolderDefinition& definition,
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
             this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
-    connect(_engine.data(), SIGNAL(newBigFolder(QString)), this, SLOT(slotNewBigFolderDiscovered(QString)));
+    connect(_engine.data(), SIGNAL(newBigFolder(QString,bool)),
+            this, SLOT(slotNewBigFolderDiscovered(QString,bool)));
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
     connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotLogPropagationStart()));
@@ -646,10 +647,12 @@ void Folder::startSync(const QStringList &pathList)
 
     setDirtyNetworkLimits();
 
+    SyncOptions opt;
     ConfigFile cfgFile;
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    quint64 limit = newFolderLimit.first ? newFolderLimit.second * 1000 * 1000 : -1; // convert from MB to B
-    _engine->setNewBigFolderSizeLimit(limit);
+    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
+    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+    _engine->setSyncOptions(opt);
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
@@ -822,7 +825,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
 }
 
-void Folder::slotNewBigFolderDiscovered(const QString &newF)
+void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
 {
     auto newFolder = newF;
     if (!newFolder.endsWith(QLatin1Char('/'))) {
@@ -847,9 +850,11 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF)
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
             emit newBigFolderDiscovered(newFolder);
         }
-        QString message = tr("A new folder larger than %1 MB has been added: %2.\n"
-                             "Please go in the settings to select it if you wish to download it.")
-                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF);
+        QString message = !isExternal ?
+            (tr("A new folder larger than %1 MB has been added: %2.\n")
+                .arg(ConfigFile().newBigFolderSizeLimit().second).arg(newF))
+            : (tr("A folder from an external storage has been added.\n"));
+        message += tr("Please go in the settings to select it if you wish to download it.");
 
         auto logger = Logger::instance();
         logger->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);

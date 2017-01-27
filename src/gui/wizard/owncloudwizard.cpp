@@ -86,7 +86,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
-
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -109,6 +108,10 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
     return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
+bool OwncloudWizard::isConfirmBigFolderChecked() const
+{
+    return _advancedSetupPage->isConfirmBigFolderChecked();
+}
 
 QString OwncloudWizard::ocUrl() const
 {

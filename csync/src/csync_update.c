@@ -436,7 +436,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                 st->instruction = CSYNC_INSTRUCTION_NEW;
 
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
-                    if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, path)) {
+                    if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, path, fs->remotePerm)) {
                         csync_file_stat_free(st);
                         return 1;
                     }

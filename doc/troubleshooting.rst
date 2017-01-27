@@ -50,6 +50,21 @@ Identifying Basic Functionality Problems
   As an example, after installing the ``cadaver`` app, you can issue the
   ``propget`` command to obtain various properties pertaining to the current
   directory and also verify WebDAV server connection.
+  
+"CSync unknown error"
+---------------------
+
+If you see this error message stop your client, delete the
+``.csync_journal.db`` file, and then restart your client. 
+There is a  ``.csync_journal.db`` file inside the folder of every account
+configured on your client. 
+
+.. NOTE::
+   Please note that this will also erase some of your settings about which
+   files to download.
+   
+See https://github.com/owncloud/client/issues/5226 for more discussion of this
+issue.
 
 
 Isolating other issues

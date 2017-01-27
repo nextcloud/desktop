@@ -105,6 +105,8 @@ public:
     /** [checked, size in MB] **/
     QPair<bool, quint64> newBigFolderSizeLimit() const;
     void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
+    bool confirmExternalStorage() const;
+    void setConfirmExternalStorage(bool);
 
     static bool setConfDir(const QString &value);
 

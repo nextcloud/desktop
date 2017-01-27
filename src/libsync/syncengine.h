@@ -77,10 +77,7 @@ public:
 
     bool isSyncRunning() const { return _syncRunning; }
 
-    /* Set the maximum size a folder can have without asking for confirmation
-     * -1 means infinite
-     */
-    void setNewBigFolderSizeLimit(qint64 limit) { _newBigFolderSizeLimit = limit; }
+    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
     bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
 
@@ -142,7 +139,7 @@ signals:
     void aboutToRestoreBackup(bool *restore);
 
     // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder);
+    void newBigFolder(const QString &folder, bool isExternal);
 
     /** Emitted when propagation has problems with a locked file.
      *
@@ -249,8 +246,7 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
-    /* maximum size a folder can have without asking for confirmation: -1 means infinite */
-    qint64 _newBigFolderSizeLimit;
+    SyncOptions _syncOptions;
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;
