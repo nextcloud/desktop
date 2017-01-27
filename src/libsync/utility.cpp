@@ -273,14 +273,13 @@ void Utility::usleep(int usec)
 
 bool Utility::fsCasePreserving()
 {
-    bool re = false;
-    if( isWindows() || isMac() ) {
-        re = true;
-    } else {
-        bool isTest = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING").toInt();
-        re = isTest;
-    }
-    return re;
+#ifndef WITH_TESTING
+    QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
+    if (!env.isEmpty())
+        return env.toInt();
+#endif
+
+    return isWindows() || isMac();
 }
 
 bool Utility::fileNamesEqual( const QString& fn1, const QString& fn2)
