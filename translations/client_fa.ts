@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="203"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>تایید تغییرات دستی</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="251"/>
