@@ -248,7 +248,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Zaznane so mape, ki zaradi prevelike velikosti niso bile usklajene: </translation>
+        <translation>Zaznane so mape, ki zaradi omejitve velikosti niso bile usklajene: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="681"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="682"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Zaznane so mape, ki zaradi prevelike velikosti ali pripadnosti zunanji shrambi niso bile usklajene: </translation>
+        <translation>Zaznane so mape, ki zaradi omejitve velikosti ali pripadnosti zunanji shrambi niso bile usklajene: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
@@ -724,7 +724,6 @@
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dodana je mapa iz zunanje shrambe.
-
 </translation>
     </message>
     <message>
