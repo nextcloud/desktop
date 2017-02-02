@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Retomar sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -248,7 +248,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Existem pastas que não foram sincronizadas por serem demasiado grandes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="681"/>
