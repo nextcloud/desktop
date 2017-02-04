@@ -730,7 +730,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="857"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Merci d&apos;aller dans les Paramètres pour indiquer si vous souhaitez le télécharger.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="893"/>
