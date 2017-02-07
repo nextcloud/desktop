@@ -10,163 +10,176 @@
 #include "folderwatcher.h"
 #include "utility.h"
 
+void touch(const QString &file)
+{
+#ifdef Q_OS_WIN
+    OCC::Utility::writeRandomFile(file);
+#else
+    QString cmd;
+    cmd = QString("touch %1").arg(file);
+    qDebug() << "Command: " << cmd;
+    system(cmd.toLocal8Bit());
+#endif
+}
+
+void mkdir(const QString &file)
+{
+#ifdef Q_OS_WIN
+    QDir dir;
+    dir.mkdir(file);
+#else
+    QString cmd = QString("mkdir %1").arg(file);
+    qDebug() << "Command: " << cmd;
+    system(cmd.toLocal8Bit());
+#endif
+}
+
+void rmdir(const QString &file)
+{
+#ifdef Q_OS_WIN
+    QDir dir;
+    dir.rmdir(file);
+#else
+    QString cmd = QString("rmdir %1").arg(file);
+    qDebug() << "Command: " << cmd;
+    system(cmd.toLocal8Bit());
+#endif
+}
+
+void rm(const QString &file)
+{
+#ifdef Q_OS_WIN
+    QFile::remove(file);
+#else
+    QString cmd = QString("rm %1").arg(file);
+    qDebug() << "Command: " << cmd;
+    system(cmd.toLocal8Bit());
+#endif
+}
+
+void mv(const QString &file1, const QString &file2)
+{
+#ifdef Q_OS_WIN
+    QFile::rename(file1, file2);
+#else
+    QString cmd = QString("mv %1 %2").arg(file1, file2);
+    qDebug() << "Command: " << cmd;
+    system(cmd.toLocal8Bit());
+#endif
+}
+
 using namespace OCC;
 
 class TestFolderWatcher : public QObject
 {
     Q_OBJECT
 
-public slots:
-    void slotFolderChanged( const QString& path ) {
-        if (_skipNotifications.contains(path)) {
-            return;
-        }
-        if (_requiredNotifications.contains(path)) {
-            _receivedNotifications.insert(path);
-        }
-    }
+    QTemporaryDir _root;
+    QString _rootPath;
+    QScopedPointer<FolderWatcher> _watcher;
+    QScopedPointer<QSignalSpy> _pathChangedSpy;
 
-    void slotEnd() { // in case something goes wrong...
-        _loop.quit();
-        QVERIFY2(1 == 0, "Loop hang!");
-    }
-
-private:
-    QString        _root;
-    FolderWatcher *_watcher;
-    QEventLoop     _loop;
-    QTimer         _timer;
-    QSet<QString>  _requiredNotifications;
-    QSet<QString>  _receivedNotifications;
-    QSet<QString>  _skipNotifications;
-
-    void processAndWait()
+    bool waitForPathChanged(const QString &path)
     {
-        _loop.processEvents();
-        Utility::usleep(200000);
-        _loop.processEvents();
+        QElapsedTimer t;
+        t.start();
+        while (t.elapsed() < 5000) {
+            // Check if it was already reported as changed by the watcher
+            for (int i = 0; i < _pathChangedSpy->size(); ++i) {
+                const auto &args = _pathChangedSpy->at(i);
+                if (args.first().toString() == path)
+                    return true;
+            }
+            // Wait a bit and test again (don't bother checking if we timed out or not)
+            _pathChangedSpy->wait(200);
+        }
+        return false;
+    }
+
+public:
+    TestFolderWatcher() {
+        qsrand(QTime::currentTime().msec());
+        QDir rootDir(_root.path());
+        _rootPath = rootDir.canonicalPath();
+        qDebug() << "creating test directory tree in " << _rootPath;
+
+        rootDir.mkpath("a1/b1/c1");
+        rootDir.mkpath("a1/b1/c2");
+        rootDir.mkpath("a1/b2/c1");
+        rootDir.mkpath("a1/b3/c3");
+        rootDir.mkpath("a2/b3/c3");
+        Utility::writeRandomFile( _rootPath+"/a1/random.bin");
+        Utility::writeRandomFile( _rootPath+"/a1/b2/todelete.bin");
+        Utility::writeRandomFile( _rootPath+"/a2/renamefile");
+        Utility::writeRandomFile( _rootPath+"/a1/movefile");
+
+        _watcher.reset(new FolderWatcher(_rootPath));
+        _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), SIGNAL(pathChanged(QString))));
     }
 
 private slots:
-    void initTestCase() {
-        qsrand(QTime::currentTime().msec());
-        _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
-        qDebug() << "creating test directory tree in " << _root;
-        QDir rootDir(_root);
-
-        rootDir.mkpath(_root + "/a1/b1/c1");
-        rootDir.mkpath(_root + "/a1/b1/c2");
-        rootDir.mkpath(_root + "/a1/b2/c1");
-        rootDir.mkpath(_root + "/a1/b3/c3");
-        rootDir.mkpath(_root + "/a2/b3/c3");
-        Utility::writeRandomFile( _root+"/a1/random.bin");
-        Utility::writeRandomFile( _root+"/a1/b2/todelete.bin");
-        Utility::writeRandomFile( _root+"/a2/renamefile");
-        Utility::writeRandomFile( _root+"/a1/movefile");
-
-        _watcher = new FolderWatcher(_root);
-        QObject::connect(_watcher, SIGNAL(pathChanged(QString)), this, SLOT(slotFolderChanged(QString)));
-        _timer.singleShot(5000, this, SLOT(slotEnd()));
-    }
-
     void init()
     {
-        _receivedNotifications.clear();
-        _requiredNotifications.clear();
-        _skipNotifications.clear();
-    }
-
-    void checkNotifications()
-    {
-        processAndWait();
-        QCOMPARE(_receivedNotifications, _requiredNotifications);
+        _pathChangedSpy->clear();
     }
 
     void testACreate() { // create a new file
-        QString file(_root + "/foo.txt");
+        QString file(_rootPath + "/foo.txt");
         QString cmd;
-        _requiredNotifications.insert(file);
         cmd = QString("echo \"xyz\" > %1").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 
-        checkNotifications();
+        QVERIFY(waitForPathChanged(file));
     }
 
     void testATouch() { // touch an existing file.
-        QString file(_root + "/a1/random.bin");
-        _requiredNotifications.insert(file);
-#ifdef Q_OS_WIN
-        Utility::writeRandomFile(QString("%1/a1/random.bin").arg(_root));
-#else
-        QString cmd;
-        cmd = QString("touch %1").arg(file);
-        qDebug() << "Command: " << cmd;
-        system(cmd.toLocal8Bit());
-#endif
-
-        checkNotifications();
+        QString file(_rootPath + "/a1/random.bin");
+        touch(file);
+        QVERIFY(waitForPathChanged(file));
     }
 
     void testCreateADir() {
-        QString file(_root+"/a1/b1/new_dir");
-        _requiredNotifications.insert(file);
-        //_skipNotifications.insert(_root + "/a1/b1/new_dir");
-        QDir dir;
-        dir.mkdir(file);
-        QVERIFY(QFile::exists(file));
-
-        checkNotifications();
+        QString file(_rootPath+"/a1/b1/new_dir");
+        mkdir(file);
+        QVERIFY(waitForPathChanged(file));
     }
 
     void testRemoveADir() {
-        QString file(_root+"/a1/b3/c3");
-        _requiredNotifications.insert(file);
-        QDir dir;
-        QVERIFY(dir.rmdir(file));
-
-        checkNotifications();
+        QString file(_rootPath+"/a1/b3/c3");
+        rmdir(file);
+        QVERIFY(waitForPathChanged(file));
     }
 
     void testRemoveAFile() {
-        QString file(_root+"/a1/b2/todelete.bin");
-        _requiredNotifications.insert(file);
+        QString file(_rootPath+"/a1/b2/todelete.bin");
         QVERIFY(QFile::exists(file));
-        QFile::remove(file);
+        rm(file);
         QVERIFY(!QFile::exists(file));
 
-        checkNotifications();
+        QVERIFY(waitForPathChanged(file));
     }
 
     void testRenameAFile() {
-        QString file1(_root+"/a2/renamefile");
-        QString file2(_root+"/a2/renamefile.renamed");
-        _requiredNotifications.insert(file1);
-        _requiredNotifications.insert(file2);
+        QString file1(_rootPath+"/a2/renamefile");
+        QString file2(_rootPath+"/a2/renamefile.renamed");
         QVERIFY(QFile::exists(file1));
-        QFile::rename(file1, file2);
+        mv(file1, file2);
         QVERIFY(QFile::exists(file2));
 
-        checkNotifications();
+        QVERIFY(waitForPathChanged(file1));
+        QVERIFY(waitForPathChanged(file2));
     }
 
     void testMoveAFile() {
-        QString old_file(_root+"/a1/movefile");
-        QString new_file(_root+"/a2/movefile.renamed");
-        _requiredNotifications.insert(old_file);
-        _requiredNotifications.insert(new_file);
+        QString old_file(_rootPath+"/a1/movefile");
+        QString new_file(_rootPath+"/a2/movefile.renamed");
         QVERIFY(QFile::exists(old_file));
-        QFile::rename(old_file, new_file);
+        mv(old_file, new_file);
         QVERIFY(QFile::exists(new_file));
 
-        checkNotifications();
-    }
-
-    void cleanupTestCase() {
-        if( _root.startsWith(QDir::tempPath() )) {
-            system( QString("rm -rf %1").arg(_root).toLocal8Bit() );
-        }
-        delete _watcher;
+        QVERIFY(waitForPathChanged(old_file));
+        QVERIFY(waitForPathChanged(new_file));
     }
 };
 
@@ -178,6 +191,8 @@ int main(int argc, char *argv[])
     TestFolderWatcher tc;
     return QTest::qExec(&tc, argc, argv);
 }
+#elif defined(Q_OS_MAC)
+    QTEST_MAIN(TestFolderWatcher)
 #else
     QTEST_GUILESS_MAIN(TestFolderWatcher)
 #endif
