@@ -370,7 +370,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
                So replace the 'M' by a 'm' for every sub entries in an external storage */
-            std::replace(std::begin(file_stat->remotePerm), std::end(file_stat->remotePerm),
+            std::replace(file_stat->remotePerm, file_stat->remotePerm + strlen(file_stat->remotePerm),
                          'M', 'm');
         }
 
