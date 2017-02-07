@@ -58,9 +58,6 @@ if( UNIX AND NOT APPLE )
 endif()
 ####
 
-# Enable Q_ASSERT etc. in all builds
-add_definitions( -DQT_FORCE_ASSERTS )
-
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
 include(GenerateExportHeader)
