@@ -118,7 +118,7 @@ private:
     // Set to true if this is the root path and we need to check the data-fingerprint
     bool _isRootPath;
     // If this directory is an external storage (The first item has 'M' in its permission)
-    bool _isExternalStorage = false;
+    bool _isExternalStorage;
     QPointer<LsColJob> _lsColJob;
 
 public:

@@ -244,7 +244,7 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
 
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false), _isRootPath(false)
+    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false), _isRootPath(false), _isExternalStorage(false)
 {
 }
 
