@@ -23,6 +23,7 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "checksums.h"
+#include "asserts.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -441,7 +442,7 @@ void PropagateDownloadFile::slotGetFinished()
     propagator()->_activeJobList.removeOne(this);
 
     GETFileJob *job = qobject_cast<GETFileJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()

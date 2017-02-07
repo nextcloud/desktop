@@ -12,10 +12,10 @@
  * for more details.
  */
 
-
 #include <QString>
 #include <QDebug>
 
+#include "asserts.h"
 #include "creds/abstractcredentials.h"
 
 namespace OCC
@@ -28,7 +28,7 @@ AbstractCredentials::AbstractCredentials()
 
 void AbstractCredentials::setAccount(Account *account)
 {
-    Q_ASSERT(!_account);
+    ENFORCE(!_account, "should only setAccount once");
     _account = account;
 }
 

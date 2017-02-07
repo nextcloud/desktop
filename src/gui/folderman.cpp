@@ -23,6 +23,7 @@
 #include "accountmanager.h"
 #include "filesystem.h"
 #include "lockwatcher.h"
+#include "asserts.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -48,7 +49,7 @@ FolderMan::FolderMan(QObject *parent) :
     _lockWatcher(new LockWatcher),
     _appRestartRequired(false)
 {
-    Q_ASSERT(!_instance);
+    ASSERT(!_instance);
     _instance = this;
 
     _socketApi.reset(new SocketApi);
@@ -133,12 +134,13 @@ int FolderMan::unloadAndDeleteAllFolders()
         delete f;
         cnt++;
     }
+    ASSERT(_folderMap.isEmpty());
+
     _lastSyncFolder = 0;
     _currentSyncFolder = 0;
     _scheduledFolders.clear();
     emit scheduleQueueChanged();
 
-    Q_ASSERT(_folderMap.count() == 0);
     return cnt;
 }
 
@@ -462,7 +464,7 @@ void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
 void FolderMan::slotFolderCanSyncChanged()
 {
     Folder *f = qobject_cast<Folder*>(sender());
-    Q_ASSERT(f);
+    ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
     } else {

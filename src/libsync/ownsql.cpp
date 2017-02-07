@@ -20,6 +20,7 @@
 
 #include "ownsql.h"
 #include "utility.h"
+#include "asserts.h"
 
 #define SQLITE_SLEEP_TIME_USEC 100000
 #define SQLITE_REPEAT_COUNT 20
@@ -147,10 +148,8 @@ void SqlDatabase::close()
 {
     if( _db ) {
         SQLITE_DO(sqlite3_close(_db) );
-        if (_errId != SQLITE_OK) {
-            qWarning() << "ERROR When closing DB" << _error;
-            Q_ASSERT(!"SQLite Close Error");
-        }
+        // Fatal because reopening an unclosed db might be problematic.
+        ENFORCE(_errId == SQLITE_OK, "Error when closing DB");
         _db = 0;
     }
 }
@@ -223,11 +222,7 @@ int SqlQuery::prepare( const QString& sql, bool allow_failure )
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
-            if (!allow_failure) {
-                qFatal("SQLITE Prepare error: %s in %s",
-                       _error.toLocal8Bit().data(),
-                       sql.toLocal8Bit().data());
-            }
+            ENFORCE(allow_failure, "SQLITE Prepare error");
         }
     }
     return _errId;
@@ -284,61 +279,63 @@ bool SqlQuery::next()
 void SqlQuery::bindValue(int pos, const QVariant& value)
 {
     int res = -1;
-    Q_ASSERT(_stmt);
-    if( _stmt ) {
-        switch (value.type()) {
-        case QVariant::Int:
-        case QVariant::Bool:
-            res = sqlite3_bind_int(_stmt, pos, value.toInt());
-            break;
-        case QVariant::Double:
-            res = sqlite3_bind_double(_stmt, pos, value.toDouble());
-            break;
-        case QVariant::UInt:
-        case QVariant::LongLong:
-            res = sqlite3_bind_int64(_stmt, pos, value.toLongLong());
-            break;
-        case QVariant::DateTime: {
-            const QDateTime dateTime = value.toDateTime();
-            const QString str = dateTime.toString(QLatin1String("yyyy-MM-ddThh:mm:ss.zzz"));
-            res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-                                      str.size() * sizeof(ushort), SQLITE_TRANSIENT);
-            break;
+    if (!_stmt) {
+        ASSERT(false);
+        return;
+    }
+
+    switch (value.type()) {
+    case QVariant::Int:
+    case QVariant::Bool:
+        res = sqlite3_bind_int(_stmt, pos, value.toInt());
+        break;
+    case QVariant::Double:
+        res = sqlite3_bind_double(_stmt, pos, value.toDouble());
+        break;
+    case QVariant::UInt:
+    case QVariant::LongLong:
+        res = sqlite3_bind_int64(_stmt, pos, value.toLongLong());
+        break;
+    case QVariant::DateTime: {
+        const QDateTime dateTime = value.toDateTime();
+        const QString str = dateTime.toString(QLatin1String("yyyy-MM-ddThh:mm:ss.zzz"));
+        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
+                                  str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+        break;
+    }
+    case QVariant::Time: {
+        const QTime time = value.toTime();
+        const QString str = time.toString(QLatin1String("hh:mm:ss.zzz"));
+        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
+                                  str.size() * sizeof(ushort), SQLITE_TRANSIENT);
+        break;
+    }
+    case QVariant::String: {
+        if( !value.toString().isNull() ) {
+            // lifetime of string == lifetime of its qvariant
+            const QString *str = static_cast<const QString*>(value.constData());
+            res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
+                                      (str->size()) * sizeof(QChar), SQLITE_TRANSIENT);
+        } else {
+            res = sqlite3_bind_null(_stmt, pos);
         }
-        case QVariant::Time: {
-            const QTime time = value.toTime();
-            const QString str = time.toString(QLatin1String("hh:mm:ss.zzz"));
-            res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-                                      str.size() * sizeof(ushort), SQLITE_TRANSIENT);
-            break;
-        }
-        case QVariant::String: {
-            if( !value.toString().isNull() ) {
-                // lifetime of string == lifetime of its qvariant
-                const QString *str = static_cast<const QString*>(value.constData());
-                res = sqlite3_bind_text16(_stmt, pos, str->utf16(),
-                                          (str->size()) * sizeof(QChar), SQLITE_TRANSIENT);
-            } else {
-                res = sqlite3_bind_null(_stmt, pos);
-            }
-            break; }
-        case QVariant::ByteArray: {
-            auto ba = value.toByteArray();
-            res = sqlite3_bind_text(_stmt, pos, ba.constData(), ba.size(), SQLITE_TRANSIENT);
-            break;
-        }
-        default: {
-            QString str = value.toString();
-            // SQLITE_TRANSIENT makes sure that sqlite buffers the data
-            res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
-                                      (str.size()) * sizeof(QChar), SQLITE_TRANSIENT);
-            break; }
-        }
+        break; }
+    case QVariant::ByteArray: {
+        auto ba = value.toByteArray();
+        res = sqlite3_bind_text(_stmt, pos, ba.constData(), ba.size(), SQLITE_TRANSIENT);
+        break;
+    }
+    default: {
+        QString str = value.toString();
+        // SQLITE_TRANSIENT makes sure that sqlite buffers the data
+        res = sqlite3_bind_text16(_stmt, pos, str.utf16(),
+                                  (str.size()) * sizeof(QChar), SQLITE_TRANSIENT);
+        break; }
     }
     if (res != SQLITE_OK) {
         qDebug() << Q_FUNC_INFO << "ERROR" << value << res;
     }
-    Q_ASSERT( res == SQLITE_OK );
+    ASSERT( res == SQLITE_OK );
 }
 
 bool SqlQuery::nullValue(int index)

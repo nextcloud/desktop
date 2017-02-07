@@ -25,7 +25,7 @@
 #include "syncengine.h"
 #include "propagateremotemove.h"
 #include "propagateremotedelete.h"
-
+#include "asserts.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -188,7 +188,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
 void PropagateUploadFileNG::slotDeleteJobFinished()
 {
     auto job = qobject_cast<DeleteJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     _jobs.remove(_jobs.indexOf(job));
 
     QNetworkReply::NetworkError err = job->reply()->error();
@@ -220,7 +220,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 
 void PropagateUploadFileNG::startNewUpload()
 {
-    Q_ASSERT(propagator()->_activeJobList.count(this) == 1);
+    ASSERT(propagator()->_activeJobList.count(this) == 1);
     _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16) ^ qHash(_item->_file);
     _sent = 0;
     _currentChunk = 0;
@@ -270,11 +270,12 @@ void PropagateUploadFileNG::startNextChunk()
         return;
 
     quint64 fileSize = _item->_size;
-    Q_ASSERT(fileSize >= _sent);
+    ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
+
     quint64 currentChunkSize = qMin(chunkSize(), fileSize - _sent);
 
     if (currentChunkSize == 0) {
-        Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
+        ASSERT(_jobs.isEmpty());
         _finished = true;
         // Finish with a MOVE
         QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
@@ -343,7 +344,8 @@ void PropagateUploadFileNG::startNextChunk()
 void PropagateUploadFileNG::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
+
     slotJobDestroyed(job); // remove it from the _jobs list
 
     qDebug() << job->reply()->request().url() << "FINISHED WITH STATUS"
@@ -391,7 +393,7 @@ void PropagateUploadFileNG::slotPutFinished()
         return;
     }
 
-    Q_ASSERT(_sent <= _item->_size);
+    ENFORCE(_sent <= _item->_size, "can't send more than size");
     bool finished = _sent == _item->_size;
 
     // Check if the file still exists

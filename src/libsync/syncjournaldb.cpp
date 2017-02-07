@@ -27,6 +27,7 @@
 #include "utility.h"
 #include "version.h"
 #include "filesystem.h"
+#include "asserts.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -178,7 +179,7 @@ bool SyncJournalDb::sqlFail( const QString& log, const SqlQuery& query )
 {
     commitTransaction();
     qWarning() << "SQL Error" << log << query.error();
-    Q_ASSERT(!"SQL ERROR");
+    ASSERT(false);
     _db.close();
     return false;
 }
@@ -1607,7 +1608,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
 QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok )
 {
     QStringList result;
-    Q_ASSERT(ok);
+    ASSERT(ok);
 
     QMutexLocker locker(&_mutex);
     if( !checkConnect() ) {

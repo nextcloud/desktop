@@ -24,6 +24,7 @@
 #include "csync_private.h"
 #include "filesystem.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -83,7 +84,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString& localPath,
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
-    Q_ASSERT(localPath.endsWith(QLatin1Char('/')));
+    ASSERT(localPath.endsWith(QLatin1Char('/')));
 
     csync_create(&_csync_ctx, localPath.toUtf8().data());
 
@@ -353,7 +354,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
 
     QTextCodec::ConverterState utf8State;
     static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    Q_ASSERT(codec);
+    ASSERT(codec);
     QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
     QString renameTarget;
     QString key = fileUtf8;
@@ -389,9 +390,11 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_modtime = file->modtime;
     } else {
         if (instruction != CSYNC_INSTRUCTION_NONE) {
-            qDebug() << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
-            Q_ASSERT(!"Instructions are both unequal NONE");
-            return -1;
+            qWarning() << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
+            ASSERT(false);
+            // Set instruction to NONE for safety.
+            file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
+            return -1; // should lead to treewalk error
         }
     }
 
@@ -499,7 +502,7 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
         item->_status = SyncFileItem::SoftError;
         break;
     default:
-        Q_ASSERT("Non handled error-status");
+        ASSERT(false, "Non handled error-status");
         /* No error string */
     }
 
@@ -709,8 +712,11 @@ void SyncEngine::startSync()
         }
     }
 
-    Q_ASSERT(!s_anySyncRunning);
-    Q_ASSERT(!_syncRunning);
+    if (s_anySyncRunning || _syncRunning) {
+        ASSERT(false);
+        return;
+    }
+
     s_anySyncRunning = true;
     _syncRunning = true;
     _anotherSyncNeeded = NoFollowUpSync;

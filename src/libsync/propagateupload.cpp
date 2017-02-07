@@ -25,6 +25,7 @@
 #include "checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -375,7 +376,7 @@ bool UploadDevice::prepareAndOpen(const QString& fileName, qint64 start, qint64 
 
 
 qint64 UploadDevice::writeData(const char* , qint64 ) {
-    Q_ASSERT(!"write to read only device");
+    ASSERT(false, "write to read only device");
     return 0;
 }
 
@@ -486,7 +487,7 @@ void PropagateUploadFileCommon::startPollJob(const QString& path)
 void PropagateUploadFileCommon::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
 
     propagator()->_activeJobList.removeOne(this);
 

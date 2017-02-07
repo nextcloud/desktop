@@ -25,6 +25,7 @@
 #include "checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -171,7 +172,8 @@ void PropagateUploadFileV1::startNextChunk()
 void PropagateUploadFileV1::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
+
     slotJobDestroyed(job); // remove it from the _jobs list
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"

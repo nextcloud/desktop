@@ -25,6 +25,7 @@
 #include "configfile.h"
 #include "utility.h"
 #include "account.h"
+#include "asserts.h"
 #include <json.h>
 
 #ifdef Q_OS_WIN
@@ -638,7 +639,7 @@ bool PropagateDirectory::scheduleNextJob()
             return true;
         }
 
-        Q_ASSERT(_subJobs.at(i)->_state == Running);
+        ASSERT(_subJobs.at(i)->_state == Running);
 
         auto paral = _subJobs.at(i)->parallelism();
         if (paral == WaitForFinished) {
@@ -654,6 +655,7 @@ bool PropagateDirectory::scheduleNextJob()
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
     PropagatorJob *subJob = static_cast<PropagatorJob *>(sender());
+    ASSERT(subJob);
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
@@ -663,7 +665,7 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
         _firstJob.reset();
     } else {
         int i = _subJobs.indexOf(subJob);
-        Q_ASSERT(i >= 0);
+        ASSERT(i >= 0);
         _subJobs.remove(i);
     }
 
@@ -759,7 +761,7 @@ void CleanupPollsJob::start()
 void CleanupPollsJob::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
         emit aborted(job->_item->_errorString);
         deleteLater();

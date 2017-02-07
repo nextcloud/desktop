@@ -13,14 +13,17 @@
  */
 
 #include "discoveryphase.h"
+
+#include "account.h"
+#include "theme.h"
+#include "asserts.h"
+
 #include <csync_private.h>
 #include <csync_rename.h>
-#include <qdebug.h>
 
+#include <qdebug.h>
 #include <QUrl>
-#include "account.h"
 #include <QFileInfo>
-#include "theme.h"
 #include <cstring>
 
 
