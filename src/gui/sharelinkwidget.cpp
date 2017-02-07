@@ -229,7 +229,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     Q_FOREACH(auto share, shares) {
 
         if (share->getShareType() == Share::TypeLink) {
-            _share = qSharedPointerObjectCast<LinkShare>(share);
+            _share = qSharedPointerDynamicCast<LinkShare>(share);
             _ui->pushButton_copy->show();
             _ui->pushButton_mail->show();
 

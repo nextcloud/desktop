@@ -1,8 +1,6 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
-
 configure_file( version.h.in "${CMAKE_CURRENT_BINARY_DIR}/version.h" )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})

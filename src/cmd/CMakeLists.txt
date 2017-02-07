@@ -1,8 +1,6 @@
 project(cmd)
 set(CMAKE_AUTOMOC TRUE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
-
 set(cmd_NAME ${APPLICATION_EXECUTABLE}cmd)
 set(cmd_SRC
     cmd.cpp
