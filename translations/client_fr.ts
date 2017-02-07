@@ -263,17 +263,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
         <source>Confirm Account Removal</source>
-        <translation>Confirmer la suppression du compte</translation>
+        <translation>Confirmation de retrait du compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>p&gt;Êtes-vous certain de vouloir supprimer le compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt;Aucun fichier ne sera supprimé.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer &lt;i&gt;%1&lt;/i&gt; des comptes synchronisés avec le serveur ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Remarque :&lt;/b&gt; cela ne supprimera pas votre compte sur le serveur et aucun fichier ne sera supprimé ni localement ni en ligne.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>Remove connection</source>
-        <translation>Supprimer la connexion</translation>
+        <translation>Retirer le compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="225"/>
