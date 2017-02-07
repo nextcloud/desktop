@@ -345,7 +345,7 @@ public:
             } else
                 xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
-            auto gmtDate = fileInfo.lastModified.toTimeZone(QTimeZone("GMT"));
+            auto gmtDate = fileInfo.lastModified.toTimeZone(QTimeZone(0));
             auto stringDate = gmtDate.toString("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));

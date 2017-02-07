@@ -207,7 +207,7 @@ __attribute__ ((packed))
 #endif
 ;
 
-void csync_file_stat_free(csync_file_stat_t *st);
+OCSYNC_EXPORT void csync_file_stat_free(csync_file_stat_t *st);
 
 /*
  * context for the treewalk function
