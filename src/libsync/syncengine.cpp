@@ -892,6 +892,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _backInTimeFiles = 0;
     bool walkOk = true;
     _remotePerms.clear();
+    _remotePerms.reserve(c_rbtree_size(_csync_ctx->remote.tree));
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
