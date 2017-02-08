@@ -662,7 +662,7 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     bool wasFirstJob = false;
     if (subJob == _firstJob.data()) {
         wasFirstJob = true;
-        _firstJob.reset();
+        _firstJob.take();
     } else {
         int i = _subJobs.indexOf(subJob);
         ASSERT(i >= 0);
