@@ -515,5 +515,3 @@ QString SocketApi::buildRegisterPathMessage(const QString& path)
 }
 
 } // namespace OCC
-
-Q_DECLARE_METATYPE(OCC::SocketListener)
