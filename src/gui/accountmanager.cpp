@@ -46,11 +46,17 @@ AccountManager *AccountManager::instance()
 bool AccountManager::restore()
 {
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    if (settings->status() != QSettings::NoError) {
+        qDebug() << "Could not read settings from" << settings->fileName()
+                 << settings->status();
+        return false;
+    }
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()
             && !settings->contains(QLatin1String(versionC))) {
-        return restoreFromLegacySettings();
+        restoreFromLegacySettings();
+        return true;
     }
 
     foreach (const auto& accountId, settings->childGroups()) {
@@ -69,6 +75,9 @@ bool AccountManager::restore()
 
 bool AccountManager::restoreFromLegacySettings()
 {
+    qDebug() << "Migrate: restoreFromLegacySettings, checking settings group"
+             << Theme::instance()->appName();
+
     // try to open the correctly themed settings
     auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
 

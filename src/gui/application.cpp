@@ -156,7 +156,23 @@ Application::Application(int &argc, char **argv) :
 
     connect(this, SIGNAL(messageReceived(QString, QObject*)), SLOT(slotParseMessage(QString, QObject*)));
 
-    AccountManager::instance()->restore();
+    if (!AccountManager::instance()->restore()) {
+        // If there is an error reading the account settings, try again
+        // after a couple of seconds, if that fails, give up.
+        // (non-existence is not an error)
+        Utility::sleep(5);
+        if (!AccountManager::instance()->restore()) {
+            qDebug() << "Could not read the account settings, quitting";
+            QMessageBox::critical(
+                        0,
+                        tr("Error accessing the configuration file"),
+                        tr("There was an error while accessing the configuration "
+                           "file at %1.").arg(ConfigFile().configFile()),
+                        tr("Quit ownCloud"));
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return;
+        }
+    }
 
     FolderMan::instance()->setSyncEnabled(true);
 
