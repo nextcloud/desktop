@@ -60,9 +60,6 @@
 
 #define DEBUG qDebug() << "SocketApi: "
 
-Q_DECLARE_METATYPE(OCC::SocketListener)
-
-
 static inline QString removeTrailingSlash(QString path)
 {
     Q_ASSERT(path.endsWith(QLatin1Char('/')));
@@ -113,7 +110,7 @@ class SocketListener {
 public:
     QIODevice* socket;
 
-    SocketListener(QIODevice* socket = nullptr) : socket(socket) { }
+    SocketListener(QIODevice* socket = 0) : socket(socket) { }
 
     void sendMessage(const QString& message, bool doWait = false) const
     {
@@ -517,3 +514,5 @@ QString SocketApi::buildRegisterPathMessage(const QString& path)
 }
 
 } // namespace OCC
+
+Q_DECLARE_METATYPE(OCC::SocketListener)

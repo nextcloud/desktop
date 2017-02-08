@@ -226,7 +226,7 @@ public:
                 etag = file->etag;
             return file;
         }
-        return nullptr;
+        return 0;
     }
 
     FileInfo *createDir(const QString &relativePath) {
