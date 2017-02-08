@@ -883,17 +883,22 @@ void Folder::setSaveBackwardsCompatible(bool save)
     _saveBackwardsCompatible = save;
 }
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *cancel)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
 {
     ConfigFile cfgFile;
     if (!cfgFile.promptDeleteFiles())
         return;
 
-    QString msg =
-        tr("This sync would remove all the files in the sync folder '%1'.\n"
-           "This might be because the folder was silently reconfigured, or that all "
-           "the files were manually removed.\n"
-           "Are you sure you want to perform this operation?");
+    QString msg = dir == SyncFileItem::Down ?
+        tr("All files in the sync folder '%1' folder were deleted on the server.\n"
+            "These deletes will be synchronized to your local sync folder, making such files "
+            "unavailable unless you have a right to restore. \n"
+            "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
+            "If you decide to delete the files, they will be unavailable to you, unless you are the owner.") :
+        tr("All the files in your local sync folder '%1' were deleted. These deletes will be "
+            "synchronized with your server, making such files unavailable unless restored.\n"
+            "Are you sure you want to sync those actions with the server?\n"
+            "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
                        msg.arg(shortGuiLocalPath()));
     msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
