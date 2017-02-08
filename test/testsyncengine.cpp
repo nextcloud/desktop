@@ -214,7 +214,6 @@ private slots:
     }
 
     void abortAfterFailedMkdir() {
-        QSKIP("Skip for 2.3");
         FakeFolder fakeFolder{FileInfo{}};
         QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
         fakeFolder.serverErrorPaths().append("NewFolder");

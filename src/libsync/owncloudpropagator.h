@@ -227,7 +227,7 @@ public:
 private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
-            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
+            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)));
             connect(next, SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
