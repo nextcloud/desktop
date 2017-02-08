@@ -15,6 +15,7 @@
 #include "propagateremotedelete.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
+#include "asserts.h"
 
 namespace OCC {
 
@@ -81,7 +82,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    Q_ASSERT(_job);
+    ASSERT(_job);
 
     qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()

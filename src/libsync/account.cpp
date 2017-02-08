@@ -20,6 +20,7 @@
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
+#include "asserts.h"
 
 #include <QSettings>
 #include <QMutex>
@@ -153,8 +154,9 @@ QUrl Account::davUrl() const
  */
 void Account::clearCookieJar()
 {
-    Q_ASSERT(qobject_cast<CookieJar*>(_am->cookieJar()));
-    static_cast<CookieJar*>(_am->cookieJar())->setAllCookies(QList<QNetworkCookie>());
+    auto jar = qobject_cast<CookieJar*>(_am->cookieJar());
+    ASSERT(jar);
+    jar->setAllCookies(QList<QNetworkCookie>());
     emit wantsAccountSaved(this);
 }
 

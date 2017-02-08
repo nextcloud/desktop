@@ -16,6 +16,7 @@
 #include "folderman.h"
 #include "accountstate.h"
 #include "utility.h"
+#include "asserts.h"
 #include <theme.h>
 #include <account.h>
 #include "folderstatusdelegate.h"
@@ -480,14 +481,14 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
     }
     auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_pathIdx;
     int i = 1;
-    Q_ASSERT(pathIdx.at(0) < _folders.count());
+    ASSERT(pathIdx.at(0) < _folders.count());
     if (pathIdx.count() == 1) {
         return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
     while (i < pathIdx.count() - 1) {
-        Q_ASSERT(pathIdx.at(i) < info->_subs.count());
+        ASSERT(pathIdx.at(i) < info->_subs.count());
         info = &info->_subs[pathIdx.at(i)];
         ++i;
     }
@@ -576,7 +577,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
     auto job = sender();
     auto permissionMap = job->property(propertyPermissionMap).toMap();
     job->setProperty(propertyPermissionMap, QVariant()); // avoid a detach of the map while it is modified
-    Q_ASSERT(!href.endsWith(QLatin1Char('/'))); // LsColXMLParser::parse removes the trailing slash before calling us.
+    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
     permissionMap[href] = *it;
     job->setProperty(propertyPermissionMap, permissionMap);
 }
@@ -584,7 +585,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     auto parentInfo = infoForIndex(idx);
     if (!parentInfo) {
@@ -715,7 +716,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     if (!idx.isValid()) {
         return;
@@ -730,7 +731,7 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
-            Q_ASSERT(!parentInfo->hasLabel());
+            ASSERT(!parentInfo->hasLabel());
             beginInsertRows(idx, 0, 0);
             parentInfo->_hasError = true;
             endInsertRows();
@@ -1135,7 +1136,7 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
 void FolderStatusModel::slotNewBigFolder()
 {
     auto f = qobject_cast<Folder *>(sender());
-    Q_ASSERT(f);
+    ASSERT(f);
 
     int folderIndex = -1;
     for (int i = 0; i < _folders.count(); ++i) {

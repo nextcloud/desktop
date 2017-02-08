@@ -17,6 +17,7 @@
 #include "account.h"
 #include "syncjournalfilerecord.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 #include <QFile>
 
 namespace OCC {
@@ -70,7 +71,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    Q_ASSERT(_job);
+    ASSERT(_job);
 
     qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
