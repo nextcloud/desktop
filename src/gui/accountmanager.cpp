@@ -86,7 +86,7 @@ bool AccountManager::restoreFromLegacySettings()
 
         QFileInfo fi( oCCfgFile );
         if( fi.isReadable() ) {
-            QSettings *oCSettings = new QSettings(oCCfgFile, QSettings::IniFormat);
+            std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));
             oCSettings->beginGroup(QLatin1String("ownCloud"));
 
             // Check the theme url to see if it is the same url that the oC config was for
@@ -101,9 +101,7 @@ bool AccountManager::restoreFromLegacySettings()
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
-                    settings.reset( oCSettings );
-                } else {
-                    delete oCSettings;
+                    settings = std::move(oCSettings);
                 }
             }
         }
