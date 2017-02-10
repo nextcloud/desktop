@@ -132,11 +132,16 @@ changed and no synchronization occurs.
 In the event a file has changed on both the local and the remote repository
 since the last sync run, it can not easily be decided which version of the file
 is the one that should be used. However, changes to any side will not be lost.  Instead,
-a *conflict case* is created. The client resolves this conflict by creating a
-conflict file of the older of the two files and saving the newer file under the
-original file name. Conflict files are always created on the client and never
-on the server. The conflict file uses the same name as the original file, but
-is appended with the timestamp of the conflict detection.
+a *conflict case* is created. The client resolves this conflict by renaming the
+local file, appending a conflict label and timestamp, and saving the remote file
+under the original file name.
+
+Example: Assume there is a conflict in message.txt because its contents have
+changed both locally and remotely since the last sync run. The local file with
+the local changes will be renamed to message_conflict-20160101-153110.txt and
+the remote file will be downloaded and saved as message.txt.
+
+Conflict files are always created on the client and never on the server.
 
 
 .. _ignored-files-label:
