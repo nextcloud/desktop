@@ -183,15 +183,7 @@ private slots:
     }
 };
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-// Qt4 does not have QTEST_GUILESS_MAIN, so we simulate it.
-int main(int argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-    TestFolderWatcher tc;
-    return QTest::qExec(&tc, argc, argv);
-}
-#elif defined(Q_OS_MAC)
+#ifdef Q_OS_MAC
     QTEST_MAIN(TestFolderWatcher)
 #else
     QTEST_GUILESS_MAIN(TestFolderWatcher)
