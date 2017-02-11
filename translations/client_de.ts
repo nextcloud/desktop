@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Es ist ein Fehler beim Zugriff auf die Konfigurationsdatei unter %1 aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud verlassen</translation>
     </message>
 </context>
 <context>
@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien im Synchronisationsordner &apos;%1&apos; werden auf dem Server gelöscht.
+Diese Löschung wird in Ihr lokales Synchronisationsverzeichnis synchronisiert. Dadurch sind die Dateien nicht mehr verfügbar, falls Sie keine Möglichkeit zur Wiederherstellung haben.
+Wenn Sie sich dazu entscheiden, diese Dateien zu behalten, werden diese wieder synchronisiert. Dies geschieht nur, wenn Sie die Rechte dazu haben.
+Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfügbar, außer Sie sind der Eigentümer.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="898"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle Dateien im Synchronisationsordner &apos;%1&apos; werden auf dem Server gelöscht. Diese Löschung wird mit Ihrem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, außer diese werden wiederhergestellt.
+Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren möchten?
+Falls dies ein Missgeschick war und Sie sich zum Behalten der Datei entscheiden, werden diese wieder vom Server synchronisiert.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="902"/>

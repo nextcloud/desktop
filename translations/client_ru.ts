@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при доступе к файлу конфигурации</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>При обращении к файлу конфигурации %1 произошла ошибка.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Выйти из ownCloud</translation>
     </message>
 </context>
 <context>
@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Все фйлы в синхронизируемом каталоге &apos;%1&apos; были удалены на сервере.
+Эти удаления будут переданы в ваш локальный синхронизируемый каталог, так что файлы станут недоступны, если только у вас нет права на восстановление. 
+Если вы решите сохранить эти файлы, то они будут повторно синхронизированы с сервером, при наличии у вас прав на это.
+Если вы решили удалить файлы, они станут вам недоступны, крмое случая, когда вы сам владелец.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="898"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы в локальном синхронизируемом каталоге &apos;%1&apos; были удалены. Эти удаления будут отправлены на ваш сервер, сделав таким образом файлы совсем недоступными, если только не восстанавливать их из резервной копии.
+Вы уверены, что хотите засинхронизировать сервер со всеми этими изменениями?
+Если это произошло случайно и вы решите сохранить файлы, они будут перезакачаны с сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="902"/>

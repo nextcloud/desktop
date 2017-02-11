@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Napaka dostopa do nastavitvene datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Med dostopom do nastavitvene datoteke na %1 je prišlo do napake.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Končaj ownCloud</translation>
     </message>
 </context>
 <context>
