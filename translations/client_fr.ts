@@ -3375,7 +3375,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="629"/>
         <source>Pause all synchronization</source>
-        <translation>Mettre en pause tout la synchronisation </translation>
+        <translation>Mettre en pause toutes les synchronisations</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="631"/>

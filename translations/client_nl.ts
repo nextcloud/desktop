@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij benaderen configuratiebestand</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Er trad een fout op bij het benaderen configuratiebestand op %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Verlaten ownCloud</translation>
     </message>
 </context>
 <context>
