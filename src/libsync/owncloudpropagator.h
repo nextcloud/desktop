@@ -170,30 +170,22 @@ public slots:
     virtual void start() = 0;
 };
 
-
 /**
- * @brief Propagate a directory, and all its sub entries.
+ * @brief Job that runs subjobs. It becomes finished only when all subjobs are finished.
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob {
+class PropagatorCompositeJob : public PropagatorJob {
     Q_OBJECT
 public:
-    // e.g: create the directory
-    QScopedPointer<PropagateItemJob>_firstJob;
-
-    // all the sub files or sub directories.
     QVector<PropagatorJob *> _subJobs;
-
-    SyncFileItemPtr _item;
-
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
-    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
+    explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
-        , _item(item), _hasError(SyncFileItem::NoStatus)
+        , _hasError(SyncFileItem::NoStatus)
     { }
 
-    virtual ~PropagateDirectory() {
+    virtual ~PropagatorCompositeJob() {
         qDeleteAll(_subJobs);
     }
 
@@ -204,17 +196,9 @@ public:
     virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
-        if (_firstJob)
-            _firstJob->abort();
         foreach (PropagatorJob *j, _subJobs)
             j->abort();
     }
-
-    void increaseAffectedCount() {
-        _firstJob->_item->_affectedItems++;
-    }
-
-    void finalize();
 
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
@@ -230,6 +214,48 @@ private slots:
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
+};
+
+/**
+ * @brief Propagate a directory, and all its sub entries.
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob {
+    Q_OBJECT
+public:
+    SyncFileItemPtr _item;
+    // e.g: create the directory
+    QScopedPointer<PropagateItemJob>_firstJob;
+
+    PropagatorCompositeJob _subJobs;
+
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem));
+
+    void append(PropagatorJob *subJob) {
+        _subJobs.append(subJob);
+    }
+
+    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
+    virtual void abort() Q_DECL_OVERRIDE {
+        if (_firstJob)
+            _firstJob->abort();
+        _subJobs.abort();
+    }
+
+    void increaseAffectedCount() {
+        _firstJob->_item->_affectedItems++;
+    }
+
+
+    qint64 committedDiskSpace() const Q_DECL_OVERRIDE {
+        return _subJobs.committedDiskSpace();
+    }
+
+private slots:
+
+    void slotFirstJobFinished(SyncFileItem::Status status);
+    void slotSubJobsFinished(SyncFileItem::Status status);
 };
 
 
@@ -251,7 +277,6 @@ public:
 class OwncloudPropagator : public QObject {
     Q_OBJECT
 
-    PropagateItemJob *createJob(const SyncFileItemPtr& item);
     QScopedPointer<PropagateDirectory> _rootJob;
 
 public:
@@ -304,6 +329,7 @@ public:
     bool localFileNameClash(const QString& relfile);
     QString getFilePath(const QString& tmp_file_name) const;
 
+    PropagateItemJob *createJob(const SyncFileItemPtr& item);
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob) {
