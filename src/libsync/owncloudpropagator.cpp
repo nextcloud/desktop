@@ -621,14 +621,9 @@ bool PropagateDirectory::scheduleNextJob()
         return false;
     }
 
-    bool stopAtDirectory = false;
     for (int i = 0; i < _subJobs.size(); ++i) {
         if (_subJobs.at(i)->_state == Finished) {
             continue;
-        }
-
-        if (stopAtDirectory && qobject_cast<PropagateDirectory*>(_subJobs.at(i))) {
-            return false;
         }
 
         if (possiblyRunNextJob(_subJobs.at(i))) {
@@ -640,9 +635,6 @@ bool PropagateDirectory::scheduleNextJob()
         auto paral = _subJobs.at(i)->parallelism();
         if (paral == WaitForFinished) {
             return false;
-        }
-        if (paral == WaitForFinishedInParentDirectory) {
-            stopAtDirectory = true;
         }
     }
     return false;

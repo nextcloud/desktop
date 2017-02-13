@@ -76,12 +76,6 @@ public:
             So this job is guaranteed to finish before any jobs below it
             are executed. */
         WaitForFinished,
-
-        /** A job with this parallelism will allow later jobs to start and
-            run in parallel as long as they aren't PropagateDirectory jobs.
-            When the first directory job is encountered, no further jobs
-            will be started until this one is finished. */
-        WaitForFinishedInParentDirectory
     };
 
     virtual JobParallelism parallelism() { return FullParallelism; }

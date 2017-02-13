@@ -54,7 +54,7 @@ public:
         : PropagateItemJob(propagator, item) {}
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return OCC::PropagatorJob::WaitForFinishedInParentDirectory; }
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->_isDirectory ? WaitForFinished : FullParallelism; }
 
     /**
      * Rename the directory in the selective sync list
