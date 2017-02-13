@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Error al acceder al archivo de configuración</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ha ocurrido un error al acceder al archivo de configuración %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Salir de OwnCloud</translation>
     </message>
 </context>
 <context>
@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta %1 serán borrados en el servidor.
+Estos borrados serán sincronizados en su carpeta local sync, haciendo imposible su recuperación a menos que disponga de archivos de respaldo.
+Si decide mantener estos archivos, serán re-sincronizados con el servidor si Vd. dispone de permisos para ello.
+Si decide borrarlos, no serán visibles para Vd. a menos que sea usted el propietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="898"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos los archivos en la carpeta %1 serán borrados en el servidor.
+¿Está Vd. seguro de que desea sincronizarse con el servidor?
+Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados con el servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="902"/>
