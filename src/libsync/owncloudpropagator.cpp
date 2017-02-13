@@ -381,22 +381,22 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
                 }
             } else {
                 PropagateDirectory* currentDirJob = directories.top().second;
-                currentDirJob->append(dir);
+                currentDirJob->appendJob(dir);
             }
             directories.push(qMakePair(item->destination() + "/" , dir));
-        } else if (PropagateItemJob* current = createJob(item)) {
+        } else {
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
-                directoriesToRemove.prepend(current);
+                directoriesToRemove.prepend(createJob(item));
                 removedDirectory = item->_file + "/";
             } else {
-                directories.top().second->append(current);
+                directories.top().second->appendTask(item);
             }
         }
     }
 
     foreach(PropagatorJob* it, directoriesToRemove) {
-        _rootJob->append(it);
+        _rootJob->appendJob(it);
     }
 
     connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
@@ -604,12 +604,6 @@ bool PropagatorCompositeJob::scheduleNextJob()
     // Start the composite job
     if (_state == NotYetStarted) {
         _state = Running;
-
-        if (_jobsToDo.isEmpty()) {
-            _state = Finished;
-            emit finished(SyncFileItem::Success);
-            return true;
-        }
     }
 
     // Ask all the running composite jobs if they have something new to schedule.
@@ -635,6 +629,26 @@ bool PropagatorCompositeJob::scheduleNextJob()
         _runningJobs.append(nextJob);
         return possiblyRunNextJob(nextJob);
     }
+    while (!_tasksToDo.isEmpty()) {
+        SyncFileItemPtr nextTask = _tasksToDo.first();
+        _tasksToDo.remove(0);
+        PropagatorJob *job = propagator()->createJob(nextTask);
+        if (!job) {
+            qWarning() << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
+            continue;
+        }
+
+        _runningJobs.append(job);
+        return possiblyRunNextJob(job);
+    }
+
+    // If neither us or our children had stuff left to do we could hang. Make sure
+    // we mark this job as finished so that the propagator can schedule a new one.
+    if (_jobsToDo.isEmpty() && _tasksToDo.isEmpty() && _runningJobs.isEmpty()) {
+        // Our parent jobs are already iterating over their running jobs, post to the event loop
+        // to avoid removing ourself from that list while they iterate.
+        QMetaObject::invokeMethod(this, "finalize", Qt::QueuedConnection);
+    }
     return false;
 }
 
@@ -658,13 +672,22 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
         _hasError = status;
     }
 
-    // Check if we finished processing all the jobs.
-    if (_jobsToDo.isEmpty() && _runningJobs.isEmpty()) {
-        _state = Finished;
-        emit finished(_hasError == SyncFileItem::NoStatus ?  SyncFileItem::Success : _hasError);
+    if (_jobsToDo.isEmpty() && _tasksToDo.isEmpty() && _runningJobs.isEmpty()) {
+        finalize();
     } else {
         emit ready();
     }
+}
+
+void PropagatorCompositeJob::finalize()
+{
+    // The propagator will do parallel scheduling and this could be posted
+    // multiple times on the event loop, ignore the duplicate calls.
+    if (_state == Finished)
+        return;
+
+    _state = Finished;
+    emit finished(_hasError == SyncFileItem::NoStatus ?  SyncFileItem::Success : _hasError);
 }
 
 qint64 PropagatorCompositeJob::committedDiskSpace() const

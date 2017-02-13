@@ -178,6 +178,7 @@ class PropagatorCompositeJob : public PropagatorJob {
     Q_OBJECT
 public:
     QVector<PropagatorJob *> _jobsToDo;
+    SyncFileItemVector _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
@@ -191,8 +192,11 @@ public:
         qDeleteAll(_runningJobs);
     }
 
-    void append(PropagatorJob *subJob) {
-        _jobsToDo.append(subJob);
+    void appendJob(PropagatorJob *job) {
+        _jobsToDo.append(job);
+    }
+    void appendTask(const SyncFileItemPtr &item) {
+        _tasksToDo.append(item);
     }
 
     virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
@@ -216,6 +220,7 @@ private slots:
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
+    void finalize();
 };
 
 /**
@@ -233,8 +238,12 @@ public:
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem));
 
-    void append(PropagatorJob *subJob) {
-        _subJobs.append(subJob);
+    void appendJob(PropagatorJob *job) {
+        _subJobs.appendJob(job);
+    }
+
+    void appendTask(const SyncFileItemPtr &item) {
+        _subJobs.appendTask(item);
     }
 
     virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
