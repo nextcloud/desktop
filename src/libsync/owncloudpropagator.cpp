@@ -585,10 +585,10 @@ OwncloudPropagator *PropagatorJob::propagator() const
 
 PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism()
 {
-    // If any of the non-finished sub jobs is not parallel, we have to wait
-    for (int i = 0; i < _subJobs.count(); ++i) {
-        if (_subJobs.at(i)->parallelism() != FullParallelism) {
-            return _subJobs.at(i)->parallelism();
+    // If any of the running sub jobs is not parallel, we have to wait
+    for (int i = 0; i < _runningJobs.count(); ++i) {
+        if (_runningJobs.at(i)->parallelism() != FullParallelism) {
+            return _runningJobs.at(i)->parallelism();
         }
     }
     return FullParallelism;
@@ -601,27 +601,39 @@ bool PropagatorCompositeJob::scheduleNextJob()
         return false;
     }
 
+    // Start the composite job
     if (_state == NotYetStarted) {
         _state = Running;
 
-        if (_subJobs.isEmpty()) {
+        if (_jobsToDo.isEmpty()) {
             _state = Finished;
             emit finished(SyncFileItem::Success);
             return true;
         }
     }
 
-    for (int i = 0; i < _subJobs.size(); ++i) {
-        if (possiblyRunNextJob(_subJobs.at(i))) {
+    // Ask all the running composite jobs if they have something new to schedule.
+    for (int i = 0; i < _runningJobs.size(); ++i) {
+        ASSERT(_runningJobs.at(i)->_state == Running);
+
+        if (possiblyRunNextJob(_runningJobs.at(i))) {
             return true;
         }
 
-        ASSERT(_subJobs.at(i)->_state == Running);
-
-        auto paral = _subJobs.at(i)->parallelism();
+        // If any of the running sub jobs is not parallel, we have to cancel the scheduling
+        // of the rest of the list and wait for the blocking job to finish and emit ready().
+        auto paral = _runningJobs.at(i)->parallelism();
         if (paral == WaitForFinished) {
             return false;
         }
+    }
+
+    // Now it's our turn, check if we have something left to do.
+    if (!_jobsToDo.isEmpty()) {
+        PropagatorJob *nextJob = _jobsToDo.first();
+        _jobsToDo.remove(0);
+        _runningJobs.append(nextJob);
+        return possiblyRunNextJob(nextJob);
     }
     return false;
 }
@@ -633,9 +645,9 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
-    int i = _subJobs.indexOf(subJob);
+    int i = _runningJobs.indexOf(subJob);
     ASSERT(i >= 0);
-    _subJobs.remove(i);
+    _runningJobs.remove(i);
 
     if (status == SyncFileItem::FatalError) {
         abort();
@@ -647,7 +659,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     }
 
     // Check if we finished processing all the jobs.
-    if (_subJobs.isEmpty()) {
+    if (_jobsToDo.isEmpty() && _runningJobs.isEmpty()) {
         _state = Finished;
         emit finished(_hasError == SyncFileItem::NoStatus ?  SyncFileItem::Success : _hasError);
     } else {
@@ -658,7 +670,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 qint64 PropagatorCompositeJob::committedDiskSpace() const
 {
     qint64 needed = 0;
-    foreach (PropagatorJob* job, _subJobs) {
+    foreach (PropagatorJob* job, _runningJobs) {
         needed += job->committedDiskSpace();
     }
     return needed;
@@ -712,6 +724,7 @@ bool PropagateDirectory::scheduleNextJob()
     }
 
     if (_firstJob && _firstJob->_state == Running) {
+        // Don't schedule any more job until this is done.
         return false;
     }
 

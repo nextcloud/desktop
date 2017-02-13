@@ -177,7 +177,8 @@ public slots:
 class PropagatorCompositeJob : public PropagatorJob {
     Q_OBJECT
 public:
-    QVector<PropagatorJob *> _subJobs;
+    QVector<PropagatorJob *> _jobsToDo;
+    QVector<PropagatorJob *> _runningJobs;
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
@@ -186,17 +187,18 @@ public:
     { }
 
     virtual ~PropagatorCompositeJob() {
-        qDeleteAll(_subJobs);
+        qDeleteAll(_jobsToDo);
+        qDeleteAll(_runningJobs);
     }
 
     void append(PropagatorJob *subJob) {
-        _subJobs.append(subJob);
+        _jobsToDo.append(subJob);
     }
 
     virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
-        foreach (PropagatorJob *j, _subJobs)
+        foreach (PropagatorJob *j, _runningJobs)
             j->abort();
     }
 
