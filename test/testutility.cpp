@@ -169,7 +169,6 @@ private slots:
     void testFileNamesEqual()
     {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
-        qDebug() << "*** checking fileNamesEqual function";
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
@@ -201,5 +200,5 @@ private slots:
 
 };
 
-QTEST_APPLESS_MAIN(TestUtility)
+QTEST_GUILESS_MAIN(TestUtility)
 #include "testutility.moc"

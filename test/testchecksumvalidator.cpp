@@ -55,7 +55,6 @@ using namespace OCC;
     private slots:
 
     void initTestCase() {
-        qDebug() << Q_FUNC_INFO;
         _root = QDir::tempPath() + "/" + "test_" + QString::number(qrand());
         QDir rootDir(_root);
 
@@ -65,7 +64,9 @@ using namespace OCC;
     }
 
     void testUploadChecksummingAdler() {
-
+#ifndef ZLIB_FOUND
+        QSKIP("ZLIB not found.", SkipSingle);
+#else
         ComputeChecksum *vali = new ComputeChecksum(this);
         _expectedType = "Adler32";
         vali->setChecksumType(_expectedType);
@@ -81,6 +82,7 @@ using namespace OCC;
         loop.exec();
 
         delete vali;
+#endif
     }
 
     void testUploadChecksummingMd5() {
@@ -119,7 +121,9 @@ using namespace OCC;
     }
 
     void testDownloadChecksummingAdler() {
-
+#ifndef ZLIB_FOUND
+        QSKIP("ZLIB not found.", SkipSingle);
+#else
         QByteArray adler =  checkSumAdlerC;
         adler.append(":");
         adler.append(FileSystem::calcAdler32( _testfile ));
@@ -143,6 +147,7 @@ using namespace OCC;
         QTRY_VERIFY(_errorSeen);
 
         delete vali;
+#endif
     }
 
 

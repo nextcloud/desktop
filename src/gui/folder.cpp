@@ -53,7 +53,6 @@ Folder::Folder(const FolderDefinition& definition,
       , _accountState(accountState)
       , _definition(definition)
       , _csyncUnavail(false)
-      , _wipeDb(false)
       , _proxyDirty(true)
       , _lastSyncDuration(0)
       , _consecutiveFailingSyncs(0)

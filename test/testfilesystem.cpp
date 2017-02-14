@@ -17,7 +17,7 @@ class TestFileSystem : public QObject
 {
     Q_OBJECT
 
-    QString _root;
+    QTemporaryDir _root;
 
 
     QByteArray shellSum( const QByteArray& cmd, const QString& file )
@@ -38,51 +38,36 @@ class TestFileSystem : public QObject
     }
 
 private slots:
-    void initTestCase() {
-        qsrand(QTime::currentTime().msec());
-
-        QString subdir("test_"+QString::number(qrand()));
-        _root = QDir::tempPath() + "/" + subdir;
-
-        QDir dir("/tmp");
-        dir.mkdir(subdir);
-        qDebug() << "creating test directory " << _root;
-    }
-
-    void cleanupTestCase()
-    {
-      if( !_root.isEmpty() )
-        system(QString("rm -rf "+_root).toUtf8());
-    }
-
     void testMd5Calc()
     {
-       QString file( _root+"/file_a.bin");
-       writeRandomFile(file);
-       QFileInfo fi(file);
-       QVERIFY(fi.exists());
-       QByteArray sum = calcMd5(file);
+        QString file( _root.path() + "/file_a.bin");
+        QVERIFY(writeRandomFile(file));
+        QFileInfo fi(file);
+        QVERIFY(fi.exists());
+        QByteArray sum = calcMd5(file);
 
-       QByteArray sSum = shellSum("/usr/bin/md5sum", file);
-       qDebug() << "calculated" << sum << "versus md5sum:"<< sSum;
-       QVERIFY(!sSum.isEmpty());
-       QVERIFY(!sum.isEmpty());
-       QVERIFY(sSum == sum );
+        QByteArray sSum = shellSum("md5sum", file);
+        if (sSum.isEmpty())
+            QSKIP("Couldn't execute md5sum to calculate checksum, executable missing?", SkipSingle);
+
+        QVERIFY(!sum.isEmpty());
+        QCOMPARE(sSum, sum);
     }
 
     void testSha1Calc()
     {
-       QString file( _root+"/file_b.bin");
-       writeRandomFile(file);
-       QFileInfo fi(file);
-       QVERIFY(fi.exists());
-       QByteArray sum = calcSha1(file);
+        QString file( _root.path() + "/file_b.bin");
+        writeRandomFile(file);
+        QFileInfo fi(file);
+        QVERIFY(fi.exists());
+        QByteArray sum = calcSha1(file);
 
-       QByteArray sSum = shellSum("/usr/bin/sha1sum", file);
-       qDebug() << "calculated" << sum << "versus sha1sum:"<< sSum;
-       QVERIFY(!sSum.isEmpty());
-       QVERIFY(!sum.isEmpty());
-       QVERIFY(sSum == sum );
+        QByteArray sSum = shellSum("sha1sum", file);
+        if (sSum.isEmpty())
+            QSKIP("Couldn't execute sha1sum to calculate checksum, executable missing?", SkipSingle);
+
+        QVERIFY(!sum.isEmpty());
+        QCOMPARE(sSum, sum);
     }
 
 };

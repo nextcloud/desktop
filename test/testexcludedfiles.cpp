@@ -11,9 +11,7 @@
 
 using namespace OCC;
 
-#define STR_(X) #X
-#define STR(X) STR_(X)
-#define BIN_PATH STR(OWNCLOUD_BIN_PATH)
+#define EXCLUDE_LIST_FILE SOURCEDIR"/../sync-exclude.lst"
 
 class TestExcludedFiles: public QObject
 {
@@ -31,9 +29,7 @@ private slots:
         QVERIFY(!excluded.isExcluded("/a/.b", "/a", keepHidden));
         QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
 
-        QString path(BIN_PATH);
-        path.append("/sync-exclude.lst");
-        excluded.addExcludeFilePath(path);
+        excluded.addExcludeFilePath(EXCLUDE_LIST_FILE);
         excluded.reloadExcludes();
 
         QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));

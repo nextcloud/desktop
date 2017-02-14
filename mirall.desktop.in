@@ -698,6 +698,24 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -753,6 +771,10 @@ Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
 GenericName[he]=סנכון תיקייה
 Name[he]=@APPLICATION_NAME@ לקוח סנכרון שולחן עבודה 
 Icon[he]=@APPLICATION_EXECUTABLE@
+Comment[ia]=@APPLICATION_NAME@ cliente de synchronisation pro scriptorio
+GenericName[ia]=Synchronisar Dossier 
+Name[ia]=@APPLICATION_NAME@ cliente de synchronisation pro scriptorio
+Icon[ia]=@APPLICATION_EXECUTABLE@
 Comment[id]=Klien sinkronisasi desktop @APPLICATION_NAME@
 GenericName[id]=Folder Sync
 Name[id]=Klien sync desktop @APPLICATION_NAME@

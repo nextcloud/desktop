@@ -28,7 +28,6 @@ include(ConfigureChecks.cmake)
 
 
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR})
-set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 

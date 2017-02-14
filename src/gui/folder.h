@@ -324,7 +324,6 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     bool         _csyncUnavail;
-    bool         _wipeDb;
     bool         _proxyDirty;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString       _lastEtag;

@@ -84,7 +84,7 @@ QString OWNCLOUDSYNC_EXPORT longWinPath( const QString& inpath );
  */
 time_t OWNCLOUDSYNC_EXPORT getModTime(const QString& filename);
 
-bool setModTime(const QString &filename, time_t modTime);
+bool OWNCLOUDSYNC_EXPORT setModTime(const QString &filename, time_t modTime);
 
 /**
  * @brief Get the size for a file
