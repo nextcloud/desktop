@@ -225,7 +225,7 @@ void PropagateUploadFileNG::startNewUpload()
     _sent = 0;
     _currentChunk = 0;
 
-    emit progress(*_item, 0);
+    propagator()->reportProgress(*_item, 0);
 
     SyncJournalDb::UploadInfo pi;
     pi._valid = true;
@@ -507,7 +507,7 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
     if (sent == 0 && total == 0) {
         return;
     }
-    emit progress(*_item, _sent + sent - total);
+    propagator()->reportProgress(*_item, _sent + sent - total);
 }
 
 }

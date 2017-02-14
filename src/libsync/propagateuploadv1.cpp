@@ -51,7 +51,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     _currentChunk = 0;
 
-    emit progress(*_item, 0);
+    propagator()->reportProgress(*_item, 0);
     startNextChunk();
 }
 
@@ -165,7 +165,7 @@ void PropagateUploadFileV1::startNextChunk()
         startNextChunk();
     }
     if (!parallelChunkUpload || _chunkCount - _currentChunk <= 0) {
-        emit ready();
+        propagator()->scheduleNextJob();
     }
 }
 
@@ -386,7 +386,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
         // sender() is the only current job, no need to look at the byteWritten properties
         amount += sent;
     }
-    emit progress(*_item, amount);
+    propagator()->reportProgress(*_item, amount);
 }
 
 }

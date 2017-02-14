@@ -333,7 +333,7 @@ void PropagateDownloadFile::start()
         return;
     }
 
-    emit progress(*_item, 0);
+    propagator()->reportProgress(*_item, 0);
 
     QString tmpFileName;
     QByteArray expectedEtagForResume;
@@ -834,7 +834,7 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 {
     if (!_job) return;
     _downloadProgress = received;
-    emit progress(*_item, _resumeStart + received);
+    propagator()->reportProgress(*_item, _resumeStart + received);
 }
 
 

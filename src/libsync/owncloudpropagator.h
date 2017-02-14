@@ -98,25 +98,12 @@ public slots:
     /** Starts this job, or a new subjob
      * returns true if a job was started.
      */
-    virtual bool scheduleNextJob() = 0;
+    virtual bool scheduleSelfOrChild() = 0;
 signals:
     /**
      * Emitted when the job is fully finished
      */
     void finished(SyncFileItem::Status);
-
-    /**
-     * Emitted when one item has been completed within a job.
-     */
-    void itemCompleted(const SyncFileItemPtr &);
-
-    /**
-     * Emitted when all the sub-jobs have been finished and
-     * more jobs might be started  (so scheduleNextJob can/must be called again)
-     */
-    void ready();
-
-    void progress(const SyncFileItem& item, quint64 bytes);
 
 protected:
     OwncloudPropagator *propagator() const;
@@ -146,7 +133,7 @@ protected:
     }
 
 protected slots:
-    void slotRestoreJobCompleted(const SyncFileItem& );
+    void slotRestoreJobFinished(SyncFileItem::Status status);
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
@@ -155,7 +142,7 @@ public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator), _item(item) {}
 
-    bool scheduleNextJob() Q_DECL_OVERRIDE {
+    bool scheduleSelfOrChild() Q_DECL_OVERRIDE {
         if (_state != NotYetStarted) {
             return false;
         }
@@ -199,7 +186,7 @@ public:
         _tasksToDo.append(item);
     }
 
-    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
         foreach (PropagatorJob *j, _runningJobs)
@@ -212,11 +199,8 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)));
-            connect(next, SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
-            connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
-            connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
         }
-        return next->scheduleNextJob();
+        return next->scheduleSelfOrChild();
     }
 
     void slotSubJobFinished(SyncFileItem::Status status);
@@ -246,7 +230,7 @@ public:
         _subJobs.appendTask(item);
     }
 
-    virtual bool scheduleNextJob() Q_DECL_OVERRIDE;
+    virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
     virtual void abort() Q_DECL_OVERRIDE {
         if (_firstJob)
@@ -341,6 +325,9 @@ public:
     QString getFilePath(const QString& tmp_file_name) const;
 
     PropagateItemJob *createJob(const SyncFileItemPtr& item);
+    void scheduleNextJob();
+    void reportProgress(const SyncFileItem&, quint64 bytes);
+
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob) {
@@ -380,7 +367,7 @@ private slots:
         _finishedEmited = true;
     }
 
-    void scheduleNextJob();
+    void scheduleNextJobImpl();
 
 signals:
     void itemCompleted(const SyncFileItemPtr &);
@@ -404,6 +391,7 @@ private:
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4
     friend class PropagateDownloadFile;
+    friend class PropagateItemJob;
     friend class PropagateLocalMkdir;
     friend class PropagateLocalRename;
     friend class PropagateRemoteMove;

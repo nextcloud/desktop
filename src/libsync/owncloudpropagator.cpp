@@ -169,7 +169,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     _item->_status = status;
 
-    emit itemCompleted(_item);
+    emit propagator()->itemCompleted(_item);
     emit finished(status);
 }
 
@@ -218,8 +218,8 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-                    this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &)));
+            connect(_restoreJob.data(), SIGNAL(finished(SyncFileItem::Status)),
+                    this, SLOT(slotRestoreJobFinished(SyncFileItem::Status)));
             QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
@@ -227,7 +227,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
     return false;
 }
 
-void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
+void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
 {
     QString msg;
     if(_restoreJob) {
@@ -235,11 +235,11 @@ void PropagateItemJob::slotRestoreJobCompleted(const SyncFileItem& item )
         _restoreJob->setRestoreJobMsg();
     }
 
-    if( item._status == SyncFileItem::Success ||  item._status == SyncFileItem::Conflict
-            || item._status == SyncFileItem::Restoration) {
+    if( status == SyncFileItem::Success ||  status == SyncFileItem::Conflict
+            || status == SyncFileItem::Restoration) {
         done( SyncFileItem::SoftError, msg);
     } else {
-        done( item._status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(item._errorString) );
+        done( status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg) );
     }
 }
 
@@ -399,15 +399,11 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->appendJob(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-            this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
-    connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
-    connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
 
     qDebug() << "Using QNAM/HTTP parallel code path";
 
-    QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
+    scheduleNextJob();
 }
 
 // ownCloud server  < 7.0 did not had permissions so we need some other euristics
@@ -515,14 +511,19 @@ QString OwncloudPropagator::getFilePath(const QString& tmp_file_name) const
 
 void OwncloudPropagator::scheduleNextJob()
 {
+    QTimer::singleShot(0, this, SLOT(scheduleNextJobImpl()));
+}
+
+void OwncloudPropagator::scheduleNextJobImpl()
+{
     // TODO: If we see that the automatic up-scaling has a bad impact we
     // need to check how to avoid this.
     // Down-scaling on slow networks? https://github.com/owncloud/client/issues/3382
     // Making sure we do up/down at same time? https://github.com/owncloud/client/issues/1633
 
     if (_activeJobList.count() < maximumActiveTransferJob()) {
-        if (_rootJob->scheduleNextJob()) {
-            QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
+        if (_rootJob->scheduleSelfOrChild()) {
+            scheduleNextJob();
         }
     } else if (_activeJobList.count() < hardMaximumActiveJob()) {
         int likelyFinishedQuicklyCount = 0;
@@ -537,11 +538,16 @@ void OwncloudPropagator::scheduleNextJob()
         }
         if (_activeJobList.count() < maximumActiveTransferJob() + likelyFinishedQuicklyCount) {
             qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
-            if (_rootJob->scheduleNextJob()) {
-                QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
+            if (_rootJob->scheduleSelfOrChild()) {
+                scheduleNextJob();
             }
         }
     }
+}
+
+void OwncloudPropagator::reportProgress(const SyncFileItem &item, quint64 bytes)
+{
+    emit progress(item, bytes);
 }
 
 AccountPtr OwncloudPropagator::account() const
@@ -595,7 +601,7 @@ PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism()
 }
 
 
-bool PropagatorCompositeJob::scheduleNextJob()
+bool PropagatorCompositeJob::scheduleSelfOrChild()
 {
     if (_state == Finished) {
         return false;
@@ -615,7 +621,7 @@ bool PropagatorCompositeJob::scheduleNextJob()
         }
 
         // If any of the running sub jobs is not parallel, we have to cancel the scheduling
-        // of the rest of the list and wait for the blocking job to finish and emit ready().
+        // of the rest of the list and wait for the blocking job to finish and schedule the next one.
         auto paral = _runningJobs.at(i)->parallelism();
         if (paral == WaitForFinished) {
             return false;
@@ -675,7 +681,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     if (_jobsToDo.isEmpty() && _tasksToDo.isEmpty() && _runningJobs.isEmpty()) {
         finalize();
     } else {
-        emit ready();
+        propagator()->scheduleNextJob();
     }
 }
 
@@ -709,14 +715,8 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
 {
     if (_firstJob) {
         connect(_firstJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotFirstJobFinished(SyncFileItem::Status)));
-        connect(_firstJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
-        connect(_firstJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
-        connect(_firstJob.data(), SIGNAL(ready()), this, SIGNAL(ready()));
     }
     connect(&_subJobs, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobsFinished(SyncFileItem::Status)));
-    connect(&_subJobs, SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
-    connect(&_subJobs, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
-    connect(&_subJobs, SIGNAL(ready()), this, SIGNAL(ready()));
 }
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
@@ -732,7 +732,7 @@ PropagatorJob::JobParallelism PropagateDirectory::parallelism()
 }
 
 
-bool PropagateDirectory::scheduleNextJob()
+bool PropagateDirectory::scheduleSelfOrChild()
 {
     if (_state == Finished) {
         return false;
@@ -743,7 +743,7 @@ bool PropagateDirectory::scheduleNextJob()
     }
 
     if (_firstJob && _firstJob->_state == NotYetStarted) {
-        return _firstJob->scheduleNextJob();
+        return _firstJob->scheduleSelfOrChild();
     }
 
     if (_firstJob && _firstJob->_state == Running) {
@@ -751,7 +751,7 @@ bool PropagateDirectory::scheduleNextJob()
         return false;
     }
 
-    return _subJobs.scheduleNextJob();
+    return _subJobs.scheduleSelfOrChild();
 
 }
 
@@ -766,7 +766,7 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
         return;
     }
 
-    emit ready();
+    propagator()->scheduleNextJob();
 }
 
 void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)

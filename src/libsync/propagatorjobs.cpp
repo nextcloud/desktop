@@ -131,7 +131,7 @@ void PropagateLocalRemove::start()
             return;
         }
     }
-    emit progress(*_item, 0);
+    propagator()->reportProgress(*_item, 0);
     propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
     propagator()->_journal->commit("Local remove");
     done(SyncFileItem::Success);
@@ -202,7 +202,7 @@ void PropagateLocalRename::start()
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
     if (_item->_file != _item->_renameTarget) {
-        emit progress(*_item, 0);
+        propagator()->reportProgress(*_item, 0);
         qDebug() << "MOVE " << existingFile << " => " << targetFile;
 
         if (QString::compare(_item->_file, _item->_renameTarget, Qt::CaseInsensitive) != 0
