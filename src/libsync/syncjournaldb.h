@@ -173,6 +173,13 @@ public:
     void setDataFingerprint(const QByteArray &dataFingerprint);
     QByteArray dataFingerprint();
 
+    /**
+     * Delete any file entry. This will force the next sync to re-sync everything as if it was new,
+     * restoring everyfile on every remote. If a file is there both on the client and server side,
+     * it will be a conflict that will be automatically resolved if the file is the same.
+     */
+    void clearFileTable();
+
 private:
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();

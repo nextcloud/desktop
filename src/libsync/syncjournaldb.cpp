@@ -1836,6 +1836,17 @@ void SyncJournalDb::setDataFingerprint(const QByteArray &dataFingerprint)
     }
 }
 
+void SyncJournalDb::clearFileTable()
+{
+    SqlQuery query(_db);
+    query.prepare("DELETE FROM metadata;");
+    if (!query.exec()) {
+        qWarning() << "SQL error in clearFileTable" << query.error();
+    } else {
+        qDebug() << query.lastQuery() << "(" << query.numRowsAffected() << " rows)";
+    }
+}
+
 void SyncJournalDb::commit(const QString& context, bool startTrans)
 {
     QMutexLocker lock(&_mutex);

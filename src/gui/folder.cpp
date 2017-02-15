@@ -908,7 +908,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
     }
     *cancel = msgBox.clickedButton() == keepBtn;
     if (*cancel) {
-        wipe();
+        journalDb()->clearFileTable();
         _lastEtag.clear();
         slotScheduleThisFolder();
     }

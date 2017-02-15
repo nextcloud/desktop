@@ -40,6 +40,7 @@ if(HAVE_QT5 AND NOT BUILD_WITH_QT4)
     owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
     owncloud_add_test(ChunkingNg "syncenginetestutils.h")
     owncloud_add_test(UploadReset "syncenginetestutils.h")
+    owncloud_add_test(AllFilesDeleted "syncenginetestutils.h")
     owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 
     if( UNIX AND NOT APPLE )
