@@ -632,125 +632,125 @@
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="139"/>
+        <location filename="../src/gui/folder.cpp" line="138"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Krajevna mapa %1 ne obstaja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="142"/>
+        <location filename="../src/gui/folder.cpp" line="141"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 bi morala biti mapa, pa ni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="145"/>
+        <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 is not readable.</source>
         <translation>%1 ni mogoče brati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="368"/>
+        <location filename="../src/gui/folder.cpp" line="367"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="375"/>
+        <location filename="../src/gui/folder.cpp" line="374"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je prejeta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="382"/>
+        <location filename="../src/gui/folder.cpp" line="381"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>Datoteka %1 je posodobljena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="389"/>
+        <location filename="../src/gui/folder.cpp" line="388"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>Datoteka %1 je preimenovana v %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="396"/>
+        <location filename="../src/gui/folder.cpp" line="395"/>
         <source>%1 has been moved to %2.</source>
         <translation>Datoteka %1 je premaknjena v %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="366"/>
+        <location filename="../src/gui/folder.cpp" line="365"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila izbrisana.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili izbrisani.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile izbrisane.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo izbrisanih.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="373"/>
+        <location filename="../src/gui/folder.cpp" line="372"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila shranjena na disk.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili shranjeni na disk.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile shranjene na disk.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo shranjenih na disk.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="380"/>
+        <location filename="../src/gui/folder.cpp" line="379"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>Datoteka %1 in še %n druga datoteka je bila posodobljena.</numerusform><numerusform>Datoteka %1 in še %n drugi datoteki sta bili posodobljeni.</numerusform><numerusform>Datoteka %1 in še %n druge datoteke so bile posodobljene.</numerusform><numerusform>Datoteka %1 in še %n drugih datotek je bilo posodobljenih.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="387"/>
+        <location filename="../src/gui/folder.cpp" line="386"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druga datoteka je bila preimenovana.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugi datoteki sta bili preimenovani.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n druge datoteke so bile preimenovane.</numerusform><numerusform>Datoteka %1 je bila preimenovana v %2 in še %n drugih datotek je bilo preimenovanih.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="394"/>
+        <location filename="../src/gui/folder.cpp" line="393"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druga datoteka je bila premaknjena.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugi datoteki sta bili premaknjeni.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n druge datoteke so bile premaknjene.</numerusform><numerusform>Datoteka %1 je bila premaknjena v %2 in še %n drugih datotek je bilo premaknjenih.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="401"/>
+        <location filename="../src/gui/folder.cpp" line="400"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>Pri datoteki %1 in še %n drugi datoteki je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform><numerusform>Pri datoteki %1 in še %n drugih datotekah je zaznan spor usklajevanja.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="403"/>
+        <location filename="../src/gui/folder.cpp" line="402"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>Pri datoteki %1 je zaznan spor usklajevanja. Preverite datoteko!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="408"/>
+        <location filename="../src/gui/folder.cpp" line="407"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>Datoteke %1 in še %n druge datoteke ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform><numerusform>Datoteke %1 in še %n drugih datotek ni mogoče uskladiti zaradi napak. Podrobnosti so zapisane v dnevniški datoteki.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="410"/>
+        <location filename="../src/gui/folder.cpp" line="409"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>Datoteke %1 zaradi napake ni mogoče uskladiti. Več podrobnosti je zabeleženih v dnevniški datoteki.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="415"/>
         <source>Sync Activity</source>
         <translation>Dejavnost usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="643"/>
+        <location filename="../src/gui/folder.cpp" line="642"/>
         <source>Could not read system exclude file</source>
         <translation>Ni mogoče prebrati sistemske izločitvene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="854"/>
+        <location filename="../src/gui/folder.cpp" line="853"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Dodana je nova mapa, ki presega %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="856"/>
+        <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Dodana je mapa iz zunanje shrambe.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="857"/>
+        <location filename="../src/gui/folder.cpp" line="856"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Med nastavitvami jo lahko izberete in označite za prejem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="893"/>
+        <location filename="../src/gui/folder.cpp" line="892"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -758,29 +758,29 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="898"/>
+        <location filename="../src/gui/folder.cpp" line="897"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="902"/>
+        <location filename="../src/gui/folder.cpp" line="901"/>
         <source>Remove All Files?</source>
         <translation>Ali naj bodo odstranjene vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="904"/>
+        <location filename="../src/gui/folder.cpp" line="903"/>
         <source>Remove all files</source>
         <translation>Odstrani vse datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="905"/>
+        <location filename="../src/gui/folder.cpp" line="904"/>
         <source>Keep files</source>
         <translation>Ohrani datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="921"/>
+        <location filename="../src/gui/folder.cpp" line="920"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -789,17 +789,17 @@ To se lahko zgodi, če je na strežniku na primer obnovljena varnostna kopija.
 Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot preimenovane datoteke v usklajevalnem sporu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="926"/>
+        <location filename="../src/gui/folder.cpp" line="925"/>
         <source>Backup detected</source>
         <translation>Varnostna kopija je zaznana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="928"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>Normal Synchronisation</source>
         <translation>Običajno usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="929"/>
+        <location filename="../src/gui/folder.cpp" line="928"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Ohrani krajevne datoteke kot datoteke v sporu</translation>
     </message>
@@ -3667,37 +3667,37 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="502"/>
+        <location filename="../src/libsync/utility.cpp" line="501"/>
         <source>in the future</source>
         <translation>v prihodnje</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="498"/>
+        <location filename="../src/libsync/utility.cpp" line="497"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>pred %n dnevom</numerusform><numerusform>pred %n dnevoma</numerusform><numerusform>pred %n dnevi</numerusform><numerusform>pred %n dnevi</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="506"/>
+        <location filename="../src/libsync/utility.cpp" line="505"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>pred %n uro</numerusform><numerusform>pred %n urama</numerusform><numerusform>pred %n urami</numerusform><numerusform>pred %n urami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="511"/>
+        <location filename="../src/libsync/utility.cpp" line="510"/>
         <source>now</source>
         <translation>zdaj</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="513"/>
+        <location filename="../src/libsync/utility.cpp" line="512"/>
         <source>Less than a minute ago</source>
         <translation>Pred manj kot minuto</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="516"/>
+        <location filename="../src/libsync/utility.cpp" line="515"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>pred %n minuto</numerusform><numerusform>pred %n minutama</numerusform><numerusform>pred %n minutami</numerusform><numerusform>pred %n minutami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="519"/>
+        <location filename="../src/libsync/utility.cpp" line="518"/>
         <source>Some time ago</source>
         <translation>Pred nekaj časa</translation>
     </message>
@@ -3731,37 +3731,37 @@ Uporaba ni priporočljiva.</translation>
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="329"/>
+        <location filename="../src/libsync/utility.cpp" line="328"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n leto</numerusform><numerusform>%n leti</numerusform><numerusform>%n leta</numerusform><numerusform>%n let</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="330"/>
+        <location filename="../src/libsync/utility.cpp" line="329"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mesec</numerusform><numerusform>%n meseca</numerusform><numerusform>%n meseci</numerusform><numerusform>%n mesecev</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="331"/>
+        <location filename="../src/libsync/utility.cpp" line="330"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dan</numerusform><numerusform>%n dneva</numerusform><numerusform>%n dnevi</numerusform><numerusform>%n dni</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="332"/>
+        <location filename="../src/libsync/utility.cpp" line="331"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n ura</numerusform><numerusform>%n uri</numerusform><numerusform>%n ure</numerusform><numerusform>%n ur</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="333"/>
+        <location filename="../src/libsync/utility.cpp" line="332"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuta</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minute</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundi</numerusform><numerusform>%n sekunde</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="358"/>
+        <location filename="../src/libsync/utility.cpp" line="357"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

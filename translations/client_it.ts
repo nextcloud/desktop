@@ -632,113 +632,113 @@
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="139"/>
+        <location filename="../src/gui/folder.cpp" line="138"/>
         <source>Local folder %1 does not exist.</source>
         <translation>La cartella locale %1 non esiste.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="142"/>
+        <location filename="../src/gui/folder.cpp" line="141"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 dovrebbe essere una cartella, ma non lo è.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="145"/>
+        <location filename="../src/gui/folder.cpp" line="144"/>
         <source>%1 is not readable.</source>
         <translation>%1 non è leggibile.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="368"/>
+        <location filename="../src/gui/folder.cpp" line="367"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato rimosso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="375"/>
+        <location filename="../src/gui/folder.cpp" line="374"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato scaricato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="382"/>
+        <location filename="../src/gui/folder.cpp" line="381"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiornato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="389"/>
+        <location filename="../src/gui/folder.cpp" line="388"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="396"/>
+        <location filename="../src/gui/folder.cpp" line="395"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="366"/>
+        <location filename="../src/gui/folder.cpp" line="365"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 e %n altro file sono stati rimossi.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="373"/>
+        <location filename="../src/gui/folder.cpp" line="372"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
         <translation><numerusform>%1 e %n altro file sono stati scaricati.</numerusform><numerusform>%1 e %n altri file sono stati scaricati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="380"/>
+        <location filename="../src/gui/folder.cpp" line="379"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 e %n altro file sono stati aggiornati.</numerusform><numerusform>%1 e %n altri file sono stati aggiornati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="387"/>
+        <location filename="../src/gui/folder.cpp" line="386"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 è stato rinominato in %2 e %n altro file sono stati rinominati.</numerusform><numerusform>%1 è stato rinominato in %2 e %n altri file sono stati rinominati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="394"/>
+        <location filename="../src/gui/folder.cpp" line="393"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 è stato spostato in %2 e %n altro file sono stati spostati.</numerusform><numerusform>%1 è stato spostato in %2 e %n altri file sono stati spostati.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="401"/>
+        <location filename="../src/gui/folder.cpp" line="400"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 e %n altro file hanno conflitti di sincronizzazione.</numerusform><numerusform>%1 e %n altri file hanno conflitti di sincronizzazione.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="403"/>
+        <location filename="../src/gui/folder.cpp" line="402"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 ha un conflitto di sincronizzazione. Controlla il file in conflitto!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="408"/>
+        <location filename="../src/gui/folder.cpp" line="407"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>1% e %n altro file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform><numerusform>1% e %n altri file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="410"/>
+        <location filename="../src/gui/folder.cpp" line="409"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 non può essere sincronizzato a causa di un errore. Controlla il log per i dettagli.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="416"/>
+        <location filename="../src/gui/folder.cpp" line="415"/>
         <source>Sync Activity</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="643"/>
+        <location filename="../src/gui/folder.cpp" line="642"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="854"/>
+        <location filename="../src/gui/folder.cpp" line="853"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una nuova cartella più grande di %1 MB è stata aggiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="856"/>
+        <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una nuova cartella da un&apos;archiviazione esterna è stata aggiunta.
@@ -746,12 +746,12 @@
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="857"/>
+        <location filename="../src/gui/folder.cpp" line="856"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vai nelle impostazioni e selezionala se vuoi scaricarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="893"/>
+        <location filename="../src/gui/folder.cpp" line="892"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -759,29 +759,29 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="898"/>
+        <location filename="../src/gui/folder.cpp" line="897"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="902"/>
+        <location filename="../src/gui/folder.cpp" line="901"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="904"/>
+        <location filename="../src/gui/folder.cpp" line="903"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="905"/>
+        <location filename="../src/gui/folder.cpp" line="904"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="921"/>
+        <location filename="../src/gui/folder.cpp" line="920"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -790,17 +790,17 @@ Ciò potrebbe verificarsi in seguito al ripristino di un backup sul server.
 Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tutti i tuoi file con file più datati in uno stato precedente. Vuoi mantenere i tuoi file locali più recenti come file di conflitto?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="926"/>
+        <location filename="../src/gui/folder.cpp" line="925"/>
         <source>Backup detected</source>
         <translation>Backup rilevato</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="928"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>Normal Synchronisation</source>
         <translation>Sincronizzazione normale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="929"/>
+        <location filename="../src/gui/folder.cpp" line="928"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Mantieni i file locali come conflitto</translation>
     </message>
@@ -3667,37 +3667,37 @@ Non è consigliabile utilizzarlo.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="502"/>
+        <location filename="../src/libsync/utility.cpp" line="501"/>
         <source>in the future</source>
         <translation>nel futuro</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="498"/>
+        <location filename="../src/libsync/utility.cpp" line="497"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>%n giorno fa</numerusform><numerusform>%n giorni fa</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="506"/>
+        <location filename="../src/libsync/utility.cpp" line="505"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>%n ora fa</numerusform><numerusform>%n ore fa</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="511"/>
+        <location filename="../src/libsync/utility.cpp" line="510"/>
         <source>now</source>
         <translation>adesso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="513"/>
+        <location filename="../src/libsync/utility.cpp" line="512"/>
         <source>Less than a minute ago</source>
         <translation>Meno di un minuto fa</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="516"/>
+        <location filename="../src/libsync/utility.cpp" line="515"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>%n minuto fa</numerusform><numerusform>%n minuti fa</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="519"/>
+        <location filename="../src/libsync/utility.cpp" line="518"/>
         <source>Some time ago</source>
         <translation>Tempo fa</translation>
     </message>
@@ -3731,37 +3731,37 @@ Non è consigliabile utilizzarlo.</translation>
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="329"/>
+        <location filename="../src/libsync/utility.cpp" line="328"/>
         <source>%n year(s)</source>
         <translation><numerusform>% anno</numerusform><numerusform>%n anni</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="330"/>
+        <location filename="../src/libsync/utility.cpp" line="329"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mese</numerusform><numerusform>%n mesi</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="331"/>
+        <location filename="../src/libsync/utility.cpp" line="330"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n giorno</numerusform><numerusform>%n giorni</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="332"/>
+        <location filename="../src/libsync/utility.cpp" line="331"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n ora</numerusform><numerusform>%n ore</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="333"/>
+        <location filename="../src/libsync/utility.cpp" line="332"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuto</numerusform><numerusform>%n minuti</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="334"/>
+        <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n secondo</numerusform><numerusform>%n secondi</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="358"/>
+        <location filename="../src/libsync/utility.cpp" line="357"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
