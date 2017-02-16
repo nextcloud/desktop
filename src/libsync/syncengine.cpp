@@ -1093,7 +1093,9 @@ void SyncEngine::slotFinished(bool success)
     _journal->commit("All Finished.", false);
 
     // Send final progress information even if no
-    // files needed propagation
+    // files needed propagation, but clear the lastCompletedItem
+    // so we don't count this twice (like Recent Files)
+    _progressInfo->_lastCompletedItem = SyncFileItem();
     emit transmissionProgress(*_progressInfo);
 
     finalize(success);
