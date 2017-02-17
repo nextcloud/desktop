@@ -171,6 +171,11 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     emit propagator()->itemCompleted(_item);
     emit finished(status);
+
+    if (status == SyncFileItem::FatalError) {
+        // Abort all remaining jobs.
+        propagator()->abort();
+    }
 }
 
 /**
@@ -669,12 +674,9 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     ASSERT(i >= 0);
     _runningJobs.remove(i);
 
-    if (status == SyncFileItem::FatalError) {
-        abort();
-        _state = Finished;
-        emit finished(status);
-        return;
-    } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
+    if (status == SyncFileItem::FatalError
+        || status == SyncFileItem::NormalError
+        || status == SyncFileItem::SoftError) {
         _hasError = status;
     }
 

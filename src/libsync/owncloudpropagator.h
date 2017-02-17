@@ -331,9 +331,11 @@ public:
     void abort() {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob) {
-            _rootJob->abort();
+            // We're possibly already in an item's finished stack
+            QMetaObject::invokeMethod(_rootJob.data(), "abort", Qt::QueuedConnection);
         }
-        emitFinished(SyncFileItem::NormalError);
+        // abort() of all jobs will likely have already resulted in finished being emitted, but just in case.
+        QMetaObject::invokeMethod(this, "emitFinished", Qt::QueuedConnection, Q_ARG(SyncFileItem::Status, SyncFileItem::NormalError));
     }
 
     // timeout in seconds
