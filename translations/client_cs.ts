@@ -2989,12 +2989,12 @@ Nedoporučuje se jí používat.</translation>
         <translation>Je dostupných pouze %1, pro spuštění je potřeba alespoň %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1213"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Není povoleno, protože nemáte oprávnění vytvořit nadřazený adresář</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat soubory do tohoto adresáře</translation>
     </message>
@@ -3129,49 +3129,49 @@ Nedoporučuje se jí používat.</translation>
         <translation>Jméno souboru obsahuje aelspoň jeden neplatný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorováno podle nastavení &quot;vybrat co synchronizovat&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Není povoleno, protože nemáte oprávnění přidávat podadresáře do tohoto adresáře</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1255"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1274"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Odstranění není povoleno, obnovuji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1287"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
         <source>Local files and share folder removed.</source>
         <translation>Místní soubory a sdílený adresář byly odstraněny.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
         <source>Move not allowed, item restored</source>
         <translation>Přesun není povolen, položka obnovena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1354"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Přesun není povolen, protože %1 je pouze pro čtení</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the destination</source>
         <translation>cílové umístění</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>

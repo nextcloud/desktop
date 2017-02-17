@@ -2984,12 +2984,12 @@ It is not advisable to use it.</source>
         <translation>Доступно лише %1, для початку необхідно хоча б %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1213"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -3124,49 +3124,49 @@ It is not advisable to use it.</source>
         <translation>Ім’я файлу містить принаймні один некоректний символ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ігнорується через чорний список в &quot;обрати що синхронізувати&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Заборонено через відсутність прав додавання підкаталогів в цю теку.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Не дозволено завантажувати цей файл, оскільки він має дозвіл лише на перегляд, відновлюємо</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1255"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1274"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Не дозволено видаляти, відновлюємо</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1287"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
         <source>Local files and share folder removed.</source>
         <translation>Локальні файли та теки в загальному доступі було видалено.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
         <source>Move not allowed, item restored</source>
         <translation>Переміщення не дозволено, елемент відновлено </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1354"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Переміщення не дозволено, оскільки %1 помічений тільки для перегляду</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the destination</source>
         <translation>призначення</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the source</source>
         <translation>джерело</translation>
     </message>

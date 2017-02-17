@@ -2989,12 +2989,12 @@ No és aconsellada usar-la.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1213"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1220"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
@@ -3129,49 +3129,49 @@ No és aconsellada usar-la.</translation>
         <translation>El nom del fitxer conté al menys un caràcter invàlid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1172"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1179"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>S&apos;ignora degut al filtre a «Trieu què sincronitzar»</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1239"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No es permet pujar aquest fitxer perquè només és de lectura en el servidor, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1255"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1274"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No es permet l&apos;eliminació, es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1287"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
         <source>Local files and share folder removed.</source>
         <translation>Fitxers locals i carpeta compartida esborrats.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1343"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
         <source>Move not allowed, item restored</source>
         <translation>No es permet moure&apos;l, l&apos;element es restaura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1354"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No es permet moure perquè %1 només és de lectura</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the destination</source>
         <translation>el destí</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>the source</source>
         <translation>l&apos;origen</translation>
     </message>
