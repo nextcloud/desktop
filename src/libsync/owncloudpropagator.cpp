@@ -40,6 +40,7 @@
 #include <QObject>
 #include <QTimerEvent>
 #include <QDebug>
+#include <qmath.h>
 
 namespace OCC {
 
@@ -72,31 +73,26 @@ qint64 freeSpaceLimit()
 OwncloudPropagator::~OwncloudPropagator()
 {}
 
-/* The maximum number of active jobs in parallel  */
-int OwncloudPropagator::maximumActiveJob()
-{
-    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    if (!max) {
-        max = 3; //default
-    }
 
+int OwncloudPropagator::maximumActiveTransferJob()
+{
     if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
         // disable parallelism when there is a network limit.
         return 1;
     }
-
-    return max;
+    return qCeil(hardMaximumActiveJob()/2.);
 }
 
+/* The maximum number of active jobs in parallel  */
 int OwncloudPropagator::hardMaximumActiveJob()
 {
-    int max = maximumActiveJob();
-    return max*2;
-    // FIXME: Wondering if we should hard-limit to 1 if maximumActiveJob() is 1
-    // to support our old use case of limiting concurrency (when "automatic" bandwidth
-    // limiting is set. But this causes https://github.com/owncloud/client/issues/4081
+    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
+    if (!max) {
+        max = 6; //default (Qt cannot do more anyway)
+        // TODO: increase this number when using HTTP2
+    }
+    return max;
 }
-
 
 /** Updates, creates or removes a blacklist entry for the given item.
  *
@@ -525,7 +521,7 @@ void OwncloudPropagator::scheduleNextJob()
     // Down-scaling on slow networks? https://github.com/owncloud/client/issues/3382
     // Making sure we do up/down at same time? https://github.com/owncloud/client/issues/1633
 
-    if (_activeJobList.count() < maximumActiveJob()) {
+    if (_activeJobList.count() < maximumActiveTransferJob()) {
         if (_rootJob->scheduleNextJob()) {
             QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
         }
@@ -535,12 +531,12 @@ void OwncloudPropagator::scheduleNextJob()
         // one that is likely finished quickly, we can launch another one.
         // When a job finishes another one will "move up" to be one of the first 3 and then
         // be counted too.
-        for (int i = 0; i < maximumActiveJob() && i < _activeJobList.count(); i++) {
+        for (int i = 0; i < maximumActiveTransferJob() && i < _activeJobList.count(); i++) {
             if (_activeJobList.at(i)->isLikelyFinishedQuickly()) {
                 likelyFinishedQuicklyCount++;
             }
         }
-        if (_activeJobList.count() < maximumActiveJob() + likelyFinishedQuicklyCount) {
+        if (_activeJobList.count() < maximumActiveTransferJob() + likelyFinishedQuicklyCount) {
             qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
             if (_rootJob->scheduleNextJob()) {
                 QTimer::singleShot(0, this, SLOT(scheduleNextJob()));

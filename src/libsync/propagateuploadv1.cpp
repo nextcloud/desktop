@@ -160,7 +160,7 @@ void PropagateUploadFileV1::startNextChunk()
         parallelChunkUpload = false;
     }
 
-    if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveJob())
+    if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveTransferJob())
             && _currentChunk < _chunkCount ) {
         startNextChunk();
     }

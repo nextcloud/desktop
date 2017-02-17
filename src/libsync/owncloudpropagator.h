@@ -301,8 +301,9 @@ public:
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
 
+    /* the maximum number of jobs using bandwidth (uploads or downloads, in parallel) */
+    int maximumActiveTransferJob();
     /* The maximum number of active jobs in parallel  */
-    int maximumActiveJob();
     int hardMaximumActiveJob();
 
     bool isInSharedDirectory(const QString& file);
