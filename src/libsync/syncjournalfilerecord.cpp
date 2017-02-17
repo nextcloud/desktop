@@ -131,7 +131,6 @@ SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::update(
     bool mayBlacklist =
             item._errorMayBeBlacklisted  // explicitly flagged for blacklisting
             || (item._httpErrorCode != 0 // or non-local error
-                && item._httpErrorCode != 507 // Don't blacklist "Insufficient Storage"
 #ifdef OWNCLOUD_5XX_NO_BLACKLIST
                 && item._httpErrorCode / 100 != 5 // In this configuration, never blacklist error 5xx
 #endif
