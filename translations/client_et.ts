@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="775"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="771"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1982,7 +1982,7 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="721"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="717"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2038,17 +2038,17 @@ Selle kasutamine pole soovitatav.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="128"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="124"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Taastamine ebaõnnestus: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="153"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
         <source>Continue blacklisting:</source>
         <translation>Jätka mustas nimekirjas hoidmist:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="246"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
