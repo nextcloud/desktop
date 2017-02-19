@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>設定ファイルのアクセスでエラーが発生しました</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloudを終了</translation>
     </message>
 </context>
 <context>
@@ -782,7 +782,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>この同期により同期フォルダ &apos;%1&apos; のファイルが以前のものに戻されます。 これは、バックアップがサーバー上に復元されたためです。 通常と同じように同期を続けると、すべてのファイルが以前の状態の古いファイルによって上書きされます。最新のローカルファイルを競合ファイルとして保存しますか？</translation>
+        <translation>この同期により同期フォルダー &apos;%1&apos; のファイルが以前のものに戻されます。 これは、バックアップがサーバー上に復元されたためです。 通常と同じように同期を続けると、すべてのファイルが以前の状態の古いファイルによって上書きされます。最新のローカルファイルを競合ファイルとして保存しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="925"/>
@@ -890,12 +890,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1349"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation>ローカルフォルダ %1 にはシンボリックリンクが含まれています。リンク先には既に同期されたフォルダが含まれているため、別のフォルダを選択してください！</translation>
+        <translation>ローカルフォルダー %1 にはシンボリックリンクが含まれています。リンク先にはすでに同期されたフォルダーが含まれているため、別のフォルダーを選択してください！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>既に同期されたフォルダがあります。別のフォルダを選択してください！</translation>
+        <translation>すでに同期されたフォルダーがあります。別のフォルダーを選択してください！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
@@ -1036,7 +1036,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>残り %5、%2中 %1完了 、%4中 %3 ファイル完了</translation>
+        <translation>残り%5、%2中%1完了 、ファイル%4個中%3個完了</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
@@ -1270,7 +1270,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>%1 のパスワードを入力してください：&lt;br&gt; &lt;br&gt;ユーザ：%2&lt;br&gt;アカウント：%3&lt;br&gt;</translation>
+        <translation>%1 のパスワードを入力してください：&lt;br&gt; &lt;br&gt;ユーザー：%2&lt;br&gt;アカウント：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1828,7 +1828,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>無効なURL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
@@ -3072,7 +3072,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名はこのファイルシステムで予約されている名前です。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
@@ -3437,7 +3437,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="47"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;バージョン %2 詳細については、&lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;をご覧ください。&lt;/p&gt;&lt;p&gt;既知の問題とヘルプは、&lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;をご覧下さい。By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;著作権 ownCloud, Inc.&lt;p&gt;&lt;p&gt;がGNU General Public License (GPL) バージョン2.0 でライセンスされています。&lt;br/&gt;ownCloud 及び ownCloud のロゴはアメリカ合衆国またはその他の国、あるいはその両方における&lt;br&gt; ownCloud, Inc.の登録商標です。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;バージョン %2 詳細については、&lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;をご覧ください。&lt;/p&gt;&lt;p&gt;既知の問題とヘルプは、&lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;をご覧ください。By Klaas Freitag, Daniel Molkentin, Jan-Christoph Borchardt, Olivier Goffart, Markus Götz and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;著作権 ownCloud, Inc.&lt;p&gt;&lt;p&gt;がGNU General Public License (GPL) バージョン2.0 でライセンスされています。&lt;br/&gt;ownCloud 及び ownCloud のロゴはアメリカ合衆国またはその他の国、あるいはその両方における&lt;br&gt; ownCloud, Inc.の登録商標です。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3476,7 +3476,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="295"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>指定された容量以上のフォルダーは同期前に確認する</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="312"/>
@@ -3487,7 +3487,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="321"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>外部ストレージと同期する前に確認する(&amp;X)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="345"/>
@@ -3613,7 +3613,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="83"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>サーバーアドレス(&amp;V)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="99"/>
