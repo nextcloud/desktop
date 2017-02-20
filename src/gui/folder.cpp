@@ -900,6 +900,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
             "If this was an accident and you decide to keep your files, they will be re-synced from the server.");
     QMessageBox msgBox(QMessageBox::Warning, tr("Remove All Files?"),
                        msg.arg(shortGuiLocalPath()));
+    msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox.addButton(tr("Remove all files"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep files"), QMessageBox::AcceptRole);
     if (msgBox.exec() == -1) {
@@ -924,6 +925,7 @@ void Folder::slotAboutToRestoreBackup(bool *restore)
            "Do you want to keep your local most recent files as conflict files?");
     QMessageBox msgBox(QMessageBox::Warning, tr("Backup detected"),
                        msg.arg(shortGuiLocalPath()));
+    msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox.addButton(tr("Normal Synchronisation"), QMessageBox::DestructiveRole);
     QPushButton* keepBtn = msgBox.addButton(tr("Keep Local Files as Conflict"), QMessageBox::AcceptRole);
 

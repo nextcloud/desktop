@@ -924,6 +924,7 @@ void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)
 void ownCloudGui::slotShowGuiMessage(const QString &title, const QString &message)
 {
     QMessageBox *msgBox = new QMessageBox;
+    msgBox->setWindowFlags(msgBox->windowFlags() | Qt::WindowStaysOnTopHint);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setText(message);
     msgBox->setWindowTitle(title);
