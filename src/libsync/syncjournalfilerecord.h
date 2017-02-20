@@ -93,15 +93,6 @@ public:
     QString    _renameTarget;
 
     bool isValid() const;
-
-    /** Takes an old blacklist entry and updates it for a new sync result.
-     *
-     * The old entry may be invalid, then a fresh entry is created.
-     * If the returned record is invalid, the file shall not be
-     * blacklisted.
-     */
-    static SyncJournalErrorBlacklistRecord update(
-            const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item);
 };
 
 }

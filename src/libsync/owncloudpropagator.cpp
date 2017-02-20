@@ -104,32 +104,122 @@ PropagateItemJob::~PropagateItemJob()
     }
 }
 
-/** Updates, creates or removes a blacklist entry for the given item.
- *
- * Returns whether the error should be suppressed.
- */
-static bool blacklistCheck(SyncJournalDb* journal, const SyncFileItem& item)
+static time_t getMinBlacklistTime()
 {
-    SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
-    SyncJournalErrorBlacklistRecord newEntry = SyncJournalErrorBlacklistRecord::update(oldEntry, item);
-
-    if (newEntry.isValid()) {
-        journal->updateErrorBlacklistEntry(newEntry);
-    } else if (oldEntry.isValid()) {
-        journal->wipeErrorBlacklistEntry(item._file);
-    }
-
-    // In some cases we add errors to the blacklist for tracking, but don't
-    // want to actively suppress them.
-    return newEntry.isValid() && newEntry._ignoreDuration > 0;
+    return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
+                25); // 25 seconds
 }
 
-void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorString)
+static time_t getMaxBlacklistTime()
 {
+    int v = qgetenv("OWNCLOUD_BLACKLIST_TIME_MAX").toInt();
+    if (v > 0)
+        return v;
+    return 24*60*60; // 1 day
+}
+
+/** Creates a blacklist entry, possibly taking into account an old one.
+ *
+ * The old entry may be invalid, then a fresh entry is created.
+ */
+static SyncJournalErrorBlacklistRecord createBlacklistEntry(
+        const SyncJournalErrorBlacklistRecord& old, const SyncFileItem& item)
+{
+    SyncJournalErrorBlacklistRecord entry;
+
+    entry._errorString = item._errorString;
+    entry._lastTryModtime = item._modtime;
+    entry._lastTryEtag = item._etag;
+    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    entry._file = item._file;
+    entry._renameTarget = item._renameTarget;
+
+    entry._retryCount = old._retryCount + 1;
+
+    static time_t minBlacklistTime(getMinBlacklistTime());
+    static time_t maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));
+
+    // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
+    entry._ignoreDuration = old._ignoreDuration * 5;
+
+    if( item._httpErrorCode == 403 ) {
+        qDebug() << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+        entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
+
+    } else if( item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
+        qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
+        entry._ignoreDuration = maxBlacklistTime;
+    }
+
+    entry._ignoreDuration = qBound(minBlacklistTime, entry._ignoreDuration, maxBlacklistTime);
+
+    if( item._status == SyncFileItem::SoftError ) {
+        // Track these errors, but don't actively suppress them.
+        entry._ignoreDuration = 0;
+    }
+
+    return entry;
+}
+
+/** Updates, creates or removes a blacklist entry for the given item.
+ *
+ * May adjust the status or item._errorString.
+ */
+static void blacklistUpdate(SyncJournalDb* journal, SyncFileItem& item)
+{
+    SyncJournalErrorBlacklistRecord oldEntry = journal->errorBlacklistEntry(item._file);
+
+    bool mayBlacklist =
+            item._errorMayBeBlacklisted  // explicitly flagged for blacklisting
+            || ((item._status == SyncFileItem::NormalError
+                 || item._status == SyncFileItem::SoftError)
+                && item._httpErrorCode != 0 // or non-local error
+               );
+
+    // No new entry? Possibly remove the old one, then done.
+    if (!mayBlacklist) {
+        if (oldEntry.isValid()) {
+            journal->wipeErrorBlacklistEntry(item._file);
+        }
+        return;
+    }
+
+    auto newEntry = createBlacklistEntry(oldEntry, item);
+    journal->updateErrorBlacklistEntry(newEntry);
+
+    // Suppress the error if it was and continues to be blacklisted.
+    // An ignoreDuration of 0 mean we're tracking the error, but not actively
+    // suppressing it.
+    if (item._hasBlacklistEntry && newEntry._ignoreDuration > 0) {
+        item._status = SyncFileItem::FileIgnored;
+        item._errorString.prepend(PropagateItemJob::tr("Continue blacklisting:") + " ");
+
+        qDebug() << "blacklisting " << item._file
+                 << " for " << newEntry._ignoreDuration
+                 << ", retry count " << newEntry._retryCount;
+
+        return;
+    }
+
+    // Some soft errors might become louder on repeat occurrence
+    if (item._status == SyncFileItem::SoftError
+            && newEntry._retryCount > 1) {
+        qDebug() << "escalating soft error on " << item._file
+                 << " to normal error, " << item._httpErrorCode;
+        item._status = SyncFileItem::NormalError;
+        return;
+    }
+}
+
+void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
+{
+    _item->_status = statusArg;
+
     _state = Finished;
     if (_item->_isRestoration) {
-        if( status == SyncFileItem::Success || status == SyncFileItem::Conflict) {
-            status = SyncFileItem::Restoration;
+        if( _item->_status == SyncFileItem::Success
+                || _item->_status == SyncFileItem::Conflict) {
+            _item->_status = SyncFileItem::Restoration;
         } else {
             _item->_errorString += tr("; Restoration Failed: %1").arg(errorString);
         }
@@ -140,24 +230,18 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
     }
 
     if( propagator()->_abortRequested.fetchAndAddRelaxed(0) &&
-            (status == SyncFileItem::NormalError || status == SyncFileItem::FatalError)) {
+            (_item->_status == SyncFileItem::NormalError
+             || _item->_status == SyncFileItem::FatalError)) {
         // an abort request is ongoing. Change the status to Soft-Error
-        status = SyncFileItem::SoftError;
+        _item->_status = SyncFileItem::SoftError;
     }
 
-    switch( status ) {
+    switch( _item->_status ) {
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
-        // For normal errors, we blacklist aggressively, otherwise only on
-        // explicit request.
-        if ((status == SyncFileItem::NormalError || _item->_errorMayBeBlacklisted)
-                && blacklistCheck(propagator()->_journal, *_item)
-                && _item->_hasBlacklistEntry) {
-            // do not error if the item was, and continues to be, blacklisted
-            status = SyncFileItem::FileIgnored;
-            _item->_errorString.prepend(tr("Continue blacklisting:") + " ");
-        }
+        // Check the blacklist, possibly adjusting the item (including its status)
+        blacklistUpdate(propagator()->_journal, *_item);
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
@@ -177,10 +261,8 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
         break;
     }
 
-    _item->_status = status;
-
     emit itemCompleted(_item);
-    emit finished(status);
+    emit finished(_item->_status);
 }
 
 /**
