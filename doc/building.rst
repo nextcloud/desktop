@@ -110,7 +110,7 @@ To set up your build environment for development using HomeBrew_:
              work correctly.
 
 Windows Development Build
------------------------
+-------------------------
 
 If you want to test some changes and deploy them locally, you can build natively
 on Windows using MinGW. If you want to generate an installer for deployment, please
@@ -210,7 +210,7 @@ In order to make setup simple, you can use the provided Dockerfile to build your
                -in ${unsigned_file} \
                -out ${installer_file}
 
-   for ``-in``, use the URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
+   For ``-in``, use the URL to the time stamping server provided by your CA along with the Authenticode certificate. Alternatively,
    you may use the official Microsoft ``signtool`` utility on Microsoft Windows.
 
    If you're familiar with docker, you can use the version of ``osslsigncode`` that is part of the docker image.

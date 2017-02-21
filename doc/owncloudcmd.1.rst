@@ -60,7 +60,7 @@ OPTIONS
       Exclude list file
 
 ``--unsyncedfolders [file]``
-      File containing the list of unsynced folders (selective sync)
+      File containing the list of un-synced folders (selective sync)
 
 ``--max-sync-retries [n]``
       Retries maximum n times (defaults to 3)

@@ -27,7 +27,7 @@ Identifying Basic Functionality Problems
   misconfiguration of the WebDAV API.
 
   The ownCloud Client uses the built-in WebDAV access of the server content.
-  Verify that you can log on to ownClouds WebDAV server. To verify connectivity
+  Verify that you can log on to ownCloud's WebDAV server. To verify connectivity
   with the ownCloud WebDAV server:
 
   - Open a browser window and enter the address to the ownCloud WebDAV server. 
@@ -78,17 +78,17 @@ Other issues can affect synchronization of your ownCloud files:
 
 - Synchronizing the same directory with ownCloud and other synchronization
   software such as Unison, rsync, Microsoft Windows Offline Folders, or other
-  cloud services such as DropBox or Microsoft SkyDrive is not supported and
+  cloud services such as Dropbox or Microsoft SkyDrive is not supported and
   should not be attempted. In the worst case, it is possible that synchronizing
   folders or files using ownCloud and other synchronization software or
   services can result in data loss.
 
-- If you find that only specific files are not synrchronized, the
+- If you find that only specific files are not synchronized, the
   synchronization protocol might be having an effect. Some files are
   automatically ignored because they are system files, other files might be
   ignored because their filename contains characters that are not supported on
   certain file systems. For more information about ignored files, see
-  :ref:`_ignored-files-label`.
+  :ref:`ignored-files-label`.
 
 - If you are operating your own server, and use the local storage backend (the
   default), make sure that ownCloud has exclusive access to the directory.
@@ -134,7 +134,7 @@ To obtain the client log file:
 
 5. Name the log file and click the 'Save' button.
 
-  The log file is saved in the location specifed.
+  The log file is saved in the location specified.
 
 Alternatively, you can launch the ownCloud Log Output window using the
 ``--logwindow`` command. After issuing this command, the Log Output window
@@ -197,7 +197,7 @@ directly from the file system in the ownCloud server data directory.
 Webserver Log Files
 ~~~~~~~~~~~~~~~~~~~
 
-It can be helpful to view your webservers error log file to isolate any
+It can be helpful to view your webserver's error log file to isolate any
 ownCloud-related problems. For Apache on Linux, the error logs are typically
 located in the ``/var/log/apache2`` directory. Some helpful files include the
 following:

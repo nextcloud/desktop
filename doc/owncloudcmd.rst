@@ -49,7 +49,7 @@ Other command line switches supported by ``owncloudcmd`` include the following:
       Exclude list file
 
 ``--unsyncedfolders [file]``
-      File containing the list of unsynced remote folders (selective sync)
+      File containing the list of un-synced remote folders (selective sync)
 
 ``--max-sync-retries [n]``
       Retries maximum n times (defaults to 3)

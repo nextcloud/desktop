@@ -236,7 +236,7 @@ also to limit download and upload bandwidth.
 
 .. figure:: images/settings_network.png
 
-.. _ignoredFilesEditor-label:
+.. _usingIgnoredFilesEditor-label:
 
 Using the Ignored Files Editor
 ------------------------------

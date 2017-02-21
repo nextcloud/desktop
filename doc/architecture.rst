@@ -158,8 +158,7 @@ By default, the ownCloud Client ignores the following files:
 
 * Files matched by one of the patterns defined in the Ignored Files Editor
 * Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
-* Files starting with ``._sync_xxxxxxx.db`` and the old format ``.csync_journal.db``, 
-as these files are reserved for journalling.
+* Files starting with ``._sync_xxxxxxx.db`` and the old format ``.csync_journal.db``,  as these files are reserved for journalling.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character ``]`` directly followed by
@@ -168,12 +167,12 @@ data*. These files are ignored and *removed* by the client if found in the
 synchronized folder. This is suitable for meta files created by some
 applications that have no sustainable meaning.
 
-If a pattern ends with the forwardslash (``/``) character, only directories are
+If a pattern ends with the forward slash (``/``) character, only directories are
 matched. The pattern is only applied for directory components of filenames
 selected using the checkbox.
 
-To match filenames against the exclude patterns, the unix standard C library
-function fnmatch is used. This process checks the filename against the
+To match filenames against the exclude patterns, the UNIX standard C library
+function ``fnmatch`` is used. This process checks the filename against the
 specified pattern using standard shell wildcard pattern matching. For more
 information, please refer to `The opengroup website
 <http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html#tag_02_13_01>`_.
@@ -212,9 +211,9 @@ In the communication between client and server a couple of custom WebDAV propert
 were introduced. They are either needed for sync functionality or help have a positive
 effect on synchronization performance.
 
-This chapter describes additional xml elements which the server returns in response
+This chapter describes additional XML elements which the server returns in response
 to a successful PROPFIND request on a file or directory. The elements are returned in
-the namespace oc.
+the namespace ``oc``.
 
 Server Side  Permissions
 ------------------------
@@ -223,27 +222,27 @@ The XML element ``<oc:permissions>`` represents the permission- and sharing stat
 item. It is a list of characters, and each of the chars has a meaning as outlined
 in the table below:
 
-+----+----------------+-------------------------------------------+
-|Code|   Resource     |  Description                              |
-+----+----------------+-------------------------------------------+
-| S  | File or Folder | is shared                                 |
-+----+----------------+-------------------------------------------+
-| R  | File or Folder | can share (includes reshare)              |
-+----+----------------+-------------------------------------------+
-| M  | File or Folder | is mounted (like on DropBox, Samba, etc.) |
-+----+----------------+-------------------------------------------+
-| W  | File           | can write file                            |
-+----+----------------+-------------------------------------------+
-| C  | Folder         |can create file in folder                  |
-+----+----------------+-------------------------------------------+
-| K  | Folder         | can create folder (mkdir)                 |
-+----+----------------+-------------------------------------------+
-| D  | File or Folder |can delete file or folder                  |
-+----+----------------+-------------------------------------------+
-| N  | File or Folder | can rename file or folder                 |
-+----+----------------+-------------------------------------------+
-| V  | File or Folder | can move file or folder                   |
-+----+----------------+-------------------------------------------+
++------+----------------+-------------------------------------------+
+| Code |   Resource     |  Description                              |
++------+----------------+-------------------------------------------+
+| S    | File or Folder | is shared                                 |
++------+----------------+-------------------------------------------+
+| R    | File or Folder | can share (includes re-share)             |
++------+----------------+-------------------------------------------+
+| M    | File or Folder | is mounted (like on Dropbox, Samba, etc.) |
++------+----------------+-------------------------------------------+
+| W    | File           | can write file                            |
++------+----------------+-------------------------------------------+
+| C    | Folder         | can create file in folder                 |
++------+----------------+-------------------------------------------+
+| K    | Folder         | can create folder (mkdir)                 |
++------+----------------+-------------------------------------------+
+| D    | File or Folder | can delete file or folder                 |
++------+----------------+-------------------------------------------+
+| N    | File or Folder | can rename file or folder                 |
++------+----------------+-------------------------------------------+
+| V    | File or Folder | can move file or folder                   |
++------+----------------+-------------------------------------------+
 
 
 Example:

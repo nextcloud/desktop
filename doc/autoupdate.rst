@@ -59,7 +59,7 @@ the auto-updater entirely.  The following sections describe how to disable the
 auto-update mechanism for different operating systems.
 
 Preventing Automatic Updates in Windows Environments
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Users may disable automatic updates by adding this line to the [General] 
 section of their ``owncloud.cfg`` files::
