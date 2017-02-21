@@ -14,8 +14,8 @@ using namespace OCC;
 bool itemDidComplete(const QSignalSpy &spy, const QString &path)
 {
     for(const QList<QVariant> &args : spy) {
-        SyncFileItem item = args[0].value<SyncFileItem>();
-        if (item.destination() == path)
+        auto item = args[0].value<SyncFileItemPtr>();
+        if (item->destination() == path)
             return true;
     }
     return false;
@@ -24,9 +24,9 @@ bool itemDidComplete(const QSignalSpy &spy, const QString &path)
 bool itemDidCompleteSuccessfully(const QSignalSpy &spy, const QString &path)
 {
     for(const QList<QVariant> &args : spy) {
-        SyncFileItem item = args[0].value<SyncFileItem>();
-        if (item.destination() == path)
-            return item._status == SyncFileItem::Success;
+        auto item = args[0].value<SyncFileItemPtr>();
+        if (item->destination() == path)
+            return item->_status == SyncFileItem::Success;
     }
     return false;
 }
@@ -38,7 +38,7 @@ class TestSyncEngine : public QObject
 private slots:
     void testFileDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.remoteModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -47,7 +47,7 @@ private slots:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.localModifier().insert("A/a0");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a0"));
@@ -56,7 +56,7 @@ private slots:
 
     void testDirDownload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.remoteModifier().mkdir("Y");
         fakeFolder.remoteModifier().mkdir("Z");
         fakeFolder.remoteModifier().insert("Z/d0");
@@ -69,7 +69,7 @@ private slots:
 
     void testDirUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.localModifier().mkdir("Y");
         fakeFolder.localModifier().mkdir("Z");
         fakeFolder.localModifier().insert("Z/d0");
@@ -82,7 +82,7 @@ private slots:
 
     void testLocalDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.remoteModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -91,7 +91,7 @@ private slots:
 
     void testRemoteDelete() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         fakeFolder.localModifier().remove("A/a1");
         fakeFolder.syncOnce();
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "A/a1"));
@@ -107,7 +107,7 @@ private slots:
         // fakeFolder.syncOnce();
         fakeFolder.syncOnce();
 
-        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         // Touch the file without changing the content, shouldn't upload
         fakeFolder.localModifier().setContents("a1.eml", 'A');
         // Change the content/size
@@ -204,7 +204,7 @@ private slots:
             QCOMPARE(fakeFolder.currentLocalState(), remoteState);
 
             expectedServerState = fakeFolder.currentRemoteState();
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             fakeFolder.syncOnce(); // This sync should do nothing
             QCOMPARE(completeSpy.count(), 0);
 
@@ -213,6 +213,18 @@ private slots:
         }
     }
 
+    void abortAfterFailedMkdir() {
+        QSKIP("Skip for 2.3");
+        FakeFolder fakeFolder{FileInfo{}};
+        QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));
+        fakeFolder.serverErrorPaths().append("NewFolder");
+        fakeFolder.localModifier().mkdir("NewFolder");
+        // This should be aborted and would otherwise fail in FileInfo::create.
+        fakeFolder.localModifier().insert("NewFolder/NewFile");
+        fakeFolder.syncOnce();
+        QCOMPARE(finishedSpy.size(), 1);
+        QCOMPARE(finishedSpy.first().first().toBool(), false);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

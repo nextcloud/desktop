@@ -114,7 +114,7 @@ signals:
     /**
      * Emitted when one item has been completed within a job.
      */
-    void itemCompleted(const SyncFileItem &, const PropagatorJob &);
+    void itemCompleted(const SyncFileItemPtr &);
 
     /**
      * Emitted when all the sub-jobs have been finished and
@@ -192,14 +192,11 @@ public:
 
     SyncFileItemPtr _item;
 
-    int _jobsFinished; // number of jobs that have completed
-    int _runningNow; // number of subJobs running right now
     SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
-    int _firstUnfinishedSubJob;
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem))
         : PropagatorJob(propagator)
-        , _firstJob(0), _item(item),  _jobsFinished(0), _runningNow(0), _hasError(SyncFileItem::NoStatus), _firstUnfinishedSubJob(0)
+        , _item(item), _hasError(SyncFileItem::NoStatus)
     { }
 
     virtual ~PropagateDirectory() {
@@ -231,11 +228,9 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next) {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)), Qt::QueuedConnection);
-            connect(next, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-                    this, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+            connect(next, SIGNAL(itemCompleted(const SyncFileItemPtr &)), this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             connect(next, SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
             connect(next, SIGNAL(ready()), this, SIGNAL(ready()));
-            _runningNow++;
         }
         return next->scheduleNextJob();
     }
@@ -306,8 +301,9 @@ public:
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
 
+    /* the maximum number of jobs using bandwidth (uploads or downloads, in parallel) */
+    int maximumActiveTransferJob();
     /* The maximum number of active jobs in parallel  */
-    int maximumActiveJob();
     int hardMaximumActiveJob();
 
     bool isInSharedDirectory(const QString& file);
@@ -356,7 +352,7 @@ private slots:
     void scheduleNextJob();
 
 signals:
-    void itemCompleted(const SyncFileItem &, const PropagatorJob &);
+    void itemCompleted(const SyncFileItemPtr &);
     void progress(const SyncFileItem&, quint64 bytes);
     void finished(bool success);
 

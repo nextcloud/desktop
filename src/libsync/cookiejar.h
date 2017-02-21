@@ -39,15 +39,13 @@ public:
     using QNetworkCookieJar::setAllCookies;
     using QNetworkCookieJar::allCookies;
 
-    void save();
+    void save(const QString &fileName);
+    void restore(const QString &fileName);
 
 signals:
     void newCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
 private:
-    void restore();
     QList<QNetworkCookie> removeExpired(const QList<QNetworkCookie> &cookies);
-    QString storagePath() const;
-
 };
 
 } // namespace OCC

@@ -280,17 +280,15 @@ private slots:
 
     void slotFolderDiscovered(bool local, QString folderName);
     void slotTransmissionProgress(const ProgressInfo& pi);
-    void slotItemCompleted(const SyncFileItem&, const PropagatorJob&);
+    void slotItemCompleted(const SyncFileItemPtr&);
 
     void slotRunEtagJob();
     void etagRetreived(const QString &);
     void etagRetreivedFromSyncEngine(const QString &);
 
-    void slotThreadTreeWalkResult(const SyncFileItemVector& ); // after sync is done
-
     void slotEmitFinishedDelayed();
 
-    void slotNewBigFolderDiscovered(const QString &);
+    void slotNewBigFolderDiscovered(const QString &, bool isExternal);
 
     void slotLogPropagationStart();
 
@@ -302,7 +300,7 @@ private slots:
 private:
     bool setIgnoredFiles();
 
-    void bubbleUpSyncResult();
+    void showSyncResultPopup();
 
     void checkLocalPath();
 
@@ -325,10 +323,7 @@ private:
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
-    QStringList  _errors;
-    bool         _csyncError;
     bool         _csyncUnavail;
-    bool         _wipeDb;
     bool         _proxyDirty;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString       _lastEtag;

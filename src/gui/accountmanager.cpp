@@ -46,11 +46,17 @@ AccountManager *AccountManager::instance()
 bool AccountManager::restore()
 {
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    if (settings->status() != QSettings::NoError) {
+        qDebug() << "Could not read settings from" << settings->fileName()
+                 << settings->status();
+        return false;
+    }
 
     // If there are no accounts, check the old format.
     if (settings->childGroups().isEmpty()
             && !settings->contains(QLatin1String(versionC))) {
-        return restoreFromLegacySettings();
+        restoreFromLegacySettings();
+        return true;
     }
 
     foreach (const auto& accountId, settings->childGroups()) {
@@ -69,6 +75,9 @@ bool AccountManager::restore()
 
 bool AccountManager::restoreFromLegacySettings()
 {
+    qDebug() << "Migrate: restoreFromLegacySettings, checking settings group"
+             << Theme::instance()->appName();
+
     // try to open the correctly themed settings
     auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
 
@@ -86,7 +95,7 @@ bool AccountManager::restoreFromLegacySettings()
 
         QFileInfo fi( oCCfgFile );
         if( fi.isReadable() ) {
-            QSettings *oCSettings = new QSettings(oCCfgFile, QSettings::IniFormat);
+            std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));
             oCSettings->beginGroup(QLatin1String("ownCloud"));
 
             // Check the theme url to see if it is the same url that the oC config was for
@@ -101,9 +110,7 @@ bool AccountManager::restoreFromLegacySettings()
                 qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
-                    settings.reset( oCSettings );
-                } else {
-                    delete oCSettings;
+                    settings = std::move(oCSettings);
                 }
             }
         }
@@ -196,8 +203,8 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
     if (acc->_am) {
         CookieJar* jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
         if (jar) {
-            qDebug() << "Saving cookies.";
-            jar->save();
+            qDebug() << "Saving cookies." << acc->cookieJarPath();
+            jar->save(acc->cookieJarPath());
         }
     }
 }
@@ -288,6 +295,8 @@ void AccountManager::deleteAccount(AccountState* account)
     if (it == _accounts.end()) { return; }
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
+
+    QFile::remove(account->account()->cookieJarPath());
 
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());

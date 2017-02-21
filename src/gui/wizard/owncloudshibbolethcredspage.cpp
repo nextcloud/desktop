@@ -44,6 +44,7 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     // i.e. if someone presses "back"
     QNetworkAccessManager *qnam = account->networkAccessManager();
     CookieJar *jar = new CookieJar;
+    jar->restore(account->cookieJarPath());
     // Implicitly deletes the old cookie jar, and reparents the jar
     qnam->setCookieJar(jar);
 

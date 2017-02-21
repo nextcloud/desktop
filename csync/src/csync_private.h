@@ -89,7 +89,7 @@ struct csync_s {
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
       int (*checkSelectiveSyncBlackListHook)(void*, const char*);
-      int (*checkSelectiveSyncNewFolderHook)(void*, const char*);
+      int (*checkSelectiveSyncNewFolderHook)(void*, const char* /* path */, const char* /* remotePerm */);
 
 
       csync_vio_opendir_hook remote_opendir_hook;
@@ -207,7 +207,7 @@ __attribute__ ((packed))
 #endif
 ;
 
-void csync_file_stat_free(csync_file_stat_t *st);
+OCSYNC_EXPORT void csync_file_stat_free(csync_file_stat_t *st);
 
 /*
  * context for the treewalk function

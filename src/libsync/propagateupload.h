@@ -183,13 +183,14 @@ class PropagateUploadFileCommon : public PropagateItemJob {
     Q_OBJECT
 
 protected:
-    QElapsedTimer _duration;
     QVector<AbstractNetworkJob*> _jobs; /// network jobs that are currently in transit
-    bool _finished; /// Tells that all the jobs have been finished
-    bool _deleteExisting;
+    bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
+    bool _deleteExisting BITFIELD(1);
 
     // measure the performance of checksum calc and upload
+#ifdef WITH_TESTING
     Utility::StopWatch _stopWatch;
+#endif
 
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;
@@ -300,7 +301,8 @@ private:
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
-    QMap<int, quint64> _serverChunks;
+    struct ServerChunkInfo { quint64 size; QString originalName; };
+    QMap<int, ServerChunkInfo> _serverChunks;
 
     quint64 chunkSize() const { return propagator()->chunkSize(); }
     /**

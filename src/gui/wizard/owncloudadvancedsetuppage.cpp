@@ -68,6 +68,15 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
     _ui.lLocalIcon->setText(QString());
     _ui.lLocalIcon->setPixmap(QPixmap(Theme::hidpiFileName(":/client/resources/folder-sync.png")));
+
+    if (theme->wizardHideExternalStorageConfirmationCheckbox()) {
+        _ui.confCheckBoxExternal->hide();
+    }
+    if (theme->wizardHideFolderSizeLimitCheckbox()) {
+        _ui.confCheckBoxSize->hide();
+        _ui.confSpinBox->hide();
+        _ui.confTraillingSizeLabel->hide();
+    }
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -118,6 +127,12 @@ void OwncloudAdvancedSetupPage::initializePage()
         _selectiveSyncBlacklist = QStringList("/");
         QTimer::singleShot(0, this, SLOT(slotSelectiveSyncClicked()));
     }
+
+    ConfigFile cfgFile;
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
+    _ui.confCheckBoxSize->setChecked(newFolderLimit.first);
+    _ui.confSpinBox->setValue(newFolderLimit.second);
+    _ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and
@@ -200,6 +215,11 @@ QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
     return _selectiveSyncBlacklist;
 }
 
+bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
+{
+    return _ui.rSyncEverything->isChecked() && _ui.confCheckBoxSize->isChecked();
+}
+
 bool OwncloudAdvancedSetupPage::validatePage()
 {
     if(!_created) {
@@ -207,6 +227,13 @@ bool OwncloudAdvancedSetupPage::validatePage()
         _checking = true;
         startSpinner();
         emit completeChanged();
+
+        if (_ui.rSyncEverything->isChecked()) {
+            ConfigFile cfgFile;
+            cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(),
+                                                _ui.confSpinBox->value());
+            cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
+        }
 
         emit createLocalAndRemoteFolders(localFolder(), _remoteFolder);
         return false;

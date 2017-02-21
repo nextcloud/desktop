@@ -7,6 +7,8 @@ endif()
 
 project(client)
 
+set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
      include ( ${OEM_THEME_DIR}/OEM.cmake )
@@ -57,9 +59,6 @@ if( UNIX AND NOT APPLE )
     set(WITH_DBUS ON)
 endif()
 ####
-
-# Enable Q_ASSERT etc. in all builds
-add_definitions( -DQT_FORCE_ASSERTS )
 
 include(GNUInstallDirs)
 include(DefineInstallationPaths)

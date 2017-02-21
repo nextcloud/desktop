@@ -27,6 +27,7 @@
 #include "utility.h"
 #include "version.h"
 #include "filesystem.h"
+#include "asserts.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -178,7 +179,7 @@ bool SyncJournalDb::sqlFail( const QString& log, const SqlQuery& query )
 {
     commitTransaction();
     qWarning() << "SQL Error" << log << query.error();
-    Q_ASSERT(!"SQL ERROR");
+    ASSERT(false);
     _db.close();
     return false;
 }
@@ -1370,21 +1371,22 @@ void SyncJournalDb::setUploadInfo(const QString& file, const SyncJournalDb::Uplo
     }
 }
 
-bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
+QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
 {
     QMutexLocker locker(&_mutex);
+    QVector<uint> ids;
 
     if (!checkConnect()) {
-        return false;
+        return ids;
     }
 
     SqlQuery query(_db);
-    query.prepare("SELECT path FROM uploadinfo");
+    query.prepare("SELECT path,transferid FROM uploadinfo");
 
     if (!query.exec()) {
         QString err = query.error();
         qDebug() << "Error creating prepared statement: " << query.lastQuery() << ", Error:" << err;
-        return false;
+        return ids;
     }
 
     QStringList superfluousPaths;
@@ -1393,10 +1395,12 @@ bool SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
         const QString file = query.stringValue(0);
         if (!keep.contains(file)) {
             superfluousPaths.append(file);
+            ids.append(query.intValue(1));
         }
     }
 
-    return deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
+    deleteBatch(*_deleteUploadInfoQuery, superfluousPaths, "uploadinfo");
+    return ids;
 }
 
 SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry( const QString& file )
@@ -1604,7 +1608,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo& info)
 QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncListType type, bool *ok )
 {
     QStringList result;
-    Q_ASSERT(ok);
+    ASSERT(ok);
 
     QMutexLocker locker(&_mutex);
     if( !checkConnect() ) {
@@ -1829,6 +1833,17 @@ void SyncJournalDb::setDataFingerprint(const QByteArray &dataFingerprint)
         qWarning() << "Error SQL statement setDataFingerprint2: "
                    << _setDataFingerprintQuery2->lastQuery() << " :"
                    << _setDataFingerprintQuery2->error();
+    }
+}
+
+void SyncJournalDb::clearFileTable()
+{
+    SqlQuery query(_db);
+    query.prepare("DELETE FROM metadata;");
+    if (!query.exec()) {
+        qWarning() << "SQL error in clearFileTable" << query.error();
+    } else {
+        qDebug() << query.lastQuery() << "(" << query.numRowsAffected() << " rows)";
     }
 }
 

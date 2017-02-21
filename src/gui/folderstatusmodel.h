@@ -51,7 +51,7 @@ public:
 
     struct SubFolderInfo {
         SubFolderInfo()
-            : _folder(0), _size(0), _fetched(false), _fetching(false),
+            : _folder(0), _size(0), _isExternal(false), _fetched(false), _fetching(false),
             _hasError(false), _fetchingLabel(false), _isUndecided(false), _checked(Qt::Checked) {}
         Folder *_folder;
         QString _name;
@@ -59,6 +59,7 @@ public:
         QVector<int> _pathIdx;
         QVector<SubFolderInfo> _subs;
         qint64 _size;
+        bool _isExternal;
 
         bool _fetched; // If we did the LSCOL for this folder already
         bool _fetching; // Whether a LSCOL job is currently running
@@ -113,6 +114,7 @@ public slots:
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
+    void slotGatherPermissions(const QString &name, const QMap<QString,QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
     void slotFolderSyncStateChange(Folder* f);
     void slotFolderScheduleQueueChanged();

@@ -32,12 +32,14 @@
 
 #include <QNetworkProxy>
 #include <QDir>
+#include <QScopedValueRollback>
 
 namespace OCC {
 
 GeneralSettings::GeneralSettings(QWidget *parent) :
     QWidget(parent),
-    _ui(new Ui::GeneralSettings)
+    _ui(new Ui::GeneralSettings),
+    _currentlyLoading(false)
 {
     _ui->setupUi(this);
 
@@ -66,6 +68,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->newFolderLimitCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
     connect(_ui->newFolderLimitSpinBox, SIGNAL(valueChanged(int)), SLOT(saveMiscSettings()));
+    connect(_ui->newExternalStorage, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -85,6 +88,9 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     _ui->monoIconsCheckBox->setVisible(QDir(themeDir).exists());
 
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
+
+    // accountAdded means the wizard was finished and the wizard might change some options.
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)), this, SLOT(loadMiscSettings()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -99,6 +105,12 @@ QSize GeneralSettings::sizeHint() const {
 
 void GeneralSettings::loadMiscSettings()
 {
+#if QT_VERSION < QT_VERSION_CHECK( 5, 4, 0 )
+    QScopedValueRollback<bool> scope(_currentlyLoading);
+    _currentlyLoading = true;
+#else
+    QScopedValueRollback<bool> scope(_currentlyLoading, true);
+#endif
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
@@ -106,6 +118,8 @@ void GeneralSettings::loadMiscSettings()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
+    _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
+    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -130,6 +144,8 @@ void GeneralSettings::slotUpdateInfo()
 
 void GeneralSettings::saveMiscSettings()
 {
+    if (_currentlyLoading)
+        return;
     ConfigFile cfgFile;
     bool isChecked = _ui->monoIconsCheckBox->isChecked();
     cfgFile.setMonoIcons(isChecked);
@@ -138,6 +154,7 @@ void GeneralSettings::saveMiscSettings()
 
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
                                         _ui->newFolderLimitSpinBox->value());
+    cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

@@ -23,6 +23,7 @@
 #include "accountmanager.h"
 #include "filesystem.h"
 #include "lockwatcher.h"
+#include "asserts.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -48,7 +49,7 @@ FolderMan::FolderMan(QObject *parent) :
     _lockWatcher(new LockWatcher),
     _appRestartRequired(false)
 {
-    Q_ASSERT(!_instance);
+    ASSERT(!_instance);
     _instance = this;
 
     _socketApi.reset(new SocketApi);
@@ -133,12 +134,13 @@ int FolderMan::unloadAndDeleteAllFolders()
         delete f;
         cnt++;
     }
+    ASSERT(_folderMap.isEmpty());
+
     _lastSyncFolder = 0;
     _currentSyncFolder = 0;
     _scheduledFolders.clear();
     emit scheduleQueueChanged();
 
-    Q_ASSERT(_folderMap.count() == 0);
     return cnt;
 }
 
@@ -260,7 +262,6 @@ int FolderMan::setupFoldersMigration()
 {
     ConfigFile cfg;
     QDir storageDir(cfg.configPath());
-    storageDir.mkpath(QLatin1String("folders"));
     _folderConfigPath = cfg.configPath() + QLatin1String("folders");
 
     qDebug() << "* Setup folders from " << _folderConfigPath << "(migration)";
@@ -463,7 +464,7 @@ void FolderMan::slotFolderSyncPaused( Folder *f, bool paused )
 void FolderMan::slotFolderCanSyncChanged()
 {
     Folder *f = qobject_cast<Folder*>(sender());
-    Q_ASSERT(f);
+    ASSERT(f);
     if (f->canSync()) {
         _socketApi->slotRegisterPath(f->alias());
     } else {
@@ -1121,7 +1122,7 @@ void FolderMan::setDirtyNetworkLimits()
 
 SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
 {
-    SyncResult overallResult(SyncResult::Undefined);
+    SyncResult overallResult;
 
     int cnt = folders.count();
 
@@ -1235,10 +1236,10 @@ SyncResult FolderMan::accountStatus(const QList<Folder*> &folders)
     return overallResult;
 }
 
-QString FolderMan::statusToString( SyncResult syncStatus, bool paused ) const
+QString FolderMan::statusToString( SyncResult::Status syncStatus, bool paused ) const
 {
     QString folderMessage;
-    switch( syncStatus.status() ) {
+    switch( syncStatus ) {
     case SyncResult::Undefined:
         folderMessage = tr( "Undefined State." );
         break;

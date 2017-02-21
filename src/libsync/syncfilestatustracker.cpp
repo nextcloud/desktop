@@ -17,6 +17,7 @@
 #include "syncengine.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
+#include "asserts.h"
 
 namespace OCC {
 
@@ -77,8 +78,8 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
 {
     connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector&)),
             SLOT(slotAboutToPropagate(SyncFileItemVector&)));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItem&, const PropagatorJob&)),
-            SLOT(slotItemCompleted(const SyncFileItem&)));
+    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItemPtr&)),
+            SLOT(slotItemCompleted(const SyncFileItemPtr&)));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
     connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
     connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
@@ -86,7 +87,7 @@ SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& relativePath)
 {
-    Q_ASSERT(!relativePath.endsWith(QLatin1Char('/')));
+    ASSERT(!relativePath.endsWith(QLatin1Char('/')));
 
     if (relativePath.isEmpty()) {
         // This is the root sync folder, it doesn't have an entry in the database and won't be walked by csync, so resolve manually.
@@ -121,62 +122,67 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString& relativePath)
 void SyncFileStatusTracker::slotPathTouched(const QString& fileName)
 {
     QString folderPath = _syncEngine->localPath();
-    Q_ASSERT(fileName.startsWith(folderPath));
 
+    ASSERT(fileName.startsWith(folderPath));
     QString localPath = fileName.mid(folderPath.size());
     _dirtyPaths.insert(localPath);
 
     emit fileStatusChanged(fileName, SyncFileStatus::StatusSync);
 }
 
-void SyncFileStatusTracker::incSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange)
+void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedFlag)
 {
     // Will return 0 (and increase to 1) if the path wasn't in the map yet
     int count = _syncCount[relativePath]++;
     if (!count) {
-        if (emitStatusChange)
-            emit fileStatusChanged(getSystemDestination(relativePath), fileStatus(relativePath));
+        SyncFileStatus status = sharedFlag == UnknownShared
+            ? fileStatus(relativePath)
+            : resolveSyncAndErrorStatus(relativePath, sharedFlag);
+        emit fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from OK to SYNC, increment the parent to keep it marked as
         // SYNC while we propagate ourselves and our own children.
-        Q_ASSERT(!relativePath.endsWith('/'));
+        ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
         if (lastSlashIndex != -1)
-            incSyncCount(relativePath.left(lastSlashIndex), EmitStatusChange);
+            incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
         else if (!relativePath.isEmpty())
-            incSyncCount(QString(), EmitStatusChange);
+            incSyncCountAndEmitStatusChanged(QString(), UnknownShared);
     }
 }
 
-void SyncFileStatusTracker::decSyncCount(const QString &relativePath, EmitStatusChangeFlag emitStatusChange)
+void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedFlag)
 {
     int count = --_syncCount[relativePath];
     if (!count) {
         // Remove from the map, same as 0
         _syncCount.remove(relativePath);
 
-        if (emitStatusChange)
-            emit fileStatusChanged(getSystemDestination(relativePath), fileStatus(relativePath));
+        SyncFileStatus status = sharedFlag == UnknownShared
+            ? fileStatus(relativePath)
+            : resolveSyncAndErrorStatus(relativePath, sharedFlag);
+        emit fileStatusChanged(getSystemDestination(relativePath), status);
 
         // We passed from SYNC to OK, decrement our parent.
-        Q_ASSERT(!relativePath.endsWith('/'));
+        ASSERT(!relativePath.endsWith('/'));
         int lastSlashIndex = relativePath.lastIndexOf('/');
         if (lastSlashIndex != -1)
-            decSyncCount(relativePath.left(lastSlashIndex), EmitStatusChange);
+            decSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
         else if (!relativePath.isEmpty())
-            decSyncCount(QString(), EmitStatusChange);
+            decSyncCountAndEmitStatusChanged(QString(), UnknownShared);
     }
 }
 
 void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
 {
-    Q_ASSERT(_syncCount.isEmpty());
+    ASSERT(_syncCount.isEmpty());
 
     std::map<QString, SyncFileStatus::SyncFileStatusTag> oldProblems;
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
         // qDebug() << Q_FUNC_INFO << "Investigating" << item->destination() << item->_status << item->_instruction;
+        _dirtyPaths.remove(item->destination());
 
         if (showErrorInSocketApi(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
@@ -185,18 +191,16 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
 
-        // Mark this path as syncing for instructions that will result in propagation,
-        // but DontEmitStatusChange since we're going to emit for ourselves using the
-        // info in the SyncFileItem we received, parents will still be emit if needed.
+        SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
         if (item->_instruction != CSYNC_INSTRUCTION_NONE
             && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
             && item->_instruction != CSYNC_INSTRUCTION_IGNORE
             && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
-            incSyncCount(item->destination(), DontEmitStatusChange);
+            // Mark this path as syncing for instructions that will result in propagation.
+            incSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
+        } else {
+            emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
         }
-
-        _dirtyPaths.remove(item->destination());
-        emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), item->_remotePerm.contains("S") ? Shared : NotShared));
     }
 
     // Some metadata status won't trigger files to be synced, make sure that we
@@ -220,27 +224,29 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector& items)
     }
 }
 
-void SyncFileStatusTracker::slotItemCompleted(const SyncFileItem &item)
+void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
 {
     // qDebug() << Q_FUNC_INFO << item.destination() << item._status << item._instruction;
 
-    if (showErrorInSocketApi(item)) {
-        _syncProblems[item._file] = SyncFileStatus::StatusError;
-        invalidateParentPaths(item.destination());
-    } else if (showWarningInSocketApi(item)) {
-        _syncProblems[item._file] = SyncFileStatus::StatusWarning;
+    if (showErrorInSocketApi(*item)) {
+        _syncProblems[item->_file] = SyncFileStatus::StatusError;
+        invalidateParentPaths(item->destination());
+    } else if (showWarningInSocketApi(*item)) {
+        _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
     } else {
-        _syncProblems.erase(item._file);
+        _syncProblems.erase(item->_file);
     }
 
-    // decSyncCount calls *must* be symetric with incSyncCount calls in slotAboutToPropagate
-    if (item._instruction != CSYNC_INSTRUCTION_NONE
-        && item._instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
-        && item._instruction != CSYNC_INSTRUCTION_IGNORE
-        && item._instruction != CSYNC_INSTRUCTION_ERROR) {
-        decSyncCount(item.destination(), DontEmitStatusChange);
+    SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+    if (item->_instruction != CSYNC_INSTRUCTION_NONE
+        && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
+        && item->_instruction != CSYNC_INSTRUCTION_IGNORE
+        && item->_instruction != CSYNC_INSTRUCTION_ERROR) {
+        // decSyncCount calls *must* be symetric with incSyncCount calls in slotAboutToPropagate
+        decSyncCountAndEmitStatusChanged(item->destination(), sharedFlag);
+    } else {
+        emit fileStatusChanged(getSystemDestination(item->destination()), resolveSyncAndErrorStatus(item->destination(), sharedFlag));
     }
-    emit fileStatusChanged(getSystemDestination(item.destination()), resolveSyncAndErrorStatus(item.destination(), item._remotePerm.contains("S") ? Shared : NotShared));
 }
 
 void SyncFileStatusTracker::slotSyncFinished()
@@ -257,7 +263,7 @@ void SyncFileStatusTracker::slotSyncEngineRunningChanged()
     emit fileStatusChanged(getSystemDestination(QString()), resolveSyncAndErrorStatus(QString(), NotShared));
 }
 
-SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag isShared, PathKnownFlag isPathKnown)
+SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag sharedFlag, PathKnownFlag isPathKnown)
 {
     // If it's a new file and that we're not syncing it yet,
     // don't show any icon and wait for the filesystem watcher to trigger a sync.
@@ -272,7 +278,9 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
             status.set(problemStatus);
     }
 
-    if (isShared)
+    ASSERT(sharedFlag != UnknownShared,
+           "The shared status needs to have been fetched from a SyncFileItem or the DB at this point.");
+    if (sharedFlag == Shared)
         status.setSharedWithMe(true);
 
     return status;

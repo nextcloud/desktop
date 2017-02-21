@@ -25,7 +25,7 @@
 #include "syncengine.h"
 #include "propagateremotemove.h"
 #include "propagateremotedelete.h"
-
+#include "asserts.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -41,7 +41,8 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
         + propagator()->account()->davUser()
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunk >= 0) {
-        path += QLatin1Char('/') + QString::number(chunk);
+        // We need to do add leading 0 because the server orders the chunk alphabetically
+        path += QLatin1Char('/') + QString::number(chunk).rightJustified(8, '0');
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -79,7 +80,6 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
 
 void PropagateUploadFileNG::doStartUpload()
 {
-    _duration.start();
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
@@ -97,6 +97,12 @@ void PropagateUploadFileNG::doStartUpload()
                 this, SLOT(slotPropfindIterate(QString,QMap<QString,QString>)));
         job->start();
         return;
+    } else if (progressInfo._valid) {
+        // The upload info is stale. remove the stale chunks on the server
+        _transferId = progressInfo._transferid;
+        // Fire and forget. Any error will be ignored.
+        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+        // startNewUpload will reset the _transferId and the UploadInfo in the db.
     }
 
     startNewUpload();
@@ -108,9 +114,11 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
         return; // skip the info about the path itself
     }
     bool ok = false;
-    auto chunkId = name.mid(name.lastIndexOf('/')+1).toUInt(&ok);
+    QString chunkName = name.mid(name.lastIndexOf('/')+1);
+    auto chunkId = chunkName.toUInt(&ok);
     if (ok) {
-        _serverChunks[chunkId] = properties["getcontentlength"].toULongLong();
+        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toULongLong(), chunkName };
+        _serverChunks[chunkId] = chunkinfo;
     }
 }
 
@@ -123,7 +131,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
     _currentChunk = 0;
     _sent = 0;
     while (_serverChunks.contains(_currentChunk)) {
-        _sent += _serverChunks[_currentChunk];
+        _sent += _serverChunks[_currentChunk].size;
         _serverChunks.remove(_currentChunk);
         ++_currentChunk;
     }
@@ -141,7 +149,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
     qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
 
     if (!_serverChunks.isEmpty()) {
-        qDebug() << "To Delete" << _serverChunks;
+        qDebug() << "To Delete" << _serverChunks.keys();
         propagator()->_activeJobList.append(this);
         _removeJobError = false;
 
@@ -149,7 +157,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // we should remove the later chunks. Otherwise when we do dynamic chunk sizing, we may end up
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
-            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), QString::number(it.key())), this);
+            auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), it->originalName), this);
             QObject::connect(job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
             _jobs.append(job);
             job->start();
@@ -180,7 +188,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
 void PropagateUploadFileNG::slotDeleteJobFinished()
 {
     auto job = qobject_cast<DeleteJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     _jobs.remove(_jobs.indexOf(job));
 
     QNetworkReply::NetworkError err = job->reply()->error();
@@ -212,7 +220,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 
 void PropagateUploadFileNG::startNewUpload()
 {
-    Q_ASSERT(propagator()->_activeJobList.count(this) == 1);
+    ASSERT(propagator()->_activeJobList.count(this) == 1);
     _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16) ^ qHash(_item->_file);
     _sent = 0;
     _currentChunk = 0;
@@ -262,11 +270,12 @@ void PropagateUploadFileNG::startNextChunk()
         return;
 
     quint64 fileSize = _item->_size;
-    Q_ASSERT(fileSize >= _sent);
+    ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
+
     quint64 currentChunkSize = qMin(chunkSize(), fileSize - _sent);
 
     if (currentChunkSize == 0) {
-        Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
+        ASSERT(_jobs.isEmpty());
         _finished = true;
         // Finish with a MOVE
         QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
@@ -335,7 +344,8 @@ void PropagateUploadFileNG::startNextChunk()
 void PropagateUploadFileNG::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
+
     slotJobDestroyed(job); // remove it from the _jobs list
 
     qDebug() << job->reply()->request().url() << "FINISHED WITH STATUS"
@@ -383,7 +393,7 @@ void PropagateUploadFileNG::slotPutFinished()
         return;
     }
 
-    Q_ASSERT(_sent <= _item->_size);
+    ENFORCE(_sent <= _item->_size, "can't send more than size");
     bool finished = _sent == _item->_size;
 
     // Check if the file still exists
@@ -475,14 +485,16 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     }
     _item->_responseTimeStamp = job->responseTimestamp();
 
+#ifdef WITH_TESTING
     // performance logging
-    _item->_requestDuration = _stopWatch.stop();
+    quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-             << _item->_requestDuration;
+             << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
+#endif
     finalize();
 }
 

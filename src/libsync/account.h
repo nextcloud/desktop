@@ -172,6 +172,7 @@ public:
 
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
+    QString cookieJarPath();
 
     void resetNetworkAccessManager();
     QNetworkAccessManager* networkAccessManager();

@@ -13,13 +13,19 @@
  */
 
 #include "discoveryphase.h"
+
+#include "account.h"
+#include "theme.h"
+#include "asserts.h"
+
 #include <csync_private.h>
 #include <csync_rename.h>
-#include <qdebug.h>
 
+#include <qdebug.h>
 #include <QUrl>
-#include "account.h"
 #include <QFileInfo>
+#include <cstring>
+
 
 namespace OCC {
 
@@ -81,14 +87,32 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *pat
     return static_cast<DiscoveryJob*>(data)->isInSelectiveSyncBlackList(path);
 }
 
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
+bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path, const char *remotePerm)
 {
-    // If this path or the parent is in the white list, then we do not block this file
+
+    if (_syncOptions._confirmExternalStorage && std::strchr(remotePerm, 'M')) {
+        // 'M' in the permission means external storage.
+
+        /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
+         * root of a mounted storage has 'M', all sub entries have 'm' */
+
+        // Only allow it if the white list contains exactly this path (not parents)
+        // We want to ask confirmation for external storage even if the parents where selected
+        if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
+            return false;
+        }
+
+        emit newBigFolder(path, true);
+        return true;
+    }
+
+   // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
         return false;
     }
 
-    if (_newBigFolderSizeLimit < 0) {
+    auto limit = _syncOptions._newBigFolderSizeLimit;
+    if (limit < 0) {
         // no limit, everything is allowed;
         return false;
     }
@@ -102,10 +126,9 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
         _vioWaitCondition.wait(&_vioMutex);
     }
 
-    auto limit = _newBigFolderSizeLimit;
     if (result >= limit) {
         // we tell the UI there is a new folder
-        emit newBigFolder(path);
+        emit newBigFolder(path, false);
         return true;
     } else {
         // it is not too big, put it in the white list (so we will not do more query for the children)
@@ -119,9 +142,9 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString& path)
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path)
+int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path, const char *remotePerm)
 {
-    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path));
+    return static_cast<DiscoveryJob*>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
 }
 
 
@@ -224,7 +247,7 @@ int get_errno_from_http_errcode( int err, const QString & reason ) {
 
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false), _isRootPath(false)
+    : QObject(parent), _subPath(path), _account(account), _ignoredFirst(false), _isRootPath(false), _isExternalStorage(false)
 {
 }
 
@@ -321,7 +344,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            emit firstDirectoryPermissions(map.value("permissions"));
+            auto perm = map.value("permissions");
+            emit firstDirectoryPermissions(perm);
+            _isExternalStorage = perm.contains(QLatin1Char('M'));
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
@@ -343,6 +368,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         file_stat->name = strdup(file.toUtf8());
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
             qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+        }
+        if (_isExternalStorage) {
+            /* All the entries in a external storage have 'M' in their permission. However, for all
+               purposes in the desktop client, we only need to know about the mount points.
+               So replace the 'M' by a 'm' for every sub entries in an external storage */
+            std::replace(file_stat->remotePerm, file_stat->remotePerm + strlen(file_stat->remotePerm),
+                         'M', 'm');
         }
 
         QStringRef fileRef(&file);

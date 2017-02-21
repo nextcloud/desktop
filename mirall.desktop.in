@@ -641,6 +641,99 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -665,7 +758,9 @@ Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
 GenericName[ja_JP]=フォルダー同期
 Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
 Icon[ja_JP]=@APPLICATION_EXECUTABLE@
+Comment[el]=@ΟΝΟΜΑ_ΕΦΑΡΜΟΓΗΣ@ συγχρονισμός επιφάνειας εργασίας πελάτη
 GenericName[el]=Συγχρονισμός φακέλου
+Name[el]=@ΟΝΟΜΑ_ΕΦΑΡΜΟΓΗΣ@  συγχρονισμός επιφάνειας εργασίας πελάτη
 Icon[el]=@APPLICATION_EXECUTABLE@
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
 GenericName[en_GB]=Folder Sync
@@ -679,10 +774,13 @@ Comment[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de_DE]=Ordner-Synchronisation
 Name[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de_DE]=@APPLICATION_EXECUTABLE@
-Comment[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
-GenericName[pl]=Folder Synchronizacji
-Name[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
-Icon[pl]=@APPLICATION_EXECUTABLE@
+Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
+GenericName[bg_BG]=Синхронизиране на папката
+Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
+Icon[bg_BG]=@APPLICATION_EXECUTABLE@
+GenericName[fa]=همسان سازی پوشه‌ها
+Name[fa]=@APPLICATION_EXECUTABLE@ نسخه‌ی همسان سازی مشتری
+Icon[fa]=@APPLICATION_EXECUTABLE@
 Comment[fr]=@APPLICATION_NAME@ synchronisation du client
 GenericName[fr]=Dossier de Synchronisation
 Name[fr]=@APPLICATION_NAME@ synchronisation du client
@@ -691,6 +789,10 @@ Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
 GenericName[he]=סנכון תיקייה
 Name[he]=@APPLICATION_NAME@ לקוח סנכרון שולחן עבודה 
 Icon[he]=@APPLICATION_EXECUTABLE@
+Comment[ia]=@APPLICATION_NAME@ cliente de synchronisation pro scriptorio
+GenericName[ia]=Synchronisar Dossier 
+Name[ia]=@APPLICATION_NAME@ cliente de synchronisation pro scriptorio
+Icon[ia]=@APPLICATION_EXECUTABLE@
 Comment[id]=Klien sinkronisasi desktop @APPLICATION_NAME@
 GenericName[id]=Folder Sync
 Name[id]=Klien sync desktop @APPLICATION_NAME@
@@ -718,10 +820,10 @@ Comment[et_EE]=@APPLICATION_NAME@ sünkroonimise klient töölauale
 GenericName[et_EE]=Kaustade sünkroonimine
 Name[et_EE]=@APPLICATION_NAME@ sünkroonimise klient töölauale
 Icon[et_EE]=@APPLICATION_EXECUTABLE@
-Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
-GenericName[bg_BG]=Синхронизиране на папката
-Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
-Icon[bg_BG]=@APPLICATION_EXECUTABLE@
+Comment[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
+GenericName[pl]=Folder Synchronizacji
+Name[pl]=@APPLICATION_NAME@ klient synchronizacji dla komputerów stacjonarnych
+Icon[pl]=@APPLICATION_EXECUTABLE@
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização do computador
 GenericName[pt_BR]=Sincronização de Pasta
 Name[pt_BR]=@APPLICATION_NAME@ cliente de sincronização de desktop

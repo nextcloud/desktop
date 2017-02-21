@@ -29,5 +29,5 @@ improvements. (See the `complete changelog
   * Improved user notifications about ignored files and conflicts
   * Add warnings for old server versions
   * Update of QtKeyChain to support Windows credential store
-  * Packaging of dolphin overlay icon module for bleeding edge distros
+  * Packaging of dolphin overlay icon module for bleeding edge distributions
   

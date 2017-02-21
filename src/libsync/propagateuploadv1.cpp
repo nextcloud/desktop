@@ -25,6 +25,7 @@
 #include "checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -49,7 +50,6 @@ void PropagateUploadFileV1::doStartUpload()
     }
 
     _currentChunk = 0;
-    _duration.start();
 
     emit progress(*_item, 0);
     startNextChunk();
@@ -160,7 +160,7 @@ void PropagateUploadFileV1::startNextChunk()
         parallelChunkUpload = false;
     }
 
-    if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveJob())
+    if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveTransferJob())
             && _currentChunk < _chunkCount ) {
         startNextChunk();
     }
@@ -172,7 +172,8 @@ void PropagateUploadFileV1::startNextChunk()
 void PropagateUploadFileV1::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
+
     slotJobDestroyed(job); // remove it from the _jobs list
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
@@ -340,14 +341,16 @@ void PropagateUploadFileV1::slotPutFinished()
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
     }
 
+#ifdef WITH_TESTING
     // performance logging
-    _item->_requestDuration = _stopWatch.stop();
+    quint64 duration = _stopWatch.stop();
     qDebug() << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-             << _item->_requestDuration;
+             << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
+#endif
 
     finalize();
 }

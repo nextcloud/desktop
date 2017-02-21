@@ -226,7 +226,7 @@ public:
                 etag = file->etag;
             return file;
         }
-        return nullptr;
+        return 0;
     }
 
     FileInfo *createDir(const QString &relativePath) {
@@ -267,6 +267,15 @@ public:
         return (parentPath.isEmpty() ? QString() : (parentPath + '/')) + name;
     }
 
+    void fixupParentPathRecursively() {
+        auto p = path();
+        for (auto it = children.begin(); it != children.end(); ++it) {
+            Q_ASSERT(it.key() == it->name);
+            it->parentPath = p;
+            it->fixupParentPathRecursively();
+        }
+    }
+
     QString name;
     bool isDir = true;
     bool isShared = false;
@@ -283,15 +292,6 @@ public:
 private:
     FileInfo *findInvalidatingEtags(const PathComponents &pathComponents) {
         return find(pathComponents, true);
-    }
-
-    void fixupParentPathRecursively() {
-        auto p = path();
-        for (auto it = children.begin(); it != children.end(); ++it) {
-            Q_ASSERT(it.key() == it->name);
-            it->parentPath = p;
-            it->fixupParentPathRecursively();
-        }
     }
 
     friend inline QDebug operator<<(QDebug dbg, const FileInfo& fi) {
@@ -315,7 +315,10 @@ public:
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull()); // for root, it should be empty
         const FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
-        Q_ASSERT(fileInfo);
+        if (!fileInfo) {
+            QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
+            return;
+        }
         QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
 
         // Don't care about the request and just return a full propfind
@@ -342,7 +345,7 @@ public:
             } else
                 xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
-            auto gmtDate = fileInfo.lastModified.toTimeZone(QTimeZone("GMT"));
+            auto gmtDate = fileInfo.lastModified.toTimeZone(QTimeZone(0));
             auto stringDate = gmtDate.toString("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
@@ -372,6 +375,13 @@ public:
         emit metaDataChanged();
         if (bytesAvailable())
             emit readyRead();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respond404() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
+        setError(InternalServerError, "Not Found");
+        emit metaDataChanged();
         emit finished();
     }
 
@@ -524,7 +534,8 @@ class FakeGetReply : public QNetworkReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    QByteArray payload;
+    char payload;
+    int size;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
     : QNetworkReply{parent} {
@@ -540,8 +551,9 @@ public:
     }
 
     Q_INVOKABLE void respond() {
-        payload.fill(fileInfo->contentChar, fileInfo->size);
-        setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
+        payload = fileInfo->contentChar;
+        size = fileInfo->size;
+        setHeader(QNetworkRequest::ContentLengthHeader, size);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -553,12 +565,12 @@ public:
     }
 
     void abort() override { }
-    qint64 bytesAvailable() const override { return payload.size() + QIODevice::bytesAvailable(); }
+    qint64 bytesAvailable() const override { return size + QIODevice::bytesAvailable(); }
 
     qint64 readData(char *data, qint64 maxlen) override {
-        qint64 len = std::min(qint64{payload.size()}, maxlen);
-        strncpy(data, payload.constData(), len);
-        payload.remove(0, len);
+        qint64 len = std::min(qint64{size}, maxlen);
+        std::fill_n(data, len, payload);
+        size -= len;
         return len;
     }
 };
@@ -586,15 +598,17 @@ public:
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
         int size = 0;
-        char payload = '*';
+        char payload = '\0';
 
         do {
-            if (!sourceFolder->children.contains(QString::number(count)))
+            QString chunkName = QString::number(count).rightJustified(8, '0');
+            if (!sourceFolder->children.contains(chunkName))
                 break;
-            auto &x = sourceFolder->children[QString::number(count)];
+            auto &x = sourceFolder->children[chunkName];
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
+            Q_ASSERT(!payload || payload == x.contentChar);
             payload = x.contentChar;
             ++count;
         } while(true);
@@ -606,7 +620,12 @@ public:
         Q_ASSERT(!fileName.isEmpty());
 
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
-            QCOMPARE(request.rawHeader("If"), QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])"));
+            QVERIFY(request.hasRawHeader("If")); // The client should put this header
+            if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") +
+                                                "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
+                QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
+                return;
+            }
             fileInfo->size = size;
             fileInfo->contentChar = payload;
         } else {
@@ -627,6 +646,13 @@ public:
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
         setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respondPreconditionFailed() {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        setError(InternalServerError, "Precondition Failed");
         emit metaDataChanged();
         emit finished();
     }
@@ -765,6 +791,7 @@ public:
         QDir rootDir{_tempDir.path()};
         FileInfo rootTemplate;
         fromDisk(rootDir, rootTemplate);
+        rootTemplate.fixupParentPathRecursively();
         return rootTemplate;
     }
 
@@ -791,15 +818,15 @@ public:
     }
 
     void execUntilItemCompleted(const QString &relativePath) {
-        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+        QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         QElapsedTimer t;
         t.start();
         while (t.elapsed() < 5000) {
             spy.clear();
             QVERIFY(spy.wait());
             for(const QList<QVariant> &args : spy) {
-                auto item = args[0].value<OCC::SyncFileItem>();
-                if (item.destination() == relativePath)
+                auto item = args[0].value<OCC::SyncFileItemPtr>();
+                if (item->destination() == relativePath)
                     return;
             }
         }
@@ -808,7 +835,7 @@ public:
 
     bool execUntilFinished() {
         QSignalSpy spy(_syncEngine.get(), SIGNAL(finished(bool)));
-        bool ok = spy.wait(60000);
+        bool ok = spy.wait(3600000);
         Q_ASSERT(ok && "Sync timed out");
         return spy[0][0].toBool();
     }
@@ -841,8 +868,8 @@ private:
             if (diskChild.isDir()) {
                 QDir subDir = dir;
                 subDir.cd(diskChild.fileName());
-                templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName()});
-                fromDisk(subDir, templateFi.children.last());
+                FileInfo &subFi = templateFi.children[diskChild.fileName()] = FileInfo{diskChild.fileName()};
+                fromDisk(subDir, subFi);
             } else {
                 QFile f{diskChild.filePath()};
                 f.open(QFile::ReadOnly);

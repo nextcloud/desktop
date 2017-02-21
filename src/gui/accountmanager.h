@@ -36,7 +36,9 @@ public:
 
     /**
      * Creates account objects from a given settings file.
-     * return true if the account was restored
+     *
+     * Returns false if there was an error reading the settings,
+     * but note that settings not existing is not an error.
      */
     bool restore();
 

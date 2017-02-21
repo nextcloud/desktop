@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>917</width>
-    <height>493</height>
+    <width>912</width>
+    <height>633</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -226,11 +226,14 @@
      <item row="0" column="1" colspan="2">
       <widget class="QWidget" name="widget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>0</number>
-          </property>
           <item>
            <widget class="QRadioButton" name="rSyncEverything">
             <property name="text">
@@ -260,6 +263,64 @@
              </size>
             </property>
            </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QCheckBox" name="confCheckBoxSize">
+              <property name="text">
+               <string>Ask for confirmation before synchroni&amp;zing folders larger than</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="confSpinBox">
+              <property name="maximum">
+               <number>999999</number>
+              </property>
+              <property name="value">
+               <number>99</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="confTraillingSizeLabel">
+              <property name="text">
+               <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="confCheckBoxExternal">
+            <property name="text">
+             <string>Ask for confirmation before synchronizing e&amp;xternal storages</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -345,5 +406,70 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>rSyncEverything</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>confCheckBoxSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>217</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>126</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rSyncEverything</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>confSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>311</x>
+     <y>83</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>952</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rSyncEverything</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>confTraillingSizeLabel</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1076</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rSyncEverything</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>confCheckBoxExternal</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>181</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>382</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -47,19 +47,12 @@ public:
     };
 
     SyncResult();
-    SyncResult( Status status );
-    ~SyncResult();
-    void    setErrorString( const QString& );
-    void    setErrorStrings( const QStringList& );
+    void reset();
+
+    void    appendErrorString( const QString& );
     QString errorString() const;
     QStringList errorStrings() const;
-    int     warnCount() const;
-    void    setWarnCount(int wc);
     void    clearErrors();
-
-    // handle a list of changed items.
-    void    setSyncFileItemVector( const SyncFileItemVector& );
-    SyncFileItemVector syncFileItemVector() const;
 
     void setStatus( Status );
     Status status() const;
@@ -67,6 +60,25 @@ public:
     QDateTime syncTime() const;
     void setFolder(const QString& folder);
     QString folder() const;
+
+    bool foundFilesNotSynced() const { return _foundFilesNotSynced; }
+    bool folderStructureWasChanged() const { return _folderStructureWasChanged; }
+
+    int numNewItems() const { return _numNewItems; }
+    int numRemovedItems() const { return _numRemovedItems; }
+    int numUpdatedItems() const { return _numUpdatedItems; }
+    int numRenamedItems() const { return _numRenamedItems; }
+    int numConflictItems() const { return _numConflictItems; }
+    int numErrorItems() const { return _numErrorItems; }
+
+    const SyncFileItemPtr& firstItemNew() const { return _firstItemNew; }
+    const SyncFileItemPtr& firstItemDeleted() const { return _firstItemDeleted; }
+    const SyncFileItemPtr& firstItemUpdated() const { return _firstItemUpdated; }
+    const SyncFileItemPtr& firstItemRenamed() const { return _firstItemRenamed; }
+    const SyncFileItemPtr& firstConflictItem() const { return _firstConflictItem; }
+    const SyncFileItemPtr& firstItemError() const { return _firstItemError; }
+
+    void processCompletedItem(const SyncFileItemPtr &item);
 
 private:
     Status             _status;
@@ -77,7 +89,23 @@ private:
      * when the sync tool support this...
      */
     QStringList        _errors;
-    int                _warnCount;
+    bool _foundFilesNotSynced;
+    bool _folderStructureWasChanged;
+
+    // count new, removed and updated items
+    int _numNewItems;
+    int _numRemovedItems;
+    int _numUpdatedItems;
+    int _numRenamedItems;
+    int _numConflictItems;
+    int _numErrorItems;
+
+    SyncFileItemPtr _firstItemNew;
+    SyncFileItemPtr _firstItemDeleted;
+    SyncFileItemPtr _firstItemUpdated;
+    SyncFileItemPtr _firstItemRenamed;
+    SyncFileItemPtr _firstConflictItem;
+    SyncFileItemPtr _firstItemError;
 };
 
 }

@@ -31,6 +31,7 @@
 #include "accountstate.h"
 #include "account.h"
 #include "capabilities.h"
+#include "asserts.h"
 
 #include <QBitArray>
 #include <QDebug>
@@ -59,9 +60,6 @@
 #define MIRALL_SOCKET_API_VERSION "1.0"
 
 #define DEBUG qDebug() << "SocketApi: "
-
-Q_DECLARE_METATYPE(OCC::SocketListener)
-
 
 static inline QString removeTrailingSlash(QString path)
 {
@@ -113,7 +111,7 @@ class SocketListener {
 public:
     QIODevice* socket;
 
-    SocketListener(QIODevice* socket = nullptr) : socket(socket) { }
+    SocketListener(QIODevice* socket = 0) : socket(socket) { }
 
     void sendMessage(const QString& message, bool doWait = false) const
     {
@@ -216,7 +214,7 @@ SocketApi::~SocketApi()
     DEBUG << "dtor";
     _localServer.close();
     // All remaining sockets will be destroyed with _localServer, their parent
-    Q_ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
+    ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
     _listeners.clear();
 }
 
@@ -231,7 +229,7 @@ void SocketApi::slotNewConnection()
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, SIGNAL(destroyed(QObject*)), this, SLOT(slotSocketDestroyed(QObject*)));
-    Q_ASSERT(socket->readAll().isEmpty());
+    ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(SocketListener(socket));
     SocketListener &listener = _listeners.last();
@@ -259,7 +257,7 @@ void SocketApi::slotSocketDestroyed(QObject* obj)
 void SocketApi::slotReadSocket()
 {
     QIODevice* socket = qobject_cast<QIODevice*>(sender());
-    Q_ASSERT(socket);
+    ASSERT(socket);
     SocketListener *listener = &*std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
 
     while(socket->canReadLine()) {

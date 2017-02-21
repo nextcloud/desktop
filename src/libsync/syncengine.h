@@ -47,7 +47,6 @@ namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
-class PropagatorJob;
 
 enum AnotherSyncNeeded
 {
@@ -78,10 +77,7 @@ public:
 
     bool isSyncRunning() const { return _syncRunning; }
 
-    /* Set the maximum size a folder can have without asking for confirmation
-     * -1 means infinite
-     */
-    void setNewBigFolderSizeLimit(qint64 limit) { _newBigFolderSizeLimit = limit; }
+    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
     bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
 
@@ -122,10 +118,7 @@ signals:
     void aboutToPropagate(SyncFileItemVector&);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const SyncFileItem&, const PropagatorJob&);
-
-    // after sync is done
-    void treeWalkResult(const SyncFileItemVector&);
+    void itemCompleted(const SyncFileItemPtr&);
 
     void transmissionProgress( const ProgressInfo& progress );
 
@@ -146,7 +139,7 @@ signals:
     void aboutToRestoreBackup(bool *restore);
 
     // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder);
+    void newBigFolder(const QString &folder, bool isExternal);
 
     /** Emitted when propagation has problems with a locked file.
      *
@@ -156,7 +149,7 @@ signals:
 
 private slots:
     void slotRootEtagReceived(const QString &);
-    void slotItemCompleted(const SyncFileItem& item, const PropagatorJob & job);
+    void slotItemCompleted(const SyncFileItemPtr& item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem& item, quint64 curent);
     void slotDiscoveryJobFinished(int updateResult);
@@ -180,13 +173,13 @@ private:
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.
-    void deleteStaleDownloadInfos();
+    void deleteStaleDownloadInfos(const SyncFileItemVector &syncItems);
 
     // Removes stale uploadinfos from the journal.
-    void deleteStaleUploadInfos();
+    void deleteStaleUploadInfos(const SyncFileItemVector &syncItems);
 
     // Removes stale error blacklist entries from the journal.
-    void deleteStaleErrorBlacklistEntries();
+    void deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems);
 
     // cleanup and emit the finished signal
     void finalize(bool success);
@@ -195,10 +188,6 @@ private:
 
     // Must only be acessed during update and reconcile
     QMap<QString, SyncFileItemPtr> _syncItemMap;
-
-    // should be called _syncItems (present tense). It's the items from the _syncItemMap but
-    // sorted and re-adjusted based on permissions.
-    SyncFileItemVector _syncedItems;
 
     AccountPtr _account;
     CSYNC *_csync_ctx;
@@ -241,13 +230,13 @@ private:
      * check if we are allowed to propagate everything, and if we are not, adjust the instructions
      * to recover
      */
-    void checkForPermission();
+    void checkForPermission(SyncFileItemVector &syncItems);
     QByteArray getPermissions(const QString& file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
      */
-    void restoreOldFiles();
+    void restoreOldFiles(SyncFileItemVector &syncItems);
 
     bool _hasNoneFiles; // true if there is at least one file which was not changed on the server
     bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE
@@ -257,8 +246,7 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
-    /* maximum size a folder can have without asking for confirmation: -1 means infinite */
-    qint64 _newBigFolderSizeLimit;
+    SyncOptions _syncOptions;
 
     // hash containing the permissions on the remote directory
     QHash<QString, QByteArray> _remotePerms;

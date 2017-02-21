@@ -39,7 +39,7 @@ node('CLIENT') {
 
 
     stage 'Win32'
-	def win32 = docker.image('deepdiver/docker-owncloud-client-win32:latest')
+	def win32 = docker.image('guruz/docker-owncloud-client-win32:latest')
 	win32.pull() // make sure we have the latest available from Docker Hub
 	win32.inside {
 		sh '''

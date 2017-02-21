@@ -3,7 +3,7 @@ StrCpy $MUI_FINISHPAGE_SHOWREADME_TEXT_STRING "Показати примітки
 StrCpy $ConfirmEndProcess_MESSAGEBOX_TEXT "Знайдено процес(и) ${APPLICATION_EXECUTABLE}, які необхідно зупинити.$\nХочете щоб програма установки зробила це самостійно?"
 StrCpy $ConfirmEndProcess_KILLING_PROCESSES_TEXT "Завершення процесів ${APPLICATION_EXECUTABLE}."
 StrCpy $ConfirmEndProcess_KILL_NOT_FOUND_TEXT "Не знайдено процеси, які необхідно зупинити!"
-StrCpy $PageReinstall_NEW_Field_1 "Знайдено застарілу версію програми ${APPLICATION_NAME}. Рекомендуємо її спочатку видалити. Оберіть подальшу дію та натисніть $\"Далі$\"."
+StrCpy $PageReinstall_NEW_Field_1 "У вашої системі встановлена застаріла версія додатку ${APPLICATION_NAME}. Рекомендуємо видалити її перед початком встановлення поточної версії. Оберіть подальшу дію та натисніть $\"Далі$\"."
 StrCpy $PageReinstall_NEW_Field_2 "Видалити перед установкою"
 StrCpy $PageReinstall_NEW_Field_3 "Не видаляти"
 StrCpy $PageReinstall_NEW_MUI_HEADER_TEXT_TITLE "Установлено"

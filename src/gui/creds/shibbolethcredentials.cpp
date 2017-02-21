@@ -130,7 +130,7 @@ void ShibbolethCredentials::fetchFromKeychain()
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
         job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
         job->setInsecureFallback(false);
-        job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
+        job->setKey(keychainKey(_account->url().toString(), user()));
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
         job->start();
     }
@@ -309,7 +309,7 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
     job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
-    job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
+    job->setKey(keychainKey(_account->url().toString(), user()));
     job->setTextData(QString::fromUtf8(cookie.toRawForm()));
     job->start();
 }
@@ -318,7 +318,7 @@ void ShibbolethCredentials::removeShibCookie()
 {
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
-    job->setKey(keychainKey(_account->url().toString(), "shibAssertion"));
+    job->setKey(keychainKey(_account->url().toString(), user()));
     job->start();
 }
 

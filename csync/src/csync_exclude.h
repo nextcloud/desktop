@@ -36,7 +36,7 @@ enum csync_exclude_type_e {
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
-#ifdef WITH_UNIT_TESTING
+#ifdef WITH_TESTING
 int OCSYNC_EXPORT _csync_exclude_add(c_strlist_t **inList, const char *string);
 #endif
 

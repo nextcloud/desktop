@@ -28,8 +28,6 @@
 
 namespace OCC {
 
-class PropagatorJob;
-
 /**
  * @brief The ProgressInfo class
  * @ingroup libsync
@@ -252,9 +250,7 @@ signals:
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder,
-                       const SyncFileItem & item,
-                       const PropagatorJob & job);
+    void itemCompleted(const QString &folder, const SyncFileItemPtr & item);
 
 protected:
     void setProgressInfo(const QString& folder, const ProgressInfo& progress);

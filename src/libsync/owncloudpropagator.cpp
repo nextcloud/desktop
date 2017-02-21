@@ -25,6 +25,7 @@
 #include "configfile.h"
 #include "utility.h"
 #include "account.h"
+#include "asserts.h"
 #include <json.h>
 
 #ifdef Q_OS_WIN
@@ -39,6 +40,7 @@
 #include <QObject>
 #include <QTimerEvent>
 #include <QDebug>
+#include <qmath.h>
 
 namespace OCC {
 
@@ -71,31 +73,26 @@ qint64 freeSpaceLimit()
 OwncloudPropagator::~OwncloudPropagator()
 {}
 
-/* The maximum number of active jobs in parallel  */
-int OwncloudPropagator::maximumActiveJob()
-{
-    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    if (!max) {
-        max = 3; //default
-    }
 
+int OwncloudPropagator::maximumActiveTransferJob()
+{
     if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
         // disable parallelism when there is a network limit.
         return 1;
     }
-
-    return max;
+    return qCeil(hardMaximumActiveJob()/2.);
 }
 
+/* The maximum number of active jobs in parallel  */
 int OwncloudPropagator::hardMaximumActiveJob()
 {
-    int max = maximumActiveJob();
-    return max*2;
-    // FIXME: Wondering if we should hard-limit to 1 if maximumActiveJob() is 1
-    // to support our old use case of limiting concurrency (when "automatic" bandwidth
-    // limiting is set. But this causes https://github.com/owncloud/client/issues/4081
+    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
+    if (!max) {
+        max = 6; //default (Qt cannot do more anyway)
+        // TODO: increase this number when using HTTP2
+    }
+    return max;
 }
-
 
 /** Updates, creates or removes a blacklist entry for the given item.
  *
@@ -172,7 +169,7 @@ void PropagateItemJob::done(SyncFileItem::Status status, const QString &errorStr
 
     _item->_status = status;
 
-    emit itemCompleted(*_item, *this);
+    emit itemCompleted(_item);
     emit finished(status);
 }
 
@@ -221,7 +218,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         if( newJob )  {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &, const PropagatorJob &)),
+            connect(_restoreJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
                     this, SLOT(slotRestoreJobCompleted(const SyncFileItemPtr &)));
             QMetaObject::invokeMethod(newJob, "start");
         }
@@ -403,8 +400,8 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
         _rootJob->append(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)),
-            this, SIGNAL(itemCompleted(const SyncFileItem &, const PropagatorJob &)));
+    connect(_rootJob.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
+            this, SIGNAL(itemCompleted(const SyncFileItemPtr &)));
     connect(_rootJob.data(), SIGNAL(progress(const SyncFileItem &,quint64)), this, SIGNAL(progress(const SyncFileItem &,quint64)));
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
     connect(_rootJob.data(), SIGNAL(ready()), this, SLOT(scheduleNextJob()), Qt::QueuedConnection);
@@ -524,7 +521,7 @@ void OwncloudPropagator::scheduleNextJob()
     // Down-scaling on slow networks? https://github.com/owncloud/client/issues/3382
     // Making sure we do up/down at same time? https://github.com/owncloud/client/issues/1633
 
-    if (_activeJobList.count() < maximumActiveJob()) {
+    if (_activeJobList.count() < maximumActiveTransferJob()) {
         if (_rootJob->scheduleNextJob()) {
             QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
         }
@@ -534,12 +531,12 @@ void OwncloudPropagator::scheduleNextJob()
         // one that is likely finished quickly, we can launch another one.
         // When a job finishes another one will "move up" to be one of the first 3 and then
         // be counted too.
-        for (int i = 0; i < maximumActiveJob() && i < _activeJobList.count(); i++) {
+        for (int i = 0; i < maximumActiveTransferJob() && i < _activeJobList.count(); i++) {
             if (_activeJobList.at(i)->isLikelyFinishedQuickly()) {
                 likelyFinishedQuicklyCount++;
             }
         }
-        if (_activeJobList.count() < maximumActiveJob() + likelyFinishedQuicklyCount) {
+        if (_activeJobList.count() < maximumActiveTransferJob() + likelyFinishedQuicklyCount) {
             qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
             if (_rootJob->scheduleNextJob()) {
                 QTimer::singleShot(0, this, SLOT(scheduleNextJob()));
@@ -588,17 +585,12 @@ OwncloudPropagator *PropagatorJob::propagator() const
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
 {
     // If any of the non-finished sub jobs is not parallel, we have to wait
-
-    // FIXME!  we should probably cache this result
-
-    if (_firstJob && _firstJob->_state != Finished) {
-        if (_firstJob->parallelism() != FullParallelism)
-            return WaitForFinished;
+    if (_firstJob && _firstJob->parallelism() != FullParallelism) {
+        return WaitForFinished;
     }
 
-    // FIXME: use the cached value of finished job
     for (int i = 0; i < _subJobs.count(); ++i) {
-        if (_subJobs.at(i)->_state != Finished && _subJobs.at(i)->parallelism() != FullParallelism) {
+        if (_subJobs.at(i)->parallelism() != FullParallelism) {
             return WaitForFinished;
         }
     }
@@ -629,15 +621,8 @@ bool PropagateDirectory::scheduleNextJob()
         return false;
     }
 
-    // cache the value of first unfinished subjob
     bool stopAtDirectory = false;
-    int i = _firstUnfinishedSubJob;
-    int subJobsCount = _subJobs.count();
-    while (i < subJobsCount && _subJobs.at(i)->_state == Finished) {
-      _firstUnfinishedSubJob = ++i;
-    }
-
-    for (int i = _firstUnfinishedSubJob; i < subJobsCount; ++i) {
+    for (int i = 0; i < _subJobs.size(); ++i) {
         if (_subJobs.at(i)->_state == Finished) {
             continue;
         }
@@ -650,7 +635,7 @@ bool PropagateDirectory::scheduleNextJob()
             return true;
         }
 
-        Q_ASSERT(_subJobs.at(i)->_state == Running);
+        ASSERT(_subJobs.at(i)->_state == Running);
 
         auto paral = _subJobs.at(i)->parallelism();
         if (paral == WaitForFinished) {
@@ -665,8 +650,23 @@ bool PropagateDirectory::scheduleNextJob()
 
 void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 {
+    PropagatorJob *subJob = static_cast<PropagatorJob *>(sender());
+    ASSERT(subJob);
+
+    // Delete the job and remove it from our list of jobs.
+    subJob->deleteLater();
+    bool wasFirstJob = false;
+    if (subJob == _firstJob.data()) {
+        wasFirstJob = true;
+        _firstJob.take();
+    } else {
+        int i = _subJobs.indexOf(subJob);
+        ASSERT(i >= 0);
+        _subJobs.remove(i);
+    }
+
     if (status == SyncFileItem::FatalError ||
-            (sender() == _firstJob.data() && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
+            (wasFirstJob && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
         abort();
         _state = Finished;
         emit finished(status);
@@ -674,18 +674,10 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
         _hasError = status;
     }
-    _runningNow--;
-    _jobsFinished++;
-
-    int totalJobs = _subJobs.count();
-    if (_firstJob) {
-        totalJobs++;
-    }
 
     // We finished processing all the jobs
     // check if we finished
-    if (_jobsFinished >= totalJobs) {
-        Q_ASSERT(!_runningNow); // how can we be finished if there are still jobs running now
+    if (!_firstJob && _subJobs.isEmpty()) {
         finalize();
     } else {
         emit ready();
@@ -765,7 +757,7 @@ void CleanupPollsJob::start()
 void CleanupPollsJob::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
         emit aborted(job->_item->_errorString);
         deleteLater();

@@ -27,7 +27,6 @@
 #include "syncfileitem.h"
 #include "folder.h"
 #include "openfilemanager.h"
-#include "owncloudpropagator.h"
 #include "activityitemdelegate.h"
 
 #include "ui_protocolwidget.h"
@@ -45,8 +44,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
 
     connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
             this, SLOT(slotProgressInfo(QString,ProgressInfo)));
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString,SyncFileItem,PropagatorJob)),
-            this, SLOT(slotItemCompleted(QString,SyncFileItem,PropagatorJob)));
+    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString,SyncFileItemPtr)),
+            this, SLOT(slotItemCompleted(QString,SyncFileItemPtr)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
 
@@ -222,15 +221,11 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
     }
 }
 
-void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem &item, const PropagatorJob &job)
+void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
-    if (qobject_cast<const PropagateDirectory*>(&job)) {
-        return;
-    }
-
-    QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, item);
+    QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, *item);
     if(line) {
-       if( item.hasErrorStatus() ) {
+       if( item->hasErrorStatus() ) {
             _issueItemView->insertTopLevelItem(0, line);
             emit issueItemCountUpdated(_issueItemView->topLevelItemCount());
         } else {

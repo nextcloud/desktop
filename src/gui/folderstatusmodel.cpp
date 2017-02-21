@@ -16,6 +16,7 @@
 #include "folderman.h"
 #include "accountstate.h"
 #include "utility.h"
+#include "asserts.h"
 #include <theme.h>
 #include <account.h>
 #include "folderstatusdelegate.h"
@@ -29,6 +30,14 @@ Q_DECLARE_METATYPE(QPersistentModelIndex)
 namespace OCC {
 
 static const char propertyParentIndexC[] = "oc_parentIndex";
+static const char propertyPermissionMap[] = "oc_permissionMap";
+
+static QString removeTrailingSlash(const QString &s) {
+    if (s.endsWith('/')) {
+        return s.left(s.size() - 1);
+    }
+    return s;
+}
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
     :QAbstractItemModel(parent), _accountState(0), _dirty(false)
@@ -162,7 +171,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
-            return QFileIconProvider().icon(QFileIconProvider::Folder);
+            return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         case Qt::ForegroundRole:
             if (x._isUndecided) {
                 return QColor(Qt::red);
@@ -368,6 +377,9 @@ FolderStatusModel::SubFolderInfo* FolderStatusModel::infoForIndex(const QModelIn
         if (parentInfo->hasLabel()) {
             return 0;
         }
+        if (index.row() >= parentInfo->_subs.size()) {
+            return 0;
+        }
         return &parentInfo->_subs[index.row()];
     } else {
         if (index.row() >= _folders.count()) {
@@ -469,14 +481,14 @@ QModelIndex FolderStatusModel::parent(const QModelIndex& child) const
     }
     auto pathIdx = static_cast<SubFolderInfo*>(child.internalPointer())->_pathIdx;
     int i = 1;
-    Q_ASSERT(pathIdx.at(0) < _folders.count());
+    ASSERT(pathIdx.at(0) < _folders.count());
     if (pathIdx.count() == 1) {
         return createIndex(pathIdx.at(0), 0/*, nullptr*/);
     }
 
     const SubFolderInfo *info = &_folders[pathIdx.at(0)];
     while (i < pathIdx.count() - 1) {
-        Q_ASSERT(pathIdx.at(i) < info->_subs.count());
+        ASSERT(pathIdx.at(i) < info->_subs.count());
         info = &info->_subs[pathIdx.at(i)];
         ++i;
     }
@@ -537,12 +549,15 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
+    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size" << "http://owncloud.org/ns:permissions");
     job->setTimeout(60 * 1000);
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
             SLOT(slotUpdateDirectories(QStringList)));
     connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
             this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
+    connect(job, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+            this, SLOT(slotGatherPermissions(const QString&, const QMap<QString,QString>&)));
+
     job->start();
 
     QPersistentModelIndex persistentIndex(parent);
@@ -553,10 +568,24 @@ void FolderStatusModel::fetchMore(const QModelIndex& parent)
     QTimer::singleShot(1000, this, SLOT(slotShowFetchProgress()));
 }
 
+void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString,QString> &map)
+{
+    auto it = map.find("permissions");
+    if (it == map.end())
+        return;
+
+    auto job = sender();
+    auto permissionMap = job->property(propertyPermissionMap).toMap();
+    job->setProperty(propertyPermissionMap, QVariant()); // avoid a detach of the map while it is modified
+    ASSERT(!href.endsWith(QLatin1Char('/')), "LsColXMLParser::parse should remove the trailing slash before calling us.");
+    permissionMap[href] = *it;
+    job->setProperty(propertyPermissionMap, permissionMap);
+}
+
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     auto parentInfo = infoForIndex(idx);
     if (!parentInfo) {
@@ -598,6 +627,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
             selectiveSyncUndecidedSet.insert(str);
         }
     }
+    const auto permissionMap = job->property(propertyPermissionMap).toMap();
 
     QStringList sortedSubfolders = list;
     // skip the parent item (first in the list)
@@ -618,8 +648,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        auto size = job ? job->_sizes.value(path) : 0;
-        newInfo._size = size;
+        newInfo._size = job->_sizes.value(path);
+        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
         newInfo._name = relativePath.split('/', QString::SkipEmptyParts).last();
 
@@ -686,7 +716,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
 {
     auto job = qobject_cast<LsColJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     if (!idx.isValid()) {
         return;
@@ -701,7 +731,7 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
         if (r->error() == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
-            Q_ASSERT(!parentInfo->hasLabel());
+            ASSERT(!parentInfo->hasLabel());
             beginInsertRows(idx, 0, 0);
             parentInfo->_hasError = true;
             endInsertRows();
@@ -981,7 +1011,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     auto& pi = _folders[folderIndex]._progress;
 
     SyncResult::Status state = f->syncResult().status();
-    if (f->syncPaused()) {
+    if (!f->canSync()) {
         // Reset progress info.
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::NotYetStarted) {
@@ -1012,18 +1042,10 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     // update the icon etc. now
     slotUpdateFolderState(f);
 
-    if (state == SyncResult::Success) {
-        foreach (const SyncFileItemPtr &i, f->syncResult().syncFileItemVector()) {
-            if (i->_isDirectory && (i->_instruction == CSYNC_INSTRUCTION_NEW
-                    || i->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                    || i->_instruction == CSYNC_INSTRUCTION_REMOVE
-                    || i->_instruction == CSYNC_INSTRUCTION_RENAME)) {
-                // There is a new or a removed folder. reset all data
-                auto & info = _folders[folderIndex];
-                info.resetSubs(this, index(folderIndex));
-                return;
-            }
-        }
+    if (state == SyncResult::Success && f->syncResult().folderStructureWasChanged()) {
+        // There is a new or a removed folder. reset all data
+        auto & info = _folders[folderIndex];
+        info.resetSubs(this, index(folderIndex));
     }
 }
 
@@ -1114,7 +1136,7 @@ void FolderStatusModel::slotSyncNoPendingBigFolders()
 void FolderStatusModel::slotNewBigFolder()
 {
     auto f = qobject_cast<Folder *>(sender());
-    Q_ASSERT(f);
+    ASSERT(f);
 
     int folderIndex = -1;
     for (int i = 0; i < _folders.count(); ++i) {

@@ -18,6 +18,7 @@
 #include "account.h"
 #include "syncjournalfilerecord.h"
 #include "filesystem.h"
+#include "asserts.h"
 #include <QFile>
 #include <QStringList>
 #include <QDir>
@@ -123,7 +124,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    Q_ASSERT(_job);
+    ASSERT(_job);
 
     qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
@@ -145,7 +146,6 @@ void PropagateRemoteMove::slotMoveJobFinished()
         return;
     }
 
-    _item->_requestDuration = _job->duration();
     _item->_responseTimeStamp = _job->responseTimestamp();
 
     if (_item->_httpErrorCode != 201 ) {
@@ -208,8 +208,8 @@ bool PropagateRemoteMove::adjustSelectiveSync(SyncJournalDb *journal, const QStr
         return false;
 
     bool changed = false;
-    Q_ASSERT(!from_.endsWith(QLatin1String("/")));
-    Q_ASSERT(!to_.endsWith(QLatin1String("/")));
+    ASSERT(!from_.endsWith(QLatin1String("/")));
+    ASSERT(!to_.endsWith(QLatin1String("/")));
     QString from = from_ + QLatin1String("/");
     QString to = to_ + QLatin1String("/");
 

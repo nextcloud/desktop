@@ -25,6 +25,7 @@
 #include "checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
+#include "asserts.h"
 
 #include <json.h>
 #include <QNetworkAccessManager>
@@ -224,7 +225,9 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // change during the checksum calculation
     _item->_modtime = FileSystem::getModTime(filePath);
 
+#ifdef WITH_TESTING
     _stopWatch.start();
+#endif
 
     QByteArray checksumType = contentChecksumType();
 
@@ -251,8 +254,10 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
     _item->_contentChecksum = contentChecksum;
     _item->_contentChecksumType = contentChecksumType;
 
+#ifdef WITH_TESTING
     _stopWatch.addLapTime(QLatin1String("ContentChecksum"));
     _stopWatch.start();
+#endif
 
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
@@ -299,7 +304,9 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray& transmissionCh
         done(SyncFileItem::SoftError, tr("File Removed"));
         return;
     }
+#ifdef WITH_TESTING
     _stopWatch.addLapTime(QLatin1String("TransmissionChecksum"));
+#endif
 
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
@@ -369,7 +376,7 @@ bool UploadDevice::prepareAndOpen(const QString& fileName, qint64 start, qint64 
 
 
 qint64 UploadDevice::writeData(const char* , qint64 ) {
-    Q_ASSERT(!"write to read only device");
+    ASSERT(false, "write to read only device");
     return 0;
 }
 
@@ -480,7 +487,7 @@ void PropagateUploadFileCommon::startPollJob(const QString& path)
 void PropagateUploadFileCommon::slotPollFinished()
 {
     PollJob *job = qobject_cast<PollJob *>(sender());
-    Q_ASSERT(job);
+    ASSERT(job);
 
     propagator()->_activeJobList.removeOne(this);
 
@@ -569,7 +576,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
-    _item->_requestDuration = _duration.elapsed();
     _finished = true;
 
     if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, propagator()->getFilePath(_item->_file)))) {
