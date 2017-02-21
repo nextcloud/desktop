@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Vse datoteke v usklajevani mapi »%1« so bile na strežniku izbrisane.
+Sprememba bo usklajena tudi s krajevno mapo na disku, zato bodo te datoteke, če ni ustreznih dovoljenj za obnovitev, izgubljene. 
+V kolikor se odločite te datoteke ohraniti, in so na voljo ustrezna dovoljenja, bodo spet usklajene s strežnikom.
+Nasprotno, če potrdite izbris in niste lastnik datotek, te ne bodo več na voljo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="897"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Vse datoteke v usklajevani mapi »%1« so bile izbrisane. Sprememba bo usklajena s strežnikom, zato bodo datoteke, če ni ustreznih dovoljenj za obnovitev, nedostopne.
+Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
+Če je prišlo do napake in se odločite datoteke ohraniti, bodo te ponovno usklajene s strežnika.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="901"/>
@@ -770,17 +775,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Ali naj bodo odstranjene vse datoteke?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="903"/>
+        <location filename="../src/gui/folder.cpp" line="904"/>
         <source>Remove all files</source>
         <translation>Odstrani vse datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="904"/>
+        <location filename="../src/gui/folder.cpp" line="905"/>
         <source>Keep files</source>
         <translation>Ohrani datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="920"/>
+        <location filename="../src/gui/folder.cpp" line="921"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -789,17 +794,17 @@ To se lahko zgodi, če je na strežniku na primer obnovljena varnostna kopija.
 Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi različicami. Ali želite ohraniti trenutne krajevne datoteke kot preimenovane datoteke v usklajevalnem sporu?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="925"/>
+        <location filename="../src/gui/folder.cpp" line="926"/>
         <source>Backup detected</source>
         <translation>Varnostna kopija je zaznana</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="929"/>
         <source>Normal Synchronisation</source>
         <translation>Običajno usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="928"/>
+        <location filename="../src/gui/folder.cpp" line="930"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Ohrani krajevne datoteke kot datoteke v sporu</translation>
     </message>
