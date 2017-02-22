@@ -163,12 +163,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Vynutit synchronizaci nyní</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Restartovat synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -425,7 +425,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Seznam nesynchronizovaných položek byl zkopírován do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit ownCloud</translation>
     </message>
 </context>
 <context>
@@ -740,12 +740,12 @@
         <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Byla přidána složka z externího úložiště.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="856"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Pokud to chcete stáhnout, běžte do nastavení a vyberte to.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
@@ -897,7 +897,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Ze serveru se do tohoto umístění již synchronizuje. Prosím zvolte jinou místní složku!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
@@ -1212,7 +1212,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se před synchronizací složek větších než</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1223,7 +1223,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se na potvrzení před synchronizací externích úlošišť</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -1832,7 +1832,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
@@ -2361,7 +2361,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Zrušte výběr vzdálených složek, které nechcete synchronizovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -3066,7 +3066,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Jména souborů končících tečkou nejsou na tomto systému souborů podporována.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
@@ -3076,7 +3076,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Jméno souboru je na tomto systému souborů rezervovaným jménem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
@@ -3480,7 +3480,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="295"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se na synchroni&amp;zaci složek větších než</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="312"/>
@@ -3491,7 +3491,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="321"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Zeptat se na potvrzení před synchronizací e&amp;xterních úložišť</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="345"/>
