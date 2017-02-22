@@ -267,6 +267,9 @@ void OwncloudSetupWizard::testOwnCloudConnect()
 
     auto *job = new PropfindJob(account, "/", this);
     job->setIgnoreCredentialFailure(true);
+    // There is custom redirect handling in the error handler,
+    // so don't automatically follow redirects.
+    job->setFollowRedirects(false);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), _ocWizard, SLOT(successfulStep()));
     connect(job, SIGNAL(finishedWithError()), this, SLOT(slotAuthError()));
