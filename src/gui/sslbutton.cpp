@@ -58,7 +58,9 @@ static QString addCertDetailsField(const QString &key, const QString &value)
     if (value.isEmpty())
         return QString();
 
-    return QString::fromLatin1("<tr><td style=\"vertical-align: top;\"><b>%1</b></td><td style=\"vertical-align: bottom;\">%2</td></tr>").arg(key).arg(value);
+    return QLatin1String("<tr><td style=\"vertical-align: top;\"><b>") + key
+        + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">)") + value
+        + QLatin1String("</td></tr>");
 }
 
 
@@ -162,7 +164,9 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
     // create label first
     QLabel *label = new QLabel(parent);
     label->setStyleSheet(QLatin1String("QLabel { padding: 8px; background-color: #fff; }"));
+    label->setTextFormat(Qt::RichText);
     label->setText(details);
+
     // plug label into widget action
     QWidgetAction *action = new QWidgetAction(parent);
     action->setDefaultWidget(label);

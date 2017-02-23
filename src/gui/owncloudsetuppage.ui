@@ -35,6 +35,9 @@
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
@@ -154,6 +157,9 @@
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string>TextLabel</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
      </property>
     </widget>
    </item>

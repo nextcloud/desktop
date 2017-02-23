@@ -178,10 +178,10 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
     auto serverVersion = CheckServerJob::version(info);
 
     _ocWizard->appendToConfigurationLog(tr("<font color=\"green\">Successfully connected to %1: %2 version %3 (%4)</font><br/><br/>")
-                                        .arg(url.toString())
-                                        .arg(Theme::instance()->appNameGUI())
-                                        .arg(CheckServerJob::versionString(info))
-                                        .arg(serverVersion));
+                                        .arg(Utility::escape(url.toString()),
+                                             Utility::escape(Theme::instance()->appNameGUI()),
+                                             Utility::escape(CheckServerJob::versionString(info)),
+                                             Utility::escape(serverVersion)));
 
     _ocWizard->account()->setServerVersion(serverVersion);
 
@@ -212,9 +212,9 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
         msg = tr("Invalid URL");
     } else {
         msg = tr("Failed to connect to %1 at %2:<br/>%3")
-            .arg(Theme::instance()->appNameGUI(),
-                 reply->url().toString(),
-                 reply->errorString());
+                  .arg(Utility::escape(Theme::instance()->appNameGUI()),
+                       Utility::escape(reply->url().toString()),
+                       Utility::escape(reply->errorString()));
     }
     bool isDowngradeAdvised = checkDowngradeAdvised(reply);
 
@@ -244,9 +244,10 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 {
-    _ocWizard->displayError(tr("Timeout while trying to connect to %1 at %2.")
-                            .arg(Theme::instance()->appNameGUI(),
-                                 url.toString()), false);
+    _ocWizard->displayError(
+        tr("Timeout while trying to connect to %1 at %2.")
+            .arg(Utility::escape(Theme::instance()->appNameGUI()), Utility::escape(url.toString())),
+        false);
 }
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
@@ -307,7 +308,7 @@ void OwncloudSetupWizard::slotAuthError()
         }
         errorMsg = tr("The authenticated request to the server was redirected to "
                       "'%1'. The URL is bad, the server is misconfigured.")
-                   .arg(redirectUrl.toString());
+                       .arg(Utility::escape(redirectUrl.toString()));
 
     // A 404 is actually a success: we were authorized to know that the folder does
     // not exist. It will be created later...
@@ -320,7 +321,7 @@ void OwncloudSetupWizard::slotAuthError()
         if (!_ocWizard->account()->credentials()->stillValid(reply)) {
             errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
-                       .arg(_ocWizard->account()->url().toString());
+                           .arg(Utility::escape(_ocWizard->account()->url().toString()));
         } else {
             errorMsg = errorMessage(reply->errorString(), reply->readAll());
         }
@@ -369,7 +370,9 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
     if( fi.exists() ) {
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
-        _ocWizard->appendToConfigurationLog( tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>").arg(localFolder));
+        _ocWizard->appendToConfigurationLog(
+            tr("Local sync folder %1 already exists, setting it up for sync.<br/><br/>")
+                .arg(Utility::escape(localFolder)));
     } else {
         QString res = tr("Creating local sync folder %1...").arg(localFolder);
         if( fi.mkpath( localFolder ) ) {
@@ -379,7 +382,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
         } else {
             res += tr("failed.");
             qDebug() << "Failed to create " << fi.path();
-            _ocWizard->displayError(tr("Could not create local folder %1").arg(localFolder), false);
+            _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)), false);
             nextStep = false;
         }
         _ocWizard->appendToConfigurationLog( res );
@@ -415,7 +418,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
     }
 
     if( !ok ) {
-        _ocWizard->displayError(error, false);
+        _ocWizard->displayError(Utility::escape(error), false);
     }
 
     finalizeSetup( ok );
@@ -455,8 +458,8 @@ void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::Network
         _remoteFolder.clear();
         success = false;
     } else {
-        _ocWizard->appendToConfigurationLog( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error));
-        _ocWizard->displayError( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(_remoteFolder).arg(error), false );
+        _ocWizard->appendToConfigurationLog( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error));
+        _ocWizard->displayError( tr("Remote folder %1 creation failed with error <tt>%2</tt>.").arg(Utility::escape(_remoteFolder)).arg(error), false );
         _remoteFolder.clear();
         success = false;
     }
@@ -472,8 +475,9 @@ void OwncloudSetupWizard::finalizeSetup( bool success )
     const QString localFolder = _ocWizard->property("localFolder").toString();
     if( success ) {
         if( !(localFolder.isEmpty() || _remoteFolder.isEmpty() )) {
-            _ocWizard->appendToConfigurationLog( tr("A sync connection from %1 to remote directory %2 was set up.")
-                                                 .arg(localFolder).arg(_remoteFolder));
+            _ocWizard->appendToConfigurationLog(
+                tr("A sync connection from %1 to remote directory %2 was set up.")
+                    .arg(localFolder, _remoteFolder));
         }
         _ocWizard->appendToConfigurationLog( QLatin1String(" "));
         _ocWizard->appendToConfigurationLog( QLatin1String("<p><font color=\"green\"><b>")

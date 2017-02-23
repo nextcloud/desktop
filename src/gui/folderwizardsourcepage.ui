@@ -126,7 +126,7 @@
       <string/>
      </property>
      <property name="textFormat">
-      <enum>Qt::AutoText</enum>
+      <enum>Qt::RichText</enum>
      </property>
      <property name="margin">
       <number>3</number>
