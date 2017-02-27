@@ -309,7 +309,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 sur %2 utilisés</translation>
+        <translation>%1 utilisés sur %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="535"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Quitter ownCloud</translation>
     </message>
 </context>
 <context>
@@ -2404,7 +2404,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="97"/>
         <source>General</source>
-        <translation>Généraux</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="103"/>
@@ -2432,7 +2432,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="88"/>
         <source>General</source>
-        <translation>Généraux</translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="92"/>

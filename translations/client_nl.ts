@@ -755,14 +755,18 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden in de syncmap &apos;%1&apos; werden verwijderd van de server.
+Deze verwijderingen worden gesynchroniseerd naar uw lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij u het recht hebt om ze te herstellen. 
+Als u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als u die autorisatie hebt.
+Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eigenaar bent.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="897"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden in de lokale syncmap &apos;%1&apos; werden verwijderd van de server. Deze verwijderingen worden gesynchroniseerd naar uw server, Weet u zeker dat ik deze acties wilt synchroniseren met de server? 
+Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="901"/>
