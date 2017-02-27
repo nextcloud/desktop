@@ -661,8 +661,10 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
         _firstJob.take();
     } else {
         int i = _subJobs.indexOf(subJob);
+        // Shouldn't happen but could be -1 if finished was emitted twice for a job.
         ASSERT(i >= 0);
-        _subJobs.remove(i);
+        if (i >= 0)
+            _subJobs.remove(i);
     }
 
     if (status == SyncFileItem::FatalError ||
