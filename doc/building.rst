@@ -11,7 +11,7 @@ desktop client.
 .. note:: Build instructions are subject to change as development proceeds.
   Please check the version for which you want to build.
 
-These instructions are updated to work with version 2.2 of the ownCloud Client.
+These instructions are updated to work with version |version| of the ownCloud Client.
 
 Getting Source Code
 -------------------

@@ -19,7 +19,7 @@ recommended to keep your client updated.
 Improvements and New Features
 -----------------------------
 
-The 2.2 release of the ownCloud desktop sync client has many new features and 
+The |version| release of the ownCloud desktop sync client has many new features and 
 improvements. (See the `complete changelog 
 <https://owncloud.org/changelog/desktop/>`_.)
  
