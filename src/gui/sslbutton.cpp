@@ -59,7 +59,7 @@ static QString addCertDetailsField(const QString &key, const QString &value)
         return QString();
 
     return QLatin1String("<tr><td style=\"vertical-align: top;\"><b>") + key
-        + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">)") + value
+        + QLatin1String("</b></td><td style=\"vertical-align: bottom;\">") + value
         + QLatin1String("</td></tr>");
 }
 
