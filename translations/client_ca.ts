@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Reinicia la sincronització</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -965,7 +965,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
         <source>Adding folder is disabled because you are already syncing all your files. If you want to sync multiple folders, please remove the currently configured root folder.</source>
-        <translation type="unfinished"/>
+        <translation>No es pot afegir carpetes perquè ja esteu sincronitzant tots els vostres fitxers. Si voleu sincronitzar múltiples carpetes, elimineu la carpeta arrel actualment configurada.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="193"/>
@@ -3442,7 +3442,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versió %2. Per més informació visiteu &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Per errors coneguts i ajuda, visiteu: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Per Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt i altres.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;amb llicència GNU General Public License (GPL) versió 2.0&lt;br/&gt;ownCloud i el logo d&apos;ownCloud són marques registrades d&apos;ownCloud GmbH als Estats Units, altres països, o ambdós.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

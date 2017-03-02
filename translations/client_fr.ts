@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Choisir...</translation>
+        <translation>&amp;Sélectionner...</translation>
     </message>
 </context>
 <context>
@@ -35,7 +35,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Veuillez spécifier un répertoire distant</translation>
+        <translation>Veuillez sélectionner un dossier distant</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Connecté à &lt;server&gt; en tant que &lt;user&gt;</translation>
+        <translation>Connecté au serveur &lt;server&gt; avec le compte &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="133"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="147"/>
         <source>Add new</source>
-        <translation>Ajouter un nouveau</translation>
+        <translation>Ajouter un nouveau compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="155"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="229"/>
         <source>Choose what to sync</source>
-        <translation>Choisir le contenu à synchroniser</translation>
+        <translation>Sélectionner le contenu à synchroniser</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -278,7 +278,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="225"/>
         <source>Open folder</source>
-        <translation>Ouvrir le dossier</translation>
+        <translation>Ouvrir le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="151"/>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="243"/>
         <source>Resume sync</source>
-        <translation>Reprendre</translation>
+        <translation>Reprendre la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="243"/>
@@ -384,12 +384,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="532"/>
         <source>Sync Protocol</source>
-        <translation>Protocole de synchronisation</translation>
+        <translation>Activité locale</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="540"/>
         <source>List of ignored or erroneous files</source>
-        <translation>Liste des fichiers ignorés ou en erreur</translation>
+        <translation>Historique des fichiers exclus ou en erreur</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="544"/>
@@ -415,12 +415,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation>La liste des activités du serveur a été copiée dans le presse-papier.</translation>
+        <translation>L&apos;historique des opérations sur le serveur a été copié dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="617"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation>La liste des activités de synchronisation a été copiée dans le presse-papier.</translation>
+        <translation>L&apos;historique des opérations locales a été copié dans le presse-papier.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur s&apos;est produite lors de l&apos;accès au fichier de configuration situé dans %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
@@ -928,7 +928,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation>Synchronisé avec le dossier local</translation>
+        <translation>Sélectionnez les sous-dossiers à synchroniser à partir du dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -1042,7 +1042,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <location filename="../src/gui/folderstatusmodel.cpp" line="972"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%5 restant(s), %1 sur %2, fichier %3 sur %4.</translation>
+        <translation>%5 restantes, %1 sur %2, fichier %3 sur %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
@@ -1132,7 +1132,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="232"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Impossible de lister un répertoire. Erreur : %1</translation>
+        <translation>Impossible de lister un dossier. Erreur : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="313"/>
@@ -1258,7 +1258,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <location filename="../src/gui/generalsettings.ui" line="150"/>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
         <source>About</source>
-        <translation>À propos de</translation>
+        <translation>À propos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="166"/>
@@ -1299,7 +1299,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Éditeur de la liste des fichiers ignorés</translation>
+        <translation>Éditeur d&apos;exclusion de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
@@ -1314,7 +1314,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Fichiers ignorés par nom</translation>
+        <translation>Fichiers exclus sur motif de nom</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1324,12 +1324,12 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
         <source>Pattern</source>
-        <translation>Modèle de nom</translation>
+        <translation>Motif de nom</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
         <source>Allow Deletion</source>
-        <translation>Suppr. auto</translation>
+        <translation>Autoriser la suppression</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="45"/>
@@ -1341,9 +1341,9 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Les fichiers ou dossiers dont les noms correspondent à un modèle ne seront pas synchronisés. 
+        <translation>Les fichiers ou dossiers dont les noms correspondent à un motif ne seront pas synchronisés.
 
-Les éléments dont la suppression automatique est permise seront supprimés s&apos;ils empêchent l&apos;effacement d&apos;un répertoire. C&apos;est utile pour les fichiers de méta-données.</translation>
+Les éléments pour lesquel la suppression automatique est autorisée seront supprimés s&apos;ils empêchent l&apos;effacement d&apos;un dossier. C&apos;est utile pour les fichiers de méta-données.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
@@ -1358,12 +1358,12 @@ Les éléments dont la suppression automatique est permise seront supprimés s&a
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
         <source>Add Ignore Pattern</source>
-        <translation>Ajouter un motif à ignorer</translation>
+        <translation>Ajouter un motif d&apos;exclusion</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Ajoutez un nouveau motif à ignorer :</translation>
+        <translation>Ajoutez un nouveau motif d&apos;exclusion :</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="47"/>
@@ -1498,7 +1498,7 @@ Les éléments dont la suppression automatique est permise seront supprimés s&a
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Spécifier le proxy manuellement à</translation>
+        <translation>Indiquer un proxy manuellement</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1831,7 +1831,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Accès refusé par le serveur. Pour vérifier que vous avez accès, &lt;a href=&quot;%1&quot;&gt;cliquez ici&lt;/a&gt; pour accéder au service avec votre navigateur.</translation>
+        <translation>Accès impossibe. Afin de vérifier l&apos;accès au serveur, &lt;a href=&quot;%1&quot;&gt;cliquez ici&lt;/a&gt; et connectez-vous au service avec votre navigateur web.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
@@ -1861,7 +1861,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>Could not create local folder %1</source>
-        <translation>Impossible de créer le répertoire local %1</translation>
+        <translation>Impossible de créer le dossier local %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
@@ -1876,7 +1876,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>creating folder on ownCloud: %1</source>
-        <translation>création d&apos;un répertoire sur ownCloud : %1</translation>
+        <translation>création d&apos;un dossier sur ownCloud : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
@@ -1897,7 +1897,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>La création du répertoire distant a échoué car les informations d&apos;identification sont erronées !&lt;br/&gt;Veuillez revenir en arrière et les vérifier.&lt;/p&gt;</translation>
+        <translation>La création du dossier distant a échoué car les identifiants de connexion sont erronés !&lt;br/&gt;Veuillez revenir en arrière et vérifier ces derniers.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="456"/>
@@ -2095,7 +2095,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="98"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Impossible de supprimer le répertoire &apos;%1&apos;</translation>
+        <translation>Impossible de supprimer le dossier &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
@@ -2301,7 +2301,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="78"/>
         <source>Local sync protocol</source>
-        <translation>Protocole de synchronisation locale</translation>
+        <translation>Historique des opérations locales</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="80"/>
@@ -2352,7 +2352,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="443"/>
         <source>Choose What to Sync</source>
-        <translation>Choisir le contenu à synchroniser</translation>
+        <translation>Sélectionner le contenu à synchroniser</translation>
     </message>
 </context>
 <context>
@@ -3065,7 +3065,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="451"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Le fichier est dans la liste des fichiers à ignorer.</translation>
+        <translation>Le fichier est présent dans la liste des fichiers à exclure.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
@@ -3136,7 +3136,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1174"/>
         <location filename="../src/libsync/syncengine.cpp" line="1181"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignoré à cause de la liste noire &quot;Choisir le contenu à synchroniser&quot;.</translation>
+        <translation>Ignoré en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1200"/>
@@ -3157,7 +3157,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1289"/>
         <source>Local files and share folder removed.</source>
-        <translation>Fichiers locaux et répertoire de partage supprimés.</translation>
+        <translation>Fichiers locaux et dossier partagé supprimés.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1345"/>
@@ -3247,17 +3247,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>No sync folders configured.</source>
-        <translation>Aucun répertoire synchronisé n&apos;est configuré.</translation>
+        <translation>Aucun dossier synchronisé n&apos;est configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="334"/>
         <source>There are no sync folders configured.</source>
-        <translation>Aucun répertoire à synchroniser n&apos;est configuré.</translation>
+        <translation>Aucun dossier à synchroniser n&apos;est configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Open in browser</source>
-        <translation>Ouvrir dans le navigateur</translation>
+        <translation>Ouvrir dans le navigateur web</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="392"/>
@@ -3286,7 +3286,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="369"/>
         <source>Managed Folders:</source>
-        <translation>Répertoires configurés :</translation>
+        <translation>Dossiers configurés</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="372"/>
@@ -3311,12 +3311,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>Details...</source>
-        <translation>Détails...</translation>
+        <translation>Toutes les modifications...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="737"/>
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation>Aide...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="739"/>
@@ -3445,7 +3445,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2. Pour plus d&apos;informations, consultez &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Pour les consulter les problèmes connu et pour obtenir de l&apos;aide, merci de visiter : &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Par Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, et d&apos;autres.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Sous licence GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud et le logo ownCloud sont des marques déposées de ownCloud GmbH aux États-Unis, dans d&apos;autres pays ou dans les deux.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Version %2. Pour plus d&apos;informations, consultez &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Pour consulter les problèmes connus et obtenir de l&apos;aide, merci de visiter : &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Par Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt et d&apos;autres personnes.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Sous licence GNU General Public License (GPL) Version 2.0.&lt;br/&gt;ownCloud et le logo ownCloud sont des marques déposées de ownCloud GmbH aux États-Unis, dans d&apos;autres pays ou dans les deux.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3500,7 +3500,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
         <source>Choose what to sync</source>
-        <translation>Choisir le contenu à synchroniser</translation>
+        <translation>Sélectionner le contenu à synchroniser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
@@ -3649,7 +3649,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="163"/>
         <source>Your entire account is synced to the local folder </source>
-        <translation>Votre compte est intégralement synchronisé avec le répertoire local</translation>
+        <translation>Votre compte est intégralement synchronisé avec le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.ui" line="98"/>
