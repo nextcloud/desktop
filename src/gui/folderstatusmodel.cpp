@@ -164,10 +164,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     {
         const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs[index.row()];
         switch (role) {
-        case Qt::ToolTipRole:
         case Qt::DisplayRole:
             //: Example text: "File.txt (23KB)"
             return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+        case Qt::ToolTipRole:
+            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:

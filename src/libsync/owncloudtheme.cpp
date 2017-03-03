@@ -27,6 +27,7 @@
 
 #include "version.h"
 #include "config.h"
+#include "utility.h"
 
 namespace OCC {
 
@@ -53,9 +54,9 @@ QString ownCloudTheme::about() const
                "ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH "
                "in the United States, other countries, or both.</p>"
                )
-            .arg(MIRALL_VERSION_STRING)
-            .arg("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-            .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
+            .arg(Utility::escape(MIRALL_VERSION_STRING),
+                 Utility::escape("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN)),
+                 Utility::escape(MIRALL_STRINGIFY(APPLICATION_DOMAIN)));
 
     devString += gitSHA1();
     return devString;

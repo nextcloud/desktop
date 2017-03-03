@@ -321,7 +321,7 @@ void ShareLinkWidget::redrawElidedUrl()
         const QUrl realUrl(_shareUrl);
         QString elidedUrl = fm.elidedText(_shareUrl, Qt::ElideRight, linkLengthPixel);
 
-        u = QString("<a href=\"%1\">%2</a>").arg(realUrl.toString(QUrl::None)).arg(elidedUrl);
+        u = QString("<a href=\"%1\">%2</a>").arg(Utility::escape(realUrl.toString(QUrl::None)), Utility::escape(elidedUrl));
     }
     _ui->_labelShareLink->setText(u);
 }

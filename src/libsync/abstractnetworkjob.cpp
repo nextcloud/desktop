@@ -93,6 +93,11 @@ void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
     _ignoreCredentialFailure = ignore;
 }
 
+void AbstractNetworkJob::setFollowRedirects(bool follow)
+{
+    _followRedirects = follow;
+}
+
 void AbstractNetworkJob::setPath(const QString &path)
 {
     _path = path;

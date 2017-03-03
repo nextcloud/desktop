@@ -65,7 +65,7 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr& account)
     connect(_ui.localFolderChooseBtn, SIGNAL(clicked()), this, SLOT(slotChooseLocalFolder()));
     _ui.localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
 
-    QString defaultPath = QString::fromLatin1( "%1/%2").arg( QDir::homePath() ).arg(Theme::instance()->appName() );
+    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
     _ui.localFolderLineEdit->setText( QDir::toNativeSeparators( defaultPath ) );
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
@@ -441,7 +441,8 @@ bool FolderWizardRemotePath::isComplete() const
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
             warnStrings.append(tr("This folder is already being synced."));
         } else if (dir.startsWith(curDir + QLatin1Char('/'))) {
-            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(curDir).arg(dir));
+            warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(
+                Utility::escape(curDir), Utility::escape(dir)));
         }
 
         if (curDir == QLatin1String("/")) {

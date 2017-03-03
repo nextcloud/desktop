@@ -31,6 +31,9 @@
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -249,6 +252,9 @@
             <property name="text">
              <string>TextLabel</string>
             </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
            </widget>
           </item>
           <item>
@@ -351,6 +357,9 @@
             <property name="text">
              <string>TextLabel</string>
             </property>
+            <property name="textFormat">
+             <enum>Qt::PlainText</enum>
+            </property>
            </widget>
           </item>
           <item>
@@ -385,6 +394,9 @@
      <property name="text">
       <string>Status message</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -400,6 +412,9 @@
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string>TextLabel</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
      </property>
     </widget>
    </item>

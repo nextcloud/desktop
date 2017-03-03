@@ -552,10 +552,12 @@ void AccountSettings::slotAccountStateChanged(int state)
             _model->slotUpdateFolderState(folder);
         }
 
-        QString server = QString::fromLatin1("<a href=\"%1\">%2</a>").arg(account->url().toString(), safeUrl.toString());
+        QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
+                             .arg(Utility::escape(account->url().toString()),
+                                  Utility::escape(safeUrl.toString()));
         QString serverWithUser = server;
         if (AbstractCredentials *cred = account->credentials()) {
-           serverWithUser = tr("%1 as <i>%2</i>").arg(server, cred->user());
+            serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(cred->user()));
         }
 
         if (state == AccountState::Connected) {
@@ -569,13 +571,14 @@ void AccountSettings::slotAccountStateChanged(int state)
         } else if (state == AccountState::SignedOut) {
             showConnectionLabel( tr("Signed out from %1.").arg(serverWithUser) );
         } else {
-            showConnectionLabel( tr("No connection to %1 at %2.")
-                                 .arg(Theme::instance()->appNameGUI(),
-                                      server), _accountState->connectionErrors() );
+            showConnectionLabel(tr("No connection to %1 at %2.")
+                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
+                                _accountState->connectionErrors());
         }
     } else {
         // ownCloud is not yet configured.
-        showConnectionLabel( tr("No %1 connection configured.").arg(Theme::instance()->appNameGUI()) );
+        showConnectionLabel(tr("No %1 connection configured.")
+                                .arg(Utility::escape(Theme::instance()->appNameGUI())));
     }
 
     /* Allow to expand the item if the account is connected. */
@@ -664,7 +667,8 @@ void AccountSettings::refreshSelectiveSyncStatus()
             }
             QModelIndex theIndx = _model->indexForPath(folder, myFolder);
             if(theIndx.isValid()) {
-                msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>").arg(myFolder).arg(folder->alias());
+                msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>")
+                           .arg(Utility::escape(myFolder), Utility::escape(folder->alias()));
             } else {
                 msg += myFolder; // no link because we do not know the index yet.
             }

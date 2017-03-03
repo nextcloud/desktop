@@ -383,16 +383,16 @@ void Folder::createGuiLog( const QString& filename, LogStatus status, int count,
             break;
         case LogStatusRename:
             if( count > 1 ) {
-                text = tr("%1 has been renamed to %2 and %n other file(s) have been renamed.", "", count-1).arg(file).arg(renameTarget);
+                text = tr("%1 has been renamed to %2 and %n other file(s) have been renamed.", "", count-1).arg(file, renameTarget);
             } else {
-                text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file).arg(renameTarget);
+                text = tr("%1 has been renamed to %2.", "%1 and %2 name files.").arg(file, renameTarget);
             }
             break;
         case LogStatusMove:
             if( count > 1 ) {
-                text = tr("%1 has been moved to %2 and %n other file(s) have been moved.", "", count-1).arg(file).arg(renameTarget);
+                text = tr("%1 has been moved to %2 and %n other file(s) have been moved.", "", count-1).arg(file, renameTarget);
             } else {
-                text = tr("%1 has been moved to %2.").arg(file).arg(renameTarget);
+                text = tr("%1 has been moved to %2.").arg(file, renameTarget);
             }
             break;
         case LogStatusConflict:

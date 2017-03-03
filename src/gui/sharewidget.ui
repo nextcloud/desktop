@@ -36,6 +36,9 @@
        <property name="text">
         <string>TextLabel</string>
        </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
       </widget>
      </item>
      <item>

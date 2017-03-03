@@ -54,6 +54,18 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
+    /** Whether to handle redirects transparently.
+     *
+     * If true, a follow-up request is issued automatically when
+     * a redirect is encountered. The finished() function is only
+     * called if there are no more redirects (or there are problems
+     * with the redirect).
+     *
+     * The transparent redirect following may be disabled for some
+     * requests where custom handling is necessary.
+     */
+    void setFollowRedirects(bool follow);
+
     QByteArray responseTimestamp();
 
     qint64 timeoutMsec() { return _timer.interval(); }

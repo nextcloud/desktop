@@ -31,6 +31,9 @@
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -156,6 +159,9 @@
      <property name="text">
       <string>Error Label</string>
      </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
      <property name="openExternalLinks">
       <bool>true</bool>
      </property>
@@ -188,6 +194,9 @@
     <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string>TextLabel</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
      </property>
     </widget>
    </item>

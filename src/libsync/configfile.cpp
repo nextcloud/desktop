@@ -185,14 +185,14 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant& de
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2")
-                             .arg(APPLICATION_VENDOR).arg(Theme::instance()->appName()),
+                             .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
                              QSettings::NativeFormat);
         if(userPolicy.contains(setting)) {
             return userPolicy.value(setting);
         }
 
         QSettings machinePolicy(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\Policies\\%1\\%2")
-                                .arg(APPLICATION_VENDOR).arg(APPLICATION_NAME),
+                                .arg(APPLICATION_VENDOR, APPLICATION_NAME),
                                 QSettings::NativeFormat);
         if(machinePolicy.contains(setting)) {
             return machinePolicy.value(setting);
@@ -257,7 +257,7 @@ QString ConfigFile::excludeFileFromSystem()
     fi.setFile( QCoreApplication::applicationDirPath(), exclFile );
 #endif
 #ifdef Q_OS_UNIX
-    fi.setFile( QString( SYSCONFDIR "/%1").arg(Theme::instance()->appName()), exclFile );
+    fi.setFile(QString(SYSCONFDIR "/" + Theme::instance()->appName()), exclFile);
     if ( ! fi.exists() ) {
         // Prefer to return the preferred path! Only use the fallback location
         // if the other path does not exist and the fallback is valid.
@@ -489,8 +489,8 @@ QVariant ConfigFile::getValue(const QString& param, const QString& group,
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
         QSettings systemSettings(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\%1\\%2")
-                                .arg(APPLICATION_VENDOR).arg(Theme::instance()->appName()),
-                                QSettings::NativeFormat);
+                                     .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
+                                 QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
         }

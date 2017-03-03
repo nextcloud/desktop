@@ -58,8 +58,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         return;
     }
 
-    QString key = QString::fromLatin1("%1:%2").arg(
-            proxy.hostName(), QString::number(proxy.port()));
+    QString key = proxy.hostName() + QLatin1Char(':') + QString::number(proxy.port());
 
     // If the proxy server has changed, forget what we know.
     if (key != _proxy) {
