@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.3.0 (2017-02-xx)
+version 2.3.0 (2017-03-03)
 * Decreased memory usage during sync
 * Overlay icons: Lower CPU usage
 * Allow to not sync the server's external storages by default
