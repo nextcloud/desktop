@@ -730,13 +730,13 @@ protected:
         if (verb == QLatin1String("PROPFIND"))
             // Ignore outgoingData always returning somethign good enough, works for now.
             return new FakePropfindReply{info, op, request, this};
-        else if (verb == QLatin1String("GET"))
+        else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
             return new FakeGetReply{info, op, request, this};
-        else if (verb == QLatin1String("PUT"))
+        else if (verb == QLatin1String("PUT") || op == QNetworkAccessManager::PutOperation)
             return new FakePutReply{info, op, request, outgoingData->readAll(), this};
         else if (verb == QLatin1String("MKCOL"))
             return new FakeMkcolReply{info, op, request, this};
-        else if (verb == QLatin1String("DELETE"))
+        else if (verb == QLatin1String("DELETE") || op == QNetworkAccessManager::DeleteOperation)
             return new FakeDeleteReply{info, op, request, this};
         else if (verb == QLatin1String("MOVE") && !isUpload)
             return new FakeMoveReply{info, op, request, this};

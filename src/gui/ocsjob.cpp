@@ -93,9 +93,7 @@ void OcsJob::start()
     queryItems.append(qMakePair(QByteArray("format"), QByteArray("json")));
     url.setEncodedQueryItems(queryItems);
 
-    setReply(davRequest(_verb, url, req, buffer));
-    setupConnections(reply());
-    buffer->setParent(reply());
+    sendRequest(_verb, url, req, buffer);
     AbstractNetworkJob::start();
 }
 

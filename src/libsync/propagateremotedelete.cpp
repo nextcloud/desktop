@@ -30,8 +30,11 @@ DeleteJob::DeleteJob(AccountPtr account, const QUrl& url, QObject* parent)
 void DeleteJob::start()
 {
     QNetworkRequest req;
-    setReply(_url.isValid() ? davRequest("DELETE", _url, req) : davRequest("DELETE", path(), req));
-    setupConnections(reply());
+    if (_url.isValid()) {
+        sendRequest("DELETE", _url, req);
+    } else {
+        sendRequest("DELETE", makeDavUrl(path()), req);
+    }
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();

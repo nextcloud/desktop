@@ -202,54 +202,23 @@ QNetworkAccessManager *Account::networkAccessManager()
     return _am.data();
 }
 
-QNetworkReply *Account::headRequest(const QString &relPath)
-{
-    return headRequest(Utility::concatUrlPath(url(), relPath));
-}
-
-QNetworkReply *Account::headRequest(const QUrl &url)
-{
-    QNetworkRequest request(url);
-#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
-    request.setSslConfiguration(this->getOrCreateSslConfig());
-#endif
-    return _am->head(request);
-}
-
-QNetworkReply *Account::getRequest(const QString &relPath)
-{
-    return getRequest(Utility::concatUrlPath(url(), relPath));
-}
-
-QNetworkReply *Account::getRequest(const QUrl &url)
-{
-    QNetworkRequest request(url);
-#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
-    request.setSslConfiguration(this->getOrCreateSslConfig());
-#endif
-    return _am->get(request);
-}
-
-QNetworkReply *Account::deleteRequest( const QUrl &url)
-{
-    QNetworkRequest request(url);
-#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
-    request.setSslConfiguration(this->getOrCreateSslConfig());
-#endif
-    return _am->deleteResource(request);
-}
-
-QNetworkReply *Account::davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data)
-{
-    return davRequest(verb, Utility::concatUrlPath(davUrl(), relPath), req, data);
-}
-
-QNetworkReply *Account::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
 #if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
     req.setSslConfiguration(this->getOrCreateSslConfig());
 #endif
+    if (verb == "HEAD" && !data) {
+        return _am->head(req);
+    } else if (verb == "GET" && !data) {
+        return _am->get(req);
+    } else if (verb == "POST") {
+        return _am->post(req, data);
+    } else if (verb == "PUT") {
+        return _am->put(req, data);
+    } else if (verb == "DELETE" && !data) {
+        return _am->deleteResource(req);
+    }
     return _am->sendCustomRequest(req, verb, data);
 }
 

@@ -594,9 +594,7 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
 
 void DetermineAuthTypeJob::start()
 {
-    QNetworkReply *reply = getRequest(account()->davPath());
-    setReply(reply);
-    setupConnections(reply);
+    sendRequest("GET", account()->davUrl());
     AbstractNetworkJob::start();
 }
 
@@ -613,8 +611,7 @@ bool DetermineAuthTypeJob::finished()
         // do a new run
         _redirects++;
         resetTimeout();
-        setReply(getRequest(redirection));
-        setupConnections(reply());
+        sendRequest("GET", redirection);
         return false; // don't discard
     } else {
 #ifndef NO_SHIBBOLETH

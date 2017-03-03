@@ -86,7 +86,7 @@ class PUTFileJob : public AbstractNetworkJob {
     Q_OBJECT
 
 private:
-    QScopedPointer<QIODevice> _device;
+    QIODevice* _device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QUrl _url;
@@ -95,11 +95,17 @@ public:
     // Takes ownership of the device
     explicit PUTFileJob(AccountPtr account, const QString& path, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject* parent = 0)
-        : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers), _chunk(chunk) {}
+        : AbstractNetworkJob(account, path, parent), _device(device), _headers(headers), _chunk(chunk)
+    {
+        _device->setParent(this);
+    }
     explicit PUTFileJob(AccountPtr account, const QUrl& url, QIODevice *device,
                         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject* parent = 0)
         : AbstractNetworkJob(account, QString(), parent), _device(device), _headers(headers)
-        , _url(url), _chunk(chunk) {}
+        , _url(url), _chunk(chunk)
+    {
+        _device->setParent(this);
+    }
     ~PUTFileJob();
 
     int _chunk;

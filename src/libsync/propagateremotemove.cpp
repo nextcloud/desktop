@@ -43,8 +43,11 @@ void MoveJob::start()
     for(auto it = _extraHeaders.constBegin(); it != _extraHeaders.constEnd(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
-    setReply(_url.isValid() ? davRequest("MOVE", _url, req) : davRequest("MOVE", path(), req));
-    setupConnections(reply());
+    if (_url.isValid()) {
+        sendRequest("MOVE", _url, req);
+    } else {
+        sendRequest("MOVE", makeDavUrl(path()), req);
+    }
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
