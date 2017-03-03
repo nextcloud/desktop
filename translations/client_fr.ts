@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="286"/>
         <source>The destination file has an unexpected size or modification time</source>
-        <translation>Le fichier de destination a une erreur de taille ou de date de modification</translation>
+        <translation>Le fichier de destination a une taille ou une date de modification inattendue  </translation>
     </message>
 </context>
 <context>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="574"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Pas de connexion à %1 sur %2.</translation>
+        <translation>Aucune connexion au serveur %1 à l&apos;adresse %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="598"/>
@@ -379,7 +379,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="525"/>
         <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>Server Activity</source>
-        <translation>Activité du serveur</translation>
+        <translation>Activité sur le serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="532"/>
@@ -2026,7 +2026,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="555"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation>Le fichier téléchargé est vide malgré que le serveur a annoncé qu&apos;il aurait dû être %1.</translation>
+        <translation>Le fichier téléchargé est vide bien que le serveur indique que sa taille devrait être de %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
@@ -3794,12 +3794,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
         <source>Downloaded</source>
-        <translation>Téléchargé</translation>
+        <translation>Reçu</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
         <source>Uploaded</source>
-        <translation>Téléversé</translation>
+        <translation>Envoyé</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
@@ -3809,7 +3809,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
         <source>Deleted</source>
-        <translation>Effacé</translation>
+        <translation>Supprimé</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>

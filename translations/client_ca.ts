@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Força la sincronització ara</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
@@ -248,17 +248,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són fonts d&apos;emmagatzematge externes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="686"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Hi ha carpetes que no s&apos;han sincronitzat perquè són massa grans o són fonts d&apos;emmagatzematge externes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
@@ -425,7 +425,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha copiat una llista d&apos;elements no sincronitzats al porta-retalls.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -508,7 +508,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Certificat i clau (pkcs12)</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error en accedir al fitxer de configuració</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Hi ha hagut un error en accedir al fitxer de configuració a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Surt de l&apos;ownCloud</translation>
     </message>
 </context>
 <context>
@@ -736,13 +736,15 @@ Consulteu el registre per obtenir més informació.</numerusform></translation>
         <location filename="../src/gui/folder.cpp" line="853"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha afegit una carpeta de més de %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha afegit una carpeta d&apos;una font d&apos;emmagatzematge extern.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="856"/>
@@ -1213,7 +1215,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Demana la confirmació abans de sincronitzar carpetes més grans de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1224,7 +1226,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Demana la confirmació abans de sincronitzar fonts d&apos;emmagatzematge externes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -1273,7 +1275,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Introduïu la contrassenya de %1:&lt;br&gt;&lt;br&gt;Usuari: %2&lt;br&gt;Compte: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1833,7 +1835,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL incorrecte</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
@@ -2051,7 +2053,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
         <source>Continue blacklisting:</source>
-        <translation type="unfinished"/>
+        <translation>Mantén a la llista negra:</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
@@ -3393,7 +3395,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Compte nou...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="748"/>
@@ -3471,7 +3473,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si aquesta caixa està marcada, el contingut existent en la carpeta local s&apos;eliminarà per començar una nova sincronització des del servidor.&lt;/p&gt;&lt;p&gt;No la marqueu si el contingut local s&apos;ha de pujar a la carpeta del servidor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
@@ -3481,7 +3483,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Demana la confirmació abans de sincronit&amp;zar carpetes més grans de</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3492,7 +3494,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Demana la confirmació abans de sincronitzar fonts d&apos;emmagatzematge e&amp;xternes</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
@@ -3618,7 +3620,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>Adreça del ser&amp;vidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -3831,7 +3833,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han actualitzat les metadades locals</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -3873,7 +3875,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>s&apos;estan actualitzant les metadades locals</translation>
     </message>
 </context>
 <context>
