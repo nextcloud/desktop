@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Erro a aceder ao ficheiro de configuração</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
@@ -1831,7 +1831,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>URL inválido</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
@@ -2569,7 +2569,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possivel abrir o cliente de email</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
