@@ -379,7 +379,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="525"/>
         <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>Server Activity</source>
-        <translation>Activité sur le serveur</translation>
+        <translation>Activité serveur</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="532"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Erreur lors de l&apos;accès au fichier de configuration</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="169"/>
@@ -850,7 +850,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderman.cpp" line="1256"/>
         <source>Last Sync was successful.</source>
-        <translation>Dernière synchronisation effectuée avec succès</translation>
+        <translation>Dernière synchronisation réalisée avec succès</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1261"/>
@@ -1341,9 +1341,9 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Les fichiers ou dossiers dont les noms correspondent à un motif ne seront pas synchronisés.
+        <translation>Les fichiers ou dossiers dont les noms correspondent à un motif seront exclus de la synchronisation.
 
-Les éléments pour lesquel la suppression automatique est autorisée seront supprimés s&apos;ils empêchent l&apos;effacement d&apos;un dossier. C&apos;est utile pour les fichiers de méta-données.</translation>
+L&apos;option &quot;Autoriser la suppression&quot; permet de ne pas bloquer  la suppression d&apos;un dossier. C&apos;est utile pour les fichiers de méta-données.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
@@ -3356,7 +3356,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Unpause all folders</source>
-        <translation>Relance tous les dossiers </translation>
+        <translation>Relancer tous les dossiers </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="386"/>

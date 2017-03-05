@@ -770,6 +770,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -817,9 +820,9 @@ Icon[bg_BG]=@APPLICATION_EXECUTABLE@
 GenericName[fa]=همسان سازی پوشه‌ها
 Name[fa]=@APPLICATION_EXECUTABLE@ نسخه‌ی همسان سازی مشتری
 Icon[fa]=@APPLICATION_EXECUTABLE@
-Comment[fr]=@APPLICATION_NAME@ synchronisation du client
-GenericName[fr]=Dossier de Synchronisation
-Name[fr]=@APPLICATION_NAME@ synchronisation du client
+Comment[fr]=Application de bureau pour synchroniser des dossiers avec un serveur @APPLICATION_NAME@
+GenericName[fr]=Synchronisation de dossier
+Name[fr]=Client de synchronisation @APPLICATION_NAME@
 Icon[fr]=@APPLICATION_EXECUTABLE@
 Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
 GenericName[he]=סנכון תיקייה
