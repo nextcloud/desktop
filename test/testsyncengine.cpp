@@ -225,6 +225,40 @@ private slots:
         QCOMPARE(finishedSpy.size(), 1);
         QCOMPARE(finishedSpy.first().first().toBool(), false);
     }
+
+    void testDirDownloadWithError() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        fakeFolder.remoteModifier().mkdir("Y");
+        fakeFolder.remoteModifier().mkdir("Y/Z");
+        fakeFolder.remoteModifier().insert("Y/Z/d0");
+        fakeFolder.remoteModifier().insert("Y/Z/d1");
+        fakeFolder.remoteModifier().insert("Y/Z/d2");
+        fakeFolder.remoteModifier().insert("Y/Z/d3");
+        fakeFolder.remoteModifier().insert("Y/Z/d4");
+        fakeFolder.remoteModifier().insert("Y/Z/d5");
+        fakeFolder.remoteModifier().insert("Y/Z/d6");
+        fakeFolder.remoteModifier().insert("Y/Z/d7");
+        fakeFolder.remoteModifier().insert("Y/Z/d8");
+        fakeFolder.remoteModifier().insert("Y/Z/d9");
+        fakeFolder.serverErrorPaths().append("Y/Z/d2", 503); // 503 is a fatal error
+        fakeFolder.serverErrorPaths().append("Y/Z/d3", 503); // 503 is a fatal error
+        QVERIFY(!fakeFolder.syncOnce());
+        QCoreApplication::processEvents(); // should not crash
+
+        QSet<QString> seen;
+        for(const QList<QVariant> &args : completeSpy) {
+            auto item = args[0].value<SyncFileItemPtr>();
+            qDebug() << item->_file << item->_isDirectory << item->_status;
+            QVERIFY(!seen.contains(item->_file)); // signal only sent once per item
+            seen.insert(item->_file);
+            if (item->_file == "Y/Z/d2" || item->_file == "Y/Z/d3") {
+                QVERIFY(item->_status == SyncFileItem::FatalError);
+            }
+            QVERIFY(item->_file != "Y/Z/d9"); // we should have aborted the sync before d9 starts
+        }
+    }
+
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

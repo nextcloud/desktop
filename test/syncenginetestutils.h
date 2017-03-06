@@ -536,6 +536,7 @@ public:
     const FileInfo *fileInfo;
     char payload;
     int size;
+    bool aborted = false;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
     : QNetworkReply{parent} {
@@ -551,6 +552,12 @@ public:
     }
 
     Q_INVOKABLE void respond() {
+        if (aborted) {
+            setError(OperationCanceledError, "Operation Canceled");
+            emit metaDataChanged();
+            emit finished();
+            return;
+        }
         payload = fileInfo->contentChar;
         size = fileInfo->size;
         setHeader(QNetworkRequest::ContentLengthHeader, size);
@@ -564,8 +571,14 @@ public:
         emit finished();
     }
 
-    void abort() override { }
-    qint64 bytesAvailable() const override { return size + QIODevice::bytesAvailable(); }
+    void abort() override {
+        aborted = true;
+    }
+    qint64 bytesAvailable() const override {
+        if (aborted)
+            return 0;
+        return size + QIODevice::bytesAvailable();
+    }
 
     qint64 readData(char *data, qint64 maxlen) override {
         qint64 len = std::min(qint64{size}, maxlen);
@@ -666,8 +679,9 @@ class FakeErrorReply : public QNetworkReply
 {
     Q_OBJECT
 public:
-    FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : QNetworkReply{parent} {
+    FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+                   QObject *parent, int httpErrorCode)
+    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode) {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
@@ -676,7 +690,7 @@ public:
     }
 
     Q_INVOKABLE void respond() {
-        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 500);
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
         setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
         emit finished();
@@ -684,18 +698,22 @@ public:
 
     void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
+
+    int _httpErrorCode;
 };
 
 class FakeQNAM : public QNetworkAccessManager
 {
     FileInfo _remoteRootFileInfo;
     FileInfo _uploadFileInfo;
-    QStringList _errorPaths;
+    // maps a path to an HTTP error
+    QHash<QString, int> _errorPaths;
 public:
     FakeQNAM(FileInfo initialRoot) : _remoteRootFileInfo{std::move(initialRoot)} { }
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
     FileInfo &uploadState() { return _uploadFileInfo; }
-    QStringList &errorPaths() { return _errorPaths; }
+
+    QHash<QString, int> &errorPaths() { return _errorPaths; }
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
@@ -703,7 +721,7 @@ protected:
         const QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull());
         if (_errorPaths.contains(fileName))
-            return new FakeErrorReply{op, request, this};
+            return new FakeErrorReply{op, request, this, _errorPaths[fileName]};
 
         bool isUpload = request.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
@@ -798,7 +816,13 @@ public:
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
     FileInfo &uploadState() { return _fakeQnam->uploadState(); }
 
-    QStringList &serverErrorPaths() { return _fakeQnam->errorPaths(); }
+    struct ErrorList {
+        FakeQNAM *_qnam;
+        void append(const QString &path, int error = 500)
+        { _qnam->errorPaths().insert(path, error); }
+        void clear() { _qnam->errorPaths().clear(); }
+    };
+    ErrorList serverErrorPaths() { return {_fakeQnam}; }
 
     QString localPath() const {
         // SyncEngine wants a trailing slash

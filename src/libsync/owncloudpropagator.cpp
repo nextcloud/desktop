@@ -669,9 +669,11 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 
     if (status == SyncFileItem::FatalError ||
             (wasFirstJob && status != SyncFileItem::Success && status != SyncFileItem::Restoration)) {
-        abort();
-        _state = Finished;
-        emit finished(status);
+        if (_state != Finished) {
+            abort();
+            _state = Finished;
+            emit finished(status);
+        }
         return;
     } else if (status == SyncFileItem::NormalError || status == SyncFileItem::SoftError) {
         _hasError = status;
@@ -688,6 +690,9 @@ void PropagateDirectory::slotSubJobFinished(SyncFileItem::Status status)
 
 void PropagateDirectory::finalize()
 {
+    if (_state == Finished)
+        return;
+
     bool ok = true;
     if (!_item->isEmpty() && _hasError == SyncFileItem::NoStatus) {
         if( !_item->_renameTarget.isEmpty() ) {
