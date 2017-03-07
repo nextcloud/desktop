@@ -601,6 +601,36 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
     return re;
 }
 
+bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile)
+{
+#ifdef Q_OS_WIN
+    bool result = false;
+    const QString file( _localDir + relfile );
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+
+    hFind = FindFirstFileW(reinterpret_cast<const wchar_t*>(file.utf16()), &FindFileData);
+    if (hFind != INVALID_HANDLE_VALUE) {
+        QString firstFile = QString::fromWCharArray( FindFileData.cFileName );
+        if (FindNextFile(hFind, &FindFileData)) {
+            QString secondFile = QString::fromWCharArray( FindFileData.cFileName );
+            // This extra check shouldn't be necessary, but ensures that there
+            // are two different filenames that are identical when case is ignored.
+            if (firstFile != secondFile
+                    && QString::compare(firstFile, secondFile, Qt::CaseInsensitive) == 0) {
+                result = true;
+                qDebug() << "Found two filepaths that only differ in case: " << firstFile << secondFile;
+            }
+        }
+        FindClose(hFind);
+    }
+    return result;
+#else
+    Q_UNUSED(relfile);
+    return false;
+#endif
+}
+
 QString OwncloudPropagator::getFilePath(const QString& tmp_file_name) const
 {
     return _localDir + tmp_file_name;
