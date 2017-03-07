@@ -82,8 +82,6 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void **ppv)
 STDAPI DllCanUnloadNow(void)
 {
     return dllReferenceCount > 0 ? S_FALSE : S_OK;
-    
-    return S_FALSE;
 }
 
 HRESULT RegisterCLSID(LPCOLESTR guidStr, PCWSTR overlayStr, PCWSTR szModule)
