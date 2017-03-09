@@ -150,7 +150,7 @@ signals:
      * @brief avatarPixmap - returns either a valid pixmap or not.
      */
 
-    void avatarPixmap(QPixmap);
+    void avatarPixmap(QImage);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

@@ -256,15 +256,15 @@ void ConnectionValidator::slotUserFetched(const QVariantMap &json)
 
         AvatarJob *job = new AvatarJob(_account, this);
         job->setTimeout(20*1000);
-        QObject::connect(job, SIGNAL(avatarPixmap(QPixmap)), this, SLOT(slotAvatarPixmap(QPixmap)));
+        QObject::connect(job, SIGNAL(avatarPixmap(QImage)), this, SLOT(slotAvatarImage(QImage)));
 
         job->start();
     }
 }
 
-void ConnectionValidator::slotAvatarPixmap(const QPixmap& pixmap)
+void ConnectionValidator::slotAvatarImage(const QImage& img)
 {
-    _account->setAvatar(pixmap);
+    _account->setAvatar(img);
     reportResult(Connected);
 }
 

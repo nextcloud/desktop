@@ -56,7 +56,7 @@ namespace {
 
 namespace OCC {
 
-static QIcon circleMask( const QPixmap& avatar )
+static QIcon circleMask( const QImage& avatar )
 {
     int dim = avatar.width();
 
@@ -67,7 +67,7 @@ static QIcon circleMask( const QPixmap& avatar )
     QPainterPath clip;
     clip.addEllipse(0, 0, dim, dim);
     imgPainter.setClipPath(clip);
-    imgPainter.drawPixmap(0, 0, dim, dim, avatar);
+    imgPainter.drawImage(0, 0, avatar);
     imgPainter.end();
 
     return QIcon(fixedImage);
@@ -216,7 +216,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     QAction *accountAction;
-    QPixmap avatar = s->account()->avatar();
+    QImage avatar = s->account()->avatar();
     const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
     if(avatar.isNull()) {
         accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
@@ -251,7 +251,7 @@ void SettingsDialog::slotAccountAvatarChanged()
     if( account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if( action ) {
-            QPixmap pix = account->avatar();
+            QImage pix = account->avatar();
             if( !pix.isNull() ) {
                 action->setIcon( circleMask(pix) );
             }

@@ -80,8 +80,8 @@ public:
     QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
-    QPixmap avatar() const;
-    void setAvatar(const QPixmap& pixmap);
+    QImage avatar() const;
+    void setAvatar(const QImage& img);
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -216,7 +216,7 @@ private:
     QWeakPointer<Account> _sharedThis;
     QString _id;
     QString _davUser;
-    QPixmap _avatarPixmap;
+    QImage _avatarImg;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
     QList<QSslCertificate> _approvedCerts;

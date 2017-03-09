@@ -608,19 +608,19 @@ bool AvatarJob::finished()
 {
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    QPixmap avPixmap;
+    QImage avImage;
 
     if (http_result_code == 200) {
 
         QByteArray pngData = reply()->readAll();
         if( pngData.size() ) {
 
-            if( avPixmap.loadFromData(pngData) ) {
+            if( avImage.loadFromData(pngData) ) {
                 qDebug() << "Retrieved Avatar pixmap!";
             }
         }
     }
-    emit(avatarPixmap(avPixmap));
+    emit(avatarPixmap(avImage));
     return true;
 }
 

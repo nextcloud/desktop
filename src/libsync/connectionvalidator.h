@@ -71,7 +71,7 @@ namespace OCC {
         +-> slotUserFetched
               AvatarJob
               |
-              +-> slotAvatarPixmap --> reportResult()
+              +-> slotAvatarImage --> reportResult()
 
     \endcode
  */
@@ -122,7 +122,7 @@ protected slots:
 
     void slotCapabilitiesRecieved(const QVariantMap&);
     void slotUserFetched(const QVariantMap &);
-    void slotAvatarPixmap(const QPixmap&);
+    void slotAvatarImage(const QImage &img);
 
 private:
     void reportResult(Status status);

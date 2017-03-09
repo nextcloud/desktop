@@ -90,13 +90,13 @@ void Account::setDavUser(const QString &newDavUser)
     _davUser = newDavUser;
 }
 
-QPixmap Account::avatar() const
+QImage Account::avatar() const
 {
-    return _avatarPixmap;
+    return _avatarImg;
 }
-void Account::setAvatar(const QPixmap& pixmap)
+void Account::setAvatar(const QImage &img)
 {
-    _avatarPixmap = pixmap;
+    _avatarImg = img;
     emit accountChangedAvatar();
 }
 
