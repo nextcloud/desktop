@@ -251,8 +251,10 @@ private slots:
             qDebug() << item->_file << item->_isDirectory << item->_status;
             QVERIFY(!seen.contains(item->_file)); // signal only sent once per item
             seen.insert(item->_file);
-            if (item->_file == "Y/Z/d2" || item->_file == "Y/Z/d3") {
+            if (item->_file == "Y/Z/d2") {
                 QVERIFY(item->_status == SyncFileItem::FatalError);
+            } else if(item->_file == "Y/Z/d3") {
+                QVERIFY(item->_status != SyncFileItem::Success);
             }
             QVERIFY(item->_file != "Y/Z/d9"); // we should have aborted the sync before d9 starts
         }
