@@ -73,9 +73,11 @@ void PUTFileJob::start() {
         req.setRawHeader(it.key(), it.value());
     }
 
-    setReply(_url.isValid() ?  davRequest("PUT", _url, req, _device.data())
-        : davRequest("PUT", path(), req, _device.data()));
-    setupConnections(reply());
+    if (_url.isValid()) {
+        sendRequest("PUT", _url, req, _device);
+    } else {
+        sendRequest("PUT", makeDavUrl(path()), req, _device);
+    }
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
@@ -89,10 +91,10 @@ void PUTFileJob::start() {
     // (workaround disabled on windows and mac because the binaries we ship have patched qt)
 #if QT_VERSION < QT_VERSION_CHECK(4, 8, 7)
     if (QLatin1String(qVersion()) < QLatin1String("4.8.7"))
-        connect(_device.data(), SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
+        connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
 #elif QT_VERSION > QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2) && !defined Q_OS_WIN && !defined Q_OS_MAC
     if (QLatin1String(qVersion()) < QLatin1String("5.4.2"))
-        connect(_device.data(), SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
+        connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
 #endif
 
     AbstractNetworkJob::start();
@@ -119,8 +121,7 @@ void PollJob::start()
     QUrl accountUrl = account()->url();
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") +  accountUrl.authority()
         + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
-    setReply(getRequest(finalUrl));
-    setupConnections(reply());
+    sendRequest("GET", finalUrl);
     connect(reply(), SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(resetTimeout()));
     AbstractNetworkJob::start();
 }

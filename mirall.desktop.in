@@ -767,6 +767,21 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -775,6 +790,10 @@ Comment[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
 GenericName[ar]=مزامنة المجلد
 Name[ar]=@APPLICATION_NAME@ زبون مزامنة مكتبي
 Icon[ar]=@APPLICATION_EXECUTABLE@
+Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
+GenericName[bg_BG]=Синхронизиране на папката
+Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
+Icon[bg_BG]=@APPLICATION_EXECUTABLE@
 Comment[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
 GenericName[ca]=Sincronització de carpetes
 Name[ca]=Client de sincronització d'escriptori @APPLICATION_NAME@
@@ -807,16 +826,16 @@ Comment[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 GenericName[de_DE]=Ordner-Synchronisation
 Name[de_DE]=@APPLICATION_NAME@ Desktop-Synchronisationsclient
 Icon[de_DE]=@APPLICATION_EXECUTABLE@
-Comment[bg_BG]=@APPLICATION_NAME@ клиент за десктоп синхронизация
-GenericName[bg_BG]=Синхронизиране на папката
-Name[bg_BG]=@APPLICATION_NAME@ клиент десктоп синхронизация
-Icon[bg_BG]=@APPLICATION_EXECUTABLE@
+Comment[eu]=@APPLICATION_NAME@ mahaigaineko sinkronizazio bezeroa
+GenericName[eu]=Karpetaren sinkronizazioa
+Name[eu]=@APPLICATION_NAME@ mahaigaineko sinkronizazio bezeroa
+Icon[eu]=@APPLICATION_EXECUTABLE@
 GenericName[fa]=همسان سازی پوشه‌ها
 Name[fa]=@APPLICATION_EXECUTABLE@ نسخه‌ی همسان سازی مشتری
 Icon[fa]=@APPLICATION_EXECUTABLE@
-Comment[fr]=@APPLICATION_NAME@ synchronisation du client
-GenericName[fr]=Dossier de Synchronisation
-Name[fr]=@APPLICATION_NAME@ synchronisation du client
+Comment[fr]=Application de bureau pour synchroniser des dossiers avec un serveur @APPLICATION_NAME@
+GenericName[fr]=Synchronisation de dossier
+Name[fr]=Client de synchronisation @APPLICATION_NAME@
 Icon[fr]=@APPLICATION_EXECUTABLE@
 Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
 GenericName[he]=סנכון תיקייה

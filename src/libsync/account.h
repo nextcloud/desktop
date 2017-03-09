@@ -106,14 +106,10 @@ public:
 
 
     // For creating various network requests
-    QNetworkReply* headRequest(const QString &relPath);
-    QNetworkReply* headRequest(const QUrl &url);
-    QNetworkReply* getRequest(const QString &relPath);
-    QNetworkReply* getRequest(const QUrl &url);
-    QNetworkReply* deleteRequest( const QUrl &url);
-    QNetworkReply* davRequest(const QByteArray &verb, const QString &relPath, QNetworkRequest req, QIODevice *data = 0);
-    QNetworkReply* davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data = 0);
-
+    QNetworkReply* sendRequest(const QByteArray &verb,
+                               const QUrl &url,
+                               QNetworkRequest req = QNetworkRequest(),
+                               QIODevice *data = 0);
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();

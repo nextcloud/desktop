@@ -67,9 +67,7 @@ void RequestEtagJob::start()
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     // assumes ownership
-    setReply(davRequest("PROPFIND", path(), req, buf));
-    buf->setParent(reply());
-    setupConnections(reply());
+    sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
 
     if( reply()->error() != QNetworkReply::NoError ) {
         qDebug() << "getting etag: request network error: " << reply()->errorString();
@@ -122,10 +120,11 @@ void MkColJob::start()
    }
 
    // assumes ownership
-   QNetworkReply *reply = _url.isValid() ?  davRequest("MKCOL", _url, req)
-        : davRequest("MKCOL", path(), req);
-   setReply(reply);
-   setupConnections(reply);
+   if (_url.isValid()) {
+       sendRequest("MKCOL", _url, req);
+   } else {
+       sendRequest("MKCOL", makeDavUrl(path()), req);
+   }
    AbstractNetworkJob::start();
 }
 
@@ -322,11 +321,11 @@ void LsColJob::start()
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    QNetworkReply *reply = _url.isValid() ?  davRequest("PROPFIND", _url, req, buf)
-        : davRequest("PROPFIND", path(), req, buf);
-    buf->setParent(reply);
-    setReply(reply);
-    setupConnections(reply);
+    if (_url.isValid()) {
+        sendRequest("PROPFIND", _url, req, buf);
+    } else {
+        sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+    }
     AbstractNetworkJob::start();
 }
 
@@ -380,8 +379,7 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
 
 void CheckServerJob::start()
 {
-    setReply(getRequest(path()));
-    setupConnections(reply());
+    sendRequest("GET", makeAccountUrl(path()));
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(metaDataChangedSlot()));
     connect(reply(), SIGNAL(encrypted()), this, SLOT(encryptedSlot()));
     AbstractNetworkJob::start();
@@ -529,9 +527,7 @@ void PropfindJob::start()
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    setReply(davRequest("PROPFIND", path(), req, buf));
-    buf->setParent(reply());
-    setupConnections(reply());
+    sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
     AbstractNetworkJob::start();
 }
 
@@ -632,9 +628,7 @@ void ProppatchJob::start()
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
-    setReply(davRequest("PROPPATCH", path(), req, buf));
-    buf->setParent(reply());
-    setupConnections(reply());
+    sendRequest("PROPPATCH", makeDavUrl(path()), req, buf);
     AbstractNetworkJob::start();
 }
 
@@ -671,8 +665,7 @@ EntityExistsJob::EntityExistsJob(AccountPtr account, const QString &path, QObjec
 
 void EntityExistsJob::start()
 {
-    setReply(headRequest(path()));
-    setupConnections(reply());
+    sendRequest("HEAD", makeAccountUrl(path()));
     AbstractNetworkJob::start();
 }
 
@@ -700,8 +693,7 @@ void JsonApiJob::start()
     QList<QPair<QString, QString> > params = _additionalParams;
     params << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"));
     url.setQueryItems(params);
-    setReply(davRequest("GET", url, req));
-    setupConnections(reply());
+    sendRequest("GET", url, req);
     AbstractNetworkJob::start();
 }
 

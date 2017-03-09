@@ -27,6 +27,10 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+Q_DECLARE_METATYPE(QPointer<OCC::AccountState>)
+#endif
+
 namespace OCC {
 
 ActivityListModel::ActivityListModel(QWidget *parent)
@@ -122,7 +126,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
     QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)),
                      this, SLOT(slotActivitiesReceived(QVariantMap, int)));
-    job->setProperty("AccountStatePtr", QVariant::fromValue<AccountState*>(s));
+    job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
     QList< QPair<QString,QString> > params;
     params.append(qMakePair(QString::fromLatin1("page"),     QString::fromLatin1("0")));
@@ -139,7 +143,10 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
     auto activities = json.value("ocs").toMap().value("data").toList();
 
     ActivityList list;
-    AccountState* ast = qvariant_cast<AccountState*>(sender()->property("AccountStatePtr"));
+    auto ast = qvariant_cast<QPointer<AccountState>>(sender()->property("AccountStatePtr"));
+    if (!ast)
+        return;
+
     _currentlyFetching.remove(ast);
 
     foreach( auto activ, activities ) {

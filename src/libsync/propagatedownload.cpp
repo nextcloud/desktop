@@ -100,12 +100,11 @@ void GETFileJob::start() {
     }
 
     if (_directDownloadUrl.isEmpty()) {
-        setReply(davRequest("GET", path(), req));
+        sendRequest("GET", makeDavUrl(path()), req);
     } else {
         // Use direct URL
-        setReply(davRequest("GET", _directDownloadUrl, req));
+        sendRequest("GET", _directDownloadUrl, req);
     }
-    setupConnections(reply());
 
     reply()->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
     qDebug() << Q_FUNC_INFO << _bandwidthManager << _bandwidthChoked << _bandwidthLimited;

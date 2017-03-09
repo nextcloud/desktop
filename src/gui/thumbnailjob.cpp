@@ -27,8 +27,7 @@ ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject* par
 
 void ThumbnailJob::start()
 {
-    setReply(getRequest(path()));
-    setupConnections(reply());
+    sendRequest("GET", makeAccountUrl(path()));
     AbstractNetworkJob::start();
 }
 

@@ -54,9 +54,7 @@ void NotificationConfirmJob::start()
     req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    QIODevice *iodevice = 0;
-    setReply(davRequest(_verb, _link, req, iodevice));
-    setupConnections(reply());
+    sendRequest(_verb, _link, req);
 
     AbstractNetworkJob::start();
 }

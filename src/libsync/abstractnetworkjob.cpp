@@ -122,40 +122,49 @@ QNetworkReply* AbstractNetworkJob::addTimer(QNetworkReply *reply)
     return reply;
 }
 
-QNetworkReply* AbstractNetworkJob::davRequest(const QByteArray &verb, const QString &relPath,
-                                              QNetworkRequest req, QIODevice *data)
+QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
+                                               QNetworkRequest req, QIODevice *requestBody)
 {
-    return addTimer(_account->davRequest(verb, relPath, req, data));
+    auto reply = _account->sendRequest(verb, url, req, requestBody);
+    _requestBody = requestBody;
+    if (_requestBody) {
+        _requestBody->setParent(reply);
+    }
+    addTimer(reply);
+    setReply(reply);
+    setupConnections(reply);
+    return reply;
 }
 
-QNetworkReply *AbstractNetworkJob::davRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QUrl AbstractNetworkJob::makeAccountUrl(const QString& relativePath) const
 {
-    return addTimer(_account->davRequest(verb, url, req, data));
+    return Utility::concatUrlPath(_account->url(), relativePath);
 }
 
-QNetworkReply* AbstractNetworkJob::getRequest(const QString &relPath)
+QUrl AbstractNetworkJob::makeDavUrl(const QString& relativePath) const
 {
-    return addTimer(_account->getRequest(relPath));
+    return Utility::concatUrlPath(_account->davUrl(), relativePath);
 }
 
-QNetworkReply *AbstractNetworkJob::getRequest(const QUrl &url)
+QByteArray AbstractNetworkJob::requestVerb(QNetworkReply* reply)
 {
-    return addTimer(_account->getRequest(url));
-}
-
-QNetworkReply *AbstractNetworkJob::headRequest(const QString &relPath)
-{
-    return addTimer(_account->headRequest(relPath));
-}
-
-QNetworkReply *AbstractNetworkJob::headRequest(const QUrl &url)
-{
-    return addTimer(_account->headRequest(url));
-}
-
-QNetworkReply *AbstractNetworkJob::deleteRequest(const QUrl &url)
-{
-    return addTimer(_account->deleteRequest(url));
+    switch (reply->operation()) {
+    case QNetworkAccessManager::HeadOperation:
+        return "HEAD";
+    case QNetworkAccessManager::GetOperation:
+        return "GET";
+    case QNetworkAccessManager::PutOperation:
+        return "PUT";
+    case QNetworkAccessManager::PostOperation:
+        return "POST";
+    case QNetworkAccessManager::DeleteOperation:
+        return "DELETE";
+    case QNetworkAccessManager::CustomOperation:
+        return reply->request().attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+    case QNetworkAccessManager::UnknownOperation:
+        break;
+    }
+    return QByteArray();
 }
 
 void AbstractNetworkJob::slotFinished()
@@ -178,24 +187,36 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
 
-    if (_followRedirects) {
-        // ### the qWarnings here should be exported via displayErrors() so they
+    QUrl requestedUrl = reply()->request().url();
+    QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (_followRedirects && !redirectUrl.isEmpty()) {
+        _redirectCount++;
+
+        // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
-        QUrl requestedUrl = reply()->request().url();
-        QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-        if (!redirectUrl.isEmpty()) {
-            _redirectCount++;
-            if (requestedUrl.scheme() == QLatin1String("https") &&
-                    redirectUrl.scheme() == QLatin1String("http")) {
-                qWarning() << this << "HTTPS->HTTP downgrade detected!";
-            } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
-                qWarning() << this << "Redirect loop detected!";
-            } else {
-                resetTimeout();
-                setReply(getRequest(redirectUrl));
-                setupConnections(reply());
-                return;
+        QByteArray verb = requestVerb(reply());
+        if (requestedUrl.scheme() == QLatin1String("https") &&
+                redirectUrl.scheme() == QLatin1String("http")) {
+            qWarning() << this << "HTTPS->HTTP downgrade detected!";
+        } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
+            qWarning() << this << "Redirect loop detected!";
+        } else if (_requestBody && _requestBody->isSequential()) {
+            qWarning() << this << "cannot redirect request with sequential body";
+        } else if (verb.isEmpty()) {
+            qWarning() << this << "cannot redirect request: could not detect original verb";
+        } else {
+            // Create the redirected request and send it
+            qDebug() << "Redirecting" << verb << requestedUrl << redirectUrl;
+            resetTimeout();
+            if (_requestBody) {
+                _requestBody->seek(0);
             }
+            sendRequest(
+                    verb,
+                    redirectUrl,
+                    reply()->request(),
+                    _requestBody);
+            return;
         }
     }
 

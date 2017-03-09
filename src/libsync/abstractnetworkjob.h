@@ -78,17 +78,29 @@ signals:
     void networkActivity();
 protected:
     void setupConnections(QNetworkReply *reply);
-    QNetworkReply* davRequest(const QByteArray& verb, const QString &relPath,
-                              QNetworkRequest req = QNetworkRequest(),
-                              QIODevice *data = 0);
-    QNetworkReply* davRequest(const QByteArray& verb, const QUrl &url,
-                              QNetworkRequest req = QNetworkRequest(),
-                              QIODevice *data = 0);
-    QNetworkReply* getRequest(const QString &relPath);
-    QNetworkReply* getRequest(const QUrl &url);
-    QNetworkReply* headRequest(const QString &relPath);
-    QNetworkReply* headRequest(const QUrl &url);
-    QNetworkReply* deleteRequest(const QUrl &url);
+
+    /** Initiate a network request, returning a QNetworkReply.
+     *
+     * Calls setReply() and setupConnections() on it.
+     *
+     * Takes ownership of the requestBody (to allow redirects).
+     */
+    QNetworkReply* sendRequest(const QByteArray& verb, const QUrl &url,
+                               QNetworkRequest req = QNetworkRequest(),
+                               QIODevice *requestBody = 0);
+
+    // sendRequest does not take a relative path instead of an url,
+    // but the old API allowed that. We have this undefined overload
+    // to help catch usage errors
+    QNetworkReply* sendRequest(const QByteArray& verb, const QString &relativePath,
+                               QNetworkRequest req = QNetworkRequest(),
+                               QIODevice *requestBody = 0);
+
+    /// Creates a url for the account from a relative path
+    QUrl makeAccountUrl(const QString& relativePath) const;
+
+    /// Like makeAccountUrl() but uses the account's dav base path
+    QUrl makeDavUrl(const QString& relativePath) const;
 
     int maxRedirects() const { return 10; }
     virtual bool finished() = 0;
@@ -99,12 +111,19 @@ protected:
     // GET requests that don't set up any HTTP body or other flags.
     bool          _followRedirects;
 
+    /** Helper to construct the HTTP verb used in the request
+     *
+     * Returns an empty QByteArray for UnknownOperation.
+     */
+    static QByteArray requestVerb(QNetworkReply* reply);
+
 private slots:
     void slotFinished();
     virtual void slotTimeout();
 
 protected:
     AccountPtr _account;
+
 private:
     QNetworkReply* addTimer(QNetworkReply *reply);
     bool _ignoreCredentialFailure;
@@ -112,6 +131,12 @@ private:
     QString _path;
     QTimer _timer;
     int _redirectCount;
+
+    // Set by the xyzRequest() functions and needed to be able to redirect
+    // requests, should it be required.
+    //
+    // Reparented to the currently running QNetworkReply.
+    QPointer<QIODevice> _requestBody;
 };
 
 /**

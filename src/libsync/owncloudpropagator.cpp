@@ -762,9 +762,11 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
     _firstJob.take()->deleteLater();
 
     if (status != SyncFileItem::Success && status != SyncFileItem::Restoration) {
-        abort();
-        _state = Finished;
-        emit finished(status);
+        if (_state != Finished) {
+            abort();
+            _state = Finished;
+            emit finished(status);
+        }
         return;
     }
 
