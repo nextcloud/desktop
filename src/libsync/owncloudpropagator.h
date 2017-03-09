@@ -160,6 +160,7 @@ private:
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator), _item(item) {}
+    ~PropagateItemJob();
 
     bool scheduleNextJob() Q_DECL_OVERRIDE {
         if (_state != NotYetStarted) {

@@ -94,6 +94,16 @@ int OwncloudPropagator::hardMaximumActiveJob()
     return max;
 }
 
+PropagateItemJob::~PropagateItemJob()
+{
+    if (auto p = propagator()) {
+        // Normally, every job should clean itself from the _activeJobList. So this should not be
+        // needed. But if a job has a bug or is deleted before the network jobs signal get received,
+        // we might risk end up with dangling pointer in the list which may cause crashes.
+        p->_activeJobList.removeAll(this);
+    }
+}
+
 /** Updates, creates or removes a blacklist entry for the given item.
  *
  * Returns whether the error should be suppressed.
