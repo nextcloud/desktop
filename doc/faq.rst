@@ -45,5 +45,10 @@ image:: images/setup/ownCloud-replacement_connection_wizard.png
 This opens the ownCloud Connection Wizard, which you can see above, *but* with an extra option.
 This option provides the ability to either: keep the existing data (synced by the previous connection) or to start a clean sync (erasing the existing data).
 
+.. important:: 
+
+  Be careful before choosing the "Start a clean sync" option. The old sync folder *may* contain a considerable amount of data, ranging into the gigabytes or terabytes. If it does, after the client creates the new connection, it will have to download **all** of that information again. Instead, first move or copy the old local sync folder, containing a copy of the existing files, to the new location. Then, when creating the new connection choose "*keep existing data*" instead. The ownCloud client will check the files in the newly-added sync folder and find that they match what is on the server and not need to download anything. 
+
 Make your choice and click "**Connect...**".
 This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory.
+
