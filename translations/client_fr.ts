@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 en tant que &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 avec le compte &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="566"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="568"/>
         <source>Connected to %1.</source>
-        <translation>Connecté à %1.</translation>
+        <translation>Connecté au serveur %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="788"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -1991,7 +1991,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="734"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="816"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2047,17 +2047,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="134"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Échec de la restauration : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="159"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation>Conserver sur liste noire :</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="252"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé d&apos;un partage en lecture seule, mais la restauration a échoué : %1</translation>
     </message>

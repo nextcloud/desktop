@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="788"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="870"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -1984,7 +1984,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="734"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="816"/>
         <source>Error writing metadata to the database</source>
         <translation type="unfinished"/>
     </message>
@@ -2040,17 +2040,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="134"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Враћање није успело: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="159"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation>Настави блокирање:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="252"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
