@@ -845,12 +845,12 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderman.cpp" line="1253"/>
         <source>Sync is running.</source>
-        <translation>La synchronisation est en cours.</translation>
+        <translation>Synchronisation en cours</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1256"/>
         <source>Last Sync was successful.</source>
-        <translation>Dernière synchronisation réalisée avec succès</translation>
+        <translation>Synchronisation terminée avec succès</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1261"/>
@@ -3247,7 +3247,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>No sync folders configured.</source>
-        <translation>Aucun dossier synchronisé n&apos;est configuré.</translation>
+        <translation>Aucun dossier synchronisé n&apos;est configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="334"/>
