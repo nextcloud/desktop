@@ -399,7 +399,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="545"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="587"/>
@@ -460,7 +460,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="92"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
@@ -855,7 +855,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderman.cpp" line="1261"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>La dernière synchronisation s&apos;est achevée avec succès mais avec des avertissement à propos de certains fichiers.</translation>
+        <translation>Synchronisation terminée avec des avertissements pour certains fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1264"/>
@@ -2311,7 +2311,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="81"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
 </context>
 <context>
