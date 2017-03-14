@@ -145,7 +145,7 @@ void PropagateUploadFileV1::startNextChunk()
             parallelChunkUpload = env != "false" && env != "0";
         } else {
             int versionNum = propagator()->account()->serverVersionInt();
-            if (versionNum < 0x080003) {
+            if (versionNum < Account::makeServerVersion(8, 0, 3)) {
                 // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
                 // internal sever errors (#2743, #2938)
                 parallelChunkUpload = false;

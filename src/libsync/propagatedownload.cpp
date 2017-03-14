@@ -767,7 +767,7 @@ void PropagateDownloadFile::downloadFinished()
     // Apply the remote permissions
     // Older server versions sometimes provide empty remote permissions
     // see #4450 - don't adjust the write permissions there.
-    const int serverVersionGoodRemotePerm = 0x070000; // 7.0.0
+    const int serverVersionGoodRemotePerm = Account::makeServerVersion(7, 0, 0);
     if (propagator()->account()->serverVersionInt() >= serverVersionGoodRemotePerm) {
         FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
                                         !_item->_remotePerm.contains('W'));

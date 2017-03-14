@@ -343,7 +343,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
     // From ownCloud server 8.2 the url field is always set for public shares
     if (data.contains("url")) {
         url = QUrl(data.value("url").toString());
-    } else if (_account->serverVersionInt() >= (8 << 16)) {
+    } else if (_account->serverVersionInt() >= Account::makeServerVersion(8, 0, 0)) {
         // From ownCloud server version 8 on, a different share link scheme is used.
         url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value("token").toString())).toString();
     } else {

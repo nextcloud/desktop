@@ -930,7 +930,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     // Check for invalid character in old server version
-    if (_account->serverVersionInt() < 0x080100) {
+    if (_account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
         // Server version older than 8.1 don't support these character in filename.
         static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
@@ -961,7 +961,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qDebug() << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
         restoreOldFiles(syncItems);
-    } else if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2 && _account->serverVersionInt() < 0x090100) {
+    } else if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2
+               && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
         // The server before ownCloud 9.1 did not have the data-fingerprint property. So in that
         // case we use heuristics to detect restored backup.  This is disabled with newer version
         // because this causes troubles to the user and is not as reliable as the data-fingerprint.
