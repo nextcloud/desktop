@@ -20,7 +20,7 @@
 namespace OCC {
 
 OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint | Qt::MSWindowsFixedSizeDialogHint),
     ui(new Ui::OwncloudConnectionMethodDialog)
 {
     ui->setupUi(this);
