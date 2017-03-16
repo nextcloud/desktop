@@ -272,9 +272,6 @@ public:
 
 class OwncloudPropagator : public QObject {
     Q_OBJECT
-
-    QScopedPointer<PropagateDirectory> _rootJob;
-
 public:
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteFolder; // remote folder, ends with '/'
@@ -406,6 +403,7 @@ signals:
 private:
 
     AccountPtr _account;
+    QScopedPointer<PropagateDirectory> _rootJob;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4

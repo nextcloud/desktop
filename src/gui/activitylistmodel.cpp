@@ -47,6 +47,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     a = _finalList.at(index.row());
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
+    if (!ast)
+        return QVariant();
     QStringList list;
 
     switch (role) {
