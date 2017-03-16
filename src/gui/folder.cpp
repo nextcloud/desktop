@@ -345,7 +345,9 @@ void Folder::showSyncResultPopup()
     if( _syncResult.firstConflictItem() ) {
         createGuiLog( _syncResult.firstConflictItem()->_file, LogStatusConflict, _syncResult.numConflictItems() );
     }
-    createGuiLog( _syncResult.firstItemError()->_file, LogStatusError, _syncResult.numErrorItems() );
+    if (int errorCount = _syncResult.numErrorItems()) {
+        createGuiLog( _syncResult.firstItemError()->_file, LogStatusError, errorCount );
+    }
 
     qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
 }
