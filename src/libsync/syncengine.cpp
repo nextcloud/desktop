@@ -230,7 +230,7 @@ bool SyncEngine::checkErrorBlacklisting( SyncFileItem &item )
 
     // If duration has expired, it's not blacklisted anymore
     time_t now = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
-    if( now > entry._lastTryTime + entry._ignoreDuration ) {
+    if( now >= entry._lastTryTime + entry._ignoreDuration ) {
         qDebug() << "blacklist entry for " << item._file << " has expired!";
         return false;
     }
