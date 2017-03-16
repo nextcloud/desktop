@@ -57,6 +57,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent) :
     connect(ui->removePushButton, SIGNAL(clicked()), SLOT(slotRemoveCurrentItem()));
     connect(ui->addPushButton, SIGNAL(clicked()), SLOT(slotAddPattern()));
 
+    ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setVisible(false);
 

@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 en tant que &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 avec le compte &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="566"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="568"/>
         <source>Connected to %1.</source>
-        <translation>Connecté à %1.</translation>
+        <translation>Connecté au serveur %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="570"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="545"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="587"/>
@@ -460,7 +460,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="92"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
@@ -534,17 +534,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="168"/>
+        <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
         <translation>Erreur lors de l&apos;accès au fichier de configuration</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="169"/>
+        <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Une erreur s&apos;est produite lors de l&apos;accès au fichier de configuration situé dans %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="171"/>
+        <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
         <translation>Quitter ownCloud</translation>
     </message>
@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="778"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="900"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -845,17 +845,17 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderman.cpp" line="1253"/>
         <source>Sync is running.</source>
-        <translation>La synchronisation est en cours.</translation>
+        <translation>Synchronisation en cours</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1256"/>
         <source>Last Sync was successful.</source>
-        <translation>Dernière synchronisation réalisée avec succès</translation>
+        <translation>Synchronisation terminée avec succès</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1261"/>
         <source>Last Sync was successful, but with warnings on individual files.</source>
-        <translation>La dernière synchronisation s&apos;est achevée avec succès mais avec des avertissement à propos de certains fichiers.</translation>
+        <translation>Synchronisation terminée avec des avertissements pour certains fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1264"/>
@@ -1289,7 +1289,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>Saisissez le mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="84"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Cliquez ici&lt;/a&gt; pour demander un mot de passe d&apos;application depuis l&apos;interface web.</translation>
     </message>
@@ -1346,22 +1346,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la suppression d&apos;un dossier. C&apos;est utile pour les fichiers de méta-données.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>Impossible d&apos;ouvrir le fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Impossible d&apos;écrire les modifications sur &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>Add Ignore Pattern</source>
         <translation>Ajouter un motif d&apos;exclusion</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="141"/>
         <source>Add a new ignore pattern:</source>
         <translation>Ajoutez un nouveau motif d&apos;exclusion :</translation>
     </message>
@@ -1991,7 +1991,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="724"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2047,17 +2047,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="124"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Échec de la restauration : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation>Conserver sur liste noire :</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Un fichier ou un dossier a été supprimé d&apos;un partage en lecture seule, mais la restauration a échoué : %1</translation>
     </message>
@@ -2175,22 +2175,27 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="204"/>
+        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
         <source>File Removed</source>
         <translation>Fichier supprimé</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="319"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="326"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Fichier local modifié pendant la synchronisation. Elle va reprendre. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="331"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="338"/>
         <source>Local file changed during sync.</source>
         <translation>Fichier local modifié pendant la synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="590"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2311,7 +2316,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="81"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Copier la liste d&apos;activités dans le presse-papier.</translation>
+        <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
 </context>
 <context>
@@ -2993,12 +2998,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Seulement %1 disponibles, il faut au moins %2 pour démarrer</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter un dossier parent</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1223"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
@@ -3133,49 +3138,49 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Le nom de fichier contient au moins un caractère non valable</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoré en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à envoyer ce fichier car il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1258"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1290"/>
         <source>Local files and share folder removed.</source>
         <translation>Fichiers locaux et dossier partagé supprimés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
         <source>Move not allowed, item restored</source>
         <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Déplacement non autorisé car %1 est en mode lecture seule</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the destination</source>
         <translation>la destination</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the source</source>
         <translation>la source</translation>
     </message>
@@ -3247,7 +3252,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>No sync folders configured.</source>
-        <translation>Aucun dossier synchronisé n&apos;est configuré.</translation>
+        <translation>Aucun dossier synchronisé n&apos;est configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="334"/>
@@ -3661,7 +3666,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

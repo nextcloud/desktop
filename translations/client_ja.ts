@@ -248,17 +248,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>大きすぎるため同期されなかったフォルダがあります:</translation>
+        <translation>大きすぎるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>外部ストレージにあるため同期されなかったフォルダがあります:</translation>
+        <translation>外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="686"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダがあります:</translation>
+        <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation>サーバアクティビティリストをクリップボードにコピーしました。</translation>
+        <translation>サーバーアクティビティリストをクリップボードにコピーしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="617"/>
@@ -534,17 +534,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="168"/>
+        <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
         <translation>設定ファイルのアクセスでエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="169"/>
+        <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>設定ファイルの %1 行目にアクセスしている時にエラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="171"/>
+        <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
         <translation>ownCloudを終了</translation>
     </message>
@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="778"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="900"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -734,14 +734,14 @@
         <location filename="../src/gui/folder.cpp" line="853"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation>%1 MB より大きいフォルダが新たに追加されました: %2
+        <translation>%1 MB より大きな新しいフォルダーが追加されました: %2
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>外部ストレージからフォルダが追加されました。
+        <translation>外部ストレージからフォルダーが追加されました。
 </translation>
     </message>
     <message>
@@ -1286,7 +1286,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>パスワードを入力してください</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="84"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;ここをクリック&lt;/a&gt;してウェブインターフェースからアプリパスワードをリクエストしてください。</translation>
     </message>
@@ -1343,22 +1343,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 パターンによってディレクトリを削除から除外する場合は，パターンに含まれた項目も削除されます。例えばメタデータファイルに有用です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>ファイルが開けませんでした</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>&apos;%1&apos;を更新できません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>Add Ignore Pattern</source>
         <translation>除外するファイルパターンを追加</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="141"/>
         <source>Add a new ignore pattern:</source>
         <translation>除外するファイルパターンを新しく追加:</translation>
     </message>
@@ -1986,7 +1986,7 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="724"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2042,17 +2042,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="124"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation>; 復元に失敗: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation>ブラックリストの続き:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>ファイルまたはフォルダーが読み込み専用の共有から削除されましたが、復元に失敗しました: %1</translation>
     </message>
@@ -2170,22 +2170,27 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="204"/>
+        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
         <source>File Removed</source>
         <translation>ファイルを削除しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="319"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="326"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="331"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="338"/>
         <source>Local file changed during sync.</source>
         <translation>ローカルのファイルが同期中に変更されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="590"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2988,12 +2993,12 @@ It is not advisable to use it.</source>
         <translation>%1 しか空き容量がありません、開始するためには少なくとも %2 は必要です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>親フォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1223"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
@@ -3128,49 +3133,49 @@ It is not advisable to use it.</source>
         <translation>ファイル名に1文字以上の無効な文字が含まれています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;同期対象先&quot; ブラックリストにより無視されました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>そのフォルダーにサブフォルダーを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>サーバーでは読み取り専用となっているため、このファイルをアップロードすることはできません、復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1258"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
         <source>Not allowed to remove, restoring</source>
         <translation>削除できないので復元しています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1290"/>
         <source>Local files and share folder removed.</source>
         <translation>ローカルファイルと共有フォルダーを削除しました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
         <source>Move not allowed, item restored</source>
         <translation>移動できないので項目を復元しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>%1 は読み取り専用のため移動できません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the destination</source>
         <translation>移動先</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the source</source>
         <translation>移動元</translation>
     </message>
@@ -3656,7 +3661,7 @@ It is not advisable to use it.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>QT_LAYOUT_DIRECTION</translation>
     </message>

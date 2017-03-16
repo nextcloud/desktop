@@ -534,19 +534,19 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="168"/>
-        <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/application.cpp" line="169"/>
-        <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/application.cpp" line="171"/>
+        <source>Error accessing the configuration file</source>
+        <translation>Błąd przy dostępie do pliku konfiguracji</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="172"/>
+        <source>There was an error while accessing the configuration file at %1.</source>
+        <translation>Wystąpił błąd podczas próby dostępu do pliku konfiguracyjnego %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Wyłącz ownCloud</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="778"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="900"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -703,7 +703,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="400"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 plik ma błąd synchronizacji</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform><numerusform>%1 i %n innych plików mają konflikt synchronizacji.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="402"/>
@@ -713,7 +713,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="407"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Plik %1 nie może zostać zsynchronizowany z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform><numerusform>%1 i %n innych plików nie mogą zostać zsynchronizowane z powodu błędów. Sprawdź szczegóły w logu..</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="409"/>
@@ -1010,7 +1010,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
         <source>u2193 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2193 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="942"/>
@@ -1021,7 +1021,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
         <source>u2191 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2191 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
@@ -1060,7 +1060,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1029"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Oczekiwanie na %n inny folder...</numerusform><numerusform>Oczekiwanie na %n inne foldery...</numerusform><numerusform>Oczekiwanie na %n innych folderów...</numerusform><numerusform>Oczekiwanie na %n innych folderów...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
@@ -1213,7 +1213,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją folderów większych niż</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1286,7 +1286,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Wprowadź hasło</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="84"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation type="unfinished"/>
     </message>
@@ -1343,22 +1343,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>Nie można otworzyć plików</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Nie mogę zapisać zmian do &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>Add Ignore Pattern</source>
         <translation>Dodaj ignorowany</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="141"/>
         <source>Add a new ignore pattern:</source>
         <translation>Dodaj nowy ignorowany:</translation>
     </message>
@@ -1988,7 +1988,7 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="724"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -2044,17 +2044,17 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="124"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -2172,22 +2172,27 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="204"/>
+        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
         <source>File Removed</source>
         <translation>Usunięto plik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="319"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="326"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="331"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="338"/>
         <source>Local file changed during sync.</source>
         <translation>Lokalny plik zmienił się podczas synchronizacji.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="590"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>
@@ -2990,12 +2995,12 @@ Niezalecane jest jego użycie.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania katalogu nadrzędnego</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1223"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania plików w tym katalogu</translation>
     </message>
@@ -3130,49 +3135,49 @@ Niezalecane jest jego użycie.</translation>
         <translation>Nazwa pliku zawiera co najmniej jeden nieprawidłowy znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Niedozwolone, ponieważ nie masz uprawnień do dodawania podkatalogów w tym katalogu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Wgrywanie niedozwolone, ponieważ plik jest tylko do odczytu na serwerze, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1258"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Brak uprawnień by usunąć, przywracanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1290"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokalne pliki i udostępniane foldery zostały usunięte.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
         <source>Move not allowed, item restored</source>
         <translation>Przenoszenie niedozwolone, obiekt przywrócony</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Przenoszenie niedozwolone, ponieważ %1 jest tylko do odczytu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the destination</source>
         <translation>docelowy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the source</source>
         <translation>źródło</translation>
     </message>
@@ -3261,7 +3266,7 @@ Niezalecane jest jego użycie.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="648"/>
         <location filename="../src/gui/owncloudgui.cpp" line="742"/>
         <source>Log in...</source>
-        <translation type="unfinished"/>
+        <translation>Zaloguj...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="396"/>
@@ -3393,7 +3398,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Nowe konto...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="748"/>
@@ -3414,7 +3419,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizowanie %1 of %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="806"/>
@@ -3659,7 +3664,7 @@ Kliknij</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation type="unfinished"/>
     </message>

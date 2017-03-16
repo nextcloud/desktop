@@ -37,6 +37,7 @@
 #include "updater/ocupdater.h"
 #include "excludedfiles.h"
 #include "owncloudsetupwizard.h"
+#include "version.h"
 
 #include "config.h"
 
@@ -51,6 +52,8 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
+
+#include <openssl/crypto.h>
 
 class QSocket;
 
@@ -508,7 +511,13 @@ void Application::showVersion()
     stream << _theme->appName().toLatin1().constData()
            << QLatin1String(" version ")
            << _theme->version().toLatin1().constData() << endl;
-    stream << "Using Qt " << qVersion() << endl;
+#ifdef GIT_SHA1
+    stream << "Git revision " << GIT_SHA1 << endl;
+#endif
+    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
+#endif
 
     displayHelpText(helpText);
 }

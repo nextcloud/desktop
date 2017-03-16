@@ -396,9 +396,14 @@ int Account::serverVersionInt() const
 {
     // FIXME: Use Qt 5.5 QVersionNumber
     auto components = serverVersion().split('.');
-    return  (components.value(0).toInt() << 16)
-                   + (components.value(1).toInt() << 8)
-            + components.value(2).toInt();
+    return makeServerVersion(components.value(0).toInt(),
+                             components.value(1).toInt(),
+                             components.value(2).toInt());
+}
+
+int Account::makeServerVersion(int majorVersion, int minorVersion, int patchVersion)
+{
+    return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
 }
 
 bool Account::serverVersionUnsupported() const
@@ -407,7 +412,7 @@ bool Account::serverVersionUnsupported() const
         // not detected yet, assume it is fine.
         return false;
     }
-    return serverVersionInt() < 0x070000;
+    return serverVersionInt() < makeServerVersion(7, 0, 0);
 }
 
 void Account::setServerVersion(const QString& version)
@@ -423,7 +428,7 @@ void Account::setServerVersion(const QString& version)
 
 bool Account::rootEtagChangesNotOnlySubFolderEtags()
 {
-    return (serverVersionInt() >= 0x080100);
+    return (serverVersionInt() >= makeServerVersion(8, 1, 0));
 }
 
 void Account::setNonShib(bool nonShib)

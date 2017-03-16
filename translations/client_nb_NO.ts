@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Prøv synkronisering igjen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -248,12 +248,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Noen mapper ble ikke synkronisert fordi de er for store</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Noen mapper ble ikke synkronisert fordi de er eksterne lagringsplasser:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="686"/>
@@ -508,7 +508,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Sertifikat &amp; Nøkkel (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -534,19 +534,19 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="168"/>
+        <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Feil ved lesing av konfigurasjonsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="169"/>
+        <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="171"/>
+        <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt ownCloud</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="778"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="900"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -734,7 +734,7 @@
         <location filename="../src/gui/folder.cpp" line="853"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>En ny mappe større enn %1 MB er blitt lagt til: %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="855"/>
@@ -1213,7 +1213,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1286,7 +1286,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Legg inn passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="78"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="84"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klikk her&lt;/a&gt; for å be om et app-passord fra web-grensesnittet.</translation>
     </message>
@@ -1343,22 +1343,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning av en mappe. Dette er hendig for metadata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="111"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
         <source>Could not open file</source>
         <translation>Klarte ikke å åpne fil</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="112"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Kan ikke skrive endringer til &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="139"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
         <source>Add Ignore Pattern</source>
         <translation>Nytt mønster</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="140"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="141"/>
         <source>Add a new ignore pattern:</source>
         <translation>Legg til ignoreringsmønster:</translation>
     </message>
@@ -1833,7 +1833,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="212"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Ugyldig URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="374"/>
@@ -1988,7 +1988,7 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="724"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2044,17 +2044,17 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="124"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="224"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Gjenoppretting feilet: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="149"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="195"/>
         <source>Continue blacklisting:</source>
         <translation>Fortsett svartelisting:</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="242"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="334"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller mappe ble fjernet fra en deling med lesetilgang, men gjenoppretting feilet: %1</translation>
     </message>
@@ -2172,22 +2172,27 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="204"/>
+        <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
         <source>File Removed</source>
         <translation>Fil fjernet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="319"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="326"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Lokal fil endret under synkronisering. Den vil gjenopptas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="331"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="338"/>
         <source>Local file changed during sync.</source>
         <translation>Lokal fil endret under synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="590"/>
         <source>Error writing metadata to the database</source>
         <translation>Feil ved skriving av metadata til databasen</translation>
     </message>
@@ -2990,12 +2995,12 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Bare %1 er tilgjengelig, trenger minst %2 for å begynne</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1215"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å legge til foreldremappe</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1222"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1223"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å opprette filer i den mappen</translation>
     </message>
@@ -3067,17 +3072,17 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn som slutter med punktum er ikke tillatt på dette filsystemet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavn som inneholder &apos;%1&apos; er ikke tillatt på dette filsystemet</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnavnet er et reservert navn på dette filsystemet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
@@ -3130,49 +3135,49 @@ Det er ikke tilrådelig å bruke den.</translation>
         <translation>Filnavnet inneholder minst ett ulovlig tegn</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1174"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1181"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1175"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1182"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorert på grunn av svartelisten &quot;velg hva som skal synkroniseres&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1201"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Ikke tillatt fordi du ikke har lov til å lage undermapper i den mappen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1241"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1242"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Ikke tillatt å laste opp denne filenfordi den er skrivebeskyttet på serveren, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1257"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1276"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1258"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1277"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Ikke tillatt å fjerne, gjenoppretter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1289"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1290"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokale filer og delingsmappe fjernet.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
         <source>Move not allowed, item restored</source>
         <translation>Flytting ikke tillatt, element gjenopprettet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1356"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Flytting ikke tillatt fordi %1 er skrivebeskyttet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the destination</source>
         <translation>målet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1358"/>
         <source>the source</source>
         <translation>kilden</translation>
     </message>
@@ -3481,7 +3486,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3618,7 +3623,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>Server adresse</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -3658,7 +3663,7 @@ Det er ikke tilrådelig å bruke den.</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>QT_LAYOUT_DIRECTION</source>
         <translation>LTR</translation>
     </message>

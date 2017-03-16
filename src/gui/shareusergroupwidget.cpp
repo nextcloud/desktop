@@ -254,7 +254,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
      * https://github.com/owncloud/client/issues/4996
      */
     if (sharee->type() == Sharee::Federated
-            && _account->serverVersionInt() < 0x090100) {
+            && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
         int permissions = SharePermissionRead | SharePermissionUpdate;
         if (!_isFile) {
             permissions |= SharePermissionCreate | SharePermissionDelete;
@@ -343,7 +343,7 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
      * https://github.com/owncloud/client/issues/4996
      */
     if (share->getShareType() == Share::TypeRemote
-            && share->account()->serverVersionInt() < 0x090100) {
+            && share->account()->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
         _ui->permissionShare->setVisible(false);
         _ui->permissionToolButton->setVisible(false);
     }

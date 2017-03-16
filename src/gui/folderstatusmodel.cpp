@@ -631,8 +631,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     const auto permissionMap = job->property(propertyPermissionMap).toMap();
 
     QStringList sortedSubfolders = list;
-    // skip the parent item (first in the list)
-    sortedSubfolders.erase(sortedSubfolders.begin());
+    if (!sortedSubfolders.isEmpty())
+        sortedSubfolders.removeFirst(); // skip the parent item (first in the list)
     Utility::sortFilenames(sortedSubfolders);
 
     QVarLengthArray<int, 10> undecidedIndexes;

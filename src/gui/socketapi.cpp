@@ -404,7 +404,7 @@ void SocketApi::command_SHARE(const QString& localFile, SocketListener* listener
         listener->sendMessage(message);
     } else if (!theme->linkSharing() && (
                  !theme->userGroupSharing() ||
-                 shareFolder->accountState()->account()->serverVersionInt() < ((8 << 16) + (2 << 8)))) {
+                 shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
         const QString message = QLatin1String("SHARE:NOP:")+QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
     } else {

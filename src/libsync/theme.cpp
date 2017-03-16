@@ -23,6 +23,7 @@
 #ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
 #endif
+#include <QSslSocket>
 
 #include "owncloudtheme.h"
 
@@ -297,8 +298,13 @@ QString Theme::gitSHA1() const
                    " on %3, %4 using Qt %5, %6</small></p>")
             .arg(githubPrefix+gitSha1).arg(gitSha1.left(6))
             .arg(__DATE__).arg(__TIME__)
-            .arg(QT_VERSION_STR)
-            .arg(QString::fromAscii(OPENSSL_VERSION_TEXT));
+            .arg(QString::fromAscii(qVersion()))
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+            .arg(QSslSocket::sslLibraryVersionString());
+#else
+            .arg(QCoreApplication::translate("ownCloudTheme::about()", "built with %1").arg(
+                     QString::fromAscii(OPENSSL_VERSION_TEXT)));
+#endif
 #endif
     return devString;
 }

@@ -199,6 +199,13 @@ void PropagateUploadFileCommon::start()
         return;
     }
 
+    // Check if the specific file can be accessed
+    if( propagator()->hasCaseClashAccessibilityProblem(_item->_file) ) {
+        done( SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists")
+              .arg(QDir::toNativeSeparators(_item->_file)) );
+        return;
+    }
+
     propagator()->_activeJobList.append(this);
 
     if (!_deleteExisting) {

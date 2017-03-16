@@ -70,13 +70,19 @@ void HttpCredentialsGui::askFromUserAsync()
 
 QString HttpCredentialsGui::requestAppPasswordText(const Account* account)
 {
-    if (account->serverVersionInt() < 0x090100) {
-        // Older server than 9.1 does not have trhe feature to request App Password
+    if (account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
+        // Older server than 9.1 does not have the feature to request App Password
         return QString();
     }
 
+    QString path;
+    if (account->serverVersionInt() < Account::makeServerVersion(10, 0, 0)) {
+        path = QLatin1String("/index.php/settings/personal?section=apppasswords");
+    } else {
+        path = QLatin1String("/index.php/settings/personal?sectionid=security#apppasswords");
+    }
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(account->url().toString() + QLatin1String("/index.php/settings/personal?section=apppasswords"));
+        .arg(account->url().toString() + path);
 }
 
 

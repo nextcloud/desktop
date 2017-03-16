@@ -141,6 +141,7 @@ private:
 public:
     PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator), _item(item) {}
+    ~PropagateItemJob();
 
     bool scheduleSelfOrChild() Q_DECL_OVERRIDE {
         if (_state != NotYetStarted) {
@@ -321,7 +322,23 @@ public:
     int hardMaximumActiveJob();
 
     bool isInSharedDirectory(const QString& file);
+
+    /** Check whether a download would clash with an existing file
+     * in filesystems that are only case-preserving.
+     */
     bool localFileNameClash(const QString& relfile);
+
+    /** Check whether a file is properly accessible for upload.
+     *
+     * It is possible to create files with filenames that differ
+     * only by case in NTFS, but most operations such as stat and
+     * open only target one of these by default.
+     *
+     * When that happens, we want to avoid uploading incorrect data
+     * and give up on the file.
+     */
+    bool hasCaseClashAccessibilityProblem(const QString& relfile);
+
     QString getFilePath(const QString& tmp_file_name) const;
 
     PropagateItemJob *createJob(const SyncFileItemPtr& item);

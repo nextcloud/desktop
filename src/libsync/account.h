@@ -148,6 +148,7 @@ public:
     /** Access the server version */
     QString serverVersion() const;
     int serverVersionInt() const;
+    static int makeServerVersion(int majorVersion, int minorVersion, int patchVersion);
     void setServerVersion(const QString &version);
 
     /** Whether the server is too old.
