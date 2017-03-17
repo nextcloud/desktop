@@ -3197,17 +3197,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="309"/>
+        <location filename="../src/libsync/theme.cpp" line="315"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Верзија %1. За више информација посетите &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="313"/>
+        <location filename="../src/libsync/theme.cpp" line="319"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="314"/>
+        <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Дистрибуира %1 под ГНУ општом јавном лиценцом (ОЈЛ) верзија 2.0.&lt;br/&gt;%2 и %2 лого су регистроване марке %1 у САД, другим земљама или обоје&lt;/p&gt;</translation>
     </message>
@@ -3782,9 +3782,14 @@ It is not advisable to use it.</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="295"/>
+        <location filename="../src/libsync/theme.cpp" line="296"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Направљено од ГИТ ревизије &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; %3, %4 користећи КуТ %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="305"/>
+        <source>built with %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3880,52 +3885,52 @@ It is not advisable to use it.</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="58"/>
+        <location filename="../src/libsync/theme.cpp" line="59"/>
         <source>Status undefined</source>
         <translation>Неодређено стање</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="61"/>
+        <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Waiting to start sync</source>
         <translation>Чекам почетак синхронизације</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="64"/>
+        <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Sync is running</source>
         <translation>Синхронизација у току</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="67"/>
+        <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync Success</source>
         <translation>Успешна синхронизација</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="70"/>
+        <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Синхронизација успешна. Неки фајлови су игнорисани.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="73"/>
+        <location filename="../src/libsync/theme.cpp" line="74"/>
         <source>Sync Error</source>
         <translation>Грешка синхронизације</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="76"/>
+        <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Setup Error</source>
         <translation>Грешка подешавања</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="79"/>
+        <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Preparing to sync</source>
         <translation>Припремам синхронизацију</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="82"/>
+        <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Aborting...</source>
         <translation>Прекидам...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Sync is paused</source>
         <translation>Синхронизација паузирана</translation>
     </message>

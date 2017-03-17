@@ -3207,17 +3207,17 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="309"/>
+        <location filename="../src/libsync/theme.cpp" line="315"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;รุ่น %1 สำหรับข้อมูลเพิ่มเติมกรุณาเยี่ยมชม &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="313"/>
+        <location filename="../src/libsync/theme.cpp" line="319"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;ลิขสิทธิ์ ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="314"/>
+        <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;เผยแพร่โดย %1 และมีใบอนุญาตภายใต้ GNU General Public License (GPL) รุ่น 2.0 &lt;br/&gt;%2 และการลงทะเบียนโลโก้ %2 เครื่องหมายการค้าของ %1 ในประเทศสหรัฐอเมริกา ประเทศอื่นๆ หรือทั้งสองอย่าง&lt;/p&gt;</translation>
     </message>
@@ -3792,9 +3792,14 @@ It is not advisable to use it.</source>
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="295"/>
+        <location filename="../src/libsync/theme.cpp" line="296"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;ที่สร้างขึ้นจากการแก้ไข Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; บน %3, %4 กำลังใช้ Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="305"/>
+        <source>built with %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3890,52 +3895,52 @@ It is not advisable to use it.</source>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="58"/>
+        <location filename="../src/libsync/theme.cpp" line="59"/>
         <source>Status undefined</source>
         <translation>สถานะไม่สามารถระบุได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="61"/>
+        <location filename="../src/libsync/theme.cpp" line="62"/>
         <source>Waiting to start sync</source>
         <translation>กำลังรอการเริ่มต้นประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="64"/>
+        <location filename="../src/libsync/theme.cpp" line="65"/>
         <source>Sync is running</source>
         <translation>การประสานข้อมูลกำลังทำงาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="67"/>
+        <location filename="../src/libsync/theme.cpp" line="68"/>
         <source>Sync Success</source>
         <translation>การประสานข้อมูลเสร็จสิ้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="70"/>
+        <location filename="../src/libsync/theme.cpp" line="71"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>ประสานข้อมูลสำเร็จ บางไฟล์ถูกละเลย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="73"/>
+        <location filename="../src/libsync/theme.cpp" line="74"/>
         <source>Sync Error</source>
         <translation>ประสานข้อมูลผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="76"/>
+        <location filename="../src/libsync/theme.cpp" line="77"/>
         <source>Setup Error</source>
         <translation>เกิดข้อผิดพลาดในการตั้งค่า</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="79"/>
+        <location filename="../src/libsync/theme.cpp" line="80"/>
         <source>Preparing to sync</source>
         <translation>เตรียมความพร้อมในการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="82"/>
+        <location filename="../src/libsync/theme.cpp" line="83"/>
         <source>Aborting...</source>
         <translation>กำลังยกเลิก...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="85"/>
+        <location filename="../src/libsync/theme.cpp" line="86"/>
         <source>Sync is paused</source>
         <translation>การประสานข้อมูลถูกหยุดชั่วคราว</translation>
     </message>
