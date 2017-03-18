@@ -14,6 +14,11 @@ Configuration File
 .. index:: config file
 .. include:: conffile.rst
 
+Environment Variables
+------------------
+.. index:: env vars
+.. include:: envvars.rst
+
 ownCloud Command Line Client
 ----------------------------
 .. index:: owncloudcmd
