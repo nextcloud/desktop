@@ -1309,7 +1309,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Synchroniser les fichiers cachés</translation>
+        <translation>Synchroniser les fichiers masqués</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
@@ -2989,7 +2989,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="479"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Le fichier/dossier est ignoré car il est caché.</translation>
+        <translation>Le fichier ou dossier a été ignoré car il est masqué.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="743"/>

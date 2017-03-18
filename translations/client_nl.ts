@@ -3804,7 +3804,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>gebouwd met %1</translation>
     </message>
 </context>
 <context>
