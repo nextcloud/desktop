@@ -3417,7 +3417,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Synchronisation de %1 sur %2 (%3 restant)</translation>
+        <translation>Synchronisation de %1 sur %2 (%3 restantes)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="798"/>
@@ -3427,7 +3427,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="806"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Synchronisation de %1 (%2 restant)</translation>
+        <translation>Synchronisation de %1 (%2 restantes)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="809"/>

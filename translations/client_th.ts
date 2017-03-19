@@ -3799,7 +3799,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation>สร้างขึ้นด้วย %1</translation>
+        <translation>สร้างด้วย %1</translation>
     </message>
 </context>
 <context>
