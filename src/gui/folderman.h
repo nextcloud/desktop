@@ -124,11 +124,24 @@ public:
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
      * Make sure that this folder, or any subfolder is not sync'ed already.
      *
+     * Note that different accounts are allowed to sync to the same folder.
+     *
      * \a forNewDirectory is internal and is used for recursion.
      *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, const QUrl& serverUrl = QUrl(), bool forNewDirectory = false);
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl& serverUrl = QUrl(), bool forNewDirectory = false) const;
+
+    /**
+     * Attempts to find a non-existing, acceptable path for creating a new sync folder.
+     *
+     * Uses \a basePath as the baseline. It'll return this path if it's acceptable.
+     *
+     * Note that this can fail. If someone syncs ~ and \a basePath is ~/ownCloud, no
+     * subfolder of ~ would be a good candidate. When that happens \a basePath
+     * is returned.
+     */
+    QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,

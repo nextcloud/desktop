@@ -115,12 +115,15 @@ public:
     QString shortGuiLocalPath() const;
 
     /**
-     * local folder path
+     * canonical local folder path, always ends with /
      */
     QString path() const;
 
     /**
-     * wrapper for QDir::cleanPath("Z:\\"), which returns "Z:\\", but we need "Z:" instead
+     * cleaned canonical folder path, like path() but never ends with a /
+     *
+     * Wrapper for QDir::cleanPath(path()) except for "Z:/",
+     * where it returns "Z:" instead of "Z:/".
      */
     QString cleanPath() const;
 

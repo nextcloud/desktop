@@ -1278,7 +1278,7 @@ QString FolderMan::statusToString( SyncResult::Status syncStatus, bool paused ) 
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
+QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory) const
 {
     if (path.isEmpty()) {
         return tr("No valid folder selected!");
@@ -1369,6 +1369,42 @@ QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl
 
     return QString();
 
+}
+
+QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const
+{
+    QString folder = basePath;
+
+    // If the parent folder is a sync folder or contained in one, we can't
+    // possibly find a valid sync folder inside it.
+    // Example: Someone syncs their home directory. Then ~/foobar is not
+    // going to be an acceptable sync folder path for any value of foobar.
+    QString parentFolder = QFileInfo(folder).dir().canonicalPath();
+    if (FolderMan::instance()->folderForPath(parentFolder)) {
+        // Any path with that parent is going to be unacceptable,
+        // so just keep it as-is.
+        return basePath;
+    }
+
+    int attempt = 1;
+    forever {
+        const bool isGood =
+                !QFileInfo(folder).exists()
+             && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).isEmpty();
+        if (isGood) {
+            break;
+        }
+
+        // Count attempts and give up eventually
+        attempt++;
+        if (attempt > 100) {
+            return basePath;
+        }
+
+        folder = basePath + QString::number(attempt);
+    }
+
+    return folder;
 }
 
 bool FolderMan::ignoreHiddenFiles() const

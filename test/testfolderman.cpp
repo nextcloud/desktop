@@ -153,6 +153,54 @@ private slots:
         QSKIP("Test not supported with Qt4", SkipSingle);
 #endif
     }
+
+    void testFindGoodPathForNewSyncFolder()
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
+        // SETUP
+
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
+        QVERIFY(dir.isValid());
+        QDir dir2(dir.path());
+        QVERIFY(dir2.mkpath("sub/ownCloud1/folder/f"));
+        QVERIFY(dir2.mkpath("ownCloud"));
+        QVERIFY(dir2.mkpath("ownCloud2"));
+        QVERIFY(dir2.mkpath("ownCloud2/foo"));
+        QVERIFY(dir2.mkpath("sub/free"));
+        QVERIFY(dir2.mkpath("free2/sub"));
+        QString dirPath = dir2.canonicalPath();
+
+        AccountPtr account = Account::create();
+        QUrl url("http://example.de");
+        HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
+        account->setCredentials(cred);
+        account->setUrl( url );
+
+        AccountStatePtr newAccountState(new AccountState(account));
+        FolderMan *folderman = FolderMan::instance();
+        QCOMPARE(folderman, &_fm);
+        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/sub/ownCloud/")));
+        QVERIFY(folderman->addFolder(newAccountState.data(), folderDefinition(dirPath + "/ownCloud2/")));
+
+        // TEST
+
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/oc", url),
+                 QString(dirPath + "/oc"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud", url),
+                 QString(dirPath + "/ownCloud3"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2", url),
+                 QString(dirPath + "/ownCloud22"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/foo", url),
+                 QString(dirPath + "/ownCloud2/foo"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/ownCloud2/bar", url),
+                 QString(dirPath + "/ownCloud2/bar"));
+        QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub", url),
+                 QString(dirPath + "/sub2"));
+#else
+        QSKIP("Test not supported with Qt4", SkipSingle);
+#endif
+    }
 };
 
 QTEST_APPLESS_MAIN(TestFolderMan)
