@@ -5,7 +5,7 @@ version 2.3.1 (2017-03-2x)
 * Fix several crashes (thanks to everyone submitting to our crash reporter!)
 * Improve HTTP redirect handling (#5555)
 * Blacklist: Escalate repeated soft error to normal error (#5500)
-* NTFS: Do not attempt to upload two existing files with similar casing (#5533)
+* NTFS: Do not attempt to upload two existing files with similar casing (#5544)
 * Fix URL for linking to application password generation for ownCloud 10.0 (#5605)
 
 version 2.3.0 (2017-03-03)
