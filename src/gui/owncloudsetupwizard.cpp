@@ -96,7 +96,6 @@ void OwncloudSetupWizard::startWizard()
         localFolder = QDir::homePath() + QDir::separator() + localFolder;
     }
 
-    _ocWizard->setProperty("oldLocalFolder", localFolder);
     _ocWizard->setProperty("localFolder", localFolder);
 
     // remember the local folder to compare later if it changed, but clean first

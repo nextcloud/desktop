@@ -41,7 +41,6 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     _created(false),
     _localFolderValid(false),
     _progressIndi(new QProgressIndicator (this)),
-    _oldLocalFolder(),
     _remoteFolder()
 {
     _ui.setupUi(this);
@@ -105,7 +104,6 @@ void OwncloudAdvancedSetupPage::initializePage()
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
     _checking  = false;
-    _oldLocalFolder = wizard()->property("oldLocalFolder").toString();
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());
 
