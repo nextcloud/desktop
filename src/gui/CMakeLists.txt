@@ -29,7 +29,6 @@ set(client_UI
     shareusergroupwidget.ui
     sharewidget.ui
     sslerrordialog.ui
-    owncloudsetuppage.ui
     addcertificatedialog.ui
     proxyauthdialog.ui
     notificationwidget.ui
