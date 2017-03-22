@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Existem pastas que não foram sincronizadas por serem armazenamento externo:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="686"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Existem pastas que não foram sincronizadas por serem demasiado grandes ou armazenamento externo:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
@@ -425,7 +425,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A lista de itens não sincronizados foi copiada para a área de transferência.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro enquanto se acedia ao ficheiro de configuração em %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
@@ -734,18 +734,20 @@
         <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Foi adicionada uma nova pasta maior que %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="857"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Foi adicionada uma pasta vinda de armazenamento externo.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="858"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, vá às configurações para a selecionar se a desejar transferir.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="894"/>
@@ -753,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os ficheiros na pasta sincronizada &apos;%1&apos; foram apagados do servidor.
+Estas deleções irão ser sincronizadas para a sua pasta local de sincronização, fazendo com que os ficheiros fiquem indisponíveis, a não ser que tenha permissões para restaurar os mesmos . 
+Se decidir manter os ficheiros, eles serão sincronizados novamento para o servidor se tiver permissões para tal.
+Se decidir apagar os ficheiros, eles ficaram indisponíveis para si, a não ser que seja o seu proprietário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os ficheiros na pasta local de sincronização &apos;%1&apos; foram apagados. Estas deleções irão ser sincronizadas com o servidor, fazendo com que os ficheiros fiquem indisponíveis, a não ser que sejam restaurados.
+Tem a certeza que deseja sincronizar essas ações com o servidor?
+Se foi acidental e decidir manter os seus ficheiros, eles serão sincronizados novamente apartir do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -782,7 +789,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Esta sincronização iria repor os ficheiros para um momento anterior na pasta de sincronização &apos;%1&apos;.
+Isto pode ser porque um backup foi restaurado no servidor.
+Continuando a sincronização fará com que todos os seus ficheiros sejam substituídos por um ficheiro mais velho num estado anterior. Deseja manter os seus ficheiros locais mais recentes como ficheiros de conflito?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="928"/>
@@ -890,12 +899,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1349"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>A pasta local %1 contém hiperligação simbólica. O destino da hiperligação já contém uma pasta sincronizada. Por favor, escolha outra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Já existe uma sincronização do servidor para esta pasta local. Por favor escolha outra pasta local!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
@@ -1211,7 +1220,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmação antes de sincronizar pastas maiores que</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1222,7 +1231,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Pedir confirmação antes de sincronizar armazenamentos externos</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -2172,7 +2181,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível transferir o ficheiro %1 devido a existir um ficheiro com o mesmo nome, diferenciando apenas as maiúsculas ou minúsculas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
@@ -2220,12 +2229,12 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>ID do ficheiro no servidor em falta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="483"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag do servidor em falta</translation>
     </message>
 </context>
 <context>
@@ -2365,7 +2374,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Desmarcar pastas remotas que não deseja sincronizar.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -2533,7 +2542,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="204"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>Hiperligação $Mail</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="211"/>
@@ -2579,7 +2588,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao lançar o cliente de email para criar uma nova mensagem. Talvez nenhum cliente de email esteja configurado?</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="533"/>
@@ -2672,7 +2681,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="92"/>
         <source>SSL Chipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Vista de depuramento SSL Cipher</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="100"/>
@@ -3070,12 +3079,12 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nomes de ficheiros acabados com um ponto final não são suportados neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nomes de ficheiros que contêm o caractér &apos;%1&apos; não são suportados neste sistema de ficheiros.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
@@ -3085,7 +3094,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Nome de ficheiro contém espaços em branco seguidos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
@@ -3445,7 +3454,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versão %2. Para mais informação visite &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para problemas conhecidos e melhoramento, por favor visite: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, entre outros.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Direitos autorais ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licenciado sob a GNU General Public License (GPL) Versão 2.0&lt;br/&gt;ownCloud e o logótipo ownCloud são marcas registadas de ownCloud GmbH nos Estados Unidos, outros países, ou ambos.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3791,7 +3800,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>Criada com %1</translation>
     </message>
 </context>
 <context>
