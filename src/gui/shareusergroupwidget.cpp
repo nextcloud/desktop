@@ -374,12 +374,19 @@ void ShareWidget::slotEditPermissionsChanged()
 {
     setEnabled(false);
 
+    // Can never manually be set to "partial".
+    // This works because the state cycle for clicking is
+    // unchecked -> partial -> checked -> unchecked.
+    if (_ui->permissionsEdit->checkState() == Qt::PartiallyChecked) {
+        _ui->permissionsEdit->setCheckState(Qt::Checked);
+    }
+
     Share::Permissions permissions = SharePermissionRead;
 
     if (_ui->permissionShare->checkState() == Qt::Checked) {
         permissions |= SharePermissionShare;
     }
-    
+
     if (_ui->permissionsEdit->checkState() == Qt::Checked) {
         if (_permissionUpdate->isEnabled())
             permissions |= SharePermissionUpdate;
@@ -461,24 +468,33 @@ QSharedPointer<Share> ShareWidget::share() const
 
 void ShareWidget::displayPermissions()
 {
-    _permissionCreate->setChecked(false);
-    _ui->permissionsEdit->setCheckState(Qt::Unchecked);
-    _permissionDelete->setChecked(false);
-    _ui->permissionShare->setCheckState(Qt::Unchecked);
-    _permissionUpdate->setChecked(false);
+    auto perm = _share->getPermissions();
 
-    if (_share->getPermissions() & SharePermissionUpdate) {
+    _permissionUpdate->setChecked(false);
+    _permissionCreate->setChecked(false);
+    _permissionDelete->setChecked(false);
+    if (perm & SharePermissionUpdate) {
         _permissionUpdate->setChecked(true);
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
     }
-    if (!_isFile && _share->getPermissions() & SharePermissionCreate) {
+    if (!_isFile && perm & SharePermissionCreate) {
         _permissionCreate->setChecked(true);
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
     }
-    if (!_isFile && _share->getPermissions() & SharePermissionDelete) {
+    if (!_isFile && perm & SharePermissionDelete) {
         _permissionDelete->setChecked(true);
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
     }
+
+    if (perm & SharePermissionUpdate
+            && (_isFile
+                || (perm & SharePermissionCreate
+                    && perm & SharePermissionDelete))) {
+        _ui->permissionsEdit->setCheckState(Qt::Checked);
+    } else if (perm & (SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete)) {
+        _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
+    } else {
+        _ui->permissionsEdit->setCheckState(Qt::Unchecked);
+    }
+
+    _ui->permissionShare->setCheckState(Qt::Unchecked);
     if (_share->getPermissions() & SharePermissionShare) {
         _ui->permissionShare->setCheckState(Qt::Checked);
     }
