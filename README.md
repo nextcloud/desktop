@@ -2,8 +2,7 @@
 
 | Job                               | State                                                                                                                                                             |
 |-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| client-build-matrix               | [![Build Status](https://ci.owncloud.org/job/client-build-matrix-linux/badge/icon)](https://ci.owncloud.org/job/client-build-matrix-linux/)                       |
-| client-test-matrix-linux-no-build | [![Build Status](https://ci.owncloud.org/buildStatus/icon?job=client-test-matrix-linux-no-build)](https://ci.owncloud.org/job/client-test-matrix-linux-no-build/) |
+| build master               | [![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/)                       |
 | coverity_scan | [![Build Status](https://img.shields.io/coverity/scan/2482.svg)](https://scan.coverity.com/projects/owncloud-mirall)
 
 ## Introduction
