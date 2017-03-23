@@ -1224,7 +1224,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Zapytaj o potwierdzenie przed synchronizacją zewnętrznych skladowisk plikow</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
