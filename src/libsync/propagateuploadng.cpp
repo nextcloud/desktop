@@ -178,8 +178,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
     auto status = classifyError(err, httpErrorCode, &propagator()->_anotherSyncNeeded);
     if (status == SyncFileItem::FatalError) {
         propagator()->_activeJobList.removeOne(this);
-        QString errorString = errorMessage(job->reply()->errorString(), job->reply()->readAll());
-        abortWithError(status, errorString);
+        abortWithError(status, job->errorStringParsingBody());
         return;
     }
     startNewUpload();
@@ -254,11 +253,7 @@ void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
     if (err != QNetworkReply::NoError || _item->_httpErrorCode != 201) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &propagator()->_anotherSyncNeeded);
-        QString errorString = errorMessage(job->reply()->errorString(), job->reply()->readAll());
-        if (job->reply()->hasRawHeader("OC-ErrorString")) {
-            errorString = job->reply()->rawHeader("OC-ErrorString");
-        }
-        abortWithError(status, errorString);
+        abortWithError(status, job->errorStringParsingBody());
         return;
     }
     startNextChunk();
@@ -351,7 +346,7 @@ void PropagateUploadFileNG::slotPutFinished()
 
     qDebug() << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
              << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
              << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
@@ -377,13 +372,9 @@ void PropagateUploadFileNG::slotPutFinished()
 
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        QByteArray replyContent = job->reply()->readAll();
+        QByteArray replyContent;
+        QString errorString = job->errorStringParsingBody(&replyContent);
         qDebug() << replyContent; // display the XML error in the debug
-        QString errorString = errorMessage(job->errorString(), replyContent);
-
-        if (job->reply()->hasRawHeader("OC-ErrorString")) {
-            errorString = job->reply()->rawHeader("OC-ErrorString");
-        }
 
         // Ensure errors that should eventually reset the chunked upload are tracked.
         checkResettingErrors();
@@ -487,8 +478,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &propagator()->_anotherSyncNeeded);
-        QString errorString = errorMessage(job->errorString(), job->reply()->readAll());
-        abortWithError(status, errorString);
+        abortWithError(status, job->errorStringParsingBody());
         return;
     }
     if (_item->_httpErrorCode != 201 && _item->_httpErrorCode != 204) {

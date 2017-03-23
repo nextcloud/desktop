@@ -113,7 +113,7 @@ void GETFileJob::start() {
     }
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
+        qWarning() << Q_FUNC_INFO << " Network error: " << errorString();
     }
 
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
@@ -254,7 +254,7 @@ void GETFileJob::slotReadyRead()
 
         qint64 r = reply()->read(buffer.data(), toRead);
         if (r < 0) {
-            _errorString = reply()->errorString();
+            _errorString = networkReplyErrorString(*reply());
             _errorStatus = SyncFileItem::NormalError;
             qDebug() << "Error while reading from device: " << _errorString;
             reply()->abort();
@@ -287,7 +287,7 @@ void GETFileJob::slotReadyRead()
     }
 }
 
-void GETFileJob::slotTimeout()
+void GETFileJob::onTimedOut()
 {
     qDebug() << "Timeout" << (reply() ? reply()->request().url() : path());
     if (!reply())
@@ -301,11 +301,8 @@ QString GETFileJob::errorString() const
 {
     if (!_errorString.isEmpty()) {
         return _errorString;
-    } else if (reply()->hasRawHeader("OC-ErrorString")) {
-        return reply()->rawHeader("OC-ErrorString");
-    } else {
-        return reply()->errorString();
     }
+    return AbstractNetworkJob::errorString();
 }
 
 void PropagateDownloadFile::start()
@@ -445,7 +442,7 @@ void PropagateDownloadFile::slotGetFinished()
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
              << _item->_httpErrorCode
              << _tmpFile.size() << _item->_size << job->resumeStart()
              << job->reply()->rawHeader("Content-Range") << job->reply()->rawHeader("Content-Length");

@@ -420,10 +420,7 @@ void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
         return;
     }
 
-    int resultCode =0;
-    if( reply ) {
-        resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    }
+    int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     endNotificationRequest(job->widget(), resultCode);
     qDebug() << Q_FUNC_INFO << "Server notify job failed with code " << resultCode;

@@ -75,7 +75,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
-        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->reply()->errorString());
+        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -85,11 +85,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     } else if (err != QNetworkReply::NoError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
                                                     &propagator()->_anotherSyncNeeded);
-        auto errorString = _job->reply()->errorString();
-        if (_job->reply()->hasRawHeader("OC-ErrorString")) {
-            errorString = _job->reply()->rawHeader("OC-ErrorString");
-        }
-        done(status, errorString);
+        done(status, _job->errorString());
         return;
     } else if (_item->_httpErrorCode != 201) {
         // Normally we expect "201 Created"

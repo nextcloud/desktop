@@ -101,14 +101,6 @@ void PUTFileJob::start() {
     AbstractNetworkJob::start();
 }
 
-void PUTFileJob::slotTimeout() {
-    qDebug() << "Timeout" << (reply() ? reply()->request().url() : path());
-    if (!reply())
-        return;
-    _errorString =  tr("Connection Timeout");
-    reply()->abort();
-}
-
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
 void PUTFileJob::slotSoftAbort() {
     reply()->setProperty(owncloudShouldSoftCancelPropertyName, true);
@@ -133,11 +125,7 @@ bool PollJob::finished()
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         _item->_status = classifyError(err, _item->_httpErrorCode);
-        _item->_errorString = reply()->errorString();
-
-        if (reply()->hasRawHeader("OC-ErrorString")) {
-            _item->_errorString = reply()->rawHeader("OC-ErrorString");
-        }
+        _item->_errorString = errorString();
 
         if (_item->_status == SyncFileItem::FatalError || _item->_httpErrorCode >= 400) {
             if (_item->_status != SyncFileItem::FatalError

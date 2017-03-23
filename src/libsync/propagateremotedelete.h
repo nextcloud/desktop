@@ -32,9 +32,6 @@ public:
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE;
 
-    QString errorString();
-    bool timedOut() { return _timedout; }
-
 signals:
     void finishedSignal();
 };

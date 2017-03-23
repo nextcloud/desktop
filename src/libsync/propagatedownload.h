@@ -87,7 +87,7 @@ public:
     SyncFileItem::Status errorStatus() { return _errorStatus; }
     void setErrorStatus(const SyncFileItem::Status & s) { _errorStatus = s; }
 
-    virtual void slotTimeout() Q_DECL_OVERRIDE;
+    void onTimedOut() Q_DECL_OVERRIDE;
 
     QByteArray &etag() { return _etag; }
     quint64 resumeStart() { return _resumeStart; }

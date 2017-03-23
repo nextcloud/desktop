@@ -220,7 +220,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
     qDebug() << "** webdav mkdir request failed:" << reply->error();
-    if( reply && !_account->credentials()->stillValid(reply) ) {
+    if( !_account->credentials()->stillValid(reply) ) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {
         showWarn(tr("Failed to create the folder on %1. Please check manually.")
@@ -228,10 +228,11 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
     }
 }
 
-void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
+void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply */*reply*/)
 {
+    auto job = qobject_cast<MkColJob *>(sender());
     showWarn(tr("Failed to list a folder. Error: %1")
-             .arg(errorMessage(reply->errorString(), reply->readAll())));
+             .arg(job->errorStringParsingBody()));
 }
 
 static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)

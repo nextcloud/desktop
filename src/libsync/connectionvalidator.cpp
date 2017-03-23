@@ -144,17 +144,17 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &inf
 // status.php could not be loaded (network or server issue!).
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
-    qDebug() << Q_FUNC_INFO << reply->error() << reply->errorString() << reply->peek(1024);
-    if (reply && !_account->credentials()->ready()) {
+    auto job = qobject_cast<CheckServerJob *>(sender());
+    qDebug() << Q_FUNC_INFO << reply->error() << job->errorString() << reply->peek(1024);
+    if (!_account->credentials()->ready()) {
         // This could be needed for SSL client certificates
         // We need to load them from keychain and try
         reportResult( CredentialsMissingOrWrong );
-    } else
-    if( reply && ! _account->credentials()->stillValid(reply)) {
+    } else if (! _account->credentials()->stillValid(reply)) {
         _errors.append(tr("Authentication error: Either username or password are wrong."));
-    }  else {
+    } else {
         //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-        _errors.append( reply->errorString() );
+        _errors.append( job->errorString() );
     }
     reportResult( StatusNotFound );
 }
@@ -189,17 +189,18 @@ void ConnectionValidator::checkAuthentication()
 
 void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 {
+    auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
              !_account->credentials()->stillValid(reply)) {
-        qDebug() <<  reply->error() << reply->errorString();
+        qDebug() <<  reply->error() << job->errorString();
         qDebug() << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsMissingOrWrong;
 
     } else if( reply->error() != QNetworkReply::NoError ) {
-        _errors << errorMessage(reply->errorString(), reply->readAll());
+        _errors << job->errorStringParsingBody();
 
         const int httpStatus =
                 reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

@@ -68,12 +68,32 @@ public:
 
     QByteArray responseTimestamp();
 
-    qint64 timeoutMsec() { return _timer.interval(); }
+    qint64 timeoutMsec() const { return _timer.interval(); }
+    bool timedOut() const { return _timedout; }
+
+    /** Returns an error message, if any. */
+    QString errorString() const;
+
+    /** Like errorString, but also checking the reply body for information.
+     *
+     * Specifically, sometimes xml bodies have extra error information.
+     * This function reads the body of the reply and parses out the
+     * error information, if possible.
+     *
+     * \a body is optinally filled with the reply body.
+     *
+     * Warning: Needs to call reply()->readAll().
+     */
+    QString errorStringParsingBody(QByteArray* body = 0);
 
 public slots:
     void setTimeout(qint64 msec);
     void resetTimeout();
 signals:
+    /** Emitted on network error.
+     *
+     * \a reply is never null
+     */
     void networkError(QNetworkReply *reply);
     void networkActivity();
 protected:
@@ -103,7 +123,19 @@ protected:
     QUrl makeDavUrl(const QString& relativePath) const;
 
     int maxRedirects() const { return 10; }
+
+    /** Called at the end of QNetworkReply::finished processing.
+     *
+     * Returning true triggers a deleteLater() of this job.
+     */
     virtual bool finished() = 0;
+
+    /** Called on timeout.
+     *
+     * The default implementation aborts the reply.
+     */
+    virtual void onTimedOut();
+
     QByteArray    _responseTimestamp;
     bool          _timedout;  // set to true when the timeout slot is received
 
@@ -111,15 +143,9 @@ protected:
     // GET requests that don't set up any HTTP body or other flags.
     bool          _followRedirects;
 
-    /** Helper to construct the HTTP verb used in the request
-     *
-     * Returns an empty QByteArray for UnknownOperation.
-     */
-    static QByteArray requestVerb(QNetworkReply* reply);
-
 private slots:
     void slotFinished();
-    virtual void slotTimeout();
+    void slotTimeout();
 
 protected:
     AccountPtr _account;
@@ -162,6 +188,23 @@ QString OWNCLOUDSYNC_EXPORT extractErrorMessage(const QByteArray& errorResponse)
 
 /** Builds a error message based on the error and the reply body. */
 QString OWNCLOUDSYNC_EXPORT errorMessage(const QString& baseError, const QByteArray& body);
+
+/** Helper to construct the HTTP verb used in the request
+ *
+ * Returns an empty QByteArray for UnknownOperation.
+ */
+QByteArray OWNCLOUDSYNC_EXPORT requestVerb(const QNetworkReply& reply);
+
+/** Nicer errorString() for QNetworkReply
+ *
+ * By default QNetworkReply::errorString() often produces messages like
+ *   "Error downloading <url> - server replied: <reason>"
+ * but the "downloading" part invariably confuses people since the
+ * error might very well have been produced by a PUT request.
+ *
+ * This function produces clearer error messages for HTTP errors.
+ */
+QString OWNCLOUDSYNC_EXPORT networkReplyErrorString(const QNetworkReply& reply);
 
 } // namespace OCC
 

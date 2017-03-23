@@ -56,17 +56,6 @@ void MoveJob::start()
 }
 
 
-QString MoveJob::errorString()
-{
-    if (_timedout) {
-        return tr("Connection timed out");
-    } else if (reply()->hasRawHeader("OC-ErrorString")) {
-        return reply()->rawHeader("OC-ErrorString");
-    } else {
-        return reply()->errorString();
-    }
-}
-
 bool MoveJob::finished()
 {
     emit finishedSignal();
@@ -131,7 +120,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
     qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
-        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->reply()->errorString());
+        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

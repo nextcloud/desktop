@@ -202,6 +202,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
 
 void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
 {
+    auto job = qobject_cast<CheckServerJob *>(sender());
     int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
 
@@ -213,7 +214,7 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
         msg = tr("Failed to connect to %1 at %2:<br/>%3")
                   .arg(Utility::escape(Theme::instance()->appNameGUI()),
                        Utility::escape(reply->url().toString()),
-                       Utility::escape(reply->errorString()));
+                       Utility::escape(job->errorString()));
     }
     bool isDowngradeAdvised = checkDowngradeAdvised(reply);
 
@@ -322,7 +323,7 @@ void OwncloudSetupWizard::slotAuthError()
                           "<a href=\"%1\">click here</a> to access the service with your browser.")
                            .arg(Utility::escape(_ocWizard->account()->url().toString()));
         } else {
-            errorMsg = errorMessage(reply->errorString(), reply->readAll());
+            errorMsg = job->errorStringParsingBody();
         }
 
     // Something else went wrong, maybe the response was 200 but with invalid data.
@@ -398,6 +399,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
 // ### TODO move into EntityExistsJob once we decide if/how to return gui strings from jobs
 void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
 {
+    auto job = qobject_cast<EntityExistsJob *>(sender());
     bool ok = true;
     QString error;
     QNetworkReply::NetworkError errId = reply->error();
@@ -412,7 +414,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
             createRemoteFolder();
         }
     } else {
-        error = tr("Error: %1").arg(reply->errorString());
+        error = tr("Error: %1").arg(job->errorString());
         ok = false;
     }
 

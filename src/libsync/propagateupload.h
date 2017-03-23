@@ -120,15 +120,12 @@ public:
     }
 
     QString errorString() {
-        return _errorString.isEmpty() ? reply()->errorString() : _errorString;
+        return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }
-
-    virtual void slotTimeout() Q_DECL_OVERRIDE;
 
     quint64 msSinceStart() const {
         return _requestTimer.elapsed();
     }
-
 
 signals:
     void finishedSignal();
@@ -160,12 +157,6 @@ public:
 
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE;
-    void slotTimeout() Q_DECL_OVERRIDE {
-//      emit finishedSignal(false);
-//      deleteLater();
-        qDebug() << Q_FUNC_INFO;
-        reply()->abort();
-    }
 
 signals:
     void finishedSignal();

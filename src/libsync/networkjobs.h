@@ -203,12 +203,18 @@ public:
 
 signals:
     void instanceFound(const QUrl&url, const QVariantMap &info);
+
+    /** Emitted on invalid status.php reply.
+     *
+     * \a reply is never null
+     */
     void instanceNotFound(QNetworkReply *reply);
     void timeout(const QUrl&url);
 
+private:
+    bool finished() Q_DECL_OVERRIDE;
+    void onTimedOut() Q_DECL_OVERRIDE;
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
-    virtual void slotTimeout() Q_DECL_OVERRIDE;
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();
 

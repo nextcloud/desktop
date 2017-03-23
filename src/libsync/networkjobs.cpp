@@ -385,7 +385,7 @@ void CheckServerJob::start()
     AbstractNetworkJob::start();
 }
 
-void CheckServerJob::slotTimeout()
+void CheckServerJob::onTimedOut()
 {
     qDebug() << "TIMEOUT" << Q_FUNC_INFO;
     if (reply() && reply()->isRunning()) {
@@ -702,7 +702,7 @@ bool JsonApiJob::finished()
     int statusCode = 0;
 
     if (reply()->error() != QNetworkReply::NoError) {
-        qWarning() << "Network error: " << path() << reply()->errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qWarning() << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         emit jsonReceived(QVariantMap(), statusCode);
         return true;
     }

@@ -178,7 +178,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
     qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->reply()->errorString())
+             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
              << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
              << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
@@ -208,13 +208,9 @@ void PropagateUploadFileV1::slotPutFinished()
                "It is restored and your edit is in the conflict file."))) {
             return;
         }
-        QByteArray replyContent = job->reply()->readAll();
+        QByteArray replyContent;
+        QString errorString = job->errorStringParsingBody(&replyContent);
         qDebug() << replyContent; // display the XML error in the debug
-        QString errorString = errorMessage(job->errorString(), replyContent);
-
-        if (job->reply()->hasRawHeader("OC-ErrorString")) {
-            errorString = job->reply()->rawHeader("OC-ErrorString");
-        }
 
         if (_item->_httpErrorCode == 412) {
             // Precondition Failed: Either an etag or a checksum mismatch.

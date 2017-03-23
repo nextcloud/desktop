@@ -146,37 +146,16 @@ QUrl AbstractNetworkJob::makeDavUrl(const QString& relativePath) const
     return Utility::concatUrlPath(_account->davUrl(), relativePath);
 }
 
-QByteArray AbstractNetworkJob::requestVerb(QNetworkReply* reply)
-{
-    switch (reply->operation()) {
-    case QNetworkAccessManager::HeadOperation:
-        return "HEAD";
-    case QNetworkAccessManager::GetOperation:
-        return "GET";
-    case QNetworkAccessManager::PutOperation:
-        return "PUT";
-    case QNetworkAccessManager::PostOperation:
-        return "POST";
-    case QNetworkAccessManager::DeleteOperation:
-        return "DELETE";
-    case QNetworkAccessManager::CustomOperation:
-        return reply->request().attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
-    case QNetworkAccessManager::UnknownOperation:
-        break;
-    }
-    return QByteArray();
-}
-
 void AbstractNetworkJob::slotFinished()
 {
     _timer.stop();
 
     if( _reply->error() == QNetworkReply::SslHandshakeFailedError ) {
-        qDebug() << "SslHandshakeFailedError: " << reply()->errorString() << " : can be caused by a webserver wanting SSL client certificates";
+        qDebug() << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
     if( _reply->error() != QNetworkReply::NoError ) {
-        qDebug() << Q_FUNC_INFO << _reply->error() << _reply->errorString()
+        qDebug() << Q_FUNC_INFO << _reply->error() << errorString()
                  << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
             qDebug() << Q_FUNC_INFO << _reply->rawHeader("Proxy-Authenticate");
@@ -194,7 +173,7 @@ void AbstractNetworkJob::slotFinished()
 
         // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
-        QByteArray verb = requestVerb(reply());
+        QByteArray verb = requestVerb(*reply());
         if (requestedUrl.scheme() == QLatin1String("https") &&
                 redirectUrl.scheme() == QLatin1String("http")) {
             qWarning() << this << "HTTPS->HTTP downgrade detected!";
@@ -236,6 +215,40 @@ QByteArray AbstractNetworkJob::responseTimestamp()
     return _responseTimestamp;
 }
 
+QString AbstractNetworkJob::errorString() const
+{
+    if (_timedout) {
+        return tr("Connection timed out");
+    } else if (!reply()) {
+        return tr("Unknown error: network reply was deleted");
+    } else if (reply()->hasRawHeader("OC-ErrorString")) {
+        return reply()->rawHeader("OC-ErrorString");
+    } else {
+        return networkReplyErrorString(*reply());
+    }
+}
+
+QString AbstractNetworkJob::errorStringParsingBody(QByteArray* body)
+{
+    QString base = errorString();
+    if (base.isEmpty() || !reply()) {
+        return QString();
+    }
+
+    QByteArray replyBody = reply()->readAll();
+    if (body) {
+        *body = replyBody;
+    }
+
+    QString extra = extractErrorMessage(replyBody);
+    // Don't append the XML error message to a OC-ErrorString message.
+    if (!extra.isEmpty() && !reply()->hasRawHeader("OC-ErrorString")) {
+        return QString::fromLatin1("%1 (%2)").arg(base, extra);
+    }
+
+    return base;
+}
+
 AbstractNetworkJob::~AbstractNetworkJob()
 {
     setReply(0);
@@ -255,11 +268,15 @@ void AbstractNetworkJob::start()
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
+    qDebug() << this << "Timeout" << (reply() ? reply()->request().url() : path());
+    onTimedOut();
+}
+
+void AbstractNetworkJob::onTimedOut()
+{
     if (reply()) {
-        qDebug() << Q_FUNC_INFO << this << "Timeout" << reply()->request().url();
         reply()->abort();
     } else {
-        qDebug() << Q_FUNC_INFO << this << "Timeout reply was NULL";
         deleteLater();
     }
 }
@@ -313,6 +330,50 @@ QString errorMessage(const QString& baseError, const QByteArray& body)
         msg += QString::fromLatin1(" (%1)").arg(extra);
     }
     return msg;
+}
+
+QByteArray requestVerb(const QNetworkReply& reply)
+{
+    switch (reply.operation()) {
+    case QNetworkAccessManager::HeadOperation:
+        return "HEAD";
+    case QNetworkAccessManager::GetOperation:
+        return "GET";
+    case QNetworkAccessManager::PutOperation:
+        return "PUT";
+    case QNetworkAccessManager::PostOperation:
+        return "POST";
+    case QNetworkAccessManager::DeleteOperation:
+        return "DELETE";
+    case QNetworkAccessManager::CustomOperation:
+        return reply.request().attribute(QNetworkRequest::CustomVerbAttribute).toByteArray();
+    case QNetworkAccessManager::UnknownOperation:
+        break;
+    }
+    return QByteArray();
+}
+
+QString networkReplyErrorString(const QNetworkReply& reply)
+{
+    QString base = reply.errorString();
+    int httpStatus = reply.attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString httpReason = reply.attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
+
+    // Only adjust HTTP error messages of the expected format.
+    if (httpReason.isEmpty() || httpStatus == 0 || !base.contains(httpReason)) {
+        return base;
+    }
+
+    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(
+            QString::number(httpStatus),
+            httpReason,
+            requestVerb(reply),
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+            reply.request().url().toString()
+#else
+            reply.request().url().toDisplayString()
+#endif
+            );
 }
 
 } // namespace OCC
