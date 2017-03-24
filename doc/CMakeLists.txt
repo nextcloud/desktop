@@ -20,9 +20,9 @@ if(SPHINX_FOUND)
     configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in" conf.py @ONLY)
 
     if(WITH_DOC)
-       add_custom_target(doc ALL DEPENDS doc-html doc-man COMMENT "Building documentation...")
+       add_custom_target(doc ALL DEPENDS doc-html COMMENT "Building documentation...")
     else(WITH_DOC)
-       add_custom_target(doc DEPENDS doc-html doc-man COMMENT "Building documentation...")
+       add_custom_target(doc DEPENDS doc-html COMMENT "Building documentation...")
     endif(WITH_DOC)
 
     if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ocdoc/_shared_assets")
