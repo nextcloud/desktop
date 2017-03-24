@@ -369,8 +369,8 @@ PropagateItemJob* OwncloudPropagator::createJob(const SyncFileItemPtr &item) {
                 return job;
             } else {
                 PropagateUploadFileCommon *job = 0;
-                if (item->_size > chunkSize() && account()->capabilities().chunkingNg()) {
-                    job = new PropagateUploadFileNG(this, item, account()->capabilities().requestMaxDurationDC());
+                if (item->_size > _chunkSize && account()->capabilities().chunkingNg()) {
+                    job = new PropagateUploadFileNG(this, item);
                 } else {
                     job = new PropagateUploadFileV1(this, item);
                 }
@@ -503,6 +503,17 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
     scheduleNextJob();
 }
 
+const SyncOptions& OwncloudPropagator::syncOptions() const
+{
+    return _syncOptions;
+}
+
+void OwncloudPropagator::setSyncOptions(const SyncOptions& syncOptions)
+{
+    _syncOptions = syncOptions;
+    _chunkSize = syncOptions._initialChunkSize;
+}
+
 // ownCloud server  < 7.0 did not had permissions so we need some other euristics
 // to detect wrong doing in a Shared directory
 bool OwncloudPropagator::isInSharedDirectory(const QString& file)
@@ -522,7 +533,7 @@ bool OwncloudPropagator::isInSharedDirectory(const QString& file)
 
 int OwncloudPropagator::httpTimeout()
 {
-    static int timeout;
+    static int timeout = 0;
     if (!timeout) {
         timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
         if (timeout == 0) {
@@ -532,32 +543,6 @@ int OwncloudPropagator::httpTimeout()
 
     }
     return timeout;
-}
-
-quint64 OwncloudPropagator::chunkSize()
-{
-    static uint chunkSize;
-    if (!chunkSize) {
-        chunkSize = qgetenv("OWNCLOUD_CHUNK_SIZE").toUInt();
-        if (chunkSize == 0) {
-            ConfigFile cfg;
-            chunkSize = cfg.chunkSize();
-        }
-    }
-    return chunkSize;
-}
-
-quint64 OwncloudPropagator::maxChunkSize()
-{
-    static uint chunkSize;
-    if (!chunkSize) {
-        chunkSize = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE").toUInt();
-        if (chunkSize == 0) {
-            ConfigFile cfg;
-            chunkSize = cfg.maxChunkSize();
-        }
-    }
-    return chunkSize;
 }
 
 bool OwncloudPropagator::localFileNameClash( const QString& relFile )

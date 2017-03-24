@@ -19,6 +19,7 @@
 #include <QBuffer>
 #include <QFile>
 #include <QDebug>
+#include <QElapsedTimer>
 
 
 namespace OCC {
@@ -90,6 +91,7 @@ private:
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QUrl _url;
+    QElapsedTimer _requestTimer;
 
 public:
     // Takes ownership of the device
@@ -122,6 +124,10 @@ public:
     }
 
     virtual void slotTimeout() Q_DECL_OVERRIDE;
+
+    quint64 msSinceStart() const {
+        return _requestTimer.elapsed();
+    }
 
 
 signals:
@@ -201,7 +207,6 @@ protected:
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;
 
-
 public:
     PropagateUploadFileCommon(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _finished(false), _deleteExisting(false) {}
@@ -276,7 +281,7 @@ private:
     int _chunkCount; /// Total number of chunks for this file
     int _transferId; /// transfer id (part of the url)
 
-    quint64 chunkSize() const { return propagator()->chunkSize(); }
+    quint64 chunkSize() const { return propagator()->syncOptions()._initialChunkSize; }
 
 
 public:
@@ -303,37 +308,13 @@ private:
     quint64 _sent; /// amount of data (bytes) that was already sent
     uint _transferId; /// transfer id (part of the url)
     int _currentChunk; /// Id of the next chunk that will be sent
+    quint64 _currentChunkSize; /// current chunk size
     bool _removeJobError; /// If not null, there was an error removing the job
-    quint64 _lastChunkSize; /// current chunk size
-
-    /*
-    * This is value in ms obtained from the server.
-    *
-    * Dynamic Chunking attribute the maximum number of miliseconds that single request below chunk size can take
-    * This value should be based on heuristics with default value 10000ms, time it takes to transfer 10MB chunk on 1MB/s upload link.
-    *
-    * Suggested solution will be to evaluate max(SNR, MORD) where:
-    * > SNR - Slow network request, so time it will take to transmit default chunking sized request at specific low upload bandwidth
-    * > MORD - Maximum observed request time, so double the time of maximum observed RTT of the very small PUT request (e.g. 1kB) to the system
-    *
-    * Exemplary, syncing 100MB files, with chunking size 10MB, will cause sync of 10 PUT requests which max evaluation was set to <max_single_upload_request_duration_msec>
-    *
-    * Dynamic chunking client algorithm is specified in the ownCloud documentation and uses <max_single_upload_request_duration_msec> to estimate if given
-    * bandwidth allows higher chunk sizes (because of high goodput)
-    */
-    quint64 _requestMaxDuration;
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo { quint64 size; QString originalName; };
     QMap<int, ServerChunkInfo> _serverChunks;
-
-    quint64 chunkSize() const { return propagator()->chunkSize(); }
-    quint64 maxChunkSize() const { return propagator()->maxChunkSize(); }
-
-    quint64 getRequestMaxDurationDC(){
-        return _requestMaxDuration;
-    }
 
     /**
      * Return the URL of a chunk.
@@ -342,8 +323,8 @@ private:
     QUrl chunkUrl(int chunk = -1);
 
 public:
-    PropagateUploadFileNG(OwncloudPropagator* propagator,const SyncFileItemPtr& item, const quint64& requestMaxDuration) :
-        PropagateUploadFileCommon(propagator,item), _lastChunkSize(0), _requestMaxDuration(requestMaxDuration) {}
+    PropagateUploadFileNG(OwncloudPropagator* propagator,const SyncFileItemPtr& item) :
+        PropagateUploadFileCommon(propagator,item), _currentChunkSize(0) {}
 
     void doStartUpload() Q_DECL_OVERRIDE;
 

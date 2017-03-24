@@ -29,6 +29,7 @@
 #include "syncjournaldb.h"
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
+#include "discoveryphase.h"
 
 namespace OCC {
 
@@ -288,12 +289,16 @@ public:
             , _finishedEmited(false)
             , _bandwidthManager(this)
             , _anotherSyncNeeded(false)
+            , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
             , _account(account)
     { }
 
     ~OwncloudPropagator();
 
     void start(const SyncFileItemVector &_syncedItems);
+
+    const SyncOptions& syncOptions() const;
+    void setSyncOptions(const SyncOptions& syncOptions);
 
     QAtomicInt _downloadLimit;
     QAtomicInt _uploadLimit;
@@ -314,6 +319,15 @@ public:
 
     /* the maximum number of jobs using bandwidth (uploads or downloads, in parallel) */
     int maximumActiveTransferJob();
+
+    /** The size to use for upload chunks.
+     *
+     * Will be dynamically adjusted after each chunk upload finishes
+     * if Capabilities::desiredChunkUploadDuration has a target
+     * chunk-upload duration set.
+     */
+    quint64 _chunkSize;
+
     /* The maximum number of active jobs in parallel  */
     int hardMaximumActiveJob();
 
@@ -353,10 +367,6 @@ public:
 
     // timeout in seconds
     static int httpTimeout();
-
-    /** returns the size of chunks in bytes  */
-    static quint64 chunkSize();
-    static quint64 maxChunkSize();
 
     AccountPtr account() const;
 
@@ -404,6 +414,7 @@ private:
 
     AccountPtr _account;
     QScopedPointer<PropagateDirectory> _rootJob;
+    SyncOptions _syncOptions;
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     // access to signals which are protected in Qt4

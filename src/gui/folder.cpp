@@ -645,19 +645,58 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     setDirtyNetworkLimits();
-
-    SyncOptions opt;
-    ConfigFile cfgFile;
-    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
-    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
-    _engine->setSyncOptions(opt);
+    setSyncOptions();
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     emit syncStarted();
+}
+
+void Folder::setSyncOptions()
+{
+    SyncOptions opt;
+    ConfigFile cfgFile;
+
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
+    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
+    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+
+    QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
+    if (!chunkSizeEnv.isEmpty()) {
+        opt._initialChunkSize = chunkSizeEnv.toUInt();
+    } else {
+        opt._initialChunkSize = cfgFile.chunkSize();
+    }
+    QByteArray minChunkSizeEnv = qgetenv("OWNCLOUD_MIN_CHUNK_SIZE");
+    if (!minChunkSizeEnv.isEmpty()) {
+        opt._minChunkSize = minChunkSizeEnv.toUInt();
+    } else {
+        opt._minChunkSize = cfgFile.minChunkSize();
+    }
+    QByteArray maxChunkSizeEnv = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE");
+    if (!maxChunkSizeEnv.isEmpty()) {
+        opt._maxChunkSize = maxChunkSizeEnv.toUInt();
+    } else {
+        opt._maxChunkSize = cfgFile.maxChunkSize();
+    }
+
+    // Previously min/max chunk size values didn't exist, so users might
+    // have setups where the chunk size exceeds the new min/max default
+    // values. To cope with this, adjust min/max to always include the
+    // initial chunk size value.
+    opt._minChunkSize = qMin(opt._minChunkSize, opt._initialChunkSize);
+    opt._maxChunkSize = qMax(opt._maxChunkSize, opt._initialChunkSize);
+
+    QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
+    if (!targetChunkUploadDurationEnv.isEmpty()) {
+        opt._targetChunkUploadDuration = targetChunkUploadDurationEnv.toUInt();
+    } else {
+        opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
+    }
+
+    _engine->setSyncOptions(opt);
 }
 
 void Folder::setDirtyNetworkLimits()

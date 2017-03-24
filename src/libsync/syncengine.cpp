@@ -1004,6 +1004,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator (_account, _localPath, _remotePath, _journal));
+    _propagator->setSyncOptions(_syncOptions);
     connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
             this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
     connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &,quint64)),

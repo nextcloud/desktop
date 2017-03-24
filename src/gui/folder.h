@@ -307,6 +307,8 @@ private:
 
     void checkLocalPath();
 
+    void setSyncOptions();
+
     enum LogStatus {
         LogStatusRemove,
         LogStatusRename,
