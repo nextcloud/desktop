@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.3.1 (2017-03-2x)
+version 2.3.1 (2017-03-21)
 * Fix several crashes (thanks to everyone submitting to our crash reporter!)
 * Improve HTTP redirect handling (#5555)
 * Blacklist: Escalate repeated soft error to normal error (#5500)
