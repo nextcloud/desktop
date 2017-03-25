@@ -1591,7 +1591,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="101"/>
         <source>Closing in a few seconds...</source>
-        <translation>关闭几秒钟...</translation>
+        <translation>几秒钟后关闭...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="135"/>
