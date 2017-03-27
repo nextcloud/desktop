@@ -14,6 +14,7 @@
 
 #include "systray.h"
 #include "theme.h"
+#include "config.h"
 
 #ifdef USE_FDO_NOTIFICATIONS
 #include <QDBusConnection>
@@ -30,8 +31,8 @@ namespace OCC {
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon, int millisecondsTimeoutHint)
 {
 #ifdef USE_FDO_NOTIFICATIONS
-    if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
-        QList<QVariant> args = QList<QVariant>() << "owncloud" << quint32(0) << "owncloud"
+    if(QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
+        QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
                                                  << title << message << QStringList() << QVariantMap() << qint32(-1);
         QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
         method.setArguments(args);

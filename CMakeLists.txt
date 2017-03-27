@@ -178,6 +178,10 @@ endif()
 
 find_package(ZLIB)
 
+if (NOT DEFINED APPLICATION_ICON_NAME)
+    set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
+endif()
+
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 configure_file(test/test_journal.db "${CMAKE_BINARY_DIR}/test/test_journal.db" COPYONLY)
