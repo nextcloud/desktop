@@ -67,10 +67,10 @@ Logger *Logger::instance()
 Logger::Logger( QObject* parent) : QObject(parent),
   _showTime(true), _logWindowActivated(false), _doFileFlush(false), _logExpire(0)
 {
-#ifndef NO_MSG_HANDLER
 #if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
-    qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} %{threadid} %{function}: %{message}");
+    qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
 #endif
+#ifndef NO_MSG_HANDLER
     qInstallMessageHandler(mirallLogCatcher);
 #else
     Q_UNUSED(mirallLogCatcher)
