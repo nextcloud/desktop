@@ -15,9 +15,14 @@
 
 #include <QInputDialog>
 #include <QLabel>
+#include <QDesktopServices>
+#include <QNetworkReply>
+#include <QTimer>
+#include <QBuffer>
 #include "creds/httpcredentialsgui.h"
 #include "theme.h"
 #include "account.h"
+#include <QMessageBox>
 
 using namespace QKeychain;
 
@@ -25,11 +30,61 @@ namespace OCC {
 
 void HttpCredentialsGui::askFromUser()
 {
-    // The rest of the code assumes that this will be done asynchronously
-    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+    _password = QString(); // So our QNAM does not add any auth
+
+    // First, we will send a call to the webdav endpoint to check what kind of auth we need.
+    auto reply = _account->sendRequest("GET", _account->davUrl());
+    QTimer::singleShot(30 * 1000, reply, &QNetworkReply::abort);
+    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply] {
+        reply->deleteLater();
+        if (reply->rawHeader("WWW-Authenticate").contains("Bearer ")) {
+            // OAuth
+            _asyncAuth.reset(new OAuth(_account, this));
+            connect(_asyncAuth.data(), &OAuth::result,
+                this, &HttpCredentialsGui::asyncAuthResult);
+            _asyncAuth->start();
+        } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
+            // Show the dialog
+            // We will re-enter the event loop, so better wait the next iteration
+            QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
+        } else {
+            // Network error?
+            emit asked();
+        }
+    });
 }
 
-void HttpCredentialsGui::askFromUserAsync()
+void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
+    const QString &token, const QString &refreshToken)
+{
+    switch (r) {
+    case OAuth::NotSupported:
+        // We will re-enter the event loop, so better wait the next iteration
+        QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
+        _asyncAuth.reset(0);
+        return;
+    case OAuth::Error:
+        _asyncAuth.reset(0);
+        emit asked();
+        return;
+    case OAuth::LoggedIn:
+        break;
+    }
+
+    if (_user != user) {
+        QMessageBox::warning(nullptr, tr("Login Error"), tr("You must sign in as user %1").arg(_user));
+        _asyncAuth->openBrowser();
+        return;
+    }
+    _password = token;
+    _refreshToken = refreshToken;
+    _ready = true;
+    persist();
+    _asyncAuth.reset(0);
+    emit asked();
+}
+
+void HttpCredentialsGui::showDialog()
 {
     QString msg = tr("Please enter %1 password:<br>"
                      "<br>"
@@ -87,6 +142,4 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
         .arg(account->url().toString() + path);
 }
-
-
 } // namespace OCC

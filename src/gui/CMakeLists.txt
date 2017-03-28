@@ -93,11 +93,13 @@ set(client_SRCS
     servernotificationhandler.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
+    creds/oauth.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
     wizard/owncloudconnectionmethoddialog.cpp
     wizard/owncloudhttpcredspage.cpp
+    wizard/owncloudoauthcredspage.cpp
     wizard/owncloudsetuppage.cpp
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp

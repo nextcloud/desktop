@@ -320,6 +320,13 @@ public:
      */
     virtual QString quotaBaseFolder() const;
 
+    /**
+     * The OAuth client_id, secret pair.
+     * Note that client that change these value cannot connect to un-branded owncloud servers.
+     */
+    virtual QString oauthClientId() const;
+    virtual QString oauthClientSecret() const;
+
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
