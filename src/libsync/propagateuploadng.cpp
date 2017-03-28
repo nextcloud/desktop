@@ -272,10 +272,11 @@ void PropagateUploadFileNG::startNextChunk()
     quint64 fileSize = _item->_size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
 
-    quint64 currentChunkSize = qMin(chunkSize(), fileSize - _sent);
+    // prevent situation that chunk size is bigger then required one to send
+    _currentChunkSize = qMin(propagator()->_chunkSize, fileSize - _sent);
 
-    if (currentChunkSize == 0) {
-        ASSERT(_jobs.isEmpty());
+    if (_currentChunkSize == 0) {
+        Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
         QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
@@ -305,7 +306,7 @@ void PropagateUploadFileNG::startNextChunk()
     auto device = new UploadDevice(&propagator()->_bandwidthManager);
     const QString fileName = propagator()->getFilePath(_item->_file);
 
-    if (! device->prepareAndOpen(fileName, _sent, currentChunkSize)) {
+    if (! device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
         qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
@@ -321,7 +322,7 @@ void PropagateUploadFileNG::startNextChunk()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_sent);
 
-    _sent += currentChunkSize;
+    _sent += _currentChunkSize;
     QUrl url = chunkUrl(_currentChunk);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
@@ -394,6 +395,37 @@ void PropagateUploadFileNG::slotPutFinished()
     }
 
     ENFORCE(_sent <= _item->_size, "can't send more than size");
+
+    // Adjust the chunk size for the time taken.
+    //
+    // Dynamic chunk sizing is enabled if the server configured a
+    // target duration for each chunk upload.
+    double targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
+    if (targetDuration > 0) {
+        double uploadTime = job->msSinceStart();
+
+        auto predictedGoodSize = static_cast<quint64>(
+                _currentChunkSize / uploadTime * targetDuration);
+
+        // The whole targeting is heuristic. The predictedGoodSize will fluctuate
+        // quite a bit because of external factors (like available bandwidth)
+        // and internal factors (like number of parallel uploads).
+        //
+        // We use an exponential moving average here as a cheap way of smoothing
+        // the chunk sizes a bit.
+        quint64 targetSize = (propagator()->_chunkSize + predictedGoodSize) / 2;
+
+        propagator()->_chunkSize = qBound(
+                propagator()->syncOptions()._minChunkSize,
+                targetSize,
+                propagator()->syncOptions()._maxChunkSize);
+
+        qDebug() << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
+                 << "ms, desired is" << targetDuration << "ms, expected good chunk size is"
+                 << predictedGoodSize << "bytes and nudged next chunk size to "
+                 << propagator()->_chunkSize << "bytes";
+    }
+
     bool finished = _sent == _item->_size;
 
     // Check if the file still exists

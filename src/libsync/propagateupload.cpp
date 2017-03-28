@@ -97,6 +97,7 @@ void PUTFileJob::start() {
         connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
 #endif
 
+    _requestTimer.start();
     AbstractNetworkJob::start();
 }
 

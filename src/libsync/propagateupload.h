@@ -19,6 +19,7 @@
 #include <QBuffer>
 #include <QFile>
 #include <QDebug>
+#include <QElapsedTimer>
 
 
 namespace OCC {
@@ -90,6 +91,7 @@ private:
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QUrl _url;
+    QElapsedTimer _requestTimer;
 
 public:
     // Takes ownership of the device
@@ -122,6 +124,10 @@ public:
     }
 
     virtual void slotTimeout() Q_DECL_OVERRIDE;
+
+    quint64 msSinceStart() const {
+        return _requestTimer.elapsed();
+    }
 
 
 signals:
@@ -201,7 +207,6 @@ protected:
     QByteArray _transmissionChecksum;
     QByteArray _transmissionChecksumType;
 
-
 public:
     PropagateUploadFileCommon(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
         : PropagateItemJob(propagator, item), _finished(false), _deleteExisting(false) {}
@@ -276,7 +281,7 @@ private:
     int _chunkCount; /// Total number of chunks for this file
     int _transferId; /// transfer id (part of the url)
 
-    quint64 chunkSize() const { return propagator()->chunkSize(); }
+    quint64 chunkSize() const { return propagator()->syncOptions()._initialChunkSize; }
 
 
 public:
@@ -303,6 +308,7 @@ private:
     quint64 _sent; /// amount of data (bytes) that was already sent
     uint _transferId; /// transfer id (part of the url)
     int _currentChunk; /// Id of the next chunk that will be sent
+    quint64 _currentChunkSize; /// current chunk size
     bool _removeJobError; /// If not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
@@ -310,7 +316,6 @@ private:
     struct ServerChunkInfo { quint64 size; QString originalName; };
     QMap<int, ServerChunkInfo> _serverChunks;
 
-    quint64 chunkSize() const { return propagator()->chunkSize(); }
     /**
      * Return the URL of a chunk.
      * If chunk == -1, returns the URL of the parent folder containing the chunks
@@ -319,9 +324,10 @@ private:
 
 public:
     PropagateUploadFileNG(OwncloudPropagator* propagator,const SyncFileItemPtr& item) :
-        PropagateUploadFileCommon(propagator,item) {}
+        PropagateUploadFileCommon(propagator,item), _currentChunkSize(0) {}
 
     void doStartUpload() Q_DECL_OVERRIDE;
+
 private:
     void startNewUpload();
     void startNextChunk();
