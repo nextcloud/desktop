@@ -32,6 +32,8 @@
 
 namespace OCC {
 
+static const int thumbnailSize = 40;
+
 ShareDialog::ShareDialog(QPointer<AccountState> accountState,
                          const QString &sharePath,
                          const QString &localPath,
@@ -67,7 +69,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     QFileInfo f_info(_localPath);
     QFileIconProvider icon_provider;
     QIcon icon = icon_provider.icon(f_info);
-    _ui->label_icon->setPixmap(icon.pixmap(40,40));
+    _ui->label_icon->setPixmap(icon.pixmap(thumbnailSize, thumbnailSize));
 
     // Set filename
     QFileInfo lPath(_localPath);
@@ -213,6 +215,7 @@ void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &
 
     QPixmap p;
     p.loadFromData(reply, "PNG");
+    p = p.scaledToHeight(thumbnailSize, Qt::SmoothTransformation);
     _ui->label_icon->setPixmap(p);
 }
 
