@@ -324,6 +324,11 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
     QIcon icon(QLatin1String(":/client/resources/more.png"));
     _ui->permissionToolButton->setIcon(icon);
 
+    // If there's only a single entry in the detailed permission menu, hide it
+    if (menu->actions().size() == 1) {
+        _ui->permissionToolButton->hide();
+    }
+
     // Set the permissions checkboxes
     displayPermissions();
 
