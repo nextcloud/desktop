@@ -6,14 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>164</height>
+    <width>397</width>
+    <height>273</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Share NewDocument.odt</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="shareeHorizontalLayout">
      <item>
@@ -94,8 +106,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>437</width>
-        <height>94</height>
+        <width>395</width>
+        <height>221</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3"/>

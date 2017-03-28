@@ -14,11 +14,20 @@
    <string>Share NewDocument.odt</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_shareLink">
-     <property name="topMargin">
-      <number>10</number>
-     </property>
      <item>
       <widget class="QCheckBox" name="checkBox_shareLink">
        <property name="text">
@@ -88,7 +97,7 @@
        <number>20</number>
       </property>
       <property name="topMargin">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
