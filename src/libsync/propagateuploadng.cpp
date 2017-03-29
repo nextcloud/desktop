@@ -292,6 +292,8 @@ void PropagateUploadFileNG::startNextChunk()
                 _transmissionChecksumType, _transmissionChecksum);
         }
 
+        headers["OC-Total-Length"] = QByteArray::number(fileSize);
+
         auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
                                destination, headers, this);
         _jobs.append(job);
