@@ -1183,7 +1183,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Serwer zwrócił błędną zakres zawartości</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="295"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="297"/>
         <source>Connection Timeout</source>
         <translation>Limit czasu połączenia</translation>
     </message>
@@ -1996,47 +1996,47 @@ Niezalecane jest jego użycie.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Nie można pobrać pliku %1 ze względu na konflikt nazwy pliku lokalnego!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
         <source>The download would reduce free disk space below %1</source>
         <translation>Pobranie zmniejszy ilość wolnego miejsca poniżej %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
         <source>Free space on disk is less than %1</source>
         <translation>Wolne miejsce na dysku jest mniejsze niż %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="501"/>
         <source>File was deleted from server</source>
         <translation>Plik został usunięty z serwera</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="547"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Ten plik nie mógł być całkowicie pobrany.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="713"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
         <source>File has changed since discovery</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
         <source>Error writing metadata to the database</source>
         <translation>Błąd podczas zapisu metadanych do bazy</translation>
     </message>

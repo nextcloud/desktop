@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) de %2 utilisés. Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
+        <translation>%1 (%3%) utilisés sur %2. Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
@@ -1030,7 +1030,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 de %4)</translation>
+        <translation>%1 %2 (%3 sur %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="953"/>
@@ -1048,12 +1048,12 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 de %2, fichier %3 de %4</translation>
+        <translation>%1 sur %2, fichier %3 sur %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
         <source>file %1 of %2</source>
-        <translation>fichier %1 de %2</translation>
+        <translation>fichier %1 sur %2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1027"/>
@@ -1186,7 +1186,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>Le serveur a retourné une gamme de contenu erronée</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="295"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="297"/>
         <source>Connection Timeout</source>
         <translation>Délai d&apos;attente de connexion dépassé</translation>
     </message>
@@ -1999,47 +1999,47 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Le fichier %1 ne peut pas être téléchargé en raison d&apos;un conflit sur le nom de fichier local. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
         <source>The download would reduce free disk space below %1</source>
         <translation>Le téléchargement réduirait l&apos;espace libre à moins de %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
         <source>Free space on disk is less than %1</source>
         <translation>Il y a moins de %1 d&apos;espace libre sur le disque</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="501"/>
         <source>File was deleted from server</source>
         <translation>Le fichier a été supprimé du serveur</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="547"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Le fichier n&apos;a pas pu être téléchargé intégralement.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Le fichier téléchargé est vide bien que le serveur indique que sa taille devrait être de %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="713"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Le fichier %1 n&apos;a pas pu être sauvegardé en raison d&apos;un conflit sur le nom du fichier local !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
         <source>File has changed since discovery</source>
         <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>

@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation>Synchronizovat všechny</translation>
+        <translation>Synchronizovat vše</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
@@ -1184,7 +1184,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Server odpověděl chybným rozsahem obsahu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="295"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="297"/>
         <source>Connection Timeout</source>
         <translation>Čas spojení vypršel</translation>
     </message>
@@ -1997,47 +1997,47 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Soubor %1 nemohl být stažen z důvodu kolize názvu se souborem v místním systému!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="379"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="381"/>
         <source>The download would reduce free disk space below %1</source>
         <translation>Stažení by snížilo velikost volného místa na disku pod %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
         <source>Free space on disk is less than %1</source>
         <translation>Volné místo na disku je méně než %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="499"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="501"/>
         <source>File was deleted from server</source>
         <translation>Soubor byl smazán ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="547"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Soubor nemohl být kompletně stažen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Stažený soubor je prázdný, přestože server oznámil, že měl být %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="713"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Soubor %1 nemohl být uložen z důvodu kolize názvu se souborem v místním systému!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="762"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="812"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -2175,7 +2175,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 nelze nahrát, protože existuje jiný soubor se stejným názvem, lišící se pouze velikostí písma</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
