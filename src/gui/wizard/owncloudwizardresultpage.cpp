@@ -97,7 +97,8 @@ void OwncloudWizardResultPage::slotOpenLocal()
 
 void OwncloudWizardResultPage::slotOpenServer()
 {
-    QUrl url = field("OCUrl").toUrl();
+    Theme* theme = Theme::instance();
+    QUrl url = QUrl(field("OCUrl").toString() + theme->wizardUrlPostfix());
     qDebug() << Q_FUNC_INFO << url;
     QDesktopServices::openUrl(url);
 }
