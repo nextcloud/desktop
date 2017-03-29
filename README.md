@@ -1,9 +1,6 @@
 # ownCloud Desktop Client
 
-| Job                               | State                                                                                                                                                             |
-|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| build master               | [![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/)                       |
-| coverity_scan | [![Build Status](https://img.shields.io/coverity/scan/2482.svg)](https://scan.coverity.com/projects/owncloud-mirall)
+[![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/)
 
 ## Introduction
 
@@ -26,7 +23,7 @@ https://github.com/owncloud/client.
 
 ## Building the source code
 
-[Building the Client](http://doc.owncloud.org/desktop/2.2/building.html)
+[Building the Client](http://doc.owncloud.org/desktop/2.3/building.html)
 in the ownCloud Desktop Client manual.
 
 ## Maintainers and Contributors
