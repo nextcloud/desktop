@@ -193,7 +193,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::createAccountToolbox()
 {
-    QMenu *menu = new QMenu();
+    QMenu *menu = new QMenu(ui->_accountToolbox);
     _addAccountAction = new QAction(tr("Add new"), this);
     _addAccountAction->setObjectName("addAccountAction");
     menu->addAction(_addAccountAction);
