@@ -2197,32 +2197,32 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="372"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="374"/>
         <source>Forcing job abort on HTTP connection reset with Qt &lt; 5.4.2.</source>
         <translation>Qt &lt; 5.4.2 ile HTTP bağlantı sıfırlamasında görev iptali zorlanıyor.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="403"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="405"/>
         <source>The local file was removed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="414"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="416"/>
         <source>Local file changed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya değişti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="463"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="465"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>(%1) Sunucusundan bilinmeyen dönüş kodu </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="470"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="472"/>
         <source>Missing File ID from server</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="483"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
         <source>Missing ETag from server</source>
         <translation type="unfinished"/>
     </message>
