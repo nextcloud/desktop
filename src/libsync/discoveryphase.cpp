@@ -287,7 +287,6 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
     csync_vio_file_stat_t* file_stat = csync_vio_file_stat_new();
 
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        qCDebug(lcDiscovery) << "Property key:" << it.key() << "with value:" << it.value();
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
@@ -367,7 +366,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         FileStatPointer file_stat(propertyMapToFileStat(map));
         file_stat->name = strdup(file.toUtf8());
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
-            qCDebug(lcDiscovery) << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+            qCCritical(lcDiscovery) << "etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
         }
         if (_isExternalStorage) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
@@ -417,7 +416,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     int errnoCode = EIO; // Something went wrong
-    qCDebug(lcDiscovery) << r->errorString() << httpCode << r->error();
+    qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
     if (httpCode != 0 && httpCode != 207) {
         errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
     } else if (r->error() != QNetworkReply::NoError) {

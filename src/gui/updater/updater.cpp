@@ -89,7 +89,7 @@ Updater *Updater::create()
         updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
     }
     if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
-        qCDebug(lcUpdater) << "Not a valid updater URL, will not do update check";
+        qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;
     }
     updateBaseUrl = addQueryParams(updateBaseUrl);

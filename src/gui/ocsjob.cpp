@@ -107,7 +107,7 @@ bool OcsJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(replyData, &error);
     if (error.error != QJsonParseError::NoError) {
-        qCDebug(lcOcs) << "Could not parse reply to" 
+        qCWarning(lcOcs) << "Could not parse reply to" 
                  << _verb 
                  << Utility::concatUrlPath(account()->url(), path())
                  << _params
@@ -118,7 +118,7 @@ bool OcsJob::finished()
     QString message;
     const int statusCode = getJsonReturnCode(json, message);
     if (!_passStatusCodes.contains(statusCode)) {
-        qCDebug(lcOcs) << "Reply to"
+        qCWarning(lcOcs) << "Reply to"
                  << _verb
                  << Utility::concatUrlPath(account()->url(), path())
                  << _params

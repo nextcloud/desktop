@@ -219,7 +219,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
-    qCDebug(lcWizard) << "webdav mkdir request failed:" << reply->error();
+    qCWarning(lcWizard) << "webdav mkdir request failed:" << reply->error();
     if( !_account->credentials()->stillValid(reply) ) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {

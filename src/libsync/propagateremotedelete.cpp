@@ -49,6 +49,10 @@ void DeleteJob::start()
 
 bool DeleteJob::finished()
 {
+    qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
+        << reply()->error()
+        << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
     emit finishedSignal();
     return true;
 }
@@ -79,10 +83,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     propagator()->_activeJobList.removeOne(this);
 
     ASSERT(_job);
-
-    qCDebug(lcPropagateRemoteDelete) << _job->reply()->request().url() << "FINISHED WITH STATUS"
-        << _job->reply()->error()
-        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();

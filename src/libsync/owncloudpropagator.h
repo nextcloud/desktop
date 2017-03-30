@@ -35,6 +35,8 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
 
+extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
+
 /** Free disk space threshold below which syncs will abort and not even start.
  */
 qint64 criticalFreeSpaceLimit();
@@ -150,6 +152,9 @@ public:
         if (_state != NotYetStarted) {
             return false;
         }
+        const char * instruction_str = csync_instruction_str(_item->_instruction);
+        qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->_file << "by" << this;
+
         _state = Running;
         QMetaObject::invokeMethod(this, "start"); // We could be in a different thread (neon jobs)
         return true;

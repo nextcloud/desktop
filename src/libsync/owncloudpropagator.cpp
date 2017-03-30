@@ -146,11 +146,11 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._ignoreDuration = old._ignoreDuration * 5;
 
     if( item._httpErrorCode == 403 ) {
-        qCDebug(lcPropagator) << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+        qCWarning(lcPropagator) << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
         entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
 
     } else if( item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
-        qCDebug(lcPropagator) << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
+        qCWarning(lcPropagator) << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
         entry._ignoreDuration = maxBlacklistTime;
     }
 
@@ -197,7 +197,7 @@ static void blacklistUpdate(SyncJournalDb* journal, SyncFileItem& item)
         item._status = SyncFileItem::FileIgnored;
         item._errorString.prepend(PropagateItemJob::tr("Continue blacklisting:") + " ");
 
-        qCDebug(lcPropagator) << "blacklisting " << item._file
+        qCInfo(lcPropagator) << "blacklisting " << item._file
                  << " for " << newEntry._ignoreDuration
                  << ", retry count " << newEntry._retryCount;
 
@@ -207,7 +207,7 @@ static void blacklistUpdate(SyncJournalDb* journal, SyncFileItem& item)
     // Some soft errors might become louder on repeat occurrence
     if (item._status == SyncFileItem::SoftError
             && newEntry._retryCount > 1) {
-        qCDebug(lcPropagator) << "escalating soft error on " << item._file
+        qCWarning(lcPropagator) << "escalating soft error on " << item._file
                  << " to normal error, " << item._httpErrorCode;
         item._status = SyncFileItem::NormalError;
         return;
@@ -264,6 +264,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         break;
     }
 
+    qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
     emit propagator()->itemCompleted(_item);
     emit finished(_item->_status);
 
@@ -507,8 +508,6 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
 
-    qCDebug(lcPropagator) << "Using QNAM/HTTP parallel code path";
-
     scheduleNextJob();
 }
 
@@ -564,7 +563,7 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
         QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
             re = false;
-            qCDebug(lcPropagator) << "No valid fileinfo";
+            qCWarning(lcPropagator) << "No valid fileinfo";
         } else {
             // Need to normalize to composited form because of
             // https://bugreports.qt-project.org/browse/QTBUG-39622
@@ -586,7 +585,7 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
             FindClose(hFind);
 
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
-                qCDebug(lcPropagator) << "Detected case clash between" << file << "and" << realFileName;
+                qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << realFileName;
                 re = true;
             }
         }
@@ -622,7 +621,7 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
             if (firstFile != secondFile
                     && QString::compare(firstFile, secondFile, Qt::CaseInsensitive) == 0) {
                 result = true;
-                qCDebug(lcPropagator) << "Found two filepaths that only differ in case: " << firstFile << secondFile;
+                qCWarning(lcPropagator) << "Found two filepaths that only differ in case: " << firstFile << secondFile;
             }
         }
         FindClose(hFind);
@@ -969,7 +968,7 @@ void CleanupPollsJob::slotPollFinished()
         deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
-        qCDebug(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
+        qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
         if (!_journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file))) {
             qCWarning(lcCleanupPolls) << "database error";

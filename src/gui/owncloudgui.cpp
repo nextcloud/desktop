@@ -139,10 +139,10 @@ void ownCloudGui::setupOverlayIcons()
               p.waitForFinished(5000);
               QByteArray result = p.readAll();
               QString resultAsString(result); // if appropriate
-              qCDebug(lcApplication) << "Load Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
+              qCInfo(lcApplication) << "Load Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
                        << (p.exitCode() != 0 ? p.errorString() : QString::null);
         } else  {
-            qCDebug(lcApplication) << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
+            qCWarning(lcApplication) << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
         }
     }
 #endif
@@ -159,7 +159,7 @@ void ownCloudGui::slotOpenSettingsDialog()
             _settingsDialog->close();
         }
     } else {
-        qCDebug(lcApplication) << "No configured folders yet, starting setup wizard";
+        qCInfo(lcApplication) << "No configured folders yet, starting setup wizard";
         slotNewAccountWizard();
     }
 }
@@ -212,7 +212,7 @@ void ownCloudGui::slotSyncStateChange( Folder* folder )
 
     auto result = folder->syncResult();
 
-    qCDebug(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": "  << result.statusString();
+    qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": "  << result.statusString();
 
     if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
@@ -500,7 +500,7 @@ void ownCloudGui::setupContextMenu()
         if (platformMenu
                 && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
             _qdbusmenuWorkaround = true;
-            qCDebug(lcApplication) << "Enabled QDBusPlatformMenu workaround";
+            qCWarning(lcApplication) << "Enabled QDBusPlatformMenu workaround";
         }
     }
 #endif
@@ -693,7 +693,7 @@ void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
     if( _tray )
         _tray->showMessage(title, msg);
     else
-        qCDebug(lcApplication) << "Tray not ready: " << msg;
+        qCWarning(lcApplication) << "Tray not ready: " << msg;
 }
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
@@ -712,7 +712,7 @@ void ownCloudGui::slotFolderOpenAction( const QString& alias )
 {
     Folder *f = FolderMan::instance()->folder(alias);
     if( f ) {
-        qCDebug(lcApplication) << "opening local url " << f->path();
+        qCInfo(lcApplication) << "opening local url " << f->path();
         QUrl url = QUrl::fromLocalFile(f->path());
 
 #ifdef Q_OS_WIN
@@ -1039,7 +1039,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
-        qCDebug(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
+        qCWarning(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
     }
 
@@ -1064,10 +1064,10 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
 
     ShareDialog *w = 0;
     if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
-        qCDebug(lcApplication) << "Raising share dialog" << sharePath << localPath;
+        qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
         w = _shareDialogs[localPath];
     } else {
-        qCDebug(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
+        qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
         w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions);
         w->setAttribute( Qt::WA_DeleteOnClose, true );
 

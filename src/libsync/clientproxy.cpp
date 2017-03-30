@@ -74,23 +74,23 @@ void ClientProxy::setupQtProxyFromConfig()
 
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
-        qCDebug(lcClientProxy) << "Set proxy configuration to use NO proxy";
+        qCInfo(lcClientProxy) << "Set proxy configuration to use NO proxy";
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
     case QNetworkProxy::DefaultProxy:
-        qCDebug(lcClientProxy) << "Set proxy configuration to use system configuration";
+        qCInfo(lcClientProxy) << "Set proxy configuration to use system configuration";
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
-        qCDebug(lcClientProxy) << "Set proxy configuration to SOCKS5" << printQNetworkProxy(proxy);
+        qCInfo(lcClientProxy) << "Set proxy configuration to SOCKS5" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
-        qCDebug(lcClientProxy) << "Set proxy configuration to HTTP" << printQNetworkProxy(proxy);
+        qCInfo(lcClientProxy) << "Set proxy configuration to HTTP" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;

@@ -62,12 +62,12 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
     QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
-            qCDebug(lcUtility) << "Could not create autostart folder";
+            qCWarning(lcUtility) << "Could not create autostart folder";
             return;
         }
         QFile iniFile(desktopFileLocation);
         if (!iniFile.open(QIODevice::WriteOnly)) {
-            qCDebug(lcUtility) << "Could not write auto start entry" << desktopFileLocation;
+            qCWarning(lcUtility) << "Could not write auto start entry" << desktopFileLocation;
             return;
         }
         QTextStream ts(&iniFile);
@@ -85,7 +85,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
             ;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
-            qCDebug(lcUtility) << "Could not remove autostart desktop file";
+            qCWarning(lcUtility) << "Could not remove autostart desktop file";
         }
     }
 }

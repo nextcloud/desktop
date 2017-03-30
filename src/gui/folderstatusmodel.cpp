@@ -626,7 +626,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
 
     if( !(ok1 && ok2) ) {
-        qCDebug(lcFolderStatus) << "Could not retrieve selective sync info from journal";
+        qCWarning(lcFolderStatus) << "Could not retrieve selective sync info from journal";
         return;
     }
 
@@ -800,7 +800,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         bool ok;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if( !ok ) {
-            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
+            qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
@@ -1080,7 +1080,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         bool ok;
         auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         if( !ok ) {
-            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
+            qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
 
@@ -1092,7 +1092,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         // Remove all undecided folders from the blacklist
         auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if( !ok ) {
-            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
+            qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         foreach (const auto& undecidedFolder, undecidedList) {
@@ -1103,7 +1103,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         // Add all undecided folders to the white list
         auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
         if( !ok ) {
-            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
+            qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         whiteList += undecidedList;

@@ -102,7 +102,7 @@ void FolderWatcher::changeDetected( const QStringList& paths )
         return;
     }
 
-    qCDebug(lcFolderWatcher) << "detected changes in paths:" << changedPaths;
+    qCInfo(lcFolderWatcher) << "Detected changes in paths:" << changedPaths;
     foreach (const QString &path, changedPaths) {
         emit pathChanged(path);
     }

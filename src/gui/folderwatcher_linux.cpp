@@ -36,7 +36,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path
         _socket.reset( new QSocketNotifier(_fd, QSocketNotifier::Read) );
         connect(_socket.data(), SIGNAL(activated(int)), SLOT(slotReceivedNotification(int)));
     } else {
-        qCDebug(lcFolderWatcher) << "notify_init() failed: " << strerror(errno);
+        qCWarning(lcFolderWatcher) << "notify_init() failed: " << strerror(errno);
     }
 
     QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, path));
@@ -98,7 +98,7 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 
     QStringList allSubfolders;
     if( !findFoldersBelow(QDir(path), allSubfolders)) {
-        qCDebug(lcFolderWatcher) << "Could not traverse all sub folders";
+        qCWarning(lcFolderWatcher) << "Could not traverse all sub folders";
     }
     QStringListIterator subfoldersIt(allSubfolders);
     while (subfoldersIt.hasNext()) {

@@ -111,7 +111,7 @@ void NotificationWidget::slotButtonClicked()
             _actionLabel = triggeredLink._label;
 
             if( ! triggeredLink._link.isEmpty() ) {
-                qCDebug(lcNotifications) << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
+                qCInfo(lcNotifications) << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
                 _progressIndi->startAnimation();
                 emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
             }
@@ -129,7 +129,7 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
     // the ocs API returns stat code 100 if it succeeded.
     if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
-        qCDebug(lcNotifications) << "Notification Request to Server failed, leave button visible.";
+        qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);
         }

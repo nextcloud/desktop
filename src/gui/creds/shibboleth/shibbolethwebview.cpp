@@ -155,7 +155,7 @@ void ShibbolethWebView::slotLoadFinished(bool success)
     }
 
     if (!success) {
-        qCDebug(lcShibboleth) << "Could not load Shibboleth login page to log you in.";
+        qCWarning(lcShibboleth) << "Could not load Shibboleth login page to log you in.";
     }
 }
 

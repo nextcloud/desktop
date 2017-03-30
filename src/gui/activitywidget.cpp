@@ -120,7 +120,7 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
 
         snh->slotFetchNotifications(ptr);
     } else {
-        qCDebug(lcActivity) << "========> notification request counter not zero.";
+        qCWarning(lcActivity) << "Notification request counter not zero.";
     }
 }
 
@@ -252,7 +252,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
     foreach( auto activity, list ) {
         if( _blacklistedNotifications.contains(activity)) {
-            qCDebug(lcActivity) << "Activity in blacklist, skip";
+            qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
 
@@ -376,7 +376,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
 void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QByteArray& verb)
 {
-    qCDebug(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
+    qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());
 
     const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
@@ -399,7 +399,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
             _notificationRequestsRunning++;
         }
     } else {
-        qCDebug(lcActivity) << "Notification Links: Invalid verb:" << verb;
+        qCWarning(lcActivity) << "Notification Links: Invalid verb:" << verb;
     }
 }
 
@@ -421,7 +421,7 @@ void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
     int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     endNotificationRequest(job->widget(), resultCode);
-    qCDebug(lcActivity) << "Server notify job failed with code " << resultCode;
+    qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
 
 }
 
@@ -434,7 +434,7 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
 
     endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
-    qCDebug(lcActivity) << "Server Notification reply code"<< replyCode << reply;
+    qCInfo(lcActivity) << "Server Notification reply code"<< replyCode << reply;
 
     // if the notification was successful start a timer that triggers
     // removal of the done widgets in a few seconds
@@ -635,7 +635,7 @@ void ActivitySettings::slotRefresh( AccountState* ptr )
 
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
     if( timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
-        qCDebug(lcActivity) << "do not check as last check is only secs ago: " << timer.elapsed() / 1000;
+        qCDebug(lcActivity) << "Do not check as last check is only secs ago: " << timer.elapsed() / 1000;
         return;
     }
     if( ptr && ptr->isConnected() ) {

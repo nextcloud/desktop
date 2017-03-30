@@ -83,7 +83,7 @@ void PropagateUploadFileV1::startNextChunk()
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
         uint transid = _transferId ^ chunkSize();
-        qCDebug(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
+        qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers["OC-Chunked"] = "1";
@@ -110,7 +110,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     const QString fileName = propagator()->getFilePath(_item->_file);
     if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
-        qCDebug(lcPropagateUpload) << "ERR: Could not prepare upload device: " << device->errorString();
+        qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -176,12 +176,6 @@ void PropagateUploadFileV1::slotPutFinished()
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
-    qCDebug(lcPropagateUpload) << job->reply()->request().url() << "FINISHED WITH STATUS"
-             << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
-             << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-             << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
     propagator()->_activeJobList.removeOne(this);
 
     if (_finished) {
@@ -194,7 +188,7 @@ void PropagateUploadFileV1::slotPutFinished()
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
     if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {        // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
-        qCDebug(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
+        qCWarning(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         propagator()->_anotherSyncNeeded = true;
         abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
         return;
@@ -320,7 +314,7 @@ void PropagateUploadFileV1::slotPutFinished()
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
         if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
-            qCDebug(lcPropagateUpload) << "WARN: File ID changed!" << _item->_fileId << fid;
+            qCWarning(lcPropagateUpload) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }

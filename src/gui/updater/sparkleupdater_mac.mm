@@ -114,7 +114,7 @@ bool autoUpdaterAllowed()
     if ([expectedPath isEqualTo:bundlePath]) {
         return true;
     }
-    qCDebug(lcUpdater) << "ERROR: We are not in /Applications, won't check for update!";
+    qCWarning(lcUpdater) << "We are not in /Applications, won't check for update!";
     return false;
 }
 

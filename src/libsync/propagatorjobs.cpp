@@ -74,7 +74,7 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
             if (!ok) {
                 _error += PropagateLocalRemove::tr("Error removing '%1': %2;").
                     arg(QDir::toNativeSeparators(di.filePath()), removeError) + " ";
-                qCDebug(lcPropagateLocalRemove) << "Error removing " << di.filePath() << ':' << removeError;
+                qCWarning(lcPropagateLocalRemove) << "Error removing " << di.filePath() << ':' << removeError;
             }
         }
         if (success && !ok) {
@@ -100,7 +100,7 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
         if (!success) {
             _error += PropagateLocalRemove::tr("Could not remove folder '%1'")
                 .arg(QDir::toNativeSeparators(absolute)) + " ";
-            qCDebug(lcPropagateLocalRemove) << "Error removing folder" << absolute;
+            qCWarning(lcPropagateLocalRemove) << "Error removing folder" << absolute;
         }
     }
     return success;

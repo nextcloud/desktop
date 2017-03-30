@@ -86,7 +86,7 @@ AccountState::State AccountState::state() const
 void AccountState::setState(State state)
 {
     if (_state != state) {
-        qCDebug(lcAccountState) << "AccountState state change: "
+        qCInfo(lcAccountState) << "AccountState state change: "
                  << stateString(_state) << "->" << stateString(state);
         State oldState = _state;
         _state = state;
@@ -171,7 +171,7 @@ void AccountState::checkConnectivity()
     }
 
     if (_connectionValidator) {
-        qCDebug(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName();
+        qCWarning(lcAccountState) << "ConnectionValidator already running, ignoring" << account()->displayName();
         return;
     }
 
@@ -182,7 +182,7 @@ void AccountState::checkConnectivity()
 
     if (isConnected() && _timeSinceLastETagCheck.isValid()
             && _timeSinceLastETagCheck.elapsed() < polltime) {
-        //qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime/1000 << " secs. No connection check needed!";
+        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime/1000 << " secs. No connection check needed!";
         return;
     }
 
@@ -217,12 +217,12 @@ void AccountState::checkConnectivity()
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors)
 {
     if (isSignedOut()) {
-        qCDebug(lcAccountState) << "Signed out, ignoring" << connectionStatusString(status) << _account->url().toString();
+        qCWarning(lcAccountState) << "Signed out, ignoring" << connectionStatusString(status) << _account->url().toString();
         return;
     }
 
     if (_connectionStatus != status) {
-        qCDebug(lcAccountState) << "AccountState connection status change: "
+        qCInfo(lcAccountState) << "AccountState connection status change: "
                  << connectionStatusString(_connectionStatus) << "->"
                  << connectionStatusString(status);
         _connectionStatus = status;

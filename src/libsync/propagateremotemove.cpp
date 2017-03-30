@@ -25,6 +25,7 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcMoveJob, "sync.networkjob.move", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "sync.propagator.remotemove", QtInfoMsg)
 
 MoveJob::MoveJob(AccountPtr account, const QString& path,
@@ -60,6 +61,10 @@ void MoveJob::start()
 
 bool MoveJob::finished()
 {
+    qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
+        << reply()->error()
+        << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
     emit finishedSignal();
     return true;
 }
@@ -120,10 +125,6 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
     ASSERT(_job);
 
-    qCDebug(lcPropagateRemoteMove) << _job->reply()->request().url() << "FINISHED WITH STATUS"
-        << _job->reply()->error()
-        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
-
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -171,7 +172,7 @@ void PropagateRemoteMove::finalize()
         record._contentChecksum = oldRecord._contentChecksum;
         record._contentChecksumType = oldRecord._contentChecksumType;
         if (record._fileSize != oldRecord._fileSize) {
-            qCDebug(lcPropagateRemoteMove) << "Warning: file sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
+            qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
             record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
         }
     }

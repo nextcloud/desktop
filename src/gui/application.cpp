@@ -81,7 +81,7 @@ QString applicationTrPath()
     QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
     if (QDir(devTrPath).exists()) {
         // might miss Qt, QtKeyChain, etc.
-        qCDebug(lcApplication) << "Running from build location! Translations may be incomplete!";
+        qCWarning(lcApplication) << "Running from build location! Translations may be incomplete!";
         return devTrPath;
     }
 #if defined(Q_OS_WIN)
@@ -150,7 +150,7 @@ Application::Application(int &argc, char **argv) :
     setupTranslations();
 
     // Setup global excludes
-    qCDebug(lcApplication) << "Loading global exclude list";
+    qCInfo(lcApplication) << "Loading global exclude list";
     ConfigFile cfg;
     ExcludedFiles& excludes = ExcludedFiles::instance();
     excludes.addExcludeFilePath( cfg.excludeFile(ConfigFile::SystemScope) );
@@ -167,7 +167,7 @@ Application::Application(int &argc, char **argv) :
         // (non-existence is not an error)
         Utility::sleep(5);
         if (!AccountManager::instance()->restore()) {
-            qCDebug(lcApplication) << "Could not read the account settings, quitting";
+            qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                         0,
                         tr("Error accessing the configuration file"),
@@ -381,7 +381,7 @@ void Application::slotParseMessage(const QString &msg, QObject*)
         parseOptions(options);
         setupLogging();
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
-        qCDebug(lcApplication) << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
+        qCInfo(lcApplication) << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
         if (_startedAt.elapsed() < 10*1000) {
             // This call is mirrored with the one in int main()
             qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
@@ -571,7 +571,7 @@ void Application::setupTranslations()
             // for us to accept the language. Otherwise, we try with the next.
             // "en" is an exception as it is the default language and may not
             // have a translation file provided.
-            qCDebug(lcApplication) << "Using" << lang << "translation";
+            qCInfo(lcApplication) << "Using" << lang << "translation";
             setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;

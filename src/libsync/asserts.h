@@ -6,7 +6,7 @@
 #if defined(QT_FORCE_ASSERTS) || !defined(QT_NO_DEBUG)
 #define OC_ASSERT_MSG qFatal
 #else
-#define OC_ASSERT_MSG qWarning
+#define OC_ASSERT_MSG qCritical
 #endif
 
 // For overloading macros by argument count

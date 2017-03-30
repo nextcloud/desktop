@@ -44,7 +44,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     if (_directory == INVALID_HANDLE_VALUE)
     {
         DWORD errorCode = GetLastError();
-        qCDebug(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << errorCode;
+        qCWarning(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << errorCode;
         _directory = 0;
         return;
     }
@@ -82,7 +82,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
-                qCDebug(lcFolderWatcher) << "ReadDirectoryChangesW error" << errorCode;
+                qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << errorCode;
             }
             break;
         }
@@ -97,7 +97,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             break;
         }
         if (result != 0) {
-            qCDebug(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << GetLastError();
+            qCWarning(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << GetLastError();
             break;
         }
 
@@ -109,7 +109,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
-                qCDebug(lcFolderWatcher) << "GetOverlappedResult error" << errorCode;
+                qCWarning(lcFolderWatcher) << "GetOverlappedResult error" << errorCode;
             }
             break;
         }
@@ -128,7 +128,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 if (longNameSize > 0) {
                     longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(fileNameBuffer), longNameSize);
                 } else {
-                    qCDebug(lcFolderWatcher) << "Error converting file name to full length, keeping original name.";
+                    qCWarning(lcFolderWatcher) << "Error converting file name to full length, keeping original name.";
                 }
             }
             longfile = QDir::cleanPath(longfile);

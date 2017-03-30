@@ -43,7 +43,7 @@ static void setupFavLink_private(const QString &folder)
     }
     qCDebug(lcUtility) << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
-        qCDebug(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
+        qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 
 }
 

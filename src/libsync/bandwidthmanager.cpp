@@ -297,7 +297,7 @@ void BandwidthManager::relativeDownloadMeasuringTimerExpired()
     int jobCount = _downloadJobList.count();
     qint64 quota = relativeLimitProgressDifference * (downloadLimitPercent / 100.0);
     if (quota > 20*1024) {
-        qCDebug(lcBandwidthManager) << "======== ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20*1024;
+        qCInfo(lcBandwidthManager) << "ADJUSTING QUOTA FROM " << quota << " TO " << quota - 20*1024;
         quota -= 20*1024;
     }
     qint64 quotaPerJob = quota / jobCount + 1.0;
@@ -350,7 +350,7 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
 void BandwidthManager::switchingTimerExpired() {
     qint64 newUploadLimit = _propagator->_uploadLimit.fetchAndAddAcquire(0);
     if (newUploadLimit != _currentUploadLimit) {
-        qCDebug(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
+        qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
         _currentUploadLimit = newUploadLimit;
         Q_FOREACH(UploadDevice *ud, _relativeUploadDeviceList) {
             if (newUploadLimit == 0) {
@@ -367,7 +367,7 @@ void BandwidthManager::switchingTimerExpired() {
     }
     qint64 newDownloadLimit = _propagator->_downloadLimit.fetchAndAddAcquire(0);
     if (newDownloadLimit != _currentDownloadLimit) {
-        qCDebug(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
+        qCInfo(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
         _currentDownloadLimit = newDownloadLimit;
         Q_FOREACH(GETFileJob *j, _downloadJobList) {
             if (usingAbsoluteDownloadLimit()) {

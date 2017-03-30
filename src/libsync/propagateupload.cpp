@@ -43,8 +43,8 @@ const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPutFile, "sync.networkjob.put", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPoll, "sync.networkjob.poll", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPollJob, "sync.networkjob.poll", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateUpload, "sync.propagator.upload", QtInfoMsg)
 
 /**
@@ -85,7 +85,7 @@ void PUTFileJob::start() {
     }
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qCWarning(lcPutFile) << " Network error: " << reply()->errorString();
+        qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
@@ -147,7 +147,7 @@ bool PollJob::finished()
     }
 
     QByteArray jsonData = reply()->readAll().trimmed();
-    qCDebug(lcPoll) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QJsonParseError jsonParseError;
     QJsonObject status = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     if (jsonParseError.error != QJsonParseError::NoError) {
@@ -501,11 +501,11 @@ void PropagateUploadFileCommon::checkResettingErrors()
         auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount += 1;
         if (uploadInfo._errorCount > 3) {
-            qCDebug(lcPropagateUpload) << "Reset transfer of" << _item->_file
+            qCInfo(lcPropagateUpload) << "Reset transfer of" << _item->_file
                      << "due to repeated error" << _item->_httpErrorCode;
             uploadInfo = SyncJournalDb::UploadInfo();
         } else {
-            qCDebug(lcPropagateUpload) << "Error count for maybe-reset error" << _item->_httpErrorCode
+            qCInfo(lcPropagateUpload) << "Error count for maybe-reset error" << _item->_httpErrorCode
                      << "on file" << _item->_file
                      << "is" << uploadInfo._errorCount;
         }

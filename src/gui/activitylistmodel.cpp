@@ -140,7 +140,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);
-    qCDebug(lcActivity) << "Start fetching activities for " << s->account()->displayName();
+    qCInfo(lcActivity) << "Start fetching activities for " << s->account()->displayName();
     job->start();
 }
 

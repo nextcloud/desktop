@@ -44,7 +44,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     // not yet valid, its assumed that notifications are available.
     if( ptr->account()->capabilities().isValid() ) {
         if( ! ptr->account()->capabilities().notificationsAvailable() ) {
-            qCDebug(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            qCInfo(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
             return;
         }
@@ -62,7 +62,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument& json, int statusCode)
 {
     if( statusCode != 200 ) {
-        qCDebug(lcServerNotification) << "Notifications failed with status code " << statusCode;
+        qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
         return;
     }

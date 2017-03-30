@@ -329,7 +329,7 @@ void AccountSettings::slotFolderWizardAccepted()
     FolderWizard *folderWizard = qobject_cast<FolderWizard*>(sender());
     FolderMan *folderMan = FolderMan::instance();
 
-    qCDebug(lcAccountSettings) << "* Folder wizard completed";
+    qCInfo(lcAccountSettings) << "Folder wizard completed";
 
     FolderDefinition definition;
     definition.localPath    = FolderDefinition::prepareLocalPath(
@@ -340,7 +340,7 @@ void AccountSettings::slotFolderWizardAccepted()
     {
         QDir dir(definition.localPath);
         if (!dir.exists()) {
-            qCDebug(lcAccountSettings) << "Creating folder" << definition.localPath;
+            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath;
             if (!dir.mkpath(".")) {
                 QMessageBox::warning(this, tr("Folder creation failed"),
                                      tr("<p>Could not create local folder <i>%1</i>.")
@@ -375,7 +375,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
 void AccountSettings::slotFolderWizardRejected()
 {
-    qCDebug(lcAccountSettings) << "* Folder wizard cancelled";
+    qCInfo(lcAccountSettings) << "Folder wizard cancelled";
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(true);
 }
@@ -388,7 +388,7 @@ void AccountSettings::slotRemoveCurrentFolder()
     if( selected.isValid() && folder ) {
         int row = selected.row();
 
-        qCDebug(lcAccountSettings) << "Remove Folder alias " << folder->alias();
+        qCInfo(lcAccountSettings) << "Remove Folder alias " << folder->alias();
         QString shortGuiLocalPath = folder->shortGuiLocalPath();
 
         QMessageBox messageBox(QMessageBox::Question,
@@ -460,7 +460,7 @@ void AccountSettings::slotEnableCurrentFolder()
     if( !alias.isEmpty() ) {
         FolderMan *folderMan = FolderMan::instance();
 
-        qCDebug(lcAccountSettings) << "Application: enable folder with alias " << alias;
+        qCInfo(lcAccountSettings) << "Application: enable folder with alias " << alias;
         bool terminate = false;
         bool currentlyPaused = false;
 
@@ -667,7 +667,7 @@ void AccountSettings::slotLinkActivated(const QString& link)
             ui->_folderList->setCurrentIndex(indx);
             ui->_folderList->scrollTo(indx);
         } else {
-            qCDebug(lcAccountSettings) << "Unable to find a valid index for " << myFolder;
+            qCWarning(lcAccountSettings) << "Unable to find a valid index for " << myFolder;
         }
     }
 }

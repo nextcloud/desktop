@@ -114,7 +114,7 @@ public:
 
     void sendMessage(const QString& message, bool doWait = false) const
     {
-        qCDebug(lcSocketApi) << "Sending message: " << message;
+        qCInfo(lcSocketApi) << "Sending SocketAPI message: " << message << "to" << socket;
         QString localMessage = message;
         if( ! localMessage.endsWith(QLatin1Char('\n'))) {
             localMessage.append(QLatin1Char('\n'));
@@ -126,7 +126,7 @@ public:
             socket->waitForBytesWritten(1000);
         }
         if( sent != bytesToSend.length() ) {
-            qCDebug(lcSocketApi) << "WARN: Could not send all data on socket for " << localMessage;
+            qCWarning(lcSocketApi) << "Could not send all data on socket for " << localMessage;
         }
 
     }
@@ -183,7 +183,7 @@ SocketApi::SocketApi(QObject* parent)
 #endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {
-	qCDebug(lcSocketApi) << "An unexpected system detected";
+	   qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
     }
 
     SocketApiServer::removeServer(socketPath);
@@ -197,9 +197,9 @@ SocketApi::SocketApi(QObject* parent)
         }
     }
     if(!_localServer.listen(socketPath)) {
-        qCDebug(lcSocketApi) << "can't start server" << socketPath;
+        qCWarning(lcSocketApi) << "can't start server" << socketPath;
     } else {
-        qCDebug(lcSocketApi) << "server started, listening at " << socketPath;
+        qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
     connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
@@ -224,7 +224,7 @@ void SocketApi::slotNewConnection()
     if( ! socket ) {
         return;
     }
-    qCDebug(lcSocketApi) << "New connection" << socket;
+    qCInfo(lcSocketApi) << "New connection" << socket;
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, SIGNAL(destroyed(QObject*)), this, SLOT(slotSocketDestroyed(QObject*)));
@@ -243,7 +243,7 @@ void SocketApi::slotNewConnection()
 
 void SocketApi::onLostConnection()
 {
-    qCDebug(lcSocketApi) << "Lost connection " << sender();
+    qCInfo(lcSocketApi) << "Lost connection " << sender();
     sender()->deleteLater();
 }
 
@@ -272,7 +272,7 @@ void SocketApi::slotReadSocket()
         if(indexOfMethod != -1) {
             staticMetaObject.method(indexOfMethod).invoke(this, Q_ARG(QString, argument), Q_ARG(SocketListener*, listener));
         } else {
-            qCDebug(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
+            qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
     }
 }

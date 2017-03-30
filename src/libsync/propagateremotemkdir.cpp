@@ -77,10 +77,6 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     ASSERT(_job);
 
-    qCDebug(lcPropagateRemoteMkdir) << _job->reply()->request().url() << "FINISHED WITH STATUS"
-        << _job->reply()->error()
-        << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
-
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 

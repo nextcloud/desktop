@@ -48,7 +48,7 @@ NotificationWidget *NotificationConfirmJob::widget()
 void NotificationConfirmJob::start()
 {
     if( !_link.isValid() ) {
-        qCDebug(lcNotifications) << "Attempt to trigger invalid URL: " << _link.toString();
+        qCWarning(lcNotifications) << "Attempt to trigger invalid URL: " << _link.toString();
         return;
     }
     QNetworkRequest req;

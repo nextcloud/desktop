@@ -139,17 +139,17 @@ void PropagateUploadFileNG::slotPropfindFinished()
     if (_sent > _item->_size) {
         // Normally this can't happen because the size is xor'ed with the transfer id, and it is
         // therefore impossible that there is more data on the server than on the file.
-        qCWarning(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
+        qCCritical(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
             << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
             << _item->_size << ")";
         startNewUpload();
         return;
     }
 
-    qCDebug(lcPropagateUpload) << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
+    qCInfo(lcPropagateUpload) << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
 
     if (!_serverChunks.isEmpty()) {
-        qCDebug(lcPropagateUpload) << "To Delete" << _serverChunks.keys();
+        qCInfo(lcPropagateUpload) << "To Delete" << _serverChunks.keys();
         propagator()->_activeJobList.append(this);
         _removeJobError = false;
 
@@ -304,7 +304,7 @@ void PropagateUploadFileNG::startNextChunk()
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (! device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
-        qCDebug(lcPropagateUpload) << "ERR: Could not prepare upload device: " << device->errorString();
+        qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -346,12 +346,6 @@ void PropagateUploadFileNG::slotPutFinished()
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
-    qCDebug(lcPropagateUpload) << job->reply()->request().url() << "FINISHED WITH STATUS"
-             << job->reply()->error()
-             << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
-             << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
-             << job->reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
     propagator()->_activeJobList.removeOne(this);
 
     if (_finished) {
@@ -365,7 +359,7 @@ void PropagateUploadFileNG::slotPutFinished()
     if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {
         // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
-        qCDebug(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
+        qCWarning(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         propagator()->_anotherSyncNeeded = true;
         abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
         return;
@@ -413,7 +407,7 @@ void PropagateUploadFileNG::slotPutFinished()
                 targetSize,
                 propagator()->syncOptions()._maxChunkSize);
 
-        qCDebug(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
+        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
                  << "ms, desired is" << targetDuration << "ms, expected good chunk size is"
                  << predictedGoodSize << "bytes and nudged next chunk size to "
                  << propagator()->_chunkSize << "bytes";
@@ -496,7 +490,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     } else {
         // the old file id should only be empty for new files uploaded
         if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
-            qCDebug(lcPropagateUpload) << "WARN: File ID changed!" << _item->_fileId << fid;
+            qCWarning(lcPropagateUpload) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }

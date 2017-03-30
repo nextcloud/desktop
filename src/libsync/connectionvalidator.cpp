@@ -93,14 +93,14 @@ void ConnectionValidator::checkServerAndAuth()
 
 void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
     if (!_account) {
-        qCDebug(lcConnectionValidator) << "Bailing out, Account had been deleted";
+        qCWarning(lcConnectionValidator) << "Bailing out, Account had been deleted";
         return;
     }
 
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qCDebug(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+        qCInfo(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
     } else {
-        qCDebug(lcConnectionValidator) << "No system proxy set by OS";
+        qCInfo(lcConnectionValidator) << "No system proxy set by OS";
     }
     _account->networkAccessManager()->setProxy(proxy);
 
@@ -127,7 +127,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
     QString serverVersion = CheckServerJob::version(info);
 
     // status.php was found.
-    qCDebug(lcConnectionValidator) << "** Application: ownCloud found: "
+    qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
              << url << " with version "
              << CheckServerJob::versionString(info)
              << "(" << serverVersion << ")";
@@ -152,7 +152,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    qCDebug(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
+    qCWarning(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
     if (!_account->credentials()->ready()) {
         // This could be needed for SSL client certificates
         // We need to load them from keychain and try
@@ -201,8 +201,7 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
              !_account->credentials()->stillValid(reply)) {
-        qCDebug(lcConnectionValidator) <<  reply->error() << job->errorString();
-        qCDebug(lcConnectionValidator) << "******** Password is wrong!";
+        qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job->errorString();
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsMissingOrWrong;
 
@@ -241,7 +240,7 @@ void ConnectionValidator::checkServerCapabilities()
 void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 {
     auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-    qCDebug(lcConnectionValidator) << "Server capabilities" << caps;
+    qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
     _account->setCapabilities(caps.toVariantMap());
 
     // New servers also report the version in the capabilities

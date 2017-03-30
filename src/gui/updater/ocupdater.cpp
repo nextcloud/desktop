@@ -67,12 +67,12 @@ void UpdaterScheduler::slotTimerFired()
     auto checkInterval = cfg.updateCheckInterval();
     if( checkInterval != _updateCheckTimer.interval() ) {
         _updateCheckTimer.setInterval(checkInterval);
-        qCDebug(lcUpdater) << "Setting new update check interval " << checkInterval;
+        qCInfo(lcUpdater) << "Setting new update check interval " << checkInterval;
     }
 
     // consider the skipUpdateCheck flag in the config.
     if( cfg.skipUpdateCheck() ) {
-        qCDebug(lcUpdater) << "Skipping update check because of config file";
+        qCInfo(lcUpdater) << "Skipping update check because of config file";
         return;
     }
 
@@ -123,14 +123,14 @@ void OCUpdater::backgroundCheckForUpdate()
     case UpToDate:
     case DownloadFailed:
     case DownloadTimedOut:
-        qCDebug(lcUpdater) << "checking for available update";
+        qCInfo(lcUpdater) << "Checking for available update";
         checkForUpdate();
         break;
     case DownloadComplete:
-        qCDebug(lcUpdater) << "Update is downloaded, skip new check.";
+        qCInfo(lcUpdater) << "Update is downloaded, skip new check.";
         break;
     case UpdateOnlyAvailableThroughSystem:
-        qCDebug(lcUpdater) << "Update is only available through system, skip check.";
+        qCInfo(lcUpdater) << "Update is only available through system, skip check.";
         break;
     }
 }
@@ -188,7 +188,7 @@ void OCUpdater::slotStartInstaller()
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(autoUpdateAttemptedC, true);
     settings.sync();
-    qCDebug(lcUpdater) << "Running updater" << updateFile;
+    qCInfo(lcUpdater) << "Running updater" << updateFile;
     QProcess::startDetached(updateFile, QStringList() << "/S" << "/launch");
 }
 
@@ -223,7 +223,7 @@ void OCUpdater::slotVersionInfoArrived()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
     if( reply->error() != QNetworkReply::NoError ) {
-        qCDebug(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
+        qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
         return;
     }
 
@@ -234,7 +234,7 @@ void OCUpdater::slotVersionInfoArrived()
     if( ok ) {
         versionInfoArrived(_updateInfo);
     } else {
-        qCDebug(lcUpdater) << "Could not parse update information.";
+        qCWarning(lcUpdater) << "Could not parse update information.";
     }
 }
 
@@ -272,7 +272,7 @@ void NSISUpdater::slotDownloadFinished()
     _file->close();
     QFile::copy(_file->fileName(), _targetFile);
     setDownloadState(DownloadComplete);
-    qCDebug(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
+    qCInfo(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue(updateTargetVersionC, updateInfo().version());
@@ -290,7 +290,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
        || infoVersion <= currVersion
        || infoVersion <= seenVersion)
     {
-        qCDebug(lcUpdater) << "Client is on latest version!";
+        qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
@@ -457,7 +457,7 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 
     if( info.version().isEmpty() ||
             currentVer >= remoteVer ) {
-        qCDebug(lcUpdater) << "Client is on latest version!";
+        qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         setDownloadState(UpdateOnlyAvailableThroughSystem);

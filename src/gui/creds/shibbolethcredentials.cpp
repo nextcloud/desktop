@@ -214,11 +214,11 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 {
     if (_user.isEmpty()) {
         if (user.isEmpty()) {
-            qCDebug(lcShibboleth) << "Failed to fetch the shibboleth user";
+            qCWarning(lcShibboleth) << "Failed to fetch the shibboleth user";
         }
         _user = user;
     } else if (user != _user) {
-        qCDebug(lcShibboleth) << "Wrong user: " << user << "!=" << _user;
+        qCWarning(lcShibboleth) << "Wrong user: " << user << "!=" << _user;
         QMessageBox::warning(_browser, tr("Login Error"), tr("You must sign in as user %1").arg(_user));
         invalidateToken();
         showLoginWindow();

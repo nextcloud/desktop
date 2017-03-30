@@ -148,14 +148,14 @@ void AbstractNetworkJob::slotFinished()
     _timer.stop();
 
     if( _reply->error() == QNetworkReply::SslHandshakeFailedError ) {
-        qCDebug(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
+        qCWarning(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
     if( _reply->error() != QNetworkReply::NoError ) {
-        qCDebug(lcNetworkJob) << _reply->error() << errorString()
+        qCWarning(lcNetworkJob) << _reply->error() << errorString()
                  << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
-            qCDebug(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
+            qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
         }
         emit networkError(_reply);
     }
@@ -182,7 +182,7 @@ void AbstractNetworkJob::slotFinished()
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
             // Create the redirected request and send it
-            qCDebug(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
+            qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
             resetTimeout();
             if (_requestBody) {
                 _requestBody->seek(0);
@@ -203,6 +203,7 @@ void AbstractNetworkJob::slotFinished()
 
     bool discard = finished();
     if (discard) {
+        qCDebug(lcNetworkJob) << "Network job" << metaObject()->className() << "finished for" << path();
         deleteLater();
     }
 }
@@ -259,7 +260,7 @@ void AbstractNetworkJob::start()
     const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
     QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
-    qCDebug(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
+    qCInfo(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()

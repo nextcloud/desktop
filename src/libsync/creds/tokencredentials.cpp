@@ -133,7 +133,7 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
 
 void TokenCredentials::invalidateToken()
 {
-    qCDebug(lcTokenCredentials) << "Invalidating token";
+    qCInfo(lcTokenCredentials) << "Invalidating token";
     _ready = false;
     _account->clearCookieJar();
     _token = QString();
@@ -157,7 +157,7 @@ void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* 
     // we cannot use QAuthenticator, because it sends username and passwords with latin1
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
-    qCDebug(lcTokenCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
+    qCWarning(lcTokenCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
 }

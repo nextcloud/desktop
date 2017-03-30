@@ -40,7 +40,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 {
 	(void) conf;
     if (!certs) {
-        qCDebug(lcSslErrorDialog) << "Certs parameter required but is NULL!";
+        qCCritical(lcSslErrorDialog) << "Certs parameter required but is NULL!";
         return false;
     }
 
@@ -214,7 +214,7 @@ bool SslErrorDialog::trustConnection()
     if( _allTrusted ) return true;
 
     bool stat = ( _ui->_cbTrustConnect->checkState() == Qt::Checked );
-    qCDebug(lcSslErrorDialog) << "SSL-Connection is trusted: " << stat;
+    qCInfo(lcSslErrorDialog) << "SSL-Connection is trusted: " << stat;
 
     return stat;
 }

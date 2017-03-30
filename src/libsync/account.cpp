@@ -328,13 +328,13 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
 
     // If all certs have previously been rejected by the user, don't ask again.
     if( allPreviouslyRejected ) {
-        qCDebug(lcAccount) << out << "Certs not trusted by user decision, returning.";
+        qCInfo(lcAccount) << out << "Certs not trusted by user decision, returning.";
         return;
     }
 
     QList<QSslCertificate> approvedCerts;
     if (_sslErrorHandler.isNull() ) {
-        qCDebug(lcAccount) << out << "called without valid SSL error handler for account" << url();
+        qCWarning(lcAccount) << out << "called without valid SSL error handler for account" << url();
         return;
     }
 
@@ -352,7 +352,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
         addApprovedCerts(approvedCerts);
         emit wantsAccountSaved(this);
         // all ssl certs are known and accepted. We can ignore the problems right away.
-        qCDebug(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
+        qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
 
         // Warning: Do *not* use ignoreSslErrors() (without args) here:
         // it permanently ignores all SSL errors for this host, even

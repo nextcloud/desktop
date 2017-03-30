@@ -144,7 +144,7 @@ void ShareDialog::slotMaxSharingPermissionsReceived(const QVariantMap & result)
     const QVariant receivedPermissions = result["share-permissions"];
     if (!receivedPermissions.toString().isEmpty()) {
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
-        qCDebug(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
+        qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
 
     showSharingUi();
@@ -208,7 +208,7 @@ void ShareDialog::showSharingUi()
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
 {
     if (statusCode != 200) {
-        qCDebug(lcSharing) << "Thumbnail status code: " << statusCode;
+        qCWarning(lcSharing) << "Thumbnail status code: " << statusCode;
         return;
     }
 

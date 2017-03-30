@@ -202,7 +202,7 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job* incoming)
         }
 #endif
         if (_clientSslKey.isNull()) {
-            qCDebug(lcHttpCredentials) << "Warning: Could not load SSL key into Qt!";
+            qCWarning(lcHttpCredentials) << "Could not load SSL key into Qt!";
         }
     }
 
@@ -232,7 +232,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incomingJob)
     _password = job->textData();
 
     if( _user.isEmpty()) {
-        qCDebug(lcHttpCredentials) << "Strange: User is empty!";
+        qCWarning(lcHttpCredentials) << "Strange: User is empty!";
     }
 
     QKeychain::Error error = job->error();
@@ -268,7 +268,7 @@ void HttpCredentials::invalidateToken()
 
     const QString kck = keychainKey(_account->url().toString(), _user);
     if( kck.isEmpty() ) {
-        qCDebug(lcHttpCredentials) << "InvalidateToken: User is empty, bailing out!";
+        qCWarning(lcHttpCredentials) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 
@@ -363,7 +363,7 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
     case NoError:
         break;
     default:
-        qCDebug(lcHttpCredentials) << "Error while writing password" << job->errorString();
+        qCWarning(lcHttpCredentials) << "Error while writing password" << job->errorString();
     }
     WritePasswordJob *wjob = qobject_cast<WritePasswordJob*>(job);
     wjob->deleteLater();
@@ -374,7 +374,7 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
-    qCDebug(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
+    qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
 }

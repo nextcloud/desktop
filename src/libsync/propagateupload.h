@@ -23,6 +23,7 @@
 
 namespace OCC {
 
+Q_DECLARE_LOGGING_CATEGORY(lcPutJob)
 Q_DECLARE_LOGGING_CATEGORY(lcPropagateUpload)
 
 class BandwidthManager;
@@ -117,6 +118,12 @@ public:
     virtual void start() Q_DECL_OVERRIDE;
 
     virtual bool finished() Q_DECL_OVERRIDE {
+        qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
+                 << reply()->error()
+                 << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString())
+                 << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
+                 << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+
         emit finishedSignal();
         return true;
     }

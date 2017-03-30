@@ -38,11 +38,11 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
 {
     QString u(url);
     if( u.isEmpty() ) {
-        qCDebug(lcCredentials) << "Empty url in keyChain, error!";
+        qCWarning(lcCredentials) << "Empty url in keyChain, error!";
         return QString::null;
     }
     if( user.isEmpty() ) {
-        qCDebug(lcCredentials) << "Error: User is empty!";
+        qCWarning(lcCredentials) << "Error: User is empty!";
         return QString::null;
     }
 
