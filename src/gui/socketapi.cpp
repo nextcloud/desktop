@@ -15,6 +15,7 @@
  */
 
 #include "socketapi.h"
+#include "socketapi_p.h"
 
 #include "conflictdialog.h"
 #include "conflictsolver.h"
@@ -53,6 +54,13 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog>
+
+
+#include <QAction>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QWidget>
+
 #include <QClipboard>
 #include <QDesktopServices>
 
@@ -62,10 +70,30 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.1"
+#define DEBUG qDebug() << "SocketApi: "
+
+namespace {
+#if GUI_TESTING
+QWidget *findWidget(const QString &objectName)
+{
+    auto widgets = QApplication::allWidgets();
+
+    auto foundWidget = std::find_if(widgets.constBegin(), widgets.constEnd(), [&](QWidget *widget) {
+        return widget->objectName() == objectName;
+    });
+
+    if (foundWidget == widgets.constEnd()) {
+        return nullptr;
+    }
+
+    return *foundWidget;
+}
+#endif
 
 static inline QString removeTrailingSlash(QString path)
 {
@@ -89,6 +117,7 @@ static QString buildMessage(const QString &verb, const QString &path, const QStr
     }
     return msg;
 }
+}
 
 namespace OCC {
 
@@ -96,80 +125,28 @@ Q_LOGGING_CATEGORY(lcSocketApi, "nextcloud.gui.socketapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPublicLink, "nextcloud.gui.socketapi.publiclink", QtInfoMsg)
 
 
-class BloomFilter
+void SocketListener::sendMessage(const QString &message, bool doWait) const
 {
-    // Initialize with m=1024 bits and k=2 (high and low 16 bits of a qHash).
-    // For a client navigating in less than 100 directories, this gives us a probability less than (1-e^(-2*100/1024))^2 = 0.03147872136 false positives.
-    const static int NumBits = 1024;
-
-public:
-    BloomFilter()
-        : hashBits(NumBits)
-    {
+    if (!socket) {
+        qCInfo(lcSocketApi) << "Not sending message to dead socket:" << message;
+        return;
     }
 
-    void storeHash(uint hash)
-    {
-        hashBits.setBit((hash & 0xFFFF) % NumBits); // NOLINT it's uint all the way and the modulo puts us back in the 0..1023 range
-        hashBits.setBit((hash >> 16) % NumBits); // NOLINT
-    }
-    bool isHashMaybeStored(uint hash) const
-    {
-        return hashBits.testBit((hash & 0xFFFF) % NumBits) // NOLINT
-            && hashBits.testBit((hash >> 16) % NumBits); // NOLINT
+    qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
+    QString localMessage = message;
+    if (!localMessage.endsWith(QLatin1Char('\n'))) {
+        localMessage.append(QLatin1Char('\n'));
     }
 
-private:
-    QBitArray hashBits;
-};
-
-class SocketListener
-{
-public:
-    QPointer<QIODevice> socket;
-
-    explicit SocketListener(QIODevice *socket)
-        : socket(socket)
-    {
+    QByteArray bytesToSend = localMessage.toUtf8();
+    qint64 sent = socket->write(bytesToSend);
+    if (doWait) {
+        socket->waitForBytesWritten(1000);
     }
-
-    void sendMessage(const QString &message, bool doWait = false) const
-    {
-        if (!socket) {
-            qCInfo(lcSocketApi) << "Not sending message to dead socket:" << message;
-            return;
-        }
-
-        qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
-        QString localMessage = message;
-        if (!localMessage.endsWith(QLatin1Char('\n'))) {
-            localMessage.append(QLatin1Char('\n'));
-        }
-
-        QByteArray bytesToSend = localMessage.toUtf8();
-        qint64 sent = socket->write(bytesToSend);
-        if (doWait) {
-            socket->waitForBytesWritten(1000);
-        }
-        if (sent != bytesToSend.length()) {
-            qCWarning(lcSocketApi) << "Could not send all data on socket for " << localMessage;
-        }
+    if (sent != bytesToSend.length()) {
+        qCWarning(lcSocketApi) << "Could not send all data on socket for " << localMessage;
     }
-
-    void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
-    {
-        if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash))
-            sendMessage(message, false);
-    }
-
-    void registerMonitoredDirectory(uint systemDirectoryHash)
-    {
-        _monitoredDirectoriesBloomFilter.storeHash(systemDirectoryHash);
-    }
-
-private:
-    BloomFilter _monitoredDirectoriesBloomFilter;
-};
+}
 
 struct ListenerHasSocketPred
 {
@@ -185,6 +162,9 @@ SocketApi::SocketApi(QObject *parent)
     : QObject(parent)
 {
     QString socketPath;
+
+    qRegisterMetaType<SocketListener *>("SocketListener*");
+    qRegisterMetaType<QSharedPointer<SocketApiJob>>("QSharedPointer<SocketApiJob>");
 
     if (Utility::isWindows()) {
         socketPath = QLatin1String(R"(\\.\pipe\)")
@@ -321,20 +301,48 @@ void SocketApi::slotReadSocket()
         line.chop(1); // remove the '\n'
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         QByteArray command = line.split(":").value(0).toLatin1();
-        QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
+
+        QByteArray functionWithArguments = "command_" + command;
+        if (command.startsWith("ASYNC_")) {
+            functionWithArguments += "(QSharedPointer<SocketApiJob>)";
+        } else {
+            functionWithArguments += "(QString,SocketListener*)";
+        }
+
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
         QString argument = line.remove(0, command.length() + 1);
-        if (indexOfMethod == -1) {
-            // Fallback: Try upper-case command
-            functionWithArguments = "command_" + command.toUpper() + "(QString,SocketListener*)";
-            indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
-        }
+        if (command.startsWith("ASYNC_")) {
 
-        if (indexOfMethod != -1) {
-            staticMetaObject.method(indexOfMethod).invoke(this, Q_ARG(QString, argument), Q_ARG(SocketListener *, listener));
+            auto arguments = argument.split('|');
+            if (arguments.size() != 2) {
+                listener->sendMessage(QLatin1String("argument count is wrong"));
+                return;
+            }
+
+            auto json = QJsonDocument::fromJson(arguments[1].toUtf8()).object();
+
+            auto jobId = arguments[0];
+
+            auto socketApiJob = QSharedPointer<SocketApiJob>(
+                new SocketApiJob(jobId, listener, json), &QObject::deleteLater);
+            if (indexOfMethod != -1) {
+                staticMetaObject.method(indexOfMethod)
+                    .invoke(this, Qt::QueuedConnection,
+                            Q_ARG(QSharedPointer<SocketApiJob>, socketApiJob));
+            } else {
+                qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command
+                      << "with argument:" << argument;
+                socketApiJob->reject("command not found");
+            }
         } else {
-            qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
+            if (indexOfMethod != -1) {
+                staticMetaObject.method(indexOfMethod)
+                    .invoke(this, Qt::QueuedConnection, Q_ARG(QString, argument),
+                            Q_ARG(SocketListener *, listener));
+            } else {
+                qCWarning(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
+            }
         }
     }
 }
@@ -1122,6 +1130,109 @@ DirectEditor* SocketApi::getDirectEditorForLocalFile(const QString &localFile)
 
     return nullptr;
 }
+
+#if GUI_TESTING
+void SocketApi::command_ASYNC_LIST_WIDGETS(const QSharedPointer<SocketApiJob> &job)
+{
+    QString response;
+    for (auto &widget : QApplication::allWidgets()) {
+        auto objectName = widget->objectName();
+        if (!objectName.isEmpty()) {
+            response += objectName + ":" + widget->property("text").toString() + ", ";
+        }
+    }
+    job->resolve(response);
+}
+
+void SocketApi::command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<SocketApiJob> &job)
+{
+    auto &arguments = job->arguments();
+
+    auto widget = findWidget(arguments["objectName"].toString());
+    if (!widget) {
+        job->reject(QLatin1String("widget not found"));
+        return;
+    }
+
+    QMetaObject::invokeMethod(widget, arguments["method"].toString().toLocal8Bit().constData());
+    job->resolve();
+}
+
+void SocketApi::command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job)
+{
+    auto widget = findWidget(job->arguments()[QLatin1String("objectName")].toString());
+    if (!widget) {
+        job->reject(QLatin1String("widget not found"));
+        return;
+    }
+
+    auto propertyName = job->arguments()[QLatin1String("property")].toString();
+
+    job->resolve(widget->property(propertyName.toLocal8Bit().constData())
+                     .toString()
+                     .toLocal8Bit()
+                     .constData());
+}
+
+void SocketApi::command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job)
+{
+    auto &arguments = job->arguments();
+    auto widget = findWidget(arguments["objectName"].toString());
+    if (!widget) {
+        job->reject(QLatin1String("widget not found"));
+        return;
+    }
+    widget->setProperty(arguments["property"].toString().toLocal8Bit().constData(),
+                        arguments["value"].toString().toLocal8Bit().constData());
+    job->resolve();
+}
+
+void SocketApi::command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<SocketApiJob> &job)
+{
+    auto &arguments = job->arguments();
+    auto widget = findWidget(arguments["objectName"].toString());
+    if (!widget) {
+        job->reject(QLatin1String("widget not found"));
+        return;
+    }
+
+    ListenerClosure *closure = new ListenerClosure([job]() { job->resolve("signal emitted"); });
+
+    auto signalSignature = arguments["signalSignature"].toString();
+    signalSignature.prepend("2");
+    auto local8bit = signalSignature.toLocal8Bit();
+    auto signalSignatureFinal = local8bit.constData();
+    connect(widget, signalSignatureFinal, closure, SLOT(closureSlot()), Qt::QueuedConnection);
+}
+
+void SocketApi::command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApiJob> &job)
+{
+    auto &arguments = job->arguments();
+
+    auto objectName = arguments["objectName"].toString();
+    auto widget = findWidget(objectName);
+    if (!widget) {
+        job->reject(QLatin1String("widget not found: ") + objectName);
+        return;
+    }
+
+    auto children = widget->findChildren<QWidget *>();
+    for (auto childWidget : children) {
+        // foo is the popupwidget!
+        auto actions = childWidget->actions();
+        for (auto action : actions) {
+            if (action->objectName() == arguments["actionName"].toString()) {
+                action->trigger();
+
+                job->resolve("action found");
+                return;
+            }
+        }
+    }
+
+    job->reject("Action not found");
+}
+#endif
 
 QString SocketApi::buildRegisterPathMessage(const QString &path)
 {
