@@ -195,6 +195,7 @@ void AccountSettings::createAccountToolbox()
 {
     QMenu *menu = new QMenu();
     _addAccountAction = new QAction(tr("Add new"), this);
+    _addAccountAction->setObjectName("addAccountAction");
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
 

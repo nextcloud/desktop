@@ -231,7 +231,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
-    _ui->stack->insertWidget(0, accountSettings);
+    QString objectName = QLatin1String("accountSettings_");
+    objectName += s->account()->displayName();
+    accountSettings->setObjectName(objectName);
+    _ui->stack->insertWidget(0 , accountSettings);
+
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
@@ -363,6 +367,10 @@ public:
         }
 
         QToolButton *btn = new QToolButton(parent);
+        QString objectName = QLatin1String("settingsdialog_toolbutton_");
+        objectName += text();
+        btn->setObjectName(objectName);
+
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);

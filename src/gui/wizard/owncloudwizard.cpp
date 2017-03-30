@@ -50,6 +50,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _credentialsPage(0)
     , _setupLog()
 {
+    setObjectName("owncloudWizard");
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);

@@ -12,7 +12,6 @@
  * for more details.
  */
 
-
 #ifndef SOCKETAPI_H
 #define SOCKETAPI_H
 
@@ -20,6 +19,8 @@
 #include "common/syncfilestatus.h"
 #include "sharedialog.h" // for the ShareDialogStartPage
 #include "common/syncjournalfilerecord.h"
+
+#include "config.h"
 
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"
@@ -37,6 +38,7 @@ namespace OCC {
 class SyncFileStatus;
 class Folder;
 class SocketListener;
+class SocketApiJob;
 
 /**
  * @brief The SocketApi class
@@ -135,6 +137,15 @@ private:
      */
     Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
 
+#if GUI_TESTING
+    Q_INVOKABLE void command_ASYNC_LIST_WIDGETS(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_INVOKE_WIDGET_METHOD(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_GET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_SET_WIDGET_PROPERTY(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<SocketApiJob> &job);
+    Q_INVOKABLE void command_ASYNC_TRIGGER_MENU_ACTION(const QSharedPointer<SocketApiJob> &job);
+#endif
+
     QString buildRegisterPathMessage(const QString &path);
 
     QSet<QString> _registeredAliases;
@@ -142,4 +153,5 @@ private:
     SocketApiServer _localServer;
 };
 }
+
 #endif // SOCKETAPI_H
