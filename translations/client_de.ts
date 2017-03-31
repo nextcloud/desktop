@@ -3093,7 +3093,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Dateiname enthält Leerzeichen.</translation>
+        <translation>Dateiname endet mit Leerzeichen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
