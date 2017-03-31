@@ -686,7 +686,6 @@ void DiscoveryJob::start() {
 
     csync_set_log_callback(_log_callback);
     csync_set_log_level(_log_level);
-    csync_set_log_userdata(_log_userdata);
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 

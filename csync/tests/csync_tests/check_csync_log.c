@@ -59,8 +59,7 @@ static int teardown(void **state) {
 
 static void check_log_callback(int verbosity,
                                const char *function,
-                               const char *buffer,
-                               void *userdata)
+                               const char *buffer)
 {
     int rc;
 
@@ -69,8 +68,6 @@ static void check_log_callback(int verbosity,
     assert_false(function[0] == '\0');
     assert_non_null(buffer);
     assert_false(buffer[0] == '\0');
-
-    (void) userdata; /* unused */
 
     rc = system("touch /tmp/check_csync1/cb_called");
     assert_int_equal(rc, 0);

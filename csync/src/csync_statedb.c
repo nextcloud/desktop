@@ -168,7 +168,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
   //
   result = csync_statedb_query(db, "SELECT sqlite_version();");
   if (result && result->count >= 1) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "sqlite3 version \"%s\"", *result->vector);
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3 version \"%s\"", *result->vector);
   }
   c_strlist_destroy(result);
 
@@ -186,7 +186,7 @@ int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **pdb) {
 #endif
   *pdb = db;
 
-   CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "Success");
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Success");
 
   return 0;
 out:
@@ -218,7 +218,7 @@ int csync_statedb_close(CSYNC *ctx) {
   ctx->statedb.lastReturnValue = SQLITE_OK;
 
   int sr = sqlite3_close(ctx->statedb.db);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_NOTICE, "sqlite3_close=%d", sr);
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "sqlite3_close=%d", sr);
 
   ctx->statedb.db = 0;
 
@@ -295,7 +295,7 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
         }
     } else {
         if( rc != SQLITE_DONE ) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: Query results in %d", rc);
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Query results in %d", rc);
         }
     }
     return rc;

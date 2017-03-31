@@ -287,8 +287,7 @@ typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
 
 typedef void (*csync_log_callback) (int verbosity,
                                     const char *function,
-                                    const char *buffer,
-                                    void *userdata);
+                                    const char *buffer);
 
 typedef void (*csync_update_callback) (bool local,
                                     const char *dirUrl,
@@ -437,22 +436,6 @@ csync_log_callback OCSYNC_EXPORT csync_get_log_callback(void);
  * @return              0 on success, less than 0 if an error occurred.
  */
 int OCSYNC_EXPORT csync_set_log_callback(csync_log_callback cb);
-
-/**
- * @brief get the userdata set for the logging callback.
- *
- * @return              The userdata or NULL.
- */
-void OCSYNC_EXPORT *csync_get_log_userdata(void);
-
-/**
- * @brief Set the userdata passed to the logging callback.
- *
- * @param[in]  data     The userdata to set.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_log_userdata(void *data);
 
 /* Used for special modes or debugging */
 CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);

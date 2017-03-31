@@ -29,48 +29,22 @@
 
 CSYNC_THREAD int csync_log_level;
 CSYNC_THREAD csync_log_callback csync_log_cb;
-CSYNC_THREAD void *csync_log_userdata;
-
-static void csync_log_stderr(int verbosity,
-                             const char *function,
-                             const char *buffer)
-{
-    fprintf(stderr, "[%d] %s", verbosity, function);
-    fprintf(stderr, "  %s\n", buffer);
-}
-static void csync_log_function(int verbosity,
-                               const char *function,
-                               const char *buffer)
-{
-    csync_log_callback log_fn = csync_get_log_callback();
-    if (log_fn) {
-        char buf[1024];
-
-        snprintf(buf, sizeof(buf), "%s: %s", function, buffer);
-
-        log_fn(verbosity,
-               function,
-               buf,
-               csync_get_log_userdata());
-        return;
-    }
-
-    csync_log_stderr(verbosity, function, buffer);
-}
-
 
 void csync_log(int verbosity,
                const char *function,
                const char *format, ...)
 {
-    char buffer[1024];
-    va_list va;
-
-    if (verbosity <= csync_get_log_level()) {
+    csync_log_callback log_fn = csync_get_log_callback();
+    if (log_fn && verbosity <= csync_get_log_level()) {
+        char buffer[1024];
+        va_list va;
+ 
         va_start(va, format);
         vsnprintf(buffer, sizeof(buffer), format, va);
         va_end(va);
-        csync_log_function(verbosity, function, buffer);
+
+        log_fn(verbosity, function, buffer);
+        return;
     }
 }
 
@@ -101,16 +75,3 @@ int csync_set_log_callback(csync_log_callback cb) {
 csync_log_callback csync_get_log_callback(void) {
   return csync_log_cb;
 }
-
-void *csync_get_log_userdata(void)
-{
-    return csync_log_userdata;
-}
-
-int csync_set_log_userdata(void *data)
-{
-    csync_log_userdata = data;
-
-    return 0;
-}
-

@@ -208,7 +208,6 @@ class DiscoveryJob : public QObject {
     CSYNC              *_csync_ctx;
     csync_log_callback  _log_callback;
     int                 _log_level;
-    void*               _log_userdata;
     QElapsedTimer       _lastUpdateProgressCallbackCall;
 
     /**
@@ -243,7 +242,6 @@ public:
         // and updates run in another thread
         _log_callback = csync_get_log_callback();
         _log_level = csync_get_log_level();
-        _log_userdata = csync_get_log_userdata();
     }
 
     QStringList _selectiveSyncBlackList;

@@ -341,7 +341,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
                       "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
@@ -349,7 +349,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         }
         else
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
+            CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
                       "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,

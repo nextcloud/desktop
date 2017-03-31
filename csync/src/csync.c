@@ -160,7 +160,7 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   if (!ctx->excludes) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "No exclude file loaded or defined!");
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "No exclude file loaded or defined!");
   }
 
   /* update detection for local replica */
@@ -524,7 +524,7 @@ int csync_commit(CSYNC *ctx) {
 
   if (ctx->statedb.db != NULL
       && csync_statedb_close(ctx) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
     rc = -1;
   }
   ctx->statedb.db = NULL;
@@ -559,7 +559,7 @@ int csync_destroy(CSYNC *ctx) {
 
   if (ctx->statedb.db != NULL
       && csync_statedb_close(ctx) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ERR: closing of statedb failed.");
+    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
     rc = -1;
   }
   ctx->statedb.db = NULL;

@@ -50,7 +50,6 @@ public:
   void log(Log log);
   void doLog(const QString &log);
 
-  static void csyncLog( const QString& message );
   static void mirallLog( const QString& message );
 
   const QList<Log>& logs() const {return _logs;}

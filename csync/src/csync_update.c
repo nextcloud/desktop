@@ -263,7 +263,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
     if(tmp && tmp->phash == h ) { /* there is an entry in the database */
         /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                             ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
                                             ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
@@ -414,7 +414,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
             if(tmp ) {                           /* tmp existing at all */
                 if ( _csync_filetype_different(tmp, fs)) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "WARN: file types different is not!");
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "file types different is not!");
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
                 }
@@ -446,7 +446,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
         }
     }
   } else  {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unable to open statedb" );
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Unable to open statedb" );
       csync_file_stat_free(st);
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
@@ -528,7 +528,7 @@ out:
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "file: %s, instruction: %s <<=", st->path,
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", st->path,
       csync_instruction_str(st->instruction));
 
   return 0;
