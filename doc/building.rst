@@ -99,12 +99,12 @@ To set up your build environment for development using HomeBrew_:
 
 10. Install the Packages_ package creation tool.
 
-11. In the build directory, run ``admin/osx/create_mac.sh <build_dir>
-   <install_dir>``. If you have a developer signing certificate, you can specify
-   its Common Name as a third parameter (use quotes) to have the package
-   signed automatically.
+11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``. 
+    If you have a developer signing certificate, you can specify
+    its Common Name as a third parameter (use quotes) to have the package
+    signed automatically.
 
-  .. note::  Contrary to earlier versions, ownCloud 1.7 and later are packaged
+   .. note:: Contrary to earlier versions, ownCloud 1.7 and later are packaged
              as a ``pkg`` installer. Do not call "make package" at any time when
              compiling for OS X, as this will build a disk image, and will not
              work correctly.
@@ -240,8 +240,8 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-    cmake -DCMAKE_BUILD_TYPE="Debug" ..
-
+     cmake -DCMAKE_BUILD_TYPE="Debug" ..
+    
    .. note:: You must use absolute paths for the ``include`` and ``library``
             directories.
 
@@ -249,14 +249,10 @@ To build the most up-to-date version of the client:
             where ``target`` is a private location, i.e. in parallel to your build
             dir by specifying ``../install``.
             
-   ..note:: qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/
-
-   .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/   -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
-
-   .. note:: Example:: cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1
-
-   qtkeychain must be compiled with the same prefix e.g CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .
-
+   .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
+   
+   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1``
+   
 4. Call ``make``.
 
    The owncloud binary will appear in the ``bin`` directory.
