@@ -27,7 +27,7 @@ set(client_UI
     sharedialog.ui
     sharelinkwidget.ui
     shareusergroupwidget.ui
-    sharewidget.ui
+    shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
     proxyauthdialog.ui

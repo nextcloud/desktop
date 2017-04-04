@@ -34,7 +34,7 @@ namespace OCC {
 
 namespace Ui {
 class ShareUserGroupWidget;
-class ShareWidget;
+class ShareUserLine;
 }
 
 class AbstractCredentials;
@@ -44,44 +44,6 @@ class Share;
 class Sharee;
 class ShareManager;
 class ShareeModel;
-
-class ShareWidget : public QWidget
-{
-    Q_OBJECT
-
-public:
-    explicit ShareWidget(QSharedPointer<Share> Share,
-                         SharePermissions maxSharingPermissions,
-                         bool isFile,
-                         QWidget *parent = 0);
-    ~ShareWidget();
-
-    QSharedPointer<Share> share() const;
-
-signals:
-    void visualDeletionDone();
-    void resizeRequested();
-
-private slots:
-    void on_deleteShareButton_clicked();
-    void slotPermissionsChanged();
-    void slotEditPermissionsChanged();
-    void slotDeleteAnimationFinished();
-
-    void slotShareDeleted();
-    void slotPermissionsSet();
-private:
-    void displayPermissions();
-
-    Ui::ShareWidget *_ui;
-    QSharedPointer<Share> _share;
-    bool _isFile;
-
-    QAction *_permissionCreate;
-    QAction *_permissionUpdate;
-    QAction *_permissionDelete;
-};
-
 
 /**
  * @brief The ShareDialog (user/group) class
@@ -132,6 +94,46 @@ private:
     ShareManager *_manager;
 
     QProgressIndicator _pi_sharee;
+};
+
+/**
+ * The widget displayed for each user/group share
+ */
+class ShareUserLine : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ShareUserLine(QSharedPointer<Share> Share,
+                           SharePermissions maxSharingPermissions,
+                           bool isFile,
+                           QWidget *parent = 0);
+    ~ShareUserLine();
+
+    QSharedPointer<Share> share() const;
+
+signals:
+    void visualDeletionDone();
+    void resizeRequested();
+
+private slots:
+    void on_deleteShareButton_clicked();
+    void slotPermissionsChanged();
+    void slotEditPermissionsChanged();
+    void slotDeleteAnimationFinished();
+
+    void slotShareDeleted();
+    void slotPermissionsSet();
+private:
+    void displayPermissions();
+
+    Ui::ShareUserLine *_ui;
+    QSharedPointer<Share> _share;
+    bool _isFile;
+
+    QAction *_permissionCreate;
+    QAction *_permissionUpdate;
+    QAction *_permissionDelete;
 };
 
 }

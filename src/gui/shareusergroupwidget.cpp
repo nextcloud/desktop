@@ -14,7 +14,7 @@
 
 #include "shareusergroupwidget.h"
 #include "ui_shareusergroupwidget.h"
-#include "ui_sharewidget.h"
+#include "ui_shareuserline.h"
 #include "account.h"
 #include "json.h"
 #include "folderman.h"
@@ -156,7 +156,7 @@ void ShareUserGroupWidget::searchForSharees()
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
     blacklist << currentUser;
 
-    foreach (auto sw, _ui->scrollArea->findChildren<ShareWidget*>()) {
+    foreach (auto sw, _ui->scrollArea->findChildren<ShareUserLine*>()) {
         blacklist << sw->share()->getShareWith();
     }
     _ui->errorLabel->hide();
@@ -187,7 +187,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
                 continue;
             }
 
-            ShareWidget *s = new ShareWidget(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
+            ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
             connect(s, SIGNAL(resizeRequested()), this, SLOT(slotAdjustScrollWidgetSize()));
             connect(s, SIGNAL(visualDeletionDone()), this, SLOT(getShares()));
             layout->addWidget(s);
@@ -214,7 +214,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 {
     QScrollArea *scrollArea = _ui->scrollArea;
-    if (scrollArea->findChildren<ShareWidget*>().count() <= 3) {
+    if (scrollArea->findChildren<ShareUserLine*>().count() <= 3) {
         auto minimumSize = scrollArea->widget()->sizeHint();
         auto spacing = scrollArea->widget()->layout()->spacing();
         minimumSize.rwidth() += spacing;
@@ -302,12 +302,12 @@ void ShareUserGroupWidget::displayError(int code, const QString& message)
     _ui->shareeLineEdit->setEnabled(true);
 }
 
-ShareWidget::ShareWidget(QSharedPointer<Share> share,
-                         SharePermissions maxSharingPermissions,
-                         bool isFile,
-                         QWidget *parent) :
+ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
+                             SharePermissions maxSharingPermissions,
+                             bool isFile,
+                             QWidget *parent) :
   QWidget(parent),
-  _ui(new Ui::ShareWidget),
+  _ui(new Ui::ShareUserLine),
   _share(share),
   _isFile(isFile)
 {
@@ -381,18 +381,18 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
     }
 }
 
-void ShareWidget::on_deleteShareButton_clicked()
+void ShareUserLine::on_deleteShareButton_clicked()
 {
     setEnabled(false);
     _share->deleteShare();
 }
 
-ShareWidget::~ShareWidget()
+ShareUserLine::~ShareUserLine()
 {
     delete _ui;
 }
 
-void ShareWidget::slotEditPermissionsChanged()
+void ShareUserLine::slotEditPermissionsChanged()
 {
     setEnabled(false);
 
@@ -427,7 +427,7 @@ void ShareWidget::slotEditPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareWidget::slotPermissionsChanged()
+void ShareUserLine::slotPermissionsChanged()
 {
     setEnabled(false);
     
@@ -452,7 +452,7 @@ void ShareWidget::slotPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareWidget::slotDeleteAnimationFinished()
+void ShareUserLine::slotDeleteAnimationFinished()
 {
     emit resizeRequested();
     emit visualDeletionDone();
@@ -464,7 +464,7 @@ void ShareWidget::slotDeleteAnimationFinished()
     connect(this, SIGNAL(destroyed(QObject*)), parentWidget(), SLOT(repaint()));
 }
 
-void ShareWidget::slotShareDeleted()
+void ShareUserLine::slotShareDeleted()
 {
     QPropertyAnimation *animation = new QPropertyAnimation(this, "maximumHeight", this);
 
@@ -478,18 +478,18 @@ void ShareWidget::slotShareDeleted()
     animation->start();
 }
 
-void ShareWidget::slotPermissionsSet()
+void ShareUserLine::slotPermissionsSet()
 {
     displayPermissions();
     setEnabled(true);
 }
 
-QSharedPointer<Share> ShareWidget::share() const
+QSharedPointer<Share> ShareUserLine::share() const
 {
     return _share;
 }
 
-void ShareWidget::displayPermissions()
+void ShareUserLine::displayPermissions()
 {
     auto perm = _share->getPermissions();
 
