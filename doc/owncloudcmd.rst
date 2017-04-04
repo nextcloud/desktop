@@ -77,3 +77,11 @@ machine using IP address ``192.168.178.1``, the command line would be::
 
 ``owncloudcmd`` will prompt for the user name and password, unless they have
 been specified on the command line or ``-n`` has been passed.
+
+Exclude List
+~~~~~~~~~~~~
+
+``owncloudcmd`` requires access to an exclude list file. It must either be
+installed along with ``owncloudcmd`` and thus be available in a system location,
+be placed next to the binary as ``sync-exclude.lst`` or be explicitly specified
+with the ``--exclude`` switch.
