@@ -59,7 +59,7 @@ public:
     QSharedPointer<Share> share() const;
 
 signals:
-    void shareDeleted(ShareWidget *share);
+    void visualDeletionDone();
     void resizeRequested();
 
 private slots:

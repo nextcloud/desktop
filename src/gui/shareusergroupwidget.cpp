@@ -178,28 +178,33 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
 
-    foreach(const auto &share, shares) {
-        // We don't handle link shares
-        if (share->getShareType() == Share::TypeLink) {
-            continue;
-        }
+    if (shares.isEmpty()) {
+        layout->addWidget(new QLabel(tr("The item is not shared with any users or groups")));
+    } else {
+        foreach(const auto &share, shares) {
+            // We don't handle link shares
+            if (share->getShareType() == Share::TypeLink) {
+                continue;
+            }
 
-        ShareWidget *s = new ShareWidget(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
-        connect(s, SIGNAL(resizeRequested()), this, SLOT(slotAdjustScrollWidgetSize()));
-        layout->addWidget(s);
+            ShareWidget *s = new ShareWidget(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
+            connect(s, SIGNAL(resizeRequested()), this, SLOT(slotAdjustScrollWidgetSize()));
+            connect(s, SIGNAL(visualDeletionDone()), this, SLOT(getShares()));
+            layout->addWidget(s);
 
-        x++;
-        if (x <= 3) {
-            minimumSize = newViewPort->sizeHint();
-        } else {
-            minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
+            x++;
+            if (x <= 3) {
+                minimumSize = newViewPort->sizeHint();
+            } else {
+                minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
+            }
         }
+        layout->addStretch(1);
     }
 
     minimumSize.rwidth() += layout->spacing();
     minimumSize.rheight() += layout->spacing();
     scrollArea->setMinimumSize(minimumSize);
-    scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setWidget(newViewPort);
 
     _disableCompleterActivated = false;
@@ -243,10 +248,15 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex & index)
      * Add spinner to the bottom of the widget list
      */
     auto viewPort = _ui->scrollArea->widget();
-    auto layout = viewPort->layout();
+    auto layout = qobject_cast<QVBoxLayout*>(viewPort->layout());
     auto indicator = new QProgressIndicator(viewPort);
     indicator->startAnimation();
-    layout->addWidget(indicator);
+    if (layout->count() == 1) {
+        // No shares yet! Remove the label, add some stretch.
+        delete layout->itemAt(0)->widget();
+        layout->addStretch(1);
+    }
+    layout->insertWidget(layout->count() - 1, indicator);
 
     /*
      * Don't send the reshare permissions for federated shares for servers <9.1
@@ -444,7 +454,8 @@ void ShareWidget::slotPermissionsChanged()
 
 void ShareWidget::slotDeleteAnimationFinished()
 {
-    resizeRequested();
+    emit resizeRequested();
+    emit visualDeletionDone();
     deleteLater();
 
     // There is a painting bug where a small line of this widget isn't

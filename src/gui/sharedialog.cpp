@@ -102,7 +102,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
     if (!accountState->account()->capabilities().shareAPI()) {
-        _ui->shareWidgetsLayout->addWidget(new QLabel(tr("The server does not allow sharing")));
+        _ui->shareWidgets->hide();
+        layout()->replaceWidget(_ui->shareWidgets, new QLabel(tr("The server does not allow sharing")));
         return;
     }
 
@@ -115,7 +116,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     _progressIndicator = new QProgressIndicator(this);
     _progressIndicator->startAnimation();
     _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
-    _ui->shareWidgetsLayout->addWidget(_progressIndicator);
+    _ui->buttonBoxLayout->insertWidget(0, _progressIndicator);
 
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
@@ -171,7 +172,7 @@ void ShareDialog::showSharingUi()
     if (!canReshare) {
         auto label = new QLabel(this);
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
-        _ui->shareWidgetsLayout->addWidget(label);
+        layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -184,7 +185,7 @@ void ShareDialog::showSharingUi()
 
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
-        _ui->shareWidgetsLayout->addWidget(_userGroupWidget);
+        _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
         _userGroupWidget->getShares();
     }
 
@@ -196,12 +197,11 @@ void ShareDialog::showSharingUi()
             // Make the line softer:
             p.setColor(QPalette::Foreground, QColor::fromRgba((p.color(QPalette::Foreground).rgba() & 0x00ffffff) | 0x50000000));
             hline->setPalette(p);
-            _ui->shareWidgetsLayout->addWidget(hline);
         }
 
         _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, autoShare, this);
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        _ui->shareWidgetsLayout->addWidget(_linkWidget);
+        _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
         _linkWidget->getShares();
     }
 }
