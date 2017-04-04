@@ -24,6 +24,11 @@ if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-format-attribute -D_GNU_SOURCE")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__STDC_FORMAT_MACROS=1")
 
+    if (${CMAKE_C_COMPILER_ID} MATCHES "Clang")
+        # Disable warning for assert() statements in csync
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-gnu-statement-expression")
+    endif()
+
     set(CSYNC_STRICT OFF CACHE BOOL "Strict error checking, enabled -Werror and friends")
     if (CSYNC_STRICT)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
