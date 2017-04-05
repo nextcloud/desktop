@@ -2477,32 +2477,32 @@ Uporaba ni priporočljiva.</translation>
         <translation>Pot do OwnCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="100"/>
+        <location filename="../src/gui/sharedialog.cpp" line="102"/>
         <source>%1 Sharing</source>
         <translation>%1 souporaba datotek</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="75"/>
+        <location filename="../src/gui/sharedialog.cpp" line="77"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="97"/>
+        <location filename="../src/gui/sharedialog.cpp" line="99"/>
         <source>Folder: %2</source>
         <translation>Mapa: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="103"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>The server does not allow sharing</source>
         <translation>Strežnik ne podpira souporabe</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="117"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>Pridobivanje največjega mogočega števila dovoljenj za souporabo prek strežnika ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="171"/>
+        <location filename="../src/gui/sharedialog.cpp" line="173"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Datoteke ni mogoče dodeliti v souporabo, ker ni navedenih ustreznih dovoljenj.</translation>
     </message>
@@ -2515,42 +2515,42 @@ Uporaba ni priporočljiva.</translation>
         <translation>Souporaba datoteke NovDokument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="34"/>
         <source>Share link</source>
         <translation>Povezava za souporabo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="86"/>
         <source>TextLabel</source>
         <translation>Besedilna oznaka</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="117"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="126"/>
         <source>Set &amp;password </source>
         <translation>Nastavi &amp;geslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="131"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="140"/>
         <source>Set &amp;expiration date</source>
         <translation>Nastavi datum &amp;preteka</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="155"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Set password</source>
         <translation>Nastavi geslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="213"/>
         <source>&amp;Mail link</source>
         <translation>&amp;Pošlji povezavo prek elektronske pošte</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="211"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Copy &amp;link</source>
         <translation>&amp;Kopiraj povezavo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Allow editing</source>
         <translation>Dovoli urejanje</translation>
     </message>
@@ -2605,7 +2605,7 @@ Uporaba ni priporočljiva.</translation>
         <translation>Souporaba datoteke NovDokument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="34"/>
         <source>Share with users or groups ...</source>
         <translation>Souporaba z uporabniki ali skupinami ...</translation>
     </message>
@@ -3678,37 +3678,37 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="500"/>
+        <location filename="../src/libsync/utility.cpp" line="501"/>
         <source>in the future</source>
         <translation>v prihodnje</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="496"/>
+        <location filename="../src/libsync/utility.cpp" line="497"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>pred %n dnevom</numerusform><numerusform>pred %n dnevoma</numerusform><numerusform>pred %n dnevi</numerusform><numerusform>pred %n dnevi</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="504"/>
+        <location filename="../src/libsync/utility.cpp" line="505"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>pred %n uro</numerusform><numerusform>pred %n urama</numerusform><numerusform>pred %n urami</numerusform><numerusform>pred %n urami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="509"/>
+        <location filename="../src/libsync/utility.cpp" line="510"/>
         <source>now</source>
         <translation>zdaj</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="511"/>
+        <location filename="../src/libsync/utility.cpp" line="512"/>
         <source>Less than a minute ago</source>
         <translation>Pred manj kot minuto</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="514"/>
+        <location filename="../src/libsync/utility.cpp" line="515"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>pred %n minuto</numerusform><numerusform>pred %n minutama</numerusform><numerusform>pred %n minutami</numerusform><numerusform>pred %n minutami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="517"/>
+        <location filename="../src/libsync/utility.cpp" line="518"/>
         <source>Some time ago</source>
         <translation>Pred nekaj časa</translation>
     </message>
@@ -3732,47 +3732,47 @@ Uporaba ni priporočljiva.</translation>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="141"/>
+        <location filename="../src/libsync/utility.cpp" line="142"/>
         <source>%L1 KB</source>
         <translation>%L1 KB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="144"/>
+        <location filename="../src/libsync/utility.cpp" line="145"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="327"/>
+        <location filename="../src/libsync/utility.cpp" line="328"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n leto</numerusform><numerusform>%n leti</numerusform><numerusform>%n leta</numerusform><numerusform>%n let</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="328"/>
+        <location filename="../src/libsync/utility.cpp" line="329"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mesec</numerusform><numerusform>%n meseca</numerusform><numerusform>%n meseci</numerusform><numerusform>%n mesecev</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="329"/>
+        <location filename="../src/libsync/utility.cpp" line="330"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dan</numerusform><numerusform>%n dneva</numerusform><numerusform>%n dnevi</numerusform><numerusform>%n dni</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="330"/>
+        <location filename="../src/libsync/utility.cpp" line="331"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n ura</numerusform><numerusform>%n uri</numerusform><numerusform>%n ure</numerusform><numerusform>%n ur</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="331"/>
+        <location filename="../src/libsync/utility.cpp" line="332"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuta</numerusform><numerusform>%n minuti</numerusform><numerusform>%n minute</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="332"/>
+        <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundi</numerusform><numerusform>%n sekunde</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="356"/>
+        <location filename="../src/libsync/utility.cpp" line="357"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

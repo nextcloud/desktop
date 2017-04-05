@@ -2470,32 +2470,32 @@ Det är inte lämpligt använda den.</translation>
         <translation>Sökväg till ownCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="100"/>
+        <location filename="../src/gui/sharedialog.cpp" line="102"/>
         <source>%1 Sharing</source>
         <translation>%1 Delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="75"/>
+        <location filename="../src/gui/sharedialog.cpp" line="77"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="97"/>
+        <location filename="../src/gui/sharedialog.cpp" line="99"/>
         <source>Folder: %2</source>
         <translation>Mapp: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="103"/>
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>The server does not allow sharing</source>
         <translation>Servern tillåter inte delning</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="115"/>
+        <location filename="../src/gui/sharedialog.cpp" line="117"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>Tar emot maximal delningsbehörighet från servern...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="171"/>
+        <location filename="../src/gui/sharedialog.cpp" line="173"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Filen kan inte delas eftersom den delades utan delningsrättigheter.</translation>
     </message>
@@ -2508,42 +2508,42 @@ Det är inte lämpligt använda den.</translation>
         <translation>Dela NewDocument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="25"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="34"/>
         <source>Share link</source>
         <translation>Dela länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="77"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="86"/>
         <source>TextLabel</source>
         <translation>Textetikett</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="117"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="126"/>
         <source>Set &amp;password </source>
         <translation>Sätt &amp;lösenord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="131"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="140"/>
         <source>Set &amp;expiration date</source>
         <translation>Sätt datum för &amp;utgång</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="155"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="164"/>
         <source>Set password</source>
         <translation>Ange lösenord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="213"/>
         <source>&amp;Mail link</source>
         <translation>&amp;E-postlänk</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="211"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Copy &amp;link</source>
         <translation>Kopiera &amp;länk</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Allow editing</source>
         <translation>Tillåt redigering</translation>
     </message>
@@ -2598,7 +2598,7 @@ Det är inte lämpligt använda den.</translation>
         <translation>Dela NewDocument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="34"/>
         <source>Share with users or groups ...</source>
         <translation>Dela med användare eller grupper ...</translation>
     </message>
@@ -3671,37 +3671,37 @@ Det är inte lämpligt använda den.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="500"/>
+        <location filename="../src/libsync/utility.cpp" line="501"/>
         <source>in the future</source>
         <translation>i framtiden</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="496"/>
+        <location filename="../src/libsync/utility.cpp" line="497"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>%n dag sedan</numerusform><numerusform>%n dag(ar) sedan</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="504"/>
+        <location filename="../src/libsync/utility.cpp" line="505"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>%n timme sedan</numerusform><numerusform>%n timmar sedan</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="509"/>
+        <location filename="../src/libsync/utility.cpp" line="510"/>
         <source>now</source>
         <translation>nu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="511"/>
+        <location filename="../src/libsync/utility.cpp" line="512"/>
         <source>Less than a minute ago</source>
         <translation>Mindre än en minut sedan</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="514"/>
+        <location filename="../src/libsync/utility.cpp" line="515"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>%n minut sedan</numerusform><numerusform>%n minut(er) sedan</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="517"/>
+        <location filename="../src/libsync/utility.cpp" line="518"/>
         <source>Some time ago</source>
         <translation>En stund sedan</translation>
     </message>
@@ -3725,47 +3725,47 @@ Det är inte lämpligt använda den.</translation>
         <translation>%L1 MB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="141"/>
+        <location filename="../src/libsync/utility.cpp" line="142"/>
         <source>%L1 KB</source>
         <translation>%L1 KB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="144"/>
+        <location filename="../src/libsync/utility.cpp" line="145"/>
         <source>%L1 B</source>
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="327"/>
+        <location filename="../src/libsync/utility.cpp" line="328"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n år</numerusform><numerusform>%n år</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="328"/>
+        <location filename="../src/libsync/utility.cpp" line="329"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n månad(er)</numerusform><numerusform>%n månad(er)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="329"/>
+        <location filename="../src/libsync/utility.cpp" line="330"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dag(ar)</numerusform><numerusform>%n dag(ar)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="330"/>
+        <location filename="../src/libsync/utility.cpp" line="331"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n timme/timmar</numerusform><numerusform>%n timme/timmar</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="331"/>
+        <location filename="../src/libsync/utility.cpp" line="332"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minut(er)</numerusform><numerusform>%n minut(er)</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/libsync/utility.cpp" line="332"/>
+        <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekund(er)</numerusform><numerusform>%n sekund(er)</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/libsync/utility.cpp" line="356"/>
+        <location filename="../src/libsync/utility.cpp" line="357"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
