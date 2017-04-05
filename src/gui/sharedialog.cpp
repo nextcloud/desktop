@@ -181,8 +181,6 @@ void ShareDialog::showSharingUi()
             theme->userGroupSharing()
             && _accountState->account()->serverVersionInt() >= Account::makeServerVersion(8, 2, 0);
 
-    bool autoShare = !userGroupSharing;
-
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
@@ -199,7 +197,7 @@ void ShareDialog::showSharingUi()
             hline->setPalette(p);
         }
 
-        _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, autoShare, this);
+        _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
         _linkWidget->getShares();

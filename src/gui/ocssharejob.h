@@ -86,10 +86,12 @@ public:
      * Create a new link share
      *
      * @param path The path of the file/folder to share
+     * @param name The name of the link share, empty name auto-generates one
      * @param password Optionally a password for the share
      */
     void createLinkShare(const QString& path, 
-                         const QString& password = "");
+                         const QString& name,
+                         const QString& password);
 
     /**
      * Create a new share

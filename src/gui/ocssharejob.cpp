@@ -96,7 +96,8 @@ void OcsShareJob::setPermissions(const QString &shareId,
     start();
 }
 
-void OcsShareJob::createLinkShare(const QString &path, 
+void OcsShareJob::createLinkShare(const QString &path,
+                                  const QString &name,
                                   const QString &password)
 {
     setVerb("POST");
@@ -104,6 +105,9 @@ void OcsShareJob::createLinkShare(const QString &path,
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("shareType"), QString::number(Share::TypeLink));
 
+    if (!name.isEmpty()) {
+        addParam(QString::fromLatin1("name"), name);
+    }
     if (!password.isEmpty()) {
         addParam(QString::fromLatin1("password"), password);
     }
