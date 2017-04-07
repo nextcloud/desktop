@@ -17,7 +17,7 @@ StrCpy $PageReinstall_SAME_MUI_HEADER_TEXT_SUBTITLE "Escolha a opção de manute
 StrCpy $SEC_APPLICATION_DETAILS "A instalar o essencial de ${APPLICATION_NAME}."
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_SECTION "Integração para Windows Explorer"
 StrCpy $OPTION_SECTION_SC_SHELL_EXT_DetailPrint "A instalar integração para Windows Explorer"
-StrCpy $OPTION_SECTION_SC_START_MENU_SECTION "Atalho  do progama no Menu Inicial"
+StrCpy $OPTION_SECTION_SC_START_MENU_SECTION "Atalho  do progama no Menu Iniciar"
 StrCpy $OPTION_SECTION_SC_START_MENU_DetailPrint "A adicionar o atalho de ${APPLICATION_NAME} ao Menu Inicial."
 StrCpy $OPTION_SECTION_SC_DESKTOP_SECTION "Atalho da área de trabalho"
 StrCpy $OPTION_SECTION_SC_DESKTOP_DetailPrint "A criar atalhos na área de trabalho"
