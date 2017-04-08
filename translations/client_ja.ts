@@ -747,7 +747,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="858"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダーをダウンロードするには設定画面で選択してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="894"/>
@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>サーバー上のフォルダー &apos;%1&apos; 内に存在するすべてのファイルが削除されました。
+これらはローカルに存在する同期フォルダーにも適用され、復元する権利がない限り、ファイルは使用できなくなります。
+「ファイルを残す」を選択すると、復元可能な場合はサーバーと再同期されます。
+「すべてのファイルを削除」を選択すると、あなたが所有者でない限り、ファイルは使用できなくなります。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルの同期フォルダー &apos;％1&apos; 内に存在するすべてのファイルが削除されました。これらの削除はサーバーと同期され、復元されない限りファイルは使用できなくなります。
+これらのアクションをサーバーと同期してもよろしいですか？
+「ファイルを残す」を選択した場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -1213,7 +1218,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>指定された容量以上のフォルダーは同期前に確認する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1224,7 +1229,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>外部ストレージと同期する前に確認する</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -2172,7 +2177,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は、大文字と小文字の区別が違う同じ名前のファイルが存在するためアップロードできません</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
@@ -2365,7 +2370,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>同期したくないリモートのサブフォルダーは、同期対象から外せます。</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -3070,12 +3075,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>末尾にピリオドを使うファイル名はサポートされていません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名に使用できない文字列が含まれています: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
@@ -3791,7 +3796,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 で構築されました</translation>
     </message>
 </context>
 <context>
