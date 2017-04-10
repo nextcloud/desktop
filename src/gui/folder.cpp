@@ -911,6 +911,7 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
     }
     *cancel = msgBox.clickedButton() == keepBtn;
     if (*cancel) {
+        FileSystem::setFolderMinimumPermissions(path());
         journalDb()->clearFileTable();
         _lastEtag.clear();
         slotScheduleThisFolder();
