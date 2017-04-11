@@ -280,9 +280,16 @@ void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex & index)
 void ShareUserGroupWidget::displayError(int code, const QString& message)
 {
     _pi_sharee.stopAnimation();
+
+    // Also remove the spinner in the widget list, if any
+    foreach (auto pi, _ui->scrollArea->findChildren<QProgressIndicator*>()) {
+        delete pi;
+    }
+
     qDebug() << "Error from server" << code << message;
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
+    _ui->shareeLineEdit->setEnabled(true);
 }
 
 ShareWidget::ShareWidget(QSharedPointer<Share> share,
