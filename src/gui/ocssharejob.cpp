@@ -84,6 +84,16 @@ void OcsShareJob::setPublicUpload(const QString &shareId, bool publicUpload)
     start();
 }
 
+void OcsShareJob::setName(const QString &shareId, const QString &name)
+{
+    appendPath(shareId);
+    setVerb("PUT");
+    addParam(QString::fromLatin1("name"), name);
+    _value = name;
+
+    start();
+}
+
 void OcsShareJob::setPermissions(const QString &shareId, 
                                  const Share::Permissions permissions)
 {

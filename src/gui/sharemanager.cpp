@@ -122,13 +122,15 @@ bool LinkShare::isPasswordSet() const
 LinkShare::LinkShare(AccountPtr account,
                      const QString& id,
                      const QString& path,
-                     const QString &name,
+                     const QString& name,
+                     const QString& token,
                      Permissions permissions,
                      bool passwordSet,
                      const QUrl& url,
                      const QDate& expireDate)
 : Share(account, id, path, Share::TypeLink, permissions),
   _name(name),
+  _token(token),
   _passwordSet(passwordSet),
   _expireDate(expireDate),
   _url(url)
@@ -153,6 +155,19 @@ void LinkShare::setPublicUpload(bool publicUpload)
 QString LinkShare::getName() const
 {
     return _name;
+}
+
+void LinkShare::setName(const QString& name)
+{
+    OcsShareJob *job = new OcsShareJob(_account);
+    connect(job, SIGNAL(shareJobFinished(QVariantMap,QVariant)), SLOT(slotNameSet(QVariantMap,QVariant)));
+    connect(job, SIGNAL(ocsError(int,QString)), SLOT(slotOcsError(int,QString)));
+    job->setName(getId(), name);
+}
+
+QString LinkShare::getToken() const
+{
+    return _token;
 }
 
 void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
@@ -207,6 +222,12 @@ void LinkShare::slotExpireDateSet(const QVariantMap& reply, const QVariant &valu
 void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
 {
     emit passwordSetError(statusCode, message);
+}
+
+void LinkShare::slotNameSet(const QVariantMap &, const QVariant &value)
+{
+    _name = value.toString();
+    emit nameSet();
 }
 
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
@@ -345,7 +366,8 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
     emit sharesFetched(shares);
 }
 
-QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) {
+QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data)
+{
     QUrl url;
 
     // From ownCloud server 8.2 the url field is always set for public shares
@@ -366,12 +388,11 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
        expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
 
-    QString name = data.value("name").toString();
-
     return QSharedPointer<LinkShare>(new LinkShare(_account,
                                                    data.value("id").toString(),
                                                    data.value("path").toString(),
-                                                   name,
+                                                   data.value("name").toString(),
+                                                   data.value("token").toString(),
                                                    (Share::Permissions)data.value("permissions").toInt(),
                                                    data.value("share_with").isValid(),
                                                    url,

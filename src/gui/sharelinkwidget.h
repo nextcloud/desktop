@@ -25,6 +25,7 @@
 #include <QList>
 
 class QMenu;
+class QTableWidgetItem;
 
 namespace OCC {
 
@@ -68,6 +69,7 @@ private slots:
     void slotCheckBoxEditingClicked();
     void slotExpireDateChanged(const QDate &date);
     void slotPasswordChanged(const QString& newText);
+    void slotNameEdited(QTableWidgetItem* item);
 
     void slotShareLinkButtonTriggered(QAction* action);
 

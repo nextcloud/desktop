@@ -68,11 +68,16 @@ public:
     void setPassword(const QString &shareId, const QString& password);
 
     /**
-     * Void set the share to be public upload
+     * Set the share to be public upload
      * 
      * @param publicUpload Set or remove public upload
      */
     void setPublicUpload(const QString &shareId, bool publicUpload);
+
+    /**
+     * Change the name of a share
+     */
+    void setName(const QString &shareId, const QString &name);
 
     /**
      * Set the permissions

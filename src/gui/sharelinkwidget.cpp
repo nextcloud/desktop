@@ -55,7 +55,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _ui->linkShares->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
     //Is this a file or folder?
-    _isFile = QFileInfo(localPath).isFile();
+    QFileInfo fi(localPath);
+    _isFile = fi.isFile();
+    _ui->nameLineEdit->setText(tr("%1 link").arg(fi.fileName()));
 
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
@@ -71,6 +73,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->nameLineEdit, SIGNAL(returnPressed()), SLOT(slotShareNameEntered()));
     connect(_ui->createShareButton, SIGNAL(clicked(bool)), SLOT(slotShareNameEntered()));
     connect(_ui->linkShares, SIGNAL(itemSelectionChanged()), SLOT(slotShareSelectionChanged()));
+    connect(_ui->linkShares, SIGNAL(itemChanged(QTableWidgetItem*)), SLOT(slotNameEdited(QTableWidgetItem*)));
     connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
     connect(_ui->lineEdit_password, SIGNAL(returnPressed()), this, SLOT(slotPasswordReturnPressed()));
     connect(_ui->lineEdit_password, SIGNAL(textChanged(QString)), this, SLOT(slotPasswordChanged(QString)));
@@ -193,7 +196,6 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     table->clearContents();
     table->setRowCount(0);
 
-    auto shareIcon = QIcon::fromTheme(QLatin1String("mail-send"));
     auto deleteIcon = QIcon::fromTheme(QLatin1String("user-trash"),
                                        QIcon(QLatin1String(":/client/resources/delete.png")));
 
@@ -215,16 +217,22 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         auto row = table->rowCount();
         table->insertRow(row);
 
+        auto nameItem = new QTableWidgetItem;
         QString name = linkShare->getName();
         if (name.isEmpty()) {
-            name = tr("Public link");
+            if (!_namesSupported) {
+                name = tr("Public link");
+                nameItem->setFlags(nameItem->flags() & ~Qt::ItemIsEditable);
+            } else {
+                name = linkShare->getToken();
+            }
         }
-        auto nameItem = new QTableWidgetItem(name);
+        nameItem->setText(name);
         nameItem->setData(Qt::UserRole, QVariant::fromValue(linkShare));
         table->setItem(row, 0, nameItem);
 
         auto shareButton = new QToolButton;
-        shareButton->setIcon(shareIcon);
+        shareButton->setText("...");
         shareButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
         shareButton->setMenu(_shareLinkMenu);
         shareButton->setPopupMode(QToolButton::InstantPopup);
@@ -339,10 +347,6 @@ void ShareLinkWidget::slotPasswordReturnPressed()
 {
     if (!selectedShare()) {
         // If share creation requires a password, we'll be in this case
-        if (_namesSupported && _ui->nameLineEdit->text().isEmpty()) {
-            _ui->nameLineEdit->setFocus();
-            return;
-        }
         if (_ui->lineEdit_password->text().isEmpty()) {
             _ui->lineEdit_password->setFocus();
             return;
@@ -360,6 +364,19 @@ void ShareLinkWidget::slotPasswordChanged(const QString& newText)
 {
     // disable the set-password button
     _ui->pushButton_setPassword->setEnabled( newText.length() > 0 );
+}
+
+void ShareLinkWidget::slotNameEdited(QTableWidgetItem* item)
+{
+    if (!_namesSupported) {
+        return;
+    }
+
+    QString newName = item->text();
+    auto share = item->data(Qt::UserRole).value<QSharedPointer<LinkShare>>();
+    if (share && newName != share->getName() && newName != share->getToken()) {
+        share->setName(newName);
+    }
 }
 
 void ShareLinkWidget::setPassword(const QString &password)
@@ -391,10 +408,8 @@ void ShareLinkWidget::slotPasswordSet()
 
 void ShareLinkWidget::slotShareNameEntered()
 {
-    if (!_ui->nameLineEdit->text().isEmpty() || !_namesSupported) {
-        _pi_create->startAnimation();
-        _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), QString());
-    }
+    _pi_create->startAnimation();
+    _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), QString());
 }
 
 void ShareLinkWidget::slotDeleteShareFetched()

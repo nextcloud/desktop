@@ -133,6 +133,7 @@ public:
                        const QString& id,
                        const QString& path,
                        const QString& name,
+                       const QString& token,
                        const Permissions permissions,
                        bool passwordSet,
                        const QUrl& url,
@@ -158,9 +159,21 @@ public:
     void setPublicUpload(bool publicUpload);
 
     /*
-     * Returns the name of the link share.
+     * Returns the name of the link share. Can be empty.
      */
     QString getName() const;
+
+    /*
+     * Set the name of the link share.
+     *
+     * Emits either nameSet() or serverError().
+     */
+    void setName(const QString& name);
+
+    /*
+     * Returns the token of the link share.
+     */
+    QString getToken() const;
 
     /*
      * Set the password
@@ -193,15 +206,18 @@ signals:
     void publicUploadSet();
     void passwordSet();
     void passwordSetError(int statusCode, const QString &message);
+    void nameSet();
 
 private slots:
     void slotPasswordSet(const QVariantMap&, const QVariant &value);
     void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
     void slotExpireDateSet(const QVariantMap& reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
+    void slotNameSet(const QVariantMap&, const QVariant &value);
 
 private:
     QString _name;
+    QString _token;
     bool _passwordSet;
     QDate _expireDate;
     QUrl _url;
