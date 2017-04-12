@@ -2643,17 +2643,17 @@ Uporaba ni priporočljiva.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="303"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="310"/>
         <source>create</source>
         <translation>ustvari</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="306"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="313"/>
         <source>change</source>
         <translation>spremeni</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="309"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="316"/>
         <source>delete</source>
         <translation>izbriši</translation>
     </message>
@@ -3800,7 +3800,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation>zgrajeno s/z %s</translation>
+        <translation>izgrajeno s programom %1</translation>
     </message>
 </context>
 <context>

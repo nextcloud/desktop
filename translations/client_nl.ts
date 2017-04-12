@@ -2647,17 +2647,17 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="303"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="310"/>
         <source>create</source>
         <translation>creëer</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="306"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="313"/>
         <source>change</source>
         <translation>wijzig</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="309"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="316"/>
         <source>delete</source>
         <translation>verwijderen</translation>
     </message>

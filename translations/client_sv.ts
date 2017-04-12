@@ -2636,17 +2636,17 @@ Det är inte lämpligt använda den.</translation>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="303"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="310"/>
         <source>create</source>
         <translation>skapa</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="306"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="313"/>
         <source>change</source>
         <translation>ändra</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="309"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="316"/>
         <source>delete</source>
         <translation>radera</translation>
     </message>
