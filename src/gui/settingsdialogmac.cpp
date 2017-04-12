@@ -34,8 +34,29 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QSettings>
+#include <QPainter>
+#include <QPainterPath>
 
 namespace OCC {
+
+// Duplicate in settingsdialog.cpp
+static QIcon circleMask( const QImage& avatar )
+{
+    int dim = avatar.width();
+
+    QPixmap fixedImage(dim, dim);
+    fixedImage.fill(Qt::transparent);
+
+    QPainter imgPainter(&fixedImage);
+    QPainterPath clip;
+    clip.addEllipse(0, 0, dim, dim);
+    imgPainter.setClipPath(clip);
+    imgPainter.drawImage(0, 0, avatar);
+    imgPainter.end();
+
+    return QIcon(fixedImage);
+}
+
 
 //
 // Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
@@ -125,6 +146,8 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     connect( accountSettings, &AccountSettings::folderChanged, _gui,  &ownCloudGui::slotFoldersChanged);
     connect( accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
 
+    connect(s->account().data(), SIGNAL(accountChangedAvatar()), this, SLOT(slotAccountAvatarChanged()));
+
     slotRefreshActivity(s);
 }
 
@@ -144,6 +167,21 @@ void SettingsDialogMac::slotRefreshActivity( AccountState* accountState )
 {
     if (accountState) {
         _activitySettings->slotRefresh(accountState);
+    }
+}
+
+void SettingsDialogMac::slotAccountAvatarChanged()
+{
+    Account *account = static_cast<Account*>(sender());
+    auto list = findChildren<AccountSettings*>(QString());
+    foreach(auto p, list) {
+        if (p->accountsState()->account() == account) {
+            int idx = indexForPanel(p);
+            QImage pix = account->avatar();
+            if (!pix.isNull()) {
+                setPreferencesPanelIcon(idx, circleMask(pix));
+            }
+        }
     }
 }
 

@@ -52,6 +52,7 @@ public slots:
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
+    void slotAccountAvatarChanged();
 private:
     void closeEvent(QCloseEvent *event);
 
