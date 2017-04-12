@@ -163,6 +163,14 @@ void AccountSettings::createAccountToolbox()
     slotAccountAdded(_accountState);
 }
 
+QString AccountSettings::selectedFolderAlias() const
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( !selected.isValid() )
+        return "";
+    return _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+}
+
 void AccountSettings::slotOpenAccountWizard()
 {
     if (
@@ -350,47 +358,43 @@ void AccountSettings::slotFolderWizardRejected()
 
 void AccountSettings::slotRemoveCurrentFolder()
 {
+    FolderMan *folderMan = FolderMan::instance();
+    auto folder = folderMan->folder(selectedFolderAlias());
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if( selected.isValid() ) {
+    if( selected.isValid() && folder ) {
         int row = selected.row();
 
-        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
-        qDebug() << "Remove Folder alias " << alias;
-        if( !alias.isEmpty() ) {
-            FolderMan *folderMan = FolderMan::instance();
-            QString shortGuiLocalPath = folderMan->folder(alias)->shortGuiLocalPath();
+        qDebug() << "Remove Folder alias " << folder->alias();
+        QString shortGuiLocalPath = folder->shortGuiLocalPath();
 
-            QMessageBox messageBox(QMessageBox::Question,
-                                   tr("Confirm Folder Sync Connection Removal"),
-                                   tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
-                                      "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(shortGuiLocalPath),
-                                   QMessageBox::NoButton,
-                                   this);
-            QPushButton* yesButton =
-                    messageBox.addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
-            messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
+        QMessageBox messageBox(QMessageBox::Question,
+                               tr("Confirm Folder Sync Connection Removal"),
+                               tr("<p>Do you really want to stop syncing the folder <i>%1</i>?</p>"
+                                  "<p><b>Note:</b> This will <b>not</b> delete any files.</p>").arg(shortGuiLocalPath),
+                               QMessageBox::NoButton,
+                               this);
+        QPushButton* yesButton =
+                messageBox.addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
+        messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
-            messageBox.exec();
-            if (messageBox.clickedButton() != yesButton) {
-                return;
-            }
-
-            folderMan->removeFolder( folderMan->folder(alias) );
-            _model->removeRow(row);
-
-            // single folder fix to show add-button and hide remove-button
-
-            emit folderChanged();
+        messageBox.exec();
+        if (messageBox.clickedButton() != yesButton) {
+            return;
         }
+
+        folderMan->removeFolder( folder );
+        _model->removeRow(row);
+
+        // single folder fix to show add-button and hide remove-button
+
+        emit folderChanged();
     }
 }
 
 void AccountSettings::slotOpenCurrentFolder()
 {
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-
-    if( selected.isValid() ) {
-        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
+    auto alias = selectedFolderAlias();
+    if( !alias.isEmpty() ) {
         emit openFolderAlias(alias);
     }
 }
@@ -417,16 +421,9 @@ void AccountSettings::showConnectionLabel( const QString& message, QStringList e
 
 void AccountSettings::slotEnableCurrentFolder()
 {
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    auto alias = selectedFolderAlias();
 
-    if( selected.isValid() ) {
-        QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
-
-        if( alias.isEmpty() ) {
-            qDebug() << "Empty alias to enable.";
-            return;
-        }
-
+    if( !alias.isEmpty() ) {
         FolderMan *folderMan = FolderMan::instance();
 
         qDebug() << "Application: enable folder with alias " << alias;
@@ -477,31 +474,25 @@ void AccountSettings::slotEnableCurrentFolder()
 
 void AccountSettings::slotScheduleCurrentFolder()
 {
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if( !selected.isValid() )
-        return;
-    QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
-
-    folderMan->scheduleFolder(folderMan->folder(alias));
+    if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        folderMan->scheduleFolder(folder);
+    }
 }
 
 void AccountSettings::slotForceSyncCurrentFolder()
 {
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if( !selected.isValid() )
-        return;
-    QString alias = _model->data( selected, FolderStatusDelegate::FolderAliasRole ).toString();
     FolderMan *folderMan = FolderMan::instance();
+    if (auto selectedFolder = folderMan->folder(selectedFolderAlias())) {
+        // Terminate and reschedule any running sync
+        if (Folder* current = folderMan->currentSyncFolder()) {
+            folderMan->terminateSyncProcess();
+            folderMan->scheduleFolder(current);
+        }
 
-    // Terminate and reschedule any running sync
-    if (Folder* current = folderMan->currentSyncFolder()) {
-        folderMan->terminateSyncProcess();
-        folderMan->scheduleFolder(current);
+        // Insert the selected folder at the front of the queue
+        folderMan->scheduleFolderNext(selectedFolder);
     }
-
-    // Insert the selected folder at the front of the queue
-    folderMan->scheduleFolderNext(folderMan->folder(alias));
 }
 
 void AccountSettings::slotOpenOC()

@@ -93,6 +93,9 @@ private:
     bool event(QEvent*) Q_DECL_OVERRIDE;
     void createAccountToolbox();
 
+    /// Returns the alias of the selected folder, empty string if none
+    QString selectedFolderAlias() const;
+
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
