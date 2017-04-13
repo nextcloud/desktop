@@ -478,7 +478,12 @@ restart_sync:
 
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
+    QObject::connect(&engine, &SyncEngine::finished,
+                     [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
+#else
     QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
+#endif
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
 
@@ -505,7 +510,7 @@ restart_sync:
     // Have to be done async, else, an error before exec() does not terminate the event loop.
     QMetaObject::invokeMethod(&engine, "startSync", Qt::QueuedConnection);
 
-    app.exec();
+    int resultCode = app.exec();
 
     if (engine.isAnotherSyncNeeded() != NoFollowUpSync) {
         if (restartCount < options.restartTimes) {
@@ -516,6 +521,6 @@ restart_sync:
         qWarning() << "Another sync is needed, but not done because restart count is exceeded" << restartCount;
     }
 
-    return 0;
+    return resultCode;
 }
 

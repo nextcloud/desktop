@@ -60,10 +60,9 @@ Other command line switches supported by ``owncloudcmd`` include the following:
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~
 
-``owncloudcmd`` uses the credentials of the GUI synchronization client.
-If no client is configured, or if you choose to use a different user to synchronize,
-you can specify the user
-password setting with the usual URL pattern.  For example::
+``owncloudcmd`` requires the user to specify the username and password using the standard URL pattern, e.g., 
+
+::
 
   $ owncloudcmd /home/user/my_sync_folder https://carla:secret@server/owncloud/remote.php/webdav/
 

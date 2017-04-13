@@ -280,9 +280,16 @@ void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex & index)
 void ShareUserGroupWidget::displayError(int code, const QString& message)
 {
     _pi_sharee.stopAnimation();
+
+    // Also remove the spinner in the widget list, if any
+    foreach (auto pi, _ui->scrollArea->findChildren<QProgressIndicator*>()) {
+        delete pi;
+    }
+
     qDebug() << "Error from server" << code << message;
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
+    _ui->shareeLineEdit->setEnabled(true);
 }
 
 ShareWidget::ShareWidget(QSharedPointer<Share> share,
@@ -323,6 +330,11 @@ ShareWidget::ShareWidget(QSharedPointer<Share> share,
 
     QIcon icon(QLatin1String(":/client/resources/more.png"));
     _ui->permissionToolButton->setIcon(icon);
+
+    // If there's only a single entry in the detailed permission menu, hide it
+    if (menu->actions().size() == 1) {
+        _ui->permissionToolButton->hide();
+    }
 
     // Set the permissions checkboxes
     displayPermissions();

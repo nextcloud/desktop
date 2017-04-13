@@ -40,7 +40,7 @@ private slots:
         QCOMPARE(octetsToString(10240) , QString("10 KB"));
 
         QCOMPARE(octetsToString(123456) , QString("121 KB"));
-        QCOMPARE(octetsToString(1234567) , QString("1 MB"));
+        QCOMPARE(octetsToString(1234567) , QString("1.2 MB"));
         QCOMPARE(octetsToString(12345678) , QString("12 MB"));
         QCOMPARE(octetsToString(123456789) , QString("118 MB"));
         QCOMPARE(octetsToString(1000LL*1000*1000 * 5) , QString("4.7 GB"));

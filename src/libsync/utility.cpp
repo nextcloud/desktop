@@ -122,8 +122,8 @@ QString Utility::octetsToString( qint64 octets )
     QString s;
     qreal value = octets;
 
-    // Whether we care about decimals: only for GB and only
-    // if it's less than 10 GB.
+    // Whether we care about decimals: only for GB/MB and only
+    // if it's less than 10 units.
     bool round = true;
 
     // do not display terra byte with the current units, as when
@@ -137,6 +137,7 @@ QString Utility::octetsToString( qint64 octets )
     } else if (octets >= mb) {
         s = QCoreApplication::translate("Utility", "%L1 MB");
         value /= mb;
+        round = false;
     } else if (octets >= kb) {
         s = QCoreApplication::translate("Utility", "%L1 KB");
         value /= kb;
