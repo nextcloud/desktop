@@ -485,7 +485,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="366"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Λάβατε νέες ανακοινώσεις από  %1, %2 και άλλους λογαριασμούς.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="370"/>
