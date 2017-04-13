@@ -68,7 +68,10 @@ namespace OCC {
   +-> fetchUser
         PropfindJob
         |
-        +-> slotUserFetched --> X
+        +-> slotUserFetched
+              AvatarJob
+              |
+              +-> slotAvatarImage --> reportResult()
 
     \endcode
  */
@@ -119,6 +122,7 @@ protected slots:
 
     void slotCapabilitiesRecieved(const QVariantMap&);
     void slotUserFetched(const QVariantMap &);
+    void slotAvatarImage(const QImage &img);
 
 private:
     void reportResult(Status status);

@@ -40,6 +40,8 @@
 #include <QPixmap>
 #include <QImage>
 #include <QWidgetAction>
+#include <QPainter>
+#include <QPainterPath>
 
 namespace {
   const char TOOLBAR_CSS[] =
@@ -53,6 +55,23 @@ namespace {
 
 
 namespace OCC {
+
+static QIcon circleMask( const QImage& avatar )
+{
+    int dim = avatar.width();
+
+    QPixmap fixedImage(dim, dim);
+    fixedImage.fill(Qt::transparent);
+
+    QPainter imgPainter(&fixedImage);
+    QPainterPath clip;
+    clip.addEllipse(0, 0, dim, dim);
+    imgPainter.setClipPath(clip);
+    imgPainter.drawImage(0, 0, avatar);
+    imgPainter.end();
+
+    return QIcon(fixedImage);
+}
 
 //
 // Whenever you change something here check both settingsdialog.cpp and settingsdialogmac.cpp !
@@ -196,8 +215,17 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    auto accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
-                                                brandingSingleAccount ? tr("Account") : s->account()->displayName());
+    QAction *accountAction;
+    QImage avatar = s->account()->avatar();
+    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    if(avatar.isNull()) {
+        accountAction = createColorAwareAction(QLatin1String(":/client/resources/account.png"),
+                                                    actionText);
+    } else {
+        QIcon icon = circleMask(avatar);
+        accountAction = createActionWithIcon(icon, actionText);
+    }
+
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(s->shortDisplayNameForSettings(height * buttonSizeRatio));
@@ -207,12 +235,28 @@ void SettingsDialog::accountAdded(AccountState *s)
     _ui->stack->insertWidget(0 , accountSettings);
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
+    _actionForAccount.insert(s->account().data(), accountAction);
 
     connect( accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect( accountSettings, SIGNAL(openFolderAlias(const QString&)),
              _gui, SLOT(slotFolderOpenAction(QString)));
+    connect(s->account().data(), SIGNAL(accountChangedAvatar()), SLOT(slotAccountAvatarChanged()));
 
     slotRefreshActivity(s);
+}
+
+void SettingsDialog::slotAccountAvatarChanged()
+{
+    Account *account = static_cast<Account*>(sender());
+    if( account && _actionForAccount.contains(account)) {
+        QAction *action = _actionForAccount[account];
+        if( action ) {
+            QImage pix = account->avatar();
+            if( !pix.isNull() ) {
+                action->setIcon( circleMask(pix) );
+            }
+        }
+    }
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)
@@ -236,6 +280,9 @@ void SettingsDialog::accountRemoved(AccountState *s)
         }
     }
 
+    if( _actionForAccount.contains(s->account().data()) ) {
+        _actionForAccount.remove(s->account().data());
+    }
     _activitySettings->slotRemoveAccount(s);
 
     // Hide when the last account is deleted. We want to enter the same
@@ -306,14 +353,22 @@ public:
     }
 };
 
+QAction *SettingsDialog::createActionWithIcon(const QIcon& icon, const QString& text, const QString& iconPath)
+{
+    QAction *action = new ToolButtonAction(icon, text, this);
+    action->setCheckable(true);
+    if(!iconPath.isEmpty()) {
+        action->setProperty("iconPath", iconPath);
+    }
+    return action;
+
+}
+
 QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const QString &text)
 {
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = createColorAwareIcon(iconPath);
-    QAction *action = new ToolButtonAction(coloredIcon, text, this);
-    action->setCheckable(true);
-    action->setProperty("iconPath", iconPath);
-    return action;
+    return createActionWithIcon(coloredIcon, text, iconPath);
 }
 
 void SettingsDialog::slotRefreshActivity( AccountState* accountState )

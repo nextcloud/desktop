@@ -91,6 +91,16 @@ void Account::setDavUser(const QString &newDavUser)
     _davUser = newDavUser;
 }
 
+QImage Account::avatar() const
+{
+    return _avatarImg;
+}
+void Account::setAvatar(const QImage &img)
+{
+    _avatarImg = img;
+    emit accountChangedAvatar();
+}
+
 QString Account::displayName() const
 {
     QString dn = QString("%1@%2").arg(_credentials->user(), _url.host());

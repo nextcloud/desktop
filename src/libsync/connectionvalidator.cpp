@@ -15,6 +15,7 @@
 #include <QtCore>
 #include <QNetworkReply>
 #include <QNetworkProxyFactory>
+#include <QPixmap>
 
 #include "connectionvalidator.h"
 #include "account.h"
@@ -253,7 +254,18 @@ void ConnectionValidator::slotUserFetched(const QVariantMap &json)
     QString user = json.value("ocs").toMap().value("data").toMap().value("id").toString();
     if (!user.isEmpty()) {
         _account->setDavUser(user);
+
+        AvatarJob *job = new AvatarJob(_account, this);
+        job->setTimeout(20*1000);
+        QObject::connect(job, SIGNAL(avatarPixmap(QImage)), this, SLOT(slotAvatarImage(QImage)));
+
+        job->start();
     }
+}
+
+void ConnectionValidator::slotAvatarImage(const QImage& img)
+{
+    _account->setAvatar(img);
     reportResult(Connected);
 }
 

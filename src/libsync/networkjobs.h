@@ -129,6 +129,36 @@ private:
     QList<QByteArray> _properties;
 };
 
+
+/**
+ * @brief The AvatarJob class
+ *
+ * Retrieves the account users avatar from the server using a GET request.
+ *
+ * If the server does not have the avatar, the result Pixmap is empty.
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT AvatarJob : public AbstractNetworkJob {
+    Q_OBJECT
+public:
+    explicit AvatarJob(AccountPtr account, QObject *parent = 0);
+    void start() Q_DECL_OVERRIDE;
+
+signals:
+    /**
+     * @brief avatarPixmap - returns either a valid pixmap or not.
+     */
+
+    void avatarPixmap(QImage);
+
+private slots:
+    virtual bool finished() Q_DECL_OVERRIDE;
+
+private:
+    QUrl _avatarUrl;
+};
+
 /**
  * @brief Send a Proppatch request
  *
