@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Noen mapper ble ikke synkronisert fordi de er for store eller de er eksterne lagringsplasser:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="728"/>
@@ -541,7 +541,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>En feil oppstod ved aksessering av konfigurasjonsfilen på %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
@@ -740,12 +740,13 @@
         <location filename="../src/gui/folder.cpp" line="857"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>En mappe fra et eksternt lager er blitt lagt til.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="858"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Gå til Innstillinger og velg den hvis du ønsker å laste den ned.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="894"/>
@@ -753,14 +754,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alle filene i synkroniseringsmappen &apos;%1&apos; ble slettet på serveren.
+Disse slettingene vil bli synkronisert til din lokale synkroniseringsmappe og gjøre filene utilgjengelige hvis du ikke har lov til å gjenopprette. 
+Hvis du velger å beholde filene, vil de bli synkronisert tilbake til serveren hvis du har lov til det.
+Hvis du velger å slette filene, blir de utilgjengelige for deg hvis du ikke er eieren av filen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alle filene i din lokale synkroniseringsmappe &apos;%1&apos; ble slettet. Disse slettingene vil bli synkronisert med serveren og gjøre filene utilgjengelige hvis de ikke gjenopprettes. 
+Er du sikker på at du ønsker å synkronisere denne handlingen med serveren?
+Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert tilbake fra serveren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -892,12 +898,12 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderman.cpp" line="1349"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Den lokale mappen %1 inneholder en symbolsk lenke. Målet for lenken inneholder en mappe som allerede er synkronisert. Velg en annen mappe!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Det er allerede en synkronisering fra serveren til denne lokale mappen. Velg en annen mappe!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
@@ -1224,7 +1230,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Be om bekreftelse før synkronisering av eksterne lagre</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -2174,7 +2180,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 kan ikke lastes opp fordi en annen fil eksisterer med samme navn, bare med forskjellige store og små bokstaver i navnet.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
@@ -2367,7 +2373,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Fjern valg for eksterne mapper  som du ikke ønsker å synkronisere.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -2833,7 +2839,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
         <source>Untrusted Certificate</source>
-        <translation>Ikke-tiltrodd sertifikat</translation>
+        <translation>Ikke-klarert sertifikat</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="135"/>
@@ -3497,7 +3503,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Be om bekreftelse før synkronisering av e&amp;ksterne lagre</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
@@ -3793,7 +3799,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>bygget med %1</translation>
     </message>
 </context>
 <context>
