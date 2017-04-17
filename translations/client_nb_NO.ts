@@ -1626,7 +1626,7 @@ Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning 
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>En ny oppdatering for %1 er i ferd med å bli installert. Oppdateringen
-kan be om ytterligere rettigheter under behandlingen.</translation>
+kan be om flere rettigheter under behandlingen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="144"/>
