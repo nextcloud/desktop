@@ -2719,7 +2719,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="109"/>
         <source>Subject Alternative Names:</source>
-        <translation>เรื่องชื่อทางเลือก:</translation>
+        <translation>ชื่อเรื่องทางเลือก:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
