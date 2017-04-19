@@ -183,6 +183,8 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantM
                                              Utility::escape(CheckServerJob::versionString(info)),
                                              Utility::escape(serverVersion)));
 
+    // Note with newer servers we get the version actually only later in capabilities
+    // https://github.com/owncloud/core/pull/27473/files
     _ocWizard->account()->setServerVersion(serverVersion);
 
     QString p = url.path();

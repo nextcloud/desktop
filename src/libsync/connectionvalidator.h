@@ -125,6 +125,12 @@ private:
     void checkServerCapabilities();
     void fetchUser();
 
+    /** Sets the account's server version
+     *
+     * Returns false and reports ServerVersionMismatch for very old servers.
+     */
+    bool setAndCheckServerVersion(const QString& version);
+
     QStringList _errors;
     AccountPtr   _account;
     bool _isCheckingServerAndAuth;

@@ -474,10 +474,7 @@ bool CheckServerJob::finished()
         }
 
         qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
-        if( status.contains("installed")
-                && status.contains("version")
-                && status.contains("versionstring") ) {
-
+        if( status.contains("installed") ) {
             emit instanceFound(reply()->url(), status);
         } else {
             qDebug() << "No proper answer on " << reply()->url();
