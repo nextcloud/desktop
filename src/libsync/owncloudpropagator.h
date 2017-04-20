@@ -327,6 +327,7 @@ public:
      * chunk-upload duration set.
      */
     quint64 _chunkSize;
+    quint64 smallFileSize();
 
     /* The maximum number of active jobs in parallel  */
     int hardMaximumActiveJob();

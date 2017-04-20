@@ -115,7 +115,7 @@ public:
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
     // We think it might finish quickly because it is a small file.
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < 100*1024; }
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
     /**
      * Whether an existing folder with the same name may be deleted before

@@ -212,7 +212,7 @@ public:
 
     void start() Q_DECL_OVERRIDE;
 
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < 100*1024; }
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
     void slotComputeContentChecksum();
