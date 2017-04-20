@@ -202,6 +202,11 @@ QNetworkAccessManager *Account::networkAccessManager()
     return _am.data();
 }
 
+QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
+{
+    return _am;
+}
+
 QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
