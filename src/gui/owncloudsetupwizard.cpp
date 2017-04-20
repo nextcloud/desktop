@@ -32,6 +32,7 @@
 #include "accountmanager.h"
 #include "clientproxy.h"
 #include "filesystem.h"
+#include "owncloudgui.h"
 
 #include "creds/credentialsfactory.h"
 #include "creds/abstractcredentials.h"
@@ -64,10 +65,10 @@ OwncloudSetupWizard::~OwncloudSetupWizard()
     _ocWizard->deleteLater();
 }
 
+static QPointer<OwncloudSetupWizard> wiz = 0;
+
 void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *parent)
 {
-    static QPointer<OwncloudSetupWizard> wiz;
-
     if (!wiz.isNull()) {
         return;
     }
@@ -76,6 +77,16 @@ void OwncloudSetupWizard::runWizard(QObject* obj, const char* amember, QWidget *
     connect( wiz, SIGNAL(ownCloudWizardDone(int)), obj, amember);
     FolderMan::instance()->setSyncEnabled(false);
     wiz->startWizard();
+}
+
+bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
+{
+    if (wiz.isNull()) {
+        return false;
+    }
+
+    ownCloudGui::raiseDialog(wiz->_ocWizard);
+    return true;
 }
 
 void OwncloudSetupWizard::startWizard()

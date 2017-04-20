@@ -60,6 +60,7 @@ class OwncloudSetupWizard : public QObject
 public:
     /** Run the wizard */
     static void runWizard(QObject *obj, const char* amember, QWidget *parent = 0 );
+    static bool bringWizardToFrontIfVisible();
 signals:
     // overall dialog close signal.
     void ownCloudWizardDone( int );
