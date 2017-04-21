@@ -67,6 +67,11 @@ int Capabilities::sharePublicLinkExpireDateDays() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
 }
 
+bool Capabilities::sharePublicLinkMultiple() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["multiple"].toBool();
+}
+
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();

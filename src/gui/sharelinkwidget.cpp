@@ -93,11 +93,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     }
 
     // Older servers don't support multiple public link shares
-    // TODO: Tying to the server version isn't nice, see owncloud/core#27622
-    if (_account->serverVersionInt() < Account::makeServerVersion(10, 0, 0)) {
+    if (!_account->capabilities().sharePublicLinkMultiple()) {
         _namesSupported = false;
-        _ui->nameLineEdit->hide();
         _ui->createShareButton->setText(tr("Create public link share"));
+        _ui->nameLineEdit->hide();
+        _ui->nameLineEdit->clear(); // so we don't send a name
     }
 
     _ui->shareProperties->setEnabled(false);

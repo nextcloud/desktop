@@ -39,6 +39,7 @@ public:
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
     int  sharePublicLinkExpireDateDays() const;
+    bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
     bool chunkingNg() const;
 
