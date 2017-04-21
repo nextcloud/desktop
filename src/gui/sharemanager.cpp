@@ -122,11 +122,15 @@ bool LinkShare::isPasswordSet() const
 LinkShare::LinkShare(AccountPtr account,
                      const QString& id,
                      const QString& path,
+                     const QString& name,
+                     const QString& token,
                      Permissions permissions,
                      bool passwordSet,
                      const QUrl& url,
                      const QDate& expireDate)
 : Share(account, id, path, Share::TypeLink, permissions),
+  _name(name),
+  _token(token),
   _passwordSet(passwordSet),
   _expireDate(expireDate),
   _url(url)
@@ -146,6 +150,24 @@ void LinkShare::setPublicUpload(bool publicUpload)
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotPublicUploadSet(QVariantMap, QVariant)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
     job->setPublicUpload(getId(), publicUpload);
+}
+
+QString LinkShare::getName() const
+{
+    return _name;
+}
+
+void LinkShare::setName(const QString& name)
+{
+    OcsShareJob *job = new OcsShareJob(_account);
+    connect(job, SIGNAL(shareJobFinished(QVariantMap,QVariant)), SLOT(slotNameSet(QVariantMap,QVariant)));
+    connect(job, SIGNAL(ocsError(int,QString)), SLOT(slotOcsError(int,QString)));
+    job->setName(getId(), name);
+}
+
+QString LinkShare::getToken() const
+{
+    return _token;
 }
 
 void LinkShare::slotPublicUploadSet(const QVariantMap&, const QVariant &value)
@@ -202,6 +224,12 @@ void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
     emit passwordSetError(statusCode, message);
 }
 
+void LinkShare::slotNameSet(const QVariantMap &, const QVariant &value)
+{
+    _name = value.toString();
+    emit nameSet();
+}
+
 ShareManager::ShareManager(AccountPtr account, QObject *parent)
 : QObject(parent),
   _account(account)
@@ -210,12 +238,13 @@ ShareManager::ShareManager(AccountPtr account, QObject *parent)
 }
 
 void ShareManager::createLinkShare(const QString &path,
+                                   const QString &name,
                                    const QString &password)
 {
     OcsShareJob *job = new OcsShareJob(_account);
     connect(job, SIGNAL(shareJobFinished(QVariantMap, QVariant)), SLOT(slotLinkShareCreated(QVariantMap)));
     connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
-    job->createLinkShare(path, password);
+    job->createLinkShare(path, name, password);
 }
 
 void ShareManager::slotLinkShareCreated(const QVariantMap &reply)
@@ -337,7 +366,8 @@ void ShareManager::slotSharesFetched(const QVariantMap &reply)
     emit sharesFetched(shares);
 }
 
-QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) {
+QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data)
+{
     QUrl url;
 
     // From ownCloud server 8.2 the url field is always set for public shares
@@ -361,6 +391,8 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QVariantMap &data) 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
                                                    data.value("id").toString(),
                                                    data.value("path").toString(),
+                                                   data.value("name").toString(),
+                                                   data.value("token").toString(),
                                                    (Share::Permissions)data.value("permissions").toInt(),
                                                    data.value("share_with").isValid(),
                                                    url,

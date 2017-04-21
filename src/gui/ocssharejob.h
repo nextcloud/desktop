@@ -68,11 +68,16 @@ public:
     void setPassword(const QString &shareId, const QString& password);
 
     /**
-     * Void set the share to be public upload
+     * Set the share to be public upload
      * 
      * @param publicUpload Set or remove public upload
      */
     void setPublicUpload(const QString &shareId, bool publicUpload);
+
+    /**
+     * Change the name of a share
+     */
+    void setName(const QString &shareId, const QString &name);
 
     /**
      * Set the permissions
@@ -86,10 +91,12 @@ public:
      * Create a new link share
      *
      * @param path The path of the file/folder to share
+     * @param name The name of the link share, empty name auto-generates one
      * @param password Optionally a password for the share
      */
     void createLinkShare(const QString& path, 
-                         const QString& password = "");
+                         const QString& name,
+                         const QString& password);
 
     /**
      * Create a new share

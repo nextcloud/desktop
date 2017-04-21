@@ -132,6 +132,8 @@ public:
     explicit LinkShare(AccountPtr account,
                        const QString& id,
                        const QString& path,
+                       const QString& name,
+                       const QString& token,
                        const Permissions permissions,
                        bool passwordSet,
                        const QUrl& url,
@@ -155,6 +157,23 @@ public:
      * In case of a server error the serverError signal is emitted.
      */
     void setPublicUpload(bool publicUpload);
+
+    /*
+     * Returns the name of the link share. Can be empty.
+     */
+    QString getName() const;
+
+    /*
+     * Set the name of the link share.
+     *
+     * Emits either nameSet() or serverError().
+     */
+    void setName(const QString& name);
+
+    /*
+     * Returns the token of the link share.
+     */
+    QString getToken() const;
 
     /*
      * Set the password
@@ -187,14 +206,18 @@ signals:
     void publicUploadSet();
     void passwordSet();
     void passwordSetError(int statusCode, const QString &message);
+    void nameSet();
 
 private slots:
     void slotPasswordSet(const QVariantMap&, const QVariant &value);
     void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
     void slotExpireDateSet(const QVariantMap& reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
+    void slotNameSet(const QVariantMap&, const QVariant &value);
 
 private:
+    QString _name;
+    QString _token;
     bool _passwordSet;
     QDate _expireDate;
     QUrl _url;
@@ -214,14 +237,16 @@ public:
      * Tell the manager to create a link share
      *
      * @param path The path of the linkshare relative to the user folder on the server
-     * @param password The password of the share
+     * @param name The name of the created share, may be empty
+     * @param password The password of the share, may be empty
      *
      * On success the signal linkShareCreated is emitted
      * For older server the linkShareRequiresPassword signal is emitted when it seems appropiate
      * In case of a server error the serverError signal is emitted
      */
     void createLinkShare(const QString& path,
-                         const QString& password="");
+                         const QString& name,
+                         const QString& password);
 
     /**
      * Tell the manager to create a new share
