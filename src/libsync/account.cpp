@@ -215,9 +215,7 @@ QNetworkAccessManager *Account::networkAccessManager()
 QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
-#if QT_VERSION > QT_VERSION_CHECK(4, 8, 4)
     req.setSslConfiguration(this->getOrCreateSslConfig());
-#endif
     if (verb == "HEAD" && !data) {
         return _am->head(req);
     } else if (verb == "GET" && !data) {
@@ -248,7 +246,7 @@ QSslConfiguration Account::getOrCreateSslConfig()
     // if setting the client certificate fails, you will probably get an error similar to this:
     //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
     QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
-    
+
 #if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     // Try hard to re-use session for different requests
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
@@ -447,7 +445,7 @@ void Account::setNonShib(bool nonShib)
         _davPath = Theme::instance()->webDavPathNonShib();
     } else {
         _davPath = Theme::instance()->webDavPath();
-    } 
+    }
 }
 
 

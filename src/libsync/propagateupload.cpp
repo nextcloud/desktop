@@ -89,10 +89,7 @@ void PUTFileJob::start() {
     // For Qt versions not including https://codereview.qt-project.org/110150
     // Also do the runtime check if compiled with an old Qt but running with fixed one.
     // (workaround disabled on windows and mac because the binaries we ship have patched qt)
-#if QT_VERSION < QT_VERSION_CHECK(4, 8, 7)
-    if (QLatin1String(qVersion()) < QLatin1String("4.8.7"))
-        connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
-#elif QT_VERSION > QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2) && !defined Q_OS_WIN && !defined Q_OS_MAC
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2) && !defined Q_OS_WIN && !defined Q_OS_MAC
     if (QLatin1String(qVersion()) < QLatin1String("5.4.2"))
         connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
 #endif
