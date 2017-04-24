@@ -115,25 +115,20 @@ void ConnectionValidator::slotCheckServerAndAuth()
 
 void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &info)
 {
+    // Newer servers don't disclose any version in status.php anymore
+    // https://github.com/owncloud/core/pull/27473/files
+    // so this string can be empty.
+    QString serverVersion = CheckServerJob::version(info);
+
     // status.php was found.
     qDebug() << "** Application: ownCloud found: "
              << url << " with version "
              << CheckServerJob::versionString(info)
-             << "(" << CheckServerJob::version(info) << ")";
+             << "(" << serverVersion << ")";
 
-    QString version = CheckServerJob::version(info);
-    _account->setServerVersion(version);
-
-    // We cannot deal with servers < 5.0.0
-    if (version.contains('.') && version.split('.')[0].toInt() < 5) {
-        _errors.append( tr("The configured server for this client is too old") );
-        _errors.append( tr("Please update to the latest server and restart the client.") );
-        reportResult( ServerVersionMismatch );
+    if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
         return;
     }
-
-    // We attempt to work with servers >= 5.0.0 but warn users.
-    // Check usages of Account::serverVersionUnsupported() for details.
 
     // now check the authentication
     if (_account->credentials()->ready())
@@ -237,6 +232,13 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QVariantMap &json)
     auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
     qDebug() << "Server capabilities" << caps;
     _account->setCapabilities(caps.toMap());
+
+    // New servers also report the version in the capabilities
+    QString serverVersion = caps.toMap()["core"].toMap()["status"].toMap()["version"].toString();
+    if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+        return;
+    }
+
     fetchUser();
 }
 
@@ -247,6 +249,26 @@ void ConnectionValidator::fetchUser()
     job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotUserFetched(QVariantMap)));
     job->start();
+}
+
+bool ConnectionValidator::setAndCheckServerVersion(const QString& version)
+{
+    qDebug() << _account->url() << "has server version" << version;
+    _account->setServerVersion(version);
+
+    // We cannot deal with servers < 5.0.0
+    if (_account->serverVersionInt()
+            && _account->serverVersionInt() < Account::makeServerVersion(5, 0, 0)) {
+        _errors.append( tr("The configured server for this client is too old") );
+        _errors.append( tr("Please update to the latest server and restart the client.") );
+        reportResult( ServerVersionMismatch );
+        return false;
+    }
+
+    // We attempt to work with servers >= 5.0.0 but warn users.
+    // Check usages of Account::serverVersionUnsupported() for details.
+
+    return true;
 }
 
 void ConnectionValidator::slotUserFetched(const QVariantMap &json)

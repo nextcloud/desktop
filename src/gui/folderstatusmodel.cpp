@@ -652,7 +652,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._size = job->_sizes.value(path);
         newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
-        newInfo._name = relativePath.split('/', QString::SkipEmptyParts).last();
+        newInfo._name = removeTrailingSlash(relativePath).split('/').last();
 
         if (relativePath.isEmpty())
             continue;

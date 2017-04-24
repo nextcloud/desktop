@@ -150,9 +150,21 @@ public:
     const Capabilities &capabilities() const;
     void setCapabilities(const QVariantMap &caps);
 
-    /** Access the server version */
+    /** Access the server version
+     *
+     * For servers >= 10.0.0, this can be the empty string until capabilities
+     * have been received.
+     */
     QString serverVersion() const;
+
+    /** Server version for easy comparison.
+     *
+     * Example: serverVersionInt() >= makeServerVersion(11, 2, 3)
+     *
+     * Will be 0 if the version is not available yet.
+     */
     int serverVersionInt() const;
+
     static int makeServerVersion(int majorVersion, int minorVersion, int patchVersion);
     void setServerVersion(const QString &version);
 
@@ -178,6 +190,7 @@ public:
 
     void resetNetworkAccessManager();
     QNetworkAccessManager* networkAccessManager();
+    QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager();
 
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();

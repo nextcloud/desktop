@@ -81,9 +81,14 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     }
 
     // Find the responsible QNAM if possible.
-    QNetworkAccessManager* sending_qnam = qobject_cast<QNetworkAccessManager*>(sender());
+    QNetworkAccessManager* sending_qnam = 0;
+    QWeakPointer<QNetworkAccessManager> qnam_alive;
     if (Account* account = qobject_cast<Account*>(sender())) {
-        sending_qnam = account->networkAccessManager();
+        // Since we go into an event loop, it's possible for the account's qnam
+        // to be destroyed before we get back. We can use this to check for its
+        // liveness.
+        qnam_alive = account->sharedNetworkAccessManager();
+        sending_qnam = qnam_alive.data();
     }
     if (!sending_qnam) {
         qDebug() << "Could not get the sending QNAM for" << sender();
@@ -122,6 +127,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     qDebug() << "got creds for" << _proxy;
     authenticator->setUser(_username);
     authenticator->setPassword(_password);
+    sending_qnam = qnam_alive.data();
     if (sending_qnam) {
         _gaveCredentialsTo.insert(sending_qnam);
         connect(sending_qnam, SIGNAL(destroyed(QObject*)),

@@ -174,22 +174,31 @@ void ownCloudGui::slotTrayClicked( QSystemTrayIcon::ActivationReason reason )
         last_click.start();
     }
 
-    // A click on the tray icon should only open the status window on Win and
-    // Linux, not on Mac. They want a menu entry.
-#if !defined Q_OS_MAC
+    // Left click
     if( reason == QSystemTrayIcon::Trigger ) {
-        // Start settings if config is existing.
-        slotOpenSettingsDialog();
-    }
+        if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
+            // brought wizard to front
+        } else if (_shareDialogs.size() > 0) {
+            // Share dialog(s) be hidden by other apps, bring them back
+            Q_FOREACH(const QPointer<ShareDialog> &shareDialog, _shareDialogs) {
+                Q_ASSERT(shareDialog.data());
+                raiseDialog(shareDialog);
+            }
+        } else {
+#ifdef Q_OS_MAC
+            // on macOS, a left click always opens menu.
+            // However if the settings dialog is already visible but hidden
+            // by other applications, this will bring it to the front.
+            if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
+                raiseDialog(_settingsDialog.data());
+            }
 #else
-    // On Mac, if the settings dialog is already visible but hidden
-    // by other applications, this will bring it to the front.
-    if( reason == QSystemTrayIcon::Trigger ) {
-        if (!_settingsDialog.isNull() && _settingsDialog->isVisible()) {
-            slotShowSettings();
+            slotOpenSettingsDialog();
+#endif
         }
     }
-#endif
+    // FIXME: Also make sure that any auto updater dialogue https://github.com/owncloud/client/issues/5613
+    // or SSL error dialog also comes to front.
 }
 
 void ownCloudGui::slotSyncStateChange( Folder* folder )
