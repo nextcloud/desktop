@@ -185,6 +185,8 @@ void OwncloudWizard::slotCurrentPageChanged( int id )
         disconnect(this, SIGNAL(finished(int)), this, SIGNAL(basicSetupFinished(int)));
         emit basicSetupFinished(QDialog::Accepted);
         appendToConfigurationLog( QString::null );
+        // Immediately close on show, we currently don't want this page anymore
+        close();
     }
 
     setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);

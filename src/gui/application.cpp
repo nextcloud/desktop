@@ -333,24 +333,6 @@ void Application::slotownCloudWizardDone( int res )
     folderMan->setSyncEnabled(true);
 
     if( res == QDialog::Accepted ) {
-        // Open the settings page for the new account if no folders
-        // were configured. Using the last account for this check is
-        // not exactly correct, but good enough.
-        if (!accountMan->accounts().isEmpty()) {
-            AccountStatePtr newAccount = accountMan->accounts().last();
-            bool hasFolder = false;
-            foreach (Folder* folder, folderMan->map()) {
-                if (folder->accountState() == newAccount.data()) {
-                    hasFolder = true;
-                    break;
-                }
-            }
-
-            if (!hasFolder) {
-                _gui->slotShowSettings();
-            }
-        }
-
         // Check connectivity of the newly created account
         _checkConnectionTimer.start();
         slotCheckConnection();
@@ -363,6 +345,8 @@ void Application::slotownCloudWizardDone( int res )
                 && QCoreApplication::applicationDirPath().startsWith("/Applications/");
 #endif
         Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), shouldSetAutoStart);
+
+        _gui->slotShowSettings();
     }
 }
 
