@@ -9,7 +9,6 @@ include_directories(${CMAKE_SOURCE_DIR}/csync/src
                     ${CMAKE_BINARY_DIR}/csync
                     ${CMAKE_BINARY_DIR}/csync/src
                    )
-include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qjson)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
 if ( APPLE )
@@ -69,7 +68,6 @@ set(libsync_SRCS
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
-    ../3rdparty/qjson/json.cpp
 )
 
 if(TOKEN_AUTH_ONLY)

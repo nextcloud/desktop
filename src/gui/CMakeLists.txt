@@ -102,7 +102,6 @@ set(client_SRCS
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
-    ../3rdparty/qjson/json.cpp
 )
 
 IF(NOT NO_SHIBBOLETH)
@@ -167,7 +166,6 @@ else()
 endif()
 
 set(3rdparty_INC
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qjson
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
