@@ -27,10 +27,11 @@
 #include "propagateremotedelete.h"
 #include "asserts.h"
 
-#include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <cmath>
 #include <cstring>
 
@@ -141,26 +142,26 @@ bool PollJob::finished()
         return false;
     }
 
-    bool ok = false;
     QByteArray jsonData = reply()->readAll().trimmed();
     qDebug() << Q_FUNC_INFO << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QVariantMap status = QtJson::parse(QString::fromUtf8(jsonData), ok).toMap();
-    if (!ok || status.isEmpty()) {
+    QJsonParseError jsonParseError;
+    QJsonObject status = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+    if (jsonParseError.error != QJsonParseError::NoError) {
         _item->_errorString = tr("Invalid JSON reply from the poll URL");
         _item->_status = SyncFileItem::NormalError;
         emit finishedSignal();
         return true;
     }
 
-    if (status["unfinished"].isValid()) {
+    if (status["unfinished"].toBool()) {
         start();
         return false;
     }
 
     _item->_errorString = status["error"].toString();
     _item->_status = _item->_errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
-    _item->_fileId = status["fileid"].toByteArray();
-    _item->_etag = status["etag"].toByteArray();
+    _item->_fileId = status["fileid"].toString().toUtf8();
+    _item->_etag = status["etag"].toString().toUtf8();
     _item->_responseTimeStamp = responseTimestamp();
 
     SyncJournalDb::PollInfo info;
