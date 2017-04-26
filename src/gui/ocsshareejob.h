@@ -16,7 +16,8 @@
 #define OCSSHAREEJOB_H
 
 #include "ocsjob.h"
-#include <QVariantMap>
+
+class QJsonDocument;
 
 namespace OCC {
 
@@ -44,10 +45,10 @@ signals:
      *
      * @param reply The reply
      */
-    void shareeJobFinished(const QVariantMap &reply);
+    void shareeJobFinished(const QJsonDocument &reply);
 
 private slots:
-    void jobDone(const QVariantMap &reply);
+    void jobDone(const QJsonDocument &reply);
 
 };
 

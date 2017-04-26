@@ -15,9 +15,9 @@
 #include "ocssharejob.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "json.h"
 
 #include <QBuffer>
+#include <QJsonDocument>
 
 namespace OCC {
 
@@ -25,7 +25,7 @@ OcsShareJob::OcsShareJob(AccountPtr account)
 : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
-    connect(this, SIGNAL(jobFinished(QVariantMap)), this, SLOT(jobDone(QVariantMap)));
+    connect(this, SIGNAL(jobFinished(QJsonDocument)), this, SLOT(jobDone(QJsonDocument)));
 }
 
 void OcsShareJob::getShares(const QString &path)
@@ -151,7 +151,7 @@ void OcsShareJob::getSharedWithMe()
     start();
 }
 
-void OcsShareJob::jobDone(QVariantMap reply)
+void OcsShareJob::jobDone(QJsonDocument reply)
 {
     emit shareJobFinished(reply, _value);
 }

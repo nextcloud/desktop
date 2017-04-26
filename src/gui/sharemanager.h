@@ -25,7 +25,9 @@
 #include <QList>
 #include <QSharedPointer>
 #include <QUrl>
-#include <QVariantMap>
+
+class QJsonDocument;
+class QJsonObject;
 
 namespace OCC {
 
@@ -116,7 +118,7 @@ protected slots:
 
 private slots:
     void slotDeleted();
-    void slotPermissionsSet(const QVariantMap &, const QVariant &value);
+    void slotPermissionsSet(const QJsonDocument &, const QVariant &value);
 
 };
 
@@ -214,11 +216,11 @@ signals:
     void nameSet();
 
 private slots:
-    void slotPasswordSet(const QVariantMap&, const QVariant &value);
-    void slotPublicUploadSet(const QVariantMap&, const QVariant &value);
-    void slotExpireDateSet(const QVariantMap& reply, const QVariant &value);
+    void slotPasswordSet(const QJsonDocument&, const QVariant &value);
+    void slotPublicUploadSet(const QJsonDocument&, const QVariant &value);
+    void slotExpireDateSet(const QJsonDocument& reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
-    void slotNameSet(const QVariantMap&, const QVariant &value);
+    void slotNameSet(const QJsonDocument&, const QVariant &value);
 
 private:
     QString _name;
@@ -293,15 +295,15 @@ signals:
     void linkShareRequiresPassword(const QString &message);
 
 private slots:
-    void slotSharesFetched(const QVariantMap &reply);
-    void slotLinkShareCreated(const QVariantMap &reply);
-    void slotShareCreated(const QVariantMap &reply);
+    void slotSharesFetched(const QJsonDocument &reply);
+    void slotLinkShareCreated(const QJsonDocument &reply);
+    void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
-    void slotCreateShare(const QVariantMap &reply);
+    void slotCreateShare(const QJsonDocument &reply);
 
 private:
-    QSharedPointer<LinkShare> parseLinkShare(const QVariantMap &data);
-    QSharedPointer<Share> parseShare(const QVariantMap &data);
+    QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
+    QSharedPointer<Share> parseShare(const QJsonObject &data);
 
     QMap<QObject*, QVariant> _jobContinuation;
     AccountPtr _account;

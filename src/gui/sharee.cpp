@@ -15,6 +15,10 @@
 #include "sharee.h"
 #include "ocsshareejob.h"
 
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+
 namespace OCC {
 
 Sharee::Sharee(const QString shareWith,
@@ -63,52 +67,52 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
     _search = search;
     _shareeBlacklist = blacklist;
     OcsShareeJob *job = new OcsShareeJob(_account);
-    connect(job, SIGNAL(shareeJobFinished(QVariantMap)), SLOT(shareesFetched(QVariantMap)));
+    connect(job, SIGNAL(shareeJobFinished(QJsonDocument)), SLOT(shareesFetched(QJsonDocument)));
     connect(job, SIGNAL(ocsError(int,QString)), SIGNAL(displayErrorMessage(int,QString)));
     job->getSharees(_search, _type, 1, 50);
 }
 
-void ShareeModel::shareesFetched(const QVariantMap &reply)
+void ShareeModel::shareesFetched(const QJsonDocument &reply)
 {
-    auto data = reply.value("ocs").toMap().value("data").toMap();
+    auto data = reply.object().value("ocs").toObject().value("data").toObject();
 
     QVector<QSharedPointer<Sharee>> newSharees;
 
     /*
      * Todo properly loop all of this
      */
-    auto exact = data.value("exact").toMap();
+    auto exact = data.value("exact").toObject();
     {
-        auto users = exact.value("users").toList();
+        auto users = exact.value("users").toArray();
         foreach(auto user, users) {
-            newSharees.append(parseSharee(user.toMap()));
+            newSharees.append(parseSharee(user.toObject()));
         }
-        auto groups = exact.value("groups").toList();
+        auto groups = exact.value("groups").toArray();
         foreach(auto group, groups) {
-            newSharees.append(parseSharee(group.toMap()));
+            newSharees.append(parseSharee(group.toObject()));
         }
-        auto remotes = exact.value("remotes").toList();
+        auto remotes = exact.value("remotes").toArray();
         foreach(auto remote, remotes) {
-            newSharees.append(parseSharee(remote.toMap()));
+            newSharees.append(parseSharee(remote.toObject()));
         }
     }
 
     {
-        auto users = data.value("users").toList();
+        auto users = data.value("users").toArray();
         foreach(auto user, users) {
-            newSharees.append(parseSharee(user.toMap()));
+            newSharees.append(parseSharee(user.toObject()));
         }
     }
     {
-        auto groups = data.value("groups").toList();
+        auto groups = data.value("groups").toArray();
         foreach(auto group, groups) {
-            newSharees.append(parseSharee(group.toMap()));
+            newSharees.append(parseSharee(group.toObject()));
         }
     }
     {
-        auto remotes = data.value("remotes").toList();
+        auto remotes = data.value("remotes").toArray();
         foreach(auto remote, remotes) {
-            newSharees.append(parseSharee(remote.toMap()));
+            newSharees.append(parseSharee(remote.toObject()));
         }
     }
 
@@ -133,11 +137,11 @@ void ShareeModel::shareesFetched(const QVariantMap &reply)
     shareesReady();
 }
 
-QSharedPointer<Sharee> ShareeModel::parseSharee(const QVariantMap &data)
+QSharedPointer<Sharee> ShareeModel::parseSharee(const QJsonObject &data)
 {
     const QString displayName = data.value("label").toString();
-    const QString shareWith = data.value("value").toMap().value("shareWith").toString();
-    Sharee::Type type = (Sharee::Type)data.value("value").toMap().value("shareType").toInt();
+    const QString shareWith = data.value("value").toObject().value("shareWith").toString();
+    Sharee::Type type = (Sharee::Type)data.value("value").toObject().value("shareType").toInt();
 
     return QSharedPointer<Sharee>(new Sharee(shareWith, displayName, type));
 }

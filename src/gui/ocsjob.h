@@ -25,6 +25,8 @@
 
 #define OCS_SUCCESS_STATUS_CODE 100
 
+class QJsonDocument;
+
 namespace OCC {
 
 /**
@@ -93,7 +95,7 @@ public:
      * @param message The message that is set in the metadata
      * @return The statuscode of the OCS response
      */
-    static int getJsonReturnCode(const QVariantMap &json, QString &message);
+    static int getJsonReturnCode(const QJsonDocument &json, QString &message);
 
 protected slots:
 
@@ -109,7 +111,7 @@ signals:
      *
      * @param reply the reply
      */
-    void jobFinished(QVariantMap reply);
+    void jobFinished(QJsonDocument reply);
 
     /**
      * The status code was not one of the expected (passing)

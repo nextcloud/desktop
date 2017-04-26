@@ -15,9 +15,10 @@
 #include "ocsjob.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "json.h"
 
 #include <QBuffer>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 namespace OCC {
 
@@ -101,13 +102,14 @@ bool OcsJob::finished()
 {
     const QString replyData = reply()->readAll();
 
-    bool success;
-    QVariantMap json = QtJson::parse(replyData, success).toMap();
-    if (!success) {
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(replyData.toUtf8(), &error);
+    if (error.error != QJsonParseError::NoError) {
         qDebug() << "Could not parse reply to" 
                  << _verb 
                  << Utility::concatUrlPath(account()->url(), path())
                  << _params
+                 << error.errorString()
                  << ":" << replyData;
     }
 
@@ -126,11 +128,12 @@ bool OcsJob::finished()
     return true;
 }
 
-int OcsJob::getJsonReturnCode(const QVariantMap &json, QString &message)
+int OcsJob::getJsonReturnCode(const QJsonDocument &json, QString &message)
 {
     //TODO proper checking
-    int code = json.value("ocs").toMap().value("meta").toMap().value("statuscode").toInt();
-    message = json.value("ocs").toMap().value("meta").toMap().value("message").toString();
+    auto meta = json.object().value("ocs").toObject().value("meta").toObject();
+    int code = meta.value("statuscode").toInt();
+    message = meta.value("message").toString();
 
     return code;
 }

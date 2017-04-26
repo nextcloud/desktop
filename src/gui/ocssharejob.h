@@ -126,10 +126,10 @@ signals:
      * @param reply The reply
      * @param value To what did we set a variable (if we set any).
      */
-    void shareJobFinished(QVariantMap reply, QVariant value);
+    void shareJobFinished(QJsonDocument reply, QVariant value);
 
 private slots:
-    void jobDone(QVariantMap reply);
+    void jobDone(QJsonDocument reply);
 
 private:
     QVariant _value;

@@ -20,7 +20,6 @@
 #include "sharepermissions.h"
 #include "QProgressIndicator.h"
 #include <QDialog>
-#include <QVariantMap>
 #include <QSharedPointer>
 #include <QList>
 

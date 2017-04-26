@@ -16,7 +16,6 @@
 #include "ui_shareusergroupwidget.h"
 #include "ui_shareuserline.h"
 #include "account.h"
-#include "json.h"
 #include "folderman.h"
 #include "folder.h"
 #include "accountmanager.h"

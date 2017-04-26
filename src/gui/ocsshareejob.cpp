@@ -20,7 +20,7 @@ OcsShareeJob::OcsShareeJob(AccountPtr account)
 : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/sharees");
-    connect(this, SIGNAL(jobFinished(QVariantMap)), SLOT(jobDone(QVariantMap)));
+    connect(this, SIGNAL(jobFinished(QJsonDocument)), SLOT(jobDone(QJsonDocument)));
 
 }
 
@@ -39,7 +39,7 @@ void OcsShareeJob::getSharees(const QString &search,
     start();
 }
 
-void OcsShareeJob::jobDone(const QVariantMap &reply)
+void OcsShareeJob::jobDone(const QJsonDocument &reply)
 {
     emit shareeJobFinished(reply);
 }

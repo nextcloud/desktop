@@ -25,6 +25,9 @@
 
 #include "accountfwd.h"
 
+class QJsonDocument;
+class QJsonObject;
+
 namespace OCC {
 
 class Sharee {
@@ -72,10 +75,10 @@ signals:
     void displayErrorMessage(int code, const QString &);
 
 private slots:
-    void shareesFetched(const QVariantMap &reply);
+    void shareesFetched(const QJsonDocument &reply);
 
 private:
-    QSharedPointer<Sharee> parseSharee(const QVariantMap &data);
+    QSharedPointer<Sharee> parseSharee(const QJsonObject &data);
     void setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees);
 
     AccountPtr _account;

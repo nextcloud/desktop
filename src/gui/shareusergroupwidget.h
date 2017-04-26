@@ -20,7 +20,6 @@
 #include "QProgressIndicator.h"
 #include <QDialog>
 #include <QWidget>
-#include <QVariantMap>
 #include <QSharedPointer>
 #include <QList>
 #include <QVector>
