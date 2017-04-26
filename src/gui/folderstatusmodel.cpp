@@ -178,6 +178,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QColor(Qt::red);
             }
             break;
+        case FolderStatusDelegate::FolderPathRole: {
+            auto f = x._folder;
+            if (!f)
+                return QVariant();
+            return QVariant(f->path() + x._path);
+            }
         }
     }
         return QVariant();

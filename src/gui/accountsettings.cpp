@@ -98,7 +98,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
             SLOT(slotAccountAdded(AccountState*)));
     connect(ui->_folderList, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(slotCustomContextMenuRequested(QPoint)));
-
+    connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
+            this, SLOT(slotFolderListClicked(const QModelIndex&)));
     connect(ui->_folderList, SIGNAL(expanded(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
     connect(ui->_folderList, SIGNAL(collapsed(QModelIndex)) , this, SLOT(refreshSelectiveSyncStatus()));
     connect(ui->selectiveSyncNotification, SIGNAL(linkActivated(QString)),
@@ -119,8 +120,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent) :
     connect(syncNowWithRemoteDiscovery, SIGNAL(triggered()), SLOT(slotScheduleCurrentFolderForceRemoteDiscovery()));
     addAction(syncNowWithRemoteDiscovery);
 
-    connect(ui->_folderList, SIGNAL(clicked(const QModelIndex &)),
-            this, SLOT(slotFolderListClicked(const QModelIndex&)));
+
 
     connect(ui->selectiveSyncApply, SIGNAL(clicked()), _model, SLOT(slotApplySelectiveSync()));
     connect(ui->selectiveSyncCancel, SIGNAL(clicked()), _model, SLOT(resetFolders()));
@@ -222,6 +222,24 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
+    if (_model->classify(index) == FolderStatusModel::SubFolder) {
+        QTreeView *tv = ui->_folderList;
+        QMenu *menu = new QMenu(tv);
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+
+        QAction *ac = menu->addAction(tr("Open folder"));
+        connect(ac, SIGNAL(triggered(bool)), this, SLOT(slotOpenCurrentLocalSubFolder()));
+
+        QString fileName = _model->data( index, FolderStatusDelegate::FolderPathRole ).toString();
+        if (!QFile::exists(fileName)) {
+            ac->setEnabled(false);
+        }
+
+        menu->exec(QCursor::pos());
+
+        return;
+    }
+
     if (_model->classify(index) != FolderStatusModel::RootFolder) {
         return;
     }
@@ -264,6 +282,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 void AccountSettings::slotFolderListClicked(const QModelIndex& indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
+        // "Add Folder Sync Connection"
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
         } else {
@@ -401,6 +420,16 @@ void AccountSettings::slotOpenCurrentFolder()
     if( !alias.isEmpty() ) {
         emit openFolderAlias(alias);
     }
+}
+
+void AccountSettings::slotOpenCurrentLocalSubFolder()
+{
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if( !selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+        return;
+    QString fileName = _model->data( selected, FolderStatusDelegate::FolderPathRole ).toString();
+    QUrl url = QUrl::fromLocalFile(fileName);
+    QDesktopServices::openUrl(url);
 }
 
 void AccountSettings::showConnectionLabel( const QString& message, QStringList errors )

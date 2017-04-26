@@ -75,7 +75,8 @@ protected slots:
     void slotScheduleCurrentFolderForceRemoteDiscovery();
     void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
-    void slotOpenCurrentFolder();
+    void slotOpenCurrentFolder(); // sync folder
+    void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();

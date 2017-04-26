@@ -31,7 +31,7 @@ public:
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
                     HeaderRole,
-                    FolderPathRole,
+                    FolderPathRole, // for a SubFolder it's the complete path
                     FolderSecondPathRole,
                     FolderErrorMsg,
                     FolderSyncPaused,
