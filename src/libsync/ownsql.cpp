@@ -17,6 +17,8 @@
 #include <QString>
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
 
 #include "ownsql.h"
 #include "utility.h"
@@ -101,8 +103,8 @@ bool SqlDatabase::openOrCreateReadWrite( const QString& filename )
 
     if( !checkDb() ) {
         // When disk space is low, checking the db may fail even though it's fine.
-        qint64 freeSpace = Utility::freeDiskSpace(filename);
-        if (freeSpace < 1000000) {
+        qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
+        if (freeSpace != -1 && freeSpace < 1000000) {
             qDebug() << "Consistency check failed, disk space is low, aborting" << freeSpace;
             close();
             return false;
