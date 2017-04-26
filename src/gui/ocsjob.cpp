@@ -100,10 +100,10 @@ void OcsJob::start()
 
 bool OcsJob::finished()
 {
-    const QString replyData = reply()->readAll();
+    const QByteArray replyData = reply()->readAll();
 
     QJsonParseError error;
-    auto json = QJsonDocument::fromJson(replyData.toUtf8(), &error);
+    auto json = QJsonDocument::fromJson(replyData, &error);
     if (error.error != QJsonParseError::NoError) {
         qDebug() << "Could not parse reply to" 
                  << _verb 

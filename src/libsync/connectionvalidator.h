@@ -113,15 +113,15 @@ signals:
 protected slots:
     void slotCheckServerAndAuth();
 
-    void slotStatusFound(const QUrl&url, const QVariantMap &info);
+    void slotStatusFound(const QUrl&url, const QJsonObject &info);
     void slotNoStatusFound(QNetworkReply *reply);
     void slotJobTimeout(const QUrl& url);
 
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
-    void slotCapabilitiesRecieved(const QVariantMap&);
-    void slotUserFetched(const QVariantMap &);
+    void slotCapabilitiesRecieved(const QJsonDocument&);
+    void slotUserFetched(const QJsonDocument &);
     void slotAvatarImage(const QImage &img);
 
 private:

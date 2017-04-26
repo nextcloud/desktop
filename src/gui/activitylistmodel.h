@@ -19,6 +19,8 @@
 
 #include "activitydata.h"
 
+class QJsonDocument;
+
 namespace OCC {
 
 class AccountState;
@@ -49,7 +51,7 @@ public slots:
     void slotRemoveAccount( AccountState *ast );
 
 private slots:
-    void slotActivitiesReceived(const QVariantMap& json, int statusCode);
+    void slotActivitiesReceived(const QJsonDocument& json, int statusCode);
 
 signals:
     void activityJobStatusCode(AccountState* ast, int statusCode);

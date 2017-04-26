@@ -16,6 +16,8 @@
 
 #include <networkjobs.h>
 
+class QJsonDocument;
+
 namespace OCC
 {
 
@@ -33,7 +35,7 @@ signals:
     void userFetched(const QString &user);
 
 private slots:
-    void slotJsonReceived(const QVariantMap &, int statusCode);
+    void slotJsonReceived(const QJsonDocument &, int statusCode);
 };
 
 

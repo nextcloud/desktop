@@ -27,7 +27,6 @@
 #include "propagateremotedelete.h"
 #include "asserts.h"
 
-#include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>

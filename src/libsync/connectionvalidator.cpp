@@ -107,13 +107,13 @@ void ConnectionValidator::slotCheckServerAndAuth()
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
-    connect(checkJob, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotStatusFound(QUrl,QVariantMap)));
+    connect(checkJob, SIGNAL(instanceFound(QUrl,QJsonObject)), SLOT(slotStatusFound(QUrl,QJsonObject)));
     connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
     connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
     checkJob->start();
 }
 
-void ConnectionValidator::slotStatusFound(const QUrl&url, const QVariantMap &info)
+void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &info)
 {
     // Newer servers don't disclose any version in status.php anymore
     // https://github.com/owncloud/core/pull/27473/files
@@ -223,18 +223,18 @@ void ConnectionValidator::checkServerCapabilities()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotCapabilitiesRecieved(QVariantMap)));
+    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotCapabilitiesRecieved(QJsonDocument)));
     job->start();
 }
 
-void ConnectionValidator::slotCapabilitiesRecieved(const QVariantMap &json)
+void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 {
-    auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
+    auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
     qDebug() << "Server capabilities" << caps;
-    _account->setCapabilities(caps.toMap());
+    _account->setCapabilities(caps.toVariantMap());
 
     // New servers also report the version in the capabilities
-    QString serverVersion = caps.toMap()["core"].toMap()["status"].toMap()["version"].toString();
+    QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
         return;
     }
@@ -247,7 +247,7 @@ void ConnectionValidator::fetchUser()
 
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)), this, SLOT(slotUserFetched(QVariantMap)));
+    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotUserFetched(QJsonDocument)));
     job->start();
 }
 
@@ -271,9 +271,9 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString& version)
     return true;
 }
 
-void ConnectionValidator::slotUserFetched(const QVariantMap &json)
+void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 {
-    QString user = json.value("ocs").toMap().value("data").toMap().value("id").toString();
+    QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
     if (!user.isEmpty()) {
         _account->setDavUser(user);
 

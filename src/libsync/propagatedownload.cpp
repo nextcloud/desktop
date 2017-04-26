@@ -25,7 +25,6 @@
 #include "checksums.h"
 #include "asserts.h"
 
-#include <json.h>
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>

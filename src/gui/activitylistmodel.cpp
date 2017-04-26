@@ -16,6 +16,8 @@
 #include <QAbstractListModel>
 #include <QWidget>
 #include <QIcon>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 #include "account.h"
 #include "accountstate.h"
@@ -126,8 +128,8 @@ void ActivityListModel::startFetchJob(AccountState* s)
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-    QObject::connect(job, SIGNAL(jsonReceived(QVariantMap, int)),
-                     this, SLOT(slotActivitiesReceived(QVariantMap, int)));
+    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)),
+                     this, SLOT(slotActivitiesReceived(QJsonDocument, int)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
     QList< QPair<QString,QString> > params;
@@ -140,9 +142,9 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->start();
 }
 
-void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int statusCode)
+void ActivityListModel::slotActivitiesReceived(const QJsonDocument& json, int statusCode)
 {
-    auto activities = json.value("ocs").toMap().value("data").toList();
+    auto activities = json.object().value("ocs").toObject().value("data").toArray();
 
     ActivityList list;
     auto ast = qvariant_cast<QPointer<AccountState>>(sender()->property("AccountStatePtr"));
@@ -152,17 +154,19 @@ void ActivityListModel::slotActivitiesReceived(const QVariantMap& json, int stat
     _currentlyFetching.remove(ast);
 
     foreach( auto activ, activities ) {
-        auto json = activ.toMap();
+        auto json = activ.toObject();
+
+        qDebug() << "ZZZ" << json;
 
         Activity a;
         a._type = Activity::ActivityType;
         a._accName  = ast->account()->displayName();
-        a._id       = json.value("id").toLongLong();
+        a._id       = json.value("id").toInt();
         a._subject  = json.value("subject").toString();
         a._message  = json.value("message").toString();
         a._file     = json.value("file").toString();
-        a._link     = json.value("link").toUrl();
-        a._dateTime = json.value("date").toDateTime();
+        a._link     = QUrl(json.value("link").toString());
+        a._dateTime = QDateTime::fromString(json.value("date").toString(), Qt::ISODate);
         list.append(a);
     }
 

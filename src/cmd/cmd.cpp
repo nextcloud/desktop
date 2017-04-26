@@ -20,6 +20,8 @@
 #include <QUrl>
 #include <QFile>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <qdebug.h>
 
 #include "account.h"
@@ -416,10 +418,10 @@ int main(int argc, char **argv) {
 
     JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QVariantMap &json) {
-        auto caps = json.value("ocs").toMap().value("data").toMap().value("capabilities");
+    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+        auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
         qDebug() << "Server capabilities" << caps;
-        account->setCapabilities(caps.toMap());
+        account->setCapabilities(caps.toVariantMap());
         loop.quit();
     });
     job->start();

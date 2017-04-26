@@ -26,7 +26,6 @@
 #include "utility.h"
 #include "account.h"
 #include "asserts.h"
-#include <json.h>
 
 #ifdef Q_OS_WIN
 #include <windef.h>

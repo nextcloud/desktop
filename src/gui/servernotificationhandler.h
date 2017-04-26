@@ -19,6 +19,8 @@
 
 #include "activitywidget.h"
 
+class QJsonDocument;
+
 namespace OCC
 {
 
@@ -35,7 +37,7 @@ public slots:
     void slotFetchNotifications(AccountState *ptr);
 
 private slots:
-    void slotNotificationsReceived(const QVariantMap& json, int statusCode);
+    void slotNotificationsReceived(const QJsonDocument& json, int statusCode);
 
 private:
     QPointer<JsonApiJob> _notificationJob;

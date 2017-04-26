@@ -19,6 +19,7 @@
 #include "abstractnetworkjob.h"
 
 class QUrl;
+class QJsonObject;
 
 namespace OCC {
 
@@ -227,12 +228,12 @@ public:
     explicit CheckServerJob(AccountPtr account, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
 
-    static QString version(const QVariantMap &info);
-    static QString versionString(const QVariantMap &info);
-    static bool installed(const QVariantMap &info);
+    static QString version(const QJsonObject &info);
+    static QString versionString(const QJsonObject &info);
+    static bool installed(const QJsonObject &info);
 
 signals:
-    void instanceFound(const QUrl&url, const QVariantMap &info);
+    void instanceFound(const QUrl&url, const QJsonObject &info);
 
     /** Emitted on invalid status.php reply.
      *
@@ -278,8 +279,8 @@ private slots:
  * To be used like this:
  * \code
  * _job = new JsonApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
- * connect(job, SIGNAL(jsonReceived(QVariantMap)), ...)
- * The received QVariantMap is empty in case of error or otherwise is a map as parsed by QtJson
+ * connect(job, SIGNAL(jsonReceived(QJsonDocument)), ...)
+ * The received QVariantMap is null in case of error
  * \encode
  *
  * @ingroup libsync
@@ -309,10 +310,10 @@ signals:
 
     /**
      * @brief jsonReceived - signal to report the json answer from ocs
-     * @param json - the raw json string
+     * @param json - the parsed json document
      * @param statusCode - the OCS status code: 100 (!) for success
      */
-    void jsonReceived(const QVariantMap &json, int statusCode);
+    void jsonReceived(const QJsonDocument &json, int statusCode);
 
 private:
     QList< QPair<QString,QString> > _additionalParams;

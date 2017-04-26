@@ -69,7 +69,7 @@ private slots:
     void slotDetermineAuthType(const QString&);
     void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
     void slotContinueDetermineAuth();
-    void slotOwnCloudFoundAuth(const QUrl&, const QVariantMap&);
+    void slotOwnCloudFoundAuth(const QUrl&, const QJsonObject&);
     void slotNoOwnCloudFoundAuth(QNetworkReply *reply);
     void slotNoOwnCloudFoundAuthTimeout(const QUrl&url);
 

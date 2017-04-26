@@ -15,7 +15,6 @@
 #include "thumbnailjob.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "json.h"
 
 namespace OCC {
 

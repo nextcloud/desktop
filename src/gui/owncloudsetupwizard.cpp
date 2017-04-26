@@ -176,14 +176,14 @@ void OwncloudSetupWizard::slotContinueDetermineAuth()
     account->setCredentials(CredentialsFactory::create("dummy"));
     CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);
     job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(instanceFound(QUrl,QVariantMap)), SLOT(slotOwnCloudFoundAuth(QUrl,QVariantMap)));
+    connect(job, SIGNAL(instanceFound(QUrl,QJsonObject)), SLOT(slotOwnCloudFoundAuth(QUrl,QJsonObject)));
     connect(job, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply*)));
     connect(job, SIGNAL(timeout(const QUrl&)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl&)));
     job->setTimeout((account->url().scheme() == "https") ? 30*1000 : 10*1000);
     job->start();
 }
 
-void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QVariantMap &info)
+void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QJsonObject &info)
 {
     auto serverVersion = CheckServerJob::version(info);
 

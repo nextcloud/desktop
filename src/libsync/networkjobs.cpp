@@ -28,8 +28,8 @@
 #include <QDebug>
 #include <QCoreApplication>
 #include <QPixmap>
-
-#include "json.h"
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "networkjobs.h"
 #include "account.h"
@@ -397,17 +397,17 @@ void CheckServerJob::onTimedOut()
     deleteLater();
 }
 
-QString CheckServerJob::version(const QVariantMap &info)
+QString CheckServerJob::version(const QJsonObject &info)
 {
     return info.value(QLatin1String("version")).toString();
 }
 
-QString CheckServerJob::versionString(const QVariantMap &info)
+QString CheckServerJob::versionString(const QJsonObject &info)
 {
     return info.value(QLatin1String("versionstring")).toString();
 }
 
-bool CheckServerJob::installed(const QVariantMap &info)
+bool CheckServerJob::installed(const QJsonObject &info)
 {
     return info.value(QLatin1String("installed")).toBool();
 }
@@ -461,22 +461,22 @@ bool CheckServerJob::finished()
         return false;
     }
 
-    bool success = false;
     QByteArray body = reply()->peek(4*1024);
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if( body.isEmpty() || httpStatus != 200) {
         qDebug() << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
-        QVariantMap status = QtJson::parse(QString::fromUtf8(body), success).toMap();
+        QJsonParseError error;
+        auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
-        if (!success || status.isEmpty()) {
-            qDebug() << "status.php from server is not valid JSON!" << body << reply()->request().url();
+        if (error.error != QJsonParseError::NoError || status.isNull()) {
+            qDebug() << "status.php from server is not valid JSON!" << body << reply()->request().url() << error.errorString();
         }
 
         qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
-        if( status.contains("installed") ) {
-            emit instanceFound(reply()->url(), status);
+        if( status.object().contains("installed") ) {
+            emit instanceFound(reply()->url(), status.object());
         } else {
             qDebug() << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
@@ -736,7 +736,7 @@ bool JsonApiJob::finished()
 
     if (reply()->error() != QNetworkReply::NoError) {
         qWarning() << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        emit jsonReceived(QVariantMap(), statusCode);
+        emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
 
@@ -756,12 +756,12 @@ bool JsonApiJob::finished()
         }
     }
 
-    bool success = false;
-    QVariantMap json = QtJson::parse(jsonStr, success).toMap();
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
     // empty or invalid response
-    if (!success || json.isEmpty()) {
-        qWarning() << "invalid JSON!" << jsonStr;
-        emit jsonReceived(QVariantMap(), statusCode);
+    if (error.error != QJsonParseError::NoError || json.isNull()) {
+        qWarning() << "invalid JSON!" << jsonStr << error.errorString();
+        emit jsonReceived(json, statusCode);
         return true;
     }
 
