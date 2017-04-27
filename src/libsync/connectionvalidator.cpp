@@ -48,15 +48,17 @@ QString ConnectionValidator::statusString(Status stat)
     case Connected:
         return QLatin1String("Connected");
     case NotConfigured:
-        return QLatin1String("NotConfigured");
+        return QLatin1String("Not configured");
     case ServerVersionMismatch:
         return QLatin1String("Server Version Mismatch");
-    case CredentialsMissingOrWrong:
+    case CredentialsNotReady:
+        return QLatin1String("Credentials not ready");
+    case CredentialsWrong:
         return QLatin1String("Credentials Wrong");
+    case SslError:
+        return QLatin1String("SSL Error");
     case StatusNotFound:
         return QLatin1String("Status not found");
-    case UserCanceledCredentials:
-        return QLatin1String("User canceled credentials");
     case ServiceUnavailable:
         return QLatin1String("Service unavailable");
     case MaintenanceMode:
@@ -143,10 +145,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     }
 
     // now check the authentication
-    if (_account->credentials()->ready())
-        QTimer::singleShot(0, this, SLOT(checkAuthentication()));
-    else
-        reportResult(CredentialsMissingOrWrong);
+    QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -154,11 +153,13 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
     qCWarning(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
-    if (!_account->credentials()->ready()) {
-        // This could be needed for SSL client certificates
-        // We need to load them from keychain and try
-        reportResult(CredentialsMissingOrWrong);
-    } else if (!_account->credentials()->stillValid(reply)) {
+    if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+        reportResult(SslError);
+        return;
+    }
+
+    if (!_account->credentials()->stillValid(reply)) {
+        // Note: Why would this happen on a status.php request?
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     } else {
         //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
@@ -180,8 +181,9 @@ void ConnectionValidator::checkAuthentication()
 {
     AbstractCredentials *creds = _account->credentials();
 
-    if (!creds->ready()) { // The user canceled
-        reportResult(UserCanceledCredentials);
+    if (!creds->ready()) {
+        reportResult(CredentialsNotReady);
+        return;
     }
 
     // simply GET the webdav root, will fail if credentials are wrong.
@@ -200,10 +202,15 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
-    if (reply->error() == QNetworkReply::AuthenticationRequiredError || !_account->credentials()->stillValid(reply)) {
+    if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
+        _errors << job->errorStringParsingBody();
+        stat = SslError;
+
+    } else if (reply->error() == QNetworkReply::AuthenticationRequiredError
+        || !_account->credentials()->stillValid(reply)) {
         qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job->errorString();
         _errors << tr("The provided credentials are not correct");
-        stat = CredentialsMissingOrWrong;
+        stat = CredentialsWrong;
 
     } else if (reply->error() != QNetworkReply::NoError) {
         _errors << job->errorStringParsingBody();

@@ -121,6 +121,8 @@ bool ShibbolethCredentials::ready() const
 
 void ShibbolethCredentials::fetchFromKeychain()
 {
+    _wasFetched = true;
+
     if (_user.isEmpty()) {
         _user = _account->credentialSetting(QLatin1String(userC)).toString();
     }

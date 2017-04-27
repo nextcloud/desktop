@@ -119,6 +119,7 @@ bool TokenCredentials::ready() const
 
 void TokenCredentials::fetchFromKeychain()
 {
+    _wasFetched = true;
     Q_EMIT fetched();
 }
 

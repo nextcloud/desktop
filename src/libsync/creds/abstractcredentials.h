@@ -44,9 +44,25 @@ public:
     virtual QString authType() const = 0;
     virtual QString user() const = 0;
     virtual QNetworkAccessManager *getQNAM() const = 0;
+
+    /** Whether there are credentials that can be used for a connection attempt. */
     virtual bool ready() const = 0;
+
+    /** Whether fetchFromKeychain() was called before. */
+    bool wasFetched() const { return _wasFetched; }
+
+    /** Trigger (async) fetching of credential information
+     *
+     * Should set _wasFetched = true, and later emit fetched() when done.
+     */
     virtual void fetchFromKeychain() = 0;
+
+    /** Ask credentials from the user (typically async)
+     *
+     * Should emit asked() when done.
+     */
     virtual void askFromUser() = 0;
+
     virtual bool stillValid(QNetworkReply *reply) = 0;
     virtual void persist() = 0;
 
@@ -56,6 +72,8 @@ public:
      *
      * Note that sensitive data (like the password used to acquire the
      * session cookie) may be retained. See forgetSensitiveData().
+     *
+     * ready() must return false afterwards.
      */
     virtual void invalidateToken() = 0;
 
@@ -70,11 +88,23 @@ public:
     static QString keychainKey(const QString &url, const QString &user);
 
 Q_SIGNALS:
+    /** Emitted when fetchFromKeychain() is done.
+     *
+     * Note that ready() can be true or false, depending on whether there was useful
+     * data in the keychain.
+     */
     void fetched();
+
+    /** Emitted when askFromUser() is done.
+     *
+     * Note that ready() can be true or false, depending on whether the user provided
+     * data or not.
+     */
     void asked();
 
 protected:
     Account *_account;
+    bool _wasFetched;
 };
 
 } // namespace OCC

@@ -45,6 +45,7 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
 
 void DummyCredentials::fetchFromKeychain()
 {
+    _wasFetched = true;
     Q_EMIT(fetched());
 }
 

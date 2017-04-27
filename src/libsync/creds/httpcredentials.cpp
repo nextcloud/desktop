@@ -144,6 +144,8 @@ QString HttpCredentials::fetchUser()
 
 void HttpCredentials::fetchFromKeychain()
 {
+    _wasFetched = true;
+
     // User must be fetched from config file
     fetchUser();
 

@@ -24,6 +24,7 @@ Q_LOGGING_CATEGORY(lcCredentials, "sync.credentials", QtInfoMsg)
 
 AbstractCredentials::AbstractCredentials()
     : _account(0)
+    , _wasFetched(false)
 {
 }
 

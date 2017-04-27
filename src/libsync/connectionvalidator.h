@@ -86,9 +86,10 @@ public:
         Connected,
         NotConfigured,
         ServerVersionMismatch, // The server version is too old
-        CredentialsMissingOrWrong, // Credentials aren't ready or AuthenticationRequiredError
+        CredentialsNotReady, // Credentials aren't ready
+        CredentialsWrong, // AuthenticationRequiredError
+        SslError, // SSL handshake error, certificate rejected by user?
         StatusNotFound, // Error retrieving status.php
-        UserCanceledCredentials, // checkAuthentication when credentials aren't ready
         ServiceUnavailable, // 503 on authed request
         MaintenanceMode, // maintenance enabled in status.php
         Timeout // actually also used for other errors on the authed request

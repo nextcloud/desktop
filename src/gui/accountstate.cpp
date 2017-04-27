@@ -174,6 +174,14 @@ void AccountState::checkConnectivity()
         return;
     }
 
+    // If we never fetched credentials, do that now - otherwise connection attempts
+    // make little sense, we might be missing client certs.
+    if (!account()->credentials()->wasFetched()) {
+        _waitingForNewCredentials = true;
+        account()->credentials()->fetchFromKeychain();
+        return;
+    }
+
     // IF the account is connected the connection check can be skipped
     // if the last successful etag check job is not so long ago.
     ConfigFile cfg;
@@ -247,10 +255,11 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         // much more likely, so keep trying to connect.
         setState(NetworkError);
         break;
-    case ConnectionValidator::CredentialsMissingOrWrong:
+    case ConnectionValidator::CredentialsWrong:
+    case ConnectionValidator::CredentialsNotReady:
         slotInvalidCredentials();
         break;
-    case ConnectionValidator::UserCanceledCredentials:
+    case ConnectionValidator::SslError:
         setState(SignedOut);
         break;
     case ConnectionValidator::ServiceUnavailable:
@@ -270,36 +279,33 @@ void AccountState::slotInvalidCredentials()
     if (isSignedOut() || _waitingForNewCredentials)
         return;
 
+    qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
+                           << "asking user";
+
     if (account()->credentials()->ready())
         account()->credentials()->invalidateToken();
-    account()->credentials()->fetchFromKeychain();
+    account()->credentials()->askFromUser();
 
     setState(ConfigurationError);
     _waitingForNewCredentials = true;
 }
 
-void AccountState::slotCredentialsFetched(AbstractCredentials *credentials)
+void AccountState::slotCredentialsFetched(AbstractCredentials *)
 {
-    if (!credentials->ready()) {
-        // No exiting credentials found in the keychain
-        credentials->askFromUser();
-        return;
-    }
-
+    // Make a connection attempt, no matter whether the credentials are
+    // ready or not - we want to check whether we can get an SSL connection
+    // going before bothering the user for a password.
+    qCInfo(lcAccountState) << "Fetched credentials for" << _account->url().toString()
+                           << "attempting to connect";
     _waitingForNewCredentials = false;
-
-    if (_connectionValidator) {
-        // When new credentials become available we always want to restart the
-        // connection validation, even if it's currently running.
-        _connectionValidator->deleteLater();
-        _connectionValidator = 0;
-    }
-
     checkConnectivity();
 }
 
 void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
 {
+    qCInfo(lcAccountState) << "Credentials asked for" << _account->url().toString()
+                           << "are they ready?" << credentials->ready();
+
     _waitingForNewCredentials = false;
 
     if (!credentials->ready()) {
