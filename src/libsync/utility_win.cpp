@@ -12,23 +12,41 @@
  * for more details.
  */
 
+#define _WIN32_WINNT 0x0600
+#define WINVER 0x0600
 #include <shlobj.h>
 #include <winbase.h>
 #include <windows.h>
+#include <winerror.h>
+#include <shlguid.h>
+#include <string>
+#include <QLibrary>
 
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
+
+     
 static void setupFavLink_private(const QString &folder)
 {
     // Windows Explorer: Place under "Favorites" (Links)
-    wchar_t path[MAX_PATH];
-    SHGetSpecialFolderPath(0, path, CSIDL_PROFILE, FALSE);
-    QString profile =  QDir::fromNativeSeparators(QString::fromWCharArray(path));
+    
+    QString linkName; 
     QDir folderDir(QDir::fromNativeSeparators(folder));
-    QString linkName = profile+QLatin1String("/Links/") + folderDir.dirName() + QLatin1String(".lnk");
+     
+    /* Use new WINAPI functions */
+    PWSTR path;
+    
+    if(SHGetKnownFolderPath(FOLDERID_Links, 0, NULL, &path) == S_OK) {
+        QString links = QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
+        linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
+    	CoTaskMemFree(path);
+    }
+    qDebug() << Q_FUNC_INFO << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
         qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
+
 }
+
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
