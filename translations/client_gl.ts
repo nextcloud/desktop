@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -91,12 +91,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Espazo de almacenamento: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
@@ -106,17 +106,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar todo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Non sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar cambios manuais</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="147"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Engadir novo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="155"/>
@@ -163,17 +163,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Forzar a sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Reiniciar a sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
@@ -188,12 +188,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar a retirada da conexión da sincronización do cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="369"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Retirar a conexión da sincronización do cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="451"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="537"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 en uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="559"/>
@@ -218,7 +218,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Este servidor da versión %1 é vello e non ten soporte! Vostede verá o que fai.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="567"/>
@@ -248,32 +248,32 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Hai cartafoles que non se sincronizaron por ser demasiado grandes:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Hai cartafoles que non se sincronizaron porque son almacenamentos externos:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Hai cartafoles que non se sincronizaron porque son demasiado grandes ou almacenamentos externos:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="728"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirme a retirada da conta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="729"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;De verdade quere retirar a conexión a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="735"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Retirar conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="225"/>
@@ -299,17 +299,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="364"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Quere realmente deixar de sincronizar o cartafol &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Aviso:&lt;/b&gt; Esto &lt;b&gt;non&lt;/b&gt; eliminará ningún ficheiro.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="524"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%3%) de %2 en uso. Algúns cartafoles, incluíndo os compartidos e os montados en rede, poderían ter diferentes límites.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
         <source>%1 of %2 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 de %2 en uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="534"/>
@@ -365,12 +365,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 en %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 en %2 (desconectado)</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="525"/>
         <location filename="../src/gui/activitywidget.cpp" line="581"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividade do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="532"/>
@@ -389,7 +389,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="540"/>
         <source>List of ignored or erroneous files</source>
-        <translation type="unfinished"/>
+        <translation>Lista de ficheiros ignorados ou con erros</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="544"/>
@@ -404,28 +404,28 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="587"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>Non sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="590"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Non sincronizado (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A lista de actividade do servidor copiouse no portapapeis.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="617"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A lista de actividade de sincronización foi copiada ao portapapeis.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="620"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A lista de elementos non sincronizados foi copiada ao portapapeis.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="625"/>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="136"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Actividades do servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="91"/>
@@ -465,12 +465,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Acción requerida: Notificacións</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="145"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br/&gt;A conta %1 non ten as actividades habilitadas.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
@@ -2629,7 +2629,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharewidget.ui" line="83"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="310"/>
