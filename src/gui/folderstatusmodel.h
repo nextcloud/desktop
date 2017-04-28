@@ -70,7 +70,8 @@ public:
         QString _lastErrorString;
         bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
 
-        bool _isUndecided; // undecided folders are the big folders that the user has not accepted yet
+        // undecided folders are the big folders that the user has not accepted yet
+        bool _isUndecided;
 
         Qt::CheckState _checked;
 
@@ -150,7 +151,9 @@ private:
 
 signals:
     void dirtyChanged();
-    void suggestExpand(const QModelIndex &); // Tell the view that this item should be expanded because it has an undecided item
+
+    // Tell the view that this item should be expanded because it has an undecided item
+    void suggestExpand(const QModelIndex &);
 
     friend struct SubFolderInfo;
 };

@@ -173,7 +173,9 @@ void PropagateRemoteMove::finalize()
         record._contentChecksumType = oldRecord._contentChecksumType;
         if (record._fileSize != oldRecord._fileSize) {
             qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
-            record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
+
+            // the server might have claimed a different size, we take the old one from the DB
+            record._fileSize = oldRecord._fileSize;
         }
     }
 

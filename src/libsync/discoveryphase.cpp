@@ -667,7 +667,8 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*> (dhandle);
         QString path = directoryResult->path;
         qCDebug(lcDiscovery) << discoveryJob << path;
-        delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
+         // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
+        delete directoryResult;
     }
 }
 

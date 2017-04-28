@@ -1631,7 +1631,8 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QString& fileName)
 
     SqlQuery query(_db);
     // This query will match entries for which the path is a prefix of fileName
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;"); // CSYNC_FTW_TYPE_DIR == 2
+    // Note: CSYNC_FTW_TYPE_DIR == 2
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;");
     query.bindValue(1, fileName);
     query.exec();
 

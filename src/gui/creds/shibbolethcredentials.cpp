@@ -108,7 +108,8 @@ void ShibbolethCredentials::slotReplyFinished(QNetworkReply* r)
     QVariant target = r->attribute(QNetworkRequest::RedirectionTargetAttribute);
     if (target.isValid()) {
         _stillValid = false;
-        qCWarning(lcShibboleth) << "detected redirect, will open Login Window"; // will be done in NetworkJob's finished signal
+        // The Login window will be opened in NetworkJob's finished signal
+        qCWarning(lcShibboleth) << "detected redirect, will open Login Window";
     } else {
         //_stillValid = true; // gets set when reading from keychain or getting it from browser
     }

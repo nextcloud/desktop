@@ -238,10 +238,17 @@ private:
      */
     void restoreOldFiles(SyncFileItemVector &syncItems);
 
-    bool _hasNoneFiles; // true if there is at least one file which was not changed on the server
-    bool _hasRemoveFile; // true if there is at leasr one file with instruction REMOVE
-    bool _hasForwardInTimeFiles; // true if there is at least one file from the server that goes forward in time
-    int _backInTimeFiles; // number of files which goes back in time from the server
+    // true if there is at least one file which was not changed on the server
+    bool _hasNoneFiles;
+
+    // true if there is at leasr one file with instruction REMOVE
+    bool _hasRemoveFile;
+
+    // true if there is at least one file from the server that goes forward in time
+    bool _hasForwardInTimeFiles;
+
+    // number of files which goes back in time from the server
+    int _backInTimeFiles;
 
 
     int _uploadLimit;

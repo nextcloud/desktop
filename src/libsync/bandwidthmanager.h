@@ -61,25 +61,44 @@ public slots:
     void relativeDownloadDelayTimerExpired();
 
 private:
-    QTimer _switchingTimer; // for switching between absolute and relative bw limiting
-    OwncloudPropagator *_propagator; // FIXME this timer and this variable should be replaced
+    // for switching between absolute and relative bw limiting
+    QTimer _switchingTimer;
+
+    // FIXME this timer and this variable should be replaced
     // by the propagator emitting the changed limit values to us as signal
+    OwncloudPropagator *_propagator;
 
-    QTimer _absoluteLimitTimer; // for absolute up/down bw limiting
+    // for absolute up/down bw limiting
+    QTimer _absoluteLimitTimer;
 
+    // FIXME merge these two lists
     QLinkedList<UploadDevice*> _absoluteUploadDeviceList;
-    QLinkedList<UploadDevice*> _relativeUploadDeviceList; // FIXME merge with list above ^^
+    QLinkedList<UploadDevice*> _relativeUploadDeviceList;
+
     QTimer _relativeUploadMeasuringTimer;
-    QTimer _relativeUploadDelayTimer; // for relative bw limiting, we need to wait this amount before measuring again
-    UploadDevice *_relativeLimitCurrentMeasuredDevice; // the device measured
-    qint64 _relativeUploadLimitProgressAtMeasuringRestart; // for measuring how much progress we made at start
+
+    // for relative bw limiting, we need to wait this amount before measuring again
+    QTimer _relativeUploadDelayTimer;
+
+    // the device measured
+    UploadDevice *_relativeLimitCurrentMeasuredDevice;
+
+    // for measuring how much progress we made at start
+    qint64 _relativeUploadLimitProgressAtMeasuringRestart;
     qint64 _currentUploadLimit;
 
     QLinkedList<GETFileJob*> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
-    QTimer _relativeDownloadDelayTimer; // for relative bw limiting, we need to wait this amount before measuring again
-    GETFileJob *_relativeLimitCurrentMeasuredJob; // the device measured
-    qint64 _relativeDownloadLimitProgressAtMeasuringRestart; // for measuring how much progress we made at start
+
+    // for relative bw limiting, we need to wait this amount before measuring again
+    QTimer _relativeDownloadDelayTimer;
+
+    // the device measured
+    GETFileJob *_relativeLimitCurrentMeasuredJob;
+
+    // for measuring how much progress we made at start
+    qint64 _relativeDownloadLimitProgressAtMeasuringRestart;
+
     qint64 _currentDownloadLimit;
 };
 
