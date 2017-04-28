@@ -248,17 +248,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Tyto složky nebyly synchroznizovány, protože jsou příšliš velké:</translation>
+        <translation>Tyto složky nebyly synchronizovány, protože jsou příšliš velké:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Tyto složky nebyly synchronizovány, protože se nachází na externím uložišti:</translation>
+        <translation>Tyto složky nebyly synchronizovány, protože se nachází na externím úložišti:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Tyto složky nebyly synchronizovány, protože jsou příšliš velké, nebo se nachází na externím uložišti:</translation>
+        <translation>Tyto složky nebyly synchronizovány, protože jsou příliš velké, nebo se nachází na externím úložišti:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="728"/>
@@ -508,7 +508,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Certifikát &amp; Klíč (pkcs12):</translation>
+        <translation>Certifikát &amp; klíč (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -754,14 +754,18 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Všechny soubory v synchronizované složce &apos;%1&apos; byly na serveru smazány.
+Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat. Rozhodnete-li se soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
+Rozhodnete-li se soubory smazat, budou vám nedostupné, nejste-li jejich vlastníkem.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Všechny soubory ve vaší místní synchronizované složce &apos;%1&apos; byly smazány. Tyto soubory budou smazány i na serveru a nebudou tedy dostupné, pokud následně neprovedete jejich obnovení.
+Jste si jisti, že chcete tyto akce synchronizovat se serverem?
+Pokud to byl omyl a chcete si soubory ponechat, budou opět synchronizovány ze serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -783,7 +787,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Tato synchronizace resetuje soubory na dřívější čas v synchronizovaném adresáři &apos;%1&apos;.
+        <translation>Tato synchronizace nastaví soubory na dřívější čas v synchronizovaném adresáři &apos;%1&apos;.
 Toto může být způsobeno obnovením zálohy na straně serveru.
 Pokračováním v synchronizaci způsobí přepsání všech vašich souborů staršími soubory z dřívějšího stavu. Přejete si ponechat své místní nejaktuálnější soubory jako konfliktní soubory?</translation>
     </message>
@@ -926,7 +930,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="241"/>
         <source>Synchronizing with local folder</source>
-        <translation>Synchronizace s místím adresářem</translation>
+        <translation>Synchronizace s místním adresářem</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="285"/>
@@ -944,7 +948,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="159"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Stlačením tlačítka přidáte adresář k synchronizaci.</translation>
+        <translation>Stisknutím tlačítka přidáte adresář k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="169"/>
@@ -1279,7 +1283,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Čtení z klíčenky selhalo z chybou: &apos;%1&apos;</translation>
+        <translation>Čtení z klíčenky selhalo s chybou: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="53"/>
@@ -1581,7 +1585,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/networksettings.cpp" line="134"/>
         <source>Qt &gt;= 5.4 is required in order to use the bandwidth limit</source>
-        <translation>Pro možnost omezení ryhclosti připojení je vyžadován Qt &gt;= 5.4 </translation>
+        <translation>Pro možnost omezení rychlosti připojení je vyžadována verze knihovny Qt &gt;= 5.4 </translation>
     </message>
 </context>
 <context>
@@ -1600,7 +1604,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
         <location filename="../src/gui/notificationwidget.cpp" line="135"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation>%1 požadave selhal při %2</translation>
+        <translation>%1 požadavek selhal při %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="141"/>
@@ -2175,7 +2179,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Soubor %1 nelze nahrát, protože existuje jiný soubor se stejným názvem, lišící se pouze velikostí písma</translation>
+        <translation>Soubor %1 nelze nahrát, protože existuje jiný soubor se stejným názvem, lišící se pouze velikostí písmen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
@@ -3078,7 +3082,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>Názvy souborů obsahující znak &apos;%1&apos; nejsou podporovány na tomto souborovém systému.</translation>
+        <translation>Názvy souborů obsahující znak &apos;%1&apos; nejsou na tomto souborovém systému podporovány.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
@@ -3093,7 +3097,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
         <source>Filename is too long.</source>
-        <translation>Jméno souboru je moc dlouhé.</translation>
+        <translation>Jméno souboru je příliš dlouhé.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="485"/>
@@ -3133,7 +3137,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="939"/>
         <source>File name contains at least one invalid character</source>
-        <translation>Jméno souboru obsahuje aelspoň jeden neplatný znak</translation>
+        <translation>Jméno souboru obsahuje alespoň jeden neplatný znak</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1175"/>
@@ -3339,7 +3343,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Server na účtu %1 používá starou a nepodporovanou verzi %2. Používání tohoto klienta s nepodporovanými verzemi serveru není testováno a může být potencionálně nebezpečné. Pokračujte na vlastní riziko.</translation>
+        <translation>Server na účtu %1 používá starou a nepodporovanou verzi %2. Používání tohoto klienta s nepodporovanými verzemi serveru není testováno a může být nebezpečné. Pokračujte na vlastní riziko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
@@ -3794,7 +3798,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>přeloženo pomocí %1</translation>
     </message>
 </context>
 <context>
