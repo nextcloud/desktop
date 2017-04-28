@@ -776,7 +776,7 @@ void SyncEngine::startSync()
 
     if( fileRecordCount == -1 ) {
         qDebug() << "No way to create a sync journal!";
-        emit csyncError(tr("Unable to initialize a sync journal."));
+        emit csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
         return;
         // database creation error!
