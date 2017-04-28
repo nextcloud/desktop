@@ -1,0 +1,63 @@
+# Copyright (C) 2016 Olivier Goffart <ogoffart@woboq.com>
+#
+# You may use this file under the terms of the 3-clause BSD license.
+# See the file LICENSE from this package for details.
+
+# This is the clang-format configuration style to be used by Qt,
+# based on the rules from https://wiki.qt.io/Qt_Coding_Style and
+# https://wiki.qt.io/Coding_Conventions
+
+---
+# Webkit style was loosely based on the Qt style
+BasedOnStyle: WebKit
+
+Standard: Cpp11
+ColumnLimit: 0
+
+# Disable reflow of qdoc comments: indentation rules are different.
+# Translation comments are also excluded
+CommentPragmas: "^!|^:"
+
+# We want a space between the type and the star for pointer types
+PointerBindsToType: false
+
+# We want to break before the operators, but not before a '='
+BreakBeforeBinaryOperators: NonAssignment
+
+# Braces are usually attached, but not after functions or classes declaration
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: true
+    AfterControlStatement: false
+    AfterEnum: false
+    AfterFunction: true
+    AfterNamespace: false
+    AfterObjCDeclaration: false
+    AfterStruct: true
+    AfterUnion: false
+    BeforeCatch: false
+    BeforeElse: false
+    IndentBraces: false
+
+# The coding style does not specify the following, but this is what gives
+# results closest to the existing code.
+AlignAfterOpenBracket: DontAlign
+AlwaysBreakTemplateDeclarations: true
+
+# Ideally we should also allow less short function in a single line, but
+# clang-format does not handle that
+AllowShortFunctionsOnASingleLine: Inline
+
+# The coding style specifies some include order categories, but also tells to
+# separate categories with an empty line. It does not specify the order within
+# the categories. Since the SortInclude feature of clang-format does not
+# re-order includes separated by empty lines, the feature is not used.
+SortIncludes: false
+
+# macros for which the opening brace stays attached
+ForEachMacros:   [ foreach, Q_FOREACH, BOOST_FOREACH, forever, Q_FOREVER, QBENCHMARK, QBENCHMARK_ONCE ]
+
+# Allow two empty lines for structuring
+MaxEmptyLinesToKeep: 2
+KeepEmptyLinesAtTheStartOfBlocks: false
+
