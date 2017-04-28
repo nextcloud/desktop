@@ -643,6 +643,11 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   int rc = 0;
   int res = 0;
 
+  if (!depth) {
+    mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_INDIVIDUAL_TOO_DEEP);
+    goto done;
+  }
+
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
 
   read_from_db = ctx->remote.read_from_db;
@@ -798,7 +803,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
     }
 
-    if (flag == CSYNC_FTW_FLAG_DIR && depth && rc == 0
+    if (flag == CSYNC_FTW_FLAG_DIR && rc == 0
         && (!ctx->current_fs || ctx->current_fs->instruction != CSYNC_INSTRUCTION_IGNORE)) {
       rc = csync_ftw(ctx, filename, fn, depth - 1);
       if (rc < 0) {

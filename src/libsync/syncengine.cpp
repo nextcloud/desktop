@@ -478,6 +478,9 @@ int SyncEngine::treewalkFile( TREE_WALK_FILE *file, bool remote )
     case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN:
         item->_errorString = tr("File/Folder is ignored because it's hidden.");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
+        item->_errorString = tr("Folder hierarchy is too deep");
+        break;
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;

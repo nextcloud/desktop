@@ -58,7 +58,7 @@
 /**
  * How deep to scan directories.
  */
-#define MAX_DEPTH 50
+#define MAX_DEPTH 100
 
 #define CSYNC_STATUS_INIT 1 << 0
 #define CSYNC_STATUS_UPDATE 1 << 1
