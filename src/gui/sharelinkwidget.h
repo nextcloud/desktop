@@ -123,7 +123,9 @@ private:
     QMenu *_shareLinkMenu;
     QAction *_openLinkAction;
     QAction *_copyLinkAction;
+    QAction *_copyDirectLinkAction;
     QAction *_emailLinkAction;
+    QAction *_emailDirectLinkAction;
 };
 
 }

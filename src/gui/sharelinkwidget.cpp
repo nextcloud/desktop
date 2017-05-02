@@ -153,7 +153,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _shareLinkMenu = new QMenu(this);
     _openLinkAction = _shareLinkMenu->addAction(tr("Open link in browser"));
     _copyLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard"));
+    _copyDirectLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard (direct download)"));
     _emailLinkAction = _shareLinkMenu->addAction(tr("Send link by email"));
+    _emailDirectLinkAction = _shareLinkMenu->addAction(tr("Send link by email (direct download)"));
 
     /*
      * Create the share manager and connect it properly
@@ -533,14 +535,17 @@ void ShareLinkWidget::openShareLink(const QUrl &url)
 void ShareLinkWidget::slotShareLinkButtonTriggered(QAction *action)
 {
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
-    QUrl url = share->getLink();
 
     if (action == _copyLinkAction) {
-        copyShareLink(url);
+        copyShareLink(share->getLink());
+    } else if (action == _copyDirectLinkAction) {
+        copyShareLink(share->getDirectDownloadLink());
     } else if (action == _emailLinkAction) {
-        emailShareLink(url);
+        emailShareLink(share->getLink());
+    } else if (action == _emailDirectLinkAction) {
+        emailShareLink(share->getDirectDownloadLink());
     } else if (action == _openLinkAction) {
-        openShareLink(url);
+        openShareLink(share->getLink());
     }
 }
 

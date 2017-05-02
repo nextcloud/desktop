@@ -145,6 +145,11 @@ public:
     QUrl getLink() const;
 
     /*
+     * The share's link for direct downloading.
+     */
+    QUrl getDirectDownloadLink() const;
+
+    /*
      * Get the publicUpload status of this share
      */
     bool getPublicUpload();

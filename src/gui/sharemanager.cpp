@@ -109,6 +109,13 @@ QUrl LinkShare::getLink() const
     return _url;
 }
 
+QUrl LinkShare::getDirectDownloadLink() const
+{
+    QUrl url = _url;
+    url.setPath(url.path() + "/download");
+    return url;
+}
+
 QDate LinkShare::getExpireDate() const
 {
     return _expireDate;
