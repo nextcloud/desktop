@@ -756,14 +756,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés du serveur.
+Ces suppressions seront synchronisées sur vos dossiers locaux synchronisés, rendant ces fichiers inaccessibles, à moins que vous n&apos;ayez le droit de les restaurer.
+Si vous décidez de garder ces fichiers, ils seront synchronisés à nouveau avec le serveur si vous en avez le droit.
+Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le propriétaire.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés. Ces suppressions seront synchronisées avec votre serveur, rendant ces fichiers inaccessibles sauf s&apos;ils sont restaures.
+Êtes-vous sûr de vouloir synchroniser ces actions avec le serveur ?
+S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de garder vos fichiers, ils seront synchronisés à nouveau depuis le serveur.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -2177,7 +2182,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;envoyer le fichier %1 car un autre fichier de même nom existe, différant seulement par la casse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
