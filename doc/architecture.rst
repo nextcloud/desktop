@@ -256,7 +256,8 @@ Chunked Upload
 ~~~~~~~~~~~~~~
 
 Mostly same as above. 
-The checksum of the full file is sent with every chunk, but the server compares the checksum of the last chunk.
+The checksum of the full file is sent with every chunk of the file. 
+But the server only compares the checksum after receiving the checksum sent with the last chunk.
 
 Download
 ~~~~~~~~
