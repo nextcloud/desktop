@@ -372,16 +372,23 @@ void PropagateDownloadFile::start()
 
     // If there's not enough space to fully download this file, stop.
     const auto diskSpaceResult = propagator()->diskSpaceCheck();
-    if (diskSpaceResult == OwncloudPropagator::DiskSpaceFailure) {
-        _item->_errorMayBeBlacklisted = true;
-        done(SyncFileItem::NormalError,
-             tr("The download would reduce free disk space below %1").arg(
-                 Utility::octetsToString(freeSpaceLimit())));
-        return;
-    } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
-        done(SyncFileItem::FatalError,
-             tr("Free space on disk is less than %1").arg(
-                 Utility::octetsToString(criticalFreeSpaceLimit())));
+    if (diskSpaceResult != OwncloudPropagator::DiskSpaceOk) {
+        if (diskSpaceResult == OwncloudPropagator::DiskSpaceFailure) {
+            _item->_errorMayBeBlacklisted = true;
+            done(SyncFileItem::NormalError,
+                 tr("The download would reduce free disk space below %1").arg(
+                     Utility::octetsToString(freeSpaceLimit())));
+        } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
+            done(SyncFileItem::FatalError,
+                 tr("Free space on disk is less than %1").arg(
+                     Utility::octetsToString(criticalFreeSpaceLimit())));
+        }
+
+        // Remove the temporary, if empty.
+        if (_resumeStart == 0) {
+            _tmpFile.remove();
+        }
+
         return;
     }
 
