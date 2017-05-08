@@ -28,7 +28,7 @@ Release-1 Week:
 * [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
 
 For all Betas and RCs:
-* [ ] Branch off a release branch called <version>-rcX or <version>-betaX
+* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
 * [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
 * [ ] Create build for Windows using rotor job owncloud-client-win32 (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
 * [ ] Create build for Mac using rotor, job owncloud-client-osx (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
@@ -58,7 +58,7 @@ Day before Release:
 * [ ] Inform product management and marketing that we are 1 day out
 
 On Release Day (for final release):
-* [ ] Branch off a release branch called <version>
+* [ ] Branch off a release branch called like the version (without v, v is for tags)
 * [ ] Double check ```VERSION.cmake```: Check the version number settings and suffix (beta etc.) to be removed. Commit change to release branch only!
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Create tar ball (automated by `ownCloud-client-source` jenkins job) and **immediately** sign it (asc file). (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
@@ -67,7 +67,7 @@ On Release Day (for final release):
 * [ ] Stop publishing on OBS
 * [ ] Create Linux builds using rotor job owncloud-client-linux (this magically interacts with the ownCloud-client-source job)
   * [ ] theme 'ownCloud' -> isv:ownCloud:desktop
-  * [ ] theme 'testpilotcould' -> isv:ownCloud:testpilotcloud
+  * [ ] theme 'testpilotcloud' -> isv:ownCloud:testpilot
 * [ ] Copy the source tarball from the daily to the stable dir on download.o.o
 * [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting
 * [ ] Build Linux packages by running the jenkins job ownCloud-client-linux with proper parameters
@@ -89,7 +89,7 @@ On Release Day (for final release):
 * [ ] Keep the packaging mailinglist packaging@owncloud.org informed and announce the final sources.
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org
-* [ ] Create git signed tag in github client repository using ```git tag -u E94E7B37 tagname```
+* [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
 * [ ] Inform GCX that the new version is released (gcx@owncloud.com)
