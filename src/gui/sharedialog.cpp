@@ -172,6 +172,7 @@ void ShareDialog::showSharingUi()
     if (!canReshare) {
         auto label = new QLabel(this);
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
+        label->setWordWrap(true);
         layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
