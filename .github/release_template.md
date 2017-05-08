@@ -6,7 +6,7 @@ This is the template for new release issues.
 Copy below text into a task and tick the items:
 
 ```
-Release-1 Week:
+Some weeks before the release:
 * [ ] Check if we should update the bundled sqlite3 (https://github.com/owncloud/client/tree/master/src/3rdparty/sqlite3)
 * [ ] Check if we should update Sparkle on build machine (https://github.com/sparkle-project/Sparkle/releases)
 * [ ] Ensure NSIS is up to date on the build machine
@@ -21,10 +21,13 @@ Release-1 Week:
   * Contact AV vendors whom's engine reports a virus
 * [ ] Documentation should be online before the release http://doc.owncloud.org/desktop/1.X/
 * [ ] QA goes over https://github.com/owncloud/mirall/wiki/Testing-Scenarios
-* [ ] Communicate the release schedule on mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
 * [ ] Make sure to have `client/ChangeLog` updated
  * use `git log --format=oneline v<lastrelease>...master` if your memory fails you
-* [ ] Ensure marketing is aware and prepared for the release (social, .com website, cust. communications)
+* [ ] check if enterprise issues are fixed
+
+One week before the release:
+* [ ] Communicate the release schedule on mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
+* [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust. communications)
 * [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
 
 For all Betas and RCs:
@@ -38,7 +41,7 @@ For all Betas and RCs:
   * [ ] theme 'testpilotcould' -> isv:ownCloud:testpilot:testing
 * [ ] Copy builds from ```daily``` to ```testing``` on download.owncloud.com, double check the download links.
 * [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org and packaging@owncloud.org
+* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org
 * [ ] Announce on https://central.owncloud.org
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Check crash reporter
@@ -48,7 +51,6 @@ For first Beta of a Major or Minor release:
 * [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
 * [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) and [NSIS](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/) to point to the release branch (e.g. 2.1).
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor.
-* [ ] check if enterprise issues are fixed
 
 Day before Release:
 * [ ] Check the translations coming from transifex: All synchronized?
@@ -65,17 +67,15 @@ On Release Day (for final release):
 * [ ] Create build for Windows using rotor job owncloud-client-win32 (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
 * [ ] Create build for Mac using rotor, job owncloud-client-osx (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
 * [ ] Stop publishing on OBS
+* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting
 * [ ] Create Linux builds using rotor job owncloud-client-linux (this magically interacts with the ownCloud-client-source job)
+  * Check if patches still apply in the linux packages
+  * Update [OBS repository](https://build.opensuse.org/project/show?project=isv%3AownCloud%3Adesktop) `isv:ownCloud:desktop`
   * [ ] theme 'ownCloud' -> isv:ownCloud:desktop
   * [ ] theme 'testpilotcloud' -> isv:ownCloud:testpilot
-* [ ] Copy the source tarball from the daily to the stable dir on download.o.o
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting
-* [ ] Build Linux packages by running the jenkins job ownCloud-client-linux with proper parameters
- * Update [OBS repository](https://build.opensuse.org/project/show?project=isv%3AownCloud%3Adesktop) `isv:ownCloud:desktop`
- * Check if patches still apply in the linux packages
 * [ ] Linux: Update the testing repository to the latest stable version.
 * [ ] Inform GCX that a new tarball is available.
-* [ ] Copy builds from ```daily``` to ```stable``` on download.owncloud.com, double check the download links.
+* [ ] Copy builds and source tar ball from ```daily``` to ```stable``` on download.owncloud.com, double check the download links.
 * [ ] Check if the following packages are on download.owncloud.com/desktop/stable:
   * Windows binary package
   * Mac binary package
@@ -85,14 +85,17 @@ On Release Day (for final release):
 * [ ] Re-download Win build check signature. From Mac or Linux: ```osslsigncode verify ownCloud-version-setup.exe```
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Linux: Smoke test 
+* [ ] Linux: Re-enable OBS publishing
 * [ ] Update ASCII Changelog on http://download.owncloud.com/download/changelog-client
-* [ ] Keep the packaging mailinglist packaging@owncloud.org informed and announce the final sources.
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
 * [ ] Inform GCX that the new version is released (gcx@owncloud.com)
+* [ ] Inform release-coordination@owncloud.com
+* [ ] Ensure marketing is aware (marketing@owncloud.com)
 * [ ] Take pride and celebrate!
 * [ ] Also update the testpilotcloud builds for that release version and make sure they show up on the download page
 * [ ] Days later: Update the updater script ```clientupdater.php``` (check the crash reporter if auto update is a good idea or we need a new release)
