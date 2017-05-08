@@ -55,6 +55,8 @@ QString ConnectionValidator::statusString( Status stat )
         return QLatin1String("User canceled credentials");
     case ServiceUnavailable:
         return QLatin1String("Service unavailable");
+    case MaintenanceMode:
+        return QLatin1String("Maintenance mode");
     case Timeout:
         return QLatin1String("Timeout");
     }
@@ -127,6 +129,11 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
              << "(" << serverVersion << ")";
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+        return;
+    }
+
+    if (info["maintenance"].toBool()) {
+        reportResult( MaintenanceMode );
         return;
     }
 

@@ -94,6 +94,14 @@ void AccountState::setState(State state)
             _connectionStatus = ConnectionValidator::Undefined;
             _connectionErrors.clear();
         } else if (oldState == SignedOut && _state == Disconnected) {
+            // If we stop being voluntarily signed-out, try to connect and
+            // auth right now!
+            checkConnectivity();
+        } else if (_state == ServiceUnavailable) {
+            // Check if we are actually down for maintenance.
+            // To do this we must clear the connection validator that just
+            // produced the 503. It's finished anyway and will delete itself.
+            _connectionValidator.clear();
             checkConnectivity();
         }
         if (oldState == Connected || _state == Connected) {
@@ -117,6 +125,8 @@ QString AccountState::stateString(State state)
         return tr("Connected");
     case ServiceUnavailable:
         return tr("Service unavailable");
+    case MaintenanceMode:
+        return tr("Maintenance mode");
     case NetworkError:
         return tr("Network error");
     case ConfigurationError:
@@ -146,11 +156,6 @@ void AccountState::signIn()
 bool AccountState::isConnected() const
 {
     return _state == Connected;
-}
-
-bool AccountState::isConnectedOrTemporarilyUnavailable() const
-{
-    return isConnected() || _state == ServiceUnavailable;
 }
 
 void AccountState::tagLastSuccessfullETagRequest()
@@ -251,6 +256,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         break;
     case ConnectionValidator::ServiceUnavailable:
         setState(ServiceUnavailable);
+        break;
+    case ConnectionValidator::MaintenanceMode:
+        setState(MaintenanceMode);
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);

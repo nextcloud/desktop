@@ -54,6 +54,10 @@ public:
         /// don't bother the user too much and try again.
         ServiceUnavailable,
 
+        /// Similar to ServiceUnavailable, but we know the server is down
+        /// for maintenance
+        MaintenanceMode,
+
         /// Could not communicate with the server for some reason.
         /// We assume this may resolve itself over time and will try
         /// again automatically.
@@ -101,7 +105,6 @@ public:
     void signIn();
 
     bool isConnected() const;
-    bool isConnectedOrTemporarilyUnavailable() const;
 
     /// Triggers a ping to the server to update state and
     /// connection status and errors.

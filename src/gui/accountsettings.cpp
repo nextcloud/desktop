@@ -601,6 +601,8 @@ void AccountSettings::slotAccountStateChanged(int state)
             showConnectionLabel( tr("Connected to %1.").arg(serverWithUser), errors );
         } else if (state == AccountState::ServiceUnavailable) {
             showConnectionLabel( tr("Server %1 is temporarily unavailable.").arg(server) );
+        } else if (state == AccountState::MaintenanceMode) {
+            showConnectionLabel( tr("Server %1 is currently in maintenance mode.").arg(server) );
         } else if (state == AccountState::SignedOut) {
             showConnectionLabel( tr("Signed out from %1.").arg(serverWithUser) );
         } else {

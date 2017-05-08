@@ -85,13 +85,13 @@ public:
         Undefined,
         Connected,
         NotConfigured,
-        ServerVersionMismatch,
-        CredentialsMissingOrWrong,
-        StatusNotFound,
-        UserCanceledCredentials,
-        ServiceUnavailable,
-        // actually also used for other errors on the authed request
-        Timeout
+        ServerVersionMismatch, // The server version is too old
+        CredentialsMissingOrWrong, // Credentials aren't ready or AuthenticationRequiredError
+        StatusNotFound, // Error retrieving status.php
+        UserCanceledCredentials, // checkAuthentication when credentials aren't ready
+        ServiceUnavailable, // 503 on authed request
+        MaintenanceMode, // maintenance enabled in status.php
+        Timeout // actually also used for other errors on the authed request
     };
 
     static QString statusString( Status );
