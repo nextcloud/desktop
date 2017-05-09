@@ -156,8 +156,6 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument& json, int st
     foreach( auto activ, activities ) {
         auto json = activ.toObject();
 
-        qDebug() << "ZZZ" << json;
-
         Activity a;
         a._type = Activity::ActivityType;
         a._accName  = ast->account()->displayName();
