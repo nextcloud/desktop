@@ -62,6 +62,7 @@ Day before Release:
 On Release Day (for final release):
 * [ ] Branch off a release branch called like the version (without v, v is for tags)
 * [ ] Double check ```VERSION.cmake```: Check the version number settings and suffix (beta etc.) to be removed. Commit change to release branch only!
+* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Create tar ball (automated by `ownCloud-client-source` jenkins job) and **immediately** sign it (asc file). (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Create build for Windows using rotor job owncloud-client-win32 (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
