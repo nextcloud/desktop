@@ -25,6 +25,8 @@
 
 using namespace OCC;
 
+Q_LOGGING_CATEGORY(lcProxy, "gui.credentials.proxy", QtInfoMsg)
+
 ProxyAuthHandler* ProxyAuthHandler::instance()
 {
     static ProxyAuthHandler inst;
@@ -91,11 +93,11 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         sending_qnam = qnam_alive.data();
     }
     if (!sending_qnam) {
-        qDebug() << "Could not get the sending QNAM for" << sender();
+        qCDebug(lcProxy) << "Could not get the sending QNAM for" << sender();
     }
 
 
-    qDebug() << Q_FUNC_INFO << key << proxy.type();
+    qCDebug(lcProxy) << "Proxy auth required for" << key << proxy.type();
 
     // If we already had a username but auth still failed,
     // invalidate the old credentials! Unfortunately, authenticator->user()
@@ -105,7 +107,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     if (!_waitingForDialog && !_waitingForKeychain &&
             (!authenticator->user().isEmpty()
              || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
-        qDebug() << "invalidating old creds" << key;
+        qCDebug(lcProxy) << "invalidating old creds" << key;
         _username.clear();
         _password.clear();
         invalidated = true;
@@ -124,7 +126,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         }
     }
 
-    qDebug() << "got creds for" << _proxy;
+    qCDebug(lcProxy) << "got creds for" << _proxy;
     authenticator->setUser(_username);
     authenticator->setPassword(_password);
     sending_qnam = qnam_alive.data();
@@ -164,7 +166,7 @@ bool ProxyAuthHandler::getCredsFromDialog()
     --_waitingForDialog;
 
     if (_dialog && _dialog->result() == QDialog::Accepted) {
-        qDebug() << "got creds for" << _proxy << "from dialog";
+        qCDebug(lcProxy) << "got creds for" << _proxy << "from dialog";
         _username = _dialog->username();
         _password = _dialog->password();
         return true;
@@ -180,7 +182,7 @@ bool ProxyAuthHandler::getCredsFromKeychain()
         return false;
     }
 
-    qDebug() << "trying to load" << _proxy;
+    qCDebug(lcProxy) << "trying to load" << _proxy;
 
     if (!_waitingForKeychain) {
         _username = _settings->value(keychainUsernameKey()).toString();
@@ -211,14 +213,14 @@ bool ProxyAuthHandler::getCredsFromKeychain()
     --_waitingForKeychain;
 
     if (_readPasswordJob->error() == NoError) {
-        qDebug() << "got creds for" << _proxy << "from keychain";
+        qCDebug(lcProxy) << "got creds for" << _proxy << "from keychain";
         _password = _readPasswordJob->textData();
         return true;
     }
 
     _username.clear();
     if (_readPasswordJob->error() != EntryNotFound) {
-        qDebug() << "ReadPasswordJob failed with" << _readPasswordJob->errorString();
+        qCDebug(lcProxy) << "ReadPasswordJob failed with" << _readPasswordJob->errorString();
     }
     return false;
 }
@@ -231,7 +233,7 @@ void ProxyAuthHandler::storeCredsInKeychain()
         return;
     }
 
-    qDebug() << "storing" << _proxy;
+    qCDebug(lcProxy) << "storing" << _proxy;
 
     _settings->setValue(keychainUsernameKey(), _username);
 
@@ -254,7 +256,7 @@ void ProxyAuthHandler::storeCredsInKeychain()
 
     job->deleteLater();
     if (job->error() != NoError) {
-        qDebug() << "WritePasswordJob failed with" << job->errorString();
+        qCDebug(lcProxy) << "WritePasswordJob failed with" << job->errorString();
     }
 }
 

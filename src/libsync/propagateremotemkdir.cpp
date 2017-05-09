@@ -18,16 +18,20 @@
 #include "syncjournalfilerecord.h"
 #include "propagateremotedelete.h"
 #include "asserts.h"
+
 #include <QFile>
+#include <QLoggingCategory>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "sync.propagator.remotemkdir", QtInfoMsg)
 
 void PropagateRemoteMkdir::start()
 {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item->_file;
+    qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
     propagator()->_activeJobList.append(this);
 
@@ -47,7 +51,7 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item->_file;
+    qCDebug(lcPropagateRemoteMkdir) << _item->_file;
 
     _job = new MkColJob(propagator()->account(),
                         propagator()->_remoteFolder + _item->_file,
@@ -73,7 +77,7 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     ASSERT(_job);
 
-    qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
+    qCDebug(lcPropagateRemoteMkdir) << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 

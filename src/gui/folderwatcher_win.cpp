@@ -13,7 +13,6 @@
  */
 
 #include <QThread>
-#include <QDebug>
 #include <QDir>
 
 #include "filesystem.h"
@@ -45,7 +44,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
     if (_directory == INVALID_HANDLE_VALUE)
     {
         DWORD errorCode = GetLastError();
-        qDebug() << Q_FUNC_INFO << "Failed to create handle for" << _path << ", error:" << errorCode;
+        qCDebug(lcFolderWatcher) << "Failed to create handle for" << _path << ", error:" << errorCode;
         _directory = 0;
         return;
     }
@@ -79,11 +78,11 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         {
             DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
-                qDebug() << Q_FUNC_INFO << "The buffer for changes overflowed! Triggering a generic change and resizing";
+                qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
-                qDebug() << Q_FUNC_INFO << "ReadDirectoryChangesW error" << errorCode;
+                qCDebug(lcFolderWatcher) << "ReadDirectoryChangesW error" << errorCode;
             }
             break;
         }
@@ -94,11 +93,11 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                     false, // awake once one of them arrives
                     INFINITE);
         if (result == 1) {
-            qDebug() << "Received stop event, aborting folder watcher thread";
+            qCDebug(lcFolderWatcher) << "Received stop event, aborting folder watcher thread";
             break;
         }
         if (result != 0) {
-            qDebug() << "WaitForMultipleObjects failed" << result << GetLastError();
+            qCDebug(lcFolderWatcher) << "WaitForMultipleObjects failed" << result << GetLastError();
             break;
         }
 
@@ -106,11 +105,11 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         if (! ok) {
             DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
-                qDebug() << Q_FUNC_INFO << "The buffer for changes overflowed! Triggering a generic change and resizing";
+                qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
-                qDebug() << Q_FUNC_INFO << "GetOverlappedResult error" << errorCode;
+                qCDebug(lcFolderWatcher) << "GetOverlappedResult error" << errorCode;
             }
             break;
         }
@@ -129,7 +128,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                 if (longNameSize > 0) {
                     longfile = QString::fromUtf16(reinterpret_cast<const ushort *>(fileNameBuffer), longNameSize);
                 } else {
-                    qDebug() << Q_FUNC_INFO << "Error converting file name to full length, keeping original name.";
+                    qCDebug(lcFolderWatcher) << "Error converting file name to full length, keeping original name.";
                 }
             }
             longfile = QDir::cleanPath(longfile);
@@ -141,8 +140,6 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
                     && QFileInfo(longfile).isDir();
 
             if (!skip) {
-                //qDebug() << Q_FUNC_INFO << "Found change in" << longfile
-                //         << "action:" << curEntry->Action;
                 emit changed(longfile);
             }
 

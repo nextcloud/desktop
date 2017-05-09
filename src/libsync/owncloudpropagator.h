@@ -33,6 +33,8 @@
 
 namespace OCC {
 
+Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
+
 /** Free disk space threshold below which syncs will abort and not even start.
  */
 qint64 criticalFreeSpaceLimit();

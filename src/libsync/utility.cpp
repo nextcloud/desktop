@@ -26,7 +26,6 @@
 #include <QDir>
 #include <QFile>
 #include <QUrl>
-#include <QDebug>
 #include <QProcess>
 #include <QObject>
 #include <QThread>
@@ -63,6 +62,8 @@
 #endif
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcUtility, "sync.utility", QtInfoMsg)
 
 bool Utility::writeRandomFile( const QString& fname, int size )
 {

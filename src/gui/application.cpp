@@ -59,6 +59,8 @@ class QSocket;
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcApplication, "gui.application", QtInfoMsg)
+
 namespace {
 
 static const char optionsC[] =
@@ -79,7 +81,7 @@ QString applicationTrPath()
     QString devTrPath = qApp->applicationDirPath() + QString::fromLatin1("/../src/gui/");
     if (QDir(devTrPath).exists()) {
         // might miss Qt, QtKeyChain, etc.
-        qDebug() << "Running from build location! Translations may be incomplete!";
+        qCDebug(lcApplication) << "Running from build location! Translations may be incomplete!";
         return devTrPath;
     }
 #if defined(Q_OS_WIN)
@@ -148,7 +150,7 @@ Application::Application(int &argc, char **argv) :
     setupTranslations();
 
     // Setup global excludes
-    qDebug() << "Loading global exclude list";
+    qCDebug(lcApplication) << "Loading global exclude list";
     ConfigFile cfg;
     ExcludedFiles& excludes = ExcludedFiles::instance();
     excludes.addExcludeFilePath( cfg.excludeFile(ConfigFile::SystemScope) );
@@ -165,7 +167,7 @@ Application::Application(int &argc, char **argv) :
         // (non-existence is not an error)
         Utility::sleep(5);
         if (!AccountManager::instance()->restore()) {
-            qDebug() << "Could not read the account settings, quitting";
+            qCDebug(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                         0,
                         tr("Error accessing the configuration file"),
@@ -292,7 +294,6 @@ void Application::slotCleanup()
 void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
 {
     if (cnf.state() & QNetworkConfiguration::Active) {
-        //qDebug() << "Trying fast reconnect";
         QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
     }
 }
@@ -360,7 +361,7 @@ void Application::setupLogging()
 
     Logger::instance()->enterNextLogFile();
 
-    qDebug() << QString::fromLatin1( "################## %1 %2 (%3) %4 on %5").arg(_theme->appName())
+    qCDebug(lcApplication) << QString::fromLatin1( "################## %1 %2 (%3) %4 on %5").arg(_theme->appName())
                 .arg( QLocale::system().name() )
                 .arg(property("ui_lang").toString())
                 .arg(_theme->version())
@@ -380,10 +381,10 @@ void Application::slotParseMessage(const QString &msg, QObject*)
         parseOptions(options);
         setupLogging();
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
-        qDebug() << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
+        qCDebug(lcApplication) << "Running for" << _startedAt.elapsed()/1000.0 << "sec";
         if (_startedAt.elapsed() < 10*1000) {
             // This call is mirrored with the one in int main()
-            qWarning() << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
+            qCWarning(lcApplication) << "Ignoring MSG_SHOWSETTINGS, possibly double-invocation of client via session restore and auto start";
             return;
         }
         showSettingsDialog();
@@ -570,7 +571,7 @@ void Application::setupTranslations()
             // for us to accept the language. Otherwise, we try with the next.
             // "en" is an exception as it is the default language and may not
             // have a translation file provided.
-            qDebug() << Q_FUNC_INFO << "Using" << lang << "translation";
+            qCDebug(lcApplication) << "Using" << lang << "translation";
             setProperty("ui_lang", lang);
             const QString qtTrPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
             const QString qtTrFile = QLatin1String("qt_") + lang;

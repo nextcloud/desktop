@@ -20,7 +20,6 @@
 #include "folderwatcher_linux.h"
 
 #include <cerrno>
-#include <QDebug>
 #include <QStringList>
 #include <QObject>
 #include <QVarLengthArray>
@@ -37,7 +36,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString& path
         _socket.reset( new QSocketNotifier(_fd, QSocketNotifier::Read) );
         connect(_socket.data(), SIGNAL(activated(int)), SLOT(slotReceivedNotification(int)));
     } else {
-        qDebug() << Q_FUNC_INFO << "notify_init() failed: " << strerror(errno);
+        qCDebug(lcFolderWatcher) << "notify_init() failed: " << strerror(errno);
     }
 
     QMetaObject::invokeMethod(this, "slotAddFolderRecursive", Q_ARG(QString, path));
@@ -54,7 +53,7 @@ bool FolderWatcherPrivate::findFoldersBelow( const QDir& dir, QStringList& fullL
 {
     bool ok = true;
     if( !(dir.exists() && dir.isReadable()) ) {
-        qDebug() << "Non existing path coming in: " << dir.absolutePath();
+        qCDebug(lcFolderWatcher) << "Non existing path coming in: " << dir.absolutePath();
         ok = false;
     } else {
         QStringList nameFilter;
@@ -90,7 +89,7 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString& path)
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 {
     int subdirs = 0;
-    qDebug() << "(+) Watcher:" << path;
+    qCDebug(lcFolderWatcher) << "(+) Watcher:" << path;
 
     QDir inPath(path);
     inotifyRegisterPath(inPath.absolutePath());
@@ -99,28 +98,26 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 
     QStringList allSubfolders;
     if( !findFoldersBelow(QDir(path), allSubfolders)) {
-        qDebug() << "Could not traverse all sub folders";
+        qCDebug(lcFolderWatcher) << "Could not traverse all sub folders";
     }
-    // qDebug() << "currently watching " << watchedFolders;
     QStringListIterator subfoldersIt(allSubfolders);
     while (subfoldersIt.hasNext()) {
         QString subfolder = subfoldersIt.next();
-        // qDebug() << "  (**) subfolder: " << subfolder;
         QDir folder (subfolder);
         if (folder.exists() && !watchedFolders.contains(folder.absolutePath())) {
             subdirs++;
             if( _parent->pathIsIgnored(subfolder) ) {
-                qDebug() << "* Not adding" << folder.path();
+                qCDebug(lcFolderWatcher) << "* Not adding" << folder.path();
                 continue;
             }
             inotifyRegisterPath(folder.absolutePath());
         } else {
-            qDebug() << "    `-> discarded:" << folder.path();
+            qCDebug(lcFolderWatcher) << "    `-> discarded:" << folder.path();
         }
     }
 
     if (subdirs >0) {
-        qDebug() << "    `-> and" << subdirs << "subdirectories";
+        qCDebug(lcFolderWatcher) << "    `-> and" << subdirs << "subdirectories";
     }
 }
 
@@ -160,7 +157,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         // cast an inotify_event
         event = (struct inotify_event*)&buffer[i];
         if (event == NULL) {
-            qDebug() << "NULL event";
+            qCDebug(lcFolderWatcher) << "NULL event";
             i += sizeof(struct inotify_event);
             continue;
         }
@@ -168,14 +165,11 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         // Fire event for the path that was changed.
         if (event->len > 0 && event->wd > -1) {
             QByteArray fileName(event->name);
-            // qDebug() << Q_FUNC_INFO << event->name;
             if (fileName.startsWith("._sync_") ||
                     fileName.startsWith(".csync_journal.db") ||
                     fileName.startsWith(".owncloudsync.log")) {
-                // qDebug() << "ignore journal";
             } else {
                 const QString p = _watches[event->wd] + '/' + fileName;
-                //qDebug() << "found a change in " << p;
                 _parent->changeDetected(p);
             }
         }

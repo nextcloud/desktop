@@ -17,7 +17,6 @@
 #include <QTreeView>
 #include <QHelpEvent>
 #include <QToolTip>
-#include <QDebug>
 
 using namespace OCC;
 

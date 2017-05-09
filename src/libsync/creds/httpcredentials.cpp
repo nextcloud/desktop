@@ -13,8 +13,8 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QMutex>
-#include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
 #include <QSslKey>
@@ -34,6 +34,8 @@ using namespace QKeychain;
 namespace OCC
 {
 
+Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
+
 namespace
 {
 const char userC[] = "user";
@@ -51,10 +53,6 @@ protected:
         QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
-        //qDebug() << "Request for " << req.url() << "with authorization"
-        //         << QByteArray::fromBase64(credHash)
-        //         << _cred->_clientSslKey << _cred->_clientSslCertificate
-        //         << _cred->_clientSslKey.isNull() << _cred->_clientSslCertificate.isNull();
 
         if (!_cred->_clientSslKey.isNull() && !_cred->_clientSslCertificate.isNull()) {
             // SSL configuration
@@ -155,7 +153,7 @@ void HttpCredentials::fetchFromKeychain()
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
         job->setKey(kck);
-        qDebug() << "-------- ----->" << _clientSslCertificate << _clientSslKey;
+        qCDebug(lcHttpCredentials) << "-------- ----->" << _clientSslCertificate << _clientSslKey;
 
         connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadClientCertPEMJobDone(QKeychain::Job*)));
         job->start();
@@ -204,7 +202,7 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job* incoming)
         }
 #endif
         if (_clientSslKey.isNull()) {
-            qDebug() << "Warning: Could not load SSL key into Qt!";
+            qCDebug(lcHttpCredentials) << "Warning: Could not load SSL key into Qt!";
         }
     }
 
@@ -234,7 +232,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incomingJob)
     _password = job->textData();
 
     if( _user.isEmpty()) {
-        qDebug() << "Strange: User is empty!";
+        qCDebug(lcHttpCredentials) << "Strange: User is empty!";
     }
 
     QKeychain::Error error = job->error();
@@ -270,7 +268,7 @@ void HttpCredentials::invalidateToken()
 
     const QString kck = keychainKey(_account->url().toString(), _user);
     if( kck.isEmpty() ) {
-        qDebug() << "InvalidateToken: User is empty, bailing out!";
+        qCDebug(lcHttpCredentials) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
 
@@ -365,7 +363,7 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
     case NoError:
         break;
     default:
-        qDebug() << "Error while writing password" << job->errorString();
+        qCDebug(lcHttpCredentials) << "Error while writing password" << job->errorString();
     }
     WritePasswordJob *wjob = qobject_cast<WritePasswordJob*>(job);
     wjob->deleteLater();
@@ -376,7 +374,7 @@ void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* a
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
-    qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    qCDebug(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
 }

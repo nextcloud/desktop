@@ -15,6 +15,8 @@
 #include <CoreServices/CoreServices.h>
 #include <CoreFoundation/CoreFoundation.h>
 
+namespace OCC {
+
 static void setupFavLink_private(const QString &folder)
 {
     // Finder: Place under "Places"/"Favorites" on the left sidebar
@@ -125,3 +127,4 @@ static bool hasDarkSystray_private()
     return returnValue;
 }
 
+} // namespace OCC

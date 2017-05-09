@@ -37,6 +37,8 @@ static const char serverVersionC[] = "serverVersion";
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcAccountManager, "gui.account.manager", QtInfoMsg)
+
 AccountManager *AccountManager::instance()
 {
     static AccountManager instance;
@@ -47,7 +49,7 @@ bool AccountManager::restore()
 {
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     if (settings->status() != QSettings::NoError) {
-        qDebug() << "Could not read settings from" << settings->fileName()
+        qCDebug(lcAccountManager) << "Could not read settings from" << settings->fileName()
                  << settings->status();
         return false;
     }
@@ -75,7 +77,7 @@ bool AccountManager::restore()
 
 bool AccountManager::restoreFromLegacySettings()
 {
-    qDebug() << "Migrate: restoreFromLegacySettings, checking settings group"
+    qCDebug(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
              << Theme::instance()->appName();
 
     // try to open the correctly themed settings
@@ -91,7 +93,7 @@ bool AccountManager::restoreFromLegacySettings()
         oCCfgFile = oCCfgFile.left( oCCfgFile.lastIndexOf('/'));
         oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
 
-        qDebug() << "Migrate: checking old config " << oCCfgFile;
+        qCDebug(lcAccountManager) << "Migrate: checking old config " << oCCfgFile;
 
         QFileInfo fi( oCCfgFile );
         if( fi.isReadable() ) {
@@ -107,7 +109,7 @@ bool AccountManager::restoreFromLegacySettings()
 
                 // in case the urls are equal reset the settings object to read from
                 // the ownCloud settings object
-                qDebug() << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                qCDebug(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
                          << (oCUrl == overrideUrl ? "Yes" : "No");
                 if( oCUrl == overrideUrl ) {
                     settings = std::move(oCSettings);
@@ -138,31 +140,31 @@ void AccountManager::save(bool saveCredentials)
     }
 
     settings->sync();
-    qDebug() << "Saved all account settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved all account settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccount(Account* a)
 {
-    qDebug() << "Saving account" << a->url().toString();
+    qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
 
     settings->sync();
-    qDebug() << "Saved account settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountState(AccountState* a)
 {
-    qDebug() << "Saving account state" << a->account()->url().toString();
+    qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
 
     settings->sync();
-    qDebug() << "Saved account state settings, status:" << settings->status();
+    qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
 void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool saveCredentials)
@@ -189,7 +191,7 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
 
     // Save accepted certificates.
     settings.beginGroup(QLatin1String("General"));
-    qDebug() << "Saving " << acc->approvedCerts().count() << " unknown certs.";
+    qCDebug(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     Q_FOREACH( const QSslCertificate& cert, acc->approvedCerts() ) {
         certs += cert.toPem() + '\n';
@@ -203,7 +205,7 @@ void AccountManager::saveAccountHelper(Account* acc, QSettings& settings, bool s
     if (acc->_am) {
         CookieJar* jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
         if (jar) {
-            qDebug() << "Saving cookies." << acc->cookieJarPath();
+            qCDebug(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
             jar->save(acc->cookieJarPath());
         }
     }
@@ -214,7 +216,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
     auto urlConfig = settings.value(QLatin1String(urlC));
     if (!urlConfig.isValid()) {
         // No URL probably means a corrupted entry in the account settings
-        qDebug() << "No URL for account " << settings.group();
+        qCDebug(lcAccountManager) << "No URL for account " << settings.group();
         return AccountPtr();
     }
 
@@ -243,7 +245,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings& settings)
         acc->setUrl(urlConfig.toUrl());
     }
 
-    qDebug() << "Account for" << acc->url() << "using auth type" << authType;
+    qCDebug(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
 

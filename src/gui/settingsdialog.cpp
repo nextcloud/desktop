@@ -31,7 +31,6 @@
 #include <QStandardItemModel>
 #include <QStackedWidget>
 #include <QPushButton>
-#include <QDebug>
 #include <QSettings>
 #include <QToolBar>
 #include <QToolButton>

@@ -23,6 +23,8 @@ class QJsonDocument;
 
 namespace OCC {
 
+Q_DECLARE_LOGGING_CATEGORY(lcActivity)
+
 class AccountState;
 
 /**

@@ -144,7 +144,7 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
-        qDebug() << "Trying to look up system proxy";
+        qCDebug(lcWizard) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(account->url(),
                                             this, SLOT(slotSystemProxyLookupDone(QNetworkProxy)));
     } else {
@@ -158,9 +158,9 @@ void OwncloudSetupWizard::slotDetermineAuthType(const QString &urlString)
 void OwncloudSetupWizard::slotSystemProxyLookupDone(const QNetworkProxy &proxy)
 {
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qDebug() << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+        qCDebug(lcWizard) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
     } else {
-        qDebug() << "No system proxy set by OS";
+        qCDebug(lcWizard) << "No system proxy set by OS";
     }
     AccountPtr account = _ocWizard->account();
     account->networkAccessManager()->setProxy(proxy);
@@ -203,7 +203,7 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl& url, const QJsonObje
         QUrl redirectedUrl = url;
         redirectedUrl.setPath(url.path().left(url.path().length() - 11));
         _ocWizard->account()->setUrl(redirectedUrl);
-        qDebug() << Q_FUNC_INFO << " was redirected to" << redirectedUrl.toString();
+        qCDebug(lcWizard) << " was redirected to" << redirectedUrl.toString();
     }
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
@@ -239,7 +239,7 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuth(QNetworkReply *reply)
         // FIXME: Synchronous dialogs are not so nice because of event loop recursion
         // (we already create a dialog further below)
         QString serverError = reply->peek(1024*20);
-        qDebug() << serverError;
+        qCDebug(lcWizard) << serverError;
         QMessageBox messageBox(_ocWizard);
         messageBox.setText(serverError);
         messageBox.addButton(QMessageBox::Ok);
@@ -265,7 +265,7 @@ void OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout(const QUrl&url)
 
 void OwncloudSetupWizard::slotConnectToOCUrl( const QString& url )
 {
-    qDebug() << "Connect to url: " << url;
+    qCDebug(lcWizard) << "Connect to url: " << url;
     AbstractCredentials *creds = _ocWizard->getCredentials();
     _ocWizard->account()->setCredentials(creds);
     _ocWizard->setField(QLatin1String("OCUrl"), url );
@@ -296,7 +296,7 @@ void OwncloudSetupWizard::slotAuthError()
 
     PropfindJob* job = qobject_cast<PropfindJob*>(sender());
     if (!job) {
-        qWarning() << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
+        qCWarning(lcWizard) << "Can't check for authed redirects. This slot should be invoked from PropfindJob!";
         return;
     }
     QNetworkReply* reply = job->reply();
@@ -305,7 +305,7 @@ void OwncloudSetupWizard::slotAuthError()
     // the updated server URL, similar to redirects on status.php.
     QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (!redirectUrl.isEmpty()) {
-        qDebug() << "authed request was redirected to" << redirectUrl.toString();
+        qCDebug(lcWizard) << "authed request was redirected to" << redirectUrl.toString();
 
         // strip the expected path
         QString path = redirectUrl.path();
@@ -314,7 +314,7 @@ void OwncloudSetupWizard::slotAuthError()
             path.chop(expectedPath.size());
             redirectUrl.setPath(path);
 
-            qDebug() << "setting account url to" << redirectUrl.toString();
+            qCDebug(lcWizard) << "setting account url to" << redirectUrl.toString();
             _ocWizard->account()->setUrl(redirectUrl);
             testOwnCloudConnect();
             return;
@@ -376,7 +376,7 @@ bool OwncloudSetupWizard::checkDowngradeAdvised(QNetworkReply* reply)
 
 void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFolder, const QString& remoteFolder)
 {
-    qDebug() << "Setup local sync folder for new oC connection " << localFolder;
+    qCDebug(lcWizard) << "Setup local sync folder for new oC connection " << localFolder;
     const QDir fi( localFolder );
 
     bool nextStep = true;
@@ -395,7 +395,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString& localFo
             res += tr("ok");
         } else {
             res += tr("failed.");
-            qDebug() << "Failed to create " << fi.path();
+            qCDebug(lcWizard) << "Failed to create " << fi.path();
             _ocWizard->displayError(tr("Could not create local folder %1").arg(Utility::escape(localFolder)), false);
             nextStep = false;
         }
@@ -419,7 +419,7 @@ void OwncloudSetupWizard::slotRemoteFolderExists(QNetworkReply *reply)
     QNetworkReply::NetworkError errId = reply->error();
 
     if( errId == QNetworkReply::NoError ) {
-        qDebug() << "******** Remote folder found, all cool!";
+        qCDebug(lcWizard) << "******** Remote folder found, all cool!";
     } else if( errId == QNetworkReply::ContentNotFoundError ) {
         if( _remoteFolder.isEmpty() ) {
             error = tr("No remote folder specified!");
@@ -450,7 +450,7 @@ void OwncloudSetupWizard::createRemoteFolder()
 
 void OwncloudSetupWizard::slotCreateRemoteFolderFinished( QNetworkReply::NetworkError error )
 {
-    qDebug() << "** webdav mkdir request finished " << error;
+    qCDebug(lcWizard) << "** webdav mkdir request finished " << error;
     //    disconnect(ownCloudInfo::instance(), SIGNAL(webdavColCreated(QNetworkReply::NetworkError)),
     //               this, SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
 
@@ -533,7 +533,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
     FolderMan *folderMan = FolderMan::instance();
 
     if( result == QDialog::Rejected ) {
-        qDebug() << "Rejected the new config, use the old!";
+        qCDebug(lcWizard) << "Rejected the new config, use the old!";
 
     } else if( result == QDialog::Accepted ) {
         // This may or may not wipe all folder definitions, depending
@@ -545,7 +545,7 @@ void OwncloudSetupWizard::slotAssistantFinished( int result )
 
         bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
         if (!startFromScratch || ensureStartFromScratch(localFolder)) {
-            qDebug() << "Adding folder definition for" << localFolder << _remoteFolder;
+            qCDebug(lcWizard) << "Adding folder definition for" << localFolder << _remoteFolder;
             FolderDefinition folderDefinition;
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
@@ -616,7 +616,7 @@ void DetermineAuthTypeJob::start()
 bool DetermineAuthTypeJob::finished()
 {
     QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    qDebug() << Q_FUNC_INFO << redirection.toString();
+    qCDebug(lcWizard) << redirection.toString();
     if (_redirects >= maxRedirects()) {
         redirection.clear();
     }

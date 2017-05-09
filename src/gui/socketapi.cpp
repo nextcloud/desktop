@@ -34,7 +34,6 @@
 #include "asserts.h"
 
 #include <QBitArray>
-#include <QDebug>
 #include <QUrl>
 #include <QMetaMethod>
 #include <QMetaObject>
@@ -58,8 +57,6 @@
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.0"
-
-#define DEBUG qDebug() << "SocketApi: "
 
 static inline QString removeTrailingSlash(QString path)
 {
@@ -85,6 +82,8 @@ static QString buildMessage(const QString& verb, const QString &path, const QStr
 }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcSocketApi, "gui.socketapi", QtInfoMsg)
 
 class BloomFilter {
     // Initialize with m=1024 bits and k=2 (high and low 16 bits of a qHash).
@@ -115,7 +114,7 @@ public:
 
     void sendMessage(const QString& message, bool doWait = false) const
     {
-        DEBUG << "Sending message: " << message;
+        qCDebug(lcSocketApi) << "Sending message: " << message;
         QString localMessage = message;
         if( ! localMessage.endsWith(QLatin1Char('\n'))) {
             localMessage.append(QLatin1Char('\n'));
@@ -127,7 +126,7 @@ public:
             socket->waitForBytesWritten(1000);
         }
         if( sent != bytesToSend.length() ) {
-            qDebug() << "WARN: Could not send all data on socket for " << localMessage;
+            qCDebug(lcSocketApi) << "WARN: Could not send all data on socket for " << localMessage;
         }
 
     }
@@ -184,23 +183,23 @@ SocketApi::SocketApi(QObject* parent)
 #endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {
-	DEBUG << "An unexpected system detected";
+	qCDebug(lcSocketApi) << "An unexpected system detected";
     }
 
     SocketApiServer::removeServer(socketPath);
     QFileInfo info(socketPath);
     if (!info.dir().exists()) {
         bool result = info.dir().mkpath(".");
-        DEBUG << "creating" << info.dir().path() << result;
+        qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
         if( result ) {
             QFile::setPermissions(socketPath,
                                   QFile::Permissions(QFile::ReadOwner+QFile::WriteOwner+QFile::ExeOwner));
         }
     }
     if(!_localServer.listen(socketPath)) {
-        DEBUG << "can't start server" << socketPath;
+        qCDebug(lcSocketApi) << "can't start server" << socketPath;
     } else {
-        DEBUG << "server started, listening at " << socketPath;
+        qCDebug(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
     connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
@@ -211,7 +210,7 @@ SocketApi::SocketApi(QObject* parent)
 
 SocketApi::~SocketApi()
 {
-    DEBUG << "dtor";
+    qCDebug(lcSocketApi) << "dtor";
     _localServer.close();
     // All remaining sockets will be destroyed with _localServer, their parent
     ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
@@ -225,7 +224,7 @@ void SocketApi::slotNewConnection()
     if( ! socket ) {
         return;
     }
-    DEBUG << "New connection" << socket;
+    qCDebug(lcSocketApi) << "New connection" << socket;
     connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
     connect(socket, SIGNAL(destroyed(QObject*)), this, SLOT(slotSocketDestroyed(QObject*)));
@@ -244,7 +243,7 @@ void SocketApi::slotNewConnection()
 
 void SocketApi::onLostConnection()
 {
-    DEBUG << "Lost connection " << sender();
+    qCDebug(lcSocketApi) << "Lost connection " << sender();
     sender()->deleteLater();
 }
 
@@ -273,7 +272,7 @@ void SocketApi::slotReadSocket()
         if(indexOfMethod != -1) {
             staticMetaObject.method(indexOfMethod).invoke(this, Q_ARG(QString, argument), Q_ARG(SocketListener*, listener));
         } else {
-            DEBUG << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
+            qCDebug(lcSocketApi) << "The command is not supported by this version of the client:" << command << "with argument:" << argument;
         }
     }
 }
@@ -327,7 +326,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
 
             broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
         } else {
-            qDebug() << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
+            qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
         }
     }
 }
@@ -352,14 +351,12 @@ void SocketApi::broadcastStatusPushMessage(const QString& systemPath, SyncFileSt
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketListener* listener)
 {
     // This command is the same as RETRIEVE_FILE_STATUS
-
-    //qDebug() << Q_FUNC_INFO << argument;
     command_RETRIEVE_FILE_STATUS(argument, listener);
 }
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketListener* listener)
 {
-    qDebug() << Q_FUNC_INFO << argument;
+    qCDebug(lcSocketApi) << argument;
 
     QString statusString;
 
@@ -371,7 +368,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketList
         QString systemPath = QDir::cleanPath(argument);
         if( systemPath.endsWith(QLatin1Char('/')) ) {
             systemPath.truncate(systemPath.length()-1);
-            qWarning() << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
+            qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
         }
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
@@ -389,7 +386,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString& argument, SocketList
 
 void SocketApi::command_SHARE(const QString& localFile, SocketListener* listener)
 {
-    qDebug() << Q_FUNC_INFO << localFile;
+    qCDebug(lcSocketApi) << localFile;
 
     auto theme = Theme::instance();
 
@@ -451,7 +448,7 @@ void SocketApi::command_VERSION(const QString&, SocketListener* listener)
 
 void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener* listener)
 {
-    qDebug() << Q_FUNC_INFO << localFile;
+    qCDebug(lcSocketApi) << localFile;
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 

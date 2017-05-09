@@ -32,7 +32,6 @@
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QPushButton>
-#include <QDebug>
 #include <QSettings>
 #include <QPainter>
 #include <QPainterPath>

@@ -31,14 +31,16 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QSettings>
-#include <QDebug>
 #include <QNetworkProxy>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
@@ -92,8 +94,6 @@ ConfigFile::ConfigFile()
 
     QSettings settings(config, QSettings::IniFormat);
     settings.beginGroup( defaultConnection() );
-
-    // qDebug() << Q_FUNC_INFO << "Loading config: " << config << " (URL is " << settings.value("url").toString() << ")";
 }
 
 bool ConfigFile::setConfDir(const QString &value)
@@ -108,7 +108,7 @@ bool ConfigFile::setConfDir(const QString &value)
     }
     if( fi.exists() && fi.isDir() ) {
         dirPath = fi.absoluteFilePath();
-        qDebug() << "** Using custom config dir " << dirPath;
+        qCDebug(lcConfigFile) << "** Using custom config dir " << dirPath;
         _confDir=dirPath;
         return true;
     }
@@ -360,7 +360,7 @@ int ConfigFile::remotePollInterval( const QString& connection ) const
 
   int remoteInterval = settings.value( QLatin1String(remotePollIntervalC), DEFAULT_REMOTE_POLL_INTERVAL ).toInt();
   if( remoteInterval < 5000) {
-    qDebug() << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
+    qCDebug(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
     remoteInterval = DEFAULT_REMOTE_POLL_INTERVAL;
   }
   return remoteInterval;
@@ -372,7 +372,7 @@ void ConfigFile::setRemotePollInterval(int interval, const QString &connection )
     if( connection.isEmpty() ) con = defaultConnection();
 
     if( interval < 5000 ) {
-        qDebug() << "Remote Poll interval of " << interval << " is below five seconds.";
+        qCDebug(lcConfigFile) << "Remote Poll interval of " << interval << " is below five seconds.";
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -393,7 +393,7 @@ quint64 ConfigFile::forceSyncInterval(const QString& connection) const
     quint64 defaultInterval = 2 * 60 * 60 * 1000ull; // 2h
     quint64 interval = settings.value( QLatin1String(forceSyncIntervalC), defaultInterval ).toULongLong();
     if( interval < pollInterval) {
-        qDebug() << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
+        qCDebug(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
         interval = pollInterval;
     }
     return interval;
@@ -409,7 +409,7 @@ quint64 ConfigFile::notificationRefreshInterval(const QString& connection) const
     quint64 defaultInterval = 5 * 60 * 1000ull; // 5 minutes
     quint64 interval = settings.value( QLatin1String(notificationRefreshIntervalC), defaultInterval ).toULongLong();
     if( interval < 60*1000ull) {
-        qDebug() << "notification refresh interval smaller than one minute, setting to one minute";
+        qCDebug(lcConfigFile) << "notification refresh interval smaller than one minute, setting to one minute";
         interval = 60*1000ull;
     }
     return interval;
@@ -427,7 +427,7 @@ int ConfigFile::updateCheckInterval( const QString& connection ) const
 
     int minInterval = 1000*60*5;
     if( interval < minInterval) {
-        qDebug() << "Update check interval less than five minutes, setting " << minInterval;
+        qCDebug(lcConfigFile) << "Update check interval less than five minutes, setting " << minInterval;
         interval = minInterval;
     }
     return interval;

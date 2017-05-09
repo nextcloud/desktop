@@ -20,6 +20,8 @@
 
 namespace OCC {
 
+Q_DECLARE_LOGGING_CATEGORY(lcNotifications)
+
 NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
 : AbstractNetworkJob(account, ""),
   _widget(0)
@@ -46,7 +48,7 @@ NotificationWidget *NotificationConfirmJob::widget()
 void NotificationConfirmJob::start()
 {
     if( !_link.isValid() ) {
-        qDebug() << "Attempt to trigger invalid URL: " << _link.toString();
+        qCDebug(lcNotifications) << "Attempt to trigger invalid URL: " << _link.toString();
         return;
     }
     QNetworkRequest req;

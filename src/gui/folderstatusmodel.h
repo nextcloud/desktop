@@ -17,11 +17,14 @@
 
 #include <accountfwd.h>
 #include <QAbstractItemModel>
+#include <QLoggingCategory>
 #include <QVector>
 #include <QElapsedTimer>
 
 class QNetworkReply;
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcFolderStatus)
 
 class Folder;
 class ProgressInfo;

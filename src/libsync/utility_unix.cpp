@@ -17,6 +17,8 @@
     #include <QStandardPaths>
 #endif
 
+namespace OCC {
+
 static void setupFavLink_private(const QString &folder) {
     // Nautilus: add to ~/.gtk-bookmarks
     QFile gtkBookmarks(QDir::homePath()+QLatin1String("/.gtk-bookmarks"));
@@ -60,12 +62,12 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
     QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
-            qDebug() << "Could not create autostart folder";
+            qCDebug(lcUtility) << "Could not create autostart folder";
             return;
         }
         QFile iniFile(desktopFileLocation);
         if (!iniFile.open(QIODevice::WriteOnly)) {
-            qDebug() << "Could not write auto start entry" << desktopFileLocation;
+            qCDebug(lcUtility) << "Could not write auto start entry" << desktopFileLocation;
             return;
         }
         QTextStream ts(&iniFile);
@@ -83,7 +85,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
             ;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
-            qDebug() << "Could not remove autostart desktop file";
+            qCDebug(lcUtility) << "Could not remove autostart desktop file";
         }
     }
 }
@@ -92,3 +94,5 @@ static inline bool hasDarkSystray_private()
 {
     return true;
 }
+
+} // namespace OCC

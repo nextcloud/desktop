@@ -12,7 +12,9 @@
  * for more details.
  */
 
-#include <QtCore>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QLoggingCategory>
 #include <QNetworkReply>
 #include <QNetworkProxyFactory>
 #include <QPixmap>
@@ -24,6 +26,8 @@
 #include <creds/abstractcredentials.h>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
@@ -70,13 +74,13 @@ void ConnectionValidator::checkServerAndAuth()
         reportResult( NotConfigured );
         return;
     }
-    qDebug() << "Checking server and authentication";
+    qCDebug(lcConnectionValidator) << "Checking server and authentication";
 
     _isCheckingServerAndAuth = true;
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
-        qDebug() << "Trying to look up system proxy";
+        qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(_account->url(),
                                             this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
@@ -89,14 +93,14 @@ void ConnectionValidator::checkServerAndAuth()
 
 void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
     if (!_account) {
-        qDebug() << "Bailing out, Account had been deleted";
+        qCDebug(lcConnectionValidator) << "Bailing out, Account had been deleted";
         return;
     }
 
     if (proxy.type() != QNetworkProxy::NoProxy) {
-        qDebug() << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
+        qCDebug(lcConnectionValidator) << "Setting QNAM proxy to be system proxy" << printQNetworkProxy(proxy);
     } else {
-        qDebug() << "No system proxy set by OS";
+        qCDebug(lcConnectionValidator) << "No system proxy set by OS";
     }
     _account->networkAccessManager()->setProxy(proxy);
 
@@ -123,7 +127,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
     QString serverVersion = CheckServerJob::version(info);
 
     // status.php was found.
-    qDebug() << "** Application: ownCloud found: "
+    qCDebug(lcConnectionValidator) << "** Application: ownCloud found: "
              << url << " with version "
              << CheckServerJob::versionString(info)
              << "(" << serverVersion << ")";
@@ -148,7 +152,7 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
 void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
 {
     auto job = qobject_cast<CheckServerJob *>(sender());
-    qDebug() << Q_FUNC_INFO << reply->error() << job->errorString() << reply->peek(1024);
+    qCDebug(lcConnectionValidator) << reply->error() << job->errorString() << reply->peek(1024);
     if (!_account->credentials()->ready()) {
         // This could be needed for SSL client certificates
         // We need to load them from keychain and try
@@ -181,7 +185,7 @@ void ConnectionValidator::checkAuthentication()
 
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
-    qDebug() << "# Check whether authenticated propfind works.";
+    qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
     PropfindJob *job = new PropfindJob(_account, "/", this);
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
@@ -197,8 +201,8 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 
     if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
              !_account->credentials()->stillValid(reply)) {
-        qDebug() <<  reply->error() << job->errorString();
-        qDebug() << "******** Password is wrong!";
+        qCDebug(lcConnectionValidator) <<  reply->error() << job->errorString();
+        qCDebug(lcConnectionValidator) << "******** Password is wrong!";
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsMissingOrWrong;
 
@@ -237,7 +241,7 @@ void ConnectionValidator::checkServerCapabilities()
 void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 {
     auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-    qDebug() << "Server capabilities" << caps;
+    qCDebug(lcConnectionValidator) << "Server capabilities" << caps;
     _account->setCapabilities(caps.toVariantMap());
 
     // New servers also report the version in the capabilities
@@ -260,7 +264,7 @@ void ConnectionValidator::fetchUser()
 
 bool ConnectionValidator::setAndCheckServerVersion(const QString& version)
 {
-    qDebug() << _account->url() << "has server version" << version;
+    qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
     // We cannot deal with servers < 5.0.0

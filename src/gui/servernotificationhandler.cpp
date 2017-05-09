@@ -23,6 +23,8 @@
 namespace OCC
 {
 
+Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
+
 ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
     : QObject(parent)
 {
@@ -42,7 +44,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     // not yet valid, its assumed that notifications are available.
     if( ptr->account()->capabilities().isValid() ) {
         if( ! ptr->account()->capabilities().notificationsAvailable() ) {
-            qDebug() << Q_FUNC_INFO << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+            qCDebug(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
             return;
         }
@@ -60,7 +62,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument& json, int statusCode)
 {
     if( statusCode != 200 ) {
-        qDebug() << Q_FUNC_INFO << "Notifications failed with status code " << statusCode;
+        qCDebug(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();
         return;
     }

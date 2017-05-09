@@ -17,8 +17,8 @@
 #include "utility.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QCryptographicHash>
 
 #ifdef ZLIB_FOUND
@@ -50,6 +50,8 @@ extern "C" {
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcFileSystem, "sync.filesystem", QtInfoMsg)
+
 QString FileSystem::longWinPath( const QString& inpath )
 {
     QString path(inpath);
@@ -66,7 +68,7 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
     QFile f1(fn1);
     QFile f2(fn2);
     if (!f1.open(QIODevice::ReadOnly) || !f2.open(QIODevice::ReadOnly)) {
-        qDebug() << "fileEquals: Failed to open " << fn1 << "or" << fn2;
+        qCDebug(lcFileSystem) << "fileEquals: Failed to open " << fn1 << "or" << fn2;
         return false;
     }
 
@@ -178,7 +180,7 @@ time_t FileSystem::getModTime(const QString &filename)
             && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
         result = stat->mtime;
     } else {
-        qDebug() << "Could not get modification time for" << filename
+        qCDebug(lcFileSystem) << "Could not get modification time for" << filename
                  << "with csync, using QFileInfo";
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
     }
@@ -193,7 +195,7 @@ bool FileSystem::setModTime(const QString& filename, time_t modTime)
     times[0].tv_usec = times[1].tv_usec = 0;
     int rc = c_utimes(filename.toUtf8().data(), times);
     if (rc != 0) {
-        qDebug() << "Error setting mtime for" << filename
+        qCDebug(lcFileSystem) << "Error setting mtime for" << filename
                  << "failed: rc" << rc << ", errno:" << errno;
         return false;
     }
@@ -241,7 +243,7 @@ bool FileSystem::rename(const QString &originFileName,
     }
 
     if (!success) {
-        qDebug() << "FAIL: renaming file" << originFileName
+        qCDebug(lcFileSystem) << "FAIL: renaming file" << originFileName
                  << "to" << destinationFileName
                  << "failed: " << error;
         if (errorString) {
@@ -266,7 +268,7 @@ bool FileSystem::verifyFileUnchanged(const QString& fileName,
     const qint64 actualSize = getSize(fileName);
     const time_t actualMtime = getModTime(fileName);
     if (actualSize != previousSize || actualMtime != previousMtime) {
-        qDebug() << "File" << fileName << "has changed:"
+        qCDebug(lcFileSystem) << "File" << fileName << "has changed:"
                  << "size: " << previousSize << "<->" << actualSize
                  << ", mtime: " << previousMtime << "<->" << actualMtime;
         return false;
@@ -301,7 +303,6 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     QFile orig(originFileName);
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     success = orig.fileEngine()->rename(destinationFileName);
-    // qDebug() << "Renaming " << tmpFile.fileName() << " to " << fn;
 #else
     // We want a rename that also overwites.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we could use.
@@ -310,7 +311,7 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     bool destExists = fileExists(destinationFileName);
     if( destExists && !QFile::remove(destinationFileName) ) {
         *errorString = orig.errorString();
-        qDebug() << Q_FUNC_INFO << "Target file could not be removed.";
+        qCDebug(lcFileSystem) << "Target file could not be removed.";
         success = false;
     }
     if( success ) {
@@ -319,7 +320,7 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
 #endif
     if (!success) {
         *errorString = orig.errorString();
-        qDebug() << "FAIL: renaming temp file to final failed: " << *errorString ;
+        qCDebug(lcFileSystem) << "FAIL: renaming temp file to final failed: " << *errorString ;
         return false;
     }
 
@@ -343,7 +344,7 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
                       (LPWSTR)&string, 0, NULL);
 
         *errorString = QString::fromWCharArray(string);
-        qDebug() << "FAIL: renaming temp file to final failed: " << *errorString;
+        qCDebug(lcFileSystem) << "FAIL: renaming temp file to final failed: " << *errorString;
         LocalFree((HLOCAL)string);
         return false;
     }
@@ -433,7 +434,7 @@ static qint64 getSizeWithCsync(const QString& filename)
             && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
         result = stat->size;
     } else {
-        qDebug() << "Could not get size for" << filename << "with csync";
+        qCDebug(lcFileSystem) << "Could not get size for" << filename << "with csync";
     }
     csync_vio_file_stat_destroy(stat);
     return result;

@@ -43,6 +43,10 @@ const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcPutFile, "sync.networkjob.put", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPoll, "sync.networkjob.poll", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUpload, "sync.propagator.upload", QtInfoMsg)
+
 /**
  * We do not want to upload files that are currently being modified.
  * To avoid that, we don't upload files that have a modification time
@@ -81,7 +85,7 @@ void PUTFileJob::start() {
     }
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
+        qCWarning(lcPutFile) << " Network error: " << reply()->errorString();
     }
 
     connect(reply(), SIGNAL(uploadProgress(qint64,qint64)), this, SIGNAL(uploadProgress(qint64,qint64)));
@@ -143,7 +147,7 @@ bool PollJob::finished()
     }
 
     QByteArray jsonData = reply()->readAll().trimmed();
-    qDebug() << Q_FUNC_INFO << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    qCDebug(lcPoll) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QJsonParseError jsonParseError;
     QJsonObject status = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     if (jsonParseError.error != QJsonParseError::NoError) {
@@ -376,7 +380,6 @@ qint64 UploadDevice::writeData(const char* , qint64 ) {
 }
 
 qint64 UploadDevice::readData(char* data, qint64 maxlen) {
-    //qDebug() << Q_FUNC_INFO << maxlen << _read << _size << _bandwidthQuota;
     if (_data.size() - _read <= 0) {
         // at end
         if (_bandwidthManager) {
@@ -394,7 +397,6 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
     if (isBandwidthLimited()) {
         maxlen = qMin(maxlen, _bandwidthQuota);
         if (maxlen <= 0) {  // no quota
-            //qDebug() << "no quota";
             return 0;
         }
         _bandwidthQuota -= maxlen;
@@ -406,7 +408,6 @@ qint64 UploadDevice::readData(char* data, qint64 maxlen) {
 
 void UploadDevice::slotJobUploadProgress(qint64 sent, qint64 t)
 {
-    //qDebug() << Q_FUNC_INFO << sent << _read << t << _size << _bandwidthQuota;
     if (sent == 0 || t == 0) {
         return;
     }
@@ -418,14 +419,11 @@ bool UploadDevice::atEnd() const {
 }
 
 qint64 UploadDevice::size() const{
-//    qDebug() << this << Q_FUNC_INFO << _size;
     return _data.size();
 }
 
 qint64 UploadDevice::bytesAvailable() const
 {
-//    qDebug() << this << Q_FUNC_INFO << _size << _read << QIODevice::bytesAvailable()
-//             <<   _size - _read + QIODevice::bytesAvailable();
     return _data.size() - _read + QIODevice::bytesAvailable();
 }
 
@@ -503,11 +501,11 @@ void PropagateUploadFileCommon::checkResettingErrors()
         auto uploadInfo = propagator()->_journal->getUploadInfo(_item->_file);
         uploadInfo._errorCount += 1;
         if (uploadInfo._errorCount > 3) {
-            qDebug() << "Reset transfer of" << _item->_file
+            qCDebug(lcPropagateUpload) << "Reset transfer of" << _item->_file
                      << "due to repeated error" << _item->_httpErrorCode;
             uploadInfo = SyncJournalDb::UploadInfo();
         } else {
-            qDebug() << "Error count for maybe-reset error" << _item->_httpErrorCode
+            qCDebug(lcPropagateUpload) << "Error count for maybe-reset error" << _item->_httpErrorCode
                      << "on file" << _item->_file
                      << "is" << uploadInfo._errorCount;
         }
@@ -525,7 +523,7 @@ void PropagateUploadFileCommon::abort()
 {
     foreach(auto *job, _jobs) {
         if (job->reply()) {
-            qDebug() << Q_FUNC_INFO << job << this->_item->_file;
+            qCDebug(lcPropagateUpload) << job << this->_item->_file;
             job->reply()->abort();
         }
     }

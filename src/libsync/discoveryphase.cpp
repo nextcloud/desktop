@@ -21,7 +21,7 @@
 #include <csync_private.h>
 #include <csync_rename.h>
 
-#include <qdebug.h>
+#include <QLoggingCategory>
 #include <QUrl>
 #include <QFileInfo>
 #include <cstring>
@@ -29,6 +29,7 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcDiscovery, "sync.discovery", QtInfoMsg)
 
 /* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
 static bool findPathInList(const QStringList &list, const QString &path)
@@ -286,7 +287,7 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
     csync_vio_file_stat_t* file_stat = csync_vio_file_stat_new();
 
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        //qDebug() << it.key() << it.value();
+        qCDebug(lcDiscovery) << "Property key:" << it.key() << "with value:" << it.value();
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
@@ -329,7 +330,7 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
                 strcpy(file_stat->remotePerm, v.constData());
                 file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
             } else {
-                qWarning() << "permissions too large" << v;
+                qCWarning(lcDiscovery) << "permissions too large" << v;
             }
         }
     }
@@ -339,7 +340,6 @@ static csync_vio_file_stat_t* propertyMapToFileStat(const QMap<QString,QString> 
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, const QMap<QString,QString> &map)
 {
-    //qDebug() << Q_FUNC_INFO << _subPath << file << map.count() << map.keys() << _account->davPath() << _lsColJob->reply()->request().url().path();
     if (!_ignoredFirst) {
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
@@ -367,7 +367,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         FileStatPointer file_stat(propertyMapToFileStat(map));
         file_stat->name = strdup(file.toUtf8());
         if (!file_stat->etag || strlen(file_stat->etag) == 0) {
-            qDebug() << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+            qCDebug(lcDiscovery) << "WARNING: etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
         }
         if (_isExternalStorage) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
@@ -382,7 +382,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if( slashPos > -1 ) {
             fileRef = file.midRef(slashPos+1);
         }
-        //qDebug() << "!!!!" << file_stat << file_stat->name << file_stat->file_id << map.count();
         _results.append(file_stat);
     }
 
@@ -418,7 +417,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     int errnoCode = EIO; // Something went wrong
-    qDebug() << Q_FUNC_INFO << r->errorString() << httpCode << r->error();
+    qCDebug(lcDiscovery) << r->errorString() << httpCode << r->error();
     if (httpCode != 0 && httpCode != 207) {
         errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
     } else if (r->error() != QNetworkReply::NoError) {
@@ -493,7 +492,7 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPoint
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qDebug() << Q_FUNC_INFO << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
+    qCDebug(lcDiscovery) << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
 
 
     _currentDiscoveryDirectoryResult->list = result;
@@ -516,7 +515,7 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
+    qCDebug(lcDiscovery) << csyncErrnoCode << msg;
 
      _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
      _currentDiscoveryDirectoryResult->msg = msg;
@@ -531,7 +530,7 @@ void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(const 
 {
     // Should be thread safe since the sync thread is blocked
     if (!_discoveryJob->_csync_ctx->remote.root_perms) {
-        qDebug() << "Permissions for root dir:" << p;
+        qCDebug(lcDiscovery) << "Permissions for root dir:" << p;
         _discoveryJob->_csync_ctx->remote.root_perms = strdup(p.toUtf8());
     }
 }
@@ -566,7 +565,7 @@ void DiscoveryMainThread::slotGetSizeFinishedWithError()
         return; // possibly aborted
     }
 
-    qWarning() << "Error getting the size of the directory";
+    qCWarning(lcDiscovery) << "Error getting the size of the directory";
     // just let let the discovery job continue then
     _currentGetSizeResult = 0;
     QMutexLocker locker(&_discoveryJob->_vioMutex);
@@ -581,7 +580,7 @@ void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
     }
 
     *_currentGetSizeResult = map.value(QLatin1String("size")).toLongLong();
-    qDebug() << "Size of folder:" << *_currentGetSizeResult;
+    qCDebug(lcDiscovery) << "Size of folder:" << *_currentGetSizeResult;
     _currentGetSizeResult = 0;
     QMutexLocker locker(&_discoveryJob->_vioMutex);
     _discoveryJob->_vioWaitCondition.wakeAll();
@@ -619,7 +618,7 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob*>(userdata);
     if (discoveryJob) {
-        qDebug() << discoveryJob << url << "Calling into main thread...";
+        qCDebug(lcDiscovery) << discoveryJob << url << "Calling into main thread...";
 
         QScopedPointer<DiscoveryDirectoryResult> directoryResult(new DiscoveryDirectoryResult());
         directoryResult->code = EIO;
@@ -630,11 +629,11 @@ csync_vio_handle_t* DiscoveryJob::remote_vio_opendir_hook (const char *url,
         discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
         discoveryJob->_vioMutex.unlock();
 
-        qDebug() << discoveryJob << url << "...Returned from main thread";
+        qCDebug(lcDiscovery) << discoveryJob << url << "...Returned from main thread";
 
         // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
         if (directoryResult->code != 0) {
-            qDebug() << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
+            qCDebug(lcDiscovery) << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup( directoryResult->msg.toUtf8().constData() );
@@ -668,7 +667,7 @@ void DiscoveryJob::remote_vio_closedir_hook (csync_vio_handle_t *dhandle,  void 
     if (discoveryJob) {
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult*> (dhandle);
         QString path = directoryResult->path;
-        qDebug() << Q_FUNC_INFO << discoveryJob << path;
+        qCDebug(lcDiscovery) << discoveryJob << path;
         delete directoryResult; // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
     }
 }

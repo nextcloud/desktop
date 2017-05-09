@@ -100,7 +100,7 @@ int main(int argc, char **argv)
         if (setrlimit(RLIMIT_CORE, &core_limit) < 0) {
             fprintf(stderr, "Unable to set core dump limit\n");
         } else {
-            qDebug() << "Core dumps enabled";
+            qCDebug(lcApplication) << "Core dumps enabled";
         }
     }
 #endif
@@ -114,10 +114,10 @@ int main(int argc, char **argv)
 
     // if the application is already running, notify it.
     if(app.isRunning()) {
-        qDebug() << Q_FUNC_INFO << "Already running, exiting...";
+        qCDebug(lcApplication) << "Already running, exiting...";
         if (app.isSessionRestored()) {
             // This call is mirrored with the one in Application::slotParseMessage
-            qDebug() << "Session was restored, don't notify app!";
+            qCDebug(lcApplication) << "Session was restored, don't notify app!";
             return -1;
         }
 

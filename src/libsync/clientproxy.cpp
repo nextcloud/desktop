@@ -15,10 +15,13 @@
 #include "clientproxy.h"
 
 #include "configfile.h"
+#include <QLoggingCategory>
 #include <QUrl>
 #include <QThreadPool>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcClientProxy, "sync.clientproxy", QtInfoMsg)
 
 ClientProxy::ClientProxy(QObject *parent) :
     QObject(parent)
@@ -71,23 +74,23 @@ void ClientProxy::setupQtProxyFromConfig()
 
     switch(proxyType) {
     case QNetworkProxy::NoProxy:
-        qDebug() << "Set proxy configuration to use NO proxy";
+        qCDebug(lcClientProxy) << "Set proxy configuration to use NO proxy";
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(QNetworkProxy::NoProxy);
         break;
     case QNetworkProxy::DefaultProxy:
-        qDebug() << "Set proxy configuration to use system configuration";
+        qCDebug(lcClientProxy) << "Set proxy configuration to use system configuration";
         QNetworkProxyFactory::setUseSystemConfiguration(true);
         break;
     case QNetworkProxy::Socks5Proxy:
         proxy.setType(QNetworkProxy::Socks5Proxy);
-        qDebug() << "Set proxy configuration to SOCKS5" << printQNetworkProxy(proxy);
+        qCDebug(lcClientProxy) << "Set proxy configuration to SOCKS5" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;
     case QNetworkProxy::HttpProxy:
         proxy.setType(QNetworkProxy::HttpProxy);
-        qDebug() << "Set proxy configuration to HTTP" << printQNetworkProxy(proxy);
+        qCDebug(lcClientProxy) << "Set proxy configuration to HTTP" << printQNetworkProxy(proxy);
         QNetworkProxyFactory::setUseSystemConfiguration(false);
         QNetworkProxy::setApplicationProxy(proxy);
         break;

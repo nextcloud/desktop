@@ -22,8 +22,6 @@
 
 #include "utility.h"
 
-#include <QDebug>
-
 // Does not work yet
 @interface DelegateObject : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
@@ -33,38 +31,33 @@
 // Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
-    qDebug() << Q_FUNC_INFO << "may check: YES";
+    qCDebug(lcUpdater) << "may check: YES";
     return YES;
 }
 
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 // Sent when a valid update is not found.
 // Does not seem to get called ever.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 // Sent immediately before installing the specified update.
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
 {
-    qDebug() << Q_FUNC_INFO;
 }
 
 // Tried implementing those methods, but they never ever seem to get called
 //- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 //{
-//    qDebug() << Q_FUNC_INFO << [error localizedDescription];
 //}
 
 //- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
 //{
-//    qDebug() << Q_FUNC_INFO << appcast;
 //}
 
 
@@ -121,7 +114,7 @@ bool autoUpdaterAllowed()
     if ([expectedPath isEqualTo:bundlePath]) {
         return true;
     }
-    qDebug() << "ERROR: We are not in /Applications, won't check for update!";
+    qCDebug(lcUpdater) << "ERROR: We are not in /Applications, won't check for update!";
     return false;
 }
 
@@ -135,7 +128,7 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    qDebug() << Q_FUNC_INFO << "launching background check";
+    qCDebug(lcUpdater) << "launching background check";
     if (autoUpdaterAllowed()) {
         [d->updater checkForUpdatesInBackground];
     }

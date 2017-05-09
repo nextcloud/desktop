@@ -17,7 +17,12 @@
 #include "account.h"
 #include "asserts.h"
 
+#include <QLoggingCategory>
+
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcDeleteJob, "sync.networkjob.delete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "sync.propagator.remotedelete", QtInfoMsg)
 
 DeleteJob::DeleteJob(AccountPtr account, const QString& path, QObject* parent)
     : AbstractNetworkJob(account, path, parent)
@@ -37,7 +42,7 @@ void DeleteJob::start()
     }
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
+        qCWarning(lcDeleteJob) << " Network error: " << reply()->errorString();
     }
     AbstractNetworkJob::start();
 }
@@ -53,7 +58,7 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item->_file;
+    qCDebug(lcPropagateRemoteDelete) << _item->_file;
 
     _job = new DeleteJob(propagator()->account(),
                          propagator()->_remoteFolder + _item->_file,
@@ -75,7 +80,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
 
     ASSERT(_job);
 
-    qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
+    qCDebug(lcPropagateRemoteDelete) << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 

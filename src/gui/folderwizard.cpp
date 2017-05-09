@@ -21,8 +21,8 @@
 #include "selectivesyncdialog.h"
 #include "accountstate.h"
 #include "creds/abstractcredentials.h"
+#include "wizard/owncloudwizard.h"
 
-#include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QFileDialog>
@@ -209,7 +209,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::NetworkError error)
 {
     if (error == QNetworkReply::NoError) {
-        qDebug() << "** webdav mkdir request finished";
+        qCDebug(lcWizard) << "webdav mkdir request finished";
         showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
         slotRefreshFolders();
         _ui.folderEntry->setText(static_cast<MkColJob *>(sender())->path());
@@ -219,7 +219,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished(QNetworkReply::Netwo
 
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
-    qDebug() << "** webdav mkdir request failed:" << reply->error();
+    qCDebug(lcWizard) << "webdav mkdir request failed:" << reply->error();
     if( !_account->credentials()->stillValid(reply) ) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {

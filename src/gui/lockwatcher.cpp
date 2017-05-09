@@ -15,10 +15,12 @@
 #include "lockwatcher.h"
 #include "filesystem.h"
 
+#include <QLoggingCategory>
 #include <QTimer>
-#include <QDebug>
 
 using namespace OCC;
+
+Q_LOGGING_CATEGORY(lcLockWatcher, "gui.lockwatcher", QtInfoMsg)
 
 static const int check_frequency = 20 * 1000; // ms
 
@@ -32,7 +34,7 @@ LockWatcher::LockWatcher(QObject* parent)
 
 void LockWatcher::addFile(const QString& path)
 {
-    qDebug() << "Watching for lock of" << path << "being released";
+    qCDebug(lcLockWatcher) << "Watching for lock of" << path << "being released";
     _watchedPaths.insert(path);
 }
 
@@ -42,7 +44,7 @@ void LockWatcher::checkFiles()
 
     foreach (const QString& path, _watchedPaths) {
         if (!FileSystem::isFileLocked(path)) {
-            qDebug() << "Lock of" << path << "was released";
+            qCDebug(lcLockWatcher) << "Lock of" << path << "was released";
             emit fileUnlocked(path);
             unlocked.insert(path);
         }

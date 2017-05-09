@@ -29,7 +29,6 @@
 #else
 #include <qsavefile.h>
 #endif
-#include <QDebug>
 #include <QDateTime>
 #include <qstack.h>
 #include <QCoreApplication>
@@ -38,6 +37,10 @@
 
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcPropagateLocalRemove, "sync.propagator.localremove", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateLocalMkdir, "sync.propagator.localmkdir", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateLocalRename, "sync.propagator.localrename", QtInfoMsg)
 
 /**
  * Code inspired from Qt5's QDir::removeRecursively
@@ -71,7 +74,7 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
             if (!ok) {
                 _error += PropagateLocalRemove::tr("Error removing '%1': %2;").
                     arg(QDir::toNativeSeparators(di.filePath()), removeError) + " ";
-                qDebug() << "Error removing " << di.filePath() << ':' << removeError;
+                qCDebug(lcPropagateLocalRemove) << "Error removing " << di.filePath() << ':' << removeError;
             }
         }
         if (success && !ok) {
@@ -97,7 +100,7 @@ bool PropagateLocalRemove::removeRecursively(const QString& path)
         if (!success) {
             _error += PropagateLocalRemove::tr("Could not remove folder '%1'")
                 .arg(QDir::toNativeSeparators(absolute)) + " ";
-            qDebug() << "Error removing folder" << absolute;
+            qCDebug(lcPropagateLocalRemove) << "Error removing folder" << absolute;
         }
     }
     return success;
@@ -110,7 +113,7 @@ void PropagateLocalRemove::start()
 
     QString filename = propagator()->_localDir +  _item->_file;
 
-    qDebug() << filename;
+    qCDebug(lcPropagateLocalRemove) << filename;
 
     if( propagator()->localFileNameClash(_item->_file)) {
         done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash")
@@ -159,7 +162,7 @@ void PropagateLocalMkdir::start()
     }
 
     if( Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file ) ) {
-        qDebug() << "WARN: new folder to create locally already exists!";
+        qCDebug(lcPropagateLocalMkdir) << "WARN: new folder to create locally already exists!";
         done( SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr) );
         return;
     }
@@ -203,7 +206,7 @@ void PropagateLocalRename::start()
     // to _item->renameTarget and the file is not moved as a result.
     if (_item->_file != _item->_renameTarget) {
         propagator()->reportProgress(*_item, 0);
-        qDebug() << "MOVE " << existingFile << " => " << targetFile;
+        qCDebug(lcPropagateLocalRename) << "MOVE " << existingFile << " => " << targetFile;
 
         if (QString::compare(_item->_file, _item->_renameTarget, Qt::CaseInsensitive) != 0
                 && propagator()->localFileNameClash(_item->_renameTarget)) {

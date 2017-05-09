@@ -17,7 +17,6 @@
 
 #include "owncloudpropagator.h"
 #include <QFile>
-#include <qdebug.h>
 
 namespace OCC {
 

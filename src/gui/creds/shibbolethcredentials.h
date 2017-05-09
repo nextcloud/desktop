@@ -16,6 +16,7 @@
 #define MIRALL_CREDS_SHIBBOLETH_CREDENTIALS_H
 
 #include <QList>
+#include <QLoggingCategory>
 #include <QMap>
 #include <QNetworkCookie>
 #include <QUrl>
@@ -31,6 +32,8 @@ class QAuthenticator;
 
 namespace OCC
 {
+
+Q_DECLARE_LOGGING_CATEGORY(lcShibboleth)
 
 class ShibbolethWebView;
 

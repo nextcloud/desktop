@@ -139,17 +139,17 @@ void PropagateUploadFileNG::slotPropfindFinished()
     if (_sent > _item->_size) {
         // Normally this can't happen because the size is xor'ed with the transfer id, and it is
         // therefore impossible that there is more data on the server than on the file.
-        qWarning() << "Inconsistency while resuming " << _item->_file
+        qCWarning(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
             << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
             << _item->_size << ")";
         startNewUpload();
         return;
     }
 
-    qDebug() << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
+    qCDebug(lcPropagateUpload) << "Resuming "<< _item->_file << " from chunk " << _currentChunk << "; sent ="<< _sent;
 
     if (!_serverChunks.isEmpty()) {
-        qDebug() << "To Delete" << _serverChunks.keys();
+        qCDebug(lcPropagateUpload) << "To Delete" << _serverChunks.keys();
         propagator()->_activeJobList.append(this);
         _removeJobError = false;
 
@@ -198,7 +198,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
             abortWithError(status, job->errorString());
             return;
         } else {
-            qWarning() << "DeleteJob errored out" << job->errorString() << job->reply()->url();
+            qCWarning(lcPropagateUpload) << "DeleteJob errored out" << job->errorString() << job->reply()->url();
             _removeJobError = true;
             // Let the other jobs finish
         }
@@ -304,7 +304,7 @@ void PropagateUploadFileNG::startNextChunk()
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (! device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
-        qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
+        qCDebug(lcPropagateUpload) << "ERR: Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -346,7 +346,7 @@ void PropagateUploadFileNG::slotPutFinished()
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
-    qDebug() << job->reply()->request().url() << "FINISHED WITH STATUS"
+    qCDebug(lcPropagateUpload) << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
              << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
              << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
@@ -365,7 +365,7 @@ void PropagateUploadFileNG::slotPutFinished()
     if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {
         // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
-        qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
+        qCDebug(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         propagator()->_anotherSyncNeeded = true;
         abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
         return;
@@ -376,7 +376,7 @@ void PropagateUploadFileNG::slotPutFinished()
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         QByteArray replyContent;
         QString errorString = job->errorStringParsingBody(&replyContent);
-        qDebug() << replyContent; // display the XML error in the debug
+        qCDebug(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
         // Ensure errors that should eventually reset the chunked upload are tracked.
         checkResettingErrors();
@@ -413,7 +413,7 @@ void PropagateUploadFileNG::slotPutFinished()
                 targetSize,
                 propagator()->syncOptions()._maxChunkSize);
 
-        qDebug() << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
+        qCDebug(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
                  << "ms, desired is" << targetDuration << "ms, expected good chunk size is"
                  << predictedGoodSize << "bytes and nudged next chunk size to "
                  << propagator()->_chunkSize << "bytes";
@@ -490,20 +490,20 @@ void PropagateUploadFileNG::slotMoveJobFinished()
 
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if(fid.isEmpty()) {
-        qWarning() << "Server did not return a OC-FileID" << _item->_file;
+        qCWarning(lcPropagateUpload) << "Server did not return a OC-FileID" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing File ID from server"));
         return;
     } else {
         // the old file id should only be empty for new files uploaded
         if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
-            qDebug() << "WARN: File ID changed!" << _item->_fileId << fid;
+            qCDebug(lcPropagateUpload) << "WARN: File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }
 
     _item->_etag = getEtagFromReply(job->reply());;
     if (_item->_etag.isEmpty()) {
-        qWarning() << "Server did not return an ETAG" << _item->_file;
+        qCWarning(lcPropagateUpload) << "Server did not return an ETAG" << _item->_file;
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
         return;
     }
@@ -512,7 +512,7 @@ void PropagateUploadFileNG::slotMoveJobFinished()
 #ifdef WITH_TESTING
     // performance logging
     quint64 duration = _stopWatch.stop();
-    qDebug() << "*==* duration UPLOAD" << _item->_size
+    qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
              << duration;

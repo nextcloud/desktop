@@ -295,7 +295,7 @@ void ShareUserGroupWidget::displayError(int code, const QString& message)
         delete pi;
     }
 
-    qDebug() << "Error from server" << code << message;
+    qCDebug(lcSharing) << "Sharing error from server" << code << message;
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
     _ui->shareeLineEdit->setEnabled(true);

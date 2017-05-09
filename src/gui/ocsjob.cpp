@@ -22,6 +22,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcOcs, "gui.sharing.ocs", QtInfoMsg)
+
 OcsJob::OcsJob(AccountPtr account)
 : AbstractNetworkJob(account, "")
 {
@@ -105,7 +107,7 @@ bool OcsJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(replyData, &error);
     if (error.error != QJsonParseError::NoError) {
-        qDebug() << "Could not parse reply to" 
+        qCDebug(lcOcs) << "Could not parse reply to" 
                  << _verb 
                  << Utility::concatUrlPath(account()->url(), path())
                  << _params
@@ -116,7 +118,7 @@ bool OcsJob::finished()
     QString message;
     const int statusCode = getJsonReturnCode(json, message);
     if (!_passStatusCodes.contains(statusCode)) {
-        qDebug() << "Reply to"
+        qCDebug(lcOcs) << "Reply to"
                  << _verb
                  << Utility::concatUrlPath(account()->url(), path())
                  << _params

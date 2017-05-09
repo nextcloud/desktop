@@ -41,6 +41,9 @@ class Handler;
 }
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcApplication)
+
 class Theme;
 class Folder;
 class SslErrorDialog;

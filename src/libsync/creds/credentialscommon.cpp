@@ -19,8 +19,6 @@
 #include <QSslCertificate>
 #include <QSslConfiguration>
 
-#include <QDebug>
-
 #include "creds/credentialscommon.h"
 
 #include "utility.h"

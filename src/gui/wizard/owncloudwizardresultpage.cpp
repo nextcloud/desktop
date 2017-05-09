@@ -13,7 +13,6 @@
  * for more details.
  */
 
-#include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QUrl>
@@ -99,7 +98,6 @@ void OwncloudWizardResultPage::slotOpenServer()
 {
     Theme* theme = Theme::instance();
     QUrl url = QUrl(field("OCUrl").toString() + theme->wizardUrlPostfix());
-    qDebug() << Q_FUNC_INFO << url;
     QDesktopServices::openUrl(url);
 }
 

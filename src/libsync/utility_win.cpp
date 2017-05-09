@@ -24,7 +24,7 @@
 
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
-
+namespace OCC {
      
 static void setupFavLink_private(const QString &folder)
 {
@@ -41,9 +41,9 @@ static void setupFavLink_private(const QString &folder)
         linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
     	CoTaskMemFree(path);
     }
-    qDebug() << Q_FUNC_INFO << " creating link from " << linkName << " to " << folder;
+    qCDebug(lcUtility) << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
-        qDebug() << Q_FUNC_INFO << "linking" << folder << "to" << linkName << "failed!";
+        qCDebug(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 
 }
 
@@ -71,3 +71,5 @@ static inline bool hasDarkSystray_private()
 {
     return true;
 }
+
+} // namespace OCC

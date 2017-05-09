@@ -17,8 +17,8 @@
 #include "utility.h"
 #include "filesystem.h"
 
+#include <QLoggingCategory>
 #include <qfileinfo.h>
-#include <qdebug.h>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -27,6 +27,8 @@
 #endif
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcFileRecord, "sync.database.filerecord", QtInfoMsg)
 
 SyncJournalFileRecord::SyncJournalFileRecord()
     :_inode(0), _type(0), _fileSize(0), _serverHasIgnoredFiles(false)
@@ -55,7 +57,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
                      FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL );
 
     if( h == INVALID_HANDLE_VALUE ) {
-        qWarning() << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
+        qCWarning(lcFileRecord) << "Failed to query the 'inode' because CreateFileW failed for file " << localFileName;
     } else {
         BY_HANDLE_FILE_INFORMATION fileInfo;
 
@@ -69,7 +71,7 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 
             _inode = FileIndex.QuadPart;
         } else {
-            qWarning() << "Failed to query the 'inode' for file " << localFileName;
+            qCWarning(lcFileRecord) << "Failed to query the 'inode' for file " << localFileName;
 
         }
         CloseHandle(h);
@@ -77,12 +79,12 @@ SyncJournalFileRecord::SyncJournalFileRecord(const SyncFileItem &item, const QSt
 #else
     struct stat sb;
     if( stat(QFile::encodeName(localFileName).constData(), &sb) < 0) {
-        qWarning() << "Failed to query the 'inode' for file " << localFileName;
+        qCWarning(lcFileRecord) << "Failed to query the 'inode' for file " << localFileName;
     } else {
         _inode = sb.st_ino;
     }
 #endif
-    qDebug() << Q_FUNC_INFO << localFileName << "Retrieved inode " << _inode << "(previous item inode: " << item._inode << ")";
+    qCDebug(lcFileRecord) << localFileName << "Retrieved inode " << _inode << "(previous item inode: " << item._inode << ")";
 
 }
 

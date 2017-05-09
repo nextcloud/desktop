@@ -22,7 +22,6 @@
 #include <QQueue>
 #include <QElapsedTimer>
 #include <QTimer>
-#include <QDebug>
 
 #include "syncfileitem.h"
 

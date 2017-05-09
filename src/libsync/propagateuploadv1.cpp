@@ -34,6 +34,7 @@
 #include <cstring>
 
 namespace OCC {
+
 void PropagateUploadFileV1::doStartUpload()
 {
     _chunkCount = std::ceil(_item->_size / double(chunkSize()));
@@ -45,7 +46,7 @@ void PropagateUploadFileV1::doStartUpload()
     if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime ) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
-        qDebug() << Q_FUNC_INFO << _item->_file << ": Resuming from chunk " << _startChunk;
+        qCDebug(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
     }
 
     _currentChunk = 0;
@@ -82,7 +83,7 @@ void PropagateUploadFileV1::startNextChunk()
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
         uint transid = _transferId ^ chunkSize();
-        qDebug() << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
+        qCDebug(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers["OC-Chunked"] = "1";
@@ -100,7 +101,7 @@ void PropagateUploadFileV1::startNextChunk()
         // if there's only one chunk, it's the final one
         isFinalChunk = true;
     }
-    qDebug() << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
+    qCDebug(lcPropagateUpload) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
 
     if (isFinalChunk && !_transmissionChecksumType.isEmpty()) {
         headers[checkSumHeaderC] = makeChecksumHeader(
@@ -109,7 +110,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     const QString fileName = propagator()->getFilePath(_item->_file);
     if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
-        qDebug() << "ERR: Could not prepare upload device: " << device->errorString();
+        qCDebug(lcPropagateUpload) << "ERR: Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
         // when it becomes available again.
@@ -175,7 +176,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
     slotJobDestroyed(job); // remove it from the _jobs list
 
-    qDebug() << Q_FUNC_INFO << job->reply()->request().url() << "FINISHED WITH STATUS"
+    qCDebug(lcPropagateUpload) << job->reply()->request().url() << "FINISHED WITH STATUS"
              << job->reply()->error()
              << (job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : job->errorString())
              << job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
@@ -193,7 +194,7 @@ void PropagateUploadFileV1::slotPutFinished()
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
     if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {        // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
-        qDebug() << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
+        qCDebug(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         propagator()->_anotherSyncNeeded = true;
         abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
         return;
@@ -209,7 +210,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
         QByteArray replyContent;
         QString errorString = job->errorStringParsingBody(&replyContent);
-        qDebug() << replyContent; // display the XML error in the debug
+        qCDebug(lcPropagateUpload) << replyContent; // display the XML error in the debug
 
         if (_item->_httpErrorCode == 412) {
             // Precondition Failed: Either an etag or a checksum mismatch.
@@ -319,7 +320,7 @@ void PropagateUploadFileV1::slotPutFinished()
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if( !fid.isEmpty() ) {
         if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
-            qDebug() << "WARN: File ID changed!" << _item->_fileId << fid;
+            qCDebug(lcPropagateUpload) << "WARN: File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
     }
@@ -331,7 +332,7 @@ void PropagateUploadFileV1::slotPutFinished()
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
         // Normally Owncloud 6 always puts X-OC-MTime
-        qWarning() << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
+        qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
     }
@@ -339,7 +340,7 @@ void PropagateUploadFileV1::slotPutFinished()
 #ifdef WITH_TESTING
     // performance logging
     quint64 duration = _stopWatch.stop();
-    qDebug() << "*==* duration UPLOAD" << _item->_size
+    qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
              << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
              << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
              << duration;

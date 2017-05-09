@@ -19,7 +19,6 @@
 
 #include <QFileInfo>
 #include <QFlags>
-#include <QDebug>
 #include <QDir>
 #include <QMutexLocker>
 #include <QStringList>
@@ -37,6 +36,8 @@
 #include "folder.h"
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcFolderWatcher, "gui.folderwatcher", QtInfoMsg)
 
 FolderWatcher::FolderWatcher(const QString &root, Folder* folder)
     : QObject(folder),
@@ -57,7 +58,7 @@ bool FolderWatcher::pathIsIgnored( const QString& path )
 
 #ifndef OWNCLOUD_TEST
     if (_folder->isFileExcludedAbsolute(path)) {
-        qDebug() << "* Ignoring file" << path;
+        qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
         return true;
     }
 #endif
@@ -72,8 +73,6 @@ void FolderWatcher::changeDetected( const QString& path )
 
 void FolderWatcher::changeDetected( const QStringList& paths )
 {
-    // qDebug() << Q_FUNC_INFO << paths;
-
     // TODO: this shortcut doesn't look very reliable:
     //   - why is the timeout only 1 second?
     //   - what if there is more than one file being updated frequently?
@@ -103,7 +102,7 @@ void FolderWatcher::changeDetected( const QStringList& paths )
         return;
     }
 
-    qDebug() << "detected changes in paths:" << changedPaths;
+    qCDebug(lcFolderWatcher) << "detected changes in paths:" << changedPaths;
     foreach (const QString &path, changedPaths) {
         emit pathChanged(path);
     }

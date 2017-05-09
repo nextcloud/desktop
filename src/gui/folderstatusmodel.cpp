@@ -29,6 +29,8 @@ Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcFolderStatus, "gui.folder.model", QtInfoMsg)
+
 static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";
 
@@ -624,7 +626,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     auto selectiveSyncUndecidedList = parentInfo->_folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok2);
 
     if( !(ok1 && ok2) ) {
-        qDebug() << Q_FUNC_INFO << "Could not retrieve selective sync info from journal";
+        qCDebug(lcFolderStatus) << "Could not retrieve selective sync info from journal";
         return;
     }
 
@@ -730,7 +732,7 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply* r)
     }
     auto parentInfo = infoForIndex(idx);
     if (parentInfo) {
-        qDebug() << r->errorString();
+        qCDebug(lcFolderStatus) << r->errorString();
         parentInfo->_lastErrorString = r->errorString();
 
         parentInfo->resetSubs(this, idx);
@@ -798,7 +800,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         bool ok;
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if( !ok ) {
-            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
@@ -894,10 +896,8 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         }
         if (citm._item._direction != SyncFileItem::Up){
             estimatedDownBw += progress.fileProgress(citm._item).estimatedBandwidth;
-            //qDebug() << "DOWN" << citm._item._file << progress.fileProgress(citm._item).estimatedBandwidth;
         } else {
             estimatedUpBw += progress.fileProgress(citm._item).estimatedBandwidth;
-            //qDebug() << "UP" << citm._item._file << progress.fileProgress(citm._item).estimatedBandwidth;
         }
         auto fileName = QFileInfo(citm._item._file).fileName();
         if (allFilenames.length() > 0) {
@@ -908,7 +908,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             allFilenames.append(tr("'%1'").arg(fileName));
         }
     }
-    //qDebug() << "Syncing bandwidth" << estimatedDownBw << estimatedUpBw;
     if (curItemProgress == -1) {
         curItemProgress = curItem._size;
     }
@@ -1081,7 +1080,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         bool ok;
         auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         if( !ok ) {
-            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
 
@@ -1093,7 +1092,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         // Remove all undecided folders from the blacklist
         auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if( !ok ) {
-            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         foreach (const auto& undecidedFolder, undecidedList) {
@@ -1104,7 +1103,7 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         // Add all undecided folders to the white list
         auto whiteList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
         if( !ok ) {
-            qDebug() << Q_FUNC_INFO << "Could not read selective sync list from db.";
+            qCDebug(lcFolderStatus) << "Could not read selective sync list from db.";
             return;
         }
         whiteList += undecidedList;

@@ -18,11 +18,13 @@
 
 #include <QBuffer>
 #include <QFile>
-#include <QDebug>
 #include <QElapsedTimer>
 
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcPropagateUpload)
+
 class BandwidthManager;
 
 /**

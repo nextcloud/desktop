@@ -13,7 +13,6 @@
  */
 
 #include <QApplication>
-#include <QDebug>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QWebFrame>
@@ -156,7 +155,7 @@ void ShibbolethWebView::slotLoadFinished(bool success)
     }
 
     if (!success) {
-        qDebug() << Q_FUNC_INFO << "Could not load Shibboleth login page to log you in.";
+        qCDebug(lcShibboleth) << "Could not load Shibboleth login page to log you in.";
     }
 }
 

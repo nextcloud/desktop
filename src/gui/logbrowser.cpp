@@ -27,7 +27,6 @@
 #include <QTextStream>
 #include <QMessageBox>
 #include <QCoreApplication>
-#include <QDebug>
 #include <QSettings>
 #include <QAction>
 
@@ -122,7 +121,6 @@ LogBrowser::LogBrowser(QWidget *parent) :
     ConfigFile cfg;
     cfg.restoreGeometry(this);
     int lines = cfg.maxLogLines();
-    // qDebug() << "#        ##  Have " << lines << " Loglines!";
     _logWidget->document()->setMaximumBlockCount( lines );
 
 }

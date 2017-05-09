@@ -27,6 +27,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcSsl, "gui.ssl", QtInfoMsg)
+
 SslButton::SslButton(QWidget *parent) :
     QToolButton(parent)
 {
@@ -227,7 +229,7 @@ void SslButton::slotUpdateMenu() {
         QList<QSslCertificate> chain = account->_peerCertificateChain;
 
         if (chain.isEmpty()) {
-            qWarning() << "empty certificate chain";
+            qCWarning(lcSsl) << "Empty certificate chain";
             return;
         }
 

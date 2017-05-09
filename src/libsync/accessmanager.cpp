@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QNetworkProxy>
@@ -27,6 +28,8 @@
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcAccessManager, "sync.accessmanager", QtInfoMsg)
 
 AccessManager::AccessManager(QObject* parent)
     : QNetworkAccessManager (parent)
@@ -49,7 +52,7 @@ void AccessManager::setRawCookie(const QByteArray &rawCookie, const  QUrl &url)
 {
     QNetworkCookie cookie(rawCookie.left(rawCookie.indexOf('=')),
                           rawCookie.mid(rawCookie.indexOf('=')+1));
-    qDebug() << Q_FUNC_INFO << cookie.name() << cookie.value();
+    qCDebug(lcAccessManager) << cookie.name() << cookie.value();
     QList<QNetworkCookie> cookieList;
     cookieList.append(cookie);
 

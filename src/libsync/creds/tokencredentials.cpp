@@ -13,8 +13,8 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QMutex>
-#include <QDebug>
 #include <QNetworkReply>
 #include <QSettings>
 #include <QNetworkCookieJar>
@@ -29,6 +29,8 @@
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcTokenCredentials, "sync.credentials.token", QtInfoMsg)
 
 namespace
 {
@@ -45,7 +47,7 @@ public:
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) {
         if (_cred->user().isEmpty() || _cred->password().isEmpty()) {
-            qWarning() << Q_FUNC_INFO << "Empty user/password provided!";
+            qCWarning(lcTokenCredentials) << "Empty user/password provided!";
         }
 
         QNetworkRequest req(request);
@@ -131,7 +133,7 @@ bool TokenCredentials::stillValid(QNetworkReply *reply)
 
 void TokenCredentials::invalidateToken()
 {
-    qDebug() << Q_FUNC_INFO;
+    qCDebug(lcTokenCredentials) << "Invalidating token";
     _ready = false;
     _account->clearCookieJar();
     _token = QString();
@@ -155,7 +157,7 @@ void TokenCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* 
     // we cannot use QAuthenticator, because it sends username and passwords with latin1
     // instead of utf8 encoding. Instead, we send it manually. Thus, if we reach this signal,
     // those credentials were invalid and we terminate.
-    qDebug() << "Stop request: Authentication failed for " << reply->url().toString();
+    qCDebug(lcTokenCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
     reply->close();
 }

@@ -18,6 +18,7 @@
 #include "config.h"
 
 #include <QList>
+#include <QLoggingCategory>
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -29,6 +30,8 @@
 class QTimer;
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcFolderWatcher)
 
 class FolderWatcherPrivate;
 class Folder;

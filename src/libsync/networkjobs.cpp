@@ -13,6 +13,7 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -25,7 +26,6 @@
 #include <QStack>
 #include <QTimer>
 #include <QMutex>
-#include <QDebug>
 #include <QCoreApplication>
 #include <QPixmap>
 #include <QJsonDocument>
@@ -38,6 +38,14 @@
 #include "creds/abstractcredentials.h"
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcEtag, "sync.networkjob.etag", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLsCol, "sync.networkjob.lscol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckServer, "sync.networkjob.checkserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropfind, "sync.networkjob.propfind", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAvatar, "sync.networkjob.avatar", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProppatch, "sync.networkjob.proppatch", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcJsonApi, "sync.networkjob.jsonapi", QtInfoMsg)
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -71,7 +79,7 @@ void RequestEtagJob::start()
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qDebug() << "getting etag: request network error: " << reply()->errorString();
+        qCDebug(lcEtag) << "request network error: " << reply()->errorString();
     }
     AbstractNetworkJob::start();
 }
@@ -190,7 +198,7 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
                 // but the result will have URL encoding..
                 QString hrefString = QString::fromUtf8(QByteArray::fromPercentEncoding(reader.readElementText().toUtf8()));
                 if (!hrefString.startsWith(expectedPath)) {
-                    qDebug() << "Invalid href" << hrefString << "expected starting with" << expectedPath;
+                    qCDebug(lcLsCol) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
                     return false;
                 }
                 currentHref = hrefString;
@@ -254,10 +262,10 @@ bool LsColXMLParser::parse( const QByteArray& xml, QHash<QString, qint64> *sizes
 
     if (reader.hasError()) {
         // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
-        qDebug() << "ERROR" << reader.errorString() << xml;
+        qCDebug(lcLsCol) << "ERROR" << reader.errorString() << xml;
         return false;
     } else if (!insideMultiStatus) {
-        qDebug() << "ERROR no WebDAV response?" << xml;
+        qCDebug(lcLsCol) << "ERROR no WebDAV response?" << xml;
         return false;
     } else {
         emit directoryListingSubfolders(folders);
@@ -294,7 +302,7 @@ void LsColJob::start()
     QList<QByteArray> properties = _properties;
 
     if (properties.isEmpty()) {
-        qWarning() << "Propfind with no properties!";
+        qCWarning(lcLsCol) << "Propfind with no properties!";
     }
     QByteArray propStr;
     foreach (const QByteArray &prop, properties) {
@@ -388,11 +396,11 @@ void CheckServerJob::start()
 
 void CheckServerJob::onTimedOut()
 {
-    qDebug() << "TIMEOUT" << Q_FUNC_INFO;
+    qCDebug(lcCheckServer) << "TIMEOUT";
     if (reply() && reply()->isRunning()) {
         emit timeout(reply()->url());
     } else if (!reply()) {
-        qDebug() << Q_FUNC_INFO << "Timeout even there was no reply?";
+        qCDebug(lcCheckServer) << "Timeout even there was no reply?";
     }
     deleteLater();
 }
@@ -445,7 +453,7 @@ bool CheckServerJob::finished()
     if (reply()->request().url().scheme() == QLatin1String("https")
             && reply()->sslConfiguration().sessionTicket().isEmpty()
             && reply()->error() == QNetworkReply::NoError) {
-        qDebug() << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
+        qCDebug(lcCheckServer) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
 #endif
 
@@ -457,28 +465,28 @@ bool CheckServerJob::finished()
         _subdirFallback = true;
         setPath(QLatin1String(owncloudDirC)+QLatin1String(statusphpC));
         start();
-        qDebug() << "Retrying with" << reply()->url();
+        qCDebug(lcCheckServer) << "Retrying with" << reply()->url();
         return false;
     }
 
     QByteArray body = reply()->peek(4*1024);
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if( body.isEmpty() || httpStatus != 200) {
-        qDebug() << "error: status.php replied " << httpStatus << body;
+        qCDebug(lcCheckServer) << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
         QJsonParseError error;
         auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
         if (error.error != QJsonParseError::NoError || status.isNull()) {
-            qDebug() << "status.php from server is not valid JSON!" << body << reply()->request().url() << error.errorString();
+            qCDebug(lcCheckServer) << "status.php from server is not valid JSON!" << body << reply()->request().url() << error.errorString();
         }
 
-        qDebug() << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
+        qCDebug(lcCheckServer) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
         if( status.object().contains("installed") ) {
             emit instanceFound(reply()->url(), status.object());
         } else {
-            qDebug() << "No proper answer on " << reply()->url();
+            qCDebug(lcCheckServer) << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
         }
     }
@@ -498,7 +506,7 @@ void PropfindJob::start()
     QList<QByteArray> properties = _properties;
 
     if (properties.isEmpty()) {
-        qWarning() << "Propfind with no properties!";
+        qCWarning(lcLsCol) << "Propfind with no properties!";
     }
     QNetworkRequest req;
     // Always have a higher priority than the propagator because we use this from the UI
@@ -568,13 +576,13 @@ bool PropfindJob::finished()
             }
         }
         if (reader.hasError()) {
-            qDebug() << "PROPFIND request XML parser error: " << reader.errorString();
+            qCDebug(lcPropfind) << "XML parser error: " << reader.errorString();
             emit finishedWithError(reply());
         } else {
             emit result(items);
         }
     } else {
-        qDebug() << "PROPFIND request *not* successful, http result code is" << http_result_code
+        qCDebug(lcPropfind) << "*not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
         emit finishedWithError(reply());
     }
@@ -608,7 +616,7 @@ bool AvatarJob::finished()
         if( pngData.size() ) {
 
             if( avImage.loadFromData(pngData) ) {
-                qDebug() << "Retrieved Avatar pixmap!";
+                qCDebug(lcAvatar) << "Retrieved Avatar pixmap!";
             }
         }
     }
@@ -627,7 +635,7 @@ ProppatchJob::ProppatchJob(AccountPtr account, const QString &path, QObject *par
 void ProppatchJob::start()
 {
     if (_properties.isEmpty()) {
-        qWarning() << "Proppatch with no properties!";
+        qCWarning(lcProppatch) << "Proppatch with no properties!";
     }
     QNetworkRequest req;
 
@@ -682,7 +690,7 @@ bool ProppatchJob::finished()
     if (http_result_code == 207) {
         emit success();
     } else {
-        qDebug() << "PROPPATCH request *not* successful, http result code is" << http_result_code
+        qCDebug(lcProppatch) << "*not* successful, http result code is" << http_result_code
                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString()  : QLatin1String(""));
         emit finishedWithError();
     }
@@ -735,7 +743,7 @@ bool JsonApiJob::finished()
     int statusCode = 0;
 
     if (reply()->error() != QNetworkReply::NoError) {
-        qWarning() << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qCWarning(lcJsonApi) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
@@ -760,7 +768,7 @@ bool JsonApiJob::finished()
     auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
     // empty or invalid response
     if (error.error != QJsonParseError::NoError || json.isNull()) {
-        qWarning() << "invalid JSON!" << jsonStr << error.errorString();
+        qCWarning(lcJsonApi) << "invalid JSON!" << jsonStr << error.errorString();
         emit jsonReceived(json, statusCode);
         return true;
     }

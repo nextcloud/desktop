@@ -23,7 +23,6 @@
 #include <QApplication>
 #endif
 #include <QCoreApplication>
-#include <QDebug>
 
 #include "version.h"
 #include "config.h"
@@ -34,7 +33,6 @@ namespace OCC {
 ownCloudTheme::ownCloudTheme() :
     Theme()
 {
-    // qDebug() << " ** running ownCloud theme!";
 }
 
 QString ownCloudTheme::configFileName() const

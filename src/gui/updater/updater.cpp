@@ -14,7 +14,6 @@
 
 #include <QUrl>
 #include <QProcess>
-#include <QDebug>
 
 #include "updater/updater.h"
 #include "updater/sparkleupdater.h"
@@ -27,6 +26,8 @@
 #include "config.h"
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcUpdater, "gui.updater", QtInfoMsg)
 
 Updater *Updater::_instance = 0;
 
@@ -71,7 +72,7 @@ QString Updater::getSystemInfo()
     process.start( QLatin1String("lsb_release -a") );
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
-    qDebug() << "Sys Info size: " << output.length();
+    qCDebug(lcUpdater) << "Sys Info size: " << output.length();
     if( output.length() > 1024 ) output.clear(); // don't send too much.
 
     return QString::fromLocal8Bit( output.toBase64() );
@@ -88,7 +89,7 @@ Updater *Updater::create()
         updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
     }
     if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
-        qDebug() << "Not a valid updater URL, will not do update check";
+        qCDebug(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;
     }
     updateBaseUrl = addQueryParams(updateBaseUrl);

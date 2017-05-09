@@ -15,9 +15,10 @@
 
 #pragma once
 
-#include <QNetworkReply>
-#include <QDebug>
+#include "owncloudpropagator.h"
 #include "syncfileitem.h"
+#include <QLoggingCategory>
+#include <QNetworkReply>
 
 namespace OCC {
 
@@ -48,7 +49,7 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
         ret = etag;
     }
     if (ocEtag.length() > 0 && ocEtag != etag) {
-        qDebug() << "Quite peculiar, we have an etag != OC-Etag [no problem!]" << etag << ocEtag;
+        qCDebug(lcPropagator) << "Quite peculiar, we have an etag != OC-Etag [no problem!]" << etag << ocEtag;
     }
     return ret;
 }

@@ -15,8 +15,6 @@
 #include <QStyle>
 #include <QStyleOptionFrame>
 
-#include <QDebug>
-
 #include "postfixlineedit.h"
 
 namespace OCC {
@@ -54,7 +52,6 @@ void PostfixLineEdit::setFullText(const QString &text)
     if (prefixString.endsWith(postfix())) {
         prefixString.chop(postfix().length());
     }
-    qDebug() << prefixString;
     setText(prefixString);
 }
 

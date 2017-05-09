@@ -21,6 +21,7 @@
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
+#include <QLoggingCategory>
 #include <QMap>
 #include <QUrl>
 #include <memory>
@@ -28,6 +29,8 @@
 class QSettings;
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
 /** \addtogroup libsync
  *  @{

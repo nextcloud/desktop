@@ -17,7 +17,6 @@
 #include <QNetworkReply>
 #include <QMessageBox>
 #include <QAuthenticator>
-#include <QDebug>
 
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethwebview.h"
@@ -38,6 +37,8 @@ using namespace QKeychain;
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcShibboleth, "gui.credentials.shibboleth", QtInfoMsg)
 
 namespace
 {
@@ -107,7 +108,7 @@ void ShibbolethCredentials::slotReplyFinished(QNetworkReply* r)
     QVariant target = r->attribute(QNetworkRequest::RedirectionTargetAttribute);
     if (target.isValid()) {
         _stillValid = false;
-        qWarning() << Q_FUNC_INFO << "detected redirect, will open Login Window"; // will be done in NetworkJob's finished signal
+        qCWarning(lcShibboleth) << "detected redirect, will open Login Window"; // will be done in NetworkJob's finished signal
     } else {
         //_stillValid = true; // gets set when reading from keychain or getting it from browser
     }
@@ -213,11 +214,11 @@ void ShibbolethCredentials::slotUserFetched(const QString &user)
 {
     if (_user.isEmpty()) {
         if (user.isEmpty()) {
-            qDebug() << "Failed to fetch the shibboleth user";
+            qCDebug(lcShibboleth) << "Failed to fetch the shibboleth user";
         }
         _user = user;
     } else if (user != _user) {
-        qDebug() << "Wrong user: " << user << "!=" << _user;
+        qCDebug(lcShibboleth) << "Wrong user: " << user << "!=" << _user;
         QMessageBox::warning(_browser, tr("Login Error"), tr("You must sign in as user %1").arg(_user));
         invalidateToken();
         showLoginWindow();

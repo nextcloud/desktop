@@ -17,7 +17,6 @@
 #include "configfile.h"
 
 #include <QVariantMap>
-#include <QDebug>
 
 namespace OCC {
 

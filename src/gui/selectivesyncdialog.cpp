@@ -25,7 +25,6 @@
 #include <qpushbutton.h>
 #include <QFileIconProvider>
 #include <QHeaderView>
-#include <QDebug>
 #include <QSettings>
 #include <QScopedValueRollback>
 #include <QTreeWidgetItem>

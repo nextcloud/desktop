@@ -35,7 +35,6 @@
 
 #include "creds/abstractcredentials.h"
 
-#include <QDebug>
 #include <QTimer>
 #include <QUrl>
 #include <QDir>
@@ -45,6 +44,8 @@
 #include <QPushButton>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
 Folder::Folder(const FolderDefinition& definition,
                AccountState* accountState,
@@ -81,7 +82,7 @@ Folder::Folder(const FolderDefinition& definition,
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
     if (!setIgnoredFiles())
-        qWarning("Could not read system exclude file");
+        qCWarning(lcFolder, "Could not read system exclude file");
 
     connect(_accountState.data(), SIGNAL(isConnectedChanged()), this, SIGNAL(canSyncChanged()));
     connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
@@ -124,14 +125,14 @@ void Folder::checkLocalPath()
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
     if (_canonicalLocalPath.isEmpty()) {
-        qDebug() << "Broken symlink:" << _definition.localPath;
+        qCDebug(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
     } else if( !_canonicalLocalPath.endsWith('/') ) {
         _canonicalLocalPath.append('/');
     }
 
     if( fi.isDir() && fi.isReadable() ) {
-        qDebug() << "Checked local path ok";
+        qCDebug(lcFolder) << "Checked local path ok";
     } else {
         // Check directory again
         if( !FileSystem::fileExists(_definition.localPath, fi) ) {
@@ -270,17 +271,17 @@ void Folder::prepareToSync()
 
 void Folder::slotRunEtagJob()
 {
-    qDebug() << "* Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
+    qCDebug(lcFolder) << "Trying to check" << remoteUrl().toString() << "for changes via ETag check. (time since last sync:" << (_timeSinceLastSyncDone.elapsed() / 1000) << "s)";
 
     AccountPtr account = _accountState->account();
 
     if (_requestEtagJob) {
-        qDebug() << Q_FUNC_INFO << remoteUrl().toString() << "has ETag job queued, not trying to sync";
+        qCDebug(lcFolder) << remoteUrl().toString() << "has ETag job queued, not trying to sync";
         return;
     }
 
     if (!canSync()) {
-        qDebug() << "Not syncing.  :"  << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
+        qCDebug(lcFolder) << "Not syncing.  :"  << remoteUrl().toString() << _definition.paused << AccountState::stateString(_accountState->state());
         return;
     }
 
@@ -297,13 +298,11 @@ void Folder::slotRunEtagJob()
 
 void Folder::etagRetreived(const QString& etag)
 {
-    //qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag;
-
     // re-enable sync if it was disabled because network was down
     FolderMan::instance()->setSyncEnabled(true);
 
     if (_lastEtag != etag) {
-        qDebug() << "* Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
+        qCDebug(lcFolder) << "Compare etag with previous etag: last:" << _lastEtag << ", received:" << etag << "-> CHANGED";
         _lastEtag = etag;
         slotScheduleThisFolder();
     }
@@ -313,7 +312,7 @@ void Folder::etagRetreived(const QString& etag)
 
 void Folder::etagRetreivedFromSyncEngine(const QString& etag)
 {
-    qDebug() << "Root etag from during sync:" << etag;
+    qCDebug(lcFolder) << "Root etag from during sync:" << etag;
     accountState()->tagLastSuccessfullETagRequest();
     _lastEtag = etag;
 }
@@ -349,7 +348,7 @@ void Folder::showSyncResultPopup()
         createGuiLog( _syncResult.firstItemError()->_file, LogStatusError, errorCount );
     }
 
-    qDebug() << "OO folder slotSyncFinished: result: " << int(_syncResult.status());
+    qCDebug(lcFolder) << "Folder slotSyncFinished: result: " << int(_syncResult.status());
 }
 
 void Folder::createGuiLog( const QString& filename, LogStatus status, int count,
@@ -428,7 +427,7 @@ int Folder::slotDiscardDownloadProgress()
             _journal.getAndDeleteStaleDownloadInfos(keep_nothing);
     foreach (const SyncJournalDb::DownloadInfo & deleted_info, deleted_infos) {
         const QString tmppath = folderpath.filePath(deleted_info._tmpfile);
-        qDebug() << "Deleting temporary file: " << tmppath;
+        qCDebug(lcFolder) << "Deleting temporary file: " << tmppath;
         FileSystem::remove(tmppath);
     }
     return deleted_infos.size();
@@ -474,7 +473,7 @@ void Folder::slotWatchedPathChanged(const QString& path)
         auto record = _journal.getFileRecord(relativePath);
         if (record.isValid() && !FileSystem::fileChanged(path, record._fileSize,
                 Utility::qDateTimeToTime_t(record._modtime))) {
-            qDebug() << "Ignoring spurious notification for file" << relativePath;
+            qCDebug(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return;  // probably a spurious notification
         }
     }
@@ -518,7 +517,7 @@ void Folder::saveToSettings() const
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
-    qDebug() << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
+    qCDebug(lcFolder) << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
 }
 
 void Folder::removeFromSettings() const
@@ -543,7 +542,7 @@ bool Folder::isFileExcludedRelative(const QString& relativePath) const
 
 void Folder::slotTerminateSync()
 {
-    qDebug() << "folder " << alias() << " Terminating!";
+    qCDebug(lcFolder) << "folder " << alias() << " Terminating!";
 
     if( _engine->isSyncRunning() ) {
         _engine->abort();
@@ -569,12 +568,12 @@ void Folder::wipe()
     QFile file(stateDbFile);
     if( file.exists() ) {
         if( !file.remove()) {
-            qDebug() << "WRN: Failed to remove existing csync StateDB " << stateDbFile;
+            qCDebug(lcFolder) << "WRN: Failed to remove existing csync StateDB " << stateDbFile;
         } else {
-            qDebug() << "wipe: Removed csync StateDB " << stateDbFile;
+            qCDebug(lcFolder) << "wipe: Removed csync StateDB " << stateDbFile;
         }
     } else {
-        qDebug() << "WRN: statedb is empty, can not remove.";
+        qCDebug(lcFolder) << "WRN: statedb is empty, can not remove.";
     }
 
     // Also remove other db related files
@@ -595,12 +594,12 @@ bool Folder::setIgnoredFiles()
     // a QSet of files to load.
     ConfigFile cfg;
     QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
-    qDebug() << "==== adding system ignore list to csync:" << systemList;
+    qCDebug(lcFolder) << "Adding system ignore list to csync:" << systemList;
     _engine->excludedFiles().addExcludeFilePath(systemList);
 
     QString userList = cfg.excludeFile(ConfigFile::UserScope);
     if( QFile::exists(userList) ) {
-        qDebug() << "==== adding user defined ignore list to csync:" << userList;
+        qCDebug(lcFolder) << "Adding user defined ignore list to csync:" << userList;
         _engine->excludedFiles().addExcludeFilePath(userList);
     }
 
@@ -625,7 +624,7 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     if (isBusy()) {
-        qCritical() << "* ERROR csync is still running and new sync requested.";
+        qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }
     _csyncUnavail = false;
@@ -634,7 +633,7 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus( SyncResult::SyncPrepare );
     emit syncStateChange();
 
-    qDebug() << "*** Start syncing " << remoteUrl().toString() << " - client version"
+    qCDebug(lcFolder) << "*** Start syncing " << remoteUrl().toString() << " - client version"
              << qPrintable(Theme::instance()->version());
 
     _fileLog->start(path());
@@ -731,7 +730,7 @@ void Folder::slotSyncError(const QString& err)
 
 void Folder::slotSyncStarted()
 {
-    qDebug() << "#### Propagation start #################################################### >>";
+    qCDebug(lcFolder) << "#### Propagation start #################################################### >>";
     _syncResult.setStatus(SyncResult::SyncRunning);
     emit syncStateChange();
 }
@@ -743,7 +742,7 @@ void Folder::slotCsyncUnavailable()
 
 void Folder::slotSyncFinished(bool success)
 {
-    qDebug() << " - client version" << qPrintable(Theme::instance()->version())
+    qCDebug(lcFolder) << "Client version" << qPrintable(Theme::instance()->version())
              <<  " Qt" << qVersion()
 #if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
               <<  " SSL " <<  QSslSocket::sslLibraryVersionString().toUtf8().data()
@@ -752,9 +751,9 @@ void Folder::slotSyncFinished(bool success)
 
     bool syncError = !_syncResult.errorStrings().isEmpty();
     if( syncError ) {
-        qDebug() << "-> SyncEngine finished with ERROR";
+        qCDebug(lcFolder) << "SyncEngine finished with ERROR";
     } else {
-        qDebug() << "-> SyncEngine finished without problem.";
+        qCDebug(lcFolder) << "SyncEngine finished without problem.";
     }
     _fileLog->finish();
     showSyncResultPopup();
@@ -763,10 +762,10 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncError) {
         _syncResult.setStatus(SyncResult::Error);
-        qDebug() << "    * owncloud csync thread finished with error";
+        qCDebug(lcFolder) << "ownCloud csync thread finished with error";
     } else if (_csyncUnavail) {
         _syncResult.setStatus(SyncResult::Error);
-        qDebug() << "  ** csync not available.";
+        qCDebug(lcFolder) << "csync not available.";
     } else if( _syncResult.foundFilesNotSynced() ) {
         _syncResult.setStatus(SyncResult::Problem);
     } else if( _definition.paused ) {
@@ -785,7 +784,7 @@ void Folder::slotSyncFinished(bool success)
     else
     {
         _consecutiveFailingSyncs++;
-        qDebug() << "the last" << _consecutiveFailingSyncs << "syncs failed";
+        qCDebug(lcFolder) << "the last" << _consecutiveFailingSyncs << "syncs failed";
     }
 
     if (_syncResult.status() == SyncResult::Success && success) {
@@ -809,7 +808,7 @@ void Folder::slotSyncFinished(bool success)
     // Increment the follow-up sync counter if necessary.
     if (anotherSyncNeeded == ImmediateFollowUp) {
         _consecutiveFollowUpSyncs++;
-        qDebug() << "another sync was requested by the finished sync, this has"
+        qCDebug(lcFolder) << "another sync was requested by the finished sync, this has"
                  << "happened" << _consecutiveFollowUpSyncs << "times";
     } else {
         _consecutiveFollowUpSyncs = 0;

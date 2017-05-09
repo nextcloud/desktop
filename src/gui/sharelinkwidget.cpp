@@ -118,7 +118,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         //
         // _ui->checkBox_shareLink->setEnabled(false);
         // uploadExternalFile();
-        qDebug() << Q_FUNC_INFO << "Unable to share files not in a sync folder.";
+        qCDebug(lcSharing) << "Unable to share files not in a sync folder.";
         return;
     }
 
@@ -181,7 +181,7 @@ void ShareLinkWidget::getShares()
 void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
     const QString versionString = _account->serverVersion();
-    qDebug() << Q_FUNC_INFO << versionString << "Fetched" << shares.count() << "shares";
+    qCDebug(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
 
     // Preserve the previous selection
     QString selectedShareId;
@@ -590,7 +590,7 @@ void ShareLinkWidget::slotServerError(int code, const QString &message)
     _pi_password->stopAnimation();
     _pi_editing->stopAnimation();
 
-    qDebug() << "Error from server" << code << message;
+    qCDebug(lcSharing) << "Error from server" << code << message;
     displayError(message);
 }
 

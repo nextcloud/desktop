@@ -23,6 +23,7 @@
 #include "asserts.h"
 
 #include <QSettings>
+#include <QLoggingCategory>
 #include <QMutex>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
@@ -30,11 +31,11 @@
 #include <QNetworkCookieJar>
 #include <QFileInfo>
 #include <QDir>
-#include <QDebug>
 #include <QSslKey>
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
 
 Account::Account(QObject *parent)
     : QObject(parent)
@@ -193,7 +194,7 @@ void Account::resetNetworkAccessManager()
         return;
     }
 
-    qDebug() << "Resetting QNAM";
+    qCDebug(lcAccount) << "Resetting QNAM";
     QNetworkCookieJar* jar = _am->cookieJar();
 
     // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
@@ -327,13 +328,13 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
 
     // If all certs have previously been rejected by the user, don't ask again.
     if( allPreviouslyRejected ) {
-        qDebug() << out << "Certs not trusted by user decision, returning.";
+        qCDebug(lcAccount) << out << "Certs not trusted by user decision, returning.";
         return;
     }
 
     QList<QSslCertificate> approvedCerts;
     if (_sslErrorHandler.isNull() ) {
-        qDebug() << out << Q_FUNC_INFO << "called without valid SSL error handler for account" << url();
+        qCDebug(lcAccount) << out << "called without valid SSL error handler for account" << url();
         return;
     }
 
@@ -351,7 +352,7 @@ void Account::slotHandleSslErrors(QNetworkReply *reply , QList<QSslError> errors
         addApprovedCerts(approvedCerts);
         emit wantsAccountSaved(this);
         // all ssl certs are known and accepted. We can ignore the problems right away.
-//         qDebug() << out << "Certs are known and trusted! This is not an actual error.";
+        qCDebug(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
 
         // Warning: Do *not* use ignoreSslErrors() (without args) here:
         // it permanently ignores all SSL errors for this host, even

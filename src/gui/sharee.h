@@ -18,6 +18,7 @@
 #include <QObject>
 #include <QFlags>
 #include <QAbstractListModel>
+#include <QLoggingCategory>
 #include <QModelIndex>
 #include <QVariant>
 #include <QSharedPointer>
@@ -29,6 +30,8 @@ class QJsonDocument;
 class QJsonObject;
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcSharing)
 
 class Sharee {
 public:

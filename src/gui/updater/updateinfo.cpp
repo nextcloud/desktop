@@ -2,6 +2,7 @@
 // All changes you do to this file will be lost.
 
 #include "updateinfo.h"
+#include "updater.h"
 
 #include <QtDebug>
 #include <QFile>
@@ -54,7 +55,7 @@ QString UpdateInfo::downloadUrl() const
 UpdateInfo UpdateInfo::parseElement( const QDomElement &element, bool *ok )
 {
   if ( element.tagName() != QLatin1String("owncloudclient") ) {
-    qCritical() << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
+    qCCritical(lcUpdater) << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
     if ( ok ) *ok = false;
     return UpdateInfo();
   }
@@ -105,7 +106,7 @@ UpdateInfo UpdateInfo::parseFile( const QString &filename, bool *ok )
 {
   QFile file( filename );
   if ( !file.open( QIODevice::ReadOnly ) ) {
-    qCritical() << "Unable to open file '" << filename << "'";
+    qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
     if ( ok ) *ok = false;
     return UpdateInfo();
   }
@@ -114,7 +115,7 @@ UpdateInfo UpdateInfo::parseFile( const QString &filename, bool *ok )
   int errorLine, errorCol;
   QDomDocument doc;
   if ( !doc.setContent( &file, false, &errorMsg, &errorLine, &errorCol ) ) {
-    qCritical() << errorMsg << " at " << errorLine << "," << errorCol;
+    qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
     if ( ok ) *ok = false;
     return UpdateInfo();
   }
@@ -133,7 +134,7 @@ UpdateInfo UpdateInfo::parseString( const QString &xml, bool *ok )
   int errorLine, errorCol;
   QDomDocument doc;
   if ( !doc.setContent( xml, false, &errorMsg, &errorLine, &errorCol ) ) {
-    qCritical() << errorMsg << " at " << errorLine << "," << errorCol;
+    qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
     if ( ok ) *ok = false;
     return UpdateInfo();
   }
@@ -150,7 +151,7 @@ bool UpdateInfo::writeFile( const QString &filename )
 {
   QFile file( filename );
   if ( !file.open( QIODevice::WriteOnly ) ) {
-    qCritical() << "Unable to open file '" << filename << "'";
+    qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
     return false;
   }
 

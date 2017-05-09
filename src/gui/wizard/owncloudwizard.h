@@ -17,6 +17,7 @@
 #define MIRALL_OWNCLOUD_WIZARD_H
 
 #include <QWizard>
+#include <QLoggingCategory>
 #include <QSslKey>
 #include <QSslCertificate>
 
@@ -24,6 +25,8 @@
 #include "accountfwd.h"
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcWizard)
 
 class OwncloudSetupPage;
 class OwncloudHttpCredsPage;

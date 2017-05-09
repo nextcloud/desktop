@@ -21,7 +21,6 @@
 #include <theme.h>
 
 #include <QTimer>
-#include <QDebug>
 
 namespace OCC {
 

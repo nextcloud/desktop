@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QString>
 
 #include "creds/credentialsfactory.h"
@@ -23,6 +24,8 @@
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcGuiCredentials, "gui.credentials", QtInfoMsg)
 
 namespace CredentialsFactory
 {
@@ -39,7 +42,7 @@ AbstractCredentials* create(const QString& type)
         return new ShibbolethCredentials;
 #endif
     } else {
-        qWarning("Unknown credentials type: %s", qPrintable(type));
+        qCWarning(lcGuiCredentials, "Unknown credentials type: %s", qPrintable(type));
         return new DummyCredentials;
     }
 }

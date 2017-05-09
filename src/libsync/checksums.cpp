@@ -18,6 +18,7 @@
 #include "propagatorjobs.h"
 #include "account.h"
 
+#include <QLoggingCategory>
 #include <qtconcurrentrun.h>
 
 /** \file checksums.cpp
@@ -75,6 +76,8 @@
  */
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
 
 QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& checksum)
 {
@@ -155,7 +158,7 @@ QByteArray ComputeChecksum::computeNow(const QString& filePath, const QByteArray
 #endif
     // for an unknown checksum or no checksum, we're done right now
     if( !checksumType.isEmpty() ) {
-        qDebug() << "Unknown checksum type:" << checksumType;
+        qCDebug(lcChecksums) << "Unknown checksum type:" << checksumType;
     }
     return QByteArray();
 }
@@ -185,7 +188,7 @@ void ValidateChecksumHeader::start(const QString& filePath, const QByteArray& ch
     }
 
     if( !parseChecksumHeader(checksumHeader, &_expectedChecksumType, &_expectedChecksum) ) {
-        qDebug() << "Checksum header malformed:" << checksumHeader;
+        qCDebug(lcChecksums) << "Checksum header malformed:" << checksumHeader;
         emit validationFailed(tr("The checksum header is malformed."));
         return;
     }
@@ -235,13 +238,13 @@ QByteArray CSyncChecksumHook::compute(const QString& path, int checksumTypeId)
 {
     QByteArray checksumType = _journal->getChecksumType(checksumTypeId);
     if (checksumType.isEmpty()) {
-        qDebug() << "Checksum type" << checksumTypeId << "not found";
+        qCDebug(lcChecksums) << "Checksum type" << checksumTypeId << "not found";
         return QByteArray();
     }
 
     QByteArray checksum = ComputeChecksum::computeNow(path, checksumType);
     if (checksum.isNull()) {
-        qDebug() << "Failed to compute checksum" << checksumType << "for" << path;
+        qCDebug(lcChecksums) << "Failed to compute checksum" << checksumType << "for" << path;
         return QByteArray();
     }
 

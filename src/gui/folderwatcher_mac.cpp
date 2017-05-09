@@ -19,7 +19,6 @@
 
 
 #include <cerrno>
-#include <QDebug>
 #include <QStringList>
 
 
@@ -60,7 +59,7 @@ static void callback(
             | kFSEventStreamEventFlagItemModified; // for content change
     //We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
 
-    qDebug() << "FolderWatcherPrivate::callback by OS X";
+    qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
 
     QStringList paths;
     CFArrayRef eventPaths = (CFArrayRef)eventPathsVoid;
@@ -74,7 +73,7 @@ static void callback(
         QString fn = qstring.normalized(QString::NormalizationForm_C);
 
         if (!(eventFlags[i] & c_interestingFlags)) {
-            qDebug() << "Ignoring non-content changes for" << fn;
+            qCDebug(lcFolderWatcher) << "Ignoring non-content changes for" << fn;
             continue;
         }
 
@@ -86,7 +85,7 @@ static void callback(
 
 void FolderWatcherPrivate::startWatching()
 {
-    qDebug() << "FolderWatcherPrivate::startWatching()" << _folder;
+    qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::startWatching()" << _folder;
     CFStringRef folderCF = CFStringCreateWithCharacters(0, reinterpret_cast<const UniChar *>(_folder.unicode()),
                                                         _folder.length());
     CFArrayRef pathsToWatch = CFStringCreateArrayBySeparatingStrings (NULL, folderCF, CFSTR(":"));

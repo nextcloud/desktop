@@ -14,8 +14,8 @@
 
 
 #include <QDateTime>
+#include <QLoggingCategory>
 #include <QString>
-#include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
@@ -32,6 +32,8 @@
      } }
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcSql, "sync.database.sql", QtInfoMsg)
 
 SqlDatabase::SqlDatabase()
     :_db(0),
@@ -56,13 +58,13 @@ bool SqlDatabase::openHelper( const QString& filename, int sqliteFlags )
     SQLITE_DO( sqlite3_open_v2(filename.toUtf8().constData(), &_db, sqliteFlags, 0) );
 
     if( _errId != SQLITE_OK ) {
-        qDebug() << "Error:" << _error << "for" << filename;
+        qCDebug(lcSql) << "Error:" << _error << "for" << filename;
         close();
         return false;
     }
 
     if( !_db ) {
-        qDebug() << "Error: no database for" << filename;
+        qCDebug(lcSql) << "Error: no database for" << filename;
         return false;
     }
 
@@ -77,14 +79,14 @@ bool SqlDatabase::checkDb()
     SqlQuery quick_check(*this);
     quick_check.prepare("PRAGMA quick_check;", /*allow_failure=*/true);
     if( !quick_check.exec() ) {
-        qDebug() << "Error running quick_check on database";
+        qCDebug(lcSql) << "Error running quick_check on database";
         return false;
     }
 
     quick_check.next();
     QString result = quick_check.stringValue(0);
     if( result != "ok" ) {
-        qDebug() << "quick_check returned failure:" << result;
+        qCDebug(lcSql) << "quick_check returned failure:" << result;
         return false;
     }
 
@@ -105,12 +107,12 @@ bool SqlDatabase::openOrCreateReadWrite( const QString& filename )
         // When disk space is low, checking the db may fail even though it's fine.
         qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
         if (freeSpace != -1 && freeSpace < 1000000) {
-            qDebug() << "Consistency check failed, disk space is low, aborting" << freeSpace;
+            qCDebug(lcSql) << "Consistency check failed, disk space is low, aborting" << freeSpace;
             close();
             return false;
         }
 
-        qDebug() << "Consistency check failed, removing broken db" << filename;
+        qCDebug(lcSql) << "Consistency check failed, removing broken db" << filename;
         close();
         QFile::remove(filename);
 
@@ -131,7 +133,7 @@ bool SqlDatabase::openReadOnly( const QString& filename )
     }
 
     if( !checkDb() ) {
-        qDebug() << "Consistency check failed in readonly mode, giving up" << filename;
+        qCDebug(lcSql) << "Consistency check failed in readonly mode, giving up" << filename;
         close();
         return false;
     }
@@ -223,7 +225,7 @@ int SqlQuery::prepare( const QString& sql, bool allow_failure )
 
         if( _errId != SQLITE_OK ) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
-            qWarning() << "Sqlite prepare statement error:" << _error << "in" <<_sql;
+            qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" <<_sql;
             ENFORCE(allow_failure, "SQLITE Prepare error");
         }
     }
@@ -264,7 +266,7 @@ bool SqlQuery::exec()
 
         if (_errId != SQLITE_DONE && _errId != SQLITE_ROW) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
-            qDebug() << "Sqlite exec statement error:" << _errId << _error << "in" <<_sql;
+            qCDebug(lcSql) << "Sqlite exec statement error:" << _errId << _error << "in" <<_sql;
         }
         return (_errId == SQLITE_DONE); // either SQLITE_ROW or SQLITE_DONE
     }
@@ -335,7 +337,7 @@ void SqlQuery::bindValue(int pos, const QVariant& value)
         break; }
     }
     if (res != SQLITE_OK) {
-        qDebug() << Q_FUNC_INFO << "ERROR" << value << res;
+        qCDebug(lcSql) << "ERROR" << value << res;
     }
     ASSERT( res == SQLITE_OK );
 }

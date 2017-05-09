@@ -20,7 +20,6 @@
 #include <QDir>
 #include <QUrl>
 #include <QDesktopServices>
-#include <QDebug>
 #include <QApplication>
 
 namespace OCC {
@@ -103,7 +102,6 @@ void showInFileManager(const QString &localPath)
             nativeArgs += QDir::toNativeSeparators(fi.canonicalFilePath());
             nativeArgs += QLatin1Char('"');
 
-            qDebug() << "OO Open explorer commandline:" << explorer << nativeArgs;
             QProcess p;
 #ifdef Q_OS_WIN
             // QProcess on Windows tries to wrap the whole argument/program string

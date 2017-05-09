@@ -25,6 +25,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "sync.propagator.remotemove", QtInfoMsg)
+
 MoveJob::MoveJob(AccountPtr account, const QString& path,
                  const QString &destination, QObject* parent)
     : AbstractNetworkJob(account, path, parent), _destination(destination)
@@ -50,7 +52,7 @@ void MoveJob::start()
     }
 
     if( reply()->error() != QNetworkReply::NoError ) {
-        qWarning() << Q_FUNC_INFO << " Network error: " << reply()->errorString();
+        qCWarning(lcPropagateRemoteMove) << " Network error: " << reply()->errorString();
     }
     AbstractNetworkJob::start();
 }
@@ -67,7 +69,7 @@ void PropagateRemoteMove::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qDebug() << Q_FUNC_INFO << _item->_file << _item->_renameTarget;
+    qCDebug(lcPropagateRemoteMove) << _item->_file << _item->_renameTarget;
 
     QString targetFile(propagator()->getFilePath(_item->_renameTarget));
 
@@ -118,7 +120,7 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
     ASSERT(_job);
 
-    qDebug() << Q_FUNC_INFO << _job->reply()->request().url() << "FINISHED WITH STATUS"
+    qCDebug(lcPropagateRemoteMove) << _job->reply()->request().url() << "FINISHED WITH STATUS"
         << _job->reply()->error()
         << (_job->reply()->error() == QNetworkReply::NoError ? QLatin1String("") : _job->errorString());
 
@@ -169,7 +171,7 @@ void PropagateRemoteMove::finalize()
         record._contentChecksum = oldRecord._contentChecksum;
         record._contentChecksumType = oldRecord._contentChecksumType;
         if (record._fileSize != oldRecord._fileSize) {
-            qDebug() << "Warning: file sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
+            qCDebug(lcPropagateRemoteMove) << "Warning: file sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
             record._fileSize = oldRecord._fileSize; // server might have claimed different size, we take the old one from the DB
         }
     }

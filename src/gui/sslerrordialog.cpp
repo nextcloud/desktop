@@ -27,6 +27,8 @@
 namespace OCC
 {
 
+Q_LOGGING_CATEGORY(lcSslErrorDialog, "gui.sslerrordialog", QtInfoMsg)
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 namespace Utility {
     //  Used for QSSLCertificate::subjectInfo which returns a QStringList in Qt5, but a QString in Qt4
@@ -38,7 +40,7 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
 {
 	(void) conf;
     if (!certs) {
-        qDebug() << "Certs parameter required but is NULL!";
+        qCDebug(lcSslErrorDialog) << "Certs parameter required but is NULL!";
         return false;
     }
 
@@ -151,8 +153,6 @@ bool SslErrorDialog::checkFailingCertsKnown( const QList<QSslError> &errors )
     }
     msg += QL("</div></body></html>");
 
-    //qDebug() << "#  # # # # # ";
-    //qDebug() << msg;
     QTextDocument *doc = new QTextDocument(0);
     QString style = styleSheet();
     doc->addResource( QTextDocument::StyleSheetResource, QUrl( QL("format.css") ), style);
@@ -214,7 +214,7 @@ bool SslErrorDialog::trustConnection()
     if( _allTrusted ) return true;
 
     bool stat = ( _ui->_cbTrustConnect->checkState() == Qt::Checked );
-    qDebug() << "SSL-Connection is trusted: " << stat;
+    qCDebug(lcSslErrorDialog) << "SSL-Connection is trusted: " << stat;
 
     return stat;
 }

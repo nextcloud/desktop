@@ -352,7 +352,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 {
     auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
     const QString versionString = _account->serverVersion();
-    qDebug() << Q_FUNC_INFO << versionString << "Fetched" << tmpShares.count() << "shares";
+    qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
 
     QList<QSharedPointer<Share>> shares;
 
@@ -372,7 +372,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
         shares.append(QSharedPointer<Share>(newShare));
     }
 
-    qDebug() << Q_FUNC_INFO << "Sending " << shares.count() << "shares";
+    qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
     emit sharesFetched(shares);
 }
 

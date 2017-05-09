@@ -67,12 +67,12 @@ void UpdaterScheduler::slotTimerFired()
     auto checkInterval = cfg.updateCheckInterval();
     if( checkInterval != _updateCheckTimer.interval() ) {
         _updateCheckTimer.setInterval(checkInterval);
-        qDebug() << "Setting new update check interval " << checkInterval;
+        qCDebug(lcUpdater) << "Setting new update check interval " << checkInterval;
     }
 
     // consider the skipUpdateCheck flag in the config.
     if( cfg.skipUpdateCheck() ) {
-        qDebug() << Q_FUNC_INFO << "Skipping update check because of config file";
+        qCDebug(lcUpdater) << "Skipping update check because of config file";
         return;
     }
 
@@ -123,14 +123,14 @@ void OCUpdater::backgroundCheckForUpdate()
     case UpToDate:
     case DownloadFailed:
     case DownloadTimedOut:
-        qDebug() << Q_FUNC_INFO << "checking for available update";
+        qCDebug(lcUpdater) << "checking for available update";
         checkForUpdate();
         break;
     case DownloadComplete:
-        qDebug() << "Update is downloaded, skip new check.";
+        qCDebug(lcUpdater) << "Update is downloaded, skip new check.";
         break;
     case UpdateOnlyAvailableThroughSystem:
-        qDebug() << "Update is only available through system, skip check.";
+        qCDebug(lcUpdater) << "Update is only available through system, skip check.";
         break;
     }
 }
@@ -188,7 +188,7 @@ void OCUpdater::slotStartInstaller()
     QString updateFile = settings.value(updateAvailableC).toString();
     settings.setValue(autoUpdateAttemptedC, true);
     settings.sync();
-    qDebug() << "Running updater" << updateFile;
+    qCDebug(lcUpdater) << "Running updater" << updateFile;
     QProcess::startDetached(updateFile, QStringList() << "/S" << "/launch");
 }
 
@@ -223,7 +223,7 @@ void OCUpdater::slotVersionInfoArrived()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
     if( reply->error() != QNetworkReply::NoError ) {
-        qDebug() << "Failed to reach version check url: " << reply->errorString();
+        qCDebug(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
         return;
     }
 
@@ -234,7 +234,7 @@ void OCUpdater::slotVersionInfoArrived()
     if( ok ) {
         versionInfoArrived(_updateInfo);
     } else {
-        qDebug() << "Could not parse update information.";
+        qCDebug(lcUpdater) << "Could not parse update information.";
     }
 }
 
@@ -272,7 +272,7 @@ void NSISUpdater::slotDownloadFinished()
     _file->close();
     QFile::copy(_file->fileName(), _targetFile);
     setDownloadState(DownloadComplete);
-    qDebug() << "Downloaded" << url.toString() << "to" << _targetFile;
+    qCDebug(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue(updateTargetVersionC, updateInfo().version());
@@ -290,7 +290,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
        || infoVersion <= currVersion
        || infoVersion <= seenVersion)
     {
-        qDebug() << "Client is on latest version!";
+        qCDebug(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         QString url = info.downloadUrl();
@@ -442,7 +442,6 @@ void PassiveUpdateNotifier::backgroundCheckForUpdate()
         // on linux, check if the installed binary is still the same version
         // as the one that is running. If not, restart if possible.
         const QByteArray fsVersion = Utility::versionOfInstalledBinary();
-        qDebug() << Q_FUNC_INFO;
         if( !(fsVersion.isEmpty() || _runningAppVersion.isEmpty()) && fsVersion != _runningAppVersion ) {
             emit requestRestart();
         }
@@ -458,7 +457,7 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
 
     if( info.version().isEmpty() ||
             currentVer >= remoteVer ) {
-        qDebug() << "Client is on latest version!";
+        qCDebug(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
         setDownloadState(UpdateOnlyAvailableThroughSystem);

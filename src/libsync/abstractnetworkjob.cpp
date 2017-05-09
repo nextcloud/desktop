@@ -13,6 +13,7 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -24,7 +25,6 @@
 #include <QStack>
 #include <QTimer>
 #include <QMutex>
-#include <QDebug>
 #include <QCoreApplication>
 
 #include "networkjobs.h"
@@ -37,6 +37,7 @@ Q_DECLARE_METATYPE(QTimer*)
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcNetworkJob, "sync.networkjob", QtInfoMsg)
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -74,8 +75,6 @@ void AbstractNetworkJob::setReply(QNetworkReply *reply)
 
 void AbstractNetworkJob::setTimeout(qint64 msec)
 {
-    //qDebug() << Q_FUNC_INFO << msec;
-
     _timer.start(msec);
 }
 
@@ -149,14 +148,14 @@ void AbstractNetworkJob::slotFinished()
     _timer.stop();
 
     if( _reply->error() == QNetworkReply::SslHandshakeFailedError ) {
-        qDebug() << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
+        qCDebug(lcNetworkJob) << "SslHandshakeFailedError: " << errorString() << " : can be caused by a webserver wanting SSL client certificates";
     }
 
     if( _reply->error() != QNetworkReply::NoError ) {
-        qDebug() << Q_FUNC_INFO << _reply->error() << errorString()
+        qCDebug(lcNetworkJob) << _reply->error() << errorString()
                  << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
-            qDebug() << Q_FUNC_INFO << _reply->rawHeader("Proxy-Authenticate");
+            qCDebug(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
         }
         emit networkError(_reply);
     }
@@ -174,16 +173,16 @@ void AbstractNetworkJob::slotFinished()
         QByteArray verb = requestVerb(*reply());
         if (requestedUrl.scheme() == QLatin1String("https") &&
                 redirectUrl.scheme() == QLatin1String("http")) {
-            qWarning() << this << "HTTPS->HTTP downgrade detected!";
+            qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
         } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
-            qWarning() << this << "Redirect loop detected!";
+            qCWarning(lcNetworkJob) << this << "Redirect loop detected!";
         } else if (_requestBody && _requestBody->isSequential()) {
-            qWarning() << this << "cannot redirect request with sequential body";
+            qCWarning(lcNetworkJob) << this << "cannot redirect request with sequential body";
         } else if (verb.isEmpty()) {
-            qWarning() << this << "cannot redirect request: could not detect original verb";
+            qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
             // Create the redirected request and send it
-            qDebug() << "Redirecting" << verb << requestedUrl << redirectUrl;
+            qCDebug(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
             resetTimeout();
             if (_requestBody) {
                 _requestBody->seek(0);
@@ -260,13 +259,13 @@ void AbstractNetworkJob::start()
     const QString displayUrl = QString( "%1://%2%3").arg(url.scheme()).arg(url.host()).arg(url.path());
 
     QString parentMetaObjectName = parent() ? parent()->metaObject()->className() : "";
-    qDebug() << "!!!" << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
+    qCDebug(lcNetworkJob) << metaObject()->className() << "created for" << displayUrl << "+" << path() << parentMetaObjectName;
 }
 
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
-    qDebug() << this << "Timeout" << (reply() ? reply()->request().url() : path());
+    qCDebug(lcNetworkJob) << this << "Timeout" << (reply() ? reply()->request().url() : path());
     onTimedOut();
 }
 

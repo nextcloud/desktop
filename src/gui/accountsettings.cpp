@@ -35,7 +35,6 @@
 
 #include <math.h>
 
-#include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QListWidgetItem>
@@ -57,6 +56,8 @@
 #endif
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcAccountSettings, "gui.account.settings", QtInfoMsg)
 
 static const char progressBarStyleC[] =
         "QProgressBar {"
@@ -188,7 +189,7 @@ void AccountSettings::slotOpenAccountWizard()
         topLevelWidget()->close();
     }
 #ifdef Q_OS_MAC
-    qDebug() << parent() << topLevelWidget();
+    qCDebug(lcAccountSettings) << parent() << topLevelWidget();
     SettingsDialogMac *sd = qobject_cast<SettingsDialogMac*>(topLevelWidget());
 
     if (sd) {
@@ -328,7 +329,7 @@ void AccountSettings::slotFolderWizardAccepted()
     FolderWizard *folderWizard = qobject_cast<FolderWizard*>(sender());
     FolderMan *folderMan = FolderMan::instance();
 
-    qDebug() << "* Folder wizard completed";
+    qCDebug(lcAccountSettings) << "* Folder wizard completed";
 
     FolderDefinition definition;
     definition.localPath    = FolderDefinition::prepareLocalPath(
@@ -339,7 +340,7 @@ void AccountSettings::slotFolderWizardAccepted()
     {
         QDir dir(definition.localPath);
         if (!dir.exists()) {
-            qDebug() << "Creating folder" << definition.localPath;
+            qCDebug(lcAccountSettings) << "Creating folder" << definition.localPath;
             if (!dir.mkpath(".")) {
                 QMessageBox::warning(this, tr("Folder creation failed"),
                                      tr("<p>Could not create local folder <i>%1</i>.")
@@ -374,7 +375,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
 void AccountSettings::slotFolderWizardRejected()
 {
-    qDebug() << "* Folder wizard cancelled";
+    qCDebug(lcAccountSettings) << "* Folder wizard cancelled";
     FolderMan *folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(true);
 }
@@ -387,7 +388,7 @@ void AccountSettings::slotRemoveCurrentFolder()
     if( selected.isValid() && folder ) {
         int row = selected.row();
 
-        qDebug() << "Remove Folder alias " << folder->alias();
+        qCDebug(lcAccountSettings) << "Remove Folder alias " << folder->alias();
         QString shortGuiLocalPath = folder->shortGuiLocalPath();
 
         QMessageBox messageBox(QMessageBox::Question,
@@ -444,7 +445,7 @@ void AccountSettings::showConnectionLabel( const QString& message, QStringList e
     } else {
         errors.prepend(message);
         const QString msg = errors.join(QLatin1String("\n"));
-        qDebug() << msg;
+        qCDebug(lcAccountSettings) << msg;
         ui->connectLabel->setText( msg );
         ui->connectLabel->setToolTip(QString());
         ui->connectLabel->setStyleSheet(errStyle);
@@ -459,7 +460,7 @@ void AccountSettings::slotEnableCurrentFolder()
     if( !alias.isEmpty() ) {
         FolderMan *folderMan = FolderMan::instance();
 
-        qDebug() << "Application: enable folder with alias " << alias;
+        qCDebug(lcAccountSettings) << "Application: enable folder with alias " << alias;
         bool terminate = false;
         bool currentlyPaused = false;
 
@@ -666,7 +667,7 @@ void AccountSettings::slotLinkActivated(const QString& link)
             ui->_folderList->setCurrentIndex(indx);
             ui->_folderList->scrollTo(indx);
         } else {
-            qDebug() << "Unable to find a valid index for " << myFolder;
+            qCDebug(lcAccountSettings) << "Unable to find a valid index for " << myFolder;
         }
     }
 }

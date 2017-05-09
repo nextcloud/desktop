@@ -50,8 +50,6 @@
 
 namespace OCC {
 
-/* ==================================================================== */
-
 ActivityWidget::ActivityWidget(QWidget *parent) :
     QWidget(parent),
     _ui(new Ui::ActivityWidget),
@@ -122,7 +120,7 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
 
         snh->slotFetchNotifications(ptr);
     } else {
-        qDebug() << Q_FUNC_INFO << "========> notification request counter not zero.";
+        qCDebug(lcActivity) << "========> notification request counter not zero.";
     }
 }
 
@@ -230,7 +228,7 @@ void ActivityWidget::checkActivityTabVisibility()
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
-    qDebug() << Q_FUNC_INFO << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
+    qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if( indx.isValid() ) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
@@ -254,7 +252,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
     foreach( auto activity, list ) {
         if( _blacklistedNotifications.contains(activity)) {
-            qDebug() << Q_FUNC_INFO << "Activity in blacklist, skip";
+            qCDebug(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
 
@@ -378,7 +376,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
 void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QByteArray& verb)
 {
-    qDebug() << Q_FUNC_INFO << "Server Notification Request " << verb << link << "on account" << accountName;
+    qCDebug(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());
 
     const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
@@ -401,7 +399,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
             _notificationRequestsRunning++;
         }
     } else {
-        qDebug() << Q_FUNC_INFO << "Notification Links: Invalid verb:" << verb;
+        qCDebug(lcActivity) << "Notification Links: Invalid verb:" << verb;
     }
 }
 
@@ -423,7 +421,7 @@ void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
     int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     endNotificationRequest(job->widget(), resultCode);
-    qDebug() << Q_FUNC_INFO << "Server notify job failed with code " << resultCode;
+    qCDebug(lcActivity) << "Server notify job failed with code " << resultCode;
 
 }
 
@@ -436,7 +434,7 @@ void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCo
 
     endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
-    qDebug() << Q_FUNC_INFO << "Server Notification reply code"<< replyCode << reply;
+    qCDebug(lcActivity) << "Server Notification reply code"<< replyCode << reply;
 
     // if the notification was successful start a timer that triggers
     // removal of the done widgets in a few seconds
@@ -563,7 +561,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
 
 void ActivitySettings::setNotificationRefreshInterval( quint64 interval )
 {
-    qDebug() << "Starting Notification refresh timer with " << interval/1000 << " sec interval";
+    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval/1000 << " sec interval";
     _notificationCheckTimer.start(interval);
 }
 
@@ -637,7 +635,7 @@ void ActivitySettings::slotRefresh( AccountState* ptr )
 
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
     if( timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
-        qDebug() << Q_FUNC_INFO << "do not check as last check is only secs ago: " << timer.elapsed() / 1000;
+        qCDebug(lcActivity) << "do not check as last check is only secs ago: " << timer.elapsed() / 1000;
         return;
     }
     if( ptr && ptr->isConnected() ) {

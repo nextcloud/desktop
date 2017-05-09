@@ -14,8 +14,6 @@
 
 #include "syncfilestatus.h"
 
-#include <QDebug>
-
 namespace OCC {
 SyncFileStatus::SyncFileStatus()
     :_tag(StatusNone), _sharedWithMe(false)

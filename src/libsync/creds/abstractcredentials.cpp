@@ -12,14 +12,16 @@
  * for more details.
  */
 
+#include <QLoggingCategory>
 #include <QString>
-#include <QDebug>
 
 #include "asserts.h"
 #include "creds/abstractcredentials.h"
 
 namespace OCC
 {
+
+Q_LOGGING_CATEGORY(lcCredentials, "sync.credentials", QtInfoMsg)
 
 AbstractCredentials::AbstractCredentials()
     : _account(0)
@@ -36,11 +38,11 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
 {
     QString u(url);
     if( u.isEmpty() ) {
-        qDebug() << "Empty url in keyChain, error!";
+        qCDebug(lcCredentials) << "Empty url in keyChain, error!";
         return QString::null;
     }
     if( user.isEmpty() ) {
-        qDebug() << "Error: User is empty!";
+        qCDebug(lcCredentials) << "Error: User is empty!";
         return QString::null;
     }
 

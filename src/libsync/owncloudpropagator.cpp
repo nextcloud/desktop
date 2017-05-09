@@ -35,13 +35,17 @@
 #include <QStack>
 #include <QFileInfo>
 #include <QDir>
+#include <QLoggingCategory>
 #include <QTimer>
 #include <QObject>
 #include <QTimerEvent>
-#include <QDebug>
 #include <qmath.h>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcPropagator, "sync.propagator", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDirectory, "sync.propagator.directory", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCleanupPolls, "sync.propagator.cleanuppolls", QtInfoMsg)
 
 qint64 criticalFreeSpaceLimit()
 {
@@ -142,11 +146,11 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._ignoreDuration = old._ignoreDuration * 5;
 
     if( item._httpErrorCode == 403 ) {
-        qDebug() << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
+        qCDebug(lcPropagator) << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
         entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60*60));
 
     } else if( item._httpErrorCode == 413 || item._httpErrorCode == 415 ) {
-        qDebug() << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
+        qCDebug(lcPropagator) << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";
         entry._ignoreDuration = maxBlacklistTime;
     }
 
@@ -193,7 +197,7 @@ static void blacklistUpdate(SyncJournalDb* journal, SyncFileItem& item)
         item._status = SyncFileItem::FileIgnored;
         item._errorString.prepend(PropagateItemJob::tr("Continue blacklisting:") + " ");
 
-        qDebug() << "blacklisting " << item._file
+        qCDebug(lcPropagator) << "blacklisting " << item._file
                  << " for " << newEntry._ignoreDuration
                  << ", retry count " << newEntry._retryCount;
 
@@ -203,7 +207,7 @@ static void blacklistUpdate(SyncJournalDb* journal, SyncFileItem& item)
     // Some soft errors might become louder on repeat occurrence
     if (item._status == SyncFileItem::SoftError
             && newEntry._retryCount > 1) {
-        qDebug() << "escalating soft error on " << item._file
+        qCDebug(lcPropagator) << "escalating soft error on " << item._file
                  << " to normal error, " << item._httpErrorCode;
         item._status = SyncFileItem::NormalError;
         return;
@@ -440,7 +444,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
             } else if (item->_instruction == CSYNC_INSTRUCTION_RENAME) {
                 // all is good, the rename will be executed before the directory deletion
             } else {
-                qWarning() << "WARNING:  Job within a removed directory?  This should not happen!"
+                qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                            << item->_file << item->_instruction;
             }
         }
@@ -503,7 +507,7 @@ void OwncloudPropagator::start(const SyncFileItemVector& items)
 
     connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
 
-    qDebug() << "Using QNAM/HTTP parallel code path";
+    qCDebug(lcPropagator) << "Using QNAM/HTTP parallel code path";
 
     scheduleNextJob();
 }
@@ -560,32 +564,29 @@ bool OwncloudPropagator::localFileNameClash( const QString& relFile )
         QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
             re = false;
-            qDebug() << Q_FUNC_INFO << "No valid fileinfo";
+            qCDebug(lcPropagator) << "No valid fileinfo";
         } else {
             // Need to normalize to composited form because of
             // https://bugreports.qt-project.org/browse/QTBUG-39622
             const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
-            // qDebug() << Q_FUNC_INFO << "comparing " << cName << " with " << file;
             bool equal = (file == cName);
             re = (!equal && ! cName.endsWith(relFile, Qt::CaseSensitive) );
-            // qDebug() << Q_FUNC_INFO << "Returning for localFileNameClash: " << re;
         }
 #elif defined(Q_OS_WIN)
         const QString file( _localDir + relFile );
-        qDebug() << "CaseClashCheck for " << file;
+        qCDebug(lcPropagator) << "CaseClashCheck for " << file;
         WIN32_FIND_DATA FindFileData;
         HANDLE hFind;
 
         hFind = FindFirstFileW( (wchar_t*)file.utf16(), &FindFileData);
         if (hFind == INVALID_HANDLE_VALUE) {
-            //qDebug() << "FindFirstFile failed " << GetLastError();
             // returns false.
         } else {
             QString realFileName = QString::fromWCharArray( FindFileData.cFileName );
             FindClose(hFind);
 
             if( ! file.endsWith(realFileName, Qt::CaseSensitive) ) {
-                qDebug() << Q_FUNC_INFO << "Detected case clash between" << file << "and" << realFileName;
+                qCDebug(lcPropagator) << "Detected case clash between" << file << "and" << realFileName;
                 re = true;
             }
         }
@@ -621,7 +622,7 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
             if (firstFile != secondFile
                     && QString::compare(firstFile, secondFile, Qt::CaseInsensitive) == 0) {
                 result = true;
-                qDebug() << "Found two filepaths that only differ in case: " << firstFile << secondFile;
+                qCDebug(lcPropagator) << "Found two filepaths that only differ in case: " << firstFile << secondFile;
             }
         }
         FindClose(hFind);
@@ -666,7 +667,7 @@ void OwncloudPropagator::scheduleNextJobImpl()
             }
         }
         if (_activeJobList.count() < maximumActiveTransferJob() + likelyFinishedQuicklyCount) {
-            qDebug() <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
+            qCDebug(lcPropagator) <<  "Can pump in another request! activeJobs =" << _activeJobList.count();
             if (_rootJob->scheduleSelfOrChild()) {
                 scheduleNextJob();
             }
@@ -769,7 +770,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
         _tasksToDo.remove(0);
         PropagatorJob *job = propagator()->createJob(nextTask);
         if (!job) {
-            qWarning() << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
+            qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
             continue;
         }
 
@@ -927,7 +928,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             if (!ok) {
                 status = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
-                qWarning() << "Error writing to the database for file" << _item->_file;
+                qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
             }
         }
     }
@@ -968,10 +969,10 @@ void CleanupPollsJob::slotPollFinished()
         deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
-        qDebug() << "There was an error with file " << job->_item->_file << job->_item->_errorString;
+        qCDebug(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
         if (!_journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file))) {
-            qWarning() << "database error";
+            qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
             emit aborted(job->_item->_errorString);

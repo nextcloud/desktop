@@ -36,6 +36,8 @@
 namespace OCC
 {
 
+Q_LOGGING_CATEGORY(lcWizard, "gui.wizard", QtInfoMsg)
+
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent),
       _account(0),
@@ -151,7 +153,7 @@ void OwncloudWizard::successfulStep()
 
     case WizardCommon::Page_ServerSetup:
     case WizardCommon::Page_Result:
-        qWarning("Should not happen at this stage.");
+        qCWarning(lcWizard, "Should not happen at this stage.");
         break;
     }
 
@@ -175,7 +177,7 @@ void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
 // TODO: update this function
 void OwncloudWizard::slotCurrentPageChanged( int id )
 {
-    qDebug() << "Current Wizard page changed to " << id;
+    qCDebug(lcWizard) << "Current Wizard page changed to " << id;
 
     if( id == WizardCommon::Page_ServerSetup ) {
         emit clearPendingRequests();
@@ -212,7 +214,7 @@ void OwncloudWizard::displayError( const QString& msg, bool retryHTTPonly )
 void OwncloudWizard::appendToConfigurationLog( const QString& msg, LogType /*type*/ )
 {
     _setupLog << msg;
-    qDebug() << "Setup-Log: " << msg;
+    qCDebug(lcWizard) << "Setup-Log: " << msg;
 }
 
 void OwncloudWizard::setOCUrl( const QString& url )

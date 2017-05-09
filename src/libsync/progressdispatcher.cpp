@@ -16,7 +16,6 @@
 
 #include <QObject>
 #include <QMetaType>
-#include <QDebug>
 #include <QCoreApplication>
 
 namespace OCC {

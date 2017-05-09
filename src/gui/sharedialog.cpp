@@ -13,6 +13,7 @@
  */
 
 #include "sharedialog.h"
+#include "sharee.h"
 #include "sharelinkwidget.h"
 #include "shareusergroupwidget.h"
 #include "ui_sharedialog.h"
@@ -25,7 +26,6 @@
 
 #include <QFileInfo>
 #include <QFileIconProvider>
-#include <QDebug>
 #include <QPointer>
 #include <QPushButton>
 #include <QFrame>
@@ -144,7 +144,7 @@ void ShareDialog::slotMaxSharingPermissionsReceived(const QVariantMap & result)
     const QVariant receivedPermissions = result["share-permissions"];
     if (!receivedPermissions.toString().isEmpty()) {
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
-        qDebug() << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
+        qCDebug(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
 
     showSharingUi();
@@ -208,7 +208,7 @@ void ShareDialog::showSharingUi()
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
 {
     if (statusCode != 200) {
-        qDebug() << Q_FUNC_INFO << "Status code: " << statusCode;
+        qCDebug(lcSharing) << "Thumbnail status code: " << statusCode;
         return;
     }
 
@@ -220,7 +220,7 @@ void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &
 
 void ShareDialog::slotAccountStateChanged(int state) {
     bool enabled = (state == AccountState::State::Connected);
-    qDebug() << Q_FUNC_INFO << enabled;
+    qCDebug(lcSharing) << "Account connected?" << enabled;
 
     if (_userGroupWidget != NULL) {
         _userGroupWidget->setEnabled(enabled);

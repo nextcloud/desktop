@@ -35,6 +35,8 @@ Q_DECLARE_METATYPE(QPointer<OCC::AccountState>)
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
+
 ActivityListModel::ActivityListModel(QWidget *parent)
     :QAbstractListModel(parent)
 {
@@ -138,7 +140,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);
-    qDebug() << Q_FUNC_INFO << "Start fetching activities for " << s->account()->displayName();
+    qCDebug(lcActivity) << "Start fetching activities for " << s->account()->displayName();
     job->start();
 }
 

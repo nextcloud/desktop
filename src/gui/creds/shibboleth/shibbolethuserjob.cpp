@@ -17,8 +17,11 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QLoggingCategory>
 
 namespace OCC {
+
+Q_DECLARE_LOGGING_CATEGORY(lcShibboleth)
 
 ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
     : JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
@@ -30,10 +33,9 @@ ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
 void ShibbolethUserJob::slotJsonReceived(const QJsonDocument &json, int statusCode)
 {
     if( statusCode != 100 ) {
-        qWarning() << "JSON Api call resulted in status code != 100";
+        qCWarning(lcShibboleth) << "JSON Api call resulted in status code != 100";
     }
     QString user =  json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
-    //qDebug() << "cloud/user: " << json << "->" << user;
     emit userFetched(user);
 }
 

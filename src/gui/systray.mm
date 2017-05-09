@@ -1,5 +1,4 @@
 #include <QString>
-#include <QDebug>
 #import <Cocoa/Cocoa.h>
 
 @interface NotificationCenterDelegate : NSObject
@@ -24,7 +23,6 @@ bool canOsXSendUserNotification()
 
 void sendOsXUserNotification(const QString &title, const QString &message)
 {
-    qDebug() << Q_FUNC_INFO << title << message;
     Class cuserNotificationCenter = NSClassFromString(@"NSUserNotificationCenter");
     id userNotificationCenter = [cuserNotificationCenter defaultUserNotificationCenter];
 

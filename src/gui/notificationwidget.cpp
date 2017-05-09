@@ -23,6 +23,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcNotifications, "gui.notifications", QtInfoMsg)
+
 NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
 {
     _ui.setupUi(this);
@@ -109,7 +111,7 @@ void NotificationWidget::slotButtonClicked()
             _actionLabel = triggeredLink._label;
 
             if( ! triggeredLink._link.isEmpty() ) {
-                qDebug() << Q_FUNC_INFO << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
+                qCDebug(lcNotifications) << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
                 _progressIndi->startAnimation();
                 emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
             }
@@ -127,7 +129,7 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
     // the ocs API returns stat code 100 if it succeeded.
     if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
-        qDebug() << Q_FUNC_INFO << "Notification Request to Server failed, leave button visible.";
+        qCDebug(lcNotifications) << "Notification Request to Server failed, leave button visible.";
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);
         }
