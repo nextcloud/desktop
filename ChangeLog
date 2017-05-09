@@ -1,6 +1,13 @@
 ChangeLog
 =========
 
+version 2.3.2 (2017-05-08)
+* Fix more crashes (thanks to everyone submitting to our crash reporter!)
+* Improve compatibility with server 10.0 (#5691, X-OC-Total-Size)
+* Share dialog: UI improvements, Bring to front on tray click
+* owncloudcmd: Align process return value with sync return value (#3936)
+* Fix disk free check on Windows when opening the local DB
+
 version 2.3.1 (2017-03-21)
 * Fix several crashes (thanks to everyone submitting to our crash reporter!)
 * Improve HTTP redirect handling (#5555)

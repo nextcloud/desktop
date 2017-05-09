@@ -2367,7 +2367,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Odznacz foldery zdalne, których nie chcesz synchronizować.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -2388,7 +2388,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="270"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpił błąd podczas wczytywania listy podfolderów</translation>
     </message>
 </context>
 <context>
@@ -3052,7 +3052,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="202"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpił błąd wewnętrzny %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="266"/>
@@ -3077,17 +3077,17 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nazwy plików zawierające znaki &apos;%1&apos; nie są wspierane </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa pliku jest zarezerwowana dla plików systemowych</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Nazwa pliku zawiera spacje</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
@@ -3117,7 +3117,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="798"/>
         <source>Unable to read the blacklist from the local database</source>
-        <translation type="unfinished"/>
+        <translation>Nie można odczytać czarnej listy z lokalnej bazy danych</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="835"/>
@@ -3208,7 +3208,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="319"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
@@ -3338,7 +3338,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer dla konta %1 uruchomiony jest na starej i niewspieranej wersji %2. Używanie klienta z niewspieranym serwerem nie zostało przetestowane i jest potencjalnie niebezpieczne. Kontynuujesz na własne ryzyko. </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>

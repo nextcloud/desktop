@@ -9,9 +9,17 @@
 #  QTKEYCHAIN_LIBRARIES - The libraries needed to use QtKeychain
 #  QTKEYCHAIN_DEFINITIONS - Compiler switches required for using LibXml2
 
+# When we build our own Qt we also need to build QtKeychain with it
+# so that it doesn't pull a different Qt version. For that reason
+# first look in the Qt lib directory for QtKeychain.
+get_target_property(_QTCORE_LIB_PATH Qt5::Core IMPORTED_LOCATION_RELEASE)
+get_filename_component(QT_LIB_DIR "${_QTCORE_LIB_PATH}" DIRECTORY)
+
 find_path(QTKEYCHAIN_INCLUDE_DIR
             NAMES
               keychain.h
+            HINTS
+               ${QT_LIB_DIR}/../include
             PATH_SUFFIXES
               qt5keychain
             )
@@ -20,6 +28,8 @@ find_library(QTKEYCHAIN_LIBRARY
             NAMES
               qt5keychain
               lib5qtkeychain
+            HINTS
+               ${QT_LIB_DIR}
             PATHS
                /usr/lib
                /usr/lib/${CMAKE_ARCH_TRIPLET}

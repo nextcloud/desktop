@@ -12,37 +12,18 @@
 
 using namespace OCC;
 
-namespace {
-
-const char testdbC[] = "/tmp/testdb.sqlite";
-}
-
 class TestOwnSql : public QObject
 {
     Q_OBJECT
+    QTemporaryDir _tempDir;
 
 private slots:
-    void initTestCase() {
-        QFileInfo fi( testdbC );
-
-        if( fi.exists() ) {
-            QFile::remove(testdbC);
-        }
-        fi.refresh();
-        QVERIFY(!fi.exists());
-    }
-
-    void cleanupTestCase() {
-        // QFile::remove(testdbC);
-    }
-
     void testOpenDb() {
-        QFileInfo fi( testdbC );
+        QFileInfo fi( _tempDir.path() + "/testdb.sqlite" );
         QVERIFY( !fi.exists() ); // must not exist
-        _db.openOrCreateReadWrite(testdbC);
+        _db.openOrCreateReadWrite(fi.filePath());
         fi.refresh();
         QVERIFY(fi.exists());
-
     }
 
     void testCreate() {

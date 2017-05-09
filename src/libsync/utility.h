@@ -43,6 +43,12 @@ namespace Utility
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
+
+    /**
+     * Return the amount of free space available.
+     *
+     * \a path must point to a directory
+     */
     OWNCLOUDSYNC_EXPORT qint64 freeDiskSpace(const QString &path);
 
     /**

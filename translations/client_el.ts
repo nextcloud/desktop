@@ -480,7 +480,7 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="364"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Λάβατε %n νέες ειδοποιήση(εις) από %1 και %2.</numerusform><numerusform>Λάβατε %n νέες ειδοποιήση(εις) από %1 και %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="366"/>
@@ -678,42 +678,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="367"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 και%n άλλo αρχείo(α) έχουν καταργηθεί.</numerusform><numerusform>%1 και%n άλλo αρχείo(α) έχουν καταργηθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="374"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 και%n άλλο αρχείο(ο) έχουν ληφθεί.</numerusform><numerusform>%1 και%n άλλο αρχείο(ο) έχουν ληφθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="381"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform><numerusform>%1 και%n άλλο αρχείο(α) έχουν ενημερωθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="388"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform><numerusform>%1 μετονομάστηκε σε %2 και %n άλλο αρχείο(α) έχουν μετονομαστεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="395"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform><numerusform>%1 έχει μετακινηθεί σε %2 και %n άλλo αρχείο(α) έχουν μετακινηθεί.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="402"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform><numerusform>%1 έχει και %n άλλο αρχείο(α) έχουν διένεξη συγχρονισμού.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="404"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 έχει μια διένεξη συγχρονισμού. Παρακαλώ ελέγξτε τη διένεξη του αρχείου! </translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="409"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 και %n άλλο(α) αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ιστορικό για λεπτομέρειες</numerusform><numerusform>%1 και %n άλλο αρχείο(α) δεν μπορούν να συγχρονιστούν λόγω σφαλμάτων. Δείτε το ημερολόγιο για λεπτομέρειες. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="411"/>
@@ -734,18 +734,20 @@
         <location filename="../src/gui/folder.cpp" line="855"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="857"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="858"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="894"/>
@@ -753,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Όλα τα αρχεία στο φάκελο συγχρονισμού &apos;%1&apos; έχουν διαγραφεί στον διακομιστή.
+Αυτές οι διαγραφές θα συγχρονιστούν στον τοπικό σας φάκελο συγχρονισμού, κάνοντας τέτοιου είδους αρχεία μη διαθέσιμα, εκτός εάν έχετε δικαίωμα επαναφοράς. 
+Εάν αποφασίσετε να διατηρήσετε αυτά τα αρχεία, θα συγχρονιστούν εκ νέου με το διακομιστή, εφόσον έχετε δικαιώματα να το κάνετε.
+Εφόσον επιλέξετε να διαγράψετε τα αρχεία, δε θα είναι διαθέσιμα σε εσάς, εκτός εάν είστε ο ιδιοκτήτης τους.  </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Όλα τα αρχεία στον τοπικό φάκελο συγχρονισμού σας &apos;% 1&apos; διαγράφηκαν. Αυτές οι διαγραφές θα συγχρονιστούν με το διακομιστή σας, καθιστώντας αυτά τα αρχεία μη διαθέσιμα εκτός εάν τα έχετε επαναφέρει.
+Είστε βέβαιοι ότι θέλετε να συγχρονίσετε αυτές τις ενέργειες με το διακομιστή; 
+Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -782,7 +789,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Αυτός ο συγχρονισμός θα επαναφέρει τα αρχεία σε προηγούμενη χρονική στιγμή στο φάκελο συγχρονισμού &apos;% 1&apos;
+Αυτό μπορεί να οφείλεται στο γεγονός ότι δημιουργήθηκε ένα αντίγραφο ασφαλείας στον διακομιστή
+Η συνέχιση του συγχρονισμού κανονικά θα προκαλέσει την αντικατάσταση όλων των αρχείων σας από παλιότερο αρχείο σε προηγούμενη κατάσταση. Θέλετε να διατηρήσετε τα τοπικά σας πιο πρόσφατα αρχεία ως αρχεία σύγκρουσης;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="929"/>
@@ -792,7 +801,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Κανονικός συγχρονισμός</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="933"/>
@@ -890,12 +899,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1349"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Ο τοπικός φάκελος% 1 περιέχει έναν συμβολικό σύνδεσμο. Ο στόχος συνδέσμου περιέχει έναν ήδη συγχρονισμένο φάκελο.Παρακαλώ επιλέξτε ένα άλλο!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1364"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Υπάρχει ήδη συγχρονισμός από το διακομιστή σε αυτόν τον τοπικό φάκελο. Επιλέξτε έναν άλλο τοπικό φάκελο!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1322"/>
@@ -1037,7 +1046,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="972"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Απομένει %5, %1 από %2, αρχείο  %3 από  %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
@@ -1211,7 +1220,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Ζητήστε επιβεβαίωση πριν τον συγχρονισμό φακέλων μεγαλύτερων από</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1222,32 +1231,32 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Ζητήστε επιβεβαίωση πριν τον συγχρονισμό εξωτερικών αποθηκευτικών χώρων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Προώθηση κατά την Εκκίνηση Συστήματος</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση &amp;Ειδοποιήσεις επιφάνειας εργασίας</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation type="unfinished"/>
+        <translation>Χρήση &amp;Μονόχρωμων εικονιδίων</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="61"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Εισαγωγή &amp; Αγνοούμενα Αρχεία</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="140"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>S&amp;πως κατάρρευση αναφοράς</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
@@ -1271,7 +1280,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="35"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Παρακαλώ εισάγετε %1 κωδικού πρόσβασης:&lt;br&gt;&lt;br&gt;Χρήστης: %2&lt;br&gt;Λογαριασμός: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="48"/>
@@ -1286,7 +1295,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="86"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;πατήστε εδώ&lt;/a&gt;για να ζητήσετε έναν κωδικό πρόσβασης εφαρμογής από τη διεπαφή ιστού.</translation>
     </message>
 </context>
 <context>
@@ -1586,7 +1595,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="52"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Ολοκληρώθηκε στο %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="101"/>
@@ -1597,13 +1606,13 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/notificationwidget.cpp" line="135"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>Το αίτημα% 1 απέτυχε στο% 2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="141"/>
         <source>&apos;%1&apos; selected at %2</source>
         <extracomment>The second parameter is a time, such as 'selected at 09:58pm'</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;% 1&apos; επιλέχθηκε στο% 2</translation>
     </message>
 </context>
 <context>
@@ -2021,7 +2030,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Το ληφθέν αρχείο είναι άδειο, παρόλο που ο διακομιστής ανακοίνωσε ότι θα έπρεπε να ήταν% 1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
@@ -2172,7 +2181,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="204"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο % 1 δεν μπορεί να ανέβει επειδή υπάρχει ένα άλλο αρχείο με το ίδιο όνομα, που διαφέρει μόνο στη περίπτωση,</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="312"/>
@@ -2215,17 +2224,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="465"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής επέστρεψε απροσδόκητο κωδικό (%1) </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="472"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Απουσία ID αρχείου από τον διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>Απουσία ETag από τον διακομιστή</translation>
     </message>
 </context>
 <context>
@@ -2365,7 +2374,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Απορρίψτε τους απομακρυσμένους φακέλους που δεν θέλετε να συγχρονιστούν.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -2490,7 +2499,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="117"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation type="unfinished"/>
+        <translation>Ανάκτηση των μέγιστων δυνατών δικαιωμάτων κοινής χρήσης από το διακομιστή ...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="173"/>
@@ -2533,7 +2542,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="213"/>
         <source>&amp;Mail link</source>
-        <translation type="unfinished"/>
+        <translation>&amp; Σύνδεσμος αλληλογραφίας</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2579,7 +2588,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε σφάλμα κατά την εκκίνηση του προγράμματος-πελάτη ηλεκτρονικού ταχυδρομείου για τη δημιουργία νέου μηνύματος. Ίσως δεν έχει ρυθμιστεί προεπιλεγμένο πρόγραμμα-πελάτη ηλεκτρονικού ταχυδρομείου;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="533"/>
@@ -2672,7 +2681,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="92"/>
         <source>SSL Chipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Προβολή SSL Chipher Debug </translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="100"/>
@@ -3070,22 +3079,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="455"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Τα ονόματα αρχείων που διαρκούν μια ορισμένη χρονική περίοδο δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Τα ονόματα αρχείων που περιέχουν τον χαρακτήρα &apos;% 1&apos; δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα αρχείου είναι ένα κατοχυρωμένο όνομα σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Το όνομα του αρχείου περιέχει συνεχόμενα κενά.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
@@ -3120,7 +3129,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="835"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Αδυναμία ανάγνωσης από το ημερολόγιο συγχρονισμού.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="880"/>
@@ -3336,7 +3345,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Ο διακομιστής στο λογαριασμό% 1 εκτελεί μια παλιά και μη υποστηριζόμενη έκδοση% 2. Η χρήση αυτού του προγράμματος-πελάτη με μη υποστηριζόμενες εκδόσεις διακομιστών δεν είναι δοκιμασμένη και ενδεχομένως επικίνδυνη. Προχωρήστε με δική σας ευθύνη.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
@@ -3445,7 +3454,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Έκδοση% 2.Για περισσότερες πληροφορίες επισκεφτείτε&lt;a href=&quot;%3&quot;&gt; επίσημη ιστοσελίδα://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt; Για γνωστά ζητήματα και βοήθεια, παρακαλώ επισκεφτείτε: &lt;a href=επίσημη ιστοσελίδα://central.owncloud.org/c/help/desktop-file-sync&quot;&gt;επίσημη ιστοσελίδα://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt; Από τον Klaas Freitag, τον Daniel Molkentin, τον Olivier Goffart, τον Markus Götz , Jan-Christoph Borchardt και άλλους.&lt;/small&gt;&lt;/p&gt;&lt;p&gt; Κατοχυρωμένα υπό το ownCloud GmbH &lt;/ p&gt; &lt;p&gt;Άδεια χρήσης υπό την GNU General Public License (GPL) Έκδοση 2.0 &lt;br/&gt; ownCloud και το ownCloud Τα λογότυπα είναι εμπορικά σήματα κατατεθέντα της ownCloud GmbH στις Ηνωμένες Πολιτείες, σε άλλες χώρες ή και στα δύο. &lt;/ P&gt;</translation>
     </message>
 </context>
 <context>
@@ -3484,7 +3493,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση πριν τον &amp;συγχρονισμό φακέλων μεγαλύτερων από</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3495,7 +3504,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Επιβεβαίωση πριν τον συγχρονισμό &amp;εξωτερικών αποθηκευτικών χώρων</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
@@ -3621,7 +3630,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>Διεύθυνση &amp;διακομιστή</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -3676,12 +3685,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="497"/>
         <source>%n day(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n μέρα(ες) πριν</numerusform><numerusform>%n μέρα(ες) πριν</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="505"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n ώρα(ες) πριν</numerusform><numerusform>%n ώρα(ες) πριν</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="510"/>
@@ -3696,12 +3705,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="515"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n λεπτό(ά) πριν</numerusform><numerusform>%n λεπτό(ά) πριν</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="518"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Λίγη ώρα πριν</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="144"/>
@@ -3760,7 +3769,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="333"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n δευτερόλεπτο(α)</numerusform><numerusform>%n δευτερόλεπτο(α)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/libsync/utility.cpp" line="357"/>
@@ -3791,7 +3800,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>Συγκροτήθηκε με %1</translation>
     </message>
 </context>
 <context>
@@ -3809,7 +3818,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="38"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Η έκδοση του διακομιστή κατέβηκε, η αντιγραφή άλλαξε το τοπικό αρχείο σε συγκρουόμενο αρχείο </translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
@@ -3839,7 +3848,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Ενημερωμένα τοπικά μεταδεδομένα</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -3881,7 +3890,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>γίνεται ενημέρωση μεταδεδομένων</translation>
     </message>
 </context>
 <context>
