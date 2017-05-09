@@ -73,6 +73,7 @@ static const char optionsC[] =
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
+        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n"
         ;
 
@@ -105,6 +106,7 @@ Application::Application(int &argc, char **argv) :
     _showLogWindow(false),
     _logExpire(0),
     _logFlush(false),
+    _logDebug(false),
     _userTriggeredConnect(false),
     _debugMode(false)
 {
@@ -358,6 +360,7 @@ void Application::setupLogging()
     Logger::instance()->setLogDir(_logDir);
     Logger::instance()->setLogExpire(_logExpire);
     Logger::instance()->setLogFlush(_logFlush);
+    Logger::instance()->setLogDebug(_logDebug);
 
     Logger::instance()->enterNextLogFile();
 
@@ -426,6 +429,8 @@ void Application::parseOptions(const QStringList &options)
             }
         } else if (option == QLatin1String("--logflush")) {
             _logFlush = true;
+        } else if (option == QLatin1String("--logdebug")) {
+            _logDebug = true;
         } else if (option == QLatin1String("--confdir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
                 QString confDir = it.next();

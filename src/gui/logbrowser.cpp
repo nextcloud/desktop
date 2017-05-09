@@ -85,6 +85,11 @@ LogBrowser::LogBrowser(QWidget *parent) :
     toolLayout->addWidget( _statusLabel );
     toolLayout->addStretch(5);
 
+    // Debug logging
+    _logDebugCheckBox = new QCheckBox(tr("&Capture debug messages") + " ");
+    connect(_logDebugCheckBox, SIGNAL(stateChanged(int)), SLOT(slotDebugCheckStateChanged(int)));
+    toolLayout->addWidget( _logDebugCheckBox );
+
     QDialogButtonBox *btnbox = new QDialogButtonBox;
     QPushButton *closeBtn = btnbox->addButton( QDialogButtonBox::Close );
     connect(closeBtn,SIGNAL(clicked()),this,SLOT(close()));
@@ -129,6 +134,12 @@ LogBrowser::~LogBrowser()
 {
 }
 
+void LogBrowser::showEvent(QShowEvent *)
+{
+    // This could have been changed through the --logdebug argument passed through the single application.
+    _logDebugCheckBox->setCheckState(Logger::instance()->logDebug() ? Qt::Checked : Qt::Unchecked);
+}
+
 void LogBrowser::closeEvent(QCloseEvent *)
 {
     ConfigFile cfg;
@@ -151,6 +162,11 @@ void LogBrowser::slotFind()
     if( searchText.isEmpty() ) return;
 
     search( searchText );
+}
+
+void LogBrowser::slotDebugCheckStateChanged(int checkState)
+{
+    Logger::instance()->setLogDebug(checkState == Qt::Checked);
 }
 
 void LogBrowser::search( const QString& str )

@@ -66,6 +66,9 @@ public:
   void setLogDir( const QString& dir );
   void setLogFlush( bool flush );
 
+  bool logDebug() const { return _logDebug; }
+  void setLogDebug( bool debug );
+
 signals:
   void logWindowLog(const QString&);
 
@@ -85,6 +88,7 @@ private:
   QFile       _logFile;
   bool        _doFileFlush;
   int         _logExpire;
+  bool        _logDebug;
   QScopedPointer<QTextStream> _logstream;
   QMutex      _mutex;
   QString     _logDirectory;

@@ -111,6 +111,7 @@ private:
     QString _logDir;
     int     _logExpire;
     bool    _logFlush;
+    bool    _logDebug;
     bool    _userTriggeredConnect;
     bool    _debugMode;
 

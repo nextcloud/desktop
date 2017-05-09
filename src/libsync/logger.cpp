@@ -81,7 +81,7 @@ Logger *Logger::instance()
 }
 
 Logger::Logger( QObject* parent) : QObject(parent),
-  _showTime(true), _logWindowActivated(false), _doFileFlush(false), _logExpire(0)
+  _showTime(true), _logWindowActivated(false), _doFileFlush(false), _logExpire(0), _logDebug(false)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
@@ -233,6 +233,12 @@ void Logger::setLogDir( const QString& dir )
 void Logger::setLogFlush( bool flush )
 {
     _doFileFlush = flush;
+}
+
+void Logger::setLogDebug( bool debug )
+{
+    QLoggingCategory::setFilterRules(debug ? QStringLiteral("qt.*=true\n*.debug=true") : QString());
+    _logDebug = debug;
 }
 
 void Logger::enterNextLogFile()
