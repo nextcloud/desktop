@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Errore accedendo al file di configurazione</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="172"/>
