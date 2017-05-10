@@ -33,6 +33,7 @@
 #include "accountstate.h"
 #include "openfilemanager.h"
 #include "accountmanager.h"
+#include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
@@ -1039,7 +1040,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed)
+void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
@@ -1051,6 +1052,17 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     _settingsDialog->hide();
 
     const auto accountState = folder->accountState();
+
+    const QString file = localPath.mid(folder->cleanPath().length() + 1);
+    SyncJournalFileRecord fileRecord = folder->journalDb()->getFileRecord(file);
+
+    bool resharingAllowed = true; // lets assume the good
+    if (fileRecord.isValid()) {
+        // check the permission: Is resharing allowed?
+        if (!fileRecord._remotePerm.contains('R')) {
+            resharingAllowed = false;
+        }
+    }
 
     // As a first approximation, set the set of permissions that can be granted
     // either to everything (resharing allowed) or nothing (no resharing).
@@ -1072,7 +1084,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions);
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId());
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;

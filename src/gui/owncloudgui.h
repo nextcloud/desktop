@@ -86,7 +86,16 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
-    void slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed);
+
+    /**
+     * Open a share dialog for a file or folder.
+     *
+     * sharePath is the full remote path to the item,
+     * localPath is the absolute local path to it (so not relative
+     * to the folder).
+     */
+    void slotShowShareDialog(const QString &sharePath, const QString &localPath);
+
     void slotRemoveDestroyedShareDialogs();
 
 private slots:

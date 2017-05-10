@@ -19,6 +19,7 @@
 #include "capabilities.h"
 
 #include "sharemanager.h"
+#include "guiutility.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -494,51 +495,18 @@ void ShareLinkWidget::slotCheckBoxExpireClicked()
     }
 }
 
-#ifdef Q_OS_MAC
-extern void copyToPasteboard(const QString &string);
-#endif
-
-void ShareLinkWidget::copyShareLink(const QUrl &url)
-{
-#ifdef Q_OS_MAC
-    copyToPasteboard(url.toString());
-#else
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(url.toString());
-#endif
-}
-
 void ShareLinkWidget::emailShareLink(const QUrl &url)
 {
     QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
-
-    if (!QDesktopServices::openUrl(QUrl(QString(
-                                            "mailto: "
-                                            "?subject=I shared %1 with you"
-                                            "&body=%2")
-                                            .arg(
-                                                fileName,
-                                                url.toString()),
-            QUrl::TolerantMode))) {
-        QMessageBox::warning(
-            this,
-            tr("Could not open email client"),
-            tr("There was an error when launching the email client to "
-               "create a new message. Maybe no default email client is "
-               "configured?"));
-    }
+    Utility::openEmailComposer(
+        QString("I shared %1 with you").arg(fileName),
+        url.toString(),
+        this);
 }
 
 void ShareLinkWidget::openShareLink(const QUrl &url)
 {
-    if (!QDesktopServices::openUrl(url)) {
-        QMessageBox::warning(
-            this,
-            tr("Could not open browser"),
-            tr("There was an error when launching the browser to "
-               "view the public link share. Maybe no default browser is "
-               "configured?"));
-    }
+    Utility::openBrowser(url, this);
 }
 
 void ShareLinkWidget::slotShareLinkButtonTriggered(QAction *action)
@@ -546,9 +514,9 @@ void ShareLinkWidget::slotShareLinkButtonTriggered(QAction *action)
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
 
     if (action == _copyLinkAction) {
-        copyShareLink(share->getLink());
+        QApplication::clipboard()->setText(share->getLink().toString());
     } else if (action == _copyDirectLinkAction) {
-        copyShareLink(share->getDirectDownloadLink());
+        QApplication::clipboard()->setText(share->getDirectDownloadLink().toString());
     } else if (action == _emailLinkAction) {
         emailShareLink(share->getLink());
     } else if (action == _emailDirectLinkAction) {

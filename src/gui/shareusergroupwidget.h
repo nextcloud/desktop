@@ -57,6 +57,7 @@ public:
         const QString &sharePath,
         const QString &localPath,
         SharePermissions maxSharingPermissions,
+        const QByteArray &numericFileId,
         QWidget *parent = 0);
     ~ShareUserGroupWidget();
 
@@ -75,19 +76,25 @@ private slots:
     void slotCompleterHighlighted(const QModelIndex &index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();
+    void slotPrivateLinkShare();
     void displayError(int code, const QString &message);
+
+    void slotPrivateLinkOpenBrowser();
+    void slotPrivateLinkCopy();
+    void slotPrivateLinkEmail();
 
 private:
     Ui::ShareUserGroupWidget *_ui;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
+    SharePermissions _maxSharingPermissions;
+    QByteArray _numericFileId;
 
     QCompleter *_completer;
     ShareeModel *_completerModel;
     QTimer _completionTimer;
 
-    SharePermissions _maxSharingPermissions;
     bool _isFile;
     bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;

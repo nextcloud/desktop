@@ -24,6 +24,7 @@
 #include <KIOCore/kfileitem.h>
 #include <KIOCore/KFileItemListProperties>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QMenu>
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
 #include "ownclouddolphinpluginhelper.h"
@@ -53,12 +54,31 @@ public:
                         } ))
              return {};
 
-        auto act = new QAction(parentWidget);
-        act->setText(helper->shareActionString());
-        connect(act, &QAction::triggered, this, [localFile, helper] {
+        auto menuaction = new QAction(parentWidget);
+        menuaction->setText(helper->contextMenuTitle());
+        auto menu = new QMenu(parentWidget);
+        menuaction->setMenu(menu);
+
+        auto shareAction = menu->addAction(helper->shareActionTitle());
+        connect(shareAction, &QAction::triggered, this, [localFile, helper] {
             helper->sendCommand(QByteArray("SHARE:"+localFile.toUtf8()+"\n"));
         } );
-        return { act };
+
+        if (!helper->copyPrivateLinkTitle().isEmpty()) {
+            auto copyPrivateLinkAction = menu->addAction(helper->copyPrivateLinkTitle());
+            connect(copyPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
+                helper->sendCommand(QByteArray("COPY_PRIVATE_LINK:" + localFile.toUtf8() + "\n"));
+            });
+        }
+
+        if (!helper->emailPrivateLinkTitle().isEmpty()) {
+            auto emailPrivateLinkAction = menu->addAction(helper->emailPrivateLinkTitle());
+            connect(emailPrivateLinkAction, &QAction::triggered, this, [localFile, helper] {
+                helper->sendCommand(QByteArray("EMAIL_PRIVATE_LINK:" + localFile.toUtf8() + "\n"));
+            });
+        }
+
+        return { menuaction };
     }
 
 };

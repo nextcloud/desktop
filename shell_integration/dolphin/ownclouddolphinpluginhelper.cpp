@@ -59,7 +59,7 @@ void OwncloudDolphinPluginHelper::sendCommand(const char* data)
 
 void OwncloudDolphinPluginHelper::slotConnected()
 {
-    sendCommand("SHARE_MENU_TITLE:\n");
+    sendCommand("GET_STRINGS:\n");
 }
 
 void OwncloudDolphinPluginHelper::tryConnect()
@@ -92,9 +92,11 @@ void OwncloudDolphinPluginHelper::slotReadyRead()
             QString file = QString::fromUtf8(line.constData() + col + 1, line.size() - col - 1);
             _paths.append(file);
             continue;
-        } else if (line.startsWith("SHARE_MENU_TITLE:")) {
-            auto col = line.indexOf(':');
-            _shareActionString = QString::fromUtf8(line.constData() + col + 1, line.size() - col - 1);
+        } else if (line.startsWith("STRING:")) {
+            auto args = QString::fromUtf8(line).split(QLatin1Char(':'));
+            if (args.size() >= 3) {
+                _strings[args[1]] = args.mid(2).join(QLatin1Char(':'));
+            }
             continue;
         }
         emit commandRecieved(line);

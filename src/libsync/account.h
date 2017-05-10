@@ -107,6 +107,9 @@ public:
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
 
+    /** Returns a permalink url for a file */
+    QUrl filePermalinkUrl(const QByteArray &numericFileId) const;
+
     /** Holds the accounts credentials */
     AbstractCredentials *credentials() const;
     void setCredentials(AbstractCredentials *cred);

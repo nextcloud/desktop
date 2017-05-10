@@ -95,6 +95,9 @@ class SocketConnect(GObject.GObject):
                 print("Setting connected to %r." % self.connected )
                 self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
                 print("Socket watch id: " + str(self._watch_id))
+
+                self.sendCommand('GET_STRINGS:\n')
+
                 return False  # Don't run again
             except Exception as e:
                 print("Could not connect to unix socket. " + str(e))
@@ -153,6 +156,13 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
+        self.strings = {}
+        socketConnect.addListener(self.handle_commands)
+
+    def handle_commands(self, action, args):
+        if action == 'STRING':
+            self.strings[args[0]] = ':'.join(args[1:])
+
     def check_registered_paths(self, filename):
         topLevelFolder = False
         internalFile = False
@@ -178,7 +188,6 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         if len(files) != 1:
             return
         file = files[0]
-        items = []
 
         filename = get_local_path(file.get_uri())
         # Check if its a folder (ends with an /), if yes add a "/"
@@ -190,12 +199,14 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         # Check if toplevel folder, we need to ignore those as they cannot be shared
         topLevelFolder, internalFile = self.check_registered_paths(filename)
         if topLevelFolder or not internalFile:
-            return items
+            return []
 
         entry = socketConnect.nautilusVFSFile_table.get(filename)
         if not entry:
-            return items
+            return []
 
+        # Currently 'sharable' also controls access to private link actions,
+        # and we definitely don't want to show them for IGNORED.
         shareable = False
         state = entry['state']
         state_ok = state.startswith('OK')
@@ -212,22 +223,42 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
                         break
 
         if not shareable:
-            return items
+            return []
 
-        # Create a menu item
-        labelStr = "Share with " + appname + "..."
-        item = Nautilus.MenuItem(name='NautilusPython::ShareItem', label=labelStr,
-                tip='Share file {} through {}'.format(file.get_name(), appname) )
-        item.connect("activate", self.menu_share, file)
-        items.append(item)
+        # Set up the 'ownCloud...' submenu
+        item_owncloud = Nautilus.MenuItem(
+            name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
+        menu = Nautilus.Menu()
+        item_owncloud.set_submenu(menu)
 
-        return items
+        # Add share menu option
+        item = Nautilus.MenuItem(
+            name='NautilusPython::ShareItem',
+            label=self.strings.get('SHARE_MENU_TITLE', 'Share...'))
+        item.connect("activate", self.context_menu_action, 'SHARE', file)
+        menu.append_item(item)
+
+        # Add permalink menu options, but hide these options for older clients
+        # that don't have these actions.
+        if 'COPY_PRIVATE_LINK_TITLE' in self.strings:
+            item_copyprivatelink = Nautilus.MenuItem(
+                name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_TITLE', 'Copy private link to clipboard'))
+            item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', file)
+            menu.append_item(item_copyprivatelink)
+
+        if 'EMAIL_PRIVATE_LINK_TITLE' in self.strings:
+            item_emailprivatelink = Nautilus.MenuItem(
+                name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_TITLE', 'Send private link by email...'))
+            item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', file)
+            menu.append_item(item_emailprivatelink)
+
+        return [item_owncloud]
 
 
-    def menu_share(self, menu, file):
+    def context_menu_action(self, menu, action, file):
         filename = get_local_path(file.get_uri())
-        print("Share file " + filename)
-        socketConnect.sendCommand("SHARE:" + filename + "\n")
+        print("Context menu: " + action + ' ' + filename)
+        socketConnect.sendCommand(action + ":" + filename + "\n")
 
 
 class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):

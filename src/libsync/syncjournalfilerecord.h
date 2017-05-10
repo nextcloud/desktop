@@ -48,6 +48,14 @@ public:
         return !_path.isEmpty();
     }
 
+    /** Returns the numeric part of the full id in _fileId.
+     *
+     * On the server this is sometimes known as the internal file id.
+     *
+     * It is used in the construction of private links.
+     */
+    QByteArray numericFileId() const;
+
     QString _path;
     quint64 _inode;
     QDateTime _modtime;

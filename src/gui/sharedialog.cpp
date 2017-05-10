@@ -38,6 +38,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     const QString &sharePath,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
+    const QByteArray &numericFileId,
     QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::ShareDialog)
@@ -45,6 +46,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
+    , _numericFileId(numericFileId)
     , _linkWidget(NULL)
     , _userGroupWidget(NULL)
     , _progressIndicator(NULL)
@@ -192,7 +194,7 @@ void ShareDialog::showSharingUi()
         && _accountState->account()->serverVersionInt() >= Account::makeServerVersion(8, 2, 0);
 
     if (userGroupSharing) {
-        _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
+        _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _numericFileId, this);
         _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
         _userGroupWidget->getShares();
     }

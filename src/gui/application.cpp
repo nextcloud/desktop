@@ -206,8 +206,8 @@ Application::Application(int &argc, char **argv)
         slotAccountStateAdded(ai.data());
     }
 
-    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString, bool)),
-        _gui, SLOT(slotShowShareDialog(QString, QString, bool)));
+    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString)),
+        _gui, SLOT(slotShowShareDialog(QString, QString)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
