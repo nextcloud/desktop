@@ -31,7 +31,7 @@
 // Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
-    qCDebug(lcUpdater) << "may check: YES";
+    qCDebug(OCC::lcUpdater) << "may check: YES";
     return YES;
 }
 
@@ -128,7 +128,7 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    qCDebug(lcUpdater) << "launching background check";
+    qCDebug(OCC::lcUpdater) << "launching background check";
     if (autoUpdaterAllowed()) {
         [d->updater checkForUpdatesInBackground];
     }
