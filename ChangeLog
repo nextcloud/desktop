@@ -1,6 +1,28 @@
 ChangeLog
 =========
 
+version 2.4.0 (2017-0X-XX)
+* Sharing: Add support for multiple public link shares (#5655)
+* Sharing: Add option to copy/email direct links (#5627)
+* Sharing: Show warning that links are public
+* Wizards: Never propose an existing folder for syncing (#5597)
+* Settings Dialog: Display the user server avatar
+* Selective Sync: Open sub folder context menu (#5596)
+* Exclude list: remove .htaccess
+* Detect maintenance mode (#4485)
+* Discovery: Increase the MAX_DEPTH and show deep folders as ignored
+* Downloads: Remove empty temporary if disk space full (#5746)
+* Wizard: Don't show not-so-useful result page (#5726)
+* When creating explorer favorite use more specific windows functions (#5690)
+* Added owncloudcmd bandwidth limit parameter (#5707)
+* AccountSettings: Sync with clean discovery on Ctrl-F6 (#5666)
+* Dynamic size of chunks in chunked uploads for improved big file upload performance
+* ShareDialog: Make "can edit" partially checked sometimes #5642
+* Require Qt5
+* Switch 3rdparty/json usage to Qt5's QJson (#5710)
+* Reduce memory usage
+* Documentation improvements
+
 version 2.3.2 (2017-05-08)
 * Fix more crashes (thanks to everyone submitting to our crash reporter!)
 * Improve compatibility with server 10.0 (#5691, X-OC-Total-Size)
