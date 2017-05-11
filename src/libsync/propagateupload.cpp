@@ -523,7 +523,6 @@ void PropagateUploadFileCommon::abort()
 {
     foreach(auto *job, _jobs) {
         if (job->reply()) {
-            qCDebug(lcPropagateUpload) << job << this->_item->_file;
             job->reply()->abort();
         }
     }

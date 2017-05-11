@@ -46,7 +46,7 @@ void PropagateUploadFileV1::doStartUpload()
     if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime ) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
-        qCDebug(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
+        qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
     }
 
     _currentChunk = 0;

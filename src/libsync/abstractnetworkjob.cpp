@@ -266,7 +266,7 @@ void AbstractNetworkJob::start()
 void AbstractNetworkJob::slotTimeout()
 {
     _timedout = true;
-    qCDebug(lcNetworkJob) << this << "Timeout" << (reply() ? reply()->request().url() : path());
+    qCWarning(lcNetworkJob) << "Network job timeout" << (reply() ? reply()->request().url() : path());
     onTimedOut();
 }
 

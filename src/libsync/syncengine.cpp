@@ -1464,9 +1464,12 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::abort()
 {
+    if (_propagator)
+        qCInfo(lcEngine) << "Aborting sync";
+
     // Sets a flag for the update phase
     csync_request_abort(_csync_ctx);
-    qCDebug(lcEngine) << "Aborting sync, _discoveryMainThread:" << _discoveryMainThread;
+
     // Aborts the discovery phase job
     if (_discoveryMainThread) {
         _discoveryMainThread->abort();

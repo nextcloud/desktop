@@ -264,7 +264,10 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         break;
     }
 
-    qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
+    if (_item->hasErrorStatus())
+        qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
+    else
+        qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
     emit propagator()->itemCompleted(_item);
     emit finished(_item->_status);
 
