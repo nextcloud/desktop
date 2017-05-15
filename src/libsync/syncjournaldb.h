@@ -136,6 +136,14 @@ public:
     /**
      * Make sure that on the next sync, fileName is not read from the DB but uses the PROPFIND to
      * get the info from the server
+     *
+     * Specifically, this sets the md5 field of fileName and all its parents to _invalid_.
+     * That causes a metadata difference and a resulting discovery from the remote for the
+     * affected folders.
+     *
+     * Since folders in the selective sync list will not be rediscovered (csync_ftw,
+     * _csync_detect_update skip them), the _invalid_ marker will stay and it. And any
+     * child items in the db will be ignored when reading a remote tree from the database.
      */
     void avoidReadFromDbOnNextSync(const QString& fileName);
 

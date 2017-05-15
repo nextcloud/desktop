@@ -439,7 +439,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
      * In other words, anything that is between  path+'/' and path+'0',
      * (because '0' follows '/' in ascii)
      */
-    const char *below_path_query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE path > (?||'/') AND path < (?||'0')";
+    const char *below_path_query = "SELECT " METADATA_COLUMNS " FROM metadata WHERE path > (?||'/') AND path < (?||'0') ORDER BY path||'/' ASC";
     SQLITE_BUSY_HANDLED(sqlite3_prepare_v2(ctx->statedb.db, below_path_query, -1, &stmt, NULL));
     ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_OK ) {
@@ -462,6 +462,36 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
         rc = _csync_file_stat_from_metadata_table( &st, stmt);
         if( st ) {
+            /* When selective sync is used, the database may have subtrees with a parent
+             * whose etag (md5) is _invalid_. These are ignored and shall not appear in the
+             * remote tree.
+             * Sometimes folders that are not ignored by selective sync get marked as
+             * _invalid_, but that is not a problem as the next discovery will retrieve
+             * their correct etags again and we don't run into this case.
+             */
+            if( c_streq(st->etag, "_invalid_") ) {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded", st->path);
+                char *skipbase = c_strdup(st->path);
+                skipbase[st->pathlen] = '/';
+                int skiplen = st->pathlen + 1;
+
+                /* Skip over all entries with the same base path. Note that this depends
+                 * strongly on the ordering of the retrieved items. */
+                do {
+                    csync_file_stat_free(st);
+                    rc = _csync_file_stat_from_metadata_table( &st, stmt);
+                    if( st && strncmp(st->path, skipbase, skiplen) != 0 ) {
+                        break;
+                    }
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded because the parent is", st->path);
+                } while( rc == SQLITE_ROW );
+
+                /* End of data? */
+                if( rc != SQLITE_ROW || !st ) {
+                    continue;
+                }
+            }
+
             /* Check for exclusion from the tree.
              * Note that this is only a safety net in case the ignore list changes
              * without a full remote discovery being triggered. */
