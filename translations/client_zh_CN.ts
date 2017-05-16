@@ -106,7 +106,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>同步全部</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
@@ -1830,7 +1830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="225"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>无效URL</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="388"/>
@@ -3838,7 +3838,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="51"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>已更新本地元数据</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -3880,7 +3880,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="83"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>正在更新本地元数据</translation>
     </message>
 </context>
 <context>
