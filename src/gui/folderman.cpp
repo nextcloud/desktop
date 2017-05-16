@@ -867,7 +867,10 @@ void FolderMan::slotScheduleFolderByTime()
 
 void FolderMan::slotFolderSyncStarted()
 {
-    qCInfo(lcFolderMan) << ">===================================== sync started for " << _currentSyncFolder->remoteUrl().toString();
+    qCInfo(lcFolderMan, ">========== Sync started for folder [%s] of account [%s] with remote [%s]",
+        qPrintable(_currentSyncFolder->shortGuiLocalPath()),
+        qPrintable(_currentSyncFolder->accountState()->account()->displayName()),
+        qPrintable(_currentSyncFolder->remoteUrl().toString()));
 }
 
 /*
@@ -878,7 +881,10 @@ void FolderMan::slotFolderSyncStarted()
   */
 void FolderMan::slotFolderSyncFinished(const SyncResult &)
 {
-    qCInfo(lcFolderMan) << "<===================================== sync finished for " << _currentSyncFolder->remoteUrl().toString();
+    qCInfo(lcFolderMan, "<========== Sync finished for folder [%s] of account [%s] with remote [%s]",
+        qPrintable(_currentSyncFolder->shortGuiLocalPath()),
+        qPrintable(_currentSyncFolder->accountState()->account()->displayName()),
+        qPrintable(_currentSyncFolder->remoteUrl().toString()));
 
     _lastSyncFolder = _currentSyncFolder;
     _currentSyncFolder = 0;
