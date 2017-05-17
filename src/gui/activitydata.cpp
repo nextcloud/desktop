@@ -17,20 +17,20 @@
 #include "activitydata.h"
 
 
-namespace OCC
-{
+namespace OCC {
 
-bool operator<( const Activity& rhs, const Activity& lhs ) {
+bool operator<(const Activity &rhs, const Activity &lhs)
+{
     return rhs._dateTime.toMSecsSinceEpoch() > lhs._dateTime.toMSecsSinceEpoch();
 }
 
-bool operator==( const Activity& rhs, const Activity& lhs ) {
-    return (rhs._type == lhs._type && rhs._id== lhs._id && rhs._accName == lhs._accName);
+bool operator==(const Activity &rhs, const Activity &lhs)
+{
+    return (rhs._type == lhs._type && rhs._id == lhs._id && rhs._accName == lhs._accName);
 }
 
-Activity::Identifier Activity::ident() const {
-    return Identifier( _id, _accName );
+Activity::Identifier Activity::ident() const
+{
+    return Identifier(_id, _accName);
 }
-
-
 }

@@ -27,7 +27,7 @@ using namespace OCC;
 
 Q_LOGGING_CATEGORY(lcProxy, "gui.credentials.proxy", QtInfoMsg)
 
-ProxyAuthHandler* ProxyAuthHandler::instance()
+ProxyAuthHandler *ProxyAuthHandler::instance()
 {
     static ProxyAuthHandler inst;
     return &inst;
@@ -53,8 +53,8 @@ ProxyAuthHandler::~ProxyAuthHandler()
 }
 
 void ProxyAuthHandler::handleProxyAuthenticationRequired(
-        const QNetworkProxy& proxy,
-        QAuthenticator* authenticator)
+    const QNetworkProxy &proxy,
+    QAuthenticator *authenticator)
 {
     if (!_dialog) {
         return;
@@ -73,7 +73,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         // If the user explicitly configured the proxy in the
         // network settings, don't ask about it.
         if (_configFile->proxyType() == QNetworkProxy::HttpProxy
-                || _configFile->proxyType() == QNetworkProxy::Socks5Proxy) {
+            || _configFile->proxyType() == QNetworkProxy::Socks5Proxy) {
             _blocked = true;
         }
     }
@@ -83,9 +83,9 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     }
 
     // Find the responsible QNAM if possible.
-    QNetworkAccessManager* sending_qnam = 0;
+    QNetworkAccessManager *sending_qnam = 0;
     QWeakPointer<QNetworkAccessManager> qnam_alive;
-    if (Account* account = qobject_cast<Account*>(sender())) {
+    if (Account *account = qobject_cast<Account *>(sender())) {
         // Since we go into an event loop, it's possible for the account's qnam
         // to be destroyed before we get back. We can use this to check for its
         // liveness.
@@ -104,9 +104,8 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     // isn't reliable, so we also invalidate credentials if we previously
     // gave presumably valid credentials to the same QNAM.
     bool invalidated = false;
-    if (!_waitingForDialog && !_waitingForKeychain &&
-            (!authenticator->user().isEmpty()
-             || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
+    if (!_waitingForDialog && !_waitingForKeychain && (!authenticator->user().isEmpty()
+                                                          || (sending_qnam && _gaveCredentialsTo.contains(sending_qnam)))) {
         qCInfo(lcProxy) << "invalidating old creds" << key;
         _username.clear();
         _password.clear();
@@ -132,8 +131,8 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     sending_qnam = qnam_alive.data();
     if (sending_qnam) {
         _gaveCredentialsTo.insert(sending_qnam);
-        connect(sending_qnam, SIGNAL(destroyed(QObject*)),
-                SLOT(slotSenderDestroyed(QObject*)));
+        connect(sending_qnam, SIGNAL(destroyed(QObject *)),
+            SLOT(slotSenderDestroyed(QObject *)));
     }
 }
 
@@ -142,7 +141,7 @@ void ProxyAuthHandler::slotKeychainJobDone()
     _keychainJobRunning = false;
 }
 
-void ProxyAuthHandler::slotSenderDestroyed(QObject* obj)
+void ProxyAuthHandler::slotSenderDestroyed(QObject *obj)
 {
     _gaveCredentialsTo.remove(obj);
 }
@@ -195,8 +194,8 @@ bool ProxyAuthHandler::getCredsFromKeychain()
         _readPasswordJob->setInsecureFallback(false);
         _readPasswordJob->setKey(keychainPasswordKey());
         _readPasswordJob->setAutoDelete(false);
-        connect(_readPasswordJob.data(), SIGNAL(finished(QKeychain::Job*)),
-                SLOT(slotKeychainJobDone()));
+        connect(_readPasswordJob.data(), SIGNAL(finished(QKeychain::Job *)),
+            SLOT(slotKeychainJobDone()));
         _keychainJobRunning = true;
         _readPasswordJob->start();
     }
@@ -237,13 +236,13 @@ void ProxyAuthHandler::storeCredsInKeychain()
 
     _settings->setValue(keychainUsernameKey(), _username);
 
-    WritePasswordJob* job = new WritePasswordJob(Theme::instance()->appName(), this);
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName(), this);
     job->setSettings(_settings.data());
     job->setInsecureFallback(false);
     job->setKey(keychainPasswordKey());
     job->setTextData(_password);
     job->setAutoDelete(false);
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotKeychainJobDone()));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotKeychainJobDone()));
     _keychainJobRunning = true;
     job->start();
 

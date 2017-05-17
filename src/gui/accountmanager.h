@@ -23,7 +23,8 @@ namespace OCC {
    @brief The AccountManager class
    @ingroup gui
 */
-class AccountManager : public QObject {
+class AccountManager : public QObject
+{
     Q_OBJECT
 public:
     static AccountManager *instance();
@@ -62,7 +63,7 @@ public:
     /**
      * Return the account state pointer for an account identified by its display name
      */
-    AccountStatePtr account(const QString& name);
+    AccountStatePtr account(const QString &name);
 
     /**
      * Delete the AccountState
@@ -78,23 +79,23 @@ public:
 
 private:
     // saving and loading Account to settings
-    void saveAccountHelper(Account* account, QSettings& settings, bool saveCredentials = true);
-    AccountPtr loadAccountHelper(QSettings& settings);
+    void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);
+    AccountPtr loadAccountHelper(QSettings &settings);
 
     bool restoreFromLegacySettings();
 
-    bool isAccountIdAvailable(const QString& id) const;
+    bool isAccountIdAvailable(const QString &id) const;
     QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
-    void addAccountState(AccountState* accountState);
+    void addAccountState(AccountState *accountState);
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(Account* a);
+    void saveAccount(Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(AccountState* a);
+    void saveAccountState(AccountState *a);
 
 
 Q_SIGNALS:
@@ -105,5 +106,4 @@ private:
     AccountManager() {}
     QList<AccountStatePtr> _accounts;
 };
-
 }

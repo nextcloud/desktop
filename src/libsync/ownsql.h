@@ -35,22 +35,21 @@ public:
     explicit SqlDatabase();
 
     bool isOpen();
-    bool openOrCreateReadWrite( const QString& filename );
-    bool openReadOnly( const QString& filename );
+    bool openOrCreateReadWrite(const QString &filename);
+    bool openReadOnly(const QString &filename);
     bool transaction();
     bool commit();
     void close();
     QString error() const;
-    sqlite3* sqliteDb();
+    sqlite3 *sqliteDb();
 
 private:
-    bool openHelper( const QString& filename, int sqliteFlags );
+    bool openHelper(const QString &filename, int sqliteFlags);
     bool checkDb();
 
     sqlite3 *_db;
     QString _error; // last error string
     int _errId;
-
 };
 
 /**
@@ -61,12 +60,12 @@ class OWNCLOUDSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)
 public:
-    explicit SqlQuery(SqlDatabase& db);
-    explicit SqlQuery(const QString& sql, SqlDatabase& db);
+    explicit SqlQuery(SqlDatabase &db);
+    explicit SqlQuery(const QString &sql, SqlDatabase &db);
 
     ~SqlQuery();
     QString error() const;
-    int  errorId() const;
+    int errorId() const;
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
@@ -80,9 +79,9 @@ public:
     bool isSelect();
     bool isPragma();
     bool exec();
-    int  prepare( const QString& sql, bool allow_failure = false );
+    int prepare(const QString &sql, bool allow_failure = false);
     bool next();
-    void bindValue(int pos, const QVariant& value);
+    void bindValue(int pos, const QVariant &value);
     QString lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();

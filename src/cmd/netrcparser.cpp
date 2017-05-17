@@ -25,25 +25,25 @@
 namespace OCC {
 
 namespace {
-QString defaultKeyword = QLatin1String("default");
-QString machineKeyword = QLatin1String("machine");
-QString loginKeyword = QLatin1String("login");
-QString passwordKeyword = QLatin1String("password");
-
+    QString defaultKeyword = QLatin1String("default");
+    QString machineKeyword = QLatin1String("machine");
+    QString loginKeyword = QLatin1String("login");
+    QString passwordKeyword = QLatin1String("password");
 }
 
 NetrcParser::NetrcParser(const QString &file)
 {
     _netrcLocation = file;
     if (_netrcLocation.isEmpty()) {
-       _netrcLocation = QDir::homePath()+QLatin1String("/.netrc");
+        _netrcLocation = QDir::homePath() + QLatin1String("/.netrc");
     }
 }
 
-void NetrcParser::tryAddEntryAndClear(QString& machine, LoginPair& pair, bool& isDefault) {
+void NetrcParser::tryAddEntryAndClear(QString &machine, LoginPair &pair, bool &isDefault)
+{
     if (isDefault) {
         _default = pair;
-    } else if (!machine.isEmpty() && !pair.first.isEmpty()){
+    } else if (!machine.isEmpty() && !pair.first.isEmpty()) {
         _entries.insert(machine, pair);
     }
     pair = qMakePair(QString(), QString());
@@ -87,7 +87,6 @@ bool NetrcParser::parse()
         } else if (key == passwordKeyword) {
             pair.second = value;
         } // ignore unsupported tokens
-
     }
     tryAddEntryAndClear(machine, pair, isDefault);
 

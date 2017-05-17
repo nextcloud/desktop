@@ -31,7 +31,7 @@ namespace OCC {
 class AccountState;
 
 namespace Ui {
-class SettingsDialog;
+    class SettingsDialog;
 }
 class AccountSettings;
 class Application;
@@ -57,7 +57,7 @@ public slots:
     void showFirstPage();
     void showActivityPage();
     void slotSwitchPage(QAction *action);
-    void slotRefreshActivity(AccountState *accountState );
+    void slotRefreshActivity(AccountState *accountState);
     void slotAccountAvatarChanged();
 
 protected:
@@ -74,26 +74,25 @@ private:
 
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
-    QAction *createActionWithIcon(const QIcon& icon, const QString& text, const QString& iconPath = QString());
+    QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
 
-    Ui::SettingsDialog * const _ui;
+    Ui::SettingsDialog *const _ui;
 
-    QActionGroup* _actionGroup;
+    QActionGroup *_actionGroup;
     // Maps the actions from the action group to the corresponding widgets
-    QHash<QAction*, QWidget*> _actionGroupWidgets;
+    QHash<QAction *, QWidget *> _actionGroupWidgets;
 
     // Maps the action in the dialog to their according account. Needed in
     // case the account avatar changes
-    QHash<Account*, QAction*> _actionForAccount;
+    QHash<Account *, QAction *> _actionForAccount;
 
-    QToolBar* _toolBar;
+    QToolBar *_toolBar;
 
     ActivitySettings *_activitySettings;
 
-    QAction * _activityAction;
+    QAction *_activityAction;
     ownCloudGui *_gui;
 };
-
 }
 
 #endif // SETTINGSDIALOG_H

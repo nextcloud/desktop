@@ -60,7 +60,7 @@ public:
     /**
      * Increase the file and size totals by the amount indicated in item.
      */
-    void adjustTotalsForFile(const SyncFileItem & item);
+    void adjustTotalsForFile(const SyncFileItem &item);
 
     quint64 totalFiles() const;
     quint64 completedFiles() const;
@@ -72,13 +72,12 @@ public:
     quint64 currentFile() const;
 
     /** Return true if the size needs to be taken in account in the total amount of time */
-    static inline bool isSizeDependent(const SyncFileItem & item)
+    static inline bool isSizeDependent(const SyncFileItem &item)
     {
-        return ! item._isDirectory && (
-               item._instruction == CSYNC_INSTRUCTION_CONFLICT
-            || item._instruction == CSYNC_INSTRUCTION_SYNC
-            || item._instruction == CSYNC_INSTRUCTION_NEW
-            || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE);
+        return !item._isDirectory && (item._instruction == CSYNC_INSTRUCTION_CONFLICT
+                                         || item._instruction == CSYNC_INSTRUCTION_SYNC
+                                         || item._instruction == CSYNC_INSTRUCTION_NEW
+                                         || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE);
     }
 
     /**
@@ -211,12 +210,11 @@ private:
 
 namespace Progress {
 
-    OWNCLOUDSYNC_EXPORT QString asActionString( const SyncFileItem& item );
-    OWNCLOUDSYNC_EXPORT QString asResultString(  const SyncFileItem& item );
+    OWNCLOUDSYNC_EXPORT QString asActionString(const SyncFileItem &item);
+    OWNCLOUDSYNC_EXPORT QString asResultString(const SyncFileItem &item);
 
-    OWNCLOUDSYNC_EXPORT bool isWarningKind( SyncFileItem::Status );
-    OWNCLOUDSYNC_EXPORT bool isIgnoredKind( SyncFileItem::Status );
-
+    OWNCLOUDSYNC_EXPORT bool isWarningKind(SyncFileItem::Status);
+    OWNCLOUDSYNC_EXPORT bool isIgnoredKind(SyncFileItem::Status);
 }
 
 /**
@@ -234,7 +232,7 @@ class OWNCLOUDSYNC_EXPORT ProgressDispatcher : public QObject
 
     friend class Folder; // only allow Folder class to access the setting slots.
 public:
-    static ProgressDispatcher* instance();
+    static ProgressDispatcher *instance();
     ~ProgressDispatcher();
 
 signals:
@@ -245,21 +243,20 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo( const QString& folder, const ProgressInfo& progress );
+    void progressInfo(const QString &folder, const ProgressInfo &progress);
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const SyncFileItemPtr & item);
+    void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
 protected:
-    void setProgressInfo(const QString& folder, const ProgressInfo& progress);
+    void setProgressInfo(const QString &folder, const ProgressInfo &progress);
 
 private:
-    ProgressDispatcher(QObject* parent = 0);
+    ProgressDispatcher(QObject *parent = 0);
 
     QElapsedTimer _timer;
-    static ProgressDispatcher* _instance;
+    static ProgressDispatcher *_instance;
 };
-
 }
 #endif // PROGRESSDISPATCHER_H

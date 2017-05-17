@@ -18,8 +18,7 @@
 #include "asserts.h"
 #include "creds/abstractcredentials.h"
 
-namespace OCC
-{
+namespace OCC {
 
 Q_LOGGING_CATEGORY(lcCredentials, "sync.credentials", QtInfoMsg)
 
@@ -37,20 +36,20 @@ void AbstractCredentials::setAccount(Account *account)
 QString AbstractCredentials::keychainKey(const QString &url, const QString &user)
 {
     QString u(url);
-    if( u.isEmpty() ) {
+    if (u.isEmpty()) {
         qCWarning(lcCredentials) << "Empty url in keyChain, error!";
         return QString::null;
     }
-    if( user.isEmpty() ) {
+    if (user.isEmpty()) {
         qCWarning(lcCredentials) << "Error: User is empty!";
         return QString::null;
     }
 
-    if( !u.endsWith(QChar('/')) ) {
+    if (!u.endsWith(QChar('/'))) {
         u.append(QChar('/'));
     }
 
-    QString key = user+QLatin1Char(':')+u;
+    QString key = user + QLatin1Char(':') + u;
     return key;
 }
 } // namespace OCC

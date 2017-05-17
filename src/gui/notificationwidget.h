@@ -37,25 +37,24 @@ public:
     Activity activity() const;
 
 signals:
-    void sendNotificationRequest( const QString&, const QString& link, const QByteArray& verb);
-    void requestCleanupAndBlacklist( const Activity& activity );
+    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb);
+    void requestCleanupAndBlacklist(const Activity &activity);
 
 public slots:
-     void setActivity(const Activity& activity);
-     void slotNotificationRequestFinished(int statusCode);
+    void setActivity(const Activity &activity);
+    void slotNotificationRequestFinished(int statusCode);
 
 private slots:
-     void slotButtonClicked();
+    void slotButtonClicked();
 
 private:
     Ui_NotificationWidget _ui;
     Activity _myActivity;
-    QList<QPushButton*> _buttons;
+    QList<QPushButton *> _buttons;
     QString _accountName;
     QProgressIndicator *_progressIndi;
     QString _actionLabel;
 };
-
 }
 
 #endif // NOTIFICATIONWIDGET_H

@@ -36,7 +36,8 @@ typedef QExplicitlySharedDataPointer<AccountState> AccountStatePtr;
  * @brief Extra info about an ownCloud server account.
  * @ingroup gui
  */
-class AccountState : public QObject, public QSharedData {
+class AccountState : public QObject, public QSharedData
+{
     Q_OBJECT
 public:
     enum State {
@@ -78,13 +79,13 @@ public:
      *
      * Use from AccountManager with a prepared QSettings object only.
      */
-    static AccountState* loadFromSettings(AccountPtr account, QSettings& settings);
+    static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
 
     /** Writes account state information to settings.
      *
      * It does not write the Account data.
      */
-    void writeToSettings(QSettings& settings);
+    void writeToSettings(QSettings &settings);
 
     AccountPtr account() const;
 
@@ -134,10 +135,10 @@ signals:
     void isConnectedChanged();
 
 protected Q_SLOTS:
-    void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors);
+    void slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors);
     void slotInvalidCredentials();
-    void slotCredentialsFetched(AbstractCredentials* creds);
-    void slotCredentialsAsked(AbstractCredentials* creds);
+    void slotCredentialsFetched(AbstractCredentials *creds);
+    void slotCredentialsAsked(AbstractCredentials *creds);
 
 private:
     AccountPtr _account;
@@ -148,10 +149,9 @@ private:
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
 };
-
 }
 
-Q_DECLARE_METATYPE(OCC::AccountState*)
+Q_DECLARE_METATYPE(OCC::AccountState *)
 Q_DECLARE_METATYPE(OCC::AccountStatePtr)
 
 #endif //ACCOUNTINFO_H

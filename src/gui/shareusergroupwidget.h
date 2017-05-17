@@ -32,8 +32,8 @@ class QModelIndex;
 namespace OCC {
 
 namespace Ui {
-class ShareUserGroupWidget;
-class ShareUserLine;
+    class ShareUserGroupWidget;
+    class ShareUserLine;
 }
 
 class AbstractCredentials;
@@ -53,11 +53,11 @@ class ShareUserGroupWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ShareUserGroupWidget(AccountPtr account, 
-                                  const QString &sharePath,
-                                  const QString &localPath,
-                                  SharePermissions maxSharingPermissions,
-                                  QWidget *parent = 0);
+    explicit ShareUserGroupWidget(AccountPtr account,
+        const QString &sharePath,
+        const QString &localPath,
+        SharePermissions maxSharingPermissions,
+        QWidget *parent = 0);
     ~ShareUserGroupWidget();
 
 public slots:
@@ -71,11 +71,11 @@ private slots:
     void slotLineEditTextEdited(const QString &text);
 
     void slotLineEditReturn();
-    void slotCompleterActivated(const QModelIndex & index);
-    void slotCompleterHighlighted(const QModelIndex & index);
+    void slotCompleterActivated(const QModelIndex &index);
+    void slotCompleterHighlighted(const QModelIndex &index);
     void slotShareesReady();
     void slotAdjustScrollWidgetSize();
-    void displayError(int code ,const QString &message);
+    void displayError(int code, const QString &message);
 
 private:
     Ui::ShareUserGroupWidget *_ui;
@@ -104,9 +104,9 @@ class ShareUserLine : public QWidget
 
 public:
     explicit ShareUserLine(QSharedPointer<Share> Share,
-                           SharePermissions maxSharingPermissions,
-                           bool isFile,
-                           QWidget *parent = 0);
+        SharePermissions maxSharingPermissions,
+        bool isFile,
+        QWidget *parent = 0);
     ~ShareUserLine();
 
     QSharedPointer<Share> share() const;
@@ -123,6 +123,7 @@ private slots:
 
     void slotShareDeleted();
     void slotPermissionsSet();
+
 private:
     void displayPermissions();
 
@@ -134,7 +135,6 @@ private:
     QAction *_permissionUpdate;
     QAction *_permissionDelete;
 };
-
 }
 
 #endif // SHAREUSERGROUPWIDGET_H

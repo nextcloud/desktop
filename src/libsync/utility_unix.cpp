@@ -14,14 +14,15 @@
  */
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    #include <QStandardPaths>
+#include <QStandardPaths>
 #endif
 
 namespace OCC {
 
-static void setupFavLink_private(const QString &folder) {
+static void setupFavLink_private(const QString &folder)
+{
     // Nautilus: add to ~/.gtk-bookmarks
-    QFile gtkBookmarks(QDir::homePath()+QLatin1String("/.gtk-bookmarks"));
+    QFile gtkBookmarks(QDir::homePath() + QLatin1String("/.gtk-bookmarks"));
     QByteArray folderUrl = "file://" + folder.toUtf8();
     if (gtkBookmarks.open(QFile::ReadWrite)) {
         QByteArray places = gtkBookmarks.readAll();
@@ -43,7 +44,7 @@ QString getUserAutostartDir_private()
     QString config = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
 
     if (config.isEmpty()) {
-        config = QDir::homePath()+QLatin1String("/.config");
+        config = QDir::homePath() + QLatin1String("/.config");
     }
 #endif
     config += QLatin1String("/autostart/");
@@ -52,14 +53,14 @@ QString getUserAutostartDir_private()
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {
-    QString desktopFileLocation = getUserAutostartDir_private()+appName+QLatin1String(".desktop");
+    QString desktopFileLocation = getUserAutostartDir_private() + appName + QLatin1String(".desktop");
     return QFile::exists(desktopFileLocation);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
+void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
 {
     QString userAutoStartPath = getUserAutostartDir_private();
-    QString desktopFileLocation = userAutoStartPath+appName+QLatin1String(".desktop");
+    QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
             qCWarning(lcUtility) << "Could not create autostart folder";
@@ -81,8 +82,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
            << QLatin1String("Categories=") << QLatin1String("Network") << endl
            << QLatin1String("Type=") << QLatin1String("Application") << endl
            << QLatin1String("StartupNotify=") << "false" << endl
-           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl
-            ;
+           << QLatin1String("X-GNOME-Autostart-enabled=") << "true" << endl;
     } else {
         if (!QFile::remove(desktopFileLocation)) {
             qCWarning(lcUtility) << "Could not remove autostart desktop file";

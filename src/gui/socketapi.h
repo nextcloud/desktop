@@ -43,16 +43,16 @@ class SocketListener;
  */
 class SocketApi : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit SocketApi(QObject* parent = 0);
+    explicit SocketApi(QObject *parent = 0);
     virtual ~SocketApi();
 
 public slots:
     void slotUpdateFolderView(Folder *f);
-    void slotUnregisterPath( const QString& alias );
-    void slotRegisterPath( const QString& alias );
+    void slotUnregisterPath(const QString &alias);
+    void slotRegisterPath(const QString &alias);
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
@@ -61,27 +61,26 @@ signals:
 private slots:
     void slotNewConnection();
     void onLostConnection();
-    void slotSocketDestroyed(QObject* obj);
+    void slotSocketDestroyed(QObject *obj);
     void slotReadSocket();
-    void broadcastStatusPushMessage(const QString& systemPath, SyncFileStatus fileStatus);
+    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 private:
-    void broadcastMessage(const QString& msg, bool doWait = false);
+    void broadcastMessage(const QString &msg, bool doWait = false);
 
-    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString& argument, SocketListener* listener);
-    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString& argument, SocketListener* listener);
-    Q_INVOKABLE void command_SHARE(const QString& localFile, SocketListener* listener);
+    Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener);
+    Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
 
-    Q_INVOKABLE void command_VERSION(const QString& argument, SocketListener* listener);
+    Q_INVOKABLE void command_VERSION(const QString &argument, SocketListener *listener);
 
-    Q_INVOKABLE void command_SHARE_STATUS(const QString& localFile, SocketListener* listener);
-    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString& argument, SocketListener* listener);
-    QString buildRegisterPathMessage(const QString& path);
+    Q_INVOKABLE void command_SHARE_STATUS(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
+    QString buildRegisterPathMessage(const QString &path);
 
     QSet<QString> _registeredAliases;
     QList<SocketListener> _listeners;
     SocketApiServer _localServer;
 };
-
 }
 #endif // SOCKETAPI_H

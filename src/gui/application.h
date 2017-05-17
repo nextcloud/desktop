@@ -73,7 +73,7 @@ public slots:
     void slotownCloudWizardDone(int);
 
 protected:
-    void parseOptions(const QStringList& );
+    void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
     void enterNextLogFile();
@@ -81,12 +81,12 @@ protected:
 
 signals:
     void folderRemoved();
-    void folderStateChanged(Folder*);
+    void folderStateChanged(Folder *);
 
 protected slots:
-    void slotParseMessage(const QString&, QObject*);
+    void slotParseMessage(const QString &, QObject *);
     void slotCheckConnection();
-    void slotUseMonoIconsChanged( bool );
+    void slotUseMonoIconsChanged(bool);
     void slotCleanup();
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);
@@ -109,11 +109,11 @@ private:
     bool _showLogWindow;
     QString _logFile;
     QString _logDir;
-    int     _logExpire;
-    bool    _logFlush;
-    bool    _logDebug;
-    bool    _userTriggeredConnect;
-    bool    _debugMode;
+    int _logExpire;
+    bool _logFlush;
+    bool _logDebug;
+    bool _userTriggeredConnect;
+    bool _debugMode;
 
     ClientProxy _proxy;
 

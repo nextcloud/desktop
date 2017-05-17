@@ -22,7 +22,7 @@
 namespace OCC {
 
 OcsShareJob::OcsShareJob(AccountPtr account)
-: OcsJob(account)
+    : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
     connect(this, SIGNAL(jobFinished(QJsonDocument)), this, SLOT(jobDone(QJsonDocument)));
@@ -94,8 +94,8 @@ void OcsShareJob::setName(const QString &shareId, const QString &name)
     start();
 }
 
-void OcsShareJob::setPermissions(const QString &shareId, 
-                                 const Share::Permissions permissions)
+void OcsShareJob::setPermissions(const QString &shareId,
+    const Share::Permissions permissions)
 {
     appendPath(shareId);
     setVerb("PUT");
@@ -107,8 +107,8 @@ void OcsShareJob::setPermissions(const QString &shareId,
 }
 
 void OcsShareJob::createLinkShare(const QString &path,
-                                  const QString &name,
-                                  const QString &password)
+    const QString &name,
+    const QString &password)
 {
     setVerb("POST");
 
@@ -127,10 +127,10 @@ void OcsShareJob::createLinkShare(const QString &path,
     start();
 }
 
-void OcsShareJob::createShare(const QString& path, 
-                              const Share::ShareType shareType,
-                              const QString& shareWith,
-                              const Share::Permissions permissions)
+void OcsShareJob::createShare(const QString &path,
+    const Share::ShareType shareType,
+    const QString &shareWith,
+    const Share::Permissions permissions)
 {
     setVerb("POST");
 
@@ -155,5 +155,4 @@ void OcsShareJob::jobDone(QJsonDocument reply)
 {
     emit shareJobFinished(reply, _value);
 }
-
 }

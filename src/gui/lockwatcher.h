@@ -42,19 +42,19 @@ class LockWatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit LockWatcher(QObject* parent = 0);
+    explicit LockWatcher(QObject *parent = 0);
 
     /** Start watching a file.
      *
      * If the file is not locked later on, the fileUnlocked signal will be
      * emitted once.
      */
-    void addFile(const QString& path);
+    void addFile(const QString &path);
 
 signals:
     /** Emitted when one of the watched files is no longer
      *  being locked. */
-    void fileUnlocked(const QString& path);
+    void fileUnlocked(const QString &path);
 
 private slots:
     void checkFiles();
@@ -63,5 +63,4 @@ private:
     QSet<QString> _watchedPaths;
     QTimer _timer;
 };
-
 }

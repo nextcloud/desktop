@@ -71,7 +71,7 @@ public:
     UpdaterScheduler(QObject *parent);
 
 signals:
-    void updaterAnnouncement(const QString& title, const QString& msg);
+    void updaterAnnouncement(const QString &title, const QString &msg);
     void requestRestart();
 
 private slots:
@@ -79,7 +79,6 @@ private slots:
 
 private:
     QTimer _updateCheckTimer; /** Timer for the regular update check. */
-
 };
 
 /**
@@ -90,10 +89,14 @@ class OCUpdater : public Updater
 {
     Q_OBJECT
 public:
-    enum DownloadState { Unknown = 0, CheckingServer, UpToDate,
-                         Downloading, DownloadComplete,
-                         DownloadFailed, DownloadTimedOut,
-                         UpdateOnlyAvailableThroughSystem };
+    enum DownloadState { Unknown = 0,
+        CheckingServer,
+        UpToDate,
+        Downloading,
+        DownloadComplete,
+        DownloadFailed,
+        DownloadTimedOut,
+        UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url);
 
     bool performUpdate();
@@ -106,7 +109,7 @@ public:
 
 signals:
     void downloadStateChanged();
-    void newUpdateAvailable(const QString& header, const QString& message);
+    void newUpdateAvailable(const QString &header, const QString &message);
     void requestRestart();
 
 public slots:
@@ -123,13 +126,14 @@ private slots:
 protected:
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
     bool updateSucceeded() const;
-    QNetworkAccessManager* qnam() const { return _accessManager; }
+    QNetworkAccessManager *qnam() const { return _accessManager; }
     UpdateInfo updateInfo() const { return _updateInfo; }
+
 private:
     QUrl _updateUrl;
     int _state;
     QNetworkAccessManager *_accessManager;
-    QTimer *_timeoutWatchdog;  /** Timer to guard the timeout of an individual network request */
+    QTimer *_timeoutWatchdog; /** Timer to guard the timeout of an individual network request */
     UpdateInfo _updateInfo;
 };
 
@@ -137,16 +141,20 @@ private:
  * @brief Windows Updater Using NSIS
  * @ingroup gui
  */
-class NSISUpdater : public OCUpdater {
+class NSISUpdater : public OCUpdater
+{
     Q_OBJECT
 public:
-    enum UpdateState { NoUpdate = 0, UpdateAvailable, UpdateFailed };
+    enum UpdateState { NoUpdate = 0,
+        UpdateAvailable,
+        UpdateFailed };
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() Q_DECL_OVERRIDE;
 private slots:
     void slotSetSeenVersion();
     void slotDownloadFinished();
     void slotWriteFile();
+
 private:
     NSISUpdater::UpdateState updateStateOnStart();
     void showDialog(const UpdateInfo &info);
@@ -154,7 +162,6 @@ private:
     QScopedPointer<QTemporaryFile> _file;
     QString _targetFile;
     bool _showFallbackMessage;
-
 };
 
 /**
@@ -164,7 +171,8 @@ private:
  *
  *  @ingroup gui
  */
-class PassiveUpdateNotifier : public OCUpdater {
+class PassiveUpdateNotifier : public OCUpdater
+{
     Q_OBJECT
 public:
     explicit PassiveUpdateNotifier(const QUrl &url);
@@ -173,11 +181,8 @@ public:
 
 private:
     void versionInfoArrived(const UpdateInfo &info) Q_DECL_OVERRIDE;
-     QByteArray _runningAppVersion;
+    QByteArray _runningAppVersion;
 };
-
-
-
 }
 
 #endif // OC_UPDATER

@@ -27,7 +27,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcCookieJar, "sync.cookiejar", QtInfoMsg)
 
 namespace {
-  const unsigned int JAR_VERSION = 23;
+    const unsigned int JAR_VERSION = 23;
 }
 
 QDataStream &operator<<(QDataStream &stream, const QList<QNetworkCookie> &list)
@@ -51,8 +51,7 @@ QDataStream &operator>>(QDataStream &stream, QList<QNetworkCookie> &list)
 
     quint32 count;
     stream >> count;
-    for(quint32 i = 0; i < count; ++i)
-    {
+    for (quint32 i = 0; i < count; ++i) {
         QByteArray value;
         stream >> value;
         QList<QNetworkCookie> newCookies = QNetworkCookie::parseCookies(value);
@@ -67,8 +66,8 @@ QDataStream &operator>>(QDataStream &stream, QList<QNetworkCookie> &list)
     return stream;
 }
 
-CookieJar::CookieJar(QObject *parent) :
-    QNetworkCookieJar(parent)
+CookieJar::CookieJar(QObject *parent)
+    : QNetworkCookieJar(parent)
 {
 }
 
@@ -76,14 +75,14 @@ CookieJar::~CookieJar()
 {
 }
 
-bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url)
+bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
 {
-  if (QNetworkCookieJar::setCookiesFromUrl(cookieList, url)) {
-    Q_EMIT newCookiesForUrl(cookieList, url);
-    return true;
-  }
+    if (QNetworkCookieJar::setCookiesFromUrl(cookieList, url)) {
+        Q_EMIT newCookiesForUrl(cookieList, url);
+        return true;
+    }
 
-  return false;
+    return false;
 }
 
 QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl &url) const
@@ -124,7 +123,7 @@ void CookieJar::restore(const QString &fileName)
 QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cookies)
 {
     QList<QNetworkCookie> updatedList;
-    foreach(const QNetworkCookie &cookie, cookies) {
+    foreach (const QNetworkCookie &cookie, cookies) {
         if (cookie.expirationDate() > QDateTime::currentDateTime() && !cookie.isSessionCookie()) {
             updatedList << cookie;
         }

@@ -31,9 +31,9 @@ Q_LOGGING_CATEGORY(lcUpdater, "gui.updater", QtInfoMsg)
 
 Updater *Updater::_instance = 0;
 
-Updater * Updater::instance()
+Updater *Updater::instance()
 {
-    if(!_instance) {
+    if (!_instance) {
         _instance = create();
     }
     return _instance;
@@ -47,7 +47,7 @@ QUrl Updater::addQueryParams(const QUrl &url)
     if (Utility::isLinux()) {
         platform = QLatin1String("linux");
     } else if (Utility::isBSD()) {
-            platform = QLatin1String("bsd");
+        platform = QLatin1String("bsd");
     } else if (Utility::isWindows()) {
         platform = QLatin1String("win32");
     } else if (Utility::isMac()) {
@@ -55,12 +55,12 @@ QUrl Updater::addQueryParams(const QUrl &url)
     }
 
     QString sysInfo = getSystemInfo();
-    if( !sysInfo.isEmpty() ) {
-        paramUrl.addQueryItem(QLatin1String("client"), sysInfo );
+    if (!sysInfo.isEmpty()) {
+        paramUrl.addQueryItem(QLatin1String("client"), sysInfo);
     }
-    paramUrl.addQueryItem( QLatin1String("version"), clientVersion() );
-    paramUrl.addQueryItem( QLatin1String("platform"), platform );
-    paramUrl.addQueryItem( QLatin1String("oem"), theme->appName() );
+    paramUrl.addQueryItem(QLatin1String("version"), clientVersion());
+    paramUrl.addQueryItem(QLatin1String("platform"), platform);
+    paramUrl.addQueryItem(QLatin1String("oem"), theme->appName());
     return paramUrl;
 }
 
@@ -69,13 +69,14 @@ QString Updater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
-    process.start( QLatin1String("lsb_release -a") );
+    process.start(QLatin1String("lsb_release -a"));
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qCDebug(lcUpdater) << "Sys Info size: " << output.length();
-    if( output.length() > 1024 ) output.clear(); // don't send too much.
+    if (output.length() > 1024)
+        output.clear(); // don't send too much.
 
-    return QString::fromLocal8Bit( output.toBase64() );
+    return QString::fromLocal8Bit(output.toBase64());
 #else
     return QString::null;
 #endif
@@ -94,15 +95,14 @@ Updater *Updater::create()
     }
     updateBaseUrl = addQueryParams(updateBaseUrl);
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    updateBaseUrl.addQueryItem( QLatin1String("sparkle"), QLatin1String("true"));
+    updateBaseUrl.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
     return new SparkleUpdater(updateBaseUrl.toString());
-#elif defined (Q_OS_WIN32)
+#elif defined(Q_OS_WIN32)
     // the best we can do is notify about updates
     return new NSISUpdater(updateBaseUrl);
 #else
     return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
 #endif
-
 }
 
 
@@ -114,10 +114,10 @@ qint64 Updater::Helper::versionToInt(qint64 major, qint64 minor, qint64 patch, q
 qint64 Updater::Helper::currentVersionToInt()
 {
     return versionToInt(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR,
-                        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
+        MIRALL_VERSION_PATCH, MIRALL_VERSION_BUILD);
 }
 
-qint64 Updater::Helper::stringVersionToInt(const QString& version)
+qint64 Updater::Helper::stringVersionToInt(const QString &version)
 {
     if (version.isEmpty())
         return 0;

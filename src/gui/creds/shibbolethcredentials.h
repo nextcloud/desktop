@@ -25,13 +25,12 @@
 #include "creds/abstractcredentials.h"
 
 namespace QKeychain {
-    class Job;
+class Job;
 }
 
 class QAuthenticator;
 
-namespace OCC
-{
+namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcShibboleth)
 
@@ -43,7 +42,7 @@ class ShibbolethWebView;
  */
 class ShibbolethCredentials : public AbstractCredentials
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     ShibbolethCredentials();
@@ -51,10 +50,10 @@ public:
     /* create credentials for an already connected account */
     ShibbolethCredentials(const QNetworkCookie &cookie);
 
-    void setAccount(Account* account) Q_DECL_OVERRIDE;
+    void setAccount(Account *account) Q_DECL_OVERRIDE;
     QString authType() const Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;
     void askFromUser() Q_DECL_OVERRIDE;
@@ -70,16 +69,16 @@ public:
     static QByteArray shibCookieName();
 
 private Q_SLOTS:
-    void onShibbolethCookieReceived(const QNetworkCookie&);
+    void onShibbolethCookieReceived(const QNetworkCookie &);
     void slotBrowserRejected();
-    void slotReadJobDone(QKeychain::Job*);
-    void slotReplyFinished(QNetworkReply*);
-    void slotUserFetched(const QString& user);
+    void slotReadJobDone(QKeychain::Job *);
+    void slotReplyFinished(QNetworkReply *);
+    void slotUserFetched(const QString &user);
     void slotFetchUser();
     void slotFetchUserHelper();
 
 Q_SIGNALS:
-    void newCookie(const QNetworkCookie& cookie);
+    void newCookie(const QNetworkCookie &cookie);
 
 private:
     void storeShibCookie(const QNetworkCookie &cookie);

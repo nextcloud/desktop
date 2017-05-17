@@ -23,7 +23,7 @@
 namespace OCC {
 
 namespace Ui {
-class OwncloudConnectionMethodDialog;
+    class OwncloudConnectionMethodDialog;
 }
 
 /**
@@ -43,7 +43,7 @@ public:
         Client_Side_TLS,
         Back
     };
-    
+
     // The URL that was tried
     void setUrl(const QUrl &);
 
@@ -55,7 +55,6 @@ public slots:
 private:
     Ui::OwncloudConnectionMethodDialog *ui;
 };
-
 }
 
 #endif // OWNCLOUDCONNECTIONMETHODDIALOG_H

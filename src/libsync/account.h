@@ -50,10 +50,11 @@ class AccessManager;
  * @brief Reimplement this to handle SSL errors from libsync
  * @ingroup libsync
  */
-class AbstractSslErrorHandler {
+class AbstractSslErrorHandler
+{
 public:
     virtual ~AbstractSslErrorHandler() {}
-    virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate>*, AccountPtr) = 0;
+    virtual bool handleErrors(QList<QSslError>, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
 };
 
 /**
@@ -63,7 +64,8 @@ public:
  * The Account has a name and url. It also has information about credentials,
  * SSL errors and certificates.
  */
-class OWNCLOUDSYNC_EXPORT Account : public QObject {
+class OWNCLOUDSYNC_EXPORT Account : public QObject
+{
     Q_OBJECT
 public:
     static AccountPtr create();
@@ -81,7 +83,7 @@ public:
     void setDavUser(const QString &newDavUser);
 
     QImage avatar() const;
-    void setAvatar(const QImage& img);
+    void setAvatar(const QImage &img);
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -99,22 +101,22 @@ public:
      * @returns the (themeable) dav path for the account.
      */
     QString davPath() const;
-    void setDavPath(const QString&s) { _davPath = s; }
+    void setDavPath(const QString &s) { _davPath = s; }
     void setNonShib(bool nonShib);
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
 
     /** Holds the accounts credentials */
-    AbstractCredentials* credentials() const;
+    AbstractCredentials *credentials() const;
     void setCredentials(AbstractCredentials *cred);
 
 
     // For creating various network requests
-    QNetworkReply* sendRequest(const QByteArray &verb,
-                               const QUrl &url,
-                               QNetworkRequest req = QNetworkRequest(),
-                               QIODevice *data = 0);
+    QNetworkReply *sendRequest(const QByteArray &verb,
+        const QUrl &url,
+        QNetworkRequest req = QNetworkRequest(),
+        QIODevice *data = 0);
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();
@@ -140,8 +142,8 @@ public:
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
     // To be called by credentials only, for storing username and the like
-    QVariant credentialSetting(const QString& key) const;
-    void setCredentialSetting(const QString& key, const QVariant &value);
+    QVariant credentialSetting(const QString &key) const;
+    void setCredentialSetting(const QString &key, const QVariant &value);
 
     /** Assign a client certificate */
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
@@ -189,7 +191,7 @@ public:
     QString cookieJarPath();
 
     void resetNetworkAccessManager();
-    QNetworkAccessManager* networkAccessManager();
+    QNetworkAccessManager *networkAccessManager();
     QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager();
 
     /// Called by network jobs on credential errors, emits invalidCredentials()
@@ -202,21 +204,21 @@ signals:
     /// Triggered by handleInvalidCredentials()
     void invalidCredentials();
 
-    void credentialsFetched(AbstractCredentials* credentials);
-    void credentialsAsked(AbstractCredentials* credentials);
+    void credentialsFetched(AbstractCredentials *credentials);
+    void credentialsAsked(AbstractCredentials *credentials);
 
     /// Forwards from QNetworkAccessManager::proxyAuthenticationRequired().
-    void proxyAuthenticationRequired(const QNetworkProxy&, QAuthenticator*);
+    void proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
     // e.g. when the approved SSL certificates changed
-    void wantsAccountSaved(Account* acc);
+    void wantsAccountSaved(Account *acc);
 
-    void serverVersionChanged(Account* account, const QString& newVersion, const QString& oldVersion);
+    void serverVersionChanged(Account *account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
 
 protected Q_SLOTS:
-    void slotHandleSslErrors(QNetworkReply*,QList<QSslError>);
+    void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
     void slotCredentialsFetched();
     void slotCredentialsAsked();
 
@@ -247,7 +249,6 @@ private:
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     friend class AccountManager;
 };
-
 }
 
 Q_DECLARE_METATYPE(OCC::AccountPtr)

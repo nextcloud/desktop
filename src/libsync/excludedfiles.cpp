@@ -25,7 +25,7 @@ extern "C" {
 
 using namespace OCC;
 
-ExcludedFiles::ExcludedFiles(c_strlist_t** excludesPtr)
+ExcludedFiles::ExcludedFiles(c_strlist_t **excludesPtr)
     : _excludesPtr(excludesPtr)
 {
 }
@@ -35,14 +35,14 @@ ExcludedFiles::~ExcludedFiles()
     c_strlist_destroy(*_excludesPtr);
 }
 
-ExcludedFiles& ExcludedFiles::instance()
+ExcludedFiles &ExcludedFiles::instance()
 {
-    static c_strlist_t* globalExcludes;
+    static c_strlist_t *globalExcludes;
     static ExcludedFiles inst(&globalExcludes);
     return inst;
 }
 
-void ExcludedFiles::addExcludeFilePath(const QString& path)
+void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
     _excludeFiles.insert(path);
 }
@@ -60,7 +60,7 @@ bool ExcludedFiles::reloadExcludes()
     *_excludesPtr = NULL;
 
     bool success = true;
-    foreach (const QString& file, _excludeFiles) {
+    foreach (const QString &file, _excludeFiles) {
         if (csync_exclude_load(file.toUtf8(), _excludesPtr) < 0)
             success = false;
     }
@@ -68,22 +68,22 @@ bool ExcludedFiles::reloadExcludes()
 }
 
 bool ExcludedFiles::isExcluded(
-        const QString& filePath,
-        const QString& basePath,
-        bool excludeHidden) const
+    const QString &filePath,
+    const QString &basePath,
+    bool excludeHidden) const
 {
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
         return true;
     }
 
-    if( excludeHidden ) {
+    if (excludeHidden) {
         QString path = filePath;
         // Check all path subcomponents, but to *not* check the base path:
         // We do want to be able to sync with a hidden folder as the target.
         while (path.size() > basePath.size()) {
             QFileInfo fi(path);
-            if( fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.')) ) {
+            if (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.'))) {
                 return true;
             }
 

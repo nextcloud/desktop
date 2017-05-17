@@ -43,7 +43,8 @@ public:
     void restore(const QString &fileName);
 
 signals:
-    void newCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
+    void newCookiesForUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);
+
 private:
     QList<QNetworkCookie> removeExpired(const QList<QNetworkCookie> &cookies);
 };

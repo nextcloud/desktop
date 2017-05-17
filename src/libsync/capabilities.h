@@ -28,8 +28,8 @@ namespace OCC {
  * server
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT Capabilities {
-
+class OWNCLOUDSYNC_EXPORT Capabilities
+{
 public:
     Capabilities(const QVariantMap &capabilities);
 
@@ -38,7 +38,7 @@ public:
     bool sharePublicLinkAllowUpload() const;
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
-    int  sharePublicLinkExpireDateDays() const;
+    int sharePublicLinkExpireDateDays() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
     bool chunkingNg() const;
@@ -104,7 +104,6 @@ public:
 private:
     QVariantMap _capabilities;
 };
-
 }
 
 #endif //CAPABILITIES_H

@@ -12,158 +12,160 @@
 
 namespace OCC {
 
-void UpdateInfo::setVersion( const QString &v )
+void UpdateInfo::setVersion(const QString &v)
 {
-  mVersion = v;
+    mVersion = v;
 }
 
 QString UpdateInfo::version() const
 {
-  return mVersion;
+    return mVersion;
 }
 
-void UpdateInfo::setVersionString( const QString &v )
+void UpdateInfo::setVersionString(const QString &v)
 {
-  mVersionString = v;
+    mVersionString = v;
 }
 
 QString UpdateInfo::versionString() const
 {
-  return mVersionString;
+    return mVersionString;
 }
 
-void UpdateInfo::setWeb( const QString &v )
+void UpdateInfo::setWeb(const QString &v)
 {
-  mWeb = v;
+    mWeb = v;
 }
 
 QString UpdateInfo::web() const
 {
-  return mWeb;
+    return mWeb;
 }
 
-void UpdateInfo::setDownloadUrl( const QString &v )
+void UpdateInfo::setDownloadUrl(const QString &v)
 {
-  mDownloadUrl = v;
+    mDownloadUrl = v;
 }
 
 QString UpdateInfo::downloadUrl() const
 {
-  return mDownloadUrl;
+    return mDownloadUrl;
 }
 
-UpdateInfo UpdateInfo::parseElement( const QDomElement &element, bool *ok )
+UpdateInfo UpdateInfo::parseElement(const QDomElement &element, bool *ok)
 {
-  if ( element.tagName() != QLatin1String("owncloudclient") ) {
-    qCCritical(lcUpdater) << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
-    if ( ok ) *ok = false;
-    return UpdateInfo();
-  }
-
-  UpdateInfo result = UpdateInfo();
-
-  QDomNode n;
-  for( n = element.firstChild(); !n.isNull(); n = n.nextSibling() ) {
-    QDomElement e = n.toElement();
-    if ( e.tagName() == QLatin1String("version") ) {
-      result.setVersion( e.text() );
+    if (element.tagName() != QLatin1String("owncloudclient")) {
+        qCCritical(lcUpdater) << "Expected 'owncloudclient', got '" << element.tagName() << "'.";
+        if (ok)
+            *ok = false;
+        return UpdateInfo();
     }
-    else if ( e.tagName() == QLatin1String("versionstring") ) {
-      result.setVersionString( e.text() );
+
+    UpdateInfo result = UpdateInfo();
+
+    QDomNode n;
+    for (n = element.firstChild(); !n.isNull(); n = n.nextSibling()) {
+        QDomElement e = n.toElement();
+        if (e.tagName() == QLatin1String("version")) {
+            result.setVersion(e.text());
+        } else if (e.tagName() == QLatin1String("versionstring")) {
+            result.setVersionString(e.text());
+        } else if (e.tagName() == QLatin1String("web")) {
+            result.setWeb(e.text());
+        } else if (e.tagName() == QLatin1String("downloadurl")) {
+            result.setDownloadUrl(e.text());
+        }
     }
-    else if ( e.tagName() == QLatin1String("web") ) {
-      result.setWeb( e.text() );
+
+
+    if (ok)
+        *ok = true;
+    return result;
+}
+
+void UpdateInfo::writeElement(QXmlStreamWriter &xml)
+{
+    xml.writeStartElement(QLatin1String("owncloudclient"));
+    if (!version().isEmpty()) {
+        xml.writeTextElement(QLatin1String("version"), version());
     }
-    else if ( e.tagName() == QLatin1String("downloadurl") ) {
-        result.setDownloadUrl( e.text() );
+    if (!versionString().isEmpty()) {
+        xml.writeTextElement(QLatin1String("versionstring"), versionString());
     }
-  }
-
-
-  if ( ok ) *ok = true;
-  return result;
+    if (!web().isEmpty()) {
+        xml.writeTextElement(QLatin1String("web"), web());
+    }
+    if (!downloadUrl().isEmpty()) {
+        xml.writeTextElement(QLatin1String("downloadurl"), web());
+    }
+    xml.writeEndElement();
 }
 
-void UpdateInfo::writeElement( QXmlStreamWriter &xml )
+UpdateInfo UpdateInfo::parseFile(const QString &filename, bool *ok)
 {
-  xml.writeStartElement( QLatin1String("owncloudclient") );
-  if ( !version().isEmpty() ) {
-    xml.writeTextElement(  QLatin1String("version"), version() );
-  }
-  if ( !versionString().isEmpty() ) {
-    xml.writeTextElement(  QLatin1String("versionstring"), versionString() );
-  }
-  if ( !web().isEmpty() ) {
-    xml.writeTextElement(  QLatin1String("web"), web() );
-  }
-  if ( !downloadUrl().isEmpty() ) {
-    xml.writeTextElement(  QLatin1String("downloadurl"), web() );
-  }
-  xml.writeEndElement();
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
+        if (ok)
+            *ok = false;
+        return UpdateInfo();
+    }
+
+    QString errorMsg;
+    int errorLine, errorCol;
+    QDomDocument doc;
+    if (!doc.setContent(&file, false, &errorMsg, &errorLine, &errorCol)) {
+        qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
+        if (ok)
+            *ok = false;
+        return UpdateInfo();
+    }
+
+    bool documentOk;
+    UpdateInfo c = parseElement(doc.documentElement(), &documentOk);
+    if (ok) {
+        *ok = documentOk;
+    }
+    return c;
 }
 
-UpdateInfo UpdateInfo::parseFile( const QString &filename, bool *ok )
+UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
 {
-  QFile file( filename );
-  if ( !file.open( QIODevice::ReadOnly ) ) {
-    qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
-    if ( ok ) *ok = false;
-    return UpdateInfo();
-  }
+    QString errorMsg;
+    int errorLine, errorCol;
+    QDomDocument doc;
+    if (!doc.setContent(xml, false, &errorMsg, &errorLine, &errorCol)) {
+        qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
+        if (ok)
+            *ok = false;
+        return UpdateInfo();
+    }
 
-  QString errorMsg;
-  int errorLine, errorCol;
-  QDomDocument doc;
-  if ( !doc.setContent( &file, false, &errorMsg, &errorLine, &errorCol ) ) {
-    qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
-    if ( ok ) *ok = false;
-    return UpdateInfo();
-  }
-
-  bool documentOk;
-  UpdateInfo c = parseElement( doc.documentElement(), &documentOk );
-  if ( ok ) {
-    *ok = documentOk;
-  }
-  return c;
+    bool documentOk;
+    UpdateInfo c = parseElement(doc.documentElement(), &documentOk);
+    if (ok) {
+        *ok = documentOk;
+    }
+    return c;
 }
 
-UpdateInfo UpdateInfo::parseString( const QString &xml, bool *ok )
+bool UpdateInfo::writeFile(const QString &filename)
 {
-  QString errorMsg;
-  int errorLine, errorCol;
-  QDomDocument doc;
-  if ( !doc.setContent( xml, false, &errorMsg, &errorLine, &errorCol ) ) {
-    qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
-    if ( ok ) *ok = false;
-    return UpdateInfo();
-  }
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
+        return false;
+    }
 
-  bool documentOk;
-  UpdateInfo c = parseElement( doc.documentElement(), &documentOk );
-  if ( ok ) {
-    *ok = documentOk;
-  }
-  return c;
-}
+    QXmlStreamWriter xml(&file);
+    xml.setAutoFormatting(true);
+    xml.setAutoFormattingIndent(2);
+    xml.writeStartDocument(QLatin1String("1.0"));
+    writeElement(xml);
+    xml.writeEndDocument();
+    file.close();
 
-bool UpdateInfo::writeFile( const QString &filename )
-{
-  QFile file( filename );
-  if ( !file.open( QIODevice::WriteOnly ) ) {
-    qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
-    return false;
-  }
-
-  QXmlStreamWriter xml( &file );
-  xml.setAutoFormatting( true );
-  xml.setAutoFormattingIndent( 2 );
-  xml.writeStartDocument( QLatin1String("1.0") );
-  writeElement( xml );
-  xml.writeEndDocument();
-  file.close();
-
-  return true;
+    return true;
 }
 
 } // namespace OCC

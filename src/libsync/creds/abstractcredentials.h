@@ -23,8 +23,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
-namespace OCC
-{
+namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
 {
@@ -40,11 +39,11 @@ public:
      * Calling Account::setCredentials() will call this function.
      * Credentials only live as long as the underlying account object.
      */
-    virtual void setAccount(Account* account);
+    virtual void setAccount(Account *account);
 
     virtual QString authType() const = 0;
     virtual QString user() const = 0;
-    virtual QNetworkAccessManager* getQNAM() const = 0;
+    virtual QNetworkAccessManager *getQNAM() const = 0;
     virtual bool ready() const = 0;
     virtual void fetchFromKeychain() = 0;
     virtual void askFromUser() = 0;
@@ -75,7 +74,7 @@ Q_SIGNALS:
     void asked();
 
 protected:
-    Account* _account;
+    Account *_account;
 };
 
 } // namespace OCC

@@ -27,10 +27,10 @@ namespace OCC {
  *
  * Fetching sharees from the OCS Sharee API
  */
-class OcsShareeJob : public OcsJob {
+class OcsShareeJob : public OcsJob
+{
     Q_OBJECT
 public:
-
     explicit OcsShareeJob(AccountPtr account);
 
     /**
@@ -38,7 +38,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getSharees(const QString& search, const QString& itemType, int page = 1, int perPage = 50);
+    void getSharees(const QString &search, const QString &itemType, int page = 1, int perPage = 50);
 signals:
     /**
      * Result of the OCS request
@@ -49,9 +49,7 @@ signals:
 
 private slots:
     void jobDone(const QJsonDocument &reply);
-
 };
-
 }
 
 #endif // OCSSHAREEJOB_H

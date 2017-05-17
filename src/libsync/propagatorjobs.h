@@ -36,11 +36,16 @@ static const char checkSumAdlerC[] = "Adler32";
  * @brief Declaration of the other propagation jobs
  * @ingroup libsync
  */
-class PropagateLocalRemove : public PropagateItemJob {
+class PropagateLocalRemove : public PropagateItemJob
+{
     Q_OBJECT
 public:
-    PropagateLocalRemove (OwncloudPropagator* propagator,const SyncFileItemPtr& item)  : PropagateItemJob(propagator, item) {}
+    PropagateLocalRemove(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+    {
+    }
     void start() Q_DECL_OVERRIDE;
+
 private:
     bool removeRecursively(const QString &path);
     QString _error;
@@ -50,11 +55,15 @@ private:
  * @brief The PropagateLocalMkdir class
  * @ingroup libsync
  */
-class PropagateLocalMkdir : public PropagateItemJob {
+class PropagateLocalMkdir : public PropagateItemJob
+{
     Q_OBJECT
 public:
-    PropagateLocalMkdir (OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item), _deleteExistingFile(false) {}
+    PropagateLocalMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+        , _deleteExistingFile(false)
+    {
+    }
     void start() Q_DECL_OVERRIDE;
 
     /**
@@ -73,12 +82,15 @@ private:
  * @brief The PropagateLocalRename class
  * @ingroup libsync
  */
-class PropagateLocalRename : public PropagateItemJob {
+class PropagateLocalRename : public PropagateItemJob
+{
     Q_OBJECT
 public:
-    PropagateLocalRename (OwncloudPropagator* propagator,const SyncFileItemPtr& item)  : PropagateItemJob(propagator, item) {}
+    PropagateLocalRename(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+    {
+    }
     void start() Q_DECL_OVERRIDE;
     JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->_isDirectory ? WaitForFinished : FullParallelism; }
 };
-
 }

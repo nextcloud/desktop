@@ -38,35 +38,33 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ActivityListModel(QWidget *parent=0);
+    explicit ActivityListModel(QWidget *parent = 0);
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
-    bool canFetchMore(const QModelIndex& ) const Q_DECL_OVERRIDE;
-    void fetchMore(const QModelIndex&) Q_DECL_OVERRIDE;
+    bool canFetchMore(const QModelIndex &) const Q_DECL_OVERRIDE;
+    void fetchMore(const QModelIndex &) Q_DECL_OVERRIDE;
 
     ActivityList activityList() { return _finalList; }
 
 public slots:
-    void slotRefreshActivity(AccountState* ast);
-    void slotRemoveAccount( AccountState *ast );
+    void slotRefreshActivity(AccountState *ast);
+    void slotRemoveAccount(AccountState *ast);
 
 private slots:
-    void slotActivitiesReceived(const QJsonDocument& json, int statusCode);
+    void slotActivitiesReceived(const QJsonDocument &json, int statusCode);
 
 signals:
-    void activityJobStatusCode(AccountState* ast, int statusCode);
+    void activityJobStatusCode(AccountState *ast, int statusCode);
 
 private:
-    void startFetchJob(AccountState* s);
+    void startFetchJob(AccountState *s);
     void combineActivityLists();
 
-    QMap<AccountState*, ActivityList> _activityLists;
+    QMap<AccountState *, ActivityList> _activityLists;
     ActivityList _finalList;
-    QSet<AccountState*> _currentlyFetching;
+    QSet<AccountState *> _currentlyFetching;
 };
-
-
 }
 #endif // ACTIVITYLISTMODEL_H

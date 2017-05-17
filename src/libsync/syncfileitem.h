@@ -24,10 +24,10 @@
 #include <csync.h>
 
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
- // openSuse 12.3 didn't like enum bitfields.
- #define BITFIELD(size)
+// openSuse 12.3 didn't like enum bitfields.
+#define BITFIELD(size)
 #else
- #define BITFIELD(size) :size
+#define BITFIELD(size) :size
 #endif
 
 
@@ -37,18 +37,20 @@ namespace OCC {
  * @brief The SyncFileItem class
  * @ingroup libsync
  */
-class SyncFileItem {
+class SyncFileItem
+{
 public:
     enum Direction {
-      None = 0,
-      Up,
-      Down };
+        None = 0,
+        Up,
+        Down
+    };
 
     enum Type {
-      UnknownType = 0,
-      File      = CSYNC_FTW_TYPE_FILE,
-      Directory = CSYNC_FTW_TYPE_DIR,
-      SoftLink  = CSYNC_FTW_TYPE_SLINK
+        UnknownType = 0,
+        File = CSYNC_FTW_TYPE_FILE,
+        Directory = CSYNC_FTW_TYPE_DIR,
+        SoftLink = CSYNC_FTW_TYPE_SLINK
     };
 
     enum Status {
@@ -64,20 +66,31 @@ public:
         Restoration ///< The file was restored because what should have been done was not allowed
     };
 
-    SyncFileItem() : _type(UnknownType),  _direction(None), _isDirectory(false),
-         _serverHasIgnoredFiles(false), _hasBlacklistEntry(false),
-         _errorMayBeBlacklisted(false), _status(NoStatus),
-        _isRestoration(false),
-        _httpErrorCode(0), _affectedItems(1),
-        _instruction(CSYNC_INSTRUCTION_NONE), _modtime(0), _size(0), _inode(0)
+    SyncFileItem()
+        : _type(UnknownType)
+        , _direction(None)
+        , _isDirectory(false)
+        , _serverHasIgnoredFiles(false)
+        , _hasBlacklistEntry(false)
+        , _errorMayBeBlacklisted(false)
+        , _status(NoStatus)
+        , _isRestoration(false)
+        , _httpErrorCode(0)
+        , _affectedItems(1)
+        , _instruction(CSYNC_INSTRUCTION_NONE)
+        , _modtime(0)
+        , _size(0)
+        , _inode(0)
     {
     }
 
-    friend bool operator==(const SyncFileItem& item1, const SyncFileItem& item2) {
+    friend bool operator==(const SyncFileItem &item1, const SyncFileItem &item2)
+    {
         return item1._originalFile == item2._originalFile;
     }
 
-    friend bool operator<(const SyncFileItem& item1, const SyncFileItem& item2) {
+    friend bool operator<(const SyncFileItem &item1, const SyncFileItem &item2)
+    {
         // Sort by destination
         auto d1 = item1.destination();
         auto d2 = item2.destination();
@@ -93,7 +106,9 @@ public:
         // Find the length of the largest prefix
         int prefixL = 0;
         auto minSize = std::min(d1.size(), d2.size());
-        while (prefixL < minSize && data1[prefixL] == data2[prefixL]) { prefixL++; }
+        while (prefixL < minSize && data1[prefixL] == data2[prefixL]) {
+            prefixL++;
+        }
 
         if (prefixL == d2.size())
             return false;
@@ -108,14 +123,16 @@ public:
         return data1[prefixL] < data2[prefixL];
     }
 
-    QString destination() const {
+    QString destination() const
+    {
         if (!_renameTarget.isEmpty()) {
             return _renameTarget;
         }
         return _file;
     }
 
-    bool isEmpty() const {
+    bool isEmpty() const
+    {
         return _file.isEmpty();
     }
 
@@ -126,12 +143,13 @@ public:
      * issues list on the activity page and for checking whether an
      * item should be announced in the notification message.
      */
-    bool hasErrorStatus() const {
+    bool hasErrorStatus() const
+    {
         return _status == SyncFileItem::SoftError
-                || _status == SyncFileItem::NormalError
-                || _status == SyncFileItem::FatalError
-                || _status == SyncFileItem::Conflict
-                || !_errorString.isEmpty();
+            || _status == SyncFileItem::NormalError
+            || _status == SyncFileItem::FatalError
+            || _status == SyncFileItem::Conflict
+            || !_errorString.isEmpty();
     }
 
     // Variables useful for everybody
@@ -145,54 +163,55 @@ public:
     /// Whether there's an entry in the blacklist table.
     /// Note: that entry may have retries left, so this can be true
     /// without the status being FileIgnored.
-    bool                 _hasBlacklistEntry BITFIELD(1);
+    bool _hasBlacklistEntry BITFIELD(1);
 
     /** If true and NormalError, this error may be blacklisted
      *
      * Note that non-local errors (httpErrorCode!=0) may also be
      * blacklisted independently of this flag.
      */
-    bool                 _errorMayBeBlacklisted BITFIELD(1);
+    bool _errorMayBeBlacklisted BITFIELD(1);
 
     // Variables useful to report to the user
-    Status               _status BITFIELD(4);
-    bool                 _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
-    quint16              _httpErrorCode;
-    QString              _errorString; // Contains a string only in case of error
-    QByteArray           _responseTimeStamp;
-    quint32              _affectedItems; // the number of affected items by the operation on this item.
-     // usually this value is 1, but for removes on dirs, it might be much higher.
+    Status _status BITFIELD(4);
+    bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
+    quint16 _httpErrorCode;
+    QString _errorString; // Contains a string only in case of error
+    QByteArray _responseTimeStamp;
+    quint32 _affectedItems; // the number of affected items by the operation on this item.
+    // usually this value is 1, but for removes on dirs, it might be much higher.
 
     // Variables used by the propagator
     csync_instructions_e _instruction;
-    QString              _originalFile; // as it is in the csync tree
-    time_t               _modtime;
-    QByteArray           _etag;
-    quint64              _size;
-    quint64              _inode;
-    QByteArray           _fileId;
-    QByteArray           _remotePerm;
-    QByteArray           _contentChecksum;
-    QByteArray           _contentChecksumType;
-    QString              _directDownloadUrl;
-    QString              _directDownloadCookies;
+    QString _originalFile; // as it is in the csync tree
+    time_t _modtime;
+    QByteArray _etag;
+    quint64 _size;
+    quint64 _inode;
+    QByteArray _fileId;
+    QByteArray _remotePerm;
+    QByteArray _contentChecksum;
+    QByteArray _contentChecksumType;
+    QString _directDownloadUrl;
+    QString _directDownloadCookies;
 
-    struct {
-        quint64     _other_size;
-        time_t      _other_modtime;
-        QByteArray  _other_etag;
-        QByteArray  _other_fileId;
+    struct
+    {
+        quint64 _other_size;
+        time_t _other_modtime;
+        QByteArray _other_etag;
+        QByteArray _other_fileId;
         enum csync_instructions_e _other_instruction BITFIELD(16);
     } log;
 };
 
 typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
-inline bool operator<(const SyncFileItemPtr& item1, const SyncFileItemPtr& item2) {
+inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
+{
     return *item1 < *item2;
 }
 
 typedef QVector<SyncFileItemPtr> SyncFileItemVector;
-
 }
 
 Q_DECLARE_METATYPE(OCC::SyncFileItem)

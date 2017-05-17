@@ -23,7 +23,7 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcShibboleth)
 
-ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
+ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject *parent)
     : JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
 {
     setIgnoreCredentialFailure(true);
@@ -32,11 +32,10 @@ ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject* parent)
 
 void ShibbolethUserJob::slotJsonReceived(const QJsonDocument &json, int statusCode)
 {
-    if( statusCode != 100 ) {
+    if (statusCode != 100) {
         qCWarning(lcShibboleth) << "JSON Api call resulted in status code != 100";
     }
-    QString user =  json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
+    QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
     emit userFetched(user);
 }
-
 }

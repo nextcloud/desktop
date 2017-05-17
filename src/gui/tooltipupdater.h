@@ -37,16 +37,16 @@ class ToolTipUpdater : public QObject
 {
     Q_OBJECT
 public:
-    ToolTipUpdater(QTreeView* treeView);
+    ToolTipUpdater(QTreeView *treeView);
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* ev) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *obj, QEvent *ev) Q_DECL_OVERRIDE;
 
 private slots:
-    void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 
 private:
-    QTreeView* _treeView;
+    QTreeView *_treeView;
     QPoint _toolTipPos;
 };
 

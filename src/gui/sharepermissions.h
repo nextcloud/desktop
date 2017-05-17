@@ -23,11 +23,11 @@ namespace OCC {
  * Possible permissions, must match the server permission constants
  */
 enum SharePermission {
-    SharePermissionRead   =  1,
-    SharePermissionUpdate =  2,
-    SharePermissionCreate =  4,
-    SharePermissionDelete =  8,
-    SharePermissionShare  = 16,
+    SharePermissionRead = 1,
+    SharePermissionUpdate = 2,
+    SharePermissionCreate = 4,
+    SharePermissionDelete = 8,
+    SharePermissionShare = 16,
     SharePermissionDefault = 1 << 30
 };
 Q_DECLARE_FLAGS(SharePermissions, SharePermission)

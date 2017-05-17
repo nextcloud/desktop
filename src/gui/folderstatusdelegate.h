@@ -30,26 +30,26 @@ public:
     FolderStatusDelegate();
 
     enum datarole { FolderAliasRole = Qt::UserRole + 100,
-                    HeaderRole,
-                    FolderPathRole, // for a SubFolder it's the complete path
-                    FolderSecondPathRole,
-                    FolderErrorMsg,
-                    FolderSyncPaused,
-                    FolderStatusIconRole,
-                    FolderAccountConnected,
+        HeaderRole,
+        FolderPathRole, // for a SubFolder it's the complete path
+        FolderSecondPathRole,
+        FolderErrorMsg,
+        FolderSyncPaused,
+        FolderStatusIconRole,
+        FolderAccountConnected,
 
-                    SyncProgressOverallPercent,
-                    SyncProgressOverallString,
-                    SyncProgressItemString,
-                    WarningCount,
-                    SyncRunning,
+        SyncProgressOverallPercent,
+        SyncProgressOverallString,
+        SyncProgressItemString,
+        WarningCount,
+        SyncRunning,
 
-                    AddButton // 1 = enabled; 2 = disabled
-                  };
-    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
-                      const QModelIndex& index ) Q_DECL_OVERRIDE;
+        AddButton // 1 = enabled; 2 = disabled
+    };
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+        const QModelIndex &index) Q_DECL_OVERRIDE;
 
 
     /**
@@ -57,9 +57,9 @@ public:
      */
     static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
+
 private:
     static QString addFolderText();
 };
 
 } // namespace OCC
-

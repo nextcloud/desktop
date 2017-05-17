@@ -23,7 +23,7 @@ class IgnoreListEditor;
 class SyncLogDialog;
 
 namespace Ui {
-class GeneralSettings;
+    class GeneralSettings;
 }
 
 /**
@@ -48,7 +48,6 @@ private slots:
     void loadMiscSettings();
 
 private:
-
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
     QPointer<SyncLogDialog> _syncLogDialog;

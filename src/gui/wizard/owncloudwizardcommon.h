@@ -19,34 +19,32 @@
 class QVariant;
 class QLabel;
 
-namespace OCC
-{
+namespace OCC {
 
-namespace WizardCommon
-{
+namespace WizardCommon {
 
-void setupCustomMedia( const QVariant& variant, QLabel *label );
-QString titleTemplate();
-QString subTitleTemplate();
-void initErrorLabel(QLabel* errorLabel);
+    void setupCustomMedia(const QVariant &variant, QLabel *label);
+    QString titleTemplate();
+    QString subTitleTemplate();
+    void initErrorLabel(QLabel *errorLabel);
 
-enum AuthType {
-    HttpCreds,
-    Shibboleth
-};
+    enum AuthType {
+        HttpCreds,
+        Shibboleth
+    };
 
-enum SyncMode {
-    SelectiveMode,
-    BoxMode
-};
+    enum SyncMode {
+        SelectiveMode,
+        BoxMode
+    };
 
-enum Pages {
-    Page_ServerSetup,
-    Page_HttpCreds,
-    Page_ShibbolethCreds,
-    Page_AdvancedSetup,
-    Page_Result
-};
+    enum Pages {
+        Page_ServerSetup,
+        Page_HttpCreds,
+        Page_ShibbolethCreds,
+        Page_AdvancedSetup,
+        Page_Result
+    };
 
 } // ns WizardCommon
 

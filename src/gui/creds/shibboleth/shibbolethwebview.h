@@ -24,8 +24,7 @@
 class QNetworkCookie;
 class QUrl;
 
-namespace OCC
-{
+namespace OCC {
 
 class ShibbolethCookieJar;
 
@@ -35,32 +34,32 @@ class ShibbolethCookieJar;
  */
 class ShibbolethWebView : public QWebView
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  ShibbolethWebView(AccountPtr account, QWidget* parent = 0);
-  ShibbolethWebView(AccountPtr account, ShibbolethCookieJar* jar, QWidget* parent = 0);
-  ~ShibbolethWebView();
+    ShibbolethWebView(AccountPtr account, QWidget *parent = 0);
+    ShibbolethWebView(AccountPtr account, ShibbolethCookieJar *jar, QWidget *parent = 0);
+    ~ShibbolethWebView();
 
-  void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
-  void shibbolethCookieReceived(const QNetworkCookie &cookie);
-  void rejected();
+    void shibbolethCookieReceived(const QNetworkCookie &cookie);
+    void rejected();
 
 private Q_SLOTS:
-  void onNewCookiesForUrl(const QList<QNetworkCookie>& cookieList, const QUrl& url);
-  void slotLoadStarted();
-  void slotLoadFinished(bool success);
+    void onNewCookiesForUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url);
+    void slotLoadStarted();
+    void slotLoadFinished(bool success);
 
 protected:
-  void accept();
+    void accept();
 
 private:
-  void setup(AccountPtr account, ShibbolethCookieJar* jar);
-  AccountPtr _account;
-  bool _accepted;
-  bool _cursorOverriden;
+    void setup(AccountPtr account, ShibbolethCookieJar *jar);
+    AccountPtr _account;
+    bool _accepted;
+    bool _cursorOverriden;
 };
 
 } // namespace OCC

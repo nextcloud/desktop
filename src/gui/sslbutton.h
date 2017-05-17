@@ -43,10 +43,10 @@ public slots:
     void slotUpdateMenu();
 
 private:
-    QMenu* buildCertMenu(QMenu *parent, const QSslCertificate& cert,
-                         const QList<QSslCertificate>& userApproved, int pos);
+    QMenu *buildCertMenu(QMenu *parent, const QSslCertificate &cert,
+        const QList<QSslCertificate> &userApproved, int pos);
     QPointer<AccountState> _accountState;
-    QMenu* _menu;
+    QMenu *_menu;
 };
 
 } // namespace OCC

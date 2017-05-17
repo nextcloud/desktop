@@ -27,17 +27,19 @@ class FolderWatcher;
  * @brief The WatcherThread class
  * @ingroup gui
  */
-class WatcherThread : public QThread {
+class WatcherThread : public QThread
+{
     Q_OBJECT
 public:
-    WatcherThread(const QString &path) :
-        QThread(),
-        _path(path),
-        _directory(0),
-        _resultEvent(0),
-        _stopEvent(0),
-        _done(false)
-    {}
+    WatcherThread(const QString &path)
+        : QThread()
+        , _path(path)
+        , _directory(0)
+        , _resultEvent(0)
+        , _stopEvent(0)
+        , _done(false)
+    {
+    }
 
     ~WatcherThread();
 
@@ -46,7 +48,7 @@ public:
 protected:
     void run();
     void watchChanges(size_t fileNotifyBufferSize,
-                      bool* increaseBufferSize);
+        bool *increaseBufferSize);
     void closeHandle();
 
 signals:
@@ -64,10 +66,11 @@ private:
  * @brief Windows implementation of FolderWatcher
  * @ingroup gui
  */
-class FolderWatcherPrivate : public QObject {
+class FolderWatcherPrivate : public QObject
+{
     Q_OBJECT
 public:
-    FolderWatcherPrivate(FolderWatcher *p, const QString& path);
+    FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
     void addPath(const QString &) {}
@@ -77,7 +80,6 @@ private:
     FolderWatcher *_parent;
     WatcherThread *_thread;
 };
-
 }
 
 #endif // MIRALL_FOLDERWATCHER_WIN_H

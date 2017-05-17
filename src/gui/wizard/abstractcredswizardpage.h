@@ -17,8 +17,7 @@
 
 #include <QWizardPage>
 
-namespace OCC
-{
+namespace OCC {
 
 class AbstractCredentials;
 
@@ -30,7 +29,7 @@ class AbstractCredentialsWizardPage : public QWizardPage
 {
 public:
     void cleanupPage() Q_DECL_OVERRIDE;
-    virtual AbstractCredentials* getCredentials() const = 0;
+    virtual AbstractCredentials *getCredentials() const = 0;
 };
 
 } // namespace OCC

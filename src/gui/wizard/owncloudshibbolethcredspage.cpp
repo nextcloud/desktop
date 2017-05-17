@@ -23,21 +23,21 @@
 #include "creds/shibbolethcredentials.h"
 #include "creds/shibboleth/shibbolethwebview.h"
 
-namespace OCC
-{
+namespace OCC {
 
 OwncloudShibbolethCredsPage::OwncloudShibbolethCredsPage()
-    : AbstractCredentialsWizardPage(),
-      _browser(0),
-      _afterInitialSetup(false)
-{}
+    : AbstractCredentialsWizardPage()
+    , _browser(0)
+    , _afterInitialSetup(false)
+{
+}
 
 void OwncloudShibbolethCredsPage::setupBrowser()
 {
     if (!_browser.isNull()) {
         return;
     }
-    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard*>(wizard());
+    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     AccountPtr account = ocWizard->account();
 
     // we need to reset the cookie jar to drop temporary cookies (like the shib cookie)
@@ -49,10 +49,10 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     qnam->setCookieJar(jar);
 
     _browser = new ShibbolethWebView(account);
-    connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie&)),
-            this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie&)), Qt::QueuedConnection);
+    connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie &)),
+        this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie &)), Qt::QueuedConnection);
     connect(_browser, SIGNAL(rejected()),
-            this, SLOT(slotBrowserRejected()));
+        this, SLOT(slotBrowserRejected()));
 
     _browser->move(ocWizard->x(), ocWizard->y());
     _browser->show();
@@ -84,7 +84,7 @@ void OwncloudShibbolethCredsPage::initializePage()
 
 int OwncloudShibbolethCredsPage::nextId() const
 {
-  return WizardCommon::Page_AdvancedSetup;
+    return WizardCommon::Page_AdvancedSetup;
 }
 
 void OwncloudShibbolethCredsPage::setConnected()
@@ -92,7 +92,7 @@ void OwncloudShibbolethCredsPage::setConnected()
     wizard()->show();
 }
 
-AbstractCredentials* OwncloudShibbolethCredsPage::getCredentials() const
+AbstractCredentials *OwncloudShibbolethCredsPage::getCredentials() const
 {
     return new ShibbolethCredentials(_cookie);
 }

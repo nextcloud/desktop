@@ -26,13 +26,12 @@
 #include "accessmanager.h"
 #include "utility.h"
 
-namespace OCC
-{
+namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccessManager, "sync.accessmanager", QtInfoMsg)
 
-AccessManager::AccessManager(QObject* parent)
-    : QNetworkAccessManager (parent)
+AccessManager::AccessManager(QObject *parent)
+    : QNetworkAccessManager(parent)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && defined(Q_OS_MAC)
     // FIXME Workaround http://stackoverflow.com/a/15707366/2941 https://bugreports.qt-project.org/browse/QTBUG-30434
@@ -48,10 +47,10 @@ AccessManager::AccessManager(QObject* parent)
     setCookieJar(new CookieJar);
 }
 
-void AccessManager::setRawCookie(const QByteArray &rawCookie, const  QUrl &url)
+void AccessManager::setRawCookie(const QByteArray &rawCookie, const QUrl &url)
 {
     QNetworkCookie cookie(rawCookie.left(rawCookie.indexOf('=')),
-                          rawCookie.mid(rawCookie.indexOf('=')+1));
+        rawCookie.mid(rawCookie.indexOf('=') + 1));
     qCDebug(lcAccessManager) << cookie.name() << cookie.value();
     QList<QNetworkCookie> cookieList;
     cookieList.append(cookie);
@@ -60,7 +59,7 @@ void AccessManager::setRawCookie(const QByteArray &rawCookie, const  QUrl &url)
     jar->setCookiesFromUrl(cookieList, url);
 }
 
-QNetworkReply* AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest& request, QIODevice* outgoingData)
+QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest newRequest(request);
 
@@ -78,7 +77,7 @@ QNetworkReply* AccessManager::createRequest(QNetworkAccessManager::Operation op,
     // For PROPFIND (assumed to be a WebDAV op), set xml/utf8 as content type/encoding
     // This needs extension
     if (verb == "PROPFIND") {
-        newRequest.setHeader( QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
+        newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
     }
     return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
 }

@@ -22,7 +22,7 @@
 namespace OCC {
 
 namespace Ui {
-class AddCertificateDialog;
+    class AddCertificateDialog;
 }
 
 /**
@@ -46,9 +46,8 @@ private slots:
 
 private:
     Ui::AddCertificateDialog *ui;
-
 };
 
-}//End namespace OCC
+} //End namespace OCC
 
 #endif // ADDCERTIFICATEDIALOG_H

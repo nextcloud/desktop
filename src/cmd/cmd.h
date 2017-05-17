@@ -22,12 +22,17 @@
  * @brief Helper class for command line client
  * @ingroup cmd
  */
-class Cmd : public QObject {
+class Cmd : public QObject
+{
     Q_OBJECT
 public:
-    Cmd() : QObject() { }
+    Cmd()
+        : QObject()
+    {
+    }
 public slots:
-    void transmissionProgressSlot() {
+    void transmissionProgressSlot()
+    {
     }
 };
 

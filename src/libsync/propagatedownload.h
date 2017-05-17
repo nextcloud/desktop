@@ -25,9 +25,10 @@ namespace OCC {
  * @brief The GETFileJob class
  * @ingroup libsync
  */
-class GETFileJob : public AbstractNetworkJob {
+class GETFileJob : public AbstractNetworkJob
+{
     Q_OBJECT
-    QFile* _device;
+    QFile *_device;
     QMap<QByteArray, QByteArray> _headers;
     QString _errorString;
     QByteArray _expectedEtagForResume;
@@ -41,24 +42,26 @@ class GETFileJob : public AbstractNetworkJob {
     QPointer<BandwidthManager> _bandwidthManager;
     bool _hasEmittedFinishedSignal;
     time_t _lastModified;
-public:
 
+public:
     // DOES NOT take ownership of the device.
-    explicit GETFileJob(AccountPtr account, const QString& path, QFile *device,
-                        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-                        quint64 resumeStart, QObject* parent = 0);
+    explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+        quint64 resumeStart, QObject *parent = 0);
     // For directDownloadUrl:
-    explicit GETFileJob(AccountPtr account, const QUrl& url, QFile *device,
-                        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-                        quint64 resumeStart, QObject* parent = 0);
-    virtual ~GETFileJob() {
+    explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+        quint64 resumeStart, QObject *parent = 0);
+    virtual ~GETFileJob()
+    {
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
         }
     }
 
     virtual void start() Q_DECL_OVERRIDE;
-    virtual bool finished() Q_DECL_OVERRIDE {
+    virtual bool finished() Q_DECL_OVERRIDE
+    {
         if (reply()->bytesAvailable()) {
             return false;
         } else {
@@ -80,10 +83,10 @@ public:
     qint64 currentDownloadPosition();
 
     QString errorString() const;
-    void setErrorString(const QString& s) { _errorString = s; }
+    void setErrorString(const QString &s) { _errorString = s; }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
-    void setErrorStatus(const SyncFileItem::Status & s) { _errorStatus = s; }
+    void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
 
     void onTimedOut() Q_DECL_OVERRIDE;
 
@@ -94,7 +97,7 @@ public:
 
 signals:
     void finishedSignal();
-    void downloadProgress(qint64,qint64);
+    void downloadProgress(qint64, qint64);
 private slots:
     void slotReadyRead();
     void slotMetaDataChanged();
@@ -104,11 +107,17 @@ private slots:
  * @brief The PropagateDownloadFile class
  * @ingroup libsync
  */
-class PropagateDownloadFile : public PropagateItemJob {
+class PropagateDownloadFile : public PropagateItemJob
+{
     Q_OBJECT
 public:
-    PropagateDownloadFile(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item), _resumeStart(0), _downloadProgress(0), _deleteExisting(false) {}
+    PropagateDownloadFile(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+        , _resumeStart(0)
+        , _downloadProgress(0)
+        , _deleteExisting(false)
+    {
+    }
     void start() Q_DECL_OVERRIDE;
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
@@ -129,11 +138,11 @@ public:
 private slots:
     void slotGetFinished();
     void abort() Q_DECL_OVERRIDE;
-    void transmissionChecksumValidated(const QByteArray& checksumType, const QByteArray& checksum);
-    void contentChecksumComputed(const QByteArray& checksumType, const QByteArray& checksum);
+    void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
+    void contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
     void downloadFinished();
-    void slotDownloadProgress(qint64,qint64);
-    void slotChecksumFail( const QString& errMsg );
+    void slotDownloadProgress(qint64, qint64);
+    void slotChecksumFail(const QString &errMsg);
 
 private:
     void deleteExistingFolder();
@@ -146,5 +155,4 @@ private:
 
     QElapsedTimer _stopwatch;
 };
-
 }

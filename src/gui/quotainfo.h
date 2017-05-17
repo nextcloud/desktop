@@ -43,10 +43,11 @@ class PropfindJob;
  *
  * @ingroup gui
  */
-class QuotaInfo : public QObject {
+class QuotaInfo : public QObject
+{
     Q_OBJECT
 public:
-    explicit QuotaInfo(OCC::AccountState* accountState, QObject* parent = 0);
+    explicit QuotaInfo(OCC::AccountState *accountState, QObject *parent = 0);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
@@ -83,7 +84,6 @@ private:
     bool _active; // if we should check at regular interval (when the UI is visible)
     QPointer<PropfindJob> _job; // the currently running job
 };
-
 
 
 } // namespace OCC

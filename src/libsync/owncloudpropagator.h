@@ -59,11 +59,12 @@ class OwncloudPropagator;
  *
  * @ingroup libsync
  */
-class PropagatorJob : public QObject {
+class PropagatorJob : public QObject
+{
     Q_OBJECT
 
 public:
-    explicit PropagatorJob(OwncloudPropagator* propagator);
+    explicit PropagatorJob(OwncloudPropagator *propagator);
 
     enum JobState {
         NotYetStarted,
@@ -118,21 +119,24 @@ protected:
 /*
  * Abstract class to propagate a single item
  */
-class PropagateItemJob : public PropagatorJob {
+class PropagateItemJob : public PropagatorJob
+{
     Q_OBJECT
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString());
 
-    bool checkForProblemsWithShared(int httpStatusCode, const QString& msg);
+    bool checkForProblemsWithShared(int httpStatusCode, const QString &msg);
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.
      * It is displayed in the activity view.
      */
-    QString restoreJobMsg() const {
+    QString restoreJobMsg() const
+    {
         return _item->_isRestoration ? _item->_errorString : QString();
     }
-    void setRestoreJobMsg( const QString& msg = QString() ) {
+    void setRestoreJobMsg(const QString &msg = QString())
+    {
         _item->_isRestoration = true;
         _item->_errorString = msg;
     }
@@ -144,15 +148,19 @@ private:
     QScopedPointer<PropagateItemJob> _restoreJob;
 
 public:
-    PropagateItemJob(OwncloudPropagator* propagator, const SyncFileItemPtr &item)
-        : PropagatorJob(propagator), _item(item) {}
+    PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagatorJob(propagator)
+        , _item(item)
+    {
+    }
     ~PropagateItemJob();
 
-    bool scheduleSelfOrChild() Q_DECL_OVERRIDE {
+    bool scheduleSelfOrChild() Q_DECL_OVERRIDE
+    {
         if (_state != NotYetStarted) {
             return false;
         }
-        const char * instruction_str = csync_instruction_str(_item->_instruction);
+        const char *instruction_str = csync_instruction_str(_item->_instruction);
         qCInfo(lcPropagator) << "Starting" << instruction_str << "propagation of" << _item->_file << "by" << this;
 
         _state = Running;
@@ -160,7 +168,7 @@ public:
         return true;
     }
 
-    SyncFileItemPtr  _item;
+    SyncFileItemPtr _item;
 
 public slots:
     virtual void start() = 0;
@@ -170,34 +178,40 @@ public slots:
  * @brief Job that runs subjobs. It becomes finished only when all subjobs are finished.
  * @ingroup libsync
  */
-class PropagatorCompositeJob : public PropagatorJob {
+class PropagatorCompositeJob : public PropagatorJob
+{
     Q_OBJECT
 public:
     QVector<PropagatorJob *> _jobsToDo;
     SyncFileItemVector _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
-    SyncFileItem::Status _hasError;  // NoStatus,  or NormalError / SoftError if there was an error
+    SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
         , _hasError(SyncFileItem::NoStatus)
-    { }
+    {
+    }
 
-    virtual ~PropagatorCompositeJob() {
+    virtual ~PropagatorCompositeJob()
+    {
         qDeleteAll(_jobsToDo);
         qDeleteAll(_runningJobs);
     }
 
-    void appendJob(PropagatorJob *job) {
+    void appendJob(PropagatorJob *job)
+    {
         _jobsToDo.append(job);
     }
-    void appendTask(const SyncFileItemPtr &item) {
+    void appendTask(const SyncFileItemPtr &item)
+    {
         _tasksToDo.append(item);
     }
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort() Q_DECL_OVERRIDE {
+    virtual void abort() Q_DECL_OVERRIDE
+    {
         foreach (PropagatorJob *j, _runningJobs)
             j->abort();
     }
@@ -205,7 +219,8 @@ public:
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
 private slots:
-    bool possiblyRunNextJob(PropagatorJob *next) {
+    bool possiblyRunNextJob(PropagatorJob *next)
+    {
         if (next->_state == NotYetStarted) {
             connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)));
         }
@@ -220,39 +235,45 @@ private slots:
  * @brief Propagate a directory, and all its sub entries.
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob {
+class OWNCLOUDSYNC_EXPORT PropagateDirectory : public PropagatorJob
+{
     Q_OBJECT
 public:
     SyncFileItemPtr _item;
     // e.g: create the directory
-    QScopedPointer<PropagateItemJob>_firstJob;
+    QScopedPointer<PropagateItemJob> _firstJob;
 
     PropagatorCompositeJob _subJobs;
 
     explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item = SyncFileItemPtr(new SyncFileItem));
 
-    void appendJob(PropagatorJob *job) {
+    void appendJob(PropagatorJob *job)
+    {
         _subJobs.appendJob(job);
     }
 
-    void appendTask(const SyncFileItemPtr &item) {
+    void appendTask(const SyncFileItemPtr &item)
+    {
         _subJobs.appendTask(item);
     }
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort() Q_DECL_OVERRIDE {
+    virtual void abort() Q_DECL_OVERRIDE
+    {
         if (_firstJob)
             _firstJob->abort();
         _subJobs.abort();
     }
 
-    void increaseAffectedCount() {
+    void increaseAffectedCount()
+    {
         _firstJob->_item->_affectedItems++;
     }
 
 
-    qint64 committedDiskSpace() const Q_DECL_OVERRIDE {
+    qint64 committedDiskSpace() const Q_DECL_OVERRIDE
+    {
         return _subJobs.committedDiskSpace();
     }
 
@@ -267,45 +288,51 @@ private slots:
  * @brief Dummy job that just mark it as completed and ignored
  * @ingroup libsync
  */
-class PropagateIgnoreJob : public PropagateItemJob {
+class PropagateIgnoreJob : public PropagateItemJob
+{
     Q_OBJECT
 public:
-    PropagateIgnoreJob(OwncloudPropagator* propagator,const SyncFileItemPtr& item)
-        : PropagateItemJob(propagator, item) {}
-    void start() Q_DECL_OVERRIDE {
+    PropagateIgnoreJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+        : PropagateItemJob(propagator, item)
+    {
+    }
+    void start() Q_DECL_OVERRIDE
+    {
         SyncFileItem::Status status = _item->_status;
         done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item->_errorString);
     }
 };
 
-class OwncloudPropagator : public QObject {
+class OwncloudPropagator : public QObject
+{
     Q_OBJECT
 public:
     const QString _localDir; // absolute path to the local directory. ends with '/'
     const QString _remoteFolder; // remote folder, ends with '/'
 
-    SyncJournalDb * const _journal;
+    SyncJournalDb *const _journal;
     bool _finishedEmited; // used to ensure that finished is only emitted once
 
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
-                       const QString &remoteFolder, SyncJournalDb *progressDb)
-            : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir+'/' )
-            , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder+'/' )
-            , _journal(progressDb)
-            , _finishedEmited(false)
-            , _bandwidthManager(this)
-            , _anotherSyncNeeded(false)
-            , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
-            , _account(account)
-    { }
+        const QString &remoteFolder, SyncJournalDb *progressDb)
+        : _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
+        , _remoteFolder((remoteFolder.endsWith(QChar('/'))) ? remoteFolder : remoteFolder + '/')
+        , _journal(progressDb)
+        , _finishedEmited(false)
+        , _bandwidthManager(this)
+        , _anotherSyncNeeded(false)
+        , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
+        , _account(account)
+    {
+    }
 
     ~OwncloudPropagator();
 
     void start(const SyncFileItemVector &_syncedItems);
 
-    const SyncOptions& syncOptions() const;
-    void setSyncOptions(const SyncOptions& syncOptions);
+    const SyncOptions &syncOptions() const;
+    void setSyncOptions(const SyncOptions &syncOptions);
 
     QAtomicInt _downloadLimit;
     QAtomicInt _uploadLimit;
@@ -319,7 +346,7 @@ public:
         Jobs add themself to the list when they do an assynchronous operation.
         Jobs can be several time on the list (example, when several chunks are uploaded in parallel)
      */
-    QList<PropagateItemJob*> _activeJobList;
+    QList<PropagateItemJob *> _activeJobList;
 
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
@@ -339,12 +366,12 @@ public:
     /* The maximum number of active jobs in parallel  */
     int hardMaximumActiveJob();
 
-    bool isInSharedDirectory(const QString& file);
+    bool isInSharedDirectory(const QString &file);
 
     /** Check whether a download would clash with an existing file
      * in filesystems that are only case-preserving.
      */
-    bool localFileNameClash(const QString& relfile);
+    bool localFileNameClash(const QString &relfile);
 
     /** Check whether a file is properly accessible for upload.
      *
@@ -355,15 +382,16 @@ public:
      * When that happens, we want to avoid uploading incorrect data
      * and give up on the file.
      */
-    bool hasCaseClashAccessibilityProblem(const QString& relfile);
+    bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
-    QString getFilePath(const QString& tmp_file_name) const;
+    QString getFilePath(const QString &tmp_file_name) const;
 
-    PropagateItemJob *createJob(const SyncFileItemPtr& item);
+    PropagateItemJob *createJob(const SyncFileItemPtr &item);
     void scheduleNextJob();
-    void reportProgress(const SyncFileItem&, quint64 bytes);
+    void reportProgress(const SyncFileItem &, quint64 bytes);
 
-    void abort() {
+    void abort()
+    {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob) {
             // We're possibly already in an item's finished stack
@@ -378,8 +406,7 @@ public:
 
     AccountPtr account() const;
 
-    enum DiskSpaceResult
-    {
+    enum DiskSpaceResult {
         DiskSpaceOk,
         DiskSpaceFailure,
         DiskSpaceCritical
@@ -391,11 +418,11 @@ public:
     DiskSpaceResult diskSpaceCheck() const;
 
 
-
 private slots:
 
     /** Emit the finished signal and make sure it is only emitted once */
-    void emitFinished(SyncFileItem::Status status) {
+    void emitFinished(SyncFileItem::Status status)
+    {
         if (!_finishedEmited)
             emit finished(status == SyncFileItem::Success);
         _finishedEmited = true;
@@ -405,7 +432,7 @@ private slots:
 
 signals:
     void itemCompleted(const SyncFileItemPtr &);
-    void progress(const SyncFileItem&, quint64 bytes);
+    void progress(const SyncFileItem &, quint64 bytes);
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */
@@ -419,7 +446,6 @@ signals:
     void touchedFile(const QString &fileName);
 
 private:
-
     AccountPtr _account;
     QScopedPointer<PropagateDirectory> _rootJob;
     SyncOptions _syncOptions;
@@ -441,16 +467,24 @@ private:
  * @brief Job that wait for all the poll jobs to be completed
  * @ingroup libsync
  */
-class CleanupPollsJob : public QObject {
+class CleanupPollsJob : public QObject
+{
     Q_OBJECT
-    QVector< SyncJournalDb::PollInfo > _pollInfos;
+    QVector<SyncJournalDb::PollInfo> _pollInfos;
     AccountPtr _account;
     SyncJournalDb *_journal;
     QString _localPath;
+
 public:
-    explicit CleanupPollsJob(const QVector< SyncJournalDb::PollInfo > &pollInfos, AccountPtr account,
-                             SyncJournalDb *journal, const QString &localPath, QObject* parent = 0)
-        : QObject(parent), _pollInfos(pollInfos), _account(account), _journal(journal), _localPath(localPath) {}
+    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account,
+        SyncJournalDb *journal, const QString &localPath, QObject *parent = 0)
+        : QObject(parent)
+        , _pollInfos(pollInfos)
+        , _account(account)
+        , _journal(journal)
+        , _localPath(localPath)
+    {
+    }
 
     ~CleanupPollsJob();
 
@@ -465,7 +499,6 @@ signals:
 private slots:
     void slotPollFinished();
 };
-
 }
 
 #endif

@@ -24,7 +24,7 @@ namespace OCC {
 
 
 namespace Ui {
-class SyncLogDialog;
+    class SyncLogDialog;
 }
 
 
@@ -43,10 +43,8 @@ public:
 private slots:
 
 private:
-
     Ui::SyncLogDialog *_ui;
 };
-
 }
 
 #endif // SyncLogDialog_H

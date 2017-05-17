@@ -31,17 +31,16 @@
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 
-namespace OCC
-{
+namespace OCC {
 
 OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
-  : QWizardPage(),
-    _ui(),
-    _checking(false),
-    _created(false),
-    _localFolderValid(false),
-    _progressIndi(new QProgressIndicator (this)),
-    _remoteFolder()
+    : QWizardPage()
+    , _ui()
+    , _checking(false)
+    , _created(false)
+    , _localFolderValid(false)
+    , _progressIndi(new QProgressIndicator(this))
+    , _remoteFolder()
 {
     _ui.setupUi(this);
 
@@ -49,18 +48,18 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(theme->appNameGUI())));
     setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Setup local folder options")));
 
-    registerField( QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
+    registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.resultLayout->addWidget( _progressIndi );
+    _ui.resultLayout->addWidget(_progressIndi);
     stopSpinner();
     setupCustomization();
 
-    connect( _ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
+    connect(_ui.pbSelectLocalFolder, SIGNAL(clicked()), SLOT(slotSelectFolder()));
     setButtonText(QWizard::NextButton, tr("Connect..."));
 
-    connect( _ui.rSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
-    connect( _ui.rSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
-    connect( _ui.bSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect(_ui.rSyncEverything, SIGNAL(clicked()), SLOT(slotSyncEverythingClicked()));
+    connect(_ui.rSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
+    connect(_ui.bSelectiveSync, SIGNAL(clicked()), SLOT(slotSelectiveSyncClicked()));
 
     QIcon appIcon = theme->applicationIcon();
     _ui.lServerIcon->setText(QString());
@@ -85,13 +84,13 @@ void OwncloudAdvancedSetupPage::setupCustomization()
     _ui.bottomLabel->hide();
 
     Theme *theme = Theme::instance();
-    QVariant variant = theme->customMedia( Theme::oCSetupTop );
-    if( !variant.isNull() ) {
-        WizardCommon::setupCustomMedia( variant, _ui.topLabel );
+    QVariant variant = theme->customMedia(Theme::oCSetupTop);
+    if (!variant.isNull()) {
+        WizardCommon::setupCustomMedia(variant, _ui.topLabel);
     }
 
-    variant = theme->customMedia( Theme::oCSetupBottom );
-    WizardCommon::setupCustomMedia( variant, _ui.bottomLabel );
+    variant = theme->customMedia(Theme::oCSetupBottom);
+    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 }
 
 bool OwncloudAdvancedSetupPage::isComplete() const
@@ -103,7 +102,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    _checking  = false;
+    _checking = false;
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());
 
@@ -151,17 +150,17 @@ void OwncloudAdvancedSetupPage::updateStatus()
 
     _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(locFolder));
     if (dataChanged()) {
-        if( _remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/") ) {
+        if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
         } else {
             t = Utility::escape(tr("%1 folder '%2' is synced to local folder '%3'")
                                     .arg(Theme::instance()->appName(), _remoteFolder,
-                                         QDir::toNativeSeparators(locFolder)));
+                                        QDir::toNativeSeparators(locFolder)));
             _ui.rSyncEverything->setText(tr("Sync the folder '%1'").arg(_remoteFolder));
         }
 
         const bool dirNotEmpty(QDir(locFolder).entryList(QDir::AllEntries | QDir::NoDotAndDotDot).count() > 0);
-        if(dirNotEmpty) {
+        if (dirNotEmpty) {
             t += tr("<p><small><strong>Warning:</strong> The local folder is not empty. "
                     "Pick a resolution!</small></p>");
         }
@@ -230,7 +229,7 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
-    if(!_created) {
+    if (!_created) {
         setErrorString(QString::null);
         _checking = true;
         startSpinner();
@@ -239,7 +238,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
         if (_ui.rSyncEverything->isChecked()) {
             ConfigFile cfgFile;
             cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(),
-                                                _ui.confSpinBox->value());
+                _ui.confSpinBox->value());
             cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
         }
 
@@ -254,9 +253,9 @@ bool OwncloudAdvancedSetupPage::validatePage()
     }
 }
 
-void OwncloudAdvancedSetupPage::setErrorString( const QString& err )
+void OwncloudAdvancedSetupPage::setErrorString(const QString &err)
 {
-    if( err.isEmpty()) {
+    if (err.isEmpty()) {
         _ui.errorLabel->setVisible(false);
     } else {
         _ui.errorLabel->setVisible(true);
@@ -274,9 +273,9 @@ void OwncloudAdvancedSetupPage::directoriesCreated()
     emit completeChanged();
 }
 
-void OwncloudAdvancedSetupPage::setRemoteFolder( const QString& remoteFolder )
+void OwncloudAdvancedSetupPage::setRemoteFolder(const QString &remoteFolder)
 {
-    if( !remoteFolder.isEmpty() ) {
+    if (!remoteFolder.isEmpty()) {
         _remoteFolder = remoteFolder;
     }
 }
@@ -284,7 +283,7 @@ void OwncloudAdvancedSetupPage::setRemoteFolder( const QString& remoteFolder )
 void OwncloudAdvancedSetupPage::slotSelectFolder()
 {
     QString dir = QFileDialog::getExistingDirectory(0, tr("Local Sync Folder"), QDir::homePath());
-    if( !dir.isEmpty() ) {
+    if (!dir.isEmpty()) {
         _ui.pbSelectLocalFolder->setText(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();
@@ -321,7 +320,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
             _ui.rSelectiveSync->setChecked(true);
             _ui.rSelectiveSync->blockSignals(false);
             auto s = dlg->estimatedSize();
-            if (s > 0 ) {
+            if (s > 0) {
                 _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
             } else {
                 _ui.lSelectiveSyncSizeLabel->setText(QString());
@@ -344,8 +343,6 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
     _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["size"].toDouble())));
-
 }
 
 } // namespace OCC
-

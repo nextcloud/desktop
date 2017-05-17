@@ -19,8 +19,7 @@
 
 class QString;
 
-namespace OCC
-{
+namespace OCC {
 class AbstractCredentials;
 
 
@@ -28,10 +27,9 @@ class AbstractCredentials;
  * @brief The HttpCredentialsGui namespace
  * @ingroup gui
  */
-namespace CredentialsFactory
-{
+namespace CredentialsFactory {
 
-AbstractCredentials* create(const QString& type);
+    AbstractCredentials *create(const QString &type);
 
 } // ns CredentialsFactory
 

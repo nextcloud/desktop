@@ -33,17 +33,16 @@ class SyncRunFileLog
 {
 public:
     SyncRunFileLog();
-    void start( const QString& folderPath );
-    void logItem( const SyncFileItem& item );
-    void logLap( const QString& name );
+    void start(const QString &folderPath);
+    void logItem(const SyncFileItem &item);
+    void logLap(const QString &name);
     void finish();
 
 protected:
-
 private:
-    QString dateTimeStr( const QDateTime& dt );
-    QString instructionToStr( csync_instructions_e inst );
-    QString directionToStr( SyncFileItem::Direction dir );
+    QString dateTimeStr(const QDateTime &dt);
+    QString instructionToStr(csync_instructions_e inst);
+    QString directionToStr(SyncFileItem::Direction dir);
 
     QScopedPointer<QFile> _file;
     QTextStream _out;

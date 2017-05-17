@@ -23,19 +23,19 @@ namespace OCC {
 Q_DECLARE_LOGGING_CATEGORY(lcNotifications)
 
 NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
-: AbstractNetworkJob(account, ""),
-  _widget(0)
+    : AbstractNetworkJob(account, "")
+    , _widget(0)
 {
     setIgnoreCredentialFailure(true);
 }
 
-void NotificationConfirmJob::setLinkAndVerb(const QUrl& link, const QByteArray &verb)
+void NotificationConfirmJob::setLinkAndVerb(const QUrl &link, const QByteArray &verb)
 {
     _link = link;
     _verb = verb;
 }
 
-void NotificationConfirmJob::setWidget( NotificationWidget *widget )
+void NotificationConfirmJob::setWidget(NotificationWidget *widget)
 {
     _widget = widget;
 }
@@ -47,7 +47,7 @@ NotificationWidget *NotificationConfirmJob::widget()
 
 void NotificationConfirmJob::start()
 {
-    if( !_link.isValid() ) {
+    if (!_link.isValid()) {
         qCWarning(lcNotifications) << "Attempt to trigger invalid URL: " << _link.toString();
         return;
     }
@@ -66,17 +66,15 @@ bool NotificationConfirmJob::finished()
     // FIXME: check for the reply code!
     const QString replyStr = reply()->readAll();
 
-    if( replyStr.contains( "<?xml version=\"1.0\"?>") ) {
-         QRegExp rex("<statuscode>(\\d+)</statuscode>");
-         if( replyStr.contains(rex) ) {
-             // this is a error message coming back from ocs.
-             replyCode = rex.cap(1).toInt();
-         }
+    if (replyStr.contains("<?xml version=\"1.0\"?>")) {
+        QRegExp rex("<statuscode>(\\d+)</statuscode>");
+        if (replyStr.contains(rex)) {
+            // this is a error message coming back from ocs.
+            replyCode = rex.cap(1).toInt();
+        }
     }
     emit jobFinished(replyStr, replyCode);
 
     return true;
-
 }
-
 }

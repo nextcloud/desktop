@@ -24,18 +24,18 @@
 class QSslError;
 class QSslCertificate;
 
-namespace OCC
-{
+namespace OCC {
 
 namespace Ui {
-class SslErrorDialog;
+    class SslErrorDialog;
 }
 
 /**
  * @brief The SslDialogErrorHandler class
  * @ingroup gui
  */
-class SslDialogErrorHandler : public AbstractSslErrorHandler {
+class SslDialogErrorHandler : public AbstractSslErrorHandler
+{
 public:
     bool handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr) Q_DECL_OVERRIDE;
 };
@@ -50,7 +50,7 @@ class SslErrorDialog : public QDialog
 public:
     explicit SslErrorDialog(AccountPtr account, QWidget *parent = 0);
     ~SslErrorDialog();
-    bool checkFailingCertsKnown( const QList<QSslError> &errors );
+    bool checkFailingCertsKnown(const QList<QSslError> &errors);
     bool trustConnection();
     QList<QSslCertificate> unknownCerts() const { return _unknownCerts; }
 
@@ -58,12 +58,12 @@ private:
     QString styleSheet() const;
     bool _allTrusted;
 
-    QString certDiv( QSslCertificate ) const;
+    QString certDiv(QSslCertificate) const;
 
     QList<QSslCertificate> _unknownCerts;
-    QString                _customConfigHandle;
-    Ui::SslErrorDialog     *_ui;
-    AccountPtr               _account;
+    QString _customConfigHandle;
+    Ui::SslErrorDialog *_ui;
+    AccountPtr _account;
 };
 } // end namespace
 

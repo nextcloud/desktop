@@ -20,9 +20,9 @@
 
 
 namespace OCC {
-AddCertificateDialog::AddCertificateDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AddCertificateDialog)
+AddCertificateDialog::AddCertificateDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::AddCertificateDialog)
 {
     ui->setupUi(this);
     ui->labelErrorCertif->setText("");
@@ -60,5 +60,4 @@ void AddCertificateDialog::reinit()
     ui->lineEditCertificatePath->clear();
     ui->lineEditPWDCertificate->clear();
 }
-
 }

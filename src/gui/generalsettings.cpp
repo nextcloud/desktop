@@ -36,15 +36,15 @@
 
 namespace OCC {
 
-GeneralSettings::GeneralSettings(QWidget *parent) :
-    QWidget(parent),
-    _ui(new Ui::GeneralSettings),
-    _currentlyLoading(false)
+GeneralSettings::GeneralSettings(QWidget *parent)
+    : QWidget(parent)
+    , _ui(new Ui::GeneralSettings)
+    , _currentlyLoading(false)
 {
     _ui->setupUi(this);
 
     connect(_ui->desktopNotificationsCheckBox, SIGNAL(toggled(bool)),
-            SLOT(slotToggleOptionalDesktopNotifications(bool)));
+        SLOT(slotToggleOptionalDesktopNotifications(bool)));
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     connect(_ui->autostartCheckBox, SIGNAL(toggled(bool)), SLOT(slotToggleLaunchOnStartup(bool)));
@@ -78,8 +78,8 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
      * align properly vertically , fixes bug #3758
      */
     int m0, m1, m2, m3;
-    _ui->horizontalLayout_3->getContentsMargins( &m0, &m1, &m2, &m3 );
-    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3 );
+    _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
+    _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 
     // OEM themes are not obliged to ship mono icons, so there
     // is no point in offering an option
@@ -88,7 +88,7 @@ GeneralSettings::GeneralSettings(QWidget *parent) :
     connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
 
     // accountAdded means the wizard was finished and the wizard might change some options.
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState*)), this, SLOT(loadMiscSettings()));
+    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)), this, SLOT(loadMiscSettings()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -97,13 +97,14 @@ GeneralSettings::~GeneralSettings()
     delete _syncLogDialog;
 }
 
-QSize GeneralSettings::sizeHint() const {
+QSize GeneralSettings::sizeHint() const
+{
     return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
 }
 
 void GeneralSettings::loadMiscSettings()
 {
-#if QT_VERSION < QT_VERSION_CHECK( 5, 4, 0 )
+#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
     QScopedValueRollback<bool> scope(_currentlyLoading);
     _currentlyLoading = true;
 #else
@@ -123,7 +124,7 @@ void GeneralSettings::loadMiscSettings()
 void GeneralSettings::slotUpdateInfo()
 {
     // Note: the sparkle-updater is not an OCUpdater
-    OCUpdater *updater = qobject_cast<OCUpdater*>(Updater::instance());
+    OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
         updater = 0; // don't show update info if updates are disabled
     }
@@ -151,7 +152,7 @@ void GeneralSettings::saveMiscSettings()
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
-                                        _ui->newFolderLimitSpinBox->value());
+        _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
 }
 
@@ -171,7 +172,7 @@ void GeneralSettings::slotIgnoreFilesEditor()
 {
     if (_ignoreEditor.isNull()) {
         _ignoreEditor = new IgnoreListEditor(this);
-        _ignoreEditor->setAttribute( Qt::WA_DeleteOnClose, true );
+        _ignoreEditor->setAttribute(Qt::WA_DeleteOnClose, true);
         _ignoreEditor->open();
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);

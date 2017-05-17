@@ -25,14 +25,15 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcNotifications, "gui.notifications", QtInfoMsg)
 
-NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent)
+NotificationWidget::NotificationWidget(QWidget *parent)
+    : QWidget(parent)
 {
     _ui.setupUi(this);
     _progressIndi = new QProgressIndicator(this);
     _ui.horizontalLayout->addWidget(_progressIndi);
 }
 
-void NotificationWidget::setActivity(const Activity& activity)
+void NotificationWidget::setActivity(const Activity &activity)
 {
     _myActivity = activity;
 
@@ -40,8 +41,8 @@ void NotificationWidget::setActivity(const Activity& activity)
     ASSERT(!_accountName.isEmpty());
 
     // _ui._headerLabel->setText( );
-    _ui._subjectLabel->setVisible( !activity._subject.isEmpty() );
-    _ui._messageLabel->setVisible( !activity._message.isEmpty() );
+    _ui._subjectLabel->setVisible(!activity._subject.isEmpty());
+    _ui._messageLabel->setVisible(!activity._message.isEmpty());
 
     _ui._subjectLabel->setText(activity._subject);
     _ui._messageLabel->setText(activity._message);
@@ -55,20 +56,20 @@ void NotificationWidget::setActivity(const Activity& activity)
     _ui._timeLabel->setText(tText);
 
     // always remove the buttons
-    foreach( auto button, _ui._buttonBox->buttons() ) {
+    foreach (auto button, _ui._buttonBox->buttons()) {
         _ui._buttonBox->removeButton(button);
     }
     _buttons.clear();
 
     // display buttons for the links
-    if( activity._links.isEmpty() ) {
+    if (activity._links.isEmpty()) {
         // in case there is no action defined, do a close button.
-        QPushButton *b = _ui._buttonBox->addButton( QDialogButtonBox::Close );
+        QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
         connect(b, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
         _buttons.append(b);
     } else {
-        foreach( auto link, activity._links ) {
+        foreach (auto link, activity._links) {
             QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
             b->setDefault(link._isPrimary);
             connect(b, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
@@ -86,18 +87,18 @@ void NotificationWidget::slotButtonClicked()
 {
     QObject *buttonWidget = QObject::sender();
     int index = -1;
-    if( buttonWidget ) {
+    if (buttonWidget) {
         // find the button that was clicked, it has to be in the list
         // of buttons that were added to the button box before.
-        for( int i = 0; i < _buttons.count(); i++ ) {
-            if( _buttons.at(i) == buttonWidget ) {
+        for (int i = 0; i < _buttons.count(); i++) {
+            if (_buttons.at(i) == buttonWidget) {
                 index = i;
             }
             _buttons.at(i)->setEnabled(false);
         }
 
         // if the button was found, the link must be called
-        if( index > -1 && _myActivity._links.count() == 0 ) {
+        if (index > -1 && _myActivity._links.count() == 0) {
             // no links, that means it was the close button
             // empty link. Just close and remove the widget.
             QString doneText = tr("Closing in a few seconds...");
@@ -106,14 +107,14 @@ void NotificationWidget::slotButtonClicked()
             return;
         }
 
-        if( index > -1 && index < _myActivity._links.count() ) {
+        if (index > -1 && index < _myActivity._links.count()) {
             ActivityLink triggeredLink = _myActivity._links.at(index);
             _actionLabel = triggeredLink._label;
 
-            if( ! triggeredLink._link.isEmpty() ) {
-                qCInfo(lcNotifications) << "Notification Link: "<< triggeredLink._verb << triggeredLink._link;
+            if (!triggeredLink._link.isEmpty()) {
+                qCInfo(lcNotifications) << "Notification Link: " << triggeredLink._verb << triggeredLink._link;
                 _progressIndi->startAnimation();
-                emit sendNotificationRequest( _accountName, triggeredLink._link, triggeredLink._verb );
+                emit sendNotificationRequest(_accountName, triggeredLink._link, triggeredLink._verb);
             }
         }
     }
@@ -128,9 +129,9 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
     QString timeStr = locale.toString(QTime::currentTime());
 
     // the ocs API returns stat code 100 if it succeeded.
-    if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
+    if (statusCode != OCS_SUCCESS_STATUS_CODE) {
         qCWarning(lcNotifications) << "Notification Request to Server failed, leave button visible.";
-        for( i = 0; i < _buttons.count(); i++ ) {
+        for (i = 0; i < _buttons.count(); i++) {
             _buttons.at(i)->setEnabled(true);
         }
         //: The second parameter is a time, such as 'failed at 09:58pm'
@@ -142,10 +143,8 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
         //: The second parameter is a time, such as 'selected at 09:58pm'
         doneText = tr("'%1' selected at %2").arg(_actionLabel, timeStr);
     }
-    _ui._timeLabel->setText( doneText );
+    _ui._timeLabel->setText(doneText);
 
     _progressIndi->stopAnimation();
-
 }
-
 }

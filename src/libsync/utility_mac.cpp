@@ -21,14 +21,14 @@ static void setupFavLink_private(const QString &folder)
 {
     // Finder: Place under "Places"/"Favorites" on the left sidebar
     CFStringRef folderCFStr = CFStringCreateWithCString(0, folder.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
+    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
 
     LSSharedFileListRef placesItems = LSSharedFileListCreate(0, kLSSharedFileListFavoriteItems, 0);
     if (placesItems) {
         //Insert an item to the list.
         LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(placesItems,
-                                                                     kLSSharedFileListItemLast, 0, 0,
-                                                                     urlRef, 0, 0);
+            kLSSharedFileListItemLast, 0, 0,
+            urlRef, 0, 0);
         if (item)
             CFRelease(item);
     }
@@ -41,9 +41,9 @@ bool hasLaunchOnStartup_private(const QString &)
 {
     // this is quite some duplicate code with setLaunchOnStartup, at some point we should fix this FIXME.
     bool returnValue = false;
-    QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
+    QString filePath = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../..")).absolutePath();
     CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
+    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
     LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
     if (loginItems) {
         // We need to iterate over the items and check which one is "ours".
@@ -56,7 +56,7 @@ bool hasLaunchOnStartup_private(const QString &)
 
             if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString,appUrlRefString,0) == kCFCompareEqualTo) {
+                if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
                     returnValue = true;
                 }
                 CFRelease(itemUrlRef);
@@ -70,24 +70,24 @@ bool hasLaunchOnStartup_private(const QString &)
     return returnValue;
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
+void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(appName)
     Q_UNUSED(guiName)
-    QString filePath = QDir(QCoreApplication::applicationDirPath()+QLatin1String("/../..")).absolutePath();
+    QString filePath = QDir(QCoreApplication::applicationDirPath() + QLatin1String("/../..")).absolutePath();
     CFStringRef folderCFStr = CFStringCreateWithCString(0, filePath.toUtf8().data(), kCFStringEncodingUTF8);
-    CFURLRef urlRef = CFURLCreateWithFileSystemPath (0, folderCFStr, kCFURLPOSIXPathStyle, true);
+    CFURLRef urlRef = CFURLCreateWithFileSystemPath(0, folderCFStr, kCFURLPOSIXPathStyle, true);
     LSSharedFileListRef loginItems = LSSharedFileListCreate(0, kLSSharedFileListSessionLoginItems, 0);
 
     if (loginItems && enable) {
         //Insert an item to the list.
         LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,
-                                                                     kLSSharedFileListItemLast, 0, 0,
-                                                                     urlRef, 0, 0);
+            kLSSharedFileListItemLast, 0, 0,
+            urlRef, 0, 0);
         if (item)
             CFRelease(item);
         CFRelease(loginItems);
-    } else if (loginItems && !enable){
+    } else if (loginItems && !enable) {
         // We need to iterate over the items and check which one is "ours".
         UInt32 seedValue;
         CFArrayRef itemsArray = LSSharedFileListCopySnapshot(loginItems, &seedValue);
@@ -98,8 +98,8 @@ void setLaunchOnStartup_private(const QString &appName, const QString& guiName, 
 
             if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
-                if (CFStringCompare(itemUrlString,appUrlRefString,0) == kCFCompareEqualTo) {
-                    LSSharedFileListItemRemove(loginItems,item); // remove it!
+                if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
+                    LSSharedFileListItemRemove(loginItems, item); // remove it!
                 }
                 CFRelease(itemUrlRef);
             }
@@ -119,7 +119,7 @@ static bool hasDarkSystray_private()
     CFStringRef interfaceStyle = NULL;
     CFStringRef darkInterfaceStyle = CFSTR("Dark");
     interfaceStyle = (CFStringRef)CFPreferencesCopyAppValue(interfaceStyleKey,
-                                                            kCFPreferencesCurrentApplication);
+        kCFPreferencesCurrentApplication);
     if (interfaceStyle != NULL) {
         returnValue = (kCFCompareEqualTo == CFStringCompare(interfaceStyle, darkInterfaceStyle, 0));
         CFRelease(interfaceStyle);

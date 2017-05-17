@@ -25,26 +25,25 @@
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
 namespace OCC {
-     
+
 static void setupFavLink_private(const QString &folder)
 {
     // Windows Explorer: Place under "Favorites" (Links)
-    
-    QString linkName; 
+
+    QString linkName;
     QDir folderDir(QDir::fromNativeSeparators(folder));
-     
+
     /* Use new WINAPI functions */
     PWSTR path;
-    
-    if(SHGetKnownFolderPath(FOLDERID_Links, 0, NULL, &path) == S_OK) {
-        QString links = QDir::fromNativeSeparators(QString::fromWCharArray(path)); 
+
+    if (SHGetKnownFolderPath(FOLDERID_Links, 0, NULL, &path) == S_OK) {
+        QString links = QDir::fromNativeSeparators(QString::fromWCharArray(path));
         linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
-    	CoTaskMemFree(path);
+        CoTaskMemFree(path);
     }
     qCDebug(lcUtility) << " creating link from " << linkName << " to " << folder;
     if (!QFile::link(folder, linkName))
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
-
 }
 
 
@@ -55,13 +54,13 @@ bool hasLaunchOnStartup_private(const QString &appName)
     return settings.contains(appName);
 }
 
-void setLaunchOnStartup_private(const QString &appName, const QString& guiName, bool enable)
+void setLaunchOnStartup_private(const QString &appName, const QString &guiName, bool enable)
 {
     Q_UNUSED(guiName);
     QString runPath = QLatin1String(runPathC);
     QSettings settings(runPath, QSettings::NativeFormat);
     if (enable) {
-        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/','\\'));
+        settings.setValue(appName, QCoreApplication::applicationFilePath().replace('/', '\\'));
     } else {
         settings.remove(appName);
     }

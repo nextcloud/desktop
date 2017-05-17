@@ -65,42 +65,42 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcUtility, "sync.utility", QtInfoMsg)
 
-bool Utility::writeRandomFile( const QString& fname, int size )
+bool Utility::writeRandomFile(const QString &fname, int size)
 {
-    int maxSize = 10*10*1024;
+    int maxSize = 10 * 10 * 1024;
     qsrand(QDateTime::currentMSecsSinceEpoch());
 
-    if( size == -1 ) size = qrand() % maxSize;
+    if (size == -1)
+        size = qrand() % maxSize;
 
     QString randString;
-    for( int i = 0; i < size; i++ ) {
+    for (int i = 0; i < size; i++) {
         int r = qrand() % 128;
         randString.append(QChar(r));
     }
 
     QFile file(fname);
-    if( file.open(QIODevice::WriteOnly | QIODevice::Text) ) {
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
         out << randString;
-     // optional, as QFile destructor will already do it:
+        // optional, as QFile destructor will already do it:
         file.close();
         return true;
     }
     return false;
-
 }
 
-QString Utility::formatFingerprint( const QByteArray& fmhash, bool colonSeparated )
+QString Utility::formatFingerprint(const QByteArray &fmhash, bool colonSeparated)
 {
     QByteArray hash;
-    int steps = fmhash.length()/2;
+    int steps = fmhash.length() / 2;
     for (int i = 0; i < steps; i++) {
-        hash.append(fmhash[i*2]);
-        hash.append(fmhash[i*2+1]);
+        hash.append(fmhash[i * 2]);
+        hash.append(fmhash[i * 2 + 1]);
         hash.append(' ');
     }
 
-    QString fp = QString::fromLatin1( hash.trimmed() );
+    QString fp = QString::fromLatin1(hash.trimmed());
     if (colonSeparated) {
         fp.replace(QChar(' '), QChar(':'));
     }
@@ -113,7 +113,7 @@ void Utility::setupFavLink(const QString &folder)
     setupFavLink_private(folder);
 }
 
-QString Utility::octetsToString( qint64 octets )
+QString Utility::octetsToString(qint64 octets)
 {
 #define THE_FACTOR 1024
     static const qint64 kb = THE_FACTOR;
@@ -142,7 +142,7 @@ QString Utility::octetsToString( qint64 octets )
     } else if (octets >= kb) {
         s = QCoreApplication::translate("Utility", "%L1 KB");
         value /= kb;
-    } else  {
+    } else {
         s = QCoreApplication::translate("Utility", "%L1 B");
     }
 
@@ -189,7 +189,7 @@ QByteArray Utility::userAgentString()
     // this constant "ownCloud" is defined in the default OEM theming
     // that is used for the standard client. If it is changed there,
     // it needs to be adjusted here.
-    if( appName != QLatin1String("ownCloud") ) {
+    if (appName != QLatin1String("ownCloud")) {
         re += QString(" (%1)").arg(appName);
     }
     return re.toLatin1();
@@ -200,7 +200,7 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
     return hasLaunchOnStartup_private(appName);
 }
 
-void Utility::setLaunchOnStartup(const QString &appName, const QString& guiName, bool enable)
+void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
     setLaunchOnStartup_private(appName, guiName, enable);
 }
@@ -210,24 +210,24 @@ qint64 Utility::freeDiskSpace(const QString &path)
 #if defined(Q_OS_MAC) || defined(Q_OS_FREEBSD) || defined(Q_OS_FREEBSD_KERNEL) || defined(Q_OS_NETBSD) || defined(Q_OS_OPENBSD)
     struct statvfs stat;
     if (statvfs(path.toLocal8Bit().data(), &stat) == 0) {
-        return (qint64) stat.f_bavail * stat.f_frsize;
+        return (qint64)stat.f_bavail * stat.f_frsize;
     }
 #elif defined(Q_OS_UNIX)
     struct statvfs64 stat;
     if (statvfs64(path.toLocal8Bit().data(), &stat) == 0) {
-        return (qint64) stat.f_bavail * stat.f_frsize;
+        return (qint64)stat.f_bavail * stat.f_frsize;
     }
 #elif defined(Q_OS_WIN)
     ULARGE_INTEGER freeBytes;
     freeBytes.QuadPart = 0L;
-    if (GetDiskFreeSpaceEx( reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL )) {
+    if (GetDiskFreeSpaceEx(reinterpret_cast<const wchar_t *>(path.utf16()), &freeBytes, NULL, NULL)) {
         return freeBytes.QuadPart;
     }
 #endif
     return -1;
 }
 
-QString Utility::compactFormatDouble(double value, int prec, const QString& unit)
+QString Utility::compactFormatDouble(double value, int prec, const QString &unit)
 {
     QLocale locale = QLocale::system();
     QChar decPoint = locale.decimalPoint();
@@ -239,8 +239,8 @@ QString Utility::compactFormatDouble(double value, int prec, const QString& unit
         }
         str.chop(1);
     }
-    if( !unit.isEmpty() )
-        str += (QLatin1Char(' ')+unit);
+    if (!unit.isEmpty())
+        str += (QLatin1Char(' ') + unit);
     return str;
 }
 
@@ -256,7 +256,8 @@ QString Utility::escape(const QString &in)
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 // In Qt 4,  QThread::sleep functions are protected.
 // This is a hack to make them visible in this namespace.
-struct QThread : ::QThread {
+struct QThread : ::QThread
+{
     using ::QThread::sleep;
     using ::QThread::usleep;
 };
@@ -283,7 +284,7 @@ bool Utility::fsCasePreserving()
     return isWindows() || isMac();
 }
 
-bool Utility::fileNamesEqual( const QString& fn1, const QString& fn2)
+bool Utility::fileNamesEqual(const QString &fn1, const QString &fn2)
 {
     const QDir fd1(fn1);
     const QDir fd2(fn2);
@@ -291,9 +292,8 @@ bool Utility::fileNamesEqual( const QString& fn1, const QString& fn2)
     // Attention: If the path does not exist, canonicalPath returns ""
     // ONLY use this function with existing pathes.
     const QString a = fd1.canonicalPath();
-    const QString b =  fd2.canonicalPath();
-    bool re = !a.isEmpty() && QString::compare( a, b,
-                                                fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive) == 0;
+    const QString b = fd2.canonicalPath();
+    bool re = !a.isEmpty() && QString::compare(a, b, fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive) == 0;
     return re;
 }
 
@@ -302,7 +302,7 @@ QDateTime Utility::qDateTimeFromTime_t(qint64 t)
     return QDateTime::fromMSecsSinceEpoch(t * 1000);
 }
 
-qint64 Utility::qDateTimeToTime_t(const QDateTime& t)
+qint64 Utility::qDateTimeToTime_t(const QDateTime &t)
 {
     return t.toMSecsSinceEpoch() / 1000;
 }
@@ -316,8 +316,8 @@ namespace {
         QString description(quint64 value) const
         {
             return QCoreApplication::translate(
-                    "Utility", name, 0, QCoreApplication::UnicodeUTF8,
-                    value);
+                "Utility", name, 0, QCoreApplication::UnicodeUTF8,
+                value);
         }
     };
 // QTBUG-3945 and issue #4855: QT_TRANSLATE_NOOP does not work with plural form because lupdate
@@ -326,12 +326,12 @@ namespace {
 #undef QT_TRANSLATE_NOOP
 #define QT_TRANSLATE_NOOP(ctx, str, ...) str
     Q_DECL_CONSTEXPR Period periods[] = {
-        { QT_TRANSLATE_NOOP("Utility", "%n year(s)" , 0, _) , 365*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _) , 30*24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _) , 24*3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _) , 3600*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _) , 60*1000LL },
-        { QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _ ), 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n year(s)", 0, _), 365 * 24 * 3600 * 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n month(s)", 0, _), 30 * 24 * 3600 * 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n day(s)", 0, _), 24 * 3600 * 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n hour(s)", 0, _), 3600 * 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n minute(s)", 0, _), 60 * 1000LL },
+        { QT_TRANSLATE_NOOP("Utility", "%n second(s)", 0, _), 1000LL },
         { 0, 0 }
     };
 } // anonymous namespace
@@ -339,40 +339,39 @@ namespace {
 QString Utility::durationToDescriptiveString2(quint64 msecs)
 {
     int p = 0;
-    while (periods[p+1].name && msecs < periods[p].msec) {
+    while (periods[p + 1].name && msecs < periods[p].msec) {
         p++;
     }
 
     auto firstPart = periods[p].description(int(msecs / periods[p].msec));
 
-    if (!periods[p+1].name) {
+    if (!periods[p + 1].name) {
         return firstPart;
     }
 
-    quint64 secondPartNum = qRound( double(msecs % periods[p].msec) / periods[p+1].msec);
+    quint64 secondPartNum = qRound(double(msecs % periods[p].msec) / periods[p + 1].msec);
 
     if (secondPartNum == 0) {
         return firstPart;
     }
 
-    return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart,
-            periods[p+1].description(secondPartNum));
+    return QCoreApplication::translate("Utility", "%1 %2").arg(firstPart, periods[p + 1].description(secondPartNum));
 }
 
 QString Utility::durationToDescriptiveString1(quint64 msecs)
 {
     int p = 0;
-    while (periods[p+1].name && msecs < periods[p].msec) {
+    while (periods[p + 1].name && msecs < periods[p].msec) {
         p++;
     }
 
-    quint64 amount = qRound( double(msecs) / periods[p].msec );
+    quint64 amount = qRound(double(msecs) / periods[p].msec);
     return periods[p].description(amount);
 }
 
-QString Utility::fileNameForGuiUse(const QString& fName)
+QString Utility::fileNameForGuiUse(const QString &fName)
 {
-    if( isMac() ) {
+    if (isMac()) {
         QString n(fName);
         return n.replace(QChar(':'), QChar('/'));
     }
@@ -435,13 +434,13 @@ QString Utility::platformName()
     QString re("Windows");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-    if( isMac() ) {
+    if (isMac()) {
         re = QLatin1String("MacOSX");
-    } else if( isLinux() ) {
+    } else if (isLinux()) {
         re = QLatin1String("Linux");
-    } else if( isBSD() ) {
+    } else if (isBSD()) {
         re = QLatin1String("BSD");
-    } else if( isUnix() ) {
+    } else if (isUnix()) {
         re = QLatin1String("Unix");
     }
 #else
@@ -452,7 +451,7 @@ QString Utility::platformName()
 
 void Utility::crash()
 {
-    volatile int* a = (int*)(NULL);
+    volatile int *a = (int *)(NULL);
     *a = 1;
 }
 
@@ -463,12 +462,12 @@ void Utility::crash()
 //
 // This version only delivers output on linux, as Mac and Win get their
 // restarting from the installer.
-QByteArray Utility::versionOfInstalledBinary( const QString& command )
+QByteArray Utility::versionOfInstalledBinary(const QString &command)
 {
     QByteArray re;
-    if( isLinux() ) {
+    if (isLinux()) {
         QString binary(command);
-        if( binary.isEmpty() ) {
+        if (binary.isEmpty()) {
             binary = qApp->arguments()[0];
         }
         QStringList params;
@@ -478,42 +477,42 @@ QByteArray Utility::versionOfInstalledBinary( const QString& command )
         process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
         re = process.readAllStandardOutput();
         int newline = re.indexOf(QChar('\n'));
-        if( newline > 0 ) {
-            re.truncate( newline );
+        if (newline > 0) {
+            re.truncate(newline);
         }
     }
     return re;
 }
 
-QString Utility::timeAgoInWords(const QDateTime& dt, const QDateTime& from)
+QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
 {
     QDateTime now = QDateTime::currentDateTimeUtc();
 
-    if( from.isValid() ) {
+    if (from.isValid()) {
         now = from;
     }
 
-    if( dt.daysTo(now)>0 ) {
+    if (dt.daysTo(now) > 0) {
         int dtn = dt.daysTo(now);
         return QObject::tr("%n day(s) ago", "", dtn);
     } else {
         qint64 secs = dt.secsTo(now);
-        if( secs < 0 ) {
+        if (secs < 0) {
             return QObject::tr("in the future");
         }
-        if( floor(secs / 3600.0) > 0 ) {
-            int hours = floor(secs/3600.0);
-            return( QObject::tr("%n hour(s) ago", "", hours) );
+        if (floor(secs / 3600.0) > 0) {
+            int hours = floor(secs / 3600.0);
+            return (QObject::tr("%n hour(s) ago", "", hours));
         } else {
-            int minutes = qRound(secs/60.0);
-            if( minutes == 0 ) {
-                if(secs < 5) {
+            int minutes = qRound(secs / 60.0);
+            if (minutes == 0) {
+                if (secs < 5) {
                     return QObject::tr("now");
                 } else {
                     return QObject::tr("Less than a minute ago");
                 }
             }
-            return( QObject::tr("%n minute(s) ago", "", minutes) );
+            return (QObject::tr("%n minute(s) ago", "", minutes));
         }
     }
     return QObject::tr("Some time ago");
@@ -544,9 +543,9 @@ void Utility::StopWatch::reset()
     _lapTimes.clear();
 }
 
-quint64 Utility::StopWatch::addLapTime( const QString& lapName )
+quint64 Utility::StopWatch::addLapTime(const QString &lapName)
 {
-    if( !_timer.isValid() ) {
+    if (!_timer.isValid()) {
         start();
     }
     quint64 re = _timer.elapsed();
@@ -559,10 +558,10 @@ QDateTime Utility::StopWatch::startTime() const
     return _startTime;
 }
 
-QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
+QDateTime Utility::StopWatch::timeOfLap(const QString &lapName) const
 {
     quint64 t = durationOfLap(lapName);
-    if( t ) {
+    if (t) {
         QDateTime re(_startTime);
         return re.addMSecs(t);
     }
@@ -570,12 +569,12 @@ QDateTime Utility::StopWatch::timeOfLap( const QString& lapName ) const
     return QDateTime();
 }
 
-quint64 Utility::StopWatch::durationOfLap( const QString& lapName ) const
+quint64 Utility::StopWatch::durationOfLap(const QString &lapName) const
 {
     return _lapTimes.value(lapName, 0);
 }
 
-void Utility::sortFilenames(QStringList& fileNames)
+void Utility::sortFilenames(QStringList &fileNames)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
     QCollator collator;
@@ -590,10 +589,10 @@ void Utility::sortFilenames(QStringList& fileNames)
 }
 
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
-                            const QList< QPair<QString, QString> > &queryItems)
+    const QList<QPair<QString, QString>> &queryItems)
 {
     QString path = url.path();
-    if (! concatPath.isEmpty()) {
+    if (!concatPath.isEmpty()) {
         // avoid '//'
         if (path.endsWith('/') && concatPath.startsWith('/')) {
             path.chop(1);
@@ -606,7 +605,7 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
 
     QUrl tmpUrl = url;
     tmpUrl.setPath(path);
-    if( queryItems.size() > 0 ) {
+    if (queryItems.size() > 0) {
         tmpUrl.setQueryItems(queryItems);
     }
     return tmpUrl;
@@ -614,7 +613,7 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
 
 Q_GLOBAL_STATIC(QString, g_configFileName)
 
-std::unique_ptr<QSettings> Utility::settingsWithGroup(const QString& group, QObject *parent)
+std::unique_ptr<QSettings> Utility::settingsWithGroup(const QString &group, QObject *parent)
 {
     if (g_configFileName()->isEmpty()) {
         // cache file name

@@ -28,31 +28,31 @@ namespace OCC {
  */
 class OwncloudWizardResultPage : public QWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  OwncloudWizardResultPage();
-  ~OwncloudWizardResultPage();
+    OwncloudWizardResultPage();
+    ~OwncloudWizardResultPage();
 
-  bool isComplete() const Q_DECL_OVERRIDE;
-  void initializePage() Q_DECL_OVERRIDE;
-  void setRemoteFolder( const QString& remoteFolder);
+    bool isComplete() const Q_DECL_OVERRIDE;
+    void initializePage() Q_DECL_OVERRIDE;
+    void setRemoteFolder(const QString &remoteFolder);
 
 public slots:
-  void setComplete(bool complete);
+    void setComplete(bool complete);
 
 protected slots:
-  void slotOpenLocal();
-  void slotOpenServer();
+    void slotOpenLocal();
+    void slotOpenServer();
 
 protected:
-  void setupCustomization();
+    void setupCustomization();
 
 private:
-  QString _localFolder;
-  QString _remoteFolder;
-  bool _complete;
+    QString _localFolder;
+    QString _remoteFolder;
+    bool _complete;
 
-  Ui_OwncloudWizardResultPage _ui;
+    Ui_OwncloudWizardResultPage _ui;
 };
 
 } // namespace OCC

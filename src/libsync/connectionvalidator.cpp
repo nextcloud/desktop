@@ -31,18 +31,18 @@ Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
-static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5*1000);
+static qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
 ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
-    : QObject(parent),
-      _account(account),
-      _isCheckingServerAndAuth(false)
+    : QObject(parent)
+    , _account(account)
+    , _isCheckingServerAndAuth(false)
 {
 }
 
-QString ConnectionValidator::statusString( Status stat )
+QString ConnectionValidator::statusString(Status stat)
 {
-    switch( stat ) {
+    switch (stat) {
     case Undefined:
         return QLatin1String("Undefined");
     case Connected:
@@ -69,9 +69,9 @@ QString ConnectionValidator::statusString( Status stat )
 
 void ConnectionValidator::checkServerAndAuth()
 {
-    if( !_account ) {
+    if (!_account) {
         _errors << tr("No ownCloud account configured");
-        reportResult( NotConfigured );
+        reportResult(NotConfigured);
         return;
     }
     qCDebug(lcConnectionValidator) << "Checking server and authentication";
@@ -82,7 +82,7 @@ void ConnectionValidator::checkServerAndAuth()
     if (ClientProxy::isUsingSystemDefault()) {
         qCDebug(lcConnectionValidator) << "Trying to look up system proxy";
         ClientProxy::lookupSystemProxyAsync(_account->url(),
-                                            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
+            this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
@@ -91,7 +91,8 @@ void ConnectionValidator::checkServerAndAuth()
     }
 }
 
-void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy) {
+void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
+{
     if (!_account) {
         qCWarning(lcConnectionValidator) << "Bailing out, Account had been deleted";
         return;
@@ -113,13 +114,13 @@ void ConnectionValidator::slotCheckServerAndAuth()
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
-    connect(checkJob, SIGNAL(instanceFound(QUrl,QJsonObject)), SLOT(slotStatusFound(QUrl,QJsonObject)));
-    connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply*)), SLOT(slotNoStatusFound(QNetworkReply*)));
+    connect(checkJob, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotStatusFound(QUrl, QJsonObject)));
+    connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoStatusFound(QNetworkReply *)));
     connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
     checkJob->start();
 }
 
-void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &info)
+void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &info)
 {
     // Newer servers don't disclose any version in status.php anymore
     // https://github.com/owncloud/core/pull/27473/files
@@ -128,24 +129,24 @@ void ConnectionValidator::slotStatusFound(const QUrl&url, const QJsonObject &inf
 
     // status.php was found.
     qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
-             << url << " with version "
-             << CheckServerJob::versionString(info)
-             << "(" << serverVersion << ")";
+                                  << url << " with version "
+                                  << CheckServerJob::versionString(info)
+                                  << "(" << serverVersion << ")";
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
         return;
     }
 
     if (info["maintenance"].toBool()) {
-        reportResult( MaintenanceMode );
+        reportResult(MaintenanceMode);
         return;
     }
 
     // now check the authentication
     if (_account->credentials()->ready())
-        QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
+        QTimer::singleShot(0, this, SLOT(checkAuthentication()));
     else
-        reportResult( CredentialsMissingOrWrong );
+        reportResult(CredentialsMissingOrWrong);
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -156,14 +157,14 @@ void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
     if (!_account->credentials()->ready()) {
         // This could be needed for SSL client certificates
         // We need to load them from keychain and try
-        reportResult( CredentialsMissingOrWrong );
-    } else if (! _account->credentials()->stillValid(reply)) {
+        reportResult(CredentialsMissingOrWrong);
+    } else if (!_account->credentials()->stillValid(reply)) {
         _errors.append(tr("Authentication error: Either username or password are wrong."));
     } else {
         //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-        _errors.append( job->errorString() );
+        _errors.append(job->errorString());
     }
-    reportResult( StatusNotFound );
+    reportResult(StatusNotFound);
 }
 
 void ConnectionValidator::slotJobTimeout(const QUrl &url)
@@ -171,7 +172,7 @@ void ConnectionValidator::slotJobTimeout(const QUrl &url)
     Q_UNUSED(url);
     //_errors.append(tr("Unable to connect to %1").arg(url.toString()));
     _errors.append(tr("timeout"));
-    reportResult( Timeout );
+    reportResult(Timeout);
 }
 
 
@@ -190,7 +191,7 @@ void ConnectionValidator::checkAuthentication()
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
     connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply*)), SLOT(slotAuthFailed(QNetworkReply*)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply *)), SLOT(slotAuthFailed(QNetworkReply *)));
     job->start();
 }
 
@@ -199,24 +200,23 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
     auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
-    if( reply->error() == QNetworkReply::AuthenticationRequiredError ||
-             !_account->credentials()->stillValid(reply)) {
+    if (reply->error() == QNetworkReply::AuthenticationRequiredError || !_account->credentials()->stillValid(reply)) {
         qCWarning(lcConnectionValidator) << "******** Password is wrong!" << reply->error() << job->errorString();
         _errors << tr("The provided credentials are not correct");
         stat = CredentialsMissingOrWrong;
 
-    } else if( reply->error() != QNetworkReply::NoError ) {
+    } else if (reply->error() != QNetworkReply::NoError) {
         _errors << job->errorStringParsingBody();
 
         const int httpStatus =
-                reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if ( httpStatus == 503 ) {
+            reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        if (httpStatus == 503) {
             _errors.clear();
             stat = ServiceUnavailable;
         }
     }
 
-    reportResult( stat );
+    reportResult(stat);
 }
 
 void ConnectionValidator::slotAuthSuccess()
@@ -254,24 +254,23 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
 
 void ConnectionValidator::fetchUser()
 {
-
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
     job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotUserFetched(QJsonDocument)));
     job->start();
 }
 
-bool ConnectionValidator::setAndCheckServerVersion(const QString& version)
+bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
 {
     qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
     // We cannot deal with servers < 5.0.0
     if (_account->serverVersionInt()
-            && _account->serverVersionInt() < Account::makeServerVersion(5, 0, 0)) {
-        _errors.append( tr("The configured server for this client is too old") );
-        _errors.append( tr("Please update to the latest server and restart the client.") );
-        reportResult( ServerVersionMismatch );
+        && _account->serverVersionInt() < Account::makeServerVersion(5, 0, 0)) {
+        _errors.append(tr("The configured server for this client is too old"));
+        _errors.append(tr("Please update to the latest server and restart the client."));
+        reportResult(ServerVersionMismatch);
         return false;
     }
 
@@ -288,14 +287,14 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
         _account->setDavUser(user);
 
         AvatarJob *job = new AvatarJob(_account, this);
-        job->setTimeout(20*1000);
+        job->setTimeout(20 * 1000);
         QObject::connect(job, SIGNAL(avatarPixmap(QImage)), this, SLOT(slotAvatarImage(QImage)));
 
         job->start();
     }
 }
 
-void ConnectionValidator::slotAvatarImage(const QImage& img)
+void ConnectionValidator::slotAvatarImage(const QImage &img)
 {
     _account->setAvatar(img);
     reportResult(Connected);

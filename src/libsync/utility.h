@@ -35,17 +35,16 @@ Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 /** \addtogroup libsync
  *  @{
  */
-namespace Utility
-{
+namespace Utility {
     OWNCLOUDSYNC_EXPORT void sleep(int sec);
     OWNCLOUDSYNC_EXPORT void usleep(int usec);
-    OWNCLOUDSYNC_EXPORT QString formatFingerprint( const QByteArray&, bool colonSeparated = true );
-    OWNCLOUDSYNC_EXPORT void setupFavLink( const QString &folder );
-    OWNCLOUDSYNC_EXPORT bool writeRandomFile( const QString& fname, int size = -1);
-    OWNCLOUDSYNC_EXPORT QString octetsToString( qint64 octets );
+    OWNCLOUDSYNC_EXPORT QString formatFingerprint(const QByteArray &, bool colonSeparated = true);
+    OWNCLOUDSYNC_EXPORT void setupFavLink(const QString &folder);
+    OWNCLOUDSYNC_EXPORT bool writeRandomFile(const QString &fname, int size = -1);
+    OWNCLOUDSYNC_EXPORT QString octetsToString(qint64 octets);
     OWNCLOUDSYNC_EXPORT QByteArray userAgentString();
     OWNCLOUDSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
-    OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString& guiName, bool launch);
+    OWNCLOUDSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
 
     /**
      * Return the amount of free space available.
@@ -62,10 +61,10 @@ namespace Utility
      * @param unit an optional unit that is appended if present.
      * @return the formatted string.
      */
-    OWNCLOUDSYNC_EXPORT QString compactFormatDouble(double value, int prec, const QString& unit = QString::null);
+    OWNCLOUDSYNC_EXPORT QString compactFormatDouble(double value, int prec, const QString &unit = QString::null);
 
     // porting methods
-    OWNCLOUDSYNC_EXPORT QString escape(const QString&);
+    OWNCLOUDSYNC_EXPORT QString escape(const QString &);
 
     // conversion function QDateTime <-> time_t   (because the ones builtin work on only unsigned 32bit)
     OWNCLOUDSYNC_EXPORT QDateTime qDateTimeFromTime_t(qint64 t);
@@ -117,16 +116,16 @@ namespace Utility
     // Check if two pathes that MUST exist are equal. This function
     // uses QDir::canonicalPath() to judge and cares for the systems
     // case sensitivity.
-    OWNCLOUDSYNC_EXPORT bool fileNamesEqual( const QString& fn1, const QString& fn2);
+    OWNCLOUDSYNC_EXPORT bool fileNamesEqual(const QString &fn1, const QString &fn2);
 
     // Call the given command with the switch --version and rerun the first line
     // of the output.
     // If command is empty, the function calls the running application which, on
     // Linux, might have changed while this one is running.
     // For Mac and Windows, it returns QString()
-    OWNCLOUDSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString& command = QString() );
+    OWNCLOUDSYNC_EXPORT QByteArray versionOfInstalledBinary(const QString &command = QString());
 
-    OWNCLOUDSYNC_EXPORT QString fileNameForGuiUse(const QString& fName);
+    OWNCLOUDSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 
     /**
      * @brief timeAgoInWords - human readable time span
@@ -136,40 +135,41 @@ namespace Utility
      *
      * If the second parameter is ommitted, the current time is used.
      */
-    OWNCLOUDSYNC_EXPORT QString timeAgoInWords(const QDateTime& dt, const QDateTime& from = QDateTime() );
+    OWNCLOUDSYNC_EXPORT QString timeAgoInWords(const QDateTime &dt, const QDateTime &from = QDateTime());
 
-    class OWNCLOUDSYNC_EXPORT StopWatch {
+    class OWNCLOUDSYNC_EXPORT StopWatch
+    {
     private:
         QMap<QString, quint64> _lapTimes;
         QDateTime _startTime;
         QElapsedTimer _timer;
+
     public:
         void start();
         quint64 stop();
-        quint64 addLapTime( const QString& lapName );
+        quint64 addLapTime(const QString &lapName);
         void reset();
 
         // out helpers, return the measured times.
         QDateTime startTime() const;
-        QDateTime timeOfLap( const QString& lapName ) const;
-        quint64 durationOfLap( const QString& lapName ) const;
+        QDateTime timeOfLap(const QString &lapName) const;
+        quint64 durationOfLap(const QString &lapName) const;
     };
 
     /**
      * @brief Sort a QStringList in a way that's appropriate for filenames
      */
-    OWNCLOUDSYNC_EXPORT void sortFilenames(QStringList& fileNames);
+    OWNCLOUDSYNC_EXPORT void sortFilenames(QStringList &fileNames);
 
     /** Appends concatPath and queryItems to the url */
     OWNCLOUDSYNC_EXPORT QUrl concatUrlPath(
-            const QUrl &url, const QString &concatPath,
-            const QList< QPair<QString, QString> > &queryItems = (QList<QPair<QString, QString>>()));
+        const QUrl &url, const QString &concatPath,
+        const QList<QPair<QString, QString>> &queryItems = (QList<QPair<QString, QString>>()));
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
-    OWNCLOUDSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString& group, QObject* parent = 0);
+    OWNCLOUDSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = 0);
 }
 /** @} */ // \addtogroup
-
 }
 #endif // UTILITY_H

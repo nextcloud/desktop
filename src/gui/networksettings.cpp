@@ -26,9 +26,9 @@
 
 namespace OCC {
 
-NetworkSettings::NetworkSettings(QWidget *parent) :
-    QWidget(parent),
-    _ui(new Ui::NetworkSettings)
+NetworkSettings::NetworkSettings(QWidget *parent)
+    : QWidget(parent)
+    , _ui(new Ui::NetworkSettings)
 {
     _ui->setupUi(this);
 
@@ -47,12 +47,12 @@ NetworkSettings::NetworkSettings(QWidget *parent) :
     _ui->passwordLineEdit->setEnabled(true);
     _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
     connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)),
-            _ui->authWidgets, SLOT(setEnabled(bool)));
+        _ui->authWidgets, SLOT(setEnabled(bool)));
 
     connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-            _ui->manualSettings, SLOT(setEnabled(bool)));
+        _ui->manualSettings, SLOT(setEnabled(bool)));
     connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-            _ui->typeComboBox, SLOT(setEnabled(bool)));
+        _ui->typeComboBox, SLOT(setEnabled(bool)));
 
     loadProxySettings();
     loadBWLimitSettings();
@@ -81,7 +81,8 @@ NetworkSettings::~NetworkSettings()
     delete _ui;
 }
 
-QSize NetworkSettings::sizeHint() const {
+QSize NetworkSettings::sizeHint() const
+{
     return QSize(ownCloudGui::settingsDialogSize().width(), QWidget::sizeHint().height());
 }
 
@@ -125,7 +126,7 @@ void NetworkSettings::loadBWLimitSettings()
 {
     ConfigFile cfgFile;
 
-#if QT_VERSION < QT_VERSION_CHECK(5,3,3)
+#if QT_VERSION < QT_VERSION_CHECK(5, 3, 3)
     // QNAM bandwidth limiting only works with versions of Qt greater or equal to 5.3.3
     // (It needs Qt commits 097b641 and b99fa32)
 
@@ -147,9 +148,9 @@ void NetworkSettings::loadBWLimitSettings()
 
 #endif
     int useDownloadLimit = cfgFile.useDownloadLimit();
-    if ( useDownloadLimit >= 1 ) {
+    if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);
-    } else if (useDownloadLimit == 0){
+    } else if (useDownloadLimit == 0) {
         _ui->noDownloadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoDownloadLimitRadioButton->setChecked(true);
@@ -157,9 +158,9 @@ void NetworkSettings::loadBWLimitSettings()
     _ui->downloadSpinBox->setValue(cfgFile.downloadLimit());
 
     int useUploadLimit = cfgFile.useUploadLimit();
-    if ( useUploadLimit >= 1 ) {
+    if (useUploadLimit >= 1) {
         _ui->uploadLimitRadioButton->setChecked(true);
-    } else if (useUploadLimit == 0){
+    } else if (useUploadLimit == 0) {
         _ui->noUploadLimitRadioButton->setChecked(true);
     } else {
         _ui->autoUploadLimitRadioButton->setChecked(true);
@@ -171,9 +172,9 @@ void NetworkSettings::saveProxySettings()
 {
     ConfigFile cfgFile;
 
-    if (_ui->noProxyRadioButton->isChecked()){
+    if (_ui->noProxyRadioButton->isChecked()) {
         cfgFile.setProxyType(QNetworkProxy::NoProxy);
-    } else if (_ui->systemProxyRadioButton->isChecked()){
+    } else if (_ui->systemProxyRadioButton->isChecked()) {
         cfgFile.setProxyType(QNetworkProxy::DefaultProxy);
     } else if (_ui->manualProxyRadioButton->isChecked()) {
         int type = _ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).toInt();
@@ -181,7 +182,7 @@ void NetworkSettings::saveProxySettings()
         QString user = _ui->userLineEdit->text();
         QString pass = _ui->passwordLineEdit->text();
         cfgFile.setProxyType(type, _ui->hostLineEdit->text(),
-                             _ui->portSpinBox->value(), needsAuth, user, pass);
+            _ui->portSpinBox->value(), needsAuth, user, pass);
     }
 
     ClientProxy proxy;

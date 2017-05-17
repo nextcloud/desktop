@@ -27,10 +27,10 @@ namespace OCC {
 class ActivityLink
 {
 public:
-    QString    _label;
-    QString    _link;
+    QString _label;
+    QString _link;
     QByteArray _verb;
-    bool       _isPrimary;
+    bool _isPrimary;
 };
 
 /* ==================================================================== */
@@ -51,16 +51,16 @@ public:
         NotificationType
     };
 
-    Type      _type;
+    Type _type;
     qlonglong _id;
-    QString   _subject;
-    QString   _message;
-    QString   _file;
-    QUrl      _link;
+    QString _subject;
+    QString _message;
+    QString _file;
+    QUrl _link;
     QDateTime _dateTime;
-    QString   _accName;
+    QString _accName;
 
-    QVector <ActivityLink> _links;
+    QVector<ActivityLink> _links;
     /**
      * @brief Sort operator to sort the list youngest first.
      * @param val
@@ -71,8 +71,8 @@ public:
     Identifier ident() const;
 };
 
-bool operator==( const Activity& rhs, const Activity& lhs );
-bool operator<( const Activity& rhs, const Activity& lhs );
+bool operator==(const Activity &rhs, const Activity &lhs);
+bool operator<(const Activity &rhs, const Activity &lhs);
 
 /* ==================================================================== */
 /**
@@ -83,8 +83,6 @@ bool operator<( const Activity& rhs, const Activity& lhs );
  */
 
 typedef QList<Activity> ActivityList;
-
-
 }
 
 #endif // ACTIVITYDATA_H

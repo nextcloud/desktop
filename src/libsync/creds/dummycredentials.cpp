@@ -15,8 +15,7 @@
 #include "creds/dummycredentials.h"
 #include "accessmanager.h"
 
-namespace OCC
-{
+namespace OCC {
 
 QString DummyCredentials::authType() const
 {
@@ -28,7 +27,7 @@ QString DummyCredentials::user() const
     return _user;
 }
 
-QNetworkAccessManager* DummyCredentials::getQNAM() const
+QNetworkAccessManager *DummyCredentials::getQNAM() const
 {
     return new AccessManager;
 }
@@ -55,6 +54,7 @@ void DummyCredentials::askFromUser()
 }
 
 void DummyCredentials::persist()
-{}
+{
+}
 
 } // namespace OCC

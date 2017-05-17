@@ -26,20 +26,19 @@ class ActivityItemDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-
     enum datarole { ActionIconRole = Qt::UserRole + 1,
-                    UserIconRole,
-                    AccountRole,
-                    ActionTextRole,
-                    PathRole,
-                    LinkRole,
-                    PointInTimeRole,
-                    AccountConnectedRole };
+        UserIconRole,
+        AccountRole,
+        ActionTextRole,
+        PathRole,
+        LinkRole,
+        PointInTimeRole,
+        AccountConnectedRole };
 
-    void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const Q_DECL_OVERRIDE;
-    bool editorEvent( QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
-                      const QModelIndex& index ) Q_DECL_OVERRIDE;
+    void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+        const QModelIndex &index) Q_DECL_OVERRIDE;
 
     static int rowHeight();
     static int iconHeight();
@@ -50,4 +49,3 @@ private:
 };
 
 } // namespace OCC
-

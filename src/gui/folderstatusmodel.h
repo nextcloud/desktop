@@ -37,25 +37,35 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    FolderStatusModel(QObject * parent = 0);
+    FolderStatusModel(QObject *parent = 0);
     ~FolderStatusModel();
-    void setAccountState(const AccountState* accountState);
+    void setAccountState(const AccountState *accountState);
 
-    Qt::ItemFlags flags( const QModelIndex& ) const Q_DECL_OVERRIDE;
+    Qt::ItemFlags flags(const QModelIndex &) const Q_DECL_OVERRIDE;
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
-    int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex parent(const QModelIndex& child) const Q_DECL_OVERRIDE;
-    bool canFetchMore(const QModelIndex& parent) const Q_DECL_OVERRIDE;
-    void fetchMore(const QModelIndex& parent) Q_DECL_OVERRIDE;
-    bool hasChildren(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QModelIndex parent(const QModelIndex &child) const Q_DECL_OVERRIDE;
+    bool canFetchMore(const QModelIndex &parent) const Q_DECL_OVERRIDE;
+    void fetchMore(const QModelIndex &parent) Q_DECL_OVERRIDE;
+    bool hasChildren(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
-    struct SubFolderInfo {
+    struct SubFolderInfo
+    {
         SubFolderInfo()
-            : _folder(0), _size(0), _isExternal(false), _fetched(false), _fetching(false),
-            _hasError(false), _fetchingLabel(false), _isUndecided(false), _checked(Qt::Checked) {}
+            : _folder(0)
+            , _size(0)
+            , _isExternal(false)
+            , _fetched(false)
+            , _fetching(false)
+            , _hasError(false)
+            , _fetchingLabel(false)
+            , _isUndecided(false)
+            , _checked(Qt::Checked)
+        {
+        }
         Folder *_folder;
         QString _name;
         QString _path;
@@ -79,12 +89,19 @@ public:
         bool hasLabel() const;
 
         // Reset all subfolders and fetch status
-        void resetSubs(FolderStatusModel* model, QModelIndex index);
+        void resetSubs(FolderStatusModel *model, QModelIndex index);
 
-        struct Progress {
-            Progress() : _warningCount(0), _overallPercent(0) {}
+        struct Progress
+        {
+            Progress()
+                : _warningCount(0)
+                , _overallPercent(0)
+            {
+            }
             bool isNull() const
-            { return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty(); }
+            {
+                return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty();
+            }
             QString _progressString;
             QString _overallSyncString;
             int _warningCount;
@@ -95,7 +112,10 @@ public:
 
     QVector<SubFolderInfo> _folders;
 
-    enum ItemType { RootFolder, SubFolder, AddButton, FetchLabel };
+    enum ItemType { RootFolder,
+        SubFolder,
+        AddButton,
+        FetchLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
@@ -118,9 +138,9 @@ public slots:
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
-    void slotGatherPermissions(const QString &name, const QMap<QString,QString> &properties);
+    void slotGatherPermissions(const QString &name, const QMap<QString, QString> &properties);
     void slotLscolFinishedWithError(QNetworkReply *r);
-    void slotFolderSyncStateChange(Folder* f);
+    void slotFolderSyncStateChange(Folder *f);
     void slotFolderScheduleQueueChanged();
     void slotNewBigFolder();
 
@@ -131,10 +151,10 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo* root,
-                                const QStringList& oldBlackList) const;
-    const AccountState* _accountState;
-    bool _dirty;  // If the selective sync checkboxes were changed
+    QStringList createBlackList(OCC::FolderStatusModel::SubFolderInfo *root,
+        const QStringList &oldBlackList) const;
+    const AccountState *_accountState;
+    bool _dirty; // If the selective sync checkboxes were changed
 
     /**
      * Keeps track of items that are fetching data from the server.
@@ -146,7 +166,9 @@ private:
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
     //the roles argument was added in Qt5
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>())
-    { emit QAbstractItemModel::dataChanged(topLeft,bottomRight); }
+    {
+        emit QAbstractItemModel::dataChanged(topLeft, bottomRight);
+    }
 #endif
 
 signals:

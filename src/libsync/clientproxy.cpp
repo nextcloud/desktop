@@ -23,12 +23,12 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcClientProxy, "sync.clientproxy", QtInfoMsg)
 
-ClientProxy::ClientProxy(QObject *parent) :
-    QObject(parent)
+ClientProxy::ClientProxy(QObject *parent)
+    : QObject(parent)
 {
 }
 
-static QNetworkProxy proxyFromConfig(const ConfigFile& cfg)
+static QNetworkProxy proxyFromConfig(const ConfigFile &cfg)
 {
     QNetworkProxy proxy;
 
@@ -44,11 +44,12 @@ static QNetworkProxy proxyFromConfig(const ConfigFile& cfg)
     return proxy;
 }
 
-bool ClientProxy::isUsingSystemDefault() {
+bool ClientProxy::isUsingSystemDefault()
+{
     OCC::ConfigFile cfg;
 
     // if there is no config file, default to system proxy.
-    if( cfg.exists() ) {
+    if (cfg.exists()) {
         return cfg.proxyType() == QNetworkProxy::DefaultProxy;
     }
 
@@ -67,12 +68,12 @@ void ClientProxy::setupQtProxyFromConfig()
     QNetworkProxy proxy;
 
     // if there is no config file, default to system proxy.
-    if( cfg.exists() ) {
+    if (cfg.exists()) {
         proxyType = cfg.proxyType();
-        proxy  = proxyFromConfig(cfg);
+        proxy = proxyFromConfig(cfg);
     }
 
-    switch(proxyType) {
+    switch (proxyType) {
     case QNetworkProxy::NoProxy:
         qCInfo(lcClientProxy) << "Set proxy configuration to use NO proxy";
         QNetworkProxyFactory::setUseSystemConfiguration(false);
@@ -99,7 +100,7 @@ void ClientProxy::setupQtProxyFromConfig()
     }
 }
 
-const char* ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
+const char *ClientProxy::proxyTypeToCStr(QNetworkProxy::ProxyType type)
 {
     switch (type) {
     case QNetworkProxy::NoProxy:
@@ -126,9 +127,11 @@ void ClientProxy::lookupSystemProxyAsync(const QUrl &url, QObject *dst, const ch
     QThreadPool::globalInstance()->start(runnable); // takes ownership and deletes
 }
 
-SystemProxyRunnable::SystemProxyRunnable(const QUrl &url) : QObject(), QRunnable(), _url(url)
+SystemProxyRunnable::SystemProxyRunnable(const QUrl &url)
+    : QObject()
+    , QRunnable()
+    , _url(url)
 {
-
 }
 
 void SystemProxyRunnable::run()
@@ -143,6 +146,4 @@ void SystemProxyRunnable::run()
         // FIXME Would we really ever return more?
     }
 }
-
-
 }

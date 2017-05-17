@@ -16,18 +16,24 @@
 #pragma once
 #include "creds/httpcredentials.h"
 
-namespace OCC
-{
+namespace OCC {
 
 /**
  * @brief The HttpCredentialsGui class
  * @ingroup gui
  */
-class HttpCredentialsGui : public HttpCredentials {
+class HttpCredentialsGui : public HttpCredentials
+{
     Q_OBJECT
 public:
-    explicit HttpCredentialsGui() : HttpCredentials() {}
-    HttpCredentialsGui(const QString& user, const QString& password, const QSslCertificate& certificate, const QSslKey& key) : HttpCredentials(user, password, certificate, key) {}
+    explicit HttpCredentialsGui()
+        : HttpCredentials()
+    {
+    }
+    HttpCredentialsGui(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
+        : HttpCredentials(user, password, certificate, key)
+    {
+    }
     void askFromUser() Q_DECL_OVERRIDE;
     Q_INVOKABLE void askFromUserAsync();
 
@@ -35,4 +41,3 @@ public:
 };
 
 } // namespace OCC
-

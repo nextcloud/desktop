@@ -38,11 +38,11 @@ namespace OCC {
  *
  * All OCS jobs (e.g. sharing) should extend this class.
  */
-class OcsJob : public AbstractNetworkJob {
+class OcsJob : public AbstractNetworkJob
+{
     Q_OBJECT
 
 protected:
-
     explicit OcsJob(AccountPtr account);
 
     /**
@@ -50,7 +50,7 @@ protected:
      *
      * @param verb currently supported PUT POST DELETE
      */
-    void setVerb(const QByteArray& verb);
+    void setVerb(const QByteArray &verb);
 
     /**
      * Add a new parameter to the request.
@@ -59,7 +59,7 @@ protected:
      * @param name The name of the parameter
      * @param value The value of the parameter
      */
-    void addParam(const QString& name, const QString &value);
+    void addParam(const QString &name, const QString &value);
 
     /**
      * Set the post parameters
@@ -67,7 +67,7 @@ protected:
      * @param postParams list of pairs to add (urlEncoded) to the body of the
      * request
      */
-    void setPostParams(const QList<QPair<QString, QString> >& postParams);
+    void setPostParams(const QList<QPair<QString, QString>> &postParams);
 
     /**
      * List of expected statuscodes for this request
@@ -127,10 +127,9 @@ private slots:
 
 private:
     QByteArray _verb;
-    QList<QPair<QString, QString> > _params;
+    QList<QPair<QString, QString>> _params;
     QVector<int> _passStatusCodes;
 };
-
 }
 
 #endif // OCSJOB_H

@@ -35,32 +35,35 @@ class OWNCLOUDSYNC_EXPORT SyncFileStatusTracker : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncFileStatusTracker(SyncEngine* syncEngine);
-    SyncFileStatus fileStatus(const QString& relativePath);
+    explicit SyncFileStatusTracker(SyncEngine *syncEngine);
+    SyncFileStatus fileStatus(const QString &relativePath);
 
 public slots:
-    void slotPathTouched(const QString& fileName);
+    void slotPathTouched(const QString &fileName);
 
 signals:
-    void fileStatusChanged(const QString& systemFileName, SyncFileStatus fileStatus);
+    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus);
 
 private slots:
-    void slotAboutToPropagate(SyncFileItemVector& items);
-    void slotItemCompleted(const SyncFileItemPtr& item);
+    void slotAboutToPropagate(SyncFileItemVector &items);
+    void slotItemCompleted(const SyncFileItemPtr &item);
     void slotSyncFinished();
     void slotSyncEngineRunningChanged();
 
 private:
-    enum SharedFlag { UnknownShared, NotShared, Shared };
-    enum PathKnownFlag { PathUnknown = 0, PathKnown };
+    enum SharedFlag { UnknownShared,
+        NotShared,
+        Shared };
+    enum PathKnownFlag { PathUnknown = 0,
+        PathKnown };
     SyncFileStatus resolveSyncAndErrorStatus(const QString &relativePath, SharedFlag sharedState, PathKnownFlag isPathKnown = PathKnown);
 
-    void invalidateParentPaths(const QString& path);
-    QString getSystemDestination(const QString& relativePath);
+    void invalidateParentPaths(const QString &path);
+    QString getSystemDestination(const QString &relativePath);
     void incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedState);
     void decSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedState);
 
-    SyncEngine* _syncEngine;
+    SyncEngine *_syncEngine;
 
     std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
     QSet<QString> _dirtyPaths;
@@ -69,7 +72,6 @@ private:
     // A directory that starts/ends propagation will in turn increase/decrease its own parent by 1.
     QHash<QString, int> _syncCount;
 };
-
 }
 
 #endif

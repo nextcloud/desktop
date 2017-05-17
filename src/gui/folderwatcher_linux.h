@@ -23,8 +23,7 @@
 
 #include "folderwatcher.h"
 
-namespace OCC
-{
+namespace OCC {
 
 /**
  * @brief Linux (inotify) API implementation of FolderWatcher
@@ -34,7 +33,7 @@ class FolderWatcherPrivate : public QObject
 {
     Q_OBJECT
 public:
-    FolderWatcherPrivate() { }
+    FolderWatcherPrivate() {}
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
@@ -46,18 +45,17 @@ protected slots:
     void slotAddFolderRecursive(const QString &path);
 
 protected:
-    bool findFoldersBelow( const QDir& dir, QStringList& fullList );
-    void inotifyRegisterPath(const QString& path);
+    bool findFoldersBelow(const QDir &dir, QStringList &fullList);
+    void inotifyRegisterPath(const QString &path);
 
 private:
     FolderWatcher *_parent;
 
     QString _folder;
-    QHash <int, QString> _watches;
+    QHash<int, QString> _watches;
     QScopedPointer<QSocketNotifier> _socket;
     int _fd;
 };
-
 }
 
 #endif

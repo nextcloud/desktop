@@ -30,7 +30,8 @@ class OwncloudPropagator;
  * @brief The BandwidthManager class
  * @ingroup libsync
  */
-class BandwidthManager : public QObject {
+class BandwidthManager : public QObject
+{
     Q_OBJECT
 public:
     BandwidthManager(OwncloudPropagator *p);
@@ -43,13 +44,13 @@ public:
 
 
 public slots:
-    void registerUploadDevice(UploadDevice*);
-    void unregisterUploadDevice(UploadDevice*);
-    void unregisterUploadDevice(QObject*);
+    void registerUploadDevice(UploadDevice *);
+    void unregisterUploadDevice(UploadDevice *);
+    void unregisterUploadDevice(QObject *);
 
-    void registerDownloadJob(GETFileJob*);
-    void unregisterDownloadJob(GETFileJob*);
-    void unregisterDownloadJob(QObject*);
+    void registerDownloadJob(GETFileJob *);
+    void unregisterDownloadJob(GETFileJob *);
+    void unregisterDownloadJob(QObject *);
 
     void absoluteLimitTimerExpired();
     void switchingTimerExpired();
@@ -72,8 +73,8 @@ private:
     QTimer _absoluteLimitTimer;
 
     // FIXME merge these two lists
-    QLinkedList<UploadDevice*> _absoluteUploadDeviceList;
-    QLinkedList<UploadDevice*> _relativeUploadDeviceList;
+    QLinkedList<UploadDevice *> _absoluteUploadDeviceList;
+    QLinkedList<UploadDevice *> _relativeUploadDeviceList;
 
     QTimer _relativeUploadMeasuringTimer;
 
@@ -87,7 +88,7 @@ private:
     qint64 _relativeUploadLimitProgressAtMeasuringRestart;
     qint64 _currentUploadLimit;
 
-    QLinkedList<GETFileJob*> _downloadJobList;
+    QLinkedList<GETFileJob *> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
 
     // for relative bw limiting, we need to wait this amount before measuring again
@@ -101,7 +102,6 @@ private:
 
     qint64 _currentDownloadLimit;
 };
-
 }
 
 #endif

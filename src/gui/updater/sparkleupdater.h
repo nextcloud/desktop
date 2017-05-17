@@ -21,15 +21,17 @@
 
 namespace OCC {
 
-class SparkleUpdater : public Updater {
+class SparkleUpdater : public Updater
+{
 public:
-    SparkleUpdater(const QString& appCastUrl);
+    SparkleUpdater(const QString &appCastUrl);
     ~SparkleUpdater();
 
     // unused in this updater
     void checkForUpdate() Q_DECL_OVERRIDE;
     void backgroundCheckForUpdate() Q_DECL_OVERRIDE;
     bool handleStartup() Q_DECL_OVERRIDE { return false; }
+
 private:
     class Private;
     Private *d;

@@ -58,7 +58,7 @@ public:
     /**
      * @param root Path of the root of the folder
      */
-    FolderWatcher(const QString &root, Folder* folder = 0L);
+    FolderWatcher(const QString &root, Folder *folder = 0L);
     virtual ~FolderWatcher();
 
     /**
@@ -66,11 +66,11 @@ public:
      * Those need to be notified when a directory is added or removed while the watcher is disabled.
      * This is a no-op for backends that are recursive
      */
-    void addPath(const QString&);
-    void removePath(const QString&);
+    void addPath(const QString &);
+    void removePath(const QString &);
 
     /* Check if the path is ignored. */
-    bool pathIsIgnored( const QString& path );
+    bool pathIsIgnored(const QString &path);
 
 signals:
     /** Emitted when one of the watched directories or one
@@ -78,12 +78,12 @@ signals:
     void pathChanged(const QString &path);
 
     /** Emitted if an error occurs */
-    void error(const QString& error);
+    void error(const QString &error);
 
 protected slots:
     // called from the implementations to indicate a change in path
-    void changeDetected( const QString& path);
-    void changeDetected( const QStringList& paths);
+    void changeDetected(const QString &path);
+    void changeDetected(const QStringList &paths);
 
 protected:
     QHash<QString, int> _pendingPathes;
@@ -92,11 +92,10 @@ private:
     QScopedPointer<FolderWatcherPrivate> _d;
     QTime _timer;
     QSet<QString> _lastPaths;
-    Folder* _folder;
+    Folder *_folder;
 
     friend class FolderWatcherPrivate;
 };
-
 }
 
 #endif

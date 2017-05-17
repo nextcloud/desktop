@@ -21,7 +21,7 @@
 namespace OCC {
 
 namespace Ui {
-class NetworkSettings;
+    class NetworkSettings;
 }
 
 /**

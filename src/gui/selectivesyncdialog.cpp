@@ -34,24 +34,34 @@
 namespace OCC {
 
 
-class SelectiveSyncTreeViewItem : public QTreeWidgetItem {
+class SelectiveSyncTreeViewItem : public QTreeWidgetItem
+{
 public:
     SelectiveSyncTreeViewItem(int type = QTreeWidgetItem::Type)
-        : QTreeWidgetItem(type) { }
+        : QTreeWidgetItem(type)
+    {
+    }
     SelectiveSyncTreeViewItem(const QStringList &strings, int type = QTreeWidgetItem::Type)
-        : QTreeWidgetItem(strings, type) { }
+        : QTreeWidgetItem(strings, type)
+    {
+    }
     SelectiveSyncTreeViewItem(QTreeWidget *view, int type = QTreeWidgetItem::Type)
-        : QTreeWidgetItem(view, type) { }
+        : QTreeWidgetItem(view, type)
+    {
+    }
     SelectiveSyncTreeViewItem(QTreeWidgetItem *parent, int type = QTreeWidgetItem::Type)
-        : QTreeWidgetItem(parent, type) { }
+        : QTreeWidgetItem(parent, type)
+    {
+    }
 
 private:
-    bool operator<(const QTreeWidgetItem &other)const {
+    bool operator<(const QTreeWidgetItem &other) const
+    {
         int column = treeWidget()->sortColumn();
         if (column == 1) {
             return data(1, Qt::UserRole).toLongLong() < other.data(1, Qt::UserRole).toLongLong();
         }
-        return QTreeWidgetItem::operator <(other);
+        return QTreeWidgetItem::operator<(other);
     }
 };
 
@@ -73,10 +83,10 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
 
     layout->addWidget(_folderTree);
 
-    connect(_folderTree, SIGNAL(itemExpanded(QTreeWidgetItem*)),
-            SLOT(slotItemExpanded(QTreeWidgetItem*)));
-    connect(_folderTree, SIGNAL(itemChanged(QTreeWidgetItem*,int)),
-            SLOT(slotItemChanged(QTreeWidgetItem*,int)));
+    connect(_folderTree, SIGNAL(itemExpanded(QTreeWidgetItem *)),
+        SLOT(slotItemExpanded(QTreeWidgetItem *)));
+    connect(_folderTree, SIGNAL(itemChanged(QTreeWidgetItem *, int)),
+        SLOT(slotItemChanged(QTreeWidgetItem *, int)));
     _folderTree->setSortingEnabled(true);
     _folderTree->sortByColumn(0, Qt::AscendingOrder);
     _folderTree->setColumnCount(2);
@@ -84,7 +94,7 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _folderTree->header()->setSectionResizeMode(0, QHeaderView::QHeaderView::ResizeToContents);
     _folderTree->header()->setSectionResizeMode(1, QHeaderView::QHeaderView::ResizeToContents);
 #else
-    _folderTree->header()->resizeSection(0, sizeHint().width()/2);
+    _folderTree->header()->resizeSection(0, sizeHint().width() / 2);
 #endif
     _folderTree->header()->setStretchLastSection(true);
     _folderTree->headerItem()->setText(0, tr("Name"));
@@ -99,18 +109,19 @@ QSize SelectiveSyncWidget::sizeHint() const
 void SelectiveSyncWidget::refreshFolders()
 {
     LsColJob *job = new LsColJob(_account, _folderPath, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
+    job->setProperties(QList<QByteArray>() << "resourcetype"
+                                           << "http://owncloud.org/ns:size");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-            this, SLOT(slotUpdateDirectories(QStringList)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply*)),
-            this, SLOT(slotLscolFinishedWithError(QNetworkReply*)));
+        this, SLOT(slotUpdateDirectories(QStringList)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply *)),
+        this, SLOT(slotLscolFinishedWithError(QNetworkReply *)));
     job->start();
     _folderTree->clear();
     _loading->show();
     _loading->move(10, _folderTree->header()->height() + 10);
 }
 
-void SelectiveSyncWidget::setFolderInfo(const QString& folderPath, const QString& rootName, const QStringList& oldBlackList)
+void SelectiveSyncWidget::setFolderInfo(const QString &folderPath, const QString &rootName, const QStringList &oldBlackList)
 {
     _folderPath = folderPath;
     if (_folderPath.startsWith(QLatin1Char('/'))) {
@@ -122,7 +133,7 @@ void SelectiveSyncWidget::setFolderInfo(const QString& folderPath, const QString
     refreshFolders();
 }
 
-static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& text)
+static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &text)
 {
     for (int i = 0; i < parent->childCount(); ++i) {
         QTreeWidgetItem *child = parent->child(i);
@@ -133,7 +144,7 @@ static QTreeWidgetItem* findFirstChild(QTreeWidgetItem *parent, const QString& t
     return 0;
 }
 
-void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem* parent, QStringList pathTrail, QString path, qint64 size)
+void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size)
 {
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
@@ -144,13 +155,13 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem* parent, QStringList p
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
     } else {
-        SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem*>(findFirstChild(parent, pathTrail.first()));
+        SelectiveSyncTreeViewItem *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
             item = new SelectiveSyncTreeViewItem(parent);
             if (parent->checkState(0) == Qt::Checked
-                    || parent->checkState(0) == Qt::PartiallyChecked) {
+                || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
-                foreach(const QString &str , _oldBlackList) {
+                foreach (const QString &str, _oldBlackList) {
                     if (str == path || str == QLatin1String("/")) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
@@ -167,7 +178,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem* parent, QStringList p
                 item->setText(1, Utility::octetsToString(size));
                 item->setData(1, Qt::UserRole, size);
             }
-//            item->setData(0, Qt::UserRole, pathTrail.first());
+            //            item->setData(0, Qt::UserRole, pathTrail.first());
             item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
         }
 
@@ -182,7 +193,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem*>(_folderTree->topLevelItem(0));
+    SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
     QUrl url = _account->davUrl();
     QString pathToRemove = url.path();
@@ -240,7 +251,8 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         auto size = job ? job->_sizes.value(path) : 0;
         path.remove(pathToRemove);
         QStringList paths = path.split('/');
-        if (paths.last().isEmpty()) paths.removeLast();
+        if (paths.last().isEmpty())
+            paths.removeLast();
         if (paths.isEmpty())
             continue;
         if (!path.endsWith('/')) {
@@ -274,15 +286,17 @@ void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
 void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
 {
     QString dir = item->data(0, Qt::UserRole).toString();
-    if (dir.isEmpty()) return;
+    if (dir.isEmpty())
+        return;
     QString prefix;
     if (!_folderPath.isEmpty()) {
         prefix = _folderPath + QLatin1Char('/');
     }
     LsColJob *job = new LsColJob(_account, prefix + dir, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype" << "http://owncloud.org/ns:size");
+    job->setProperties(QList<QByteArray>() << "resourcetype"
+                                           << "http://owncloud.org/ns:size");
     connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-            SLOT(slotUpdateDirectories(QStringList)));
+        SLOT(slotUpdateDirectories(QStringList)));
     job->start();
 }
 
@@ -344,17 +358,18 @@ void SelectiveSyncWidget::slotItemChanged(QTreeWidgetItem *item, int col)
     }
 }
 
-QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem* root) const
+QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
 {
     if (!root) {
         root = _folderTree->topLevelItem(0);
     }
-    if (!root) return QStringList();
+    if (!root)
+        return QStringList();
 
-    switch(root->checkState(0)) {
+    switch (root->checkState(0)) {
     case Qt::Unchecked:
         return QStringList(root->data(0, Qt::UserRole).toString() + "/");
-    case  Qt::Checked:
+    case Qt::Checked:
         return QStringList();
     case Qt::PartiallyChecked:
         break;
@@ -368,7 +383,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem* root) const
     } else {
         // We did not load from the server so we re-use the one from the old black list
         QString path = root->data(0, Qt::UserRole).toString();
-        foreach (const QString & it, _oldBlackList) {
+        foreach (const QString &it, _oldBlackList) {
             if (it.startsWith(path))
                 result += it;
         }
@@ -381,28 +396,30 @@ QStringList SelectiveSyncWidget::oldBlackList() const
     return _oldBlackList;
 }
 
-qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem* root)
+qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
 {
     if (!root) {
         root = _folderTree->topLevelItem(0);
     }
-    if (!root) return -1;
+    if (!root)
+        return -1;
 
 
-    switch(root->checkState(0)) {
-        case Qt::Unchecked:
-            return 0;
-        case  Qt::Checked:
-            return root->data(1, Qt::UserRole).toLongLong();
-        case Qt::PartiallyChecked:
-            break;
+    switch (root->checkState(0)) {
+    case Qt::Unchecked:
+        return 0;
+    case Qt::Checked:
+        return root->data(1, Qt::UserRole).toLongLong();
+    case Qt::PartiallyChecked:
+        break;
     }
 
     qint64 result = 0;
     if (root->childCount()) {
         for (int i = 0; i < root->childCount(); ++i) {
             auto r = estimatedSize(root->child(i));
-            if (r < 0) return r;
+            if (r < 0)
+                return r;
             result += r;
         }
     } else {
@@ -413,25 +430,27 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem* root)
 }
 
 
-SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder* folder, QWidget* parent, Qt::WindowFlags f)
-    :   QDialog(parent, f), _folder(folder),
-      _okButton(0) // defined in init()
+SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
+    : QDialog(parent, f)
+    , _folder(folder)
+    , _okButton(0) // defined in init()
 {
     bool ok;
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if( ok ) {
-        _selectiveSync->setFolderInfo(_folder->remotePath(), _folder->alias(),selectiveSyncList);
+    if (ok) {
+        _selectiveSync->setFolderInfo(_folder->remotePath(), _folder->alias(), selectiveSyncList);
     } else {
         _okButton->setEnabled(false);
     }
     // Make sure we don't get crashes if the folder is destroyed while we are still open
-    connect(_folder, SIGNAL(destroyed(QObject*)), this, SLOT(deleteLater()));
+    connect(_folder, SIGNAL(destroyed(QObject *)), this, SLOT(deleteLater()));
 }
 
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder,
-                                         const QStringList& blacklist, QWidget* parent, Qt::WindowFlags f)
-    : QDialog(parent, f), _folder(0)
+    const QStringList &blacklist, QWidget *parent, Qt::WindowFlags f)
+    : QDialog(parent, f)
+    , _folder(0)
 {
     init(account);
     _selectiveSync->setFolderInfo(folder, folder, blacklist);
@@ -457,7 +476,7 @@ void SelectiveSyncDialog::accept()
     if (_folder) {
         bool ok;
         auto oldBlackListSet = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
-        if( ! ok ) {
+        if (!ok) {
             return;
         }
         QStringList blackList = _selectiveSync->createBlackList();
@@ -472,7 +491,7 @@ void SelectiveSyncDialog::accept()
         // (the ones that are no longer in the blacklist)
         auto blackListSet = blackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
-        foreach(const auto &it, changes) {
+        foreach (const auto &it, changes) {
             _folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
 
@@ -495,6 +514,4 @@ qint64 SelectiveSyncDialog::estimatedSize()
 {
     return _selectiveSync->estimatedSize();
 }
-
 }
-

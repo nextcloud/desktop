@@ -25,8 +25,7 @@
 #include "account.h"
 #include "syncengine.h"
 
-namespace OCC
-{
+namespace OCC {
 
 
 } // namespace OCC

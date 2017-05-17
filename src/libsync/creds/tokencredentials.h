@@ -27,8 +27,7 @@ namespace QKeychain {
 class Job;
 }
 
-namespace OCC
-{
+namespace OCC {
 
 class TokenCredentialsAccessManager;
 class OWNCLOUDSYNC_EXPORT TokenCredentials : public AbstractCredentials
@@ -38,10 +37,10 @@ class OWNCLOUDSYNC_EXPORT TokenCredentials : public AbstractCredentials
 public:
     friend class TokenCredentialsAccessManager;
     TokenCredentials();
-    TokenCredentials(const QString& user, const QString& password, const QString &token);
+    TokenCredentials(const QString &user, const QString &password, const QString &token);
 
     QString authType() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     void askFromUser() Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;
@@ -53,7 +52,7 @@ public:
 
     QString password() const;
 private Q_SLOTS:
-    void slotAuthentication(QNetworkReply*, QAuthenticator*);
+    void slotAuthentication(QNetworkReply *, QAuthenticator *);
 
 private:
     QString _user;

@@ -17,9 +17,9 @@
 
 namespace OCC {
 
-ProxyAuthDialog::ProxyAuthDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ProxyAuthDialog)
+ProxyAuthDialog::ProxyAuthDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::ProxyAuthDialog)
 {
     ui->setupUi(this);
 }

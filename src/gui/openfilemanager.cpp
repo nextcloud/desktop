@@ -39,7 +39,7 @@ static QStringList xdgDataDirs()
     // local location
     QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
     if (xdgDataHome.isEmpty()) {
-        xdgDataHome = QDir::homePath()+"/.local/share";
+        xdgDataHome = QDir::homePath() + "/.local/share";
     }
     dirs.prepend(xdgDataHome);
     return dirs;
@@ -49,7 +49,10 @@ static QStringList xdgDataDirs()
 static QString findDefaultFileManager()
 {
     QProcess p;
-    p.start("xdg-mime", QStringList() << "query" << "default" << "inode/directory", QFile::ReadOnly);
+    p.start("xdg-mime", QStringList() << "query"
+                                      << "default"
+                                      << "inode/directory",
+        QFile::ReadOnly);
     p.waitForFinished();
     QString fileName = QString::fromUtf8(p.readAll().trimmed());
     if (fileName.isEmpty())
@@ -58,9 +61,10 @@ static QString findDefaultFileManager()
     QFileInfo fi;
     QStringList dirs = xdgDataDirs();
     QStringList subdirs;
-    subdirs << "/applications/" << "/applications/kde4/";
-    foreach(QString dir, dirs) {
-        foreach(QString subdir, subdirs) {
+    subdirs << "/applications/"
+            << "/applications/kde4/";
+    foreach (QString dir, dirs) {
+        foreach (QString subdir, subdirs) {
             fi.setFile(dir + subdir + fileName);
             if (fi.exists()) {
                 return fi.absoluteFilePath();
@@ -93,7 +97,7 @@ void showInFileManager(const QString &localPath)
         QFileInfo fi(localPath);
 
         // canonicalFilePath returns empty if the file does not exist
-        if( !fi.canonicalFilePath().isEmpty() ) {
+        if (!fi.canonicalFilePath().isEmpty()) {
             QString nativeArgs;
             if (!fi.isDir()) {
                 nativeArgs += QLatin1String("/select,");
@@ -116,7 +120,7 @@ void showInFileManager(const QString &localPath)
         QStringList scriptArgs;
         scriptArgs << QLatin1String("-e")
                    << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
-                      .arg(localPath);
+                          .arg(localPath);
         QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
         scriptArgs.clear();
         scriptArgs << QLatin1String("-e")
@@ -135,7 +139,8 @@ void showInFileManager(const QString &localPath)
         bool canHandleFile = false; // assume dumb fm
 
         args = exec.split(' ');
-        if (args.count() > 0) app = args.takeFirst();
+        if (args.count() > 0)
+            app = args.takeFirst();
 
         QString kdeSelectParam("--select");
 
@@ -145,8 +150,7 @@ void showInFileManager(const QString &localPath)
             canHandleFile = true;
         }
 
-        if (app.contains("dolphin"))
-        {
+        if (app.contains("dolphin")) {
             static bool dolphinCanSelect = checkDolphinCanSelect();
             if (dolphinCanSelect && !args.contains(kdeSelectParam)) {
                 args.prepend(kdeSelectParam);
@@ -181,7 +185,8 @@ void showInFileManager(const QString &localPath)
         }
 
 
-        if (args.count() == 0) args << fileToOpen;
+        if (args.count() == 0)
+            args << fileToOpen;
 
         if (app.isEmpty() || args.isEmpty() || !canHandleFile) {
             // fall back: open the default file manager, without ever selecting the file
@@ -191,5 +196,4 @@ void showInFileManager(const QString &localPath)
         }
     }
 }
-
 }

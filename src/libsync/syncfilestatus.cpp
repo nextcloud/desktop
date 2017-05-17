@@ -16,14 +16,15 @@
 
 namespace OCC {
 SyncFileStatus::SyncFileStatus()
-    :_tag(StatusNone), _sharedWithMe(false)
+    : _tag(StatusNone)
+    , _sharedWithMe(false)
 {
 }
 
 SyncFileStatus::SyncFileStatus(SyncFileStatusTag tag)
-    :_tag(tag), _sharedWithMe(false)
+    : _tag(tag)
+    , _sharedWithMe(false)
 {
-
 }
 
 void SyncFileStatus::set(SyncFileStatusTag tag)
@@ -51,8 +52,7 @@ QString SyncFileStatus::toSocketAPIString() const
     QString statusString;
     bool canBeShared = true;
 
-    switch(_tag)
-    {
+    switch (_tag) {
     case StatusNone:
         statusString = QLatin1String("NOP");
         canBeShared = false;
@@ -71,7 +71,7 @@ QString SyncFileStatus::toSocketAPIString() const
         statusString = QLatin1String("ERROR");
         break;
     }
-    if(canBeShared && _sharedWithMe) {
+    if (canBeShared && _sharedWithMe) {
         statusString += QLatin1String("+SWM");
     }
 

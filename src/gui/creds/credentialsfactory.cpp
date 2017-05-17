@@ -22,30 +22,28 @@
 #include "creds/shibbolethcredentials.h"
 #endif
 
-namespace OCC
-{
+namespace OCC {
 
 Q_LOGGING_CATEGORY(lcGuiCredentials, "gui.credentials", QtInfoMsg)
 
-namespace CredentialsFactory
-{
+namespace CredentialsFactory {
 
-AbstractCredentials* create(const QString& type)
-{
-    // empty string might happen for old version of configuration
-    if (type == "http" || type == "") {
-        return new HttpCredentialsGui;
-    } else if (type == "dummy") {
-        return new DummyCredentials;
+    AbstractCredentials *create(const QString &type)
+    {
+        // empty string might happen for old version of configuration
+        if (type == "http" || type == "") {
+            return new HttpCredentialsGui;
+        } else if (type == "dummy") {
+            return new DummyCredentials;
 #ifndef NO_SHIBBOLETH
-    } else if (type == "shibboleth") {
-        return new ShibbolethCredentials;
+        } else if (type == "shibboleth") {
+            return new ShibbolethCredentials;
 #endif
-    } else {
-        qCWarning(lcGuiCredentials, "Unknown credentials type: %s", qPrintable(type));
-        return new DummyCredentials;
+        } else {
+            qCWarning(lcGuiCredentials, "Unknown credentials type: %s", qPrintable(type));
+            return new DummyCredentials;
+        }
     }
-}
 
 } // ns CredentialsFactory
 

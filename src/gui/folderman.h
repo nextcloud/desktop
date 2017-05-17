@@ -63,7 +63,7 @@ class FolderMan : public QObject
     Q_OBJECT
 public:
     ~FolderMan();
-    static FolderMan* instance();
+    static FolderMan *instance();
 
     int setupFolders();
     int setupFoldersMigration();
@@ -72,51 +72,51 @@ public:
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
-    Folder* addFolder(AccountState* accountState, const FolderDefinition& folderDefinition);
+    Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
-    void removeFolder( Folder* );
+    void removeFolder(Folder *);
 
     /** Returns the folder which the file or directory stored in path is in */
-    Folder* folderForPath(const QString& path);
+    Folder *folderForPath(const QString &path);
 
     /**
       * returns a list of local files that exist on the local harddisk for an
       * incoming relative server path. The method checks with all existing sync
       * folders.
       */
-    QStringList findFileInLocalFolders( const QString& relPath, const AccountPtr acc );
+    QStringList findFileInLocalFolders(const QString &relPath, const AccountPtr acc);
 
     /** Returns the folder by alias or NULL if no folder with the alias exists. */
-    Folder *folder( const QString& );
+    Folder *folder(const QString &);
 
     /**
      * Migrate accounts from owncloud < 2.0
      * Creates a folder for a specific configuration, identified by alias.
      */
-    Folder* setupFolderFromOldConfigFile(const QString &, AccountState *account );
+    Folder *setupFolderFromOldConfigFile(const QString &, AccountState *account);
 
     /**
      * Ensures that a given directory does not contain a sync journal file.
      *
      * @returns false if the journal could not be removed, true otherwise.
      */
-    static bool ensureJournalGone(const QString& journalDbFile);
+    static bool ensureJournalGone(const QString &journalDbFile);
 
     /** Creates a new and empty local directory. */
-    bool startFromScratch( const QString& );
+    bool startFromScratch(const QString &);
 
-    QString statusToString(SyncResult::Status, bool paused ) const;
+    QString statusToString(SyncResult::Status, bool paused) const;
 
-    static SyncResult accountStatus( const QList<Folder*> &folders );
+    static SyncResult accountStatus(const QList<Folder *> &folders);
 
-    void removeMonitorPath( const QString& alias, const QString& path );
-    void addMonitorPath( const QString& alias, const QString& path );
+    void removeMonitorPath(const QString &alias, const QString &path);
+    void addMonitorPath(const QString &alias, const QString &path);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
-    static QString escapeAlias( const QString& );
-    static QString unescapeAlias( const QString& );
+    static QString escapeAlias(const QString &);
+    static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
 
@@ -130,7 +130,7 @@ public:
      *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, const QUrl& serverUrl = QUrl(), bool forNewDirectory = false) const;
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl(), bool forNewDirectory = false) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
@@ -155,12 +155,12 @@ public:
     /**
      * Access to the current queue of scheduled folders.
      */
-    QQueue<Folder*> scheduleQueue() const;
+    QQueue<Folder *> scheduleQueue() const;
 
     /**
      * Access to the currently syncing folder.
      */
-    Folder* currentSyncFolder() const;
+    Folder *currentSyncFolder() const;
 
     /** Removes all folders */
     int unloadAndDeleteAllFolders();
@@ -169,13 +169,13 @@ public:
      * If enabled is set to false, no new folders will start to sync.
      * The current one will finish.
      */
-    void setSyncEnabled( bool );
+    void setSyncEnabled(bool);
 
     /** Queues a folder for syncing. */
-    void scheduleFolder(Folder*);
+    void scheduleFolder(Folder *);
 
     /** Puts a folder in the very front of the queue. */
-    void scheduleFolderNext(Folder*);
+    void scheduleFolderNext(Folder *);
 
     /** Queues all folders for syncing. */
     void scheduleAllFolders();
@@ -196,7 +196,7 @@ signals:
       *
       * Attention: The folder may be zero. Do a general update of the state then.
       */
-    void folderSyncStateChange(Folder*);
+    void folderSyncStateChange(Folder *);
 
     /**
      * Indicates when the schedule queue changes.
@@ -227,31 +227,31 @@ public slots:
      * Automatically detemines the folder that's responsible for the file.
      * See slotWatchedFileUnlocked().
      */
-    void slotSyncOnceFileUnlocks(const QString& path);
+    void slotSyncOnceFileUnlocks(const QString &path);
 
     // slot to schedule an ETag job (from Folder only)
-    void slotScheduleETagJob ( const QString &alias, RequestEtagJob *job);
+    void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);
 
 private slots:
     void slotFolderSyncPaused(Folder *, bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
-    void slotFolderSyncFinished( const SyncResult& );
+    void slotFolderSyncFinished(const SyncResult &);
 
     void slotRunOneEtagJob();
-    void slotEtagJobDestroyed (QObject*);
+    void slotEtagJobDestroyed(QObject *);
 
     // slot to take the next folder from queue and start syncing.
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotRemoveFoldersForAccount(AccountState* accountState);
+    void slotRemoveFoldersForAccount(AccountState *accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
     void slotForwardFolderSyncStateChange();
 
-    void slotServerVersionChanged(Account* account);
+    void slotServerVersionChanged(Account *account);
 
     /**
      * A file whose locks were being monitored has become unlocked.
@@ -259,7 +259,7 @@ private slots:
      * This schedules the folder for synchronization that contains
      * the file with the given path.
      */
-    void slotWatchedFileUnlocked(const QString& path);
+    void slotWatchedFileUnlocked(const QString &path);
 
     /**
      * Schedules folders whose time to sync has come.
@@ -270,38 +270,37 @@ private slots:
     void slotScheduleFolderByTime();
 
 private:
-
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
       */
-    Folder* addFolderInternal(FolderDefinition folderDefinition,
-                              AccountState* accountState);
+    Folder *addFolderInternal(FolderDefinition folderDefinition,
+        AccountState *accountState);
 
     /* unloads a folder object, does not delete it */
-    void unloadFolder( Folder * );
+    void unloadFolder(Folder *);
 
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon();
 
     // finds all folder configuration files
     // and create the folders
-    QString getBackupName( QString fullPathName ) const;
-    void registerFolderMonitor( Folder *folder );
+    QString getBackupName(QString fullPathName) const;
+    void registerFolderMonitor(Folder *folder);
 
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings& settings, AccountStatePtr account, bool backwardsCompatible);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible);
 
-    QSet<Folder*>  _disabledFolders;
-    Folder::Map    _folderMap;
-    QString        _folderConfigPath;
-    Folder        *_currentSyncFolder;
+    QSet<Folder *> _disabledFolders;
+    Folder::Map _folderMap;
+    QString _folderConfigPath;
+    Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
-    bool           _syncEnabled;
+    bool _syncEnabled;
 
     /// Watching for file changes in folders
-    QMap<QString, FolderWatcher*> _folderWatchers;
+    QMap<QString, FolderWatcher *> _folderWatchers;
 
     /// Starts regular etag query jobs
     QTimer _etagPollTimer;
@@ -315,14 +314,14 @@ private:
     QTimer _timeScheduler;
 
     /// Scheduled folders that should be synced as soon as possible
-    QQueue<Folder*> _scheduledFolders;
+    QQueue<Folder *> _scheduledFolders;
 
     /// Picks the next scheduled folder and starts the sync
-    QTimer          _startScheduledSyncTimer;
+    QTimer _startScheduledSyncTimer;
 
     QScopedPointer<SocketApi> _socketApi;
 
-    bool            _appRestartRequired;
+    bool _appRestartRequired;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = 0);

@@ -30,10 +30,10 @@ namespace OCC {
  * Handle talking to the OCS Share API. 
  * For creation, deletion and modification of shares.
  */
-class OcsShareJob : public OcsJob {
+class OcsShareJob : public OcsJob
+{
     Q_OBJECT
 public:
-
     /**
      * Constructor for new shares or listing of shares
      */
@@ -44,7 +44,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getShares(const QString& path = "");
+    void getShares(const QString &path = "");
 
     /**
      * Delete the current Share
@@ -57,7 +57,7 @@ public:
      * @param date The expire date, if this date is invalid the expire date
      * will be removed
      */
-    void setExpireDate(const QString &shareId, const QDate& date);
+    void setExpireDate(const QString &shareId, const QDate &date);
 
     /**
      * Set the password of a share
@@ -65,7 +65,7 @@ public:
      * @param password The password of the share, if the password is empty the
      * share will be removed
      */
-    void setPassword(const QString &shareId, const QString& password);
+    void setPassword(const QString &shareId, const QString &password);
 
     /**
      * Set the share to be public upload
@@ -84,8 +84,8 @@ public:
      *
      * @param permissions
      */
-    void setPermissions(const QString &shareId, 
-                        const Share::Permissions permissions);
+    void setPermissions(const QString &shareId,
+        const Share::Permissions permissions);
 
     /**
      * Create a new link share
@@ -94,9 +94,9 @@ public:
      * @param name The name of the link share, empty name auto-generates one
      * @param password Optionally a password for the share
      */
-    void createLinkShare(const QString& path, 
-                         const QString& name,
-                         const QString& password);
+    void createLinkShare(const QString &path,
+        const QString &name,
+        const QString &password);
 
     /**
      * Create a new share
@@ -106,10 +106,10 @@ public:
      * @param shareWith The uid/gid/federated id to share with
      * @param permissions The permissions the share will have
      */
-    void createShare(const QString& path, 
-                     const Share::ShareType shareType,
-                     const QString& shareWith = "",
-                     const Share::Permissions permissions = SharePermissionRead);
+    void createShare(const QString &path,
+        const Share::ShareType shareType,
+        const QString &shareWith = "",
+        const Share::Permissions permissions = SharePermissionRead);
 
     /**
      * Returns information on the items shared with the current user.
@@ -134,7 +134,6 @@ private slots:
 private:
     QVariant _value;
 };
-
 }
 
 #endif // OCSSHAREJOB_H

@@ -47,18 +47,18 @@ class ProxyAuthHandler : public QObject
     Q_OBJECT
 
 public:
-    static ProxyAuthHandler* instance();
+    static ProxyAuthHandler *instance();
 
     virtual ~ProxyAuthHandler();
 
 public slots:
     /// Intended for QNetworkAccessManager::proxyAuthenticationRequired()
-    void handleProxyAuthenticationRequired(const QNetworkProxy& proxy,
-                                           QAuthenticator* authenticator);
+    void handleProxyAuthenticationRequired(const QNetworkProxy &proxy,
+        QAuthenticator *authenticator);
 
 private slots:
     void slotKeychainJobDone();
-    void slotSenderDestroyed(QObject*);
+    void slotSenderDestroyed(QObject *);
 
 private:
     ProxyAuthHandler();
@@ -107,7 +107,7 @@ private:
     /// To distinguish between a new QNAM asking for credentials and credentials
     /// failing for an existing QNAM, we keep track of the senders of the
     /// proxyAuthRequired signal here.
-    QSet<QObject*> _gaveCredentialsTo;
+    QSet<QObject *> _gaveCredentialsTo;
 };
 
 } // namespace OCC

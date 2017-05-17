@@ -35,19 +35,19 @@
 
 namespace OCC {
 
-ProtocolWidget::ProtocolWidget(QWidget *parent) :
-    QWidget(parent),
-    IgnoredIndicatorRole( Qt::UserRole +1 ),
-    _ui(new Ui::ProtocolWidget)
+ProtocolWidget::ProtocolWidget(QWidget *parent)
+    : QWidget(parent)
+    , IgnoredIndicatorRole(Qt::UserRole + 1)
+    , _ui(new Ui::ProtocolWidget)
 {
     _ui->setupUi(this);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString,ProgressInfo)),
-            this, SLOT(slotProgressInfo(QString,ProgressInfo)));
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString,SyncFileItemPtr)),
-            this, SLOT(slotItemCompleted(QString,SyncFileItemPtr)));
+    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
+        this, SLOT(slotProgressInfo(QString, ProgressInfo)));
+    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
+        this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
 
-    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem*,int)), SLOT(slotOpenFile(QTreeWidgetItem*,int)));
+    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
 
     // Adjust copyToClipboard() when making changes here!
     QStringList header;
@@ -62,7 +62,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     timestampColumnExtra = 20; // font metrics are broken on Windows, see #4721
 #endif
 
-    _ui->_treeWidget->setHeaderLabels( header );
+    _ui->_treeWidget->setHeaderLabels(header);
     int timestampColumnWidth =
         _ui->_treeWidget->fontMetrics().width(timeString(QDateTime::currentDateTime()))
         + timestampColumnExtra;
@@ -78,7 +78,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     _ui->_headerLabel->setText(tr("Local sync protocol"));
 
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
+    copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     copyBtn->setEnabled(true);
     connect(copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
 
@@ -87,19 +87,19 @@ ProtocolWidget::ProtocolWidget(QWidget *parent) :
     // be embedded into another gui element.
     _issueItemView = new QTreeWidget(this);
     header.removeLast();
-    _issueItemView->setHeaderLabels( header );
+    _issueItemView->setHeaderLabels(header);
     timestampColumnWidth =
-            ActivityItemDelegate::rowHeight() // icon
-            + _issueItemView->fontMetrics().width(timeString(QDateTime::currentDateTime()))
-            + timestampColumnExtra;
+        ActivityItemDelegate::rowHeight() // icon
+        + _issueItemView->fontMetrics().width(timeString(QDateTime::currentDateTime()))
+        + timestampColumnExtra;
     _issueItemView->setColumnWidth(0, timestampColumnWidth);
     _issueItemView->setColumnWidth(1, 180);
     _issueItemView->setColumnCount(4);
     _issueItemView->setRootIsDecorated(false);
     _issueItemView->setTextElideMode(Qt::ElideMiddle);
     _issueItemView->header()->setObjectName("ActivityErrorListHeader");
-    connect(_issueItemView, SIGNAL(itemActivated(QTreeWidgetItem*,int)),
-            SLOT(slotOpenFile(QTreeWidgetItem*,int)));
+    connect(_issueItemView, SIGNAL(itemActivated(QTreeWidgetItem *, int)),
+        SLOT(slotOpenFile(QTreeWidgetItem *, int)));
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -117,24 +117,24 @@ void ProtocolWidget::showEvent(QShowEvent *ev)
 void ProtocolWidget::hideEvent(QHideEvent *ev)
 {
     ConfigFile cfg;
-    cfg.saveGeometryHeader(_ui->_treeWidget->header() );
+    cfg.saveGeometryHeader(_ui->_treeWidget->header());
     QWidget::hideEvent(ev);
 }
 
-void ProtocolWidget::cleanItems(const QString& folder)
+void ProtocolWidget::cleanItems(const QString &folder)
 {
     // The issue list is a state, clear it and let the next sync fill it
     // with ignored files and propagation errors.
     int itemCnt = _issueItemView->topLevelItemCount();
-    for( int cnt = itemCnt-1; cnt >=0 ; cnt-- ) {
+    for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _issueItemView->topLevelItem(cnt);
         QString itemFolder = item->data(2, Qt::UserRole).toString();
-        if( itemFolder == folder ) {
+        if (itemFolder == folder) {
             delete item;
         }
     }
     // update the tabtext
-    emit( issueItemCountUpdated(_issueItemView->topLevelItemCount()) );
+    emit(issueItemCountUpdated(_issueItemView->topLevelItemCount()));
 }
 
 QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) const
@@ -146,7 +146,7 @@ QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format) con
     return loc.toString(dt, dtFormat);
 }
 
-void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
+void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
 {
     QString folderName = item->data(2, Qt::UserRole).toString();
     QString fileName = item->text(1);
@@ -161,7 +161,7 @@ void ProtocolWidget::slotOpenFile( QTreeWidgetItem *item, int )
     }
 }
 
-QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& folder, const SyncFileItem& item)
+QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item)
 {
     auto f = FolderMan::instance()->folder(folder);
     if (!f) {
@@ -186,14 +186,14 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
 
     QIcon icon;
     if (item._status == SyncFileItem::NormalError
-            || item._status == SyncFileItem::FatalError) {
+        || item._status == SyncFileItem::FatalError) {
         icon = Theme::instance()->syncStateIcon(SyncResult::Error);
     } else if (Progress::isWarningKind(item._status)) {
         icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
     }
 
     if (ProgressInfo::isSizeDependent(item)) {
-        columns << Utility::octetsToString( item._size );
+        columns << Utility::octetsToString(item._size);
     }
 
     QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
@@ -206,14 +206,14 @@ QTreeWidgetItem* ProtocolWidget::createCompletedTreewidgetItem(const QString& fo
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(1, item._file);
-    twitem->setToolTip(3, message );
-    twitem->setData(2,  Qt::UserRole, folder);
+    twitem->setToolTip(3, message);
+    twitem->setData(2, Qt::UserRole, folder);
     return twitem;
 }
 
-void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo& progress )
+void ProtocolWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
-    if( !progress.isUpdatingEstimates() ) {
+    if (!progress.isUpdatingEstimates()) {
         // The sync is restarting, clean the old items
         cleanItems(folder);
     } else if (progress.completedFiles() >= progress.totalFiles()) {
@@ -224,14 +224,14 @@ void ProtocolWidget::slotProgressInfo( const QString& folder, const ProgressInfo
 void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, *item);
-    if(line) {
-       if( item->hasErrorStatus() ) {
+    if (line) {
+        if (item->hasErrorStatus()) {
             _issueItemView->insertTopLevelItem(0, line);
             emit issueItemCountUpdated(_issueItemView->topLevelItemCount());
         } else {
             // Limit the number of items
             int itemCnt = _ui->_treeWidget->topLevelItemCount();
-            while(itemCnt > 2000) {
+            while (itemCnt > 2000) {
                 delete _ui->_treeWidget->takeTopLevelItem(itemCnt - 1);
                 itemCnt--;
             }
@@ -241,38 +241,38 @@ void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 }
 
 
-void ProtocolWidget::storeSyncActivity(QTextStream& ts)
+void ProtocolWidget::storeSyncActivity(QTextStream &ts)
 {
     int topLevelItems = _ui->_treeWidget->topLevelItemCount();
 
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *child = _ui->_treeWidget->topLevelItem(i);
         ts << right
-              // time stamp
+           // time stamp
            << qSetFieldWidth(20)
-           << child->data(0,Qt::DisplayRole).toString()
-              // separator
+           << child->data(0, Qt::DisplayRole).toString()
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // file name
+           // file name
            << qSetFieldWidth(64)
-           << child->data(1,Qt::DisplayRole).toString()
-              // separator
+           << child->data(1, Qt::DisplayRole).toString()
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // folder
+           // folder
            << qSetFieldWidth(30)
            << child->data(2, Qt::DisplayRole).toString()
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // action
+           // action
            << qSetFieldWidth(15)
            << child->data(3, Qt::DisplayRole).toString()
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // size
+           // size
            << qSetFieldWidth(10)
            << child->data(4, Qt::DisplayRole).toString()
            << qSetFieldWidth(0)
@@ -280,37 +280,36 @@ void ProtocolWidget::storeSyncActivity(QTextStream& ts)
     }
 }
 
-void ProtocolWidget::storeSyncIssues(QTextStream& ts)
+void ProtocolWidget::storeSyncIssues(QTextStream &ts)
 {
     int topLevelItems = _issueItemView->topLevelItemCount();
 
     for (int i = 0; i < topLevelItems; i++) {
         QTreeWidgetItem *child = _issueItemView->topLevelItem(i);
         ts << right
-              // time stamp
+           // time stamp
            << qSetFieldWidth(20)
-           << child->data(0,Qt::DisplayRole).toString()
-              // separator
+           << child->data(0, Qt::DisplayRole).toString()
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // file name
+           // file name
            << qSetFieldWidth(64)
-           << child->data(1,Qt::DisplayRole).toString()
-              // separator
+           << child->data(1, Qt::DisplayRole).toString()
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // folder
+           // folder
            << qSetFieldWidth(30)
            << child->data(2, Qt::DisplayRole).toString()
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // action
+           // action
            << qSetFieldWidth(15)
            << child->data(3, Qt::DisplayRole).toString()
            << qSetFieldWidth(0)
            << endl;
     }
 }
-
 }

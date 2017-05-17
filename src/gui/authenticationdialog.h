@@ -25,7 +25,8 @@ namespace OCC {
  * @brief Authenticate a user for a specific credential given his credentials
  * @ingroup gui
  */
-class AuthenticationDialog : public QDialog {
+class AuthenticationDialog : public QDialog
+{
     Q_OBJECT
 public:
     AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent = 0);
@@ -36,7 +37,6 @@ public:
 private:
     QLineEdit *_user;
     QLineEdit *_password;
-
 };
 
 

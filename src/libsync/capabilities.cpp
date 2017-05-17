@@ -48,7 +48,7 @@ bool Capabilities::sharePublicLink() const
 
 bool Capabilities::sharePublicLinkAllowUpload() const
 {
-    return  _capabilities["files_sharing"].toMap()["public"].toMap()["upload"].toBool();
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["upload"].toBool();
 }
 
 bool Capabilities::sharePublicLinkEnforcePassword() const
@@ -90,7 +90,7 @@ bool Capabilities::isValid() const
 QList<QByteArray> Capabilities::supportedChecksumTypes() const
 {
     QList<QByteArray> list;
-    foreach (const auto & t, _capabilities["checksums"].toMap()["supportedTypes"].toList()) {
+    foreach (const auto &t, _capabilities["checksums"].toMap()["supportedTypes"].toList()) {
         list.push_back(t.toByteArray());
     }
     return list;
@@ -115,8 +115,10 @@ QByteArray Capabilities::uploadChecksumType() const
 bool Capabilities::chunkingNg() const
 {
     static const auto chunkng = qgetenv("OWNCLOUD_CHUNKING_NG");
-    if (chunkng == "0") return false;
-    if (chunkng == "1") return true;
+    if (chunkng == "0")
+        return false;
+    if (chunkng == "1")
+        return true;
     return _capabilities["dav"].toMap()["chunking"].toByteArray() >= "1.0";
 }
 
@@ -128,10 +130,9 @@ bool Capabilities::chunkingParallelUploadDisabled() const
 QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 {
     QList<int> list;
-    foreach (const auto & t, _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList()) {
+    foreach (const auto &t, _capabilities["dav"].toMap()["httpErrorCodesThatResetFailingChunkedUploads"].toList()) {
         list.push_back(t.toInt());
     }
     return list;
 }
-
 }

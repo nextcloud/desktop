@@ -24,15 +24,15 @@ Q_LOGGING_CATEGORY(lcLockWatcher, "gui.lockwatcher", QtInfoMsg)
 
 static const int check_frequency = 20 * 1000; // ms
 
-LockWatcher::LockWatcher(QObject* parent)
+LockWatcher::LockWatcher(QObject *parent)
     : QObject(parent)
 {
     connect(&_timer, SIGNAL(timeout()),
-            SLOT(checkFiles()));
+        SLOT(checkFiles()));
     _timer.start(check_frequency);
 }
 
-void LockWatcher::addFile(const QString& path)
+void LockWatcher::addFile(const QString &path)
 {
     qCInfo(lcLockWatcher) << "Watching for lock of" << path << "being released";
     _watchedPaths.insert(path);
@@ -42,7 +42,7 @@ void LockWatcher::checkFiles()
 {
     QSet<QString> unlocked;
 
-    foreach (const QString& path, _watchedPaths) {
+    foreach (const QString &path, _watchedPaths) {
         if (!FileSystem::isFileLocked(path)) {
             qCInfo(lcLockWatcher) << "Lock of" << path << "was released";
             emit fileUnlocked(path);

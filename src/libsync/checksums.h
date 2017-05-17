@@ -26,10 +26,10 @@ namespace OCC {
 class SyncJournalDb;
 
 /// Creates a checksum header from type and value.
-QByteArray makeChecksumHeader(const QByteArray& checksumType, const QByteArray& checksum);
+QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum);
 
 /// Parses a checksum header
-bool parseChecksumHeader(const QByteArray& header, QByteArray* type, QByteArray* checksum);
+bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum);
 
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 bool uploadChecksumEnabled();
@@ -46,12 +46,12 @@ class OWNCLOUDSYNC_EXPORT ComputeChecksum : public QObject
 {
     Q_OBJECT
 public:
-    explicit ComputeChecksum(QObject* parent = 0);
+    explicit ComputeChecksum(QObject *parent = 0);
 
     /**
      * Sets the checksum type to be used. The default is empty.
      */
-    void setChecksumType(const QByteArray& type);
+    void setChecksumType(const QByteArray &type);
 
     QByteArray checksumType() const;
 
@@ -60,15 +60,15 @@ public:
      *
      * done() is emitted when the calculation finishes.
      */
-    void start(const QString& filePath);
+    void start(const QString &filePath);
 
     /**
      * Computes the checksum synchronously.
      */
-    static QByteArray computeNow(const QString& filePath, const QByteArray& checksumType);
+    static QByteArray computeNow(const QString &filePath, const QByteArray &checksumType);
 
 signals:
-    void done(const QByteArray& checksumType, const QByteArray& checksum);
+    void done(const QByteArray &checksumType, const QByteArray &checksum);
 
 private slots:
     void slotCalculationDone();
@@ -97,14 +97,14 @@ public:
      * will be emitted. In case of any kind of error, the signal validationFailed() will
      * be emitted.
      */
-    void start(const QString& filePath, const QByteArray& checksumHeader);
+    void start(const QString &filePath, const QByteArray &checksumHeader);
 
 signals:
-    void validated(const QByteArray& checksumType, const QByteArray& checksum);
-    void validationFailed( const QString& errMsg );
+    void validated(const QByteArray &checksumType, const QByteArray &checksum);
+    void validationFailed(const QString &errMsg);
 
 private slots:
-    void slotChecksumCalculated(const QByteArray& checksumType, const QByteArray& checksum);
+    void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);
 
 private:
     QByteArray _expectedChecksumType;
@@ -119,7 +119,7 @@ class OWNCLOUDSYNC_EXPORT CSyncChecksumHook : public QObject
 {
     Q_OBJECT
 public:
-    explicit CSyncChecksumHook(SyncJournalDb* journal);
+    explicit CSyncChecksumHook(SyncJournalDb *journal);
 
     /**
      * Returns the checksum value for \a path for the given \a checksumTypeId.
@@ -128,12 +128,11 @@ public:
      * to be set as userdata.
      * The return value will be owned by csync.
      */
-    static const char* hook(const char* path, uint32_t checksumTypeId, void* this_obj);
+    static const char *hook(const char *path, uint32_t checksumTypeId, void *this_obj);
 
-    QByteArray compute(const QString& path, int checksumTypeId);
+    QByteArray compute(const QString &path, int checksumTypeId);
 
 private:
-    SyncJournalDb* _journal;
+    SyncJournalDb *_journal;
 };
-
 }

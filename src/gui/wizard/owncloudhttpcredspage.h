@@ -30,31 +30,31 @@ namespace OCC {
  */
 class OwncloudHttpCredsPage : public AbstractCredentialsWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  OwncloudHttpCredsPage(QWidget* parent);
+    OwncloudHttpCredsPage(QWidget *parent);
 
-  AbstractCredentials* getCredentials() const Q_DECL_OVERRIDE;
+    AbstractCredentials *getCredentials() const Q_DECL_OVERRIDE;
 
-  void initializePage() Q_DECL_OVERRIDE;
-  void cleanupPage() Q_DECL_OVERRIDE;
-  bool validatePage() Q_DECL_OVERRIDE;
-  int nextId() const Q_DECL_OVERRIDE;
-  void setConnected();
-  void setErrorString( const QString& err );
+    void initializePage() Q_DECL_OVERRIDE;
+    void cleanupPage() Q_DECL_OVERRIDE;
+    bool validatePage() Q_DECL_OVERRIDE;
+    int nextId() const Q_DECL_OVERRIDE;
+    void setConnected();
+    void setErrorString(const QString &err);
 
 Q_SIGNALS:
-  void connectToOCUrl(const QString&);
+    void connectToOCUrl(const QString &);
 
 private:
-  void startSpinner();
-  void stopSpinner();
-  void setupCustomization();
+    void startSpinner();
+    void stopSpinner();
+    void setupCustomization();
 
-  Ui_OwncloudHttpCredsPage _ui;
-  bool _connected;
-  QProgressIndicator* _progressIndi;
-  OwncloudWizard* _ocWizard;
+    Ui_OwncloudHttpCredsPage _ui;
+    bool _connected;
+    QProgressIndicator *_progressIndi;
+    OwncloudWizard *_ocWizard;
 };
 
 } // namespace OCC

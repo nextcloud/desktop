@@ -36,57 +36,57 @@ namespace OCC {
  * @brief The OwncloudSetupPage class
  * @ingroup gui
  */
-class OwncloudSetupPage: public QWizardPage
+class OwncloudSetupPage : public QWizardPage
 {
     Q_OBJECT
 public:
-  OwncloudSetupPage(QWidget *parent=0);
-  ~OwncloudSetupPage();
+    OwncloudSetupPage(QWidget *parent = 0);
+    ~OwncloudSetupPage();
 
-  virtual bool isComplete() const Q_DECL_OVERRIDE;
-  virtual void initializePage() Q_DECL_OVERRIDE;
-  virtual int nextId() const Q_DECL_OVERRIDE;
-  void setServerUrl( const QString& );
-  void setAllowPasswordStorage( bool );
-  bool validatePage() Q_DECL_OVERRIDE;
-  QString url() const;
-  QString localFolder() const;
-  void setRemoteFolder( const QString& remoteFolder);
-  void setMultipleFoldersExist( bool exist );
-  void setAuthType(WizardCommon::AuthType type);
+    virtual bool isComplete() const Q_DECL_OVERRIDE;
+    virtual void initializePage() Q_DECL_OVERRIDE;
+    virtual int nextId() const Q_DECL_OVERRIDE;
+    void setServerUrl(const QString &);
+    void setAllowPasswordStorage(bool);
+    bool validatePage() Q_DECL_OVERRIDE;
+    QString url() const;
+    QString localFolder() const;
+    void setRemoteFolder(const QString &remoteFolder);
+    void setMultipleFoldersExist(bool exist);
+    void setAuthType(WizardCommon::AuthType type);
 
 public slots:
-  void setErrorString( const QString&, bool retryHTTPonly );
-  void startSpinner();
-  void stopSpinner();
-  void slotCertificateAccepted();
+    void setErrorString(const QString &, bool retryHTTPonly);
+    void startSpinner();
+    void stopSpinner();
+    void slotCertificateAccepted();
 
 protected slots:
-  void slotUrlChanged(const QString&);
-  void slotUrlEditFinished();
+    void slotUrlChanged(const QString &);
+    void slotUrlEditFinished();
 
-  void setupCustomization();
+    void setupCustomization();
 
 signals:
-  void determineAuthType(const QString&);
+    void determineAuthType(const QString &);
 
 private:
-  bool urlHasChanged();
+    bool urlHasChanged();
 
-  Ui_OwncloudSetupPage _ui;
-  
-  QString _oCUrl;
-  QString _ocUser;
-  bool    _authTypeKnown;
-  bool    _checking;
-  bool    _multipleFoldersExist;
-  WizardCommon::AuthType _authType;
+    Ui_OwncloudSetupPage _ui;
 
-  QProgressIndicator* _progressIndi;
-  QButtonGroup* _selectiveSyncButtons;
-  QString _remoteFolder;
-  AddCertificateDialog* addCertDial;
-  OwncloudWizard* _ocWizard;
+    QString _oCUrl;
+    QString _ocUser;
+    bool _authTypeKnown;
+    bool _checking;
+    bool _multipleFoldersExist;
+    WizardCommon::AuthType _authType;
+
+    QProgressIndicator *_progressIndi;
+    QButtonGroup *_selectiveSyncButtons;
+    QString _remoteFolder;
+    AddCertificateDialog *addCertDial;
+    OwncloudWizard *_ocWizard;
 };
 
 } // namespace OCC

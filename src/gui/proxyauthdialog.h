@@ -20,7 +20,7 @@
 namespace OCC {
 
 namespace Ui {
-class ProxyAuthDialog;
+    class ProxyAuthDialog;
 }
 
 /**
@@ -36,7 +36,7 @@ public:
     explicit ProxyAuthDialog(QWidget *parent = 0);
     ~ProxyAuthDialog();
 
-    void setProxyAddress(const QString& address);
+    void setProxyAddress(const QString &address);
 
     QString username() const;
     QString password() const;

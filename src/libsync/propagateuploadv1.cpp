@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime ) {
+    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
@@ -60,7 +60,7 @@ void PropagateUploadFileV1::startNextChunk()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    if (! _jobs.isEmpty() &&  _currentChunk + _startChunk >= _chunkCount - 1) {
+    if (!_jobs.isEmpty() && _currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
         // We return now and when the _jobs are finished we will proceed with the last chunk
@@ -71,7 +71,7 @@ void PropagateUploadFileV1::startNextChunk()
     quint64 fileSize = _item->_size;
     auto headers = PropagateUploadFileCommon::headers();
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
-    headers["OC-Chunk-Size"]= QByteArray::number(quint64(chunkSize()));
+    headers["OC-Chunk-Size"] = QByteArray::number(quint64(chunkSize()));
 
     QString path = _item->_file;
 
@@ -84,7 +84,7 @@ void PropagateUploadFileV1::startNextChunk()
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
         uint transid = _transferId ^ chunkSize();
         qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
-        path +=  QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
+        path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers["OC-Chunked"] = "1";
 
@@ -92,7 +92,7 @@ void PropagateUploadFileV1::startNextChunk()
         currentChunkSize = chunkSize();
         if (sendingChunk == _chunkCount - 1) { // last chunk
             currentChunkSize = (fileSize % chunkSize());
-            if( currentChunkSize == 0 ) { // if the last chunk pretends to be 0, its actually the full chunk size.
+            if (currentChunkSize == 0) { // if the last chunk pretends to be 0, its actually the full chunk size.
                 currentChunkSize = chunkSize();
             }
             isFinalChunk = true;
@@ -105,11 +105,11 @@ void PropagateUploadFileV1::startNextChunk()
 
     if (isFinalChunk && !_transmissionChecksumType.isEmpty()) {
         headers[checkSumHeaderC] = makeChecksumHeader(
-                _transmissionChecksumType, _transmissionChecksum);
+            _transmissionChecksumType, _transmissionChecksum);
     }
 
     const QString fileName = propagator()->getFilePath(_item->_file);
-    if (! device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
+    if (!device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
@@ -118,18 +118,18 @@ void PropagateUploadFileV1::startNextChunk()
             emit propagator()->seenLockedFile(fileName);
         }
         // Soft error because this is likely caused by the user modifying his files while syncing
-        abortWithError( SyncFileItem::SoftError, device->errorString() );
+        abortWithError(SyncFileItem::SoftError, device->errorString());
         delete device;
         return;
     }
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob* job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
-    connect(job, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(slotUploadProgress(qint64,qint64)));
-    connect(job, SIGNAL(uploadProgress(qint64,qint64)), device, SLOT(slotJobUploadProgress(qint64,qint64)));
-    connect(job, SIGNAL(destroyed(QObject*)), this, SLOT(slotJobDestroyed(QObject*)));
+    connect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(slotUploadProgress(qint64, qint64)));
+    connect(job, SIGNAL(uploadProgress(qint64, qint64)), device, SLOT(slotJobUploadProgress(qint64, qint64)));
+    connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -161,7 +161,7 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     if (parallelChunkUpload && (propagator()->_activeJobList.count() < propagator()->maximumActiveTransferJob())
-            && _currentChunk < _chunkCount ) {
+        && _currentChunk < _chunkCount) {
         startNextChunk();
     }
     if (!parallelChunkUpload || _chunkCount - _currentChunk <= 0) {
@@ -186,7 +186,7 @@ void PropagateUploadFileV1::slotPutFinished()
     QNetworkReply::NetworkError err = job->reply()->error();
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) {        // Abort the job and try again later.
+    if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) { // Abort the job and try again later.
         // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
         qCWarning(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
         propagator()->_anotherSyncNeeded = true;
@@ -197,9 +197,9 @@ void PropagateUploadFileV1::slotPutFinished()
 
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if(checkForProblemsWithShared(_item->_httpErrorCode,
-            tr("The file was edited locally but is part of a read only share. "
-               "It is restored and your edit is in the conflict file."))) {
+        if (checkForProblemsWithShared(_item->_httpErrorCode,
+                tr("The file was edited locally but is part of a read only share. "
+                   "It is restored and your edit is in the conflict file."))) {
             return;
         }
         QByteArray replyContent;
@@ -219,7 +219,7 @@ void PropagateUploadFileV1::slotPutFinished()
         checkResettingErrors();
 
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
-                                                    &propagator()->_anotherSyncNeeded);
+            &propagator()->_anotherSyncNeeded);
         abortWithError(status, errorString);
         return;
     }
@@ -228,7 +228,7 @@ void PropagateUploadFileV1::slotPutFinished()
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
         _finished = true;
-        QString path =  QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
+        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
@@ -251,7 +251,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
     // Check if the file still exists
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
-    if( !FileSystem::fileExists(fullFilePath) ) {
+    if (!FileSystem::fileExists(fullFilePath)) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -261,9 +261,9 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     // Check whether the file changed since discovery.
-    if (! FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
+    if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
-        if( !finished ) {
+        if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
@@ -294,13 +294,13 @@ void PropagateUploadFileV1::slotPutFinished()
         auto currentChunk = job->_chunk;
         foreach (auto *job, _jobs) {
             // Take the minimum finished one
-            if (auto putJob = qobject_cast<PUTFileJob*>(job)) {
+            if (auto putJob = qobject_cast<PUTFileJob *>(job)) {
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
             }
         }
-        pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount ; // next chunk to start with
+        pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
-        pi._modtime =  Utility::qDateTimeFromTime_t(_item->_modtime);
+        pi._modtime = Utility::qDateTimeFromTime_t(_item->_modtime);
         pi._errorCount = 0; // successful chunk upload resets
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
@@ -312,8 +312,8 @@ void PropagateUploadFileV1::slotPutFinished()
     _finished = true;
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
-    if( !fid.isEmpty() ) {
-        if( !_item->_fileId.isEmpty() && _item->_fileId != fid ) {
+    if (!fid.isEmpty()) {
+        if (!_item->_fileId.isEmpty() && _item->_fileId != fid) {
             qCWarning(lcPropagateUpload) << "File ID changed!" << _item->_fileId << fid;
         }
         _item->_fileId = fid;
@@ -335,9 +335,9 @@ void PropagateUploadFileV1::slotPutFinished()
     // performance logging
     quint64 duration = _stopWatch.stop();
     qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
-             << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
-             << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-             << duration;
+                               << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
+                               << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
+                               << duration;
     // The job might stay alive for the whole sync, release this tiny bit of memory.
     _stopWatch.reset();
 #endif
@@ -368,7 +368,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
 
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {
-        amount -= (_jobs.count() -1) * chunkSize();
+        amount -= (_jobs.count() - 1) * chunkSize();
         foreach (QObject *j, _jobs) {
             amount += j->property("byteWritten").toULongLong();
         }
@@ -378,5 +378,4 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     }
     propagator()->reportProgress(*_item, amount);
 }
-
 }

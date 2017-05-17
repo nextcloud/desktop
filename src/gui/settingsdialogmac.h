@@ -47,22 +47,22 @@ public:
 
 public slots:
     void showActivityPage();
-    void slotRefreshActivity(AccountState *accountState );
+    void slotRefreshActivity(AccountState *accountState);
 
 private slots:
     void accountAdded(AccountState *);
     void accountRemoved(AccountState *);
     void slotAccountAvatarChanged();
+
 private:
     void closeEvent(QCloseEvent *event);
 
-    ProtocolWidget  *_protocolWidget;
+    ProtocolWidget *_protocolWidget;
     ActivitySettings *_activitySettings;
-    ownCloudGui     *_gui;
+    ownCloudGui *_gui;
 
     int _protocolIdx;
 };
-
 }
 
 #endif // SETTINGSDIALOGMAC_H

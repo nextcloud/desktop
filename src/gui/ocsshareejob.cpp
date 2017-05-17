@@ -17,17 +17,16 @@
 namespace OCC {
 
 OcsShareeJob::OcsShareeJob(AccountPtr account)
-: OcsJob(account)
+    : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/sharees");
     connect(this, SIGNAL(jobFinished(QJsonDocument)), SLOT(jobDone(QJsonDocument)));
-
 }
 
 void OcsShareeJob::getSharees(const QString &search,
-                              const QString &itemType,
-                              int page,
-                              int perPage)
+    const QString &itemType,
+    int page,
+    int perPage)
 {
     setVerb("GET");
 
@@ -43,5 +42,4 @@ void OcsShareeJob::jobDone(const QJsonDocument &reply)
 {
     emit shareeJobFinished(reply);
 }
-
 }

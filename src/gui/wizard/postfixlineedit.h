@@ -34,7 +34,7 @@ public:
     PostfixLineEdit(QWidget *parent);
 
     /** @brief sets an optional postfix shown greyed out */
-    void setPostfix(const QString& postfix);
+    void setPostfix(const QString &postfix);
     /** @brief retrives the postfix */
     QString postfix() const;
     /** @brief retrieves combined text() and postfix() */
@@ -45,6 +45,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *pe);
+
 private:
     QString _postfix;
 };

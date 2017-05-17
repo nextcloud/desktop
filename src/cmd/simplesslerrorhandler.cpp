@@ -20,18 +20,17 @@ namespace OCC {
 
 bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, OCC::AccountPtr account)
 {
-    (void) account;
-    (void) conf;
+    (void)account;
+    (void)conf;
 
     if (!certs) {
         qDebug() << "Certs parameter required but is NULL!";
         return false;
     }
 
-    foreach( QSslError error, errors ) {
-        certs->append( error.certificate() );
+    foreach (QSslError error, errors) {
+        certs->append(error.certificate());
     }
     return true;
 }
-
 }

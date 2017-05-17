@@ -50,14 +50,14 @@
 
 namespace OCC {
 
-ActivityWidget::ActivityWidget(QWidget *parent) :
-    QWidget(parent),
-    _ui(new Ui::ActivityWidget),
-    _notificationRequestsRunning(0)
+ActivityWidget::ActivityWidget(QWidget *parent)
+    : QWidget(parent)
+    , _ui(new Ui::ActivityWidget)
+    , _notificationRequestsRunning(0)
 {
     _ui->setupUi(this);
 
-    // Adjust copyToClipboard() when making changes here!
+// Adjust copyToClipboard() when making changes here!
 #if defined(Q_OS_MAC)
     _ui->_activityList->setMinimumWidth(400);
 #endif
@@ -83,19 +83,19 @@ ActivityWidget::ActivityWidget(QWidget *parent) :
 
     showLabels();
 
-    connect(_model, SIGNAL(activityJobStatusCode(AccountState*,int)),
-            this, SLOT(slotAccountActivityStatus(AccountState*,int)));
+    connect(_model, SIGNAL(activityJobStatusCode(AccountState *, int)),
+        this, SLOT(slotAccountActivityStatus(AccountState *, int)));
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
+    _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     connect(_copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
 
-    connect(_model, SIGNAL(rowsInserted(QModelIndex,int,int)), SIGNAL(rowsInserted()));
+    connect(_model, SIGNAL(rowsInserted(QModelIndex, int, int)), SIGNAL(rowsInserted()));
 
-    connect( _ui->_activityList, SIGNAL(activated(QModelIndex)), this,
-             SLOT(slotOpenFile(QModelIndex)));
+    connect(_ui->_activityList, SIGNAL(activated(QModelIndex)), this,
+        SLOT(slotOpenFile(QModelIndex)));
 
-    connect( &_removeTimer, SIGNAL(timeout()), this, SLOT(slotCheckToCleanWidgets()) );
+    connect(&_removeTimer, SIGNAL(timeout()), this, SLOT(slotCheckToCleanWidgets()));
     _removeTimer.setInterval(1000);
 }
 
@@ -113,10 +113,10 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
 {
     // start a server notification handler if no notification requests
     // are running
-    if( _notificationRequestsRunning == 0 ) {
+    if (_notificationRequestsRunning == 0) {
         ServerNotificationHandler *snh = new ServerNotificationHandler;
         connect(snh, SIGNAL(newNotificationList(ActivityList)), this,
-                SLOT(slotBuildNotificationDisplay(ActivityList)));
+            SLOT(slotBuildNotificationDisplay(ActivityList)));
 
         snh->slotFetchNotifications(ptr);
     } else {
@@ -124,7 +124,7 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
     }
 }
 
-void ActivityWidget::slotRemoveAccount( AccountState *ptr )
+void ActivityWidget::slotRemoveAccount(AccountState *ptr)
 {
     _model->slotRemoveAccount(ptr);
 }
@@ -139,8 +139,8 @@ void ActivityWidget::showLabels()
 
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
-    while (i.hasNext() ) {
-        t.append( tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
+    while (i.hasNext()) {
+        t.append(tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
     }
     _ui->_bottomLabel->setTextFormat(Qt::RichText);
     _ui->_bottomLabel->setText(t);
@@ -148,10 +148,10 @@ void ActivityWidget::showLabels()
 
 void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode)
 {
-    if( !(ast && ast->account()) ) {
+    if (!(ast && ast->account())) {
         return;
     }
-    if( statusCode == 999 ) {
+    if (statusCode == 999) {
         _accountsWithoutActivities.insert(ast->account()->displayName());
     } else {
         _accountsWithoutActivities.remove(ast->account()->displayName());
@@ -171,40 +171,40 @@ QString ActivityWidget::timeString(QDateTime dt, QLocale::FormatType format) con
     return loc.toString(dt, dtFormat);
 }
 
-void ActivityWidget::storeActivityList( QTextStream& ts )
+void ActivityWidget::storeActivityList(QTextStream &ts)
 {
     ActivityList activities = _model->activityList();
 
-    foreach( Activity activity, activities ) {
+    foreach (Activity activity, activities) {
         ts << right
-              // account name
+           // account name
            << qSetFieldWidth(30)
            << activity._accName
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // date and time
+           // date and time
            << qSetFieldWidth(34)
            << activity._dateTime.toString()
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // file
+           // file
            << qSetFieldWidth(30)
            << activity._file
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // subject
+           // subject
            << qSetFieldWidth(100)
            << activity._subject
-              // separator
+           // separator
            << qSetFieldWidth(0) << ","
 
-              // message (mostly empty)
+           // message (mostly empty)
            << qSetFieldWidth(55)
            << activity._message
-              //
+           //
            << qSetFieldWidth(0)
            << endl;
     }
@@ -214,14 +214,14 @@ void ActivityWidget::checkActivityTabVisibility()
 {
     int accountCount = AccountManager::instance()->accounts().count();
     bool hasAccountsWithActivity =
-            _accountsWithoutActivities.count() != accountCount;
+        _accountsWithoutActivities.count() != accountCount;
     bool hasNotifications = !_widgetForNotifId.isEmpty();
 
-    _ui->_headerLabel->setVisible( hasAccountsWithActivity );
-    _ui->_activityList->setVisible( hasAccountsWithActivity );
+    _ui->_headerLabel->setVisible(hasAccountsWithActivity);
+    _ui->_activityList->setVisible(hasAccountsWithActivity);
 
-    _ui->_notifyLabel->setVisible( hasNotifications );
-    _ui->_notifyScroll->setVisible( hasNotifications );
+    _ui->_notifyLabel->setVisible(hasNotifications);
+    _ui->_notifyScroll->setVisible(hasNotifications);
 
     emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
 }
@@ -229,7 +229,7 @@ void ActivityWidget::checkActivityTabVisibility()
 void ActivityWidget::slotOpenFile(QModelIndex indx)
 {
     qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
-    if( indx.isValid() ) {
+    if (indx.isValid()) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
 
         if (QFile::exists(fullPath)) {
@@ -242,7 +242,7 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // All notifications in list are coming from the same account
 // but in the _widgetForNotifId hash widgets for all accounts are
 // collected.
-void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
+void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 {
     QHash<QString, int> accNotified;
     QString listAccountName;
@@ -250,25 +250,25 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     // Whether a new notification widget was added to the notificationLayout.
     bool newNotificationShown = false;
 
-    foreach( auto activity, list ) {
-        if( _blacklistedNotifications.contains(activity)) {
+    foreach (auto activity, list) {
+        if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
 
         NotificationWidget *widget = 0;
 
-        if( _widgetForNotifId.contains( activity.ident()) ) {
+        if (_widgetForNotifId.contains(activity.ident())) {
             widget = _widgetForNotifId[activity.ident()];
         } else {
             widget = new NotificationWidget(this);
             connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QByteArray)),
-                    this, SLOT(slotSendNotificationRequest(QString, QString, QByteArray)));
+                this, SLOT(slotSendNotificationRequest(QString, QString, QByteArray)));
             connect(widget, SIGNAL(requestCleanupAndBlacklist(Activity)),
-                    this, SLOT(slotRequestCleanupAndBlacklist(Activity)));
+                this, SLOT(slotRequestCleanupAndBlacklist(Activity)));
 
             _notificationsLayout->addWidget(widget);
-            // _ui->_notifyScroll->setMinimumHeight( widget->height());
+// _ui->_notifyScroll->setMinimumHeight( widget->height());
 #if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
 #endif
@@ -276,7 +276,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
             newNotificationShown = true;
         }
 
-        widget->setActivity( activity );
+        widget->setActivity(activity);
 
         // remember the list account name for the strayCat handling below.
         listAccountName = activity._accName;
@@ -288,21 +288,21 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         // will repeat the gui log.
 
         // after one hour, clear the gui log notification store
-        if( _guiLogTimer.elapsed() > 60*60*1000 ) {
+        if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
             _guiLoggedNotifications.clear();
         }
-        if( !_guiLoggedNotifications.contains(activity._id)) {
+        if (!_guiLoggedNotifications.contains(activity._id)) {
             QString host = activity._accName;
             // store the name of the account that sends the notification to be
             // able to add it to the tray notification
             // remove the user name from the account as that is not accurate here.
             int indx = host.indexOf(QChar('@'));
-            if( indx>-1 ) {
-                host.remove(0, 1+indx);
+            if (indx > -1) {
+                host.remove(0, 1 + indx);
             }
-            if( !host.isEmpty() ) {
-                if( accNotified.contains(host)) {
-                    accNotified[host] = accNotified[host]+1;
+            if (!host.isEmpty()) {
+                if (accNotified.contains(host)) {
+                    accNotified[host] = accNotified[host] + 1;
                 } else {
                     accNotified[host] = 1;
                 }
@@ -313,31 +313,31 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
     // check if there are widgets that have no corresponding activity from
     // the server any more. Collect them in a list
-    QList< Activity::Identifier > strayCats;
-    foreach( auto id, _widgetForNotifId.keys() ) {
+    QList<Activity::Identifier> strayCats;
+    foreach (auto id, _widgetForNotifId.keys()) {
         NotificationWidget *widget = _widgetForNotifId[id];
 
         bool found = false;
         // do not mark widgets of other accounts to delete.
-        if( widget->activity()._accName != listAccountName ) {
+        if (widget->activity()._accName != listAccountName) {
             continue;
         }
 
-        foreach( auto activity, list ) {
-            if( activity.ident() == id ) {
+        foreach (auto activity, list) {
+            if (activity.ident() == id) {
                 // found an activity
                 found = true;
                 break;
             }
         }
-        if( ! found ) {
+        if (!found) {
             // the activity does not exist any more.
             strayCats.append(id);
         }
     }
 
     // .. and now delete all these stray cat widgets.
-    foreach( auto strayCatId, strayCats ) {
+    foreach (auto strayCatId, strayCats) {
         NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
         scheduleWidgetToRemove(widgetToGo, 0);
     }
@@ -346,19 +346,18 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
 
     int newGuiLogCount = accNotified.count();
 
-    if( newGuiLogCount > 0 ) {
+    if (newGuiLogCount > 0) {
         // restart the gui log timer now that we show a notification
         _guiLogTimer.restart();
 
         // Assemble a tray notification
-        QString msg = tr("You received %n new notification(s) from %2.", "", accNotified[accNotified.keys().at(0)]).
-                arg(accNotified.keys().at(0));
+        QString msg = tr("You received %n new notification(s) from %2.", "", accNotified[accNotified.keys().at(0)]).arg(accNotified.keys().at(0));
 
-        if( newGuiLogCount >= 2 ) {
+        if (newGuiLogCount >= 2) {
             QString acc1 = accNotified.keys().at(0);
             QString acc2 = accNotified.keys().at(1);
-            if( newGuiLogCount == 2 ) {
-                int notiCount = accNotified[ acc1 ] + accNotified[ acc2 ];
+            if (newGuiLogCount == 2) {
+                int notiCount = accNotified[acc1] + accNotified[acc2];
                 msg = tr("You received %n new notification(s) from %1 and %2.", "", notiCount).arg(acc1, acc2);
             } else {
                 msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1, acc2);
@@ -366,7 +365,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
         }
 
         const QString log = tr("%1 Notifications - Action Required").arg(Theme::instance()->appNameGUI());
-        emit guiLog( log, msg);
+        emit guiLog(log, msg);
     }
 
     if (newNotificationShown) {
@@ -374,24 +373,27 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList& list)
     }
 }
 
-void ActivityWidget::slotSendNotificationRequest(const QString& accountName, const QString& link, const QByteArray& verb)
+void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb)
 {
     qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
-    NotificationWidget *theSender = qobject_cast<NotificationWidget*>(sender());
+    NotificationWidget *theSender = qobject_cast<NotificationWidget *>(sender());
 
-    const QStringList validVerbs = QStringList() << "GET" << "PUT" << "POST" << "DELETE";
+    const QStringList validVerbs = QStringList() << "GET"
+                                                 << "PUT"
+                                                 << "POST"
+                                                 << "DELETE";
 
-    if( validVerbs.contains(verb)) {
+    if (validVerbs.contains(verb)) {
         AccountStatePtr acc = AccountManager::instance()->account(accountName);
-        if( acc ) {
+        if (acc) {
             NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
             job->setWidget(theSender);
-            connect( job, SIGNAL( networkError(QNetworkReply*)),
-                                  this, SLOT(slotNotifyNetworkError(QNetworkReply*)));
-            connect( job, SIGNAL( jobFinished(QString, int)),
-                     this, SLOT(slotNotifyServerFinished(QString, int)) );
+            connect(job, SIGNAL(networkError(QNetworkReply *)),
+                this, SLOT(slotNotifyNetworkError(QNetworkReply *)));
+            connect(job, SIGNAL(jobFinished(QString, int)),
+                this, SLOT(slotNotifyServerFinished(QString, int)));
             job->start();
 
             // count the number of running notification requests. If this member var
@@ -403,18 +405,18 @@ void ActivityWidget::slotSendNotificationRequest(const QString& accountName, con
     }
 }
 
-void ActivityWidget::endNotificationRequest( NotificationWidget *widget, int replyCode )
+void ActivityWidget::endNotificationRequest(NotificationWidget *widget, int replyCode)
 {
     _notificationRequestsRunning--;
-    if( widget ) {
+    if (widget) {
         widget->slotNotificationRequestFinished(replyCode);
     }
 }
 
-void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
+void ActivityWidget::slotNotifyNetworkError(QNetworkReply *reply)
 {
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob*>(sender());
-    if( !job ) {
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    if (!job) {
         return;
     }
 
@@ -422,43 +424,42 @@ void ActivityWidget::slotNotifyNetworkError( QNetworkReply *reply)
 
     endNotificationRequest(job->widget(), resultCode);
     qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
-
 }
 
-void ActivityWidget::slotNotifyServerFinished( const QString& reply, int replyCode )
+void ActivityWidget::slotNotifyServerFinished(const QString &reply, int replyCode)
 {
-    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob*>(sender());
-    if( !job ) {
+    NotificationConfirmJob *job = qobject_cast<NotificationConfirmJob *>(sender());
+    if (!job) {
         return;
     }
 
     endNotificationRequest(job->widget(), replyCode);
     // FIXME: remove the  widget after a couple of seconds
-    qCInfo(lcActivity) << "Server Notification reply code"<< replyCode << reply;
+    qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
 
     // if the notification was successful start a timer that triggers
     // removal of the done widgets in a few seconds
     // Add 200 millisecs to the predefined value to make sure that the timer in
     // widget's method readyToClose() has elapsed.
-    if( replyCode == OCS_SUCCESS_STATUS_CODE ) {
-        scheduleWidgetToRemove( job->widget() );
+    if (replyCode == OCS_SUCCESS_STATUS_CODE) {
+        scheduleWidgetToRemove(job->widget());
     }
 }
 
 // blacklist the activity coming in here.
-void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity& blacklistActivity)
+void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity &blacklistActivity)
 {
-    if ( ! _blacklistedNotifications.contains(blacklistActivity) ) {
+    if (!_blacklistedNotifications.contains(blacklistActivity)) {
         _blacklistedNotifications.append(blacklistActivity);
     }
 
-    NotificationWidget *widget = _widgetForNotifId[ blacklistActivity.ident() ];
+    NotificationWidget *widget = _widgetForNotifId[blacklistActivity.ident()];
     scheduleWidgetToRemove(widget);
 }
 
 void ActivityWidget::scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds)
 {
-    if( !widget ) {
+    if (!widget) {
         return;
     }
     // in five seconds from now, remove the widget.
@@ -467,7 +468,7 @@ void ActivityWidget::scheduleWidgetToRemove(NotificationWidget *widget, int mill
     if (!it.isValid() || it > removeTime) {
         it = removeTime;
     }
-    if( !_removeTimer.isActive() ) {
+    if (!_removeTimer.isActive()) {
         _removeTimer.start();
     }
 }
@@ -482,7 +483,7 @@ void ActivityWidget::slotCheckToCleanWidgets()
         QDateTime t = it.value();
         NotificationWidget *widget = it.key();
 
-        if( currentTime > t ) {
+        if (currentTime > t) {
             // found one to remove!
             Activity::Identifier id = widget->activity().ident();
             _widgetForNotifId.remove(id);
@@ -493,12 +494,12 @@ void ActivityWidget::slotCheckToCleanWidgets()
         }
     }
 
-    if( _widgetsToRemove.isEmpty() ) {
+    if (_widgetsToRemove.isEmpty()) {
         _removeTimer.stop();
     }
 
     // check to see if the whole notification pane should be hidden
-    if( _widgetForNotifId.isEmpty() ) {
+    if (_widgetForNotifId.isEmpty()) {
         _ui->_notifyLabel->setHidden(true);
         _ui->_notifyScroll->setHidden(true);
     }
@@ -508,7 +509,7 @@ void ActivityWidget::slotCheckToCleanWidgets()
 /* ==================================================================== */
 
 ActivitySettings::ActivitySettings(QWidget *parent)
-    :QWidget(parent)
+    : QWidget(parent)
 {
     QHBoxLayout *hbox = new QHBoxLayout(this);
     setLayout(hbox);
@@ -520,14 +521,14 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
     connect(_activityWidget, SIGNAL(hideActivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
-    connect(_activityWidget, SIGNAL(guiLog(QString,QString)), this, SIGNAL(guiLog(QString,QString)));
+    connect(_activityWidget, SIGNAL(guiLog(QString, QString)), this, SIGNAL(guiLog(QString, QString)));
     connect(_activityWidget, SIGNAL(newNotification()), SLOT(slotShowActivityTab()));
 
     _protocolWidget = new ProtocolWidget(this);
     _tab->insertTab(1, _protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
     connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
     connect(_protocolWidget, SIGNAL(issueItemCountUpdated(int)),
-            this, SLOT(slotShowIssueItemCount(int)));
+        this, SLOT(slotShowIssueItemCount(int)));
 
     // Add the not-synced list into the tab
     QWidget *w = new QWidget;
@@ -537,7 +538,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     QDialogButtonBox *dlgButtonBox = new QDialogButtonBox(this);
     vbox2->addWidget(dlgButtonBox);
     QPushButton *_copyBtn = dlgButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    _copyBtn->setToolTip( tr("Copy the activity list to the clipboard."));
+    _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     _copyBtn->setEnabled(true);
     connect(_copyBtn, SIGNAL(clicked()), this, SLOT(slotCopyToClipboard()));
 
@@ -550,7 +551,7 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _tab->setCornerWidget(_progressIndicator);
 
     connect(&_notificationCheckTimer, SIGNAL(timeout()),
-            this, SLOT(slotRegularNotificationCheck()));
+        this, SLOT(slotRegularNotificationCheck()));
 
     // connect a model signal to stop the animation.
     connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
@@ -559,20 +560,20 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _tab->setCurrentIndex(1);
 }
 
-void ActivitySettings::setNotificationRefreshInterval( quint64 interval )
+void ActivitySettings::setNotificationRefreshInterval(quint64 interval)
 {
-    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval/1000 << " sec interval";
+    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval / 1000 << " sec interval";
     _notificationCheckTimer.start(interval);
 }
 
 void ActivitySettings::setActivityTabHidden(bool hidden)
 {
-    if( hidden && _activityTabId > -1 ) {
+    if (hidden && _activityTabId > -1) {
         _tab->removeTab(_activityTabId);
         _activityTabId = -1;
     }
 
-    if( !hidden && _activityTabId == -1 ) {
+    if (!hidden && _activityTabId == -1) {
         _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     }
 }
@@ -580,7 +581,7 @@ void ActivitySettings::setActivityTabHidden(bool hidden)
 void ActivitySettings::slotShowIssueItemCount(int cnt)
 {
     QString cntText = tr("Not Synced");
-    if( cnt ) {
+    if (cnt) {
         //: %1 is the number of not synced files.
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
@@ -602,46 +603,46 @@ void ActivitySettings::slotCopyToClipboard()
     int idx = _tab->currentIndex();
     QString message;
 
-    if( idx == 0 ) {
+    if (idx == 0) {
         // the activity widget
         _activityWidget->storeActivityList(ts);
         message = tr("The server activity list has been copied to the clipboard.");
-    } else if(idx == 1 ) {
+    } else if (idx == 1) {
         // the protocol widget
         _protocolWidget->storeSyncActivity(ts);
         message = tr("The sync activity list has been copied to the clipboard.");
-    } else if(idx == 2 ) {
+    } else if (idx == 2) {
         // issues Widget
         message = tr("The list of unsynced items has been copied to the clipboard.");
-       _protocolWidget->storeSyncIssues(ts);
+        _protocolWidget->storeSyncIssues(ts);
     }
 
     QApplication::clipboard()->setText(text);
     emit guiLog(tr("Copied to clipboard"), message);
 }
 
-void ActivitySettings::slotRemoveAccount( AccountState *ptr )
+void ActivitySettings::slotRemoveAccount(AccountState *ptr)
 {
     _activityWidget->slotRemoveAccount(ptr);
 }
 
-void ActivitySettings::slotRefresh( AccountState* ptr )
+void ActivitySettings::slotRefresh(AccountState *ptr)
 {
     // QElapsedTimer isn't actually constructed as invalid.
-    if ( !_timeSinceLastCheck.contains(ptr) ) {
+    if (!_timeSinceLastCheck.contains(ptr)) {
         _timeSinceLastCheck[ptr].invalidate();
     }
-    QElapsedTimer & timer = _timeSinceLastCheck[ptr];
+    QElapsedTimer &timer = _timeSinceLastCheck[ptr];
 
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
-    if( timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD ) {
+    if (timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD) {
         qCDebug(lcActivity) << "Do not check as last check is only secs ago: " << timer.elapsed() / 1000;
         return;
     }
-    if( ptr && ptr->isConnected() ) {
-        if( isVisible() || !timer.isValid() ) {
+    if (ptr && ptr->isConnected()) {
+        if (isVisible() || !timer.isValid()) {
             _progressIndicator->startAnimation();
-            _activityWidget->slotRefreshActivities( ptr);
+            _activityWidget->slotRefreshActivities(ptr);
         }
         _activityWidget->slotRefreshNotifications(ptr);
         timer.start();
@@ -656,7 +657,7 @@ void ActivitySettings::slotRegularNotificationCheck()
     }
 }
 
-bool ActivitySettings::event(QEvent* e)
+bool ActivitySettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Show) {
         AccountManager *am = AccountManager::instance();
@@ -669,8 +670,5 @@ bool ActivitySettings::event(QEvent* e)
 
 ActivitySettings::~ActivitySettings()
 {
-
 }
-
-
 }

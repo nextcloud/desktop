@@ -18,8 +18,7 @@
 
 #include "owncloudlib.h"
 
-namespace OCC
-{
+namespace OCC {
 
 } // namespace OCC
 

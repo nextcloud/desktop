@@ -30,19 +30,19 @@ class WritePasswordJob;
 class ReadPasswordJob;
 }
 
-namespace OCC
-{
+namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
 {
     Q_OBJECT
     friend class HttpCredentialsAccessManager;
+
 public:
     explicit HttpCredentials();
-    HttpCredentials(const QString& user, const QString& password, const QSslCertificate& certificate = QSslCertificate(), const QSslKey& key = QSslKey());
+    HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
     QString authType() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager* getQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *getQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
@@ -55,18 +55,18 @@ public:
     virtual bool sslIsTrusted() { return false; }
 
     // To fetch the user name as early as possible
-    void setAccount(Account* account) Q_DECL_OVERRIDE;
+    void setAccount(Account *account) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-    void slotAuthentication(QNetworkReply*, QAuthenticator*);
+    void slotAuthentication(QNetworkReply *, QAuthenticator *);
 
-    void slotReadClientCertPEMJobDone(QKeychain::Job*);
-    void slotReadClientKeyPEMJobDone(QKeychain::Job*);
-    void slotReadJobDone(QKeychain::Job*);
+    void slotReadClientCertPEMJobDone(QKeychain::Job *);
+    void slotReadClientKeyPEMJobDone(QKeychain::Job *);
+    void slotReadJobDone(QKeychain::Job *);
 
-    void slotWriteClientCertPEMJobDone(QKeychain::Job*);
-    void slotWriteClientKeyPEMJobDone(QKeychain::Job*);
-    void slotWriteJobDone(QKeychain::Job*);
+    void slotWriteClientCertPEMJobDone(QKeychain::Job *);
+    void slotWriteClientKeyPEMJobDone(QKeychain::Job *);
+    void slotWriteJobDone(QKeychain::Job *);
     void clearQNAMCache();
 
 protected:

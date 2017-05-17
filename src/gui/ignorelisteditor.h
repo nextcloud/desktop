@@ -22,7 +22,7 @@ class QListWidgetItem;
 namespace OCC {
 
 namespace Ui {
-class IgnoreListEditor;
+    class IgnoreListEditor;
 }
 
 /**
@@ -46,8 +46,8 @@ private slots:
     void slotAddPattern();
 
 private:
-    void readIgnoreFile(const QString& file, bool readOnly);
-    int addPattern(const QString& pattern, bool deletable, bool readOnly);
+    void readIgnoreFile(const QString &file, bool readOnly);
+    int addPattern(const QString &pattern, bool deletable, bool readOnly);
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
 };

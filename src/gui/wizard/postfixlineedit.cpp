@@ -23,7 +23,7 @@ const int horizontalMargin(4);
 const int verticalMargin(4);
 
 PostfixLineEdit::PostfixLineEdit(QWidget *parent)
- : QLineEdit(parent)
+    : QLineEdit(parent)
 {
 }
 
@@ -32,7 +32,7 @@ void PostfixLineEdit::setPostfix(const QString &postfix)
     _postfix = postfix;
     QFontMetricsF fm(font());
     QMargins tm = textMargins();
-    tm.setRight(tm.right()+fm.width(_postfix)+verticalMargin);
+    tm.setRight(tm.right() + fm.width(_postfix) + verticalMargin);
     setTextMargins(tm);
 }
 
@@ -57,21 +57,20 @@ void PostfixLineEdit::setFullText(const QString &text)
 
 void PostfixLineEdit::paintEvent(QPaintEvent *pe)
 {
-
     QLineEdit::paintEvent(pe);
     QPainter p(this);
 
     //
     p.setPen(palette().color(QPalette::Disabled, QPalette::Text));
     QFontMetricsF fm(font());
-    int start = rect().right()-fm.width(_postfix);
+    int start = rect().right() - fm.width(_postfix);
     QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);
-    r.setTop(r.top()+horizontalMargin-1);
+    r.setTop(r.top() + horizontalMargin - 1);
     QRect postfixRect(r);
 
-    postfixRect.setLeft(start-verticalMargin);
+    postfixRect.setLeft(start - verticalMargin);
     p.drawText(postfixRect, _postfix);
 }
 

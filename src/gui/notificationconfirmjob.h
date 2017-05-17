@@ -35,11 +35,11 @@ class NotificationWidget;
  * All the communication logic is handled in this class.
  *
  */
-class NotificationConfirmJob : public AbstractNetworkJob {
+class NotificationConfirmJob : public AbstractNetworkJob
+{
     Q_OBJECT
 
 public:
-
     explicit NotificationConfirmJob(AccountPtr account);
 
     /**
@@ -47,7 +47,7 @@ public:
      *
      * @param verb currently supported GET PUT POST DELETE
      */
-    void setLinkAndVerb(const QUrl& link, const QByteArray &verb);
+    void setLinkAndVerb(const QUrl &link, const QByteArray &verb);
 
     /**
      * @brief Start the OCS request
@@ -59,7 +59,7 @@ public:
      *        it when the job has finished
      * @param widget pointer to the notification widget to store
      */
-    void setWidget( NotificationWidget *widget );
+    void setWidget(NotificationWidget *widget);
 
     /**
      * @brief widget - get the associated notification widget as stored
@@ -85,7 +85,6 @@ private:
     QUrl _link;
     NotificationWidget *_widget;
 };
-
 }
 
 #endif // NotificationConfirmJob_H

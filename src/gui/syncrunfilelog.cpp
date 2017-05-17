@@ -25,27 +25,27 @@ SyncRunFileLog::SyncRunFileLog()
 {
 }
 
-QString SyncRunFileLog::dateTimeStr( const QDateTime& dt )
+QString SyncRunFileLog::dateTimeStr(const QDateTime &dt)
 {
     return dt.toString(Qt::ISODate);
 }
 
-QString SyncRunFileLog::directionToStr( SyncFileItem::Direction dir )
+QString SyncRunFileLog::directionToStr(SyncFileItem::Direction dir)
 {
     QString re("N");
-    if( dir == SyncFileItem::Up ) {
+    if (dir == SyncFileItem::Up) {
         re = QLatin1String("Up");
-    } else if( dir == SyncFileItem::Down ) {
+    } else if (dir == SyncFileItem::Down) {
         re = QLatin1String("Down");
     }
     return re;
 }
 
-QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
+QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
 {
     QString re;
 
-    switch( inst ) {
+    switch (inst) {
     case CSYNC_INSTRUCTION_NONE:
         re = "INST_NONE";
         break;
@@ -93,7 +93,7 @@ QString SyncRunFileLog::instructionToStr( csync_instructions_e inst )
 
 void SyncRunFileLog::start(const QString &folderPath)
 {
-    const qint64 logfileMaxSize = 1024*1024; // 1MiB
+    const qint64 logfileMaxSize = 1024 * 1024; // 1MiB
 
     // Note; this name is ignored in csync_exclude.c
     const QString filename = folderPath + QLatin1String(".owncloudsync.log");
@@ -110,7 +110,7 @@ void SyncRunFileLog::start(const QString &folderPath)
     _file.reset(new QFile(filename));
 
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
-    _out.setDevice( _file.data() );
+    _out.setDevice(_file.data());
 
 
     if (!exists) {
@@ -118,7 +118,8 @@ void SyncRunFileLog::start(const QString &folderPath)
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
                 "other size | other modtime | other etag | other fileId | "
-                "other instruction" << endl;
+                "other instruction"
+             << endl;
 
         FileSystem::setFileHidden(filename, true);
     }
@@ -129,16 +130,16 @@ void SyncRunFileLog::start(const QString &folderPath)
     _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTime()) << endl;
 }
 
-void SyncRunFileLog::logItem( const SyncFileItem& item )
+void SyncRunFileLog::logItem(const SyncFileItem &item)
 {
     // don't log the directory items that are in the list
-    if( item._direction == SyncFileItem::None ) {
+    if (item._direction == SyncFileItem::None) {
         return;
     }
-    QString ts =  QString::fromAscii(item._responseTimeStamp);
-    if( ts.length() > 6 ) {
+    QString ts = QString::fromAscii(item._responseTimeStamp);
+    if (ts.length() > 6) {
         QRegExp rx("(\\d\\d:\\d\\d:\\d\\d)");
-        if( ts.contains(rx) ) {
+        if (ts.contains(rx)) {
             ts = rx.cap(0);
         }
     }
@@ -146,13 +147,13 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     const QChar L = QLatin1Char('|');
     _out << ts << L;
     _out << L;
-    if( item._instruction != CSYNC_INSTRUCTION_RENAME ) {
+    if (item._instruction != CSYNC_INSTRUCTION_RENAME) {
         _out << item._file << L;
     } else {
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
-    _out << instructionToStr( item._instruction ) << L;
-    _out << directionToStr( item._direction ) << L;
+    _out << instructionToStr(item._instruction) << L;
+    _out << directionToStr(item._direction) << L;
     _out << QString::number(item._modtime) << L;
     _out << item._etag << L;
     _out << QString::number(item._size) << L;
@@ -169,7 +170,7 @@ void SyncRunFileLog::logItem( const SyncFileItem& item )
     _out << endl;
 }
 
-void SyncRunFileLog::logLap(const QString& name)
+void SyncRunFileLog::logLap(const QString &name)
 {
     _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTime())
          << " (last step: " << _lapDuration.restart() << " msec"
@@ -183,5 +184,4 @@ void SyncRunFileLog::finish()
          << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
     _file->close();
 }
-
 }

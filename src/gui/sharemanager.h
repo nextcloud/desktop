@@ -31,19 +31,19 @@ class QJsonObject;
 
 namespace OCC {
 
-class Share : public QObject {
+class Share : public QObject
+{
     Q_OBJECT
 
 public:
-
     /**
      * Possible share types
      * Need to be in sync with Sharee::Type
      */
     enum ShareType {
-        TypeUser   = Sharee::User,
-        TypeGroup  = Sharee::Group,
-        TypeLink   = 3,
+        TypeUser = Sharee::User,
+        TypeGroup = Sharee::Group,
+        TypeLink = 3,
         TypeRemote = Sharee::Federated
     };
 
@@ -53,11 +53,11 @@ public:
      * Constructor for shares
      */
     explicit Share(AccountPtr account,
-                   const QString& id,
-                   const QString& path,
-                   const ShareType shareType,
-                   const Permissions permissions = SharePermissionDefault,
-                   const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
+        const QString &id,
+        const QString &path,
+        const ShareType shareType,
+        const Permissions permissions = SharePermissionDefault,
+        const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
 
     /**
      * The account the share is defined on.
@@ -119,7 +119,6 @@ protected slots:
 private slots:
     void slotDeleted();
     void slotPermissionsSet(const QJsonDocument &, const QVariant &value);
-
 };
 
 /**
@@ -127,19 +126,19 @@ private slots:
  * There are several methods in the API that either work differently for
  * link shares or are only available to link shares.
  */
-class LinkShare : public Share {
+class LinkShare : public Share
+{
     Q_OBJECT
 public:
-
     explicit LinkShare(AccountPtr account,
-                       const QString& id,
-                       const QString& path,
-                       const QString& name,
-                       const QString& token,
-                       const Permissions permissions,
-                       bool passwordSet,
-                       const QUrl& url,
-                       const QDate& expireDate);
+        const QString &id,
+        const QString &path,
+        const QString &name,
+        const QString &token,
+        const Permissions permissions,
+        bool passwordSet,
+        const QUrl &url,
+        const QDate &expireDate);
 
     /*
      * Get the share link
@@ -175,7 +174,7 @@ public:
      *
      * Emits either nameSet() or serverError().
      */
-    void setName(const QString& name);
+    void setName(const QString &name);
 
     /*
      * Returns the token of the link share.
@@ -188,7 +187,7 @@ public:
      * On success the passwordSet signal is emitted
      * In case of a server error the serverError signal is emitted.
      */
-    void setPassword(const QString& password);
+    void setPassword(const QString &password);
 
     /*
      * Is the password set?
@@ -206,7 +205,7 @@ public:
      * On success the expireDateSet signal is emitted
      * In case of a server error the serverError signal is emitted.
      */
-    void setExpireDate(const QDate& expireDate);
+    void setExpireDate(const QDate &expireDate);
 
 signals:
     void expireDateSet();
@@ -216,11 +215,11 @@ signals:
     void nameSet();
 
 private slots:
-    void slotPasswordSet(const QJsonDocument&, const QVariant &value);
-    void slotPublicUploadSet(const QJsonDocument&, const QVariant &value);
-    void slotExpireDateSet(const QJsonDocument& reply, const QVariant &value);
+    void slotPasswordSet(const QJsonDocument &, const QVariant &value);
+    void slotPublicUploadSet(const QJsonDocument &, const QVariant &value);
+    void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
-    void slotNameSet(const QJsonDocument&, const QVariant &value);
+    void slotNameSet(const QJsonDocument &, const QVariant &value);
 
 private:
     QString _name;
@@ -235,7 +234,8 @@ private:
  * of shares. It abstracts away from the OCS Share API, all the usages
  * shares should talk to this manager and not use OCS Share Job directly
  */
-class ShareManager : public QObject {
+class ShareManager : public QObject
+{
     Q_OBJECT
 public:
     explicit ShareManager(AccountPtr _account, QObject *parent = NULL);
@@ -251,9 +251,9 @@ public:
      * For older server the linkShareRequiresPassword signal is emitted when it seems appropiate
      * In case of a server error the serverError signal is emitted
      */
-    void createLinkShare(const QString& path,
-                         const QString& name,
-                         const QString& password);
+    void createLinkShare(const QString &path,
+        const QString &name,
+        const QString &password);
 
     /**
      * Tell the manager to create a new share
@@ -265,10 +265,10 @@ public:
      * On success the signal shareCreated is emitted
      * In case of a server error the serverError signal is emitted
      */
-    void createShare(const QString& path,
-                     const Share::ShareType shareType,
-                     const QString shareWith,
-                     const Share::Permissions permissions);
+    void createShare(const QString &path,
+        const Share::ShareType shareType,
+        const QString shareWith,
+        const Share::Permissions permissions);
 
     /**
      * Fetch all the shares for path
@@ -278,7 +278,7 @@ public:
      * On success the sharesFetched signal is emitted
      * In case of a server error the serverError signal is emitted
      */
-    void fetchShares(const QString& path);
+    void fetchShares(const QString &path);
 
 signals:
     void shareCreated(const QSharedPointer<Share> &share);
@@ -305,10 +305,9 @@ private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<Share> parseShare(const QJsonObject &data);
 
-    QMap<QObject*, QVariant> _jobContinuation;
+    QMap<QObject *, QVariant> _jobContinuation;
     AccountPtr _account;
 };
-
 }
 
 #endif // SHAREMANAGER_H

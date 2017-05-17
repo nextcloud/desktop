@@ -22,7 +22,8 @@
 
 namespace OCC {
 
-inline QByteArray parseEtag(const char *header) {
+inline QByteArray parseEtag(const char *header)
+{
     if (!header)
         return QByteArray();
     QByteArray arr = header;
@@ -34,7 +35,7 @@ inline QByteArray parseEtag(const char *header) {
     // https://github.com/owncloud/client/issues/1195
     arr.replace("-gzip", "");
 
-    if(arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
+    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
         arr = arr.mid(1, arr.length() - 2);
     }
     return arr;
@@ -58,9 +59,10 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
  * Given an error from the network, map to a SyncFileItem::Status error
  */
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
-                                          int httpCode,
-                                          bool* anotherSyncNeeded = NULL) {
-    Q_ASSERT (nerror != QNetworkReply::NoError); // we should only be called when there is an error
+    int httpCode,
+    bool *anotherSyncNeeded = NULL)
+{
+    Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
     if (nerror > QNetworkReply::NoError && nerror <= QNetworkReply::UnknownProxyError) {
         // network error or proxy error -> fatal
@@ -82,11 +84,12 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     if (httpCode == 423) {
         // "Locked"
         // Should be temporary.
-        if (anotherSyncNeeded) { *anotherSyncNeeded = true; }
+        if (anotherSyncNeeded) {
+            *anotherSyncNeeded = true;
+        }
         return SyncFileItem::SoftError;
     }
 
     return SyncFileItem::NormalError;
 }
-
 }

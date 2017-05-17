@@ -34,32 +34,32 @@ class ShibbolethWebView;
  */
 class OwncloudShibbolethCredsPage : public AbstractCredentialsWizardPage
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  OwncloudShibbolethCredsPage();
+    OwncloudShibbolethCredsPage();
 
-  AbstractCredentials* getCredentials() const Q_DECL_OVERRIDE;
+    AbstractCredentials *getCredentials() const Q_DECL_OVERRIDE;
 
-  void initializePage() Q_DECL_OVERRIDE;
-  int nextId() const Q_DECL_OVERRIDE;
-  void setConnected();
+    void initializePage() Q_DECL_OVERRIDE;
+    int nextId() const Q_DECL_OVERRIDE;
+    void setConnected();
 
 Q_SIGNALS:
-  void connectToOCUrl(const QString&);
+    void connectToOCUrl(const QString &);
 
 public Q_SLOTS:
-  void setVisible(bool visible) Q_DECL_OVERRIDE;
+    void setVisible(bool visible) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
-  void slotShibbolethCookieReceived(const QNetworkCookie&);
-  void slotBrowserRejected();
+    void slotShibbolethCookieReceived(const QNetworkCookie &);
+    void slotBrowserRejected();
 
 private:
-  void setupBrowser();
+    void setupBrowser();
 
-  QPointer<ShibbolethWebView> _browser;
-  bool _afterInitialSetup;
-  QNetworkCookie _cookie;
+    QPointer<ShibbolethWebView> _browser;
+    bool _afterInitialSetup;
+    QNetworkCookie _cookie;
 };
 
 } // namespace OCC

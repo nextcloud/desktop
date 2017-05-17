@@ -29,50 +29,50 @@ namespace OCC {
  * @brief The OwncloudAdvancedSetupPage class
  * @ingroup gui
  */
-class OwncloudAdvancedSetupPage: public QWizardPage
+class OwncloudAdvancedSetupPage : public QWizardPage
 {
     Q_OBJECT
 public:
-  OwncloudAdvancedSetupPage();
+    OwncloudAdvancedSetupPage();
 
-  virtual bool isComplete() const Q_DECL_OVERRIDE;
-  virtual void initializePage() Q_DECL_OVERRIDE;
-  virtual int nextId() const Q_DECL_OVERRIDE;
-  bool validatePage() Q_DECL_OVERRIDE;
-  QString localFolder() const;
-  QStringList selectiveSyncBlacklist() const;
-  bool isConfirmBigFolderChecked() const;
-  void setRemoteFolder( const QString& remoteFolder);
-  void setMultipleFoldersExist( bool exist );
-  void directoriesCreated();
+    virtual bool isComplete() const Q_DECL_OVERRIDE;
+    virtual void initializePage() Q_DECL_OVERRIDE;
+    virtual int nextId() const Q_DECL_OVERRIDE;
+    bool validatePage() Q_DECL_OVERRIDE;
+    QString localFolder() const;
+    QStringList selectiveSyncBlacklist() const;
+    bool isConfirmBigFolderChecked() const;
+    void setRemoteFolder(const QString &remoteFolder);
+    void setMultipleFoldersExist(bool exist);
+    void directoriesCreated();
 
 signals:
-  void createLocalAndRemoteFolders(const QString&, const QString&);
+    void createLocalAndRemoteFolders(const QString &, const QString &);
 
 public slots:
-  void setErrorString( const QString&  );
+    void setErrorString(const QString &);
 
 private slots:
-  void slotSelectFolder();
-  void slotSyncEverythingClicked();
-  void slotSelectiveSyncClicked();
-    void slotQuotaRetrieved(const QVariantMap& result);
+    void slotSelectFolder();
+    void slotSyncEverythingClicked();
+    void slotSelectiveSyncClicked();
+    void slotQuotaRetrieved(const QVariantMap &result);
 
 private:
-  void setupCustomization();
-  void updateStatus();
-  bool dataChanged();
-  void startSpinner();
-  void stopSpinner();
-  QUrl serverUrl() const;
+    void setupCustomization();
+    void updateStatus();
+    bool dataChanged();
+    void startSpinner();
+    void stopSpinner();
+    QUrl serverUrl() const;
 
-  Ui_OwncloudAdvancedSetupPage _ui;
-  bool _checking;
-  bool _created;
-  bool _localFolderValid;
-  QProgressIndicator* _progressIndi;
-  QString _remoteFolder;
-  QStringList _selectiveSyncBlacklist;
+    Ui_OwncloudAdvancedSetupPage _ui;
+    bool _checking;
+    bool _created;
+    bool _localFolderValid;
+    QProgressIndicator *_progressIndi;
+    QString _remoteFolder;
+    QStringList _selectiveSyncBlacklist;
 };
 
 } // namespace OCC

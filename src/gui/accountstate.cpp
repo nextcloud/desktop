@@ -33,14 +33,14 @@ AccountState::AccountState(AccountPtr account)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
 {
-    qRegisterMetaType<AccountState*>("AccountState*");
+    qRegisterMetaType<AccountState *>("AccountState*");
 
     connect(account.data(), SIGNAL(invalidCredentials()),
-            SLOT(slotInvalidCredentials()));
-    connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials*)),
-            SLOT(slotCredentialsFetched(AbstractCredentials*)));
-    connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials*)),
-            SLOT(slotCredentialsAsked(AbstractCredentials*)));
+        SLOT(slotInvalidCredentials()));
+    connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials *)),
+        SLOT(slotCredentialsFetched(AbstractCredentials *)));
+    connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials *)),
+        SLOT(slotCredentialsAsked(AbstractCredentials *)));
     _timeSinceLastETagCheck.invalidate();
 }
 
@@ -48,13 +48,13 @@ AccountState::~AccountState()
 {
 }
 
-AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings& /*settings*/)
+AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*settings*/)
 {
     auto accountState = new AccountState(account);
     return accountState;
 }
 
-void AccountState::writeToSettings(QSettings& /*settings*/)
+void AccountState::writeToSettings(QSettings & /*settings*/)
 {
 }
 
@@ -87,7 +87,7 @@ void AccountState::setState(State state)
 {
     if (_state != state) {
         qCInfo(lcAccountState) << "AccountState state change: "
-                 << stateString(_state) << "->" << stateString(state);
+                               << stateString(_state) << "->" << stateString(state);
         State oldState = _state;
         _state = state;
 
@@ -116,8 +116,7 @@ void AccountState::setState(State state)
 
 QString AccountState::stateString(State state)
 {
-    switch (state)
-    {
+    switch (state) {
     case SignedOut:
         return tr("Signed out");
     case Disconnected:
@@ -181,15 +180,15 @@ void AccountState::checkConnectivity()
     int polltime = cfg.remotePollInterval();
 
     if (isConnected() && _timeSinceLastETagCheck.isValid()
-            && _timeSinceLastETagCheck.elapsed() < polltime) {
-        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime/1000 << " secs. No connection check needed!";
+        && _timeSinceLastETagCheck.elapsed() < polltime) {
+        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime / 1000 << " secs. No connection check needed!";
         return;
     }
 
-    ConnectionValidator * conValidator = new ConnectionValidator(account());
+    ConnectionValidator *conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
-    connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status,QStringList)),
-            SLOT(slotConnectionValidatorResult(ConnectionValidator::Status,QStringList)));
+    connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status, QStringList)),
+        SLOT(slotConnectionValidatorResult(ConnectionValidator::Status, QStringList)));
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
@@ -197,8 +196,8 @@ void AccountState::checkConnectivity()
     } else {
         // Check the server and then the auth.
 
-// Let's try this for all OS and see if it fixes the Qt issues we have on Linux  #4720 #3888 #4051
-//#ifdef Q_OS_WIN
+        // Let's try this for all OS and see if it fixes the Qt issues we have on Linux  #4720 #3888 #4051
+        //#ifdef Q_OS_WIN
         // There seems to be a bug in Qt on Windows where QNAM sometimes stops
         // working correctly after the computer woke up from sleep. See #2895 #2899
         // and #2973.
@@ -209,12 +208,12 @@ void AccountState::checkConnectivity()
         // If we don't reset the ssl config a second CheckServerJob can produce a
         // ssl config that does not have a sensible certificate chain.
         account()->setSslConfiguration(QSslConfiguration());
-//#endif
+        //#endif
         conValidator->checkServerAndAuth();
     }
 }
 
-void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList& errors)
+void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors)
 {
     if (isSignedOut()) {
         qCWarning(lcAccountState) << "Signed out, ignoring" << connectionStatusString(status) << _account->url().toString();
@@ -223,14 +222,13 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     if (_connectionStatus != status) {
         qCInfo(lcAccountState) << "AccountState connection status change: "
-                 << connectionStatusString(_connectionStatus) << "->"
-                 << connectionStatusString(status);
+                               << connectionStatusString(_connectionStatus) << "->"
+                               << connectionStatusString(status);
         _connectionStatus = status;
     }
     _connectionErrors = errors;
 
-    switch (status)
-    {
+    switch (status) {
     case ConnectionValidator::Connected:
         if (_state != Connected) {
             setState(Connected);
@@ -280,7 +278,7 @@ void AccountState::slotInvalidCredentials()
     _waitingForNewCredentials = true;
 }
 
-void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
+void AccountState::slotCredentialsFetched(AbstractCredentials *credentials)
 {
     if (!credentials->ready()) {
         // No exiting credentials found in the keychain
@@ -300,7 +298,7 @@ void AccountState::slotCredentialsFetched(AbstractCredentials* credentials)
     checkConnectivity();
 }
 
-void AccountState::slotCredentialsAsked(AbstractCredentials* credentials)
+void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
 {
     _waitingForNewCredentials = false;
 
@@ -344,7 +342,6 @@ QString AccountState::shortDisplayNameForSettings(int width) const
     }
     return user + QLatin1String("\n") + host;
 }
-
 
 
 } // namespace OCC

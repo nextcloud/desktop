@@ -44,23 +44,23 @@ public slots:
     void setupQtProxyFromConfig();
 
 private:
-    const char* proxyTypeToCStr(QNetworkProxy::ProxyType type);
+    const char *proxyTypeToCStr(QNetworkProxy::ProxyType type);
 };
 
-class SystemProxyRunnable : public QObject, public QRunnable {
+class SystemProxyRunnable : public QObject, public QRunnable
+{
     Q_OBJECT
 public:
     SystemProxyRunnable(const QUrl &url);
     void run();
 signals:
     void systemProxyLookedUp(const QNetworkProxy &url);
+
 private:
     QUrl _url;
 };
 
 OWNCLOUDSYNC_EXPORT QString printQNetworkProxy(const QNetworkProxy &proxy);
-
-
 }
 
 #endif // CLIENTPROXY_H

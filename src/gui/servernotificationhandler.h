@@ -21,8 +21,7 @@
 
 class QJsonDocument;
 
-namespace OCC
-{
+namespace OCC {
 
 class ServerNotificationHandler : public QObject
 {
@@ -37,14 +36,11 @@ public slots:
     void slotFetchNotifications(AccountState *ptr);
 
 private slots:
-    void slotNotificationsReceived(const QJsonDocument& json, int statusCode);
+    void slotNotificationsReceived(const QJsonDocument &json, int statusCode);
 
 private:
     QPointer<JsonApiJob> _notificationJob;
-
-
 };
-
 }
 
 #endif // SERVERNOTIFICATIONHANDLER_H

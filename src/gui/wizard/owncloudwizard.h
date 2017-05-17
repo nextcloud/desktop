@@ -46,19 +46,18 @@ class OwncloudWizard : public QWizard
 {
     Q_OBJECT
 public:
-
     enum LogType {
-      LogPlain,
-      LogParagraph
+        LogPlain,
+        LogParagraph
     };
 
     OwncloudWizard(QWidget *parent = 0);
 
     void setAccount(AccountPtr account);
     AccountPtr account() const;
-    void setOCUrl( const QString& );
+    void setOCUrl(const QString &);
 
-    void setupCustomMedia( QVariant, QLabel* );
+    void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
@@ -66,8 +65,8 @@ public:
 
     void enableFinishOnResultWidget(bool enable);
 
-    void displayError( const QString&, bool retryHTTPonly);
-    AbstractCredentials* getCredentials() const;
+    void displayError(const QString &, bool retryHTTPonly);
+    AbstractCredentials *getCredentials() const;
 
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
@@ -76,31 +75,31 @@ public:
 
 public slots:
     void setAuthType(WizardCommon::AuthType type);
-    void setRemoteFolder( const QString& );
-    void appendToConfigurationLog( const QString& msg, LogType type = LogParagraph );
-    void slotCurrentPageChanged( int );
+    void setRemoteFolder(const QString &);
+    void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
+    void slotCurrentPageChanged(int);
     void successfulStep();
 
 signals:
     void clearPendingRequests();
-    void determineAuthType(const QString&);
-    void connectToOCUrl( const QString& );
-    void createLocalAndRemoteFolders(const QString&, const QString&);
+    void determineAuthType(const QString &);
+    void connectToOCUrl(const QString &);
+    void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
-    void basicSetupFinished( int );
+    void basicSetupFinished(int);
     void skipFolderConfiguration();
     void needCertificate();
 
 private:
     AccountPtr _account;
-    OwncloudSetupPage* _setupPage;
-    OwncloudHttpCredsPage* _httpCredsPage;
+    OwncloudSetupPage *_setupPage;
+    OwncloudHttpCredsPage *_httpCredsPage;
 #ifndef NO_SHIBBOLETH
-    OwncloudShibbolethCredsPage* _shibbolethCredsPage;
+    OwncloudShibbolethCredsPage *_shibbolethCredsPage;
 #endif
-    OwncloudAdvancedSetupPage* _advancedSetupPage;
-    OwncloudWizardResultPage* _resultPage;
-    AbstractCredentialsWizardPage* _credentialsPage;
+    OwncloudAdvancedSetupPage *_advancedSetupPage;
+    OwncloudWizardResultPage *_resultPage;
+    AbstractCredentialsWizardPage *_credentialsPage;
 
     QStringList _setupLog;
 };

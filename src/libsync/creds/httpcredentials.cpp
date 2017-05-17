@@ -31,26 +31,30 @@
 
 using namespace QKeychain;
 
-namespace OCC
-{
+namespace OCC {
 
 Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 
-namespace
-{
-const char userC[] = "user";
-const char clientCertificatePEMC[] = "_clientCertificatePEM";
-const char clientKeyPEMC[] = "_clientKeyPEM";
-const char authenticationFailedC[] = "owncloud-authentication-failed";
+namespace {
+    const char userC[] = "user";
+    const char clientCertificatePEMC[] = "_clientCertificatePEM";
+    const char clientKeyPEMC[] = "_clientKeyPEM";
+    const char authenticationFailedC[] = "owncloud-authentication-failed";
 } // ns
 
-class HttpCredentialsAccessManager : public AccessManager {
+class HttpCredentialsAccessManager : public AccessManager
+{
 public:
-    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject* parent = 0)
-        : AccessManager(parent), _cred(cred) {}
+    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject *parent = 0)
+        : AccessManager(parent)
+        , _cred(cred)
+    {
+    }
+
 protected:
-    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE {
-        QByteArray credHash = QByteArray(_cred->user().toUtf8()+":"+_cred->password().toUtf8()).toBase64();
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE
+    {
+        QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
         QNetworkRequest req(request);
         req.setRawHeader(QByteArray("Authorization"), QByteArray("Basic ") + credHash);
 
@@ -65,6 +69,7 @@ protected:
 
         return AccessManager::createRequest(op, req, outgoingData);
     }
+
 private:
     const HttpCredentials *_cred;
 };
@@ -84,12 +89,12 @@ HttpCredentials::HttpCredentials()
 }
 
 // From wizard
-HttpCredentials::HttpCredentials(const QString& user, const QString& password, const QSslCertificate& certificate, const QSslKey& key)
-    : _user(user),
-      _password(password),
-      _ready(true),
-      _clientSslKey(key),
-      _clientSslCertificate(certificate)
+HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
+    : _user(user)
+    , _password(password)
+    , _ready(true)
+    , _clientSslKey(key)
+    , _clientSslCertificate(certificate)
 {
 }
 
@@ -108,7 +113,7 @@ QString HttpCredentials::password() const
     return _password;
 }
 
-void HttpCredentials::setAccount(Account* account)
+void HttpCredentials::setAccount(Account *account)
 {
     AbstractCredentials::setAccount(account);
     if (_user.isEmpty()) {
@@ -116,12 +121,12 @@ void HttpCredentials::setAccount(Account* account)
     }
 }
 
-QNetworkAccessManager* HttpCredentials::getQNAM() const
+QNetworkAccessManager *HttpCredentials::getQNAM() const
 {
-    AccessManager* qnam = new HttpCredentialsAccessManager(this);
+    AccessManager *qnam = new HttpCredentialsAccessManager(this);
 
-    connect( qnam, SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-             this, SLOT(slotAuthentication(QNetworkReply*,QAuthenticator*)));
+    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
+        this, SLOT(slotAuthentication(QNetworkReply *, QAuthenticator *)));
 
     return qnam;
 }
@@ -142,7 +147,7 @@ void HttpCredentials::fetchFromKeychain()
     // User must be fetched from config file
     fetchUser();
 
-    const QString kck = keychainKey(_account->url().toString(), _user );
+    const QString kck = keychainKey(_account->url().toString(), _user);
 
     if (_ready) {
         Q_EMIT fetched();
@@ -155,18 +160,18 @@ void HttpCredentials::fetchFromKeychain()
         job->setKey(kck);
         qCDebug(lcHttpCredentials) << "-------- ----->" << _clientSslCertificate << _clientSslKey;
 
-        connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadClientCertPEMJobDone(QKeychain::Job*)));
+        connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadClientCertPEMJobDone(QKeychain::Job *)));
         job->start();
     }
 }
 
-void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job* incoming)
+void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
 {
     // Store PEM in memory
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(incoming);
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
         QList<QSslCertificate> sslCertificateList = QSslCertificate::fromData(readJob->binaryData(), QSsl::Pem);
-        if(sslCertificateList.length() >= 1) {
+        if (sslCertificateList.length() >= 1) {
             _clientSslCertificate = sslCertificateList.at(0);
         }
     }
@@ -178,14 +183,14 @@ void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job* incoming)
     job->setInsecureFallback(false);
     job->setKey(kck);
 
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadClientKeyPEMJobDone(QKeychain::Job*)));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadClientKeyPEMJobDone(QKeychain::Job *)));
     job->start();
 }
 
-void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job* incoming)
+void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
 {
     // Store key in memory
-    ReadPasswordJob *readJob = static_cast<ReadPasswordJob*>(incoming);
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
 
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
         QByteArray clientKeyPEM = readJob->binaryData();
@@ -207,13 +212,13 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job* incoming)
     }
 
     // Now fetch the actual server password
-    const QString kck = keychainKey(_account->url().toString(), _user );
+    const QString kck = keychainKey(_account->url().toString(), _user);
     ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
     job->setKey(kck);
 
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotReadJobDone(QKeychain::Job*)));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
     job->start();
 }
 
@@ -221,23 +226,23 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job* incoming)
 bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
     return ((reply->error() != QNetworkReply::AuthenticationRequiredError)
-            // returned if user or password is incorrect
-            && (reply->error() != QNetworkReply::OperationCanceledError
-                || !reply->property(authenticationFailedC).toBool()));
+        // returned if user or password is incorrect
+        && (reply->error() != QNetworkReply::OperationCanceledError
+               || !reply->property(authenticationFailedC).toBool()));
 }
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *incomingJob)
 {
-    QKeychain::ReadPasswordJob *job = static_cast<ReadPasswordJob*>(incomingJob);
+    QKeychain::ReadPasswordJob *job = static_cast<ReadPasswordJob *>(incomingJob);
     _password = job->textData();
 
-    if( _user.isEmpty()) {
+    if (_user.isEmpty()) {
         qCWarning(lcHttpCredentials) << "Strange: User is empty!";
     }
 
     QKeychain::Error error = job->error();
 
-    if( !_password.isEmpty() && error == NoError ) {
+    if (!_password.isEmpty() && error == NoError) {
         // All cool, the keychain did not come back with error.
         // Still, the password can be empty which indicates a problem and
         // the password dialog has to be opened.
@@ -257,7 +262,7 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incomingJob)
 
 void HttpCredentials::invalidateToken()
 {
-    if (! _password.isEmpty()) {
+    if (!_password.isEmpty()) {
         _previousPassword = _password;
     }
     _password = QString();
@@ -267,7 +272,7 @@ void HttpCredentials::invalidateToken()
     fetchUser();
 
     const QString kck = keychainKey(_account->url().toString(), _user);
-    if( kck.isEmpty() ) {
+    if (kck.isEmpty()) {
         qCWarning(lcHttpCredentials) << "InvalidateToken: User is empty, bailing out!";
         return;
     }
@@ -325,7 +330,7 @@ void HttpCredentials::persist()
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteClientCertPEMJobDone(QKeychain::Job*)));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteClientCertPEMJobDone(QKeychain::Job *)));
     job->setKey(keychainKey(_account->url().toString(), _user + clientCertificatePEMC));
     job->setBinaryData(_clientSslCertificate.toPem());
     job->start();
@@ -335,10 +340,10 @@ void HttpCredentials::slotWriteClientCertPEMJobDone(Job *incomingJob)
 {
     Q_UNUSED(incomingJob);
     // write ssl key
-    WritePasswordJob* job = new WritePasswordJob(Theme::instance()->appName());
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteClientKeyPEMJobDone(QKeychain::Job*)));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteClientKeyPEMJobDone(QKeychain::Job *)));
     job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC));
     job->setBinaryData(_clientSslKey.toPem());
     job->start();
@@ -347,10 +352,10 @@ void HttpCredentials::slotWriteClientCertPEMJobDone(Job *incomingJob)
 void HttpCredentials::slotWriteClientKeyPEMJobDone(Job *incomingJob)
 {
     Q_UNUSED(incomingJob);
-    WritePasswordJob* job = new WritePasswordJob(Theme::instance()->appName());
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteJobDone(QKeychain::Job *)));
     job->setKey(keychainKey(_account->url().toString(), _user));
     job->setTextData(_password);
     job->start();
@@ -365,11 +370,11 @@ void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qCWarning(lcHttpCredentials) << "Error while writing password" << job->errorString();
     }
-    WritePasswordJob *wjob = qobject_cast<WritePasswordJob*>(job);
+    WritePasswordJob *wjob = qobject_cast<WritePasswordJob *>(job);
     wjob->deleteLater();
 }
 
-void HttpCredentials::slotAuthentication(QNetworkReply* reply, QAuthenticator* authenticator)
+void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)
 {
     Q_UNUSED(authenticator)
     // Because of issue #4326, we need to set the login and password manually at every requests

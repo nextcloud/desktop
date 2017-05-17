@@ -21,8 +21,7 @@
 #include <CoreServices/CoreServices.h>
 
 
-namespace OCC
-{
+namespace OCC {
 
 /**
  * @brief Mac OS X API implementation of FolderWatcher
@@ -31,7 +30,6 @@ namespace OCC
 class FolderWatcherPrivate
 {
 public:
-
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
@@ -48,7 +46,6 @@ private:
 
     FSEventStreamRef _stream;
 };
-
 }
 
 #endif

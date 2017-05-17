@@ -39,7 +39,7 @@
 
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
-extern "C" void csync_win32_set_file_hidden( const char *file, bool h );
+extern "C" void csync_win32_set_file_hidden(const char *file, bool h);
 
 extern "C" {
 #include "csync.h"
@@ -52,17 +52,17 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileSystem, "sync.filesystem", QtInfoMsg)
 
-QString FileSystem::longWinPath( const QString& inpath )
+QString FileSystem::longWinPath(const QString &inpath)
 {
     QString path(inpath);
 
 #ifdef Q_OS_WIN
-    path = QString::fromWCharArray( static_cast<wchar_t*>( c_utf8_path_to_locale(inpath.toUtf8() ) ) );
+    path = QString::fromWCharArray(static_cast<wchar_t *>(c_utf8_path_to_locale(inpath.toUtf8())));
 #endif
     return path;
 }
 
-bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
+bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
 {
     // compare two files with given filename and return true if they have the same content
     QFile f1(fn1);
@@ -95,19 +95,19 @@ bool FileSystem::fileEquals(const QString& fn1, const QString& fn2)
     return false;
 }
 
-void FileSystem::setFileHidden(const QString& filename, bool hidden)
+void FileSystem::setFileHidden(const QString &filename, bool hidden)
 {
 #ifdef _WIN32
     QString fName = longWinPath(filename);
     DWORD dwAttrs;
 
-    dwAttrs = GetFileAttributesW( (wchar_t*)fName.utf16() );
+    dwAttrs = GetFileAttributesW((wchar_t *)fName.utf16());
 
     if (dwAttrs != INVALID_FILE_ATTRIBUTES) {
         if (hidden && !(dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-            SetFileAttributesW((wchar_t*)fName.utf16(), dwAttrs | FILE_ATTRIBUTE_HIDDEN );
+            SetFileAttributesW((wchar_t *)fName.utf16(), dwAttrs | FILE_ATTRIBUTE_HIDDEN);
         } else if (!hidden && (dwAttrs & FILE_ATTRIBUTE_HIDDEN)) {
-            SetFileAttributesW((wchar_t*)fName.utf16(), dwAttrs & ~FILE_ATTRIBUTE_HIDDEN );
+            SetFileAttributesW((wchar_t *)fName.utf16(), dwAttrs & ~FILE_ATTRIBUTE_HIDDEN);
         }
     }
 #else
@@ -132,13 +132,13 @@ static QFile::Permissions getDefaultWritePermissions()
     return result;
 }
 
-void FileSystem::setFileReadOnly(const QString& filename, bool readonly)
+void FileSystem::setFileReadOnly(const QString &filename, bool readonly)
 {
     QFile file(filename);
     QFile::Permissions permissions = file.permissions();
 
     QFile::Permissions allWritePermissions =
-            QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther | QFile::WriteOwner;
+        QFile::WriteUser | QFile::WriteGroup | QFile::WriteOther | QFile::WriteOwner;
     static QFile::Permissions defaultWritePermissions = getDefaultWritePermissions();
 
     permissions &= ~allWritePermissions;
@@ -148,7 +148,7 @@ void FileSystem::setFileReadOnly(const QString& filename, bool readonly)
     file.setPermissions(permissions);
 }
 
-void FileSystem::setFolderMinimumPermissions(const QString& filename)
+void FileSystem::setFolderMinimumPermissions(const QString &filename)
 {
 #ifdef Q_OS_MAC
     QFile::Permissions perm = QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner;
@@ -160,7 +160,7 @@ void FileSystem::setFolderMinimumPermissions(const QString& filename)
 }
 
 
-void FileSystem::setFileReadOnlyWeak(const QString& filename, bool readonly)
+void FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 {
     QFile file(filename);
     QFile::Permissions permissions = file.permissions();
@@ -174,21 +174,21 @@ void FileSystem::setFileReadOnlyWeak(const QString& filename, bool readonly)
 
 time_t FileSystem::getModTime(const QString &filename)
 {
-    csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+    csync_vio_file_stat_t *stat = csync_vio_file_stat_new();
     qint64 result = -1;
     if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
+        && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
         result = stat->mtime;
     } else {
         qCWarning(lcFileSystem) << "Could not get modification time for" << filename
-                 << "with csync, using QFileInfo";
+                                << "with csync, using QFileInfo";
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
     }
     csync_vio_file_stat_destroy(stat);
     return result;
 }
 
-bool FileSystem::setModTime(const QString& filename, time_t modTime)
+bool FileSystem::setModTime(const QString &filename, time_t modTime)
 {
     struct timeval times[2];
     times[0].tv_sec = times[1].tv_sec = modTime;
@@ -196,22 +196,22 @@ bool FileSystem::setModTime(const QString& filename, time_t modTime)
     int rc = c_utimes(filename.toUtf8().data(), times);
     if (rc != 0) {
         qCWarning(lcFileSystem) << "Error setting mtime for" << filename
-                 << "failed: rc" << rc << ", errno:" << errno;
+                                << "failed: rc" << rc << ", errno:" << errno;
         return false;
     }
     return true;
 }
 
 #ifdef Q_OS_WIN
-static bool isLnkFile(const QString& filename)
+static bool isLnkFile(const QString &filename)
 {
     return filename.endsWith(".lnk");
 }
 #endif
 
 bool FileSystem::rename(const QString &originFileName,
-                        const QString &destinationFileName,
-                        QString *errorString)
+    const QString &destinationFileName,
+    QString *errorString)
 {
     bool success = false;
     QString error;
@@ -220,14 +220,14 @@ bool FileSystem::rename(const QString &originFileName,
     QString dest = longWinPath(destinationFileName);
 
     if (isLnkFile(originFileName) || isLnkFile(destinationFileName)) {
-        success = MoveFileEx((wchar_t*)orig.utf16(),
-                             (wchar_t*)dest.utf16(),
-                             MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
+        success = MoveFileEx((wchar_t *)orig.utf16(),
+            (wchar_t *)dest.utf16(),
+            MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
         if (!success) {
             wchar_t *string = 0;
             FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                          NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                          (LPWSTR)&string, 0, NULL);
+                NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                (LPWSTR)&string, 0, NULL);
 
             error = QString::fromWCharArray(string);
             LocalFree((HLOCAL)string);
@@ -244,8 +244,8 @@ bool FileSystem::rename(const QString &originFileName,
 
     if (!success) {
         qCWarning(lcFileSystem) << "Error renaming file" << originFileName
-                 << "to" << destinationFileName
-                 << "failed: " << error;
+                                << "to" << destinationFileName
+                                << "failed: " << error;
         if (errorString) {
             *errorString = error;
         }
@@ -253,40 +253,40 @@ bool FileSystem::rename(const QString &originFileName,
     return success;
 }
 
-bool FileSystem::fileChanged(const QString& fileName,
-                             qint64 previousSize,
-                             time_t previousMtime)
+bool FileSystem::fileChanged(const QString &fileName,
+    qint64 previousSize,
+    time_t previousMtime)
 {
     return getSize(fileName) != previousSize
         || getModTime(fileName) != previousMtime;
 }
 
-bool FileSystem::verifyFileUnchanged(const QString& fileName,
-                                     qint64 previousSize,
-                                     time_t previousMtime)
+bool FileSystem::verifyFileUnchanged(const QString &fileName,
+    qint64 previousSize,
+    time_t previousMtime)
 {
     const qint64 actualSize = getSize(fileName);
     const time_t actualMtime = getModTime(fileName);
     if (actualSize != previousSize || actualMtime != previousMtime) {
         qCInfo(lcFileSystem) << "File" << fileName << "has changed:"
-                 << "size: " << previousSize << "<->" << actualSize
-                 << ", mtime: " << previousMtime << "<->" << actualMtime;
+                             << "size: " << previousSize << "<->" << actualSize
+                             << ", mtime: " << previousMtime << "<->" << actualMtime;
         return false;
     }
     return true;
 }
 
-bool FileSystem::renameReplace(const QString& originFileName,
-                               const QString& destinationFileName,
-                               qint64 destinationSize,
-                               time_t destinationMtime,
-                               QString* errorString)
+bool FileSystem::renameReplace(const QString &originFileName,
+    const QString &destinationFileName,
+    qint64 destinationSize,
+    time_t destinationMtime,
+    QString *errorString)
 {
     if (fileExists(destinationFileName)
-            && fileChanged(destinationFileName, destinationSize, destinationMtime)) {
+        && fileChanged(destinationFileName, destinationSize, destinationMtime)) {
         if (errorString) {
             *errorString = qApp->translate("FileSystem",
-                    "The destination file has an unexpected size or modification time");
+                "The destination file has an unexpected size or modification time");
         }
         return false;
     }
@@ -294,9 +294,9 @@ bool FileSystem::renameReplace(const QString& originFileName,
     return uncheckedRenameReplace(originFileName, destinationFileName, errorString);
 }
 
-bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
-                                        const QString& destinationFileName,
-                                        QString* errorString)
+bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
+    const QString &destinationFileName,
+    QString *errorString)
 {
 #ifndef Q_OS_WIN
     bool success;
@@ -309,18 +309,18 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     // ### FIXME
     success = true;
     bool destExists = fileExists(destinationFileName);
-    if( destExists && !QFile::remove(destinationFileName) ) {
+    if (destExists && !QFile::remove(destinationFileName)) {
         *errorString = orig.errorString();
         qCWarning(lcFileSystem) << "Target file could not be removed.";
         success = false;
     }
-    if( success ) {
+    if (success) {
         success = orig.rename(destinationFileName);
     }
 #endif
     if (!success) {
         *errorString = orig.errorString();
-        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString ;
+        qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
         return false;
     }
 
@@ -334,14 +334,14 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
 
-    ok = MoveFileEx((wchar_t*)orig.utf16(),
-                    (wchar_t*)dest.utf16(),
-                    MOVEFILE_REPLACE_EXISTING+MOVEFILE_COPY_ALLOWED+MOVEFILE_WRITE_THROUGH);
+    ok = MoveFileEx((wchar_t *)orig.utf16(),
+        (wchar_t *)dest.utf16(),
+        MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         wchar_t *string = 0;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-                      NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      (LPWSTR)&string, 0, NULL);
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+            NULL, ::GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+            (LPWSTR)&string, 0, NULL);
 
         *errorString = QString::fromWCharArray(string);
         qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
@@ -352,11 +352,11 @@ bool FileSystem::uncheckedRenameReplace(const QString& originFileName,
     return true;
 }
 
-bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qint64 seek)
+bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qint64 seek)
 {
     QString errorDummy;
     // avoid many if (errorOrNull) later.
-    QString& error = errorOrNull ? *errorOrNull : errorDummy;
+    QString &error = errorOrNull ? *errorOrNull : errorDummy;
     error.clear();
 
 #ifdef Q_OS_WIN
@@ -376,13 +376,13 @@ bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qi
     QString fName = longWinPath(file->fileName());
 
     HANDLE fileHandle = CreateFileW(
-            (const wchar_t*)fName.utf16(),
-            accessRights,
-            shareMode,
-            &securityAtts,
-            creationDisp,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL);
+        (const wchar_t *)fName.utf16(),
+        accessRights,
+        shareMode,
+        &securityAtts,
+        creationDisp,
+        FILE_ATTRIBUTE_NORMAL,
+        NULL);
 
     // Bail out on error.
     if (fileHandle == INVALID_HANDLE_VALUE) {
@@ -404,7 +404,7 @@ bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qi
     }
 
     // Seek to the right spot
-    LARGE_INTEGER *li = reinterpret_cast<LARGE_INTEGER*>(&seek);
+    LARGE_INTEGER *li = reinterpret_cast<LARGE_INTEGER *>(&seek);
     DWORD newFilePointer = SetFilePointer(fileHandle, li->LowPart, &li->HighPart, FILE_BEGIN);
     if (newFilePointer == 0xFFFFFFFF && GetLastError() != NO_ERROR) {
         error = qt_error_string();
@@ -426,12 +426,12 @@ bool FileSystem::openAndSeekFileSharedRead(QFile* file, QString* errorOrNull, qi
 }
 
 #ifdef Q_OS_WIN
-static qint64 getSizeWithCsync(const QString& filename)
+static qint64 getSizeWithCsync(const QString &filename)
 {
     qint64 result = 0;
-    csync_vio_file_stat_t* stat = csync_vio_file_stat_new();
+    csync_vio_file_stat_t *stat = csync_vio_file_stat_new();
     if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-            && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
+        && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
         result = stat->size;
     } else {
         qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync";
@@ -441,7 +441,7 @@ static qint64 getSizeWithCsync(const QString& filename)
 }
 #endif
 
-qint64 FileSystem::getSize(const QString& filename)
+qint64 FileSystem::getSize(const QString &filename)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
@@ -453,13 +453,13 @@ qint64 FileSystem::getSize(const QString& filename)
 }
 
 #ifdef Q_OS_WIN
-static bool fileExistsWin(const QString& filename)
+static bool fileExistsWin(const QString &filename)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
     QString fName = FileSystem::longWinPath(filename);
 
-    hFind = FindFirstFileW( (wchar_t*)fName.utf16(), &FindFileData);
+    hFind = FindFirstFileW((wchar_t *)fName.utf16(), &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE) {
         return false;
     }
@@ -468,7 +468,7 @@ static bool fileExistsWin(const QString& filename)
 }
 #endif
 
-bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
+bool FileSystem::fileExists(const QString &filename, const QFileInfo &fileInfo)
 {
 #ifdef Q_OS_WIN
     if (isLnkFile(filename)) {
@@ -480,7 +480,7 @@ bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
     // if the filename is different from the filename in fileInfo, the fileInfo is
     // not valid. There needs to be one initialised here. Otherwise the incoming
     // fileInfo is re-used.
-    if( fileInfo.filePath() != filename ) {
+    if (fileInfo.filePath() != filename) {
         QFileInfo myFI(filename);
         re = myFI.exists();
     }
@@ -488,18 +488,18 @@ bool FileSystem::fileExists(const QString& filename, const QFileInfo& fileInfo)
 }
 
 #ifdef Q_OS_WIN
-QString FileSystem::fileSystemForPath(const QString & path)
+QString FileSystem::fileSystemForPath(const QString &path)
 {
     // See also QStorageInfo (Qt >=5.4) and GetVolumeInformationByHandleW (>= Vista)
     QString drive = path.left(2);
-    if (! drive.endsWith(":"))
+    if (!drive.endsWith(":"))
         return QString();
     drive.append('\\');
 
     const size_t fileSystemBufferSize = 4096;
     TCHAR fileSystemBuffer[fileSystemBufferSize];
 
-    if (! GetVolumeInformationW(
+    if (!GetVolumeInformationW(
             reinterpret_cast<LPCWSTR>(drive.utf16()),
             NULL, 0,
             NULL, NULL, NULL,
@@ -510,21 +510,21 @@ QString FileSystem::fileSystemForPath(const QString & path)
 }
 #endif
 
-#define BUFSIZE qint64(500*1024)  // 500 KiB
+#define BUFSIZE qint64(500 * 1024) // 500 KiB
 
-static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
+static QByteArray readToCrypto(const QString &filename, QCryptographicHash::Algorithm algo)
 {
     QFile file(filename);
     const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
     QByteArray buf(bufSize, Qt::Uninitialized);
     QByteArray arr;
-    QCryptographicHash crypto( algo );
+    QCryptographicHash crypto(algo);
 
     if (file.open(QIODevice::ReadOnly)) {
         qint64 size;
         while (!file.atEnd()) {
-            size = file.read( buf.data(), bufSize );
-            if( size > 0 ) {
+            size = file.read(buf.data(), bufSize);
+            if (size > 0) {
                 crypto.addData(buf.data(), size);
             }
         }
@@ -533,18 +533,18 @@ static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Alg
     return arr;
 }
 
-QByteArray FileSystem::calcMd5( const QString& filename )
+QByteArray FileSystem::calcMd5(const QString &filename)
 {
-    return readToCrypto( filename, QCryptographicHash::Md5 );
+    return readToCrypto(filename, QCryptographicHash::Md5);
 }
 
-QByteArray FileSystem::calcSha1( const QString& filename )
+QByteArray FileSystem::calcSha1(const QString &filename)
 {
-    return readToCrypto( filename, QCryptographicHash::Sha1 );
+    return readToCrypto(filename, QCryptographicHash::Sha1);
 }
 
 #ifdef ZLIB_FOUND
-QByteArray FileSystem::calcAdler32( const QString& filename )
+QByteArray FileSystem::calcAdler32(const QString &filename)
 {
     QFile file(filename);
     const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
@@ -555,12 +555,12 @@ QByteArray FileSystem::calcAdler32( const QString& filename )
         qint64 size;
         while (!file.atEnd()) {
             size = file.read(buf.data(), bufSize);
-            if( size > 0 )
-                adler = adler32(adler, (const Bytef*) buf.data(), size);
+            if (size > 0)
+                adler = adler32(adler, (const Bytef *)buf.data(), size);
         }
     }
 
-    return QByteArray::number( adler, 16 );
+    return QByteArray::number(adler, 16);
 }
 #endif
 
@@ -580,7 +580,7 @@ QString FileSystem::makeConflictFileName(const QString &fn, const QDateTime &dt)
     if (conflictFileUserName.isEmpty())
         conflictFileName.insert(dotLocation, "_conflict-" + timeString);
     else
-        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName)  + "-" + timeString);
+        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName) + "-" + timeString);
 
     return conflictFileName;
 }
@@ -604,7 +604,7 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
     return true;
 }
 
-bool FileSystem::isFileLocked(const QString& fileName)
+bool FileSystem::isFileLocked(const QString &fileName)
 {
 #ifdef Q_OS_WIN
     mbchar_t *wuri = c_utf8_path_to_locale(fileName.toUtf8());
@@ -614,12 +614,12 @@ bool FileSystem::isFileLocked(const QString& fileName)
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
         HANDLE win_h = CreateFileW(
-                    wuri,
-                    GENERIC_READ | GENERIC_WRITE,
-                    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-                    NULL, OPEN_EXISTING,
-                    FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-                    NULL);
+            wuri,
+            GENERIC_READ | GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+            NULL, OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
+            NULL);
 
         c_free_locale_string(wuri);
         if (win_h == INVALID_HANDLE_VALUE) {

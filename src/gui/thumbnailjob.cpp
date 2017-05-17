@@ -18,8 +18,8 @@
 
 namespace OCC {
 
-ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject* parent)
-: AbstractNetworkJob(account, QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path, parent)
+ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject *parent)
+    : AbstractNetworkJob(account, QLatin1String("index.php/apps/files/api/v1/thumbnail/150/150/") + path, parent)
 {
     setIgnoreCredentialFailure(true);
 }
@@ -35,5 +35,4 @@ bool ThumbnailJob::finished()
     emit jobFinished(reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(), reply()->readAll());
     return true;
 }
-
 }

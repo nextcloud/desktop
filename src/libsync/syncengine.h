@@ -48,8 +48,7 @@ class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
 
-enum AnotherSyncNeeded
-{
+enum AnotherSyncNeeded {
     NoFollowUpSync,
     ImmediateFollowUp, // schedule this again immediately (limited amount of times)
     DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
@@ -64,10 +63,10 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
     Q_OBJECT
 public:
     SyncEngine(AccountPtr account, const QString &localPath,
-               const QString &remotePath, SyncJournalDb *journal);
+        const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
 
-    static QString csyncErrorToString( CSYNC_STATUS);
+    static QString csyncErrorToString(CSYNC_STATUS);
 
     Q_INVOKABLE void startSync();
     void setNetworkLimits(int upload, int download);
@@ -92,7 +91,7 @@ public:
      *
      * Thread-safe.
      */
-    qint64 timeSinceFileTouched(const QString& fn) const;
+    qint64 timeSinceFileTouched(const QString &fn) const;
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
@@ -105,7 +104,7 @@ public:
     static qint64 minimumFileAgeForUpload; // in ms
 
 signals:
-    void csyncError( const QString& );
+    void csyncError(const QString &);
     void csyncUnavailable();
 
     // During update, before reconcile
@@ -113,14 +112,14 @@ signals:
     void folderDiscovered(bool local, const QString &folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
-    void syncItemDiscovered(const SyncFileItem&);
+    void syncItemDiscovered(const SyncFileItem &);
     // after the above signals. with the items that actually need propagating
-    void aboutToPropagate(SyncFileItemVector&);
+    void aboutToPropagate(SyncFileItemVector &);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const SyncFileItemPtr&);
+    void itemCompleted(const SyncFileItemPtr &);
 
-    void transmissionProgress( const ProgressInfo& progress );
+    void transmissionProgress(const ProgressInfo &progress);
 
     void finished(bool success);
     void started();
@@ -149,14 +148,14 @@ signals:
 
 private slots:
     void slotRootEtagReceived(const QString &);
-    void slotItemCompleted(const SyncFileItemPtr& item);
+    void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
-    void slotProgress(const SyncFileItem& item, quint64 curent);
+    void slotProgress(const SyncFileItem &item, quint64 curent);
     void slotDiscoveryJobFinished(int updateResult);
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */
-    void slotAddTouchedFile(const QString& fn);
+    void slotAddTouchedFile(const QString &fn);
 
     /** Wipes the _touchedFiles hash */
     void slotClearTouchedFiles();
@@ -166,10 +165,10 @@ private:
 
     QString journalDbFilePath() const;
 
-    static int treewalkLocal( TREE_WALK_FILE*, void *);
-    static int treewalkRemote( TREE_WALK_FILE*, void *);
-    int treewalkFile( TREE_WALK_FILE*, bool );
-    bool checkErrorBlacklisting( SyncFileItem &item );
+    static int treewalkLocal(TREE_WALK_FILE *, void *);
+    static int treewalkRemote(TREE_WALK_FILE *, void *);
+    int treewalkFile(TREE_WALK_FILE *, bool);
+    bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.
@@ -198,7 +197,7 @@ private:
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QPointer<DiscoveryMainThread> _discoveryMainThread;
-    QSharedPointer <OwncloudPropagator> _propagator;
+    QSharedPointer<OwncloudPropagator> _propagator;
 
     // After a sync, only the syncdb entries whose filenames appear in this
     // set will be kept. See _temporarilyUnavailablePaths.
@@ -231,7 +230,7 @@ private:
      * to recover
      */
     void checkForPermission(SyncFileItemVector &syncItems);
-    QByteArray getPermissions(const QString& file) const;
+    QByteArray getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
@@ -269,7 +268,6 @@ private:
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;
 };
-
 }
 
 #endif // CSYNCTHREAD_H

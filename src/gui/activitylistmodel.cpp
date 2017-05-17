@@ -38,7 +38,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
 
 ActivityListModel::ActivityListModel(QWidget *parent)
-    :QAbstractListModel(parent)
+    : QAbstractListModel(parent)
 {
 }
 
@@ -58,12 +58,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case ActivityItemDelegate::PathRole:
         list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
-        if( list.count() > 0 ) {
+        if (list.count() > 0) {
             return QVariant(list.at(0));
         }
         // File does not exist anymore? Let's try to open its path
         list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a._file).path(), ast->account());
-        if( list.count() > 0 ) {
+        if (list.count() > 0) {
             return QVariant(list.at(0));
         }
         return QVariant();
@@ -92,13 +92,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         break;
     default:
         return QVariant();
-
     }
     return QVariant();
-
 }
 
-int ActivityListModel::rowCount(const QModelIndex&) const
+int ActivityListModel::rowCount(const QModelIndex &) const
 {
     return _finalList.count();
 }
@@ -106,16 +104,16 @@ int ActivityListModel::rowCount(const QModelIndex&) const
 // current strategy: Fetch 100 items per Account
 // ATTENTION: This method is const and thus it is not possible to modify
 // the _activityLists hash or so. Doesn't make it easier...
-bool ActivityListModel::canFetchMore(const QModelIndex& ) const
+bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
-    if( _activityLists.count() == 0 ) return true;
+    if (_activityLists.count() == 0)
+        return true;
 
-    for(auto i = _activityLists.begin() ; i != _activityLists.end(); ++i) {
+    for (auto i = _activityLists.begin(); i != _activityLists.end(); ++i) {
         AccountState *ast = i.key();
-        if( ast && ast->isConnected() ) {
+        if (ast && ast->isConnected()) {
             ActivityList activities = i.value();
-            if( activities.count() == 0 &&
-                    ! _currentlyFetching.contains(ast) ) {
+            if (activities.count() == 0 && !_currentlyFetching.contains(ast)) {
                 return true;
             }
         }
@@ -124,18 +122,18 @@ bool ActivityListModel::canFetchMore(const QModelIndex& ) const
     return false;
 }
 
-void ActivityListModel::startFetchJob(AccountState* s)
+void ActivityListModel::startFetchJob(AccountState *s)
 {
-    if( !s->isConnected() ) {
+    if (!s->isConnected()) {
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
     QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)),
-                     this, SLOT(slotActivitiesReceived(QJsonDocument, int)));
+        this, SLOT(slotActivitiesReceived(QJsonDocument, int)));
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
-    QList< QPair<QString,QString> > params;
-    params.append(qMakePair(QString::fromLatin1("page"),     QString::fromLatin1("0")));
+    QList<QPair<QString, QString>> params;
+    params.append(qMakePair(QString::fromLatin1("page"), QString::fromLatin1("0")));
     params.append(qMakePair(QString::fromLatin1("pagesize"), QString::fromLatin1("100")));
     job->addQueryParams(params);
 
@@ -144,7 +142,7 @@ void ActivityListModel::startFetchJob(AccountState* s)
     job->start();
 }
 
-void ActivityListModel::slotActivitiesReceived(const QJsonDocument& json, int statusCode)
+void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int statusCode)
 {
     auto activities = json.object().value("ocs").toObject().value("data").toArray();
 
@@ -155,17 +153,17 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument& json, int st
 
     _currentlyFetching.remove(ast);
 
-    foreach( auto activ, activities ) {
+    foreach (auto activ, activities) {
         auto json = activ.toObject();
 
         Activity a;
         a._type = Activity::ActivityType;
-        a._accName  = ast->account()->displayName();
-        a._id       = json.value("id").toInt();
-        a._subject  = json.value("subject").toString();
-        a._message  = json.value("message").toString();
-        a._file     = json.value("file").toString();
-        a._link     = QUrl(json.value("link").toString());
+        a._accName = ast->account()->displayName();
+        a._id = json.value("id").toInt();
+        a._subject = json.value("subject").toString();
+        a._message = json.value("message").toString();
+        a._file = json.value("file").toString();
+        a._link = QUrl(json.value("link").toString());
         a._dateTime = QDateTime::fromString(json.value("date").toString(), Qt::ISODate);
         list.append(a);
     }
@@ -182,11 +180,11 @@ void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
-    foreach( ActivityList list, _activityLists.values() ) {
+    foreach (ActivityList list, _activityLists.values()) {
         resultList.append(list);
     }
 
-    std::sort( resultList.begin(), resultList.end() );
+    std::sort(resultList.begin(), resultList.end());
 
     beginResetModel();
     _finalList.clear();
@@ -201,9 +199,8 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 {
     QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
 
-    foreach (const AccountStatePtr& asp, accounts) {
-
-        if( !_activityLists.contains(asp.data()) && asp->isConnected() ) {
+    foreach (const AccountStatePtr &asp, accounts) {
+        if (!_activityLists.contains(asp.data()) && asp->isConnected()) {
             _activityLists[asp.data()] = ActivityList();
             startFetchJob(asp.data());
         }
@@ -212,15 +209,15 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 
 void ActivityListModel::slotRefreshActivity(AccountState *ast)
 {
-    if(ast && _activityLists.contains(ast)) {
+    if (ast && _activityLists.contains(ast)) {
         _activityLists.remove(ast);
     }
     startFetchJob(ast);
 }
 
-void ActivityListModel::slotRemoveAccount(AccountState *ast )
+void ActivityListModel::slotRemoveAccount(AccountState *ast)
 {
-    if( _activityLists.contains(ast) ) {
+    if (_activityLists.contains(ast)) {
         int i = 0;
         const QString accountToRemove = ast->account()->displayName();
 
@@ -228,8 +225,8 @@ void ActivityListModel::slotRemoveAccount(AccountState *ast )
 
         while (it.hasNext()) {
             Activity activity = it.next();
-            if( activity._accName == accountToRemove ) {
-                beginRemoveRows(QModelIndex(), i, i+1);
+            if (activity._accName == accountToRemove) {
+                beginRemoveRows(QModelIndex(), i, i + 1);
                 it.remove();
                 endRemoveRows();
             }
@@ -238,5 +235,4 @@ void ActivityListModel::slotRemoveAccount(AccountState *ast )
         _currentlyFetching.remove(ast);
     }
 }
-
 }

@@ -38,14 +38,14 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_OBJECT
 public:
     enum CustomMediaType {
-        oCSetupTop,      // ownCloud connect page
+        oCSetupTop, // ownCloud connect page
         oCSetupSide,
         oCSetupBottom,
         oCSetupResultTop // ownCloud connect result page
     };
 
     /* returns a singleton instance. */
-    static Theme* instance();
+    static Theme *instance();
 
     ~Theme();
 
@@ -92,19 +92,19 @@ public:
     /**
       * the icon that is shown in the tray context menu left of the folder name
       */
-    virtual QIcon   trayFolderIcon( const QString& ) const;
+    virtual QIcon trayFolderIcon(const QString &) const;
 
     /**
       * get an sync state icon
       */
-    virtual QIcon   syncStateIcon( SyncResult::Status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    virtual QIcon syncStateIcon(SyncResult::Status, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 
-    virtual QIcon   folderDisabledIcon() const;
-    virtual QIcon   folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
-    virtual QIcon   applicationIcon() const = 0;
+    virtual QIcon folderDisabledIcon() const;
+    virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    virtual QIcon applicationIcon() const = 0;
 #endif
 
-    virtual QString statusHeaderText( SyncResult::Status ) const;
+    virtual QString statusHeaderText(SyncResult::Status) const;
     virtual QString version() const;
 
     /**
@@ -160,7 +160,7 @@ public:
      * The default implementation will try to look up
      * :/client/theme/<type>.png
      */
-    virtual QVariant customMedia( CustomMediaType type );
+    virtual QVariant customMedia(CustomMediaType type);
 
     /** @return color for the setup wizard */
     virtual QColor wizardHeaderTitleColor() const;
@@ -266,7 +266,9 @@ public:
      * @value UserIDEmail Wizard asks for an email as ID
      * @value UserIDCustom Specify string in \ref customUserID
      */
-    enum UserIDType { UserIDUserName = 0, UserIDEmail, UserIDCustom };
+    enum UserIDType { UserIDUserName = 0,
+        UserIDEmail,
+        UserIDCustom };
 
     /** @brief What to display as the userID (e.g. in the wizards)
      *
@@ -321,7 +323,7 @@ public:
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
-    QIcon themeIcon(const QString& name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
+    QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;
 #endif
     Theme();
 
@@ -329,15 +331,14 @@ signals:
     void systrayUseMonoIconsChanged(bool);
 
 private:
-    Theme(Theme const&);
-    Theme& operator=(Theme const&);
+    Theme(Theme const &);
+    Theme &operator=(Theme const &);
 
-    static Theme* _instance;
+    static Theme *_instance;
     bool _mono;
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
 #endif
 };
-
 }
 #endif // _THEME_H

@@ -39,7 +39,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     lay->addLayout(form);
     _password->setEchoMode(QLineEdit::Password);
 
-    QDialogButtonBox *box = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QDialogButtonBox *box = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal);
     connect(box, SIGNAL(accepted()), this, SLOT(accept()));
     connect(box, SIGNAL(rejected()), this, SLOT(reject()));
     lay->addWidget(box);

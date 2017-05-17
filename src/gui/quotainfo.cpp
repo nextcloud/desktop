@@ -25,8 +25,8 @@
 namespace OCC {
 
 namespace {
-static const int defaultIntervalT = 30*1000;
-static const int failIntervalT = 5*1000;
+    static const int defaultIntervalT = 30 * 1000;
+    static const int failIntervalT = 5 * 1000;
 }
 
 QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
@@ -37,7 +37,7 @@ QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
     , _active(false)
 {
     connect(accountState, SIGNAL(stateChanged(int)),
-            SLOT(slotAccountStateChanged()));
+        SLOT(slotAccountStateChanged()));
     connect(&_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
     _jobRestartTimer.setSingleShot(true);
 }
@@ -72,7 +72,7 @@ void QuotaInfo::slotRequestFailed()
 
 bool QuotaInfo::canGetQuota() const
 {
-    if (! _accountState || !_active) {
+    if (!_accountState || !_active) {
         return false;
     }
     AccountPtr account = _accountState->account();
@@ -88,7 +88,7 @@ QString QuotaInfo::quotaBaseFolder() const
 
 void QuotaInfo::slotCheckQuota()
 {
-    if (! canGetQuota()) {
+    if (!canGetQuota()) {
         return;
     }
 
@@ -99,9 +99,10 @@ void QuotaInfo::slotCheckQuota()
 
     AccountPtr account = _accountState->account();
     _job = new PropfindJob(account, quotaBaseFolder(), this);
-    _job->setProperties(QList<QByteArray>() << "quota-available-bytes" << "quota-used-bytes");
+    _job->setProperties(QList<QByteArray>() << "quota-available-bytes"
+                                            << "quota-used-bytes");
     connect(_job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
-    connect(_job, SIGNAL(networkError(QNetworkReply*)), SLOT(slotRequestFailed()));
+    connect(_job, SIGNAL(networkError(QNetworkReply *)), SLOT(slotRequestFailed()));
     _job->start();
 }
 
@@ -117,5 +118,4 @@ void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
     _jobRestartTimer.start(defaultIntervalT);
     _lastQuotaRecieved = QDateTime::currentDateTime();
 }
-
 }
