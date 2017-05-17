@@ -45,8 +45,9 @@ void HttpCredentialsGui::askFromUserAsync()
         msg += QLatin1String("<br>") + reqTxt + QLatin1String("<br>");
     }
     if (!_fetchErrorString.isEmpty()) {
-        msg += QLatin1String("<br>") + tr("Reading from keychain failed with error: '%1'").arg(
-                    Utility::escape(_fetchErrorString)) + QLatin1String("<br>");
+        msg += QLatin1String("<br>")
+                + tr("Reading from keychain failed with error: '%1'")
+                .arg(Utility::escape(_fetchErrorString)) + QLatin1String("<br>");
     }
 
     QInputDialog dialog;

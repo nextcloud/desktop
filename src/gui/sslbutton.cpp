@@ -69,8 +69,8 @@ static QString addCertDetailsField(const QString &key, const QString &value)
 // necessary indication only, not sufficient for primary validation!
 static bool isSelfSigned(const QSslCertificate &certificate)
 {
-    return certificate.issuerInfo(QSslCertificate::CommonName) == certificate.subjectInfo(QSslCertificate::CommonName) &&
-           certificate.issuerInfo(QSslCertificate::OrganizationalUnitName) == certificate.subjectInfo(QSslCertificate::OrganizationalUnitName);
+    return certificate.issuerInfo(QSslCertificate::CommonName) == certificate.subjectInfo(QSslCertificate::CommonName)
+           && certificate.issuerInfo(QSslCertificate::OrganizationalUnitName) == certificate.subjectInfo(QSslCertificate::OrganizationalUnitName);
 }
 
 QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
@@ -90,9 +90,9 @@ QMenu* SslButton::buildCertMenu(QMenu *parent, const QSslCertificate& cert,
 #else
     QByteArray sha265hash = cert.digest(QCryptographicHash::Sha256).toHex();
     QString sha256escaped =
-            Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length()/2), false)) +
-            QLatin1String("<br/>") +
-            Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length()/2), false));
+            Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length()/2), false))
+            + QLatin1String("<br/>")
+            + Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length()/2), false));
 #endif
     QString serial = QString::fromUtf8(cert.serialNumber());
     QString effectiveDate = cert.effectiveDate().date().toString();
@@ -245,8 +245,8 @@ void SslButton::slotUpdateMenu() {
 
         // find trust anchor (informational only, verification is done by QSslSocket!)
         foreach(QSslCertificate rootCA, QSslSocket::systemCaCertificates()) {
-            if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName) &&
-                    rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
+            if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName)
+                    && rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain.append(rootCA);
                 break;
             }

@@ -338,7 +338,8 @@ void Folder::showSyncResultPopup()
         if(renTarget != renSource) {
             status = LogStatusMove;
         }
-        createGuiLog( _syncResult.firstItemRenamed()->_originalFile, status, _syncResult.numRenamedItems(), _syncResult.firstItemRenamed()->_renameTarget );
+        createGuiLog( _syncResult.firstItemRenamed()->_originalFile, status,
+                      _syncResult.numRenamedItems(), _syncResult.firstItemRenamed()->_renameTarget );
     }
 
     if( _syncResult.firstConflictItem() ) {
