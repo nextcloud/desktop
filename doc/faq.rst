@@ -51,4 +51,3 @@ This option provides the ability to either: keep the existing data (synced by th
 
 Make your choice and click "**Connect...**".
 This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory.
-

@@ -213,6 +213,49 @@ private slots:
         }
     }
 
+    void testSelectiveSyncBug() {
+        // issue owncloud/enterprise#1965: files from selective-sync ignored
+        // folders are uploaded anyway is some circumstances.
+        FakeFolder fakeFolder{FileInfo{ QString(), {
+            FileInfo { QStringLiteral("parentFolder"), {
+                FileInfo{ QStringLiteral("subFolder"), {
+                    { QStringLiteral("fileA.txt"), 400 },
+                    { QStringLiteral("fileB.txt"), 400, 'o' }
+                }}
+            }}
+        }}};
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto expectedServerState = fakeFolder.currentRemoteState();
+
+        // Remove subFolder with selectiveSync:
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+                                                                {"parentFolder/subFolder/"});
+        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolder/");
+
+        // But touch a local file before the next sync, such that the local folder
+        // can't be removed
+        fakeFolder.localModifier().setContents("parentFolder/subFolder/fileB.txt", 'n');
+
+        // Several follow-up syncs don't change the state at all,
+        // in particular the remote state doesn't change and fileB.txt
+        // isn't uploaded.
+
+        for (int i = 0; i < 3; ++i) {
+            fakeFolder.syncOnce();
+
+            {
+                // Nothing changed on the server
+                QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
+                // The local state should still have subFolderA
+                auto local = fakeFolder.currentLocalState();
+                QVERIFY(local.find("parentFolder/subFolder"));
+                QVERIFY(local.find("parentFolder/subFolder/fileA.txt"));
+                QVERIFY(local.find("parentFolder/subFolder/fileB.txt"));
+            }
+        }
+    }
+
     void abortAfterFailedMkdir() {
         FakeFolder fakeFolder{FileInfo{}};
         QSignalSpy finishedSpy(&fakeFolder.syncEngine(), SIGNAL(finished(bool)));

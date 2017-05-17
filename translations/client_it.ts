@@ -1216,7 +1216,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Chiedi conferma prima di scaricare cartelle più grandi di</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -1227,7 +1227,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.ui" line="127"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Chiedi conferma prima di sincronizzare storage esterni</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
