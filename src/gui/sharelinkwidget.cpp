@@ -82,12 +82,17 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotExpireDateChanged(QDate)));
     connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotCheckBoxEditingClicked()));
 
+    _ui->errorLabel->hide();
+
+    bool sharingPossible = true;
     if (!_account->capabilities().sharePublicLink()) {
         displayError(tr("Link shares have been disabled"));
-        _ui->nameLineEdit->setEnabled(false);
-        _ui->createShareButton->setEnabled(false);
+        sharingPossible = false;
     } else if (!(maxSharingPermissions & SharePermissionShare)) {
         displayError(tr("The file can not be shared because it was shared without sharing permission."));
+        sharingPossible = false;
+    }
+    if (!sharingPossible) {
         _ui->nameLineEdit->setEnabled(false);
         _ui->createShareButton->setEnabled(false);
     }
@@ -121,8 +126,6 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         qCWarning(lcSharing) << "Unable to share files not in a sync folder.";
         return;
     }
-
-    _ui->errorLabel->hide();
 
 
     // Parse capabilities
@@ -159,12 +162,13 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     /*
      * Create the share manager and connect it properly
      */
-    _manager = new ShareManager(_account, this);
-
-    connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
-    connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-    connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
-    connect(_manager, SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
+    if (sharingPossible) {
+        _manager = new ShareManager(_account, this);
+        connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
+        connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
+        connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
+        connect(_manager, SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
+    }
 }
 
 ShareLinkWidget::~ShareLinkWidget()
@@ -174,7 +178,9 @@ ShareLinkWidget::~ShareLinkWidget()
 
 void ShareLinkWidget::getShares()
 {
-    _manager->fetchShares(_sharePath);
+    if (_manager) {
+        _manager->fetchShares(_sharePath);
+    }
 }
 
 void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
@@ -346,6 +352,9 @@ void ShareLinkWidget::slotExpireDateChanged(const QDate &date)
 
 void ShareLinkWidget::slotPasswordReturnPressed()
 {
+    if (!_manager) {
+        return;
+    }
     if (!selectedShare()) {
         // If share creation requires a password, we'll be in this case
         if (_ui->lineEdit_password->text().isEmpty()) {
@@ -409,6 +418,9 @@ void ShareLinkWidget::slotPasswordSet()
 
 void ShareLinkWidget::slotShareNameEntered()
 {
+    if (!_manager) {
+        return;
+    }
     _pi_create->startAnimation();
     _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), QString());
 }
