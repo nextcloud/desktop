@@ -194,15 +194,6 @@ void ShareDialog::showSharingUi()
     }
 
     if (theme->linkSharing()) {
-        if (userGroupSharing) {
-            QFrame *hline = new QFrame(this);
-            hline->setFrameShape(QFrame::HLine);
-            QPalette p = palette();
-            // Make the line softer:
-            p.setColor(QPalette::Foreground, QColor::fromRgba((p.color(QPalette::Foreground).rgba() & 0x00ffffff) | 0x50000000));
-            hline->setPalette(p);
-        }
-
         _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
