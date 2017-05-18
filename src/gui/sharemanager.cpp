@@ -395,7 +395,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     }
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
-        data.value("id").toString(),
+        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("path").toString(),
         data.value("name").toString(),
         data.value("token").toString(),
@@ -412,7 +412,7 @@ QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
         (Sharee::Type)data.value("share_type").toInt()));
 
     return QSharedPointer<Share>(new Share(_account,
-        data.value("id").toString(),
+        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("path").toString(),
         (Share::ShareType)data.value("share_type").toInt(),
         (Share::Permissions)data.value("permissions").toInt(),
