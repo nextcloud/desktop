@@ -107,6 +107,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         return;
     }
 
+    _ui->label_icon->hide();
     if (QFileInfo(_localPath).isFile()) {
         ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
         connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
@@ -217,6 +218,7 @@ void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &
     p.loadFromData(reply, "PNG");
     p = p.scaledToHeight(thumbnailSize, Qt::SmoothTransformation);
     _ui->label_icon->setPixmap(p);
+    _ui->label_icon->show();
 }
 
 void ShareDialog::slotAccountStateChanged(int state)
