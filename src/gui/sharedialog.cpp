@@ -102,8 +102,10 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
     if (!accountState->account()->capabilities().shareAPI()) {
-        _ui->shareWidgets->hide();
-        layout()->replaceWidget(_ui->shareWidgets, new QLabel(tr("The server does not allow sharing")));
+        auto label = new QLabel(tr("The server does not allow sharing"));
+        label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -175,6 +177,7 @@ void ShareDialog::showSharingUi()
         auto label = new QLabel(this);
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
         label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
