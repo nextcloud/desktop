@@ -302,7 +302,7 @@ void ShareLinkWidget::slotShareSelectionChanged()
         _ui->lineEdit_password->setPlaceholderText("********");
         _ui->lineEdit_password->setText(QString());
         _ui->lineEdit_password->setEnabled(true);
-        _ui->pushButton_setPassword->setEnabled(true);
+        _ui->pushButton_setPassword->setEnabled(false);
     } else {
         _ui->checkBox_password->setChecked(false);
         _ui->lineEdit_password->setPlaceholderText(QString());
