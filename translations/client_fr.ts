@@ -2230,12 +2230,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="472"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;identifiant de fichier est manquant sur le serveur</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;information Etag de modification de fichier est manquante sur le serveur</translation>
     </message>
 </context>
 <context>
@@ -3801,7 +3801,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="305"/>
         <source>built with %1</source>
-        <translation type="unfinished"/>
+        <translation>réalisé avec %1</translation>
     </message>
 </context>
 <context>
