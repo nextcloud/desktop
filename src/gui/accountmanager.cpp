@@ -304,6 +304,8 @@ void AccountManager::deleteAccount(AccountState *account)
     auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
+    // Forget account credentials, cookies
+    account->account()->credentials()->forgetSensitiveData();
     QFile::remove(account->account()->cookieJarPath());
 
     auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
