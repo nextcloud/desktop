@@ -69,7 +69,12 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     QFileInfo f_info(_localPath);
     QFileIconProvider icon_provider;
     QIcon icon = icon_provider.icon(f_info);
-    _ui->label_icon->setPixmap(icon.pixmap(thumbnailSize, thumbnailSize));
+    auto pixmap = icon.pixmap(thumbnailSize, thumbnailSize);
+    if (pixmap.width() > 0) {
+        _ui->label_icon->setPixmap(pixmap);
+    } else {
+        _ui->label_icon->hide();
+    }
 
     // Set filename
     QFileInfo lPath(_localPath);
@@ -109,7 +114,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         return;
     }
 
-    _ui->label_icon->hide();
     if (QFileInfo(_localPath).isFile()) {
         ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
         connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
