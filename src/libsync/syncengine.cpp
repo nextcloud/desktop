@@ -852,7 +852,7 @@ void SyncEngine::startSync()
     _discoveryMainThread->setParent(this);
     connect(this, SIGNAL(finished(bool)), _discoveryMainThread, SLOT(deleteLater()));
     qCInfo(lcEngine) << "Server" << account()->serverVersion()
-                     << QString("rootEtagChangesNotOnlySubFolderEtags=%1").arg(account()->rootEtagChangesNotOnlySubFolderEtags());
+                     << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
     if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
         connect(_discoveryMainThread, SIGNAL(etag(QString)), this, SLOT(slotRootEtagReceived(QString)));
     } else {

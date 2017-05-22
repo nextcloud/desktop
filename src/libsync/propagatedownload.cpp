@@ -118,6 +118,8 @@ void GETFileJob::start()
         req.setRawHeader(it.key(), it.value());
     }
 
+    req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
+
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
     } else {

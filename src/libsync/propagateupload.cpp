@@ -79,6 +79,8 @@ void PUTFileJob::start()
         req.setRawHeader(it.key(), it.value());
     }
 
+    req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
+
     if (_url.isValid()) {
         sendRequest("PUT", _url, req, _device);
     } else {
