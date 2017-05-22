@@ -438,6 +438,7 @@ void Application::parseOptions(const QStringList &options)
                 showHint("Path for confdir not specified");
             }
         } else if (option == QLatin1String("--debug")) {
+            _logDebug = true;
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
