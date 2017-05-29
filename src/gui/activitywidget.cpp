@@ -348,7 +348,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
     if (newGuiLogCount > 0) {
         // restart the gui log timer now that we show a notification
-        _guiLogTimer.restart();
+        _guiLogTimer.start();
 
         // Assemble a tray notification
         QString msg = tr("You received %n new notification(s) from %2.", "", accNotified[accNotified.keys().at(0)]).arg(accNotified.keys().at(0));

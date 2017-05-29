@@ -160,7 +160,7 @@ bool AccountState::isConnected() const
 
 void AccountState::tagLastSuccessfullETagRequest()
 {
-    _timeSinceLastETagCheck.restart();
+    _timeSinceLastETagCheck.start();
 }
 
 void AccountState::checkConnectivity()

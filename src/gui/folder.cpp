@@ -629,7 +629,7 @@ void Folder::startSync(const QStringList &pathList)
     }
     _csyncUnavail = false;
 
-    _timeSinceLastSyncStart.restart();
+    _timeSinceLastSyncStart.start();
     _syncResult.setStatus(SyncResult::SyncPrepare);
     emit syncStateChange();
 
@@ -798,7 +798,7 @@ void Folder::slotSyncFinished(bool success)
     QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed()));
 
     _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
-    _timeSinceLastSyncDone.restart();
+    _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
     if (anotherSyncNeeded == ImmediateFollowUp) {
