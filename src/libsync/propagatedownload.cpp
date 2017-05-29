@@ -500,6 +500,11 @@ void PropagateDownloadFile::slotGetFinished()
         } else if (fileNotFound) {
             job->setErrorString(tr("File was deleted from server"));
             job->setErrorStatus(SyncFileItem::SoftError);
+
+            // As a precaution against bugs that cause our database and the
+            // reality on the server to diverge, rediscover this folder on the
+            // next sync run.
+            propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
         }
 
         SyncFileItem::Status status = job->errorStatus();
