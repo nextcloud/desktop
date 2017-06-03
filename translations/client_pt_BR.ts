@@ -2554,7 +2554,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation>Qualquer pessoa com o link tem acesso ao arquivo/pasta</translation>
+        <translation>Qualquer pessoa com o endereço tem acesso ao arquivo/pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>
