@@ -220,7 +220,18 @@ private slots:
             FileInfo { QStringLiteral("parentFolder"), {
                 FileInfo{ QStringLiteral("subFolder"), {
                     { QStringLiteral("fileA.txt"), 400 },
-                    { QStringLiteral("fileB.txt"), 400, 'o' }
+                    { QStringLiteral("fileB.txt"), 400, 'o' },
+                    FileInfo { QStringLiteral("subsubFolder"), {
+                        { QStringLiteral("fileC.txt"), 400 },
+                        { QStringLiteral("fileD.txt"), 400, 'o' }
+                    }},
+                    FileInfo{ QStringLiteral("anotherFolder"), {
+                        FileInfo { QStringLiteral("emptyFolder"), { } },
+                        FileInfo { QStringLiteral("subsubFolder"), {
+                            { QStringLiteral("fileE.txt"), 400 },
+                            { QStringLiteral("fileF.txt"), 400, 'o' }
+                        }}
+                    }}
                 }}
             }}
         }}};
@@ -233,9 +244,11 @@ private slots:
                                                                 {"parentFolder/subFolder/"});
         fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolder/");
 
-        // But touch a local file before the next sync, such that the local folder
+        // But touch local file before the next sync, such that the local folder
         // can't be removed
         fakeFolder.localModifier().setContents("parentFolder/subFolder/fileB.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolder/subsubFolder/fileD.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt", 'n');
 
         // Several follow-up syncs don't change the state at all,
         // in particular the remote state doesn't change and fileB.txt
@@ -250,8 +263,13 @@ private slots:
                 // The local state should still have subFolderA
                 auto local = fakeFolder.currentLocalState();
                 QVERIFY(local.find("parentFolder/subFolder"));
-                QVERIFY(local.find("parentFolder/subFolder/fileA.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/fileA.txt"));
                 QVERIFY(local.find("parentFolder/subFolder/fileB.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/subsubFolder/fileC.txt"));
+                QVERIFY(local.find("parentFolder/subFolder/subsubFolder/fileD.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileE.txt"));
+                QVERIFY(local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/emptyFolder"));
             }
         }
     }
