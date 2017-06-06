@@ -510,7 +510,7 @@ QString Theme::oauthClientId() const
 
 QString Theme::oauthClientSecret() const
 {
-    return "e4rAsNUSIUs0lF4nbv9FmCeUkTlV9GdgTLDH1b5uie7syb90SzEVrbN7HIpmWJeD";
+    return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
 }
 
 
