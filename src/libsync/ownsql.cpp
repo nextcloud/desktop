@@ -59,7 +59,9 @@ bool SqlDatabase::openHelper( const QString& filename, int sqliteFlags )
         qDebug() << "Error:" << _error << "for" << filename;
         if (_errId == SQLITE_CANTOPEN) {
             qDebug() << "CANTOPEN extended errcode: " << sqlite3_extended_errcode(_db);
+#if SQLITE_VERSION_NUMBER >= 3012000
             qDebug() << "CANTOPEN system errno: " << sqlite3_system_errno(_db);
+#endif
         }
         close();
         return false;
