@@ -201,6 +201,11 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     }
 
     setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
+    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
+        // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
+        // to re-open the browser.
+        button(QWizard::BackButton)->setEnabled(false);
+    }
 }
 
 void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
