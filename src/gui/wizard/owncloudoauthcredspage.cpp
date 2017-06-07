@@ -27,43 +27,62 @@ namespace OCC {
 
 OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
     : AbstractCredentialsWizardPage()
-    , _afterInitialSetup(false)
-
 {
+    _ui.setupUi(this);
+
+    Theme *theme = Theme::instance();
+    _ui.topLabel->hide();
+    _ui.bottomLabel->hide();
+    QVariant variant = theme->customMedia(Theme::oCSetupTop);
+    WizardCommon::setupCustomMedia(variant, _ui.topLabel);
+    variant = theme->customMedia(Theme::oCSetupBottom);
+    WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
+
+    WizardCommon::initErrorLabel(_ui.errorLabel);
+
+    setTitle(WizardCommon::titleTemplate().arg(tr("Connect to %1").arg(Theme::instance()->appNameGUI())));
+    setSubTitle(WizardCommon::subTitleTemplate().arg(tr("Login in your browser")));
+
+    connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
+        _ui.errorLabel->hide();
+        if (_asyncAuth)
+            _asyncAuth->openBrowser();
+    });
 }
 
-void OwncloudOAuthCredsPage::setVisible(bool visible)
+void OwncloudOAuthCredsPage::initializePage()
 {
-    if (!_afterInitialSetup) {
-        QWizardPage::setVisible(visible);
-        return;
-    }
+    OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+    Q_ASSERT(ocWizard);
+    ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
+    _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
+    connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
+    _asyncAuth->start();
+    wizard()->hide();
+}
 
-    if (isVisible() == visible) {
-        return;
-    }
-    if (visible) {
-        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
-        Q_ASSERT(ocWizard);
-        ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
-        _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
-        connect(_asyncAuth.data(), SIGNAL(result(OAuth::Result, QString, QString, QString)),
-            this, SLOT(asyncAuthResult(OAuth::Result, QString, QString, QString)));
-        _asyncAuth->start();
-        wizard()->hide();
-    } else {
-        // The next or back button was activated, show the wizard again
-        wizard()->show();
-    }
+void OCC::OwncloudOAuthCredsPage::cleanupPage()
+{
+    // The next or back button was activated, show the wizard again
+    wizard()->show();
+    _asyncAuth.reset();
 }
 
 void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &user,
     const QString &token, const QString &refreshToken)
 {
     switch (r) {
-    case OAuth::NotSupported:
+    case OAuth::NotSupported: {
+        /* OAuth not supported (can't open browser), fallback to HTTP credentials */
+        OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
+        ocWizard->back();
+        ocWizard->setAuthType(WizardCommon::HttpCreds);
+        break;
+    }
     case OAuth::Error:
-        qWarning() << "FIXME!!!";
+        /* Error while getting the access token.  (Timeout, or the server did not accept our client credentials */
+        _ui.errorLabel->show();
+        wizard()->show();
         break;
     case OAuth::LoggedIn: {
         _token = token;
@@ -75,11 +94,6 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         break;
     }
     }
-}
-
-void OwncloudOAuthCredsPage::initializePage()
-{
-    _afterInitialSetup = true;
 }
 
 int OwncloudOAuthCredsPage::nextId() const
@@ -98,6 +112,11 @@ AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
     Q_ASSERT(ocWizard);
     return new HttpCredentialsGui(_user, _token, _refreshToken,
         ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);
+}
+
+bool OwncloudOAuthCredsPage::isComplete() const
+{
+    return false; /* We can never go forward manually */
 }
 
 } // namespace OCC

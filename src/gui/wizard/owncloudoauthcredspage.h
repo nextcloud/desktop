@@ -24,6 +24,9 @@
 #include "accountfwd.h"
 #include "creds/oauth.h"
 
+#include "ui_owncloudoauthcredspage.h"
+
+
 namespace OCC {
 
 
@@ -36,25 +39,24 @@ public:
     AbstractCredentials *getCredentials() const Q_DECL_OVERRIDE;
 
     void initializePage() Q_DECL_OVERRIDE;
+    void cleanupPage() override;
     int nextId() const Q_DECL_OVERRIDE;
     void setConnected();
+    bool isComplete() const override;
 
 public Q_SLOTS:
-    void setVisible(bool visible) Q_DECL_OVERRIDE;
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &token,
         const QString &reniewToken);
 
 signals:
     void connectToOCUrl(const QString &);
 
-private:
-    bool _afterInitialSetup;
-
 public:
     QString _user;
     QString _token;
     QString _refreshToken;
     QScopedPointer<OAuth> _asyncAuth;
+    Ui_OwncloudOAuthCredsPage _ui;
 };
 
 } // namespace OCC

@@ -50,6 +50,7 @@ public:
     enum Result { NotSupported,
         LoggedIn,
         Error };
+    Q_ENUM(Result);
     void start();
     bool openBrowser();
 
