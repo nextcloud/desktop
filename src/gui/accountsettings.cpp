@@ -687,14 +687,22 @@ void AccountSettings::slotAccountStateChanged()
     /* Allow to expand the item if the account is connected. */
     ui->_folderList->setItemsExpandable(state == AccountState::Connected);
 
-    /* check if there are expanded root items, if so, close them, if the state is different from being Connected. */
     if (state != AccountState::Connected) {
+        /* check if there are expanded root items, if so, close them */
         int i;
         for (i = 0; i < _model->rowCount(); ++i) {
             if (ui->_folderList->isExpanded(_model->index(i)))
                 ui->_folderList->setExpanded(_model->index(i), false);
         }
+    } else if (_model->isDirty()) {
+        // If we connect and have pending changes, show the list.
+        doExpand();
     }
+
+    // Disabling expansion of folders might require hiding the selective
+    // sync user interface buttons.
+    refreshSelectiveSyncStatus();
+
     /* set the correct label for the Account toolbox button */
     if (_accountState) {
         if (_accountState->isSignedOut()) {
@@ -747,7 +755,7 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    bool shouldBeVisible = _model->isDirty();
+    bool shouldBeVisible = _model->isDirty() && _accountState->isConnected();
 
     QString msg;
     int cnt = 0;
