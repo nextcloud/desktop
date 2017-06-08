@@ -1260,17 +1260,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>About</source>
         <translation>Σχετικά</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="166"/>
+        <location filename="../src/gui/generalsettings.ui" line="172"/>
         <source>Updates</source>
         <translation>Ενημερώσεις</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="197"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Επανεκκίνηση &amp;&amp; Ενημέρωση</translation>
     </message>
@@ -2023,27 +2023,27 @@ It is not advisable to use it.</source>
         <translation>Το αρχείο διαγράφηκε από τον διακομιστή</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Η λήψη του αρχείου δεν ολοκληρώθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="561"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Το ληφθέν αρχείο είναι άδειο, παρόλο που ο διακομιστής ανακοίνωσε ότι θα έπρεπε να ήταν% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Το αρχείο %1 δεν είναι δυνατό να αποθηκευτεί λόγω διένεξης με το όνομα ενός τοπικού ονόματος αρχείου!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="769"/>
         <source>File has changed since discovery</source>
         <translation>Το αρχείο έχει αλλάξει από όταν ανακαλύφθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="819"/>
         <source>Error writing metadata to the database</source>
         <translation>Σφάλμα εγγραφής μεταδεδομένων στην βάση δεδομένων</translation>
     </message>
@@ -2553,6 +2553,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Allow editing</source>
         <translation>Επιτρέπεται η επεξεργασία</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
+        <source>Anyone with the link has access to the file/folder</source>
+        <translation>Οποιοσδήποτε με τη σύνδεση έχει πρόσβαση στο αρχείο / φάκελο</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>

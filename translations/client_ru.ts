@@ -1258,17 +1258,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="166"/>
+        <location filename="../src/gui/generalsettings.ui" line="172"/>
         <source>Updates</source>
         <translation>Обновления</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="197"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Перезапуск и обновление</translation>
     </message>
@@ -2020,27 +2020,27 @@ It is not advisable to use it.</source>
         <translation>Файл был удален с сервера</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Невозможно полностью загрузить файл.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="561"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Скачанный файл пуст, хотя сервер заявил, что он должен быть %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Файл %1 не может быть сохранён из-за локального конфликта имен!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="769"/>
         <source>File has changed since discovery</source>
         <translation>После обнаружения файл был изменен</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="819"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
@@ -2550,6 +2550,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Allow editing</source>
         <translation>Разрешить редактирование</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
+        <source>Anyone with the link has access to the file/folder</source>
+        <translation>Каждый, у кого есть эта ссылка, имеет доступ к файлу/каталогу</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>

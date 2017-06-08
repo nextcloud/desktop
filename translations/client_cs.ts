@@ -1258,17 +1258,17 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>About</source>
         <translation>O aplikaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="166"/>
+        <location filename="../src/gui/generalsettings.ui" line="172"/>
         <source>Updates</source>
         <translation>Aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="197"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Restart &amp;&amp; aktualizace</translation>
     </message>
@@ -2021,27 +2021,27 @@ Nedoporučuje se jí používat.</translation>
         <translation>Soubor byl smazán ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Soubor nemohl být kompletně stažen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="561"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Stažený soubor je prázdný, přestože server oznámil, že měl být %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Soubor %1 nemohl být uložen z důvodu kolize názvu se souborem v místním systému!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="769"/>
         <source>File has changed since discovery</source>
         <translation>Soubor se mezitím změnil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="819"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>
@@ -2551,6 +2551,11 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Allow editing</source>
         <translation>Povolit úpravy</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
+        <source>Anyone with the link has access to the file/folder</source>
+        <translation>Kdokoliv, kdo má odkaz, může přistupovat k tomuto souboru/složce</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>

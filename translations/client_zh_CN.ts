@@ -163,12 +163,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>强制同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>重新开始同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>访问配置文件时发生错误</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="172"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>退出 ownCloud</translation>
     </message>
 </context>
 <context>
@@ -1251,17 +1251,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="150"/>
-        <location filename="../src/gui/generalsettings.ui" line="156"/>
+        <location filename="../src/gui/generalsettings.ui" line="162"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="166"/>
+        <location filename="../src/gui/generalsettings.ui" line="172"/>
         <source>Updates</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="197"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>重启并更新 (&amp;R)</translation>
     </message>
@@ -2013,27 +2013,27 @@ It is not advisable to use it.</source>
         <translation>已从服务器删除文件</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="549"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
         <source>The file could not be downloaded completely.</source>
         <translation>文件无法完整下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="556"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="561"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>虽然服务器宣称已完成 %1，但实际下载文件为空。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="720"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>由于本地文件名冲突，文件 %1 无法保存。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="764"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="769"/>
         <source>File has changed since discovery</source>
         <translation>自从发现文件以来，它已经被改变了</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="814"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="819"/>
         <source>Error writing metadata to the database</source>
         <translation>向数据库写入元数据错误</translation>
     </message>
@@ -2545,6 +2545,11 @@ It is not advisable to use it.</source>
         <translation>允许编辑</translation>
     </message>
     <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
+        <source>Anyone with the link has access to the file/folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>
         <source>P&amp;assword protect</source>
         <translation>密码保护(&amp;a)</translation>
@@ -2573,7 +2578,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>无法打开邮件客户端</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
@@ -3074,7 +3079,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="465"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>此文件系统不支持包含字符 &apos;%1&apos; 的文件名。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
@@ -3084,7 +3089,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>文件名尾部含有空格</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="476"/>
