@@ -1211,7 +1211,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="85"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>senkronizasyon dosyaları </translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="105"/>
@@ -2547,7 +2547,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="267"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation type="unfinished"/>
+        <translation>Dosya/klasör linkine sahip Herkes erişebilir </translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="95"/>
@@ -2583,7 +2583,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Yeni mesaj oluşturmak için eposta istemcisini çalıştırıken bir hata oluştu. Belki varsayılan eposta istemcisi ayarlanmamıştır? </translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="533"/>
@@ -3421,7 +3421,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="807"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 nin %1 i eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="815"/>
