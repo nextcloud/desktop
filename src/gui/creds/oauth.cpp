@@ -64,7 +64,7 @@ void OAuth::start()
                 }
 
                 // TODO: add redirect to the page on the server
-                httpReplyAndClose(socket, "200 OK", "<h1>Login Successfull</h1><p>You can close this window.</p>");
+                httpReplyAndClose(socket, "200 OK", "<h1>Login Successful</h1><p>You can close this window.</p>");
 
                 QString code = rx.cap(1); // The 'code' is the first capture of the regexp
 
