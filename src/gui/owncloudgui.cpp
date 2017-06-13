@@ -871,6 +871,7 @@ void ownCloudGui::slotDisplayIdle()
 void ownCloudGui::slotLogin()
 {
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
+        account->account()->resetRejectedCertificates();
         account->signIn();
     } else {
         auto list = AccountManager::instance()->accounts();
