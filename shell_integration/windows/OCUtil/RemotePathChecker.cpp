@@ -172,7 +172,8 @@ void RemotePathChecker::workerThreadLoop()
 
 
 RemotePathChecker::RemotePathChecker()
-    : _watchedDirectories(make_shared<const vector<wstring>>())
+    : _stop(false)
+    , _watchedDirectories(make_shared<const vector<wstring>>())
     , _connected(false)
     , _newQueries(CreateEvent(NULL, true, true, NULL))
     , _thread([this]{ this->workerThreadLoop(); })
