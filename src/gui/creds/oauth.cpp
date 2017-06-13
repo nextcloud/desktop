@@ -21,8 +21,9 @@
 #include <QJsonDocument>
 #include "theme.h"
 
-
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
 
 OAuth::~OAuth()
 {
@@ -89,7 +90,7 @@ void OAuth::start()
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
                         || json["token_type"].toString() != QLatin1String("Bearer")) {
-                        qDebug() << "Error when getting the accessToken" << reply->error() << json << jsonParseError.errorString();
+                        qCWarning(lcOauth) << "Error when getting the accessToken" << reply->error() << json << jsonParseError.errorString();
                         emit result(Error);
                         return;
                     }

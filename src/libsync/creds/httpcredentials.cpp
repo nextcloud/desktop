@@ -181,7 +181,6 @@ void HttpCredentials::fetchFromKeychain()
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
         job->setKey(kck);
-        qCDebug(lcHttpCredentials) << "-------- ----->" << _clientSslCertificate << _clientSslKey;
 
         connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadClientCertPEMJobDone(QKeychain::Job *)));
         job->start();
@@ -310,10 +309,10 @@ void HttpCredentials::refreshAccessToken()
         QString accessToken = json["access_token"].toString();
         if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
             // Network error maybe?
-            qDebug() << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
+            qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
         } else if (accessToken.isEmpty()) {
             // The token is no longer valid.
-            qDebug() << "Expired refresh token. Logging out";
+            qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
             _refreshToken.clear();
         } else {
             _ready = true;
