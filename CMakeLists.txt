@@ -153,8 +153,6 @@ if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
-find_package(OpenSSL 1.0.0 REQUIRED)
-
 if(APPLE)
   find_package(Sparkle)
 endif(APPLE)

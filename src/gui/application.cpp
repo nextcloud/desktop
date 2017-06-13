@@ -53,8 +53,6 @@
 #include <QMenu>
 #include <QMessageBox>
 
-#include <openssl/crypto.h>
-
 class QSocket;
 
 namespace OCC {
