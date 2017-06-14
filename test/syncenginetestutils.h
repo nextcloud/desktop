@@ -282,6 +282,7 @@ public:
     QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
+    QByteArray checksums;
     qint64 size = 0;
     char contentChar = 'W';
 
@@ -352,6 +353,7 @@ public:
             xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
+            xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
             xml.writeEndElement(); // propstat
