@@ -248,17 +248,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Çok büyük oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Harici depolama diskinde oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Çok büyük oldukları için ya da harici depolama alanında oldukları için eşitlenmeyen klasörler var:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="728"/>
@@ -546,7 +546,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>ownCloud&apos;dan çık</translation>
     </message>
 </context>
 <context>
@@ -3084,7 +3084,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Dosya adı bu dosya sisteminde ayrılmış bir addır.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="473"/>
