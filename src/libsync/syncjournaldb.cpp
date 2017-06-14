@@ -28,6 +28,7 @@
 #include "version.h"
 #include "filesystem.h"
 #include "asserts.h"
+#include "checksums.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -448,7 +449,7 @@ bool SyncJournalDb::checkConnect()
     _getFileRecordQuery.reset(new SqlQuery(_db));
     if (_getFileRecordQuery->prepare(
             "SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize,"
-            "  ignoredChildrenRemote, contentChecksum, contentchecksumtype.name"
+            "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum"
             " FROM metadata"
             "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
             " WHERE phash=?1")) {
@@ -832,7 +833,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     qCInfo(lcDb) << "Updating file record for path:" << record._path << "inode:" << record._inode
                  << "modtime:" << record._modtime << "type:" << record._type
                  << "etag:" << record._etag << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm
-                 << "fileSize:" << record._fileSize << "checksum:" << record._contentChecksum << record._contentChecksumType;
+                 << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader;
 
     qlonglong phash = getPHash(record._path);
     if (checkConnect()) {
@@ -848,7 +849,9 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         QString remotePerm(record._remotePerm);
         if (remotePerm.isEmpty())
             remotePerm = QString(); // have NULL in DB (vs empty)
-        int contentChecksumTypeId = mapChecksumType(record._contentChecksumType);
+        QByteArray checksumType, checksum;
+        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
+        int contentChecksumTypeId = mapChecksumType(checksumType);
         _setFileRecordQuery->reset_and_clear_bindings();
         _setFileRecordQuery->bindValue(1, QString::number(phash));
         _setFileRecordQuery->bindValue(2, plen);
@@ -864,7 +867,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery->bindValue(12, remotePerm);
         _setFileRecordQuery->bindValue(13, record._fileSize);
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
-        _setFileRecordQuery->bindValue(15, record._contentChecksum);
+        _setFileRecordQuery->bindValue(15, checksum);
         _setFileRecordQuery->bindValue(16, contentChecksumTypeId);
 
         if (!_setFileRecordQuery->exec()) {
@@ -943,10 +946,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
             rec._remotePerm = _getFileRecordQuery->baValue(9);
             rec._fileSize = _getFileRecordQuery->int64Value(10);
             rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
-            rec._contentChecksum = _getFileRecordQuery->baValue(12);
-            if (!_getFileRecordQuery->nullValue(13)) {
-                rec._contentChecksumType = _getFileRecordQuery->baValue(13);
-            }
+            rec._checksumHeader = _getFileRecordQuery->baValue(12);
             _getFileRecordQuery->reset_and_clear_bindings();
         } else {
             int errId = _getFileRecordQuery->errorId();

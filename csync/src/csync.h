@@ -223,6 +223,10 @@ struct csync_vio_file_stat_s {
   enum csync_vio_file_flags_e flags;
 
   char *original_name; // only set if locale conversion fails
+
+  // For remote file stats: the highest quality checksum the server provided
+  // in the "SHA1:324315da2143" form.
+  char *checksumHeader;
 };
 
 csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_new(void);
@@ -262,8 +266,7 @@ struct csync_tree_walk_file_s {
     char *directDownloadUrl;
     char *directDownloadCookies;
 
-    const char *checksum;
-    uint32_t checksumTypeId;
+    const char *checksumHeader;
 
     struct {
         int64_t     size;
@@ -304,8 +307,8 @@ typedef int (*csync_vio_stat_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
 
 /* Compute the checksum of the given \a checksumTypeId for \a path. */
-typedef const char* (*csync_checksum_hook) (
-        const char *path, uint32_t checksumTypeId, void *userdata);
+typedef const char *(*csync_checksum_hook)(
+    const char *path, const char *otherChecksumHeader, void *userdata);
 
 /**
  * @brief Allocate a csync context.

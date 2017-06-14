@@ -103,9 +103,8 @@ void PropagateUploadFileV1::startNextChunk()
     }
     qCDebug(lcPropagateUpload) << _chunkCount << isFinalChunk << chunkStart << currentChunkSize;
 
-    if (isFinalChunk && !_transmissionChecksumType.isEmpty()) {
-        headers[checkSumHeaderC] = makeChecksumHeader(
-            _transmissionChecksumType, _transmissionChecksum);
+    if (isFinalChunk && !_transmissionChecksumHeader.isEmpty()) {
+        headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
 
     const QString fileName = propagator()->getFilePath(_item->_file);

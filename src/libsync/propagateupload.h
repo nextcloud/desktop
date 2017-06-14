@@ -226,8 +226,7 @@ protected:
     Utility::StopWatch _stopWatch;
 #endif
 
-    QByteArray _transmissionChecksum;
-    QByteArray _transmissionChecksumType;
+    QByteArray _transmissionChecksumHeader;
 
 public:
     PropagateUploadFileCommon(OwncloudPropagator *propagator, const SyncFileItemPtr &item)

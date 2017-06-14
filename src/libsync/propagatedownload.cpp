@@ -344,6 +344,41 @@ void PropagateDownloadFile::start()
         }
     }
 
+    // If we have a conflict where size and mtime are identical,
+    // compare the remote checksum to the local one.
+    // Maybe it's not a real conflict and no download is necessary!
+    if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
+        && _item->_size == _item->log._other_size
+        && _item->_modtime == _item->log._other_modtime
+        && !_item->_checksumHeader.isEmpty()) {
+        qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
+        auto computeChecksum = new ComputeChecksum(this);
+        computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
+        connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
+            SLOT(conflictChecksumComputed(QByteArray, QByteArray)));
+        computeChecksum->start(propagator()->getFilePath(_item->_file));
+        return;
+    }
+
+    startDownload();
+}
+
+void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+{
+    if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
+        qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
+        // No download necessary, just update metadata
+        updateMetadata(/*isConflict=*/false);
+        return;
+    }
+    startDownload();
+}
+
+void PropagateDownloadFile::startDownload()
+{
+    if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
+        return;
+
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file)) {
         done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
@@ -672,7 +707,7 @@ namespace { // Anonymous namespace for the recall feature
                 continue;
             }
 
-            qCInfo(lcPropagateDownload) << "Recalling" << localRecalledFile << "Checksum:" << record._contentChecksumType << record._contentChecksum;
+            qCInfo(lcPropagateDownload) << "Recalling" << localRecalledFile << "Checksum:" << record._checksumHeader;
 
             QString targetPath = makeRecallFileName(recalledFile);
 
@@ -717,8 +752,7 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
 
 void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
-    _item->_contentChecksum = checksum;
-    _item->_contentChecksumType = checksumType;
+    _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
     downloadFinished();
 }
@@ -826,6 +860,13 @@ void PropagateDownloadFile::downloadFinished()
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
     _item->_size = FileSystem::getSize(fn);
+
+    updateMetadata(isConflict);
+}
+
+void PropagateDownloadFile::updateMetadata(bool isConflict)
+{
+    QString fn = propagator()->getFilePath(_item->_file);
 
     if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));

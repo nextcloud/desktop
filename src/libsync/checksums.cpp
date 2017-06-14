@@ -81,6 +81,8 @@ Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
+    if (checksumType.isEmpty() || checksum.isEmpty())
+        return QByteArray();
     QByteArray header = checksumType;
     header.append(':');
     header.append(checksum);
@@ -103,6 +105,16 @@ bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray 
     *type = header.left(idx);
     *checksum = header.mid(idx + 1);
     return true;
+}
+
+
+QByteArray parseChecksumHeaderType(const QByteArray &header)
+{
+    const auto idx = header.indexOf(':');
+    if (idx < 0) {
+        return QByteArray();
+    }
+    return header.left(idx);
 }
 
 bool uploadChecksumEnabled()
@@ -214,39 +226,27 @@ void ValidateChecksumHeader::slotChecksumCalculated(const QByteArray &checksumTy
     emit validated(checksumType, checksum);
 }
 
-CSyncChecksumHook::CSyncChecksumHook(SyncJournalDb *journal)
-    : _journal(journal)
+CSyncChecksumHook::CSyncChecksumHook()
 {
 }
 
-const char *CSyncChecksumHook::hook(const char *path, uint32_t checksumTypeId, void *this_obj)
+const char *CSyncChecksumHook::hook(const char *path, const char *otherChecksumHeader, void * /*this_obj*/)
 {
-    CSyncChecksumHook *checksumHook = static_cast<CSyncChecksumHook *>(this_obj);
-    QByteArray checksum = checksumHook->compute(QString::fromUtf8(path), checksumTypeId);
+    QByteArray type = parseChecksumHeaderType(QByteArray(otherChecksumHeader));
+    if (type.isEmpty())
+        return NULL;
+
+    QByteArray checksum = ComputeChecksum::computeNow(path, type);
     if (checksum.isNull()) {
+        qCWarning(lcChecksums) << "Failed to compute checksum" << type << "for" << path;
         return NULL;
     }
 
-    char *result = (char *)malloc(checksum.size() + 1);
-    memcpy(result, checksum.constData(), checksum.size());
-    result[checksum.size()] = 0;
+    QByteArray checksumHeader = makeChecksumHeader(type, checksum);
+    char *result = (char *)malloc(checksumHeader.size() + 1);
+    memcpy(result, checksumHeader.constData(), checksumHeader.size());
+    result[checksumHeader.size()] = 0;
     return result;
 }
 
-QByteArray CSyncChecksumHook::compute(const QString &path, int checksumTypeId)
-{
-    QByteArray checksumType = _journal->getChecksumType(checksumTypeId);
-    if (checksumType.isEmpty()) {
-        qCWarning(lcChecksums) << "Checksum type" << checksumTypeId << "not found";
-        return QByteArray();
-    }
-
-    QByteArray checksum = ComputeChecksum::computeNow(path, checksumType);
-    if (checksum.isNull()) {
-        qCWarning(lcChecksums) << "Failed to compute checksum" << checksumType << "for" << path;
-        return QByteArray();
-    }
-
-    return checksum;
-}
 }

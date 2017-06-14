@@ -190,8 +190,13 @@ public:
     quint64 _inode;
     QByteArray _fileId;
     QByteArray _remotePerm;
-    QByteArray _contentChecksum;
-    QByteArray _contentChecksumType;
+
+    // When is this set, and is it the local or the remote checksum?
+    // - if mtime or size changed locally for *.eml files (local checksum)
+    // - for potential renames of local files (local checksum)
+    // - for conflicts (remote checksum) (what about eval_rename/new reconcile?)
+    QByteArray _checksumHeader;
+
     QString _directDownloadUrl;
     QString _directDownloadCookies;
 

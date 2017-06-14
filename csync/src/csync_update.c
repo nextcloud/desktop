@@ -287,16 +287,15 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             // Checksum comparison at this stage is only enabled for .eml files,
             // check #4754 #4755
             bool isEmlFile = csync_fnmatch("*.eml", file, FNM_CASEFOLD) == 0;
-            if (isEmlFile && fs->size == tmp->size && tmp->checksumTypeId) {
+            if (isEmlFile && fs->size == tmp->size && tmp->checksumHeader) {
                 if (ctx->callbacks.checksum_hook) {
-                    st->checksum = ctx->callbacks.checksum_hook(
-                                file, tmp->checksumTypeId,
-                                ctx->callbacks.checksum_userdata);
+                    st->checksumHeader = ctx->callbacks.checksum_hook(
+                        file, tmp->checksumHeader,
+                        ctx->callbacks.checksum_userdata);
                 }
                 bool checksumIdentical = false;
-                if (st->checksum) {
-                    st->checksumTypeId = tmp->checksumTypeId;
-                    checksumIdentical = strncmp(st->checksum, tmp->checksum, 1000) == 0;
+                if (st->checksumHeader) {
+                    checksumIdentical = strncmp(st->checksumHeader, tmp->checksumHeader, 1000) == 0;
                 }
                 if (checksumIdentical) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", path);
@@ -381,15 +380,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
 
             // Verify the checksum where possible
-            if (isRename && tmp->checksumTypeId && ctx->callbacks.checksum_hook
-                    && fs->type == CSYNC_VIO_FILE_TYPE_REGULAR) {
-                st->checksum = ctx->callbacks.checksum_hook(
-                            file, tmp->checksumTypeId,
-                            ctx->callbacks.checksum_userdata);
-                if (st->checksum) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", path, st->checksum, tmp->checksum);
-                    st->checksumTypeId = tmp->checksumTypeId;
-                    isRename = strncmp(st->checksum, tmp->checksum, 1000) == 0;
+            if (isRename && tmp->checksumHeader && ctx->callbacks.checksum_hook
+                && fs->type == CSYNC_VIO_FILE_TYPE_REGULAR) {
+                st->checksumHeader = ctx->callbacks.checksum_hook(
+                    file, tmp->checksumHeader,
+                    ctx->callbacks.checksum_userdata);
+                if (st->checksumHeader) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", path, st->checksumHeader, tmp->checksumHeader);
+                    isRename = strncmp(st->checksumHeader, tmp->checksumHeader, 1000) == 0;
                 }
             }
 
@@ -504,6 +502,11 @@ out:
   }
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM) {
       strncpy(st->remotePerm, fs->remotePerm, REMOTE_PERM_BUF_SIZE);
+  }
+
+  // For the remote: propagate the discovered checksum
+  if (fs->checksumHeader && ctx->current == REMOTE_REPLICA) {
+      st->checksumHeader = c_strdup(fs->checksumHeader);
   }
 
   st->phash = h;

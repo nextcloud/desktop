@@ -321,6 +321,70 @@ private slots:
         }
     }
 
+    void testFakeConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        int nGET = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+            if (op == QNetworkAccessManager::GetOperation)
+                ++nGET;
+            return nullptr;
+        });
+
+        // For directly editing the remote checksum
+        FileInfo &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
+
+        // Base mtime with no ms content (filesystem is seconds only)
+        auto mtime = QDateTime::currentDateTime().addDays(-4);
+        mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
+
+        // Conflict: Same content, mtime, but no server checksum
+        //           -> ignored in reconcile
+        fakeFolder.localModifier().setContents("A/a1", 'C');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+
+        // Conflict: Same content, mtime, but weak server checksum
+        //           -> ignored in reconcile
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'D');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'D');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "Adler32:bad";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+
+        // Conflict: Same content, mtime, but server checksum differs
+        //           -> downloaded
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'W');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'W');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "SHA1:bad";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+
+        // Conflict: Same content, mtime, matching checksums
+        //           -> PropagateDownload, but it skips the download
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'C');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+
+        // Extra sync reads from db, no difference
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

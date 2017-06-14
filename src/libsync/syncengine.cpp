@@ -73,7 +73,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     , _backInTimeFiles(0)
     , _uploadLimit(0)
     , _downloadLimit(0)
-    , _checksum_hook(journal)
     , _anotherSyncNeeded(NoFollowUpSync)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
@@ -426,9 +425,12 @@ int SyncEngine::treewalkFile(TREE_WALK_FILE *file, bool remote)
     }
 
     // Sometimes the discovery computes checksums for local files
-    if (!remote && file->checksum && file->checksumTypeId) {
-        item->_contentChecksum = QByteArray(file->checksum);
-        item->_contentChecksumType = _journal->getChecksumType(file->checksumTypeId);
+    if (!remote && file->checksumHeader) {
+        item->_checksumHeader = QByteArray(file->checksumHeader);
+    }
+    // For conflicts, store the remote checksum there
+    if (remote && item->_instruction == CSYNC_INSTRUCTION_CONFLICT && file->checksumHeader) {
+        item->_checksumHeader = QByteArray(file->checksumHeader);
     }
 
     // record the seen files to be able to clean the journal later

@@ -40,6 +40,9 @@ csync_vio_file_stat_t* csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat
     if (file_stat_cpy->directDownloadUrl) {
         file_stat_cpy->directDownloadUrl = c_strdup(file_stat_cpy->directDownloadUrl);
     }
+    if (file_stat_cpy->checksumHeader) {
+        file_stat_cpy->checksumHeader = c_strdup(file_stat_cpy->checksumHeader);
+    }
     file_stat_cpy->name = c_strdup(file_stat_cpy->name);
     return file_stat_cpy;
 }
@@ -57,6 +60,7 @@ void csync_vio_file_stat_destroy(csync_vio_file_stat_t *file_stat) {
   SAFE_FREE(file_stat->directDownloadCookies);
   SAFE_FREE(file_stat->name);
   SAFE_FREE(file_stat->original_name);
+  SAFE_FREE(file_stat->checksumHeader);
   SAFE_FREE(file_stat);
 }
 

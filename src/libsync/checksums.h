@@ -31,6 +31,9 @@ QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &
 /// Parses a checksum header
 bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum);
 
+/// Convenience for getting the type from a checksum header, null if none
+QByteArray parseChecksumHeaderType(const QByteArray &header);
+
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 bool uploadChecksumEnabled();
 
@@ -119,20 +122,15 @@ class OWNCLOUDSYNC_EXPORT CSyncChecksumHook : public QObject
 {
     Q_OBJECT
 public:
-    explicit CSyncChecksumHook(SyncJournalDb *journal);
+    explicit CSyncChecksumHook();
 
     /**
-     * Returns the checksum value for \a path for the given \a checksumTypeId.
+     * Returns the checksum value for \a path that is comparable to \a otherChecksum.
      *
      * Called from csync, where a instance of CSyncChecksumHook has
      * to be set as userdata.
      * The return value will be owned by csync.
      */
-    static const char *hook(const char *path, uint32_t checksumTypeId, void *this_obj);
-
-    QByteArray compute(const QString &path, int checksumTypeId);
-
-private:
-    SyncJournalDb *_journal;
+    static const char *hook(const char *path, const char *otherChecksumHeader, void *this_obj);
 };
 }

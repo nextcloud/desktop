@@ -173,8 +173,7 @@ void PropagateRemoteMove::finalize()
     SyncJournalFileRecord record(*_item, propagator()->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
     if (oldRecord.isValid()) {
-        record._contentChecksum = oldRecord._contentChecksum;
-        record._contentChecksumType = oldRecord._contentChecksumType;
+        record._checksumHeader = oldRecord._checksumHeader;
         if (record._fileSize != oldRecord._fileSize) {
             qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
 
