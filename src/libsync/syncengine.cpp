@@ -52,7 +52,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEngine, "sync.engine")
+Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
 bool SyncEngine::s_anySyncRunning = false;
 
