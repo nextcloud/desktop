@@ -153,16 +153,12 @@ public:
     /*
      * Get the publicUpload status of this share
      */
-    bool getPublicUpload();
+    bool getPublicUpload() const;
 
     /*
-     * Set a share to be public upload
-     * This function can only be called on link shares
-     *
-     * On success the publicUploadSet signal is emitted
-     * In case of a server error the serverError signal is emitted.
+     * Whether directory listings are available (READ permission)
      */
-    void setPublicUpload(bool publicUpload);
+    bool getShowFileListing() const;
 
     /*
      * Returns the name of the link share. Can be empty.
@@ -209,14 +205,12 @@ public:
 
 signals:
     void expireDateSet();
-    void publicUploadSet();
     void passwordSet();
     void passwordSetError(int statusCode, const QString &message);
     void nameSet();
 
 private slots:
     void slotPasswordSet(const QJsonDocument &, const QVariant &value);
-    void slotPublicUploadSet(const QJsonDocument &, const QVariant &value);
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
     void slotSetPasswordError(int statusCode, const QString &message);
     void slotNameSet(const QJsonDocument &, const QVariant &value);

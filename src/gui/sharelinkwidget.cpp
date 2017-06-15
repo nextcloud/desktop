@@ -68,7 +68,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_editing = new QProgressIndicator();
     _ui->horizontalLayout_create->addWidget(_pi_create);
     _ui->horizontalLayout_password->addWidget(_pi_password);
-    _ui->horizontalLayout_editing->addWidget(_pi_editing);
+    _ui->layout_editing->addWidget(_pi_editing, 0, 2);
     _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
 
     connect(_ui->nameLineEdit, SIGNAL(returnPressed()), SLOT(slotShareNameEntered()));
@@ -81,7 +81,8 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotExpireDateChanged(QDate)));
-    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotCheckBoxEditingClicked()));
+    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotPermissionsCheckboxClicked()));
+    connect(_ui->checkBox_fileListing, SIGNAL(clicked(bool)), this, SLOT(slotPermissionsCheckboxClicked()));
 
     _ui->errorLabel->hide();
 
@@ -145,10 +146,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _expiryRequired = true;
     }
 
-    // File can't have public upload set.
-    _ui->widget_editing->setVisible(!_isFile);
-    _ui->checkBox_editing->setEnabled(
-        _account->capabilities().sharePublicLinkAllowUpload());
+    // File can't have public upload set; we also hide it if the capability isn't there
+    _ui->widget_editing->setVisible(
+        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
+    _ui->checkBox_fileListing->setVisible(
+        _account->capabilities().sharePublicLinkSupportsUploadOnly());
 
 
     // Prepare sharing menu
@@ -217,9 +219,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         connect(share.data(), SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
         connect(share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
         connect(share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
-        connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
+        connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPermissionsSet()));
         connect(share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
         connect(share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int, QString)));
+        connect(share.data(), SIGNAL(permissionsSet()), SLOT(slotPermissionsSet()));
 
         // Build the table row
         auto row = table->rowCount();
@@ -325,6 +328,8 @@ void ShareLinkWidget::slotShareSelectionChanged()
     // Public upload state (box is hidden for files)
     if (!_isFile) {
         _ui->checkBox_editing->setChecked(share->getPublicUpload());
+        _ui->checkBox_fileListing->setChecked(share->getShowFileListing());
+        _ui->checkBox_fileListing->setEnabled(share->getPublicUpload());
     }
 }
 
@@ -532,14 +537,22 @@ void ShareLinkWidget::slotDeleteShareClicked()
     share->deleteShare();
 }
 
-void ShareLinkWidget::slotCheckBoxEditingClicked()
+void ShareLinkWidget::slotPermissionsCheckboxClicked()
 {
     if (auto current = selectedShare()) {
         _ui->checkBox_editing->setEnabled(false);
+        _ui->checkBox_fileListing->setEnabled(false);
         _pi_editing->startAnimation();
         _ui->errorLabel->hide();
 
-        current->setPublicUpload(_ui->checkBox_editing->isChecked());
+        SharePermissions perm = SharePermissionRead;
+        if (_ui->checkBox_editing->isChecked() && _ui->checkBox_fileListing->isChecked()) {
+            perm = SharePermissionRead | SharePermissionCreate
+                | SharePermissionUpdate | SharePermissionDelete;
+        } else if (_ui->checkBox_editing->isChecked() && !_ui->checkBox_fileListing->isChecked()) {
+            perm = SharePermissionCreate;
+        }
+        current->setPermissions(perm);
     }
 }
 
@@ -553,7 +566,7 @@ QSharedPointer<LinkShare> ShareLinkWidget::selectedShare() const
     return items.first()->data(Qt::UserRole).value<QSharedPointer<LinkShare>>();
 }
 
-void ShareLinkWidget::slotPublicUploadSet()
+void ShareLinkWidget::slotPermissionsSet()
 {
     if (sender() == selectedShare().data()) {
         slotShareSelectionChanged();

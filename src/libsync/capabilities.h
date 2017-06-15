@@ -36,6 +36,7 @@ public:
     bool shareAPI() const;
     bool sharePublicLink() const;
     bool sharePublicLinkAllowUpload() const;
+    bool sharePublicLinkSupportsUploadOnly() const;
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
     int sharePublicLinkExpireDateDays() const;

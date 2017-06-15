@@ -146,17 +146,14 @@ LinkShare::LinkShare(AccountPtr account,
 {
 }
 
-bool LinkShare::getPublicUpload()
+bool LinkShare::getPublicUpload() const
 {
-    return ((_permissions & SharePermissionUpdate) && (_permissions & SharePermissionCreate));
+    return _permissions & SharePermissionCreate;
 }
 
-void LinkShare::setPublicUpload(bool publicUpload)
+bool LinkShare::getShowFileListing() const
 {
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, SIGNAL(shareJobFinished(QJsonDocument, QVariant)), SLOT(slotPublicUploadSet(QJsonDocument, QVariant)));
-    connect(job, SIGNAL(ocsError(int, QString)), SLOT(slotOcsError(int, QString)));
-    job->setPublicUpload(getId(), publicUpload);
+    return _permissions & SharePermissionRead;
 }
 
 QString LinkShare::getName() const
@@ -175,17 +172,6 @@ void LinkShare::setName(const QString &name)
 QString LinkShare::getToken() const
 {
     return _token;
-}
-
-void LinkShare::slotPublicUploadSet(const QJsonDocument &, const QVariant &value)
-{
-    if (value.toBool()) {
-        _permissions = SharePermissionRead | SharePermissionUpdate | SharePermissionCreate;
-    } else {
-        _permissions = SharePermissionRead;
-    }
-
-    emit publicUploadSet();
 }
 
 void LinkShare::setPassword(const QString &password)
