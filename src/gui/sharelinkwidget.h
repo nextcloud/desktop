@@ -70,7 +70,8 @@ private slots:
     void slotPasswordChanged(const QString &newText);
     void slotNameEdited(QTableWidgetItem *item);
 
-    void slotShareLinkButtonTriggered(QAction *action);
+    void slotShareLinkButtonClicked();
+    void slotShareLinkActionTriggered(QAction *action);
 
     void slotDeleteShareFetched();
     void slotCreateShareFetched(const QSharedPointer<LinkShare> share);
