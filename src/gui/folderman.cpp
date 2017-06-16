@@ -235,11 +235,22 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
     foreach (const auto& folderAlias, settings.childGroups()) {
         FolderDefinition folderDefinition;
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
+            auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
+
             // Migration: Old settings don't have journalPath
             if (folderDefinition.journalPath.isEmpty()) {
-                folderDefinition.journalPath = folderDefinition.defaultJournalPath(account->account());
+                folderDefinition.journalPath = defaultJournalPath;
             }
-            folderDefinition.defaultJournalPath(account->account());
+
+            // Migration: ._ files sometimes don't work
+            // So if the configured journalPath is the default one ("._sync_*.db")
+            // but the current default doesn't have the underscore, switch to the
+            // new default. See SyncJournalDb::makeDbName().
+            if (folderDefinition.journalPath.startsWith("._sync_")
+                && defaultJournalPath.startsWith(".sync_")) {
+                folderDefinition.journalPath = defaultJournalPath;
+            }
+
             // Migration: If an old db is found, move it to the new name.
             if (backwardsCompatible) {
                 SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());

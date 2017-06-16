@@ -235,6 +235,11 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         match = CSYNC_FILE_SILENTLY_EXCLUDED;
         goto out;
     }
+    rc = csync_fnmatch(".sync_*.db*", bname, 0);
+    if (rc == 0) {
+        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        goto out;
+    }
     rc = csync_fnmatch(".csync_journal.db*", bname, 0);
     if (rc == 0) {
         match = CSYNC_FILE_SILENTLY_EXCLUDED;
