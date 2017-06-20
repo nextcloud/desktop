@@ -400,6 +400,7 @@ void PropagateUploadFileNG::slotPutFinished()
         // the chunk sizes a bit.
         quint64 targetSize = (propagator()->_chunkSize + predictedGoodSize) / 2;
 
+        // Adjust the dynamic chunk size _chunkSize used for sizing of the item's chunks to be send
         propagator()->_chunkSize = qBound(
             propagator()->syncOptions()._minChunkSize,
             targetSize,
