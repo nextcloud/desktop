@@ -11,7 +11,7 @@ node('CLIENT') {
 		cd build
 		cmake -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
 		make -j4
-		ctest --output-on-failure'''
+		ctest -V --output-on-failure'''
 
     stage 'Qt5 - clang'
         sh '''rm -rf build
@@ -19,7 +19,7 @@ node('CLIENT') {
 		cd build
 		cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
 		make -j4
-		ctest --output-on-failure'''
+		ctest -V --output-on-failure'''
 
 
     stage 'Win32'
