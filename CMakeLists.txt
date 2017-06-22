@@ -182,8 +182,6 @@ endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-configure_file(test/test_journal.db "${CMAKE_BINARY_DIR}/test/test_journal.db" COPYONLY)
-
 include(OwnCloudCPack.cmake)
 
 add_definitions(-DUNICODE)

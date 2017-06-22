@@ -21,10 +21,11 @@ private slots:
 
         memset(&_ctx, 0, sizeof(CSYNC));
 
-        _ctx.statedb.file = c_strdup("./test_journal.db");
+        QString db = QCoreApplication::applicationDirPath() + "/test_journal.db";
+        _ctx.statedb.file = c_strdup(db.toLocal8Bit());
 
         rc = csync_statedb_load((CSYNC*)(&_ctx), _ctx.statedb.file, &(_ctx.statedb.db));
-        Q_ASSERT(rc == 0);
+        QVERIFY(rc == 0);
     }
 
     void testFullResult() {
@@ -85,5 +86,5 @@ private slots:
 
 };
 
-QTEST_APPLESS_MAIN(TestCSyncSqlite)
+QTEST_GUILESS_MAIN(TestCSyncSqlite)
 #include "testcsyncsqlite.moc"

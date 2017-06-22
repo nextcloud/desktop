@@ -59,3 +59,4 @@ list(APPEND FolderMan_SRC ${FolderWatcher_SRC})
 list(APPEND FolderMan_SRC stub.cpp )
 owncloud_add_test(FolderMan "${FolderMan_SRC}")
 
+configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYONLY)
