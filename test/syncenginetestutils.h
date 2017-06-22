@@ -17,6 +17,12 @@
 #include <QMap>
 #include <QtTest>
 
+/*
+ * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
+ * only works when directly called from a QTest :-(
+ */
+
+
 static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/webdav/");
 static const QUrl sRootUrl2("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
 static const QUrl sUploadUrl("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");

@@ -1,5 +1,12 @@
 #!groovy
 
+//
+// We now run the tests in Debug mode so that ASSERTs are triggered.
+// Ideally we should run the tests in both Debug and Release so we catch
+// all possible error combinations.
+// See also the top comment in syncenginetestutils.h
+//
+
 node('CLIENT') {
     stage 'Checkout'
         checkout scm
@@ -37,6 +44,8 @@ node('CLIENT') {
 		ctest .
 		'''
 	}
+
+   // Stage 'macOS' TODO
 }
 
 
