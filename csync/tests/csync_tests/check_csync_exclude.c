@@ -157,7 +157,16 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
     rc = csync_excluded_no_ctx(csync->excludes, "subdir/._sync_5bdd60bdfcfa.db", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
-    
+
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db.ctmp", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, ".sync_5bdd60bdfcfa.db-shm", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "subdir/.sync_5bdd60bdfcfa.db", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_SILENTLY_EXCLUDED);
+
 
     /* pattern ]*.directory - ignore and remove */
     rc = csync_excluded_no_ctx(csync->excludes, "my.~directory", CSYNC_FTW_TYPE_FILE);

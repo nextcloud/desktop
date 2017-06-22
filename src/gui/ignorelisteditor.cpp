@@ -48,6 +48,9 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
+    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
