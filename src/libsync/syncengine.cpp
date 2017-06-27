@@ -256,12 +256,20 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
         }
     }
 
+    int waitSeconds = entry._lastTryTime + entry._ignoreDuration - now;
     qCInfo(lcEngine) << "Item is on blacklist: " << entry._file
                      << "retries:" << entry._retryCount
-                     << "for another" << (entry._lastTryTime + entry._ignoreDuration - now) << "s";
-    item._instruction = CSYNC_INSTRUCTION_ERROR;
-    item._status = SyncFileItem::FileIgnored;
-    item._errorString = tr("The item is not synced because of previous errors: %1").arg(entry._errorString);
+                     << "for another" << waitSeconds << "s";
+
+    // We need to indicate that we skip this file due to blacklisting
+    // for reporting and for making sure we don't update the blacklist
+    // entry yet.
+    // Classification is this _instruction and _status
+    item._instruction = CSYNC_INSTRUCTION_IGNORE;
+    item._status = SyncFileItem::BlacklistedError;
+
+    auto waitSecondsStr = Utility::durationToDescriptiveString1(1000 * waitSeconds);
+    item._errorString = tr("%1 (skipped due to earlier error, trying again in %2)").arg(entry._errorString, waitSecondsStr);
 
     return true;
 }

@@ -195,8 +195,7 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     // An ignoreDuration of 0 mean we're tracking the error, but not actively
     // suppressing it.
     if (item._hasBlacklistEntry && newEntry._ignoreDuration > 0) {
-        item._status = SyncFileItem::FileIgnored;
-        item._errorString.prepend(PropagateItemJob::tr("Continue blacklisting:") + " ");
+        item._status = SyncFileItem::BlacklistedError;
 
         qCInfo(lcPropagator) << "blacklisting " << item._file
                              << " for " << newEntry._ignoreDuration
@@ -260,6 +259,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::Conflict:
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
+    case SyncFileItem::BlacklistedError:
         // nothing
         break;
     }
