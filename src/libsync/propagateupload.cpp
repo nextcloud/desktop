@@ -231,9 +231,10 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     QByteArray checksumType = contentChecksumType();
 
     // Maybe the discovery already computed the checksum?
-    if (_item->_contentChecksumType == checksumType
-        && !_item->_contentChecksum.isEmpty()) {
-        slotComputeTransmissionChecksum(checksumType, _item->_contentChecksum);
+    QByteArray existingChecksumType, existingChecksum;
+    parseChecksumHeader(_item->_checksumHeader, &existingChecksumType, &existingChecksum);
+    if (existingChecksumType == checksumType) {
+        slotComputeTransmissionChecksum(checksumType, existingChecksum);
         return;
     }
 
@@ -250,8 +251,7 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
 
 void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
 {
-    _item->_contentChecksum = contentChecksum;
-    _item->_contentChecksumType = contentChecksumType;
+    _item->_checksumHeader = makeChecksumHeader(contentChecksumType, contentChecksum);
 
 #ifdef WITH_TESTING
     _stopWatch.addLapTime(QLatin1String("ContentChecksum"));
@@ -288,13 +288,11 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     // When we start chunks, we will add it again, once for every chunks.
     propagator()->_activeJobList.removeOne(this);
 
-    _transmissionChecksum = transmissionChecksum;
-    _transmissionChecksumType = transmissionChecksumType;
+    _transmissionChecksumHeader = makeChecksumHeader(transmissionChecksumType, transmissionChecksum);
 
-    if (_item->_contentChecksum.isEmpty() && _item->_contentChecksumType.isEmpty()) {
-        // If the _contentChecksum was not set, reuse the transmission checksum as the content checksum.
-        _item->_contentChecksum = transmissionChecksum;
-        _item->_contentChecksumType = transmissionChecksumType;
+    // If no checksum header was not set, reuse the transmission checksum as the content checksum.
+    if (_item->_checksumHeader.isEmpty()) {
+        _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
     const QString fullFilePath = propagator()->getFilePath(_item->_file);

@@ -203,6 +203,8 @@ int OwncloudSetupPage::nextId() const
 {
     if (_authType == WizardCommon::HttpCreds) {
         return WizardCommon::Page_HttpCreds;
+    } else if (_authType == WizardCommon::OAuth) {
+        return WizardCommon::Page_OAuthCreds;
     } else {
         return WizardCommon::Page_ShibbolethCreds;
     }

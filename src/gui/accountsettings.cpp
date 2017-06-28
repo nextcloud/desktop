@@ -202,6 +202,7 @@ void AccountSettings::slotOpenAccountWizard()
 void AccountSettings::slotToggleSignInState()
 {
     if (_accountState->isSignedOut()) {
+        _accountState->account()->resetRejectedCertificates();
         _accountState->signIn();
     } else {
         _accountState->signOutByUi();

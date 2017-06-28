@@ -120,7 +120,6 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
    * Make sure that you have CMake_ and Git_.
    * Download the Qt_ MinGW package. You will use the MinGW version bundled with it.
-   * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
 
 2. Get the QtKeychain_ sources as well as the latest versions of the ownCloud client
    from Git as follows::
@@ -130,11 +129,10 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 3. Open the Qt MinGW shortcut console from the Start Menu
 
-4. Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source
-   directories are in your PATH. This will allow CMake to find the library and
-   headers, as well as allow the ownCloud client to find the DLLs at runtime::
+4. Make sure that your qtkeychain source directories are in your PATH. This will
+   allow CMake to find the library and headers, as well as allow the ownCloud
+   client to find the DLLs at runtime::
 
-    set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
     set PATH=C:\<qtkeychain Clone Dir>;%PATH%
 
 5. Build qtkeychain **directly in the source directory** so that the DLL is built
@@ -251,7 +249,7 @@ To build the most up-to-date version of the client:
             
    .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
    
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -D_OPENSSL_LIBDIR=/usr/local/opt/openssl/lib/ -D_OPENSSL_INCLUDEDIR=/usr/local/opt/openssl/include/  -D_OPENSSL_VERSION=1.0.2a -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include/ -DNO_SHIBBOLETH=1``
+   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -DNO_SHIBBOLETH=1``
    
 4. Call ``make``.
 
@@ -279,7 +277,6 @@ The following are known cmake parameters:
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
-.. _OpenSSL Windows Build: http://slproweb.com/products/Win32OpenSSL.html
 .. _Qt: http://www.qt.io/download
 .. _Microsoft Authenticode: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain

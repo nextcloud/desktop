@@ -153,8 +153,6 @@ if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
-find_package(OpenSSL 1.0.0 REQUIRED)
-
 if(APPLE)
   find_package(Sparkle)
 endif(APPLE)
@@ -178,9 +176,11 @@ endif()
 
 find_package(ZLIB)
 
-configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+if (NOT DEFINED APPLICATION_ICON_NAME)
+    set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
+endif()
 
-configure_file(test/test_journal.db "${CMAKE_BINARY_DIR}/test/test_journal.db" COPYONLY)
+configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 include(OwnCloudCPack.cmake)
 

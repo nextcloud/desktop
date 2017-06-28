@@ -53,17 +53,15 @@ private slots:
         record._fileId = "abcd";
         record._remotePerm = "744";
         record._fileSize = 213089055;
-        record._contentChecksum = "mychecksum";
-        record._contentChecksumType = "MD5";
+        record._checksumHeader = "MD5:mychecksum";
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
         // Update checksum
-        record._contentChecksum = "newchecksum";
-        record._contentChecksumType = "Adler32";
-        _db.updateFileRecordChecksum("foo", record._contentChecksum, record._contentChecksumType);
+        record._checksumHeader = "Adler32:newchecksum";
+        _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
         storedRecord = _db.getFileRecord("foo");
         QVERIFY(storedRecord == record);
 
@@ -91,16 +89,14 @@ private slots:
             SyncJournalFileRecord record;
             record._path = "foo-checksum";
             record._remotePerm = "744";
-            record._contentChecksum = "mychecksum";
-            record._contentChecksumType = "MD5";
+            record._checksumHeader = "MD5:mychecksum";
             record._modtime = QDateTime::currentDateTimeUtc();
             QVERIFY(_db.setFileRecord(record));
 
             SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");
             QVERIFY(storedRecord._path == record._path);
             QVERIFY(storedRecord._remotePerm == record._remotePerm);
-            QVERIFY(storedRecord._contentChecksum == record._contentChecksum);
-            QVERIFY(storedRecord._contentChecksumType == record._contentChecksumType);
+            QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
 
             // qDebug()<< "OOOOO " << storedRecord._modtime.toTime_t() << record._modtime.toTime_t();
 

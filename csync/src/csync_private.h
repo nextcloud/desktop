@@ -191,8 +191,11 @@ struct csync_file_stat_s {
   char *directDownloadCookies;
   char remotePerm[REMOTE_PERM_BUF_SIZE+1];
 
-  const char *checksum;
-  uint32_t checksumTypeId;
+  // In the local tree, this can hold a checksum and its type if it is
+  //   computed during discovery for some reason.
+  // In the remote tree, this will have the server checksum, if available.
+  // In both cases, the format is "SHA1:baff".
+  const char *checksumHeader;
 
   CSYNC_STATUS error_status;
 

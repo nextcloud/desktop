@@ -152,10 +152,12 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
-        qCWarning(lcNetworkJob) << _reply->error() << errorString()
-                                << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
-            qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
+        if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
+            qCWarning(lcNetworkJob) << _reply->error() << errorString()
+                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+            if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
+                qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
+            }
         }
         emit networkError(_reply);
     }

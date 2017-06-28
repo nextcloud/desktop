@@ -220,7 +220,18 @@ private slots:
             FileInfo { QStringLiteral("parentFolder"), {
                 FileInfo{ QStringLiteral("subFolder"), {
                     { QStringLiteral("fileA.txt"), 400 },
-                    { QStringLiteral("fileB.txt"), 400, 'o' }
+                    { QStringLiteral("fileB.txt"), 400, 'o' },
+                    FileInfo { QStringLiteral("subsubFolder"), {
+                        { QStringLiteral("fileC.txt"), 400 },
+                        { QStringLiteral("fileD.txt"), 400, 'o' }
+                    }},
+                    FileInfo{ QStringLiteral("anotherFolder"), {
+                        FileInfo { QStringLiteral("emptyFolder"), { } },
+                        FileInfo { QStringLiteral("subsubFolder"), {
+                            { QStringLiteral("fileE.txt"), 400 },
+                            { QStringLiteral("fileF.txt"), 400, 'o' }
+                        }}
+                    }}
                 }}
             }}
         }}};
@@ -233,9 +244,11 @@ private slots:
                                                                 {"parentFolder/subFolder/"});
         fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolder/");
 
-        // But touch a local file before the next sync, such that the local folder
+        // But touch local file before the next sync, such that the local folder
         // can't be removed
         fakeFolder.localModifier().setContents("parentFolder/subFolder/fileB.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolder/subsubFolder/fileD.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt", 'n');
 
         // Several follow-up syncs don't change the state at all,
         // in particular the remote state doesn't change and fileB.txt
@@ -250,8 +263,13 @@ private slots:
                 // The local state should still have subFolderA
                 auto local = fakeFolder.currentLocalState();
                 QVERIFY(local.find("parentFolder/subFolder"));
-                QVERIFY(local.find("parentFolder/subFolder/fileA.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/fileA.txt"));
                 QVERIFY(local.find("parentFolder/subFolder/fileB.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/subsubFolder/fileC.txt"));
+                QVERIFY(local.find("parentFolder/subFolder/subsubFolder/fileD.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileE.txt"));
+                QVERIFY(local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt"));
+                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/emptyFolder"));
             }
         }
     }
@@ -303,6 +321,70 @@ private slots:
         }
     }
 
+    void testFakeConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        int nGET = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+            if (op == QNetworkAccessManager::GetOperation)
+                ++nGET;
+            return nullptr;
+        });
+
+        // For directly editing the remote checksum
+        FileInfo &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
+
+        // Base mtime with no ms content (filesystem is seconds only)
+        auto mtime = QDateTime::currentDateTime().addDays(-4);
+        mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
+
+        // Conflict: Same content, mtime, but no server checksum
+        //           -> ignored in reconcile
+        fakeFolder.localModifier().setContents("A/a1", 'C');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+
+        // Conflict: Same content, mtime, but weak server checksum
+        //           -> ignored in reconcile
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'D');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'D');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "Adler32:bad";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+
+        // Conflict: Same content, mtime, but server checksum differs
+        //           -> downloaded
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'W');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'W');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "SHA1:bad";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+
+        // Conflict: Same content, mtime, matching checksums
+        //           -> PropagateDownload, but it skips the download
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'C');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+
+        // Extra sync reads from db, no difference
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

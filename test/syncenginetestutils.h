@@ -17,6 +17,12 @@
 #include <QMap>
 #include <QtTest>
 
+/*
+ * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
+ * only works when directly called from a QTest :-(
+ */
+
+
 static const QUrl sRootUrl("owncloud://somehost/owncloud/remote.php/webdav/");
 static const QUrl sRootUrl2("owncloud://somehost/owncloud/remote.php/dav/files/admin/");
 static const QUrl sUploadUrl("owncloud://somehost/owncloud/remote.php/dav/uploads/admin/");
@@ -282,6 +288,7 @@ public:
     QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
+    QByteArray checksums;
     qint64 size = 0;
     char contentChar = 'W';
 
@@ -346,12 +353,13 @@ public:
                 xml.writeEmptyElement(davUri, QStringLiteral("resourcetype"));
 
             auto gmtDate = fileInfo.lastModified.toTimeZone(QTimeZone(0));
-            auto stringDate = gmtDate.toString("ddd, dd MMM yyyy HH:mm:ss 'GMT'");
+            auto stringDate = QLocale::c().toString(gmtDate, "ddd, dd MMM yyyy HH:mm:ss 'GMT'");
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
             xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
+            xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
             xml.writeEndElement(); // propstat
@@ -704,16 +712,25 @@ public:
 
 class FakeQNAM : public QNetworkAccessManager
 {
+public:
+    using Override = std::function<QNetworkReply *(Operation, const QNetworkRequest &)>;
+
+private:
     FileInfo _remoteRootFileInfo;
     FileInfo _uploadFileInfo;
     // maps a path to an HTTP error
     QHash<QString, int> _errorPaths;
+    // monitor requests and optionally provide custom replies
+    Override _override;
+
 public:
     FakeQNAM(FileInfo initialRoot) : _remoteRootFileInfo{std::move(initialRoot)} { }
     FileInfo &currentRemoteState() { return _remoteRootFileInfo; }
     FileInfo &uploadState() { return _uploadFileInfo; }
 
     QHash<QString, int> &errorPaths() { return _errorPaths; }
+
+    void setOverride(const Override &override) { _override = override; }
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
@@ -726,8 +743,13 @@ protected:
         bool isUpload = request.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
+        if (_override) {
+            if (auto reply = _override(op, request))
+                return reply;
+        }
+
         auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
-        if (verb == QLatin1String("PROPFIND"))
+        if (verb == "PROPFIND")
             // Ignore outgoingData always returning somethign good enough, works for now.
             return new FakePropfindReply{info, op, request, this};
         else if (verb == QLatin1String("GET") || op == QNetworkAccessManager::GetOperation)
@@ -823,6 +845,7 @@ public:
         void clear() { _qnam->errorPaths().clear(); }
     };
     ErrorList serverErrorPaths() { return {_fakeQnam}; }
+    void setServerOverride(const FakeQNAM::Override &override) { _fakeQnam->setOverride(override); }
 
     QString localPath() const {
         // SyncEngine wants a trailing slash

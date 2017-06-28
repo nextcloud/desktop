@@ -106,6 +106,40 @@ private slots:
 /**
  * @brief The PropagateDownloadFile class
  * @ingroup libsync
+ *
+ * This is the flow:
+
+\code{.unparsed}
+  start()
+    |
+    | deleteExistingFolder() if enabled
+    |
+    +--> mtime and size identical?
+    |    then compute the local checksum
+    |                               done?-> conflictChecksumComputed()
+    |                                              |
+    |                         checksum differs?    |
+    +-> startDownload() <--------------------------+
+          |                                        |
+          +-> run a GETFileJob                     | checksum identical?
+                                                   |
+      done?-> slotGetFinished()                    |
+                |                                  |
+                +-> validate checksum header       |
+                                                   |
+      done?-> transmissionChecksumValidated()      |
+                |                                  |
+                +-> compute the content checksum   |
+                                                   |
+      done?-> contentChecksumComputed()            |
+                |                                  |
+                +-> downloadFinished()             |
+                       |                           |
+    +------------------+                           |
+    |                                              |
+    +-> updateMetadata() <-------------------------+
+
+\endcode
  */
 class PropagateDownloadFile : public PropagateItemJob
 {
@@ -136,11 +170,22 @@ public:
     void setDeleteExistingFolder(bool enabled);
 
 private slots:
+    /// Called when ComputeChecksum on the local file finishes,
+    /// maybe the local and remote checksums are identical?
+    void conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+    /// Called to start downloading the remote file
+    void startDownload();
+    /// Called when the GETFileJob finishes
     void slotGetFinished();
-    void abort() Q_DECL_OVERRIDE;
+    /// Called when the download's checksum header was validated
     void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
+    /// Called when the download's checksum computation is done
     void contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
     void downloadFinished();
+    /// Called when it's time to update the db metadata
+    void updateMetadata(bool isConflict);
+
+    void abort() Q_DECL_OVERRIDE;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg);
 

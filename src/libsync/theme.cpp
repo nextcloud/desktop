@@ -12,8 +12,6 @@
  * for more details.
  */
 
-#include <openssl/crypto.h>
-
 #include "theme.h"
 #include "version.h"
 #include "config.h"
@@ -308,11 +306,7 @@ QString Theme::gitSHA1() const
                     .arg(__DATE__)
                     .arg(__TIME__)
                     .arg(QString::fromAscii(qVersion()))
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
                     .arg(QSslSocket::sslLibraryVersionString());
-#else
-                    .arg(QCoreApplication::translate("ownCloudTheme::about()", "built with %1").arg(QString::fromAscii(OPENSSL_VERSION_TEXT)));
-#endif
 #endif
     return devString;
 }
@@ -501,6 +495,16 @@ QString Theme::wizardUrlHint() const
 QString Theme::quotaBaseFolder() const
 {
     return QLatin1String("/");
+}
+
+QString Theme::oauthClientId() const
+{
+    return "xdXOt13JKxym1B1QcEncf2XDkLAexMBFwiT9j6EfhhHFJhs2KM9jbjTmf8JBXE69";
+}
+
+QString Theme::oauthClientSecret() const
+{
+    return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
 }
 
 

@@ -1,5 +1,12 @@
 #!groovy
 
+//
+// We now run the tests in Debug mode so that ASSERTs are triggered.
+// Ideally we should run the tests in both Debug and Release so we catch
+// all possible error combinations.
+// See also the top comment in syncenginetestutils.h
+//
+
 node('CLIENT') {
     stage 'Checkout'
         checkout scm
@@ -9,17 +16,17 @@ node('CLIENT') {
         sh '''rm -rf build
 		mkdir build
 		cd build
-		cmake -DUNIT_TESTING=1 -DBUILD_WITH_QT4=OFF ..
+		cmake -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
 		make -j4
-		ctest --output-on-failure'''
+		ctest -V --output-on-failure'''
 
     stage 'Qt5 - clang'
         sh '''rm -rf build
 		mkdir build
 		cd build
-		cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DUNIT_TESTING=1 -DBUILD_WITH_QT4=OFF ..
+		cmake -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
 		make -j4
-		ctest --output-on-failure'''
+		ctest -V --output-on-failure'''
 
 
     stage 'Win32'
@@ -37,6 +44,8 @@ node('CLIENT') {
 		ctest .
 		'''
 	}
+
+   // Stage 'macOS' TODO
 }
 
 

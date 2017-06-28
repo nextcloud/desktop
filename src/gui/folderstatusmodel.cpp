@@ -614,6 +614,8 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!parentInfo) {
         return;
     }
+    ASSERT(parentInfo->_fetching); // we should only get a result if we were doing a fetch
+    ASSERT(parentInfo->_subs.isEmpty());
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0, 0);
@@ -712,9 +714,11 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newSubs.append(newInfo);
     }
 
-    beginInsertRows(idx, 0, newSubs.size() - 1);
-    parentInfo->_subs = std::move(newSubs);
-    endInsertRows();
+    if (!newSubs.isEmpty()) {
+        beginInsertRows(idx, 0, newSubs.size() - 1);
+        parentInfo->_subs = std::move(newSubs);
+        endInsertRows();
+    }
 
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
         suggestExpand(idx.child(*it, 0));

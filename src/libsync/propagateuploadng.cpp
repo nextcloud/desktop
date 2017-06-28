@@ -283,9 +283,8 @@ void PropagateUploadFileNG::startNextChunk()
         if (!ifMatch.isEmpty()) {
             headers["If"] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
         }
-        if (!_transmissionChecksumType.isEmpty()) {
-            headers[checkSumHeaderC] = makeChecksumHeader(
-                _transmissionChecksumType, _transmissionChecksum);
+        if (!_transmissionChecksumHeader.isEmpty()) {
+            headers[checkSumHeaderC] = _transmissionChecksumHeader;
         }
 
         headers["OC-Total-Length"] = QByteArray::number(fileSize);

@@ -15,6 +15,9 @@
 
 #pragma once
 #include "creds/httpcredentials.h"
+#include "creds/oauth.h"
+#include <QPointer>
+#include <QTcpServer>
 
 namespace OCC {
 
@@ -34,10 +37,26 @@ public:
         : HttpCredentials(user, password, certificate, key)
     {
     }
-    void askFromUser() Q_DECL_OVERRIDE;
-    Q_INVOKABLE void askFromUserAsync();
+    HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
+        const QSslCertificate &certificate, const QSslKey &key)
+        : HttpCredentials(user, password, certificate, key)
+    {
+        _refreshToken = refreshToken;
+    }
+
+    /**
+     * This will query the server and either uses OAuth via _asyncAuth->start()
+     * or call showDialog to ask the password
+     */
+    Q_INVOKABLE void askFromUser() Q_DECL_OVERRIDE;
 
     static QString requestAppPasswordText(const Account *account);
+private slots:
+    void asyncAuthResult(OAuth::Result, const QString &user, const QString &accessToken, const QString &refreshToken);
+    void showDialog();
+
+private:
+    QScopedPointer<OAuth, QScopedPointerObjectDeleteLater<OAuth>> _asyncAuth;
 };
 
 } // namespace OCC

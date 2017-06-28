@@ -346,7 +346,7 @@ void OwncloudSetupWizard::slotAuthError()
     }
 
     _ocWizard->show();
-    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
@@ -625,7 +625,11 @@ bool DetermineAuthTypeJob::finished()
         redirection.clear();
     }
     if ((reply()->error() == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
-        emit authType(WizardCommon::HttpCreds);
+        if (reply()->rawHeader("WWW-Authenticate").contains("Bearer ")) {
+            emit authType(WizardCommon::OAuth);
+        } else {
+            emit authType(WizardCommon::HttpCreds);
+        }
     } else if (redirection.toString().endsWith(account()->davPath())) {
         // do a new run
         _redirects++;

@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QElapsedTimer>
 #include <QUrl>
+#include <QDir>
 
 #include "ownsql.h"
 
@@ -28,6 +29,7 @@
 #include "version.h"
 #include "filesystem.h"
 #include "asserts.h"
+#include "checksums.h"
 
 #include "../../csync/src/std/c_jhash.h"
 
@@ -42,7 +44,8 @@ SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
 {
 }
 
-QString SyncJournalDb::makeDbName(const QUrl &remoteUrl,
+QString SyncJournalDb::makeDbName(const QString &localPath,
+    const QUrl &remoteUrl,
     const QString &remotePath,
     const QString &user)
 {
@@ -54,6 +57,42 @@ QString SyncJournalDb::makeDbName(const QUrl &remoteUrl,
     journalPath.append(ba.left(6).toHex());
     journalPath.append(".db");
 
+    // If the journal doesn't exist and we can't create a file
+    // at that location, try again with a journal name that doesn't
+    // have the ._ prefix.
+    //
+    // The disadvantage of that filename is that it will only be ignored
+    // by client versions >2.3.2.
+    //
+    // See #5633: "._*" is often forbidden on samba shared folders.
+
+    // If it exists already, the path is clearly usable
+    QFile file(QDir(localPath).filePath(journalPath));
+    if (file.exists()) {
+        return journalPath;
+    }
+
+    // Try to create a file there
+    if (file.open(QIODevice::ReadWrite)) {
+        // Ok, all good.
+        file.close();
+        file.remove();
+        return journalPath;
+    }
+
+    // Can we create it if we drop the underscore?
+    QString alternateJournalPath = journalPath.mid(2).prepend(".");
+    QFile file2(QDir(localPath).filePath(alternateJournalPath));
+    if (file2.open(QIODevice::ReadWrite)) {
+        // The alternative worked, use it
+        qCInfo(lcDb) << "Using alternate database path" << alternateJournalPath;
+        file2.close();
+        file2.remove();
+        return alternateJournalPath;
+    }
+
+    // Neither worked, just keep the original and throw errors later
+    qCWarning(lcDb) << "Could not find a writable database path" << file.fileName();
     return journalPath;
 }
 
@@ -448,7 +487,7 @@ bool SyncJournalDb::checkConnect()
     _getFileRecordQuery.reset(new SqlQuery(_db));
     if (_getFileRecordQuery->prepare(
             "SELECT path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize,"
-            "  ignoredChildrenRemote, contentChecksum, contentchecksumtype.name"
+            "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum"
             " FROM metadata"
             "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
             " WHERE phash=?1")) {
@@ -832,7 +871,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     qCInfo(lcDb) << "Updating file record for path:" << record._path << "inode:" << record._inode
                  << "modtime:" << record._modtime << "type:" << record._type
                  << "etag:" << record._etag << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm
-                 << "fileSize:" << record._fileSize << "checksum:" << record._contentChecksum << record._contentChecksumType;
+                 << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader;
 
     qlonglong phash = getPHash(record._path);
     if (checkConnect()) {
@@ -848,7 +887,9 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         QString remotePerm(record._remotePerm);
         if (remotePerm.isEmpty())
             remotePerm = QString(); // have NULL in DB (vs empty)
-        int contentChecksumTypeId = mapChecksumType(record._contentChecksumType);
+        QByteArray checksumType, checksum;
+        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
+        int contentChecksumTypeId = mapChecksumType(checksumType);
         _setFileRecordQuery->reset_and_clear_bindings();
         _setFileRecordQuery->bindValue(1, QString::number(phash));
         _setFileRecordQuery->bindValue(2, plen);
@@ -864,7 +905,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery->bindValue(12, remotePerm);
         _setFileRecordQuery->bindValue(13, record._fileSize);
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
-        _setFileRecordQuery->bindValue(15, record._contentChecksum);
+        _setFileRecordQuery->bindValue(15, checksum);
         _setFileRecordQuery->bindValue(16, contentChecksumTypeId);
 
         if (!_setFileRecordQuery->exec()) {
@@ -943,10 +984,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
             rec._remotePerm = _getFileRecordQuery->baValue(9);
             rec._fileSize = _getFileRecordQuery->int64Value(10);
             rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
-            rec._contentChecksum = _getFileRecordQuery->baValue(12);
-            if (!_getFileRecordQuery->nullValue(13)) {
-                rec._contentChecksumType = _getFileRecordQuery->baValue(13);
-            }
+            rec._checksumHeader = _getFileRecordQuery->baValue(12);
             _getFileRecordQuery->reset_and_clear_bindings();
         } else {
             int errId = _getFileRecordQuery->errorId();

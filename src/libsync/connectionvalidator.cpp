@@ -139,7 +139,9 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
         return;
     }
 
-    if (info["maintenance"].toBool()) {
+    // Check for maintenance mode: Servers send "true", so go through QVariant
+    // to parse it correctly.
+    if (info["maintenance"].toVariant().toBool()) {
         reportResult(MaintenanceMode);
         return;
     }

@@ -13,7 +13,9 @@
 # so that it doesn't pull a different Qt version. For that reason
 # first look in the Qt lib directory for QtKeychain.
 get_target_property(_QTCORE_LIB_PATH Qt5::Core IMPORTED_LOCATION_RELEASE)
-get_filename_component(QT_LIB_DIR "${_QTCORE_LIB_PATH}" DIRECTORY)
+
+# Use PATH here because Debian 7.0 has CMake 2.8.9 and DIRECTORY is only available from 2.8.12+
+get_filename_component(QT_LIB_DIR "${_QTCORE_LIB_PATH}" PATH)
 
 find_path(QTKEYCHAIN_INCLUDE_DIR
             NAMES
