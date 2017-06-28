@@ -278,11 +278,16 @@ public slots:
 
 private slots:
     void slotSyncStarted();
-    void slotSyncError(const QString &);
-    void slotCsyncUnavailable();
     void slotSyncFinished(bool);
 
+    /** Adds a error message that's not tied to a specific item.
+     */
+    void slotSyncError(const QString &message);
+
+    void slotCsyncUnavailable();
+
     void slotFolderDiscovered(bool local, QString folderName);
+
     void slotTransmissionProgress(const ProgressInfo &pi);
     void slotItemCompleted(const SyncFileItemPtr &);
 

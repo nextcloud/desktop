@@ -50,6 +50,7 @@ public:
     void showFolderErrors(const QString &folderAlias);
 
 public slots:
+    void addLine(const QString &folderAlias, const QString &message);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotOpenFile(QTreeWidgetItem *item, int);
@@ -75,6 +76,7 @@ private:
     bool shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAccount,
         const QString &filterFolderAlias) const;
     void cleanItems(const QString &folder);
+    void addItem(QTreeWidgetItem *item);
 
     Ui::IssuesWidget *_ui;
 };

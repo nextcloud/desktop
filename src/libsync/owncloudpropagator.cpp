@@ -238,6 +238,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         _item->_status = SyncFileItem::SoftError;
     }
 
+    // Blacklist handling
     switch (_item->_status) {
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:

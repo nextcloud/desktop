@@ -249,6 +249,11 @@ signals:
      */
     void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
+    /**
+     * @brief A new folder-wide sync error was seen.
+     */
+    void syncError(const QString &folder, const QString &message);
+
 protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);
 

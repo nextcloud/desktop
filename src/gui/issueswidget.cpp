@@ -49,6 +49,8 @@ IssuesWidget::IssuesWidget(QWidget *parent)
         this, SLOT(slotProgressInfo(QString, ProgressInfo)));
     connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
         this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
+    connect(ProgressDispatcher::instance(), SIGNAL(syncError(QString, QString)),
+        this, SLOT(addLine(QString, QString)));
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
     connect(_ui->copyIssuesButton, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
@@ -132,6 +134,15 @@ void IssuesWidget::cleanItems(const QString &folder)
     emit(issueCountUpdated(_ui->_treeWidget->topLevelItemCount()));
 }
 
+void IssuesWidget::addItem(QTreeWidgetItem *item)
+{
+    if (!item)
+        return;
+    _ui->_treeWidget->insertTopLevelItem(0, item);
+    item->setHidden(!shouldBeVisible(item, currentAccountFilter(), currentFolderFilter()));
+    emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
+}
+
 void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 {
     QString folderName = item->data(2, Qt::UserRole).toString();
@@ -164,10 +175,7 @@ void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPt
     QTreeWidgetItem *line = ProtocolWidget::createCompletedTreewidgetItem(folder, *item);
     if (!line)
         return;
-
-    _ui->_treeWidget->insertTopLevelItem(0, line);
-    line->setHidden(!shouldBeVisible(line, currentAccountFilter(), currentFolderFilter()));
-    emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
+    addItem(line);
 }
 
 void IssuesWidget::slotRefreshIssues()
@@ -327,5 +335,42 @@ void IssuesWidget::showFolderErrors(const QString &folderAlias)
         qMax(0, _ui->filterFolder->findData(folderAlias)));
     _ui->showIgnores->setChecked(false);
     _ui->showWarnings->setChecked(false);
+}
+
+void IssuesWidget::addLine(const QString &folderAlias, const QString &message)
+{
+    SyncFileItem::Status status = SyncFileItem::NormalError;
+
+    auto folder = FolderMan::instance()->folder(folderAlias);
+    if (!folder)
+        return;
+
+    QStringList columns;
+    QDateTime timestamp = QDateTime::currentDateTime();
+    const QString timeStr = ProtocolWidget::timeString(timestamp);
+    const QString longTimeStr = ProtocolWidget::timeString(timestamp, QLocale::LongFormat);
+
+    columns << timeStr;
+    columns << tr("<global error>");
+    columns << folder->shortGuiLocalPath();
+    columns << message;
+
+    QIcon icon;
+    if (status == SyncFileItem::NormalError
+        || status == SyncFileItem::FatalError) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
+    } else if (Progress::isWarningKind(status)) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
+    }
+
+    QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
+    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
+    twitem->setIcon(0, icon);
+    twitem->setToolTip(0, longTimeStr);
+    twitem->setToolTip(3, message);
+    twitem->setData(0, Qt::UserRole, status);
+    twitem->setData(2, Qt::UserRole, folderAlias);
+
+    addItem(twitem);
 }
 }

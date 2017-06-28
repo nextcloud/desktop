@@ -24,6 +24,7 @@
 #include "csync_private.h"
 #include "filesystem.h"
 #include "propagateremotedelete.h"
+#include "propagatedownload.h"
 #include "asserts.h"
 
 #ifdef Q_OS_WIN
@@ -1025,6 +1026,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     connect(_propagator.data(), SIGNAL(finished(bool)), this, SLOT(slotFinished(bool)), Qt::QueuedConnection);
     connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
     connect(_propagator.data(), SIGNAL(touchedFile(QString)), SLOT(slotAddTouchedFile(QString)));
+    connect(_propagator.data(), SIGNAL(insufficientLocalStorage()), SLOT(slotInsufficientLocalStorage()));
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -1135,6 +1137,7 @@ void SyncEngine::finalize(bool success)
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
+    _uniqueErrors.clear();
 
     _clearTouchedFilesTimer.start();
 }
@@ -1521,6 +1524,23 @@ void SyncEngine::abort()
     if (_propagator) {
         _propagator->abort();
     }
+}
+
+void SyncEngine::slotSummaryError(const QString &message)
+{
+    if (_uniqueErrors.contains(message))
+        return;
+
+    _uniqueErrors.insert(message);
+    emit summaryError(message);
+}
+
+void SyncEngine::slotInsufficientLocalStorage()
+{
+    slotSummaryError(
+        tr("Disk space is low: Downloads that would reduce free space "
+           "below %1 were skipped.")
+            .arg(Utility::octetsToString(freeSpaceLimit())));
 }
 
 } // namespace OCC

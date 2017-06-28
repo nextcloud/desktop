@@ -121,6 +121,9 @@ signals:
 
     void transmissionProgress(const ProgressInfo &progress);
 
+    /// We've produced a new summary error.
+    void summaryError(const QString &message);
+
     void finished(bool success);
     void started();
 
@@ -159,6 +162,11 @@ private slots:
 
     /** Wipes the _touchedFiles hash */
     void slotClearTouchedFiles();
+
+    /** Emit a summary error, unless it was seen before */
+    void slotSummaryError(const QString &message);
+
+    void slotInsufficientLocalStorage();
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
@@ -267,6 +275,9 @@ private:
 
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;
+
+    /** List of unique errors that occurred in a sync run. */
+    QSet<QString> _uniqueErrors;
 };
 }
 
