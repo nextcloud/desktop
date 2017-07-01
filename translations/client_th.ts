@@ -3458,7 +3458,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="48"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;รุ่น %2 สำหรับข้อมูลเพิ่มเดิมไปดูได้ที่ &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt; หรือแจ้งปัญหาที่ทราบไปที่: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;โดย Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt และอีกหลายท่าน&lt;/small&gt;&lt;/p&gt;&lt;p&gt;ลิขสิทธิ์ ownCloud GmbH&lt;/p&gt;&lt;p&gt;ได้รับอนุญาตภายใต้ GNU General Public License (GPL) เวอร์ชัน 2.0&lt;br/&gt;ownCloud และโลโก้ OwnCloud เป็นเครื่องหมายจดทะเบียนการค้าของ ownCloud GmbH ในประเทศสหรัฐอเมริกาหรือประเทศอื่นๆ&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
