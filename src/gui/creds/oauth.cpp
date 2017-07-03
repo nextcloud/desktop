@@ -29,15 +29,23 @@ OAuth::~OAuth()
 {
 }
 
-static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html)
+static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
+    const char *moreHeaders = nullptr)
 {
     socket->write("HTTP/1.1 ");
     socket->write(code);
     socket->write("\r\nContent-Type: text/html\r\nConnection: close\r\nContent-Length: ");
     socket->write(QByteArray::number(qstrlen(html)));
+    if (moreHeaders) {
+        socket->write("\r\n");
+        socket->write(moreHeaders);
+    }
     socket->write("\r\n\r\n");
     socket->write(html);
     socket->disconnectFromHost();
+    // We don't want that deleting the server too early prevent queued data to be sent on this socket.
+    // The socket will be deleted after disconnection because disconnected is connected to deleteLater
+    socket->setParent(nullptr);
 }
 
 void OAuth::start()
@@ -64,9 +72,6 @@ void OAuth::start()
                     return;
                 }
 
-                // TODO: add redirect to the page on the server
-                httpReplyAndClose(socket, "200 OK", "<h1>Login Successful</h1><p>You can close this window.</p>");
-
                 QString code = rx.cap(1); // The 'code' is the first capture of the regexp
 
                 QUrl requestToken(_account->url().toString()
@@ -79,20 +84,44 @@ void OAuth::start()
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
                 auto reply = _account->sendRequest("POST", requestToken, req);
                 QTimer::singleShot(30 * 1000, reply, &QNetworkReply::abort);
-                QObject::connect(reply, &QNetworkReply::finished, this, [this, reply] {
+                QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, socket] {
                     auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
                     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
                     QString accessToken = json["access_token"].toString();
                     QString refreshToken = json["refresh_token"].toString();
                     QString user = json["user_id"].toString();
+                    QUrl messageUrl = json["message_url"].toString();
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
                         || json.isEmpty() || refreshToken.isEmpty() || accessToken.isEmpty()
                         || json["token_type"].toString() != QLatin1String("Bearer")) {
-                        qCWarning(lcOauth) << "Error when getting the accessToken" << reply->error() << json << jsonParseError.errorString();
+                        QString errorReason;
+                        QString errorFromJson = json["error"].toString();
+                        if (!errorFromJson.isEmpty()) {
+                            errorReason = tr("Error returned from the server: <em>%1</em>")
+                                              .arg(errorFromJson.toHtmlEscaped());
+                        } else if (reply->error() != QNetworkReply::NoError) {
+                            errorReason = tr("There was an error accessing the 'token' endpoint: <br><em>%1</em>")
+                                              .arg(reply->errorString().toHtmlEscaped());
+                        } else if (jsonParseError.error != QJsonParseError::NoError) {
+                            errorReason = tr("Could not parse the JSON returned from the server: <br><em>%1</em>")
+                                              .arg(jsonParseError.errorString());
+                        } else {
+                            errorReason = tr("The reply from the server did not contain all expected fields");
+                        }
+                        qCWarning(lcOauth) << "Error when getting the accessToken" << json << errorReason;
+                        httpReplyAndClose(socket, "500 Internal Server Error",
+                            tr("<h1>Login Error</h1><p>%1</p>").arg(errorReason).toUtf8().constData());
                         emit result(Error);
                         return;
+                    }
+                    const char *loginSuccessfullHtml = "<h1>Login Successful</h1><p>You can close this window.</p>";
+                    if (messageUrl.isValid()) {
+                        httpReplyAndClose(socket, "303 See Other", loginSuccessfullHtml,
+                            QByteArray("Location: " + messageUrl.toEncoded()).constData());
+                    } else {
+                        httpReplyAndClose(socket, "200 OK", loginSuccessfullHtml);
                     }
                     emit result(LoggedIn, user, accessToken, refreshToken);
                 });
