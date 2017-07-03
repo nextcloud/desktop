@@ -54,7 +54,8 @@ createLocalFile( $tmpdir . "test.dat", 170 );
 createRemoteDir( "dir" );
 glob_put( "$tmpdir/*", "dir" );
 
-csync();
+# can't download these
+csync(1);
 
 # Check that only one of the two file was synced.
 # The one that exist here is undefined, the current implementation will take the
@@ -76,7 +77,8 @@ printInfo( "Renaming one file to the same name as another one with different cas
 moveRemoteFile( 'dir/Hello.dat', 'dir/NORMAL.dat');
 moveRemoteFile( 'dir/test.dat', 'dir/TEST.dat');
 
-csync();
+# can't download these
+csync(1);
 
 # Hello -> NORMAL should not have do the move since the case conflict
 assert( -e localDir() . 'dir/Hello.dat' );
@@ -87,13 +89,16 @@ assert( -e localDir() . 'dir/Normal.dat' );
 assert( -e localDir() . 'dir/TEST.dat' );
 assert( !-e localDir() . 'dir/test.dat' );
 
+# undo the change that causes the sync fail
+moveRemoteFile( 'dir/NORMAL.dat', 'dir/Hello.dat');
 
 printInfo( "Another directory with the same name but different casing is created" );
 
 createRemoteDir( "DIR" );
-glob_put( "$tmpdir/*", "DIR" );
+glob_put( "$tmpdir/HELLO.dat", "DIR" );
 
-csync();
+# can't download dirs
+csync(1);
 
 assert( !-e localDir() . 'DIR' );
 
@@ -107,7 +112,6 @@ csync();
 # now DIR was fetched
 assert( -e localDir() . 'DIR' );
 assert( -e localDir() . 'DIR/HELLO.dat' );
-assert( !-e localDir() . 'DIR/Hello.dat' );
 assert( !-e localDir() . 'dir' );
 
 # dir/NORMAL.dat is still on the server
@@ -125,7 +129,8 @@ createLocalFile( $tmpdir2 . "file.dat",       33 );
 createRemoteDir( "parallel" );
 glob_put( "$tmpdir2/*", "parallel" );
 
-csync();
+# again, can't download both
+csync(1);
 
 # only one file must exist
 assert( (!-e localDir() . 'parallel/FILE.dat' ) or (!-e localDir() . 'parallel/file.dat') );
