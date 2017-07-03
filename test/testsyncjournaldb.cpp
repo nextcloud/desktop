@@ -17,10 +17,11 @@ class TestSyncJournalDB : public QObject
 {
     Q_OBJECT
 
+    QTemporaryDir _tempDir;
 public:
-    TestSyncJournalDB()
-        : _db("/tmp/csync-test.db")
+    TestSyncJournalDB() : _db((_tempDir.path() + "/sync.db"))
     {
+        QVERIFY(_tempDir.isValid());
     }
 
     QDateTime dropMsecs(QDateTime time)
