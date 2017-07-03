@@ -298,7 +298,6 @@ sub localCleanup($)
 sub csync( ;$ )
 {
     my $expected = $_[0] // 0;
-    print "EXPECTED $expected\n";
 
     my $url = testDirUrl();
     if( $url =~ /^https:/ ) {
