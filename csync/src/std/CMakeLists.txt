@@ -5,10 +5,6 @@ set(CSTDLIB_PUBLIC_INCLUDE_DIRS
   CACHE INTERNAL "cstdlib public include directories"
 )
 
-set(CSTDLIB_PRIVATE_INCLUDE_DIRS
-  ${ICONV_INCLUDE_DIR}
-)
-
 set(CSTDLIB_LIBRARY
   cstdlib
   CACHE INTERNAL "cstdlib library"
@@ -34,7 +30,6 @@ endif()
 
 include_directories(
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
-  ${CSTDLIB_PRIVATE_INCLUDE_DIRS}
 )
 
 add_library(${CSTDLIB_LIBRARY} STATIC ${cstdlib_SRCS})

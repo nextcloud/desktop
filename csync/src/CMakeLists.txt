@@ -28,11 +28,6 @@ set(CSYNC_LINK_LIBRARIES
   ${SQLITE3_LIBRARIES}
 )
 
-if(HAVE_ICONV AND WITH_ICONV)
-    list(APPEND CSYNC_PRIVATE_INCLUDE_DIRS ${ICONV_INCLUDE_DIR})
-    list(APPEND CSYNC_LINK_LIBRARIES ${ICONV_LIBRARIES})
-endif()
-
 # Specific option for builds tied to servers that do not support renaming extensions
 set(NO_RENAME_EXTENSION 0 CACHE BOOL "Do not issue rename if the extension changes")
 if(NO_RENAME_EXTENSION)

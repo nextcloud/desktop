@@ -159,13 +159,6 @@ typedef char           mbchar_t;
 #define _tgetcwd       getcwd
 #endif
 
-#ifdef WITH_ICONV
-/** @internal */
-int c_setup_iconv(const char* to);
-/** @internal */
-int c_close_iconv(void);
-#endif
-
 /* FIXME: Implement TLS for OS X */
 #if defined(__GNUC__) && !defined(__APPLE__)
 # define CSYNC_THREAD __thread

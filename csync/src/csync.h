@@ -479,17 +479,6 @@ int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *
  */
 const char OCSYNC_EXPORT *csync_get_status_string(CSYNC *ctx);
 
-#ifdef WITH_ICONV
-/**
- * @brief Set iconv source codec for filenames.
- *
- * @param from          Source codec.
- *
- * @return              0 on success, or an iconv error number.
- */
-int OCSYNC_EXPORT csync_set_iconv_codec(const char *from);
-#endif
-
 /**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.
  *
