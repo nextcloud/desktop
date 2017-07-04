@@ -107,10 +107,6 @@ public:
 
     bool isConnected() const;
 
-    /// Triggers a ping to the server to update state and
-    /// connection status and errors.
-    void checkConnectivity();
-
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
 
@@ -126,6 +122,11 @@ public:
      *  was not so long ago.
      */
     void tagLastSuccessfullETagRequest();
+
+public slots:
+    /// Triggers a ping to the server to update state and
+    /// connection status and errors.
+    void checkConnectivity();
 
 private:
     void setState(State state);
@@ -148,6 +149,18 @@ private:
     bool _waitingForNewCredentials;
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
+
+    /**
+     * Starts counting when the server starts being back up after 503 or
+     * maintenance mode. The account will only become connected once this
+     * timer exceeds the _maintenanceToConnectedDelay value.
+     */
+    QElapsedTimer _timeSinceMaintenanceOver;
+
+    /**
+     * Milliseconds for which to delay reconnection after 503/maintenance.
+     */
+    int _maintenanceToConnectedDelay;
 };
 }
 
