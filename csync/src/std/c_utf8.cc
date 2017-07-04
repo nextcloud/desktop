@@ -21,18 +21,17 @@
 
 #include "config_csync.h"
 
-#include <assert.h>
-#include <errno.h>
+#ifdef _WIN32
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include <limits.h>
 #include <sys/types.h>
 #include <wchar.h>
-
-#ifdef _WIN32
 #include <windows.h>
+#else
+#include <QtCore/QTextCodec>
+#include <QtCore/QFile>
 #endif
 
 extern "C" {
@@ -42,18 +41,15 @@ extern "C" {
 /* Convert a locale String to UTF8 */
 char* c_utf8_from_locale(const mbchar_t *wstr)
 {
-  char *dst = NULL;
-#ifdef _WIN32
-  char *mdst = NULL;
-  int size_needed;
-  size_t len;
-#endif
-
   if (wstr == NULL) {
     return NULL;
   }
 
 #ifdef _WIN32
+  char *dst = NULL;
+  char *mdst = NULL;
+  int size_needed;
+  size_t len;
   len = wcslen(wstr);
   /* Call once to get the required size. */
   size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
@@ -64,26 +60,33 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
     WideCharToMultiByte(CP_UTF8, 0, wstr, len, mdst, size_needed, NULL, NULL);
     dst = mdst;
   }
-#else
-  dst = c_strdup(wstr);
-#endif
   return dst;
+#else
+    QTextDecoder dec(QTextCodec::codecForLocale());
+    QString s = dec.toUnicode(wstr, qstrlen(wstr));
+    if (s.isEmpty() || dec.hasFailure()) {
+        /* Conversion error: since we can't report error from this function, just return the original
+            string.  We take care of invalid utf-8 in SyncEngine::treewalkFile */
+        return c_strdup(wstr);
+    }
+#ifdef __APPLE__
+    s = s.normalized(QString::NormalizationForm_C);
+#endif
+    return c_strdup(std::move(s).toUtf8().constData());
+#endif
 }
 
 /* Convert a an UTF8 string to locale */
 mbchar_t* c_utf8_string_to_locale(const char *str)
 {
-    mbchar_t *dst = NULL;
-#ifdef _WIN32
-    size_t len;
-    int size_needed;
-#endif
-
     if (str == NULL ) {
         return NULL;
     }
-
 #ifdef _WIN32
+    mbchar_t *dst = NULL;
+    size_t len;
+    int size_needed;
+
     len = strlen(str);
     size_needed = MultiByteToWideChar(CP_UTF8, 0, str, len, NULL, 0);
     if (size_needed > 0) {
@@ -92,10 +95,10 @@ mbchar_t* c_utf8_string_to_locale(const char *str)
         memset((void*)dst, 0, size_char);
         MultiByteToWideChar(CP_UTF8, 0, str, -1, dst, size_needed);
     }
-#else
-    dst = c_strdup(str);
-#endif
     return dst;
+#else
+    return c_strdup(QFile::encodeName(QString::fromUtf8(str)));
+#endif
 }
 
 }

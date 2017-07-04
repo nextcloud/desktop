@@ -36,6 +36,7 @@ include_directories(
 add_library(${CSTDLIB_LIBRARY} STATIC ${cstdlib_SRCS})
 if(NOT WIN32)
     add_definitions( -fPIC )
+    qt5_use_modules(${CSTDLIB_LIBRARY} Core)
 endif()
 if(NOT HAVE_FNMATCH AND WIN32)
   # needed for PathMatchSpec for our fnmatch replacement
