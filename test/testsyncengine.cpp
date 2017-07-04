@@ -392,9 +392,7 @@ private slots:
      */
     void testSyncFileItemProperties()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-
-        auto initialMtime = fakeFolder.currentLocalState().find("A/a1")->lastModified;
+        auto initialMtime = QDateTime::currentDateTime().addDays(-7);
         auto changedMtime = QDateTime::currentDateTime().addDays(-4);
         auto changedMtime2 = QDateTime::currentDateTime().addDays(-3);
 
@@ -402,6 +400,15 @@ private slots:
         initialMtime.setMSecsSinceEpoch(initialMtime.toMSecsSinceEpoch() / 1000 * 1000);
         changedMtime.setMSecsSinceEpoch(changedMtime.toMSecsSinceEpoch() / 1000 * 1000);
         changedMtime2.setMSecsSinceEpoch(changedMtime2.toMSecsSinceEpoch() / 1000 * 1000);
+
+        // Ensure the initial mtimes are as expected
+        auto initialFileInfo = FileInfo::A12_B12_C12_S12();
+        initialFileInfo.setModTime("A/a1", initialMtime);
+        initialFileInfo.setModTime("B/b1", initialMtime);
+        initialFileInfo.setModTime("C/c1", initialMtime);
+
+        FakeFolder fakeFolder{ initialFileInfo };
+
 
         // upload a
         fakeFolder.localModifier().appendByte("A/a1");
