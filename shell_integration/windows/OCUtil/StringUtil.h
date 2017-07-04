@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <cassert>
 
 class __declspec(dllexport) StringUtil {
 public:
@@ -43,6 +44,22 @@ public:
             return false;
         return (childLength == parentLength || childLength > parentLength && (child[parentLength] == L'\\' || child[parentLength - 1] == L'\\'))
             && wcsncmp(child, parent, parentLength) == 0;
+    }
+
+    static bool extractChunks(const std::wstring &source, std::wstring &secondChunk, std::wstring &thirdChunk) {
+        auto statusBegin = source.find(L':', 0);
+        assert(statusBegin != std::wstring::npos);
+
+        auto statusEnd = source.find(L':', statusBegin + 1);
+        if (statusEnd == std::wstring::npos) {
+            // the command do not contains two colon?
+            return false;
+        }
+
+        // Assume the caller extracted the chunk before the first colon.
+        secondChunk = source.substr(statusBegin + 1, statusEnd - statusBegin - 1);
+        thirdChunk = source.substr(statusEnd + 1);
+        return true;
     }
 };
 
