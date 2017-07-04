@@ -532,9 +532,11 @@ void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
         { "COPY_PRIVATE_LINK_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_TITLE", tr("Send private link by email...") },
     } };
+    listener->sendMessage(QString("GET_STRINGS:BEGIN"));
     for (auto key_value : strings) {
         listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
     }
+    listener->sendMessage(QString("GET_STRINGS:END"));
 }
 
 QString SocketApi::buildRegisterPathMessage(const QString &path)
