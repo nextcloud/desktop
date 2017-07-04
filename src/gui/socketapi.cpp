@@ -518,7 +518,7 @@ void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListe
     if (!url.isEmpty()) {
         Utility::openEmailComposer(
             tr("I shared something with you"),
-            url.toString(),
+            url.toString(QUrl::FullyEncoded),
             0);
     }
 }

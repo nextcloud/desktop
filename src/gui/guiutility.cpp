@@ -44,7 +44,7 @@ bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 
 bool Utility::openEmailComposer(const QString &subject, const QString &body, QWidget *errorWidgetParent)
 {
-    QUrl url(QLatin1String("mailto: "));
+    QUrl url(QLatin1String("mailto:"));
     url.setQueryItems({ { QLatin1String("subject"), subject },
         { QLatin1String("body"), body } });
 
