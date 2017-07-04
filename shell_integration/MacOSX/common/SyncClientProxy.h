@@ -20,7 +20,7 @@
 - (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)registerPath:(NSString*)path;
 - (void)unregisterPath:(NSString*)path;
-- (void)setShareMenuTitle:(NSString*)title;
+- (void)setString:(NSString*)key value:(NSString*)value;
 - (void)connectionDidDie;
 @end
 

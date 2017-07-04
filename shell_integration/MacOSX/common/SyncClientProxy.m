@@ -73,7 +73,7 @@
 	[_remoteEnd setProtocolForProxy:@protocol(ChannelProtocol)];
 
 	// Everything is set up, start querying
-	[self askOnSocket:@"" query:@"SHARE_MENU_TITLE"];
+	[self askOnSocket:@"" query:@"GET_STRINGS"];
 }
 
 - (void)scheduleRetry
@@ -119,8 +119,10 @@
 	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
 		NSString *path = [chunks objectAtIndex:1];
 		[_delegate unregisterPath:path];
-	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"SHARE_MENU_TITLE"] ) {
-		[_delegate setShareMenuTitle:[chunks objectAtIndex:1]];
+	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"GET_STRINGS"] ) {
+		// BEGIN and END messages, do nothing.
+	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"STRING"] ) {
+		[_delegate setString:[chunks objectAtIndex:1] value:[chunks objectAtIndex:2]];
 	} else {
 		NSLog(@"SyncState: Unknown command %@", [chunks objectAtIndex:0]);
 	}
