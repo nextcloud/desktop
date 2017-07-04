@@ -434,7 +434,7 @@ static void check_readdir_bigunicode(void **state)
     assert_int_equal(rc, 0);
     SAFE_FREE(p);
 
-    const char *t1 = "goodone/ugly\xEF\xBB\xBF\x32" ".txt";
+    const char *t1 = "goodone/ugly\xEF\xBB\xBF\x32" ".txt"; // file with encoding error
     asprintf( &p, "%s/%s", CSYNC_TEST_DIR, t1 );
     rc = _tmkdir(p, MKDIR_MASK);
     SAFE_FREE(p);
@@ -444,18 +444,10 @@ static void check_readdir_bigunicode(void **state)
     int files_cnt = 0;
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
     const char *expected_result =  "<DIR> C:/tmp/csync_test/goodone"
-#ifndef __APPLE__
-        // On Mac, iconv will not return some files with fancy unicode.
-        // Linux is not so picky about it and return everything and let the sync engine deal with it.
                                    "<DIR> C:/tmp/csync_test/goodone/ugly\xEF\xBB\xBF\x32" ".txt"
-#endif
                                    ;
     assert_string_equal( sv->result, expected_result);
 
-#ifdef __APPLE__
-    // Bad one is recognized though.. !
-    assert_string_equal( sv->ignored_dir, CSYNC_TEST_DIR "/goodone/" "ugly\xEF\xBB\xBF\x32" ".txt");
-#endif
     assert_int_equal(files_cnt, 0);
 }
 
