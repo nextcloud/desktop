@@ -60,6 +60,7 @@ public:
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
+    void showIssuesList(const QString &folderAlias);
 
 public slots:
     void slotOpenOC();

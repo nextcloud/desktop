@@ -373,5 +373,15 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     return QStyle::visualRect(direction, within, r);
 }
 
+QRect FolderStatusDelegate::errorsListRect(QRect within)
+{
+    QFont font = QFont();
+    QFont aliasFont = makeAliasFont(font);
+    QFontMetrics fm(font);
+    QFontMetrics aliasFm(aliasFont);
+    within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
+    return within;
+}
+
 
 } // namespace OCC

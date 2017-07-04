@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#ifndef PROTOCOLWIDGET_H
-#define PROTOCOLWIDGET_H
+#ifndef ISSUESWIDGET_H
+#define ISSUESWIDGET_H
 
 #include <QDialog>
 #include <QDateTime>
@@ -22,7 +22,7 @@
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
 
-#include "ui_protocolwidget.h"
+#include "ui_issueswidget.h"
 
 class QPushButton;
 
@@ -38,21 +38,19 @@ class Application;
  * @brief The ProtocolWidget class
  * @ingroup gui
  */
-class ProtocolWidget : public QWidget
+class IssuesWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ProtocolWidget(QWidget *parent = 0);
-    ~ProtocolWidget();
+    explicit IssuesWidget(QWidget *parent = 0);
+    ~IssuesWidget();
     QSize sizeHint() const { return ownCloudGui::settingsDialogSize(); }
 
-    void storeSyncActivity(QTextStream &ts);
-
-    // Shared with IssueWidget
-    static QTreeWidgetItem *createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item);
-    static QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat);
+    void storeSyncIssues(QTextStream &ts);
+    void showFolderErrors(const QString &folderAlias);
 
 public slots:
+    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotOpenFile(QTreeWidgetItem *item, int);
 
@@ -62,9 +60,23 @@ protected:
 
 signals:
     void copyToClipboard();
+    void issueCountUpdated(int);
+
+private slots:
+    void slotRefreshIssues();
+    void slotUpdateFolderFilters();
+    void slotAccountAdded(AccountState *account);
+    void slotAccountRemoved(AccountState *account);
 
 private:
-    Ui::ProtocolWidget *_ui;
+    AccountState *currentAccountFilter() const;
+    QString currentFolderFilter() const;
+    bool shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAccount,
+        const QString &filterFolderAlias) const;
+    void cleanItems(const QString &folder);
+
+    Ui::IssuesWidget *_ui;
 };
 }
-#endif // PROTOCOLWIDGET_H
+
+#endif

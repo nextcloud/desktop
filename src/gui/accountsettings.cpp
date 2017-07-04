@@ -69,6 +69,42 @@ static const char progressBarStyleC[] =
     "background-color: %1; width: 1px;"
     "}";
 
+/**
+ * Adjusts the mouse cursor based on the region it is on over the folder tree view.
+ *
+ * Used to show that one can click the red error list box by changing the cursor
+ * to the pointing hand.
+ */
+class MouseCursorChanger : public QObject
+{
+    Q_OBJECT
+public:
+    MouseCursorChanger(QObject *parent)
+        : QObject(parent)
+    {
+    }
+
+    QTreeView *folderList;
+    FolderStatusModel *model;
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (event->type() == QEvent::HoverMove) {
+            Qt::CursorShape shape = Qt::ArrowCursor;
+            auto pos = folderList->mapFromGlobal(QCursor::pos());
+            auto index = folderList->indexAt(pos);
+            if (model->classify(index) == FolderStatusModel::RootFolder
+                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
+                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+                shape = Qt::PointingHandCursor;
+            }
+            folderList->setCursor(shape);
+        }
+        return QObject::eventFilter(watched, event);
+    }
+};
+
 AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
@@ -93,6 +129,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     ui->_folderList->setMinimumWidth(300);
 #endif
     new ToolTipUpdater(ui->_folderList);
+
+    auto mouseCursorChanger = new MouseCursorChanger(this);
+    mouseCursorChanger->folderList = ui->_folderList;
+    mouseCursorChanger->model = _model;
+    ui->_folderList->setMouseTracking(true);
+    ui->_folderList->setAttribute(Qt::WA_Hover, true);
+    ui->_folderList->installEventFilter(mouseCursorChanger);
 
     createAccountToolbox();
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
@@ -299,6 +342,10 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
         auto pos = tv->mapFromGlobal(QCursor::pos());
         if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
             slotCustomContextMenuRequested(pos);
+            return;
+        }
+        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+            emit showIssuesList(_model->data(indx, FolderStatusDelegate::FolderAliasRole).toString());
             return;
         }
 
@@ -808,3 +855,5 @@ bool AccountSettings::event(QEvent *e)
 }
 
 } // namespace OCC
+
+#include "accountsettings.moc"
