@@ -1,4 +1,4 @@
-project(cstdlib C)
+project(cstdlib)
 
 set(CSTDLIB_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -20,6 +20,7 @@ set(cstdlib_SRCS
   c_rbtree.c
   c_string.c
   c_time.c
+  c_utf8.cc
 )
 
 if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
