@@ -128,7 +128,7 @@ public:
 
     void sendMessage(const QString &message, bool doWait = false) const
     {
-        qCInfo(lcSocketApi) << "Sending SocketAPI message: " << message << "to" << socket;
+        qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
         QString localMessage = message;
         if (!localMessage.endsWith(QLatin1Char('\n'))) {
             localMessage.append(QLatin1Char('\n'));
@@ -282,6 +282,7 @@ void SocketApi::slotReadSocket()
         // make sure that the path will match, especially on OS X.
         QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
+        qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         QByteArray command = line.split(":").value(0).toAscii();
         QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
@@ -373,8 +374,6 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << argument;
-
     QString statusString;
 
     Folder *syncFolder = FolderMan::instance()->folderForPath(argument);
@@ -403,8 +402,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 
 void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << localFile;
-
     auto theme = Theme::instance();
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
@@ -454,8 +451,6 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 
 void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << localFile;
-
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
     if (!shareFolder) {
