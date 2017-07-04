@@ -108,48 +108,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         SLOT(slotShowOptionalTrayMessage(QString, QString)));
     connect(Logger::instance(), SIGNAL(guiMessage(QString, QString)),
         SLOT(slotShowGuiMessage(QString, QString)));
-
-    setupOverlayIcons();
-}
-
-// Use this to do platform specific code to make overlay icons appear
-// in the gui
-// MacOSX: perform a AppleScript code piece to load the Finder Plugin.
-
-
-void ownCloudGui::setupOverlayIcons()
-{
-#ifdef Q_OS_MAC
-    // Make sure that we only send the load event to the legacy plugin when
-    // using OS X <= 10.9 since 10.10 starts using the new FinderSync one.
-    if (QSysInfo::MacintoshVersion < QSysInfo::MV_10_10) {
-        const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
-        if (QFile::exists(finderExtension)) {
-            QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
-                                                "  try\n"
-                                                "    «event OWNCload»\n"
-                                                "  end try\n"
-                                                "end tell\n");
-
-            QString osascript = "/usr/bin/osascript";
-            QStringList processArguments;
-            // processArguments << "-l" << "AppleScript";
-
-            QProcess p;
-            p.start(osascript, processArguments);
-            p.write(aScript.toUtf8());
-            p.closeWriteChannel();
-            //p.waitForReadyRead(-1);
-            p.waitForFinished(5000);
-            QByteArray result = p.readAll();
-            QString resultAsString(result); // if appropriate
-            qCInfo(lcApplication) << "Load Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
-                                  << (p.exitCode() != 0 ? p.errorString() : QString::null);
-        } else {
-            qCWarning(lcApplication) << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
-        }
-    }
-#endif
 }
 
 // This should rather be in application.... or rather in ConfigFile?
