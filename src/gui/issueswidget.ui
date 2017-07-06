@@ -27,9 +27,9 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <layout class="QFormLayout" name="formLayout">
+      <layout class="QFormLayout" name="accountFolderLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="accountLabel">
          <property name="text">
           <string>Account</string>
          </property>
@@ -45,7 +45,7 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="folderLabel">
          <property name="text">
           <string>Folder</string>
          </property>

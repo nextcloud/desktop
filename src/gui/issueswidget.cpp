@@ -65,6 +65,8 @@ IssuesWidget::IssuesWidget(QWidget *parent)
         SLOT(slotAccountAdded(AccountState *)));
     connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
         SLOT(slotAccountRemoved(AccountState *)));
+    connect(FolderMan::instance(), SIGNAL(folderListChanged(Folder::Map)),
+        SLOT(slotUpdateFolderFilters()));
 
 
     // Adjust copyToClipboard() when making changes here!
@@ -183,6 +185,7 @@ void IssuesWidget::slotRefreshIssues()
 void IssuesWidget::slotAccountAdded(AccountState *account)
 {
     _ui->filterAccount->addItem(account->account()->displayName(), QVariant::fromValue(account));
+    updateAccountChoiceVisibility();
 }
 
 void IssuesWidget::slotAccountRemoved(AccountState *account)
@@ -191,6 +194,15 @@ void IssuesWidget::slotAccountRemoved(AccountState *account)
         if (account == _ui->filterAccount->itemData(i).value<AccountState *>())
             _ui->filterAccount->removeItem(i);
     }
+    updateAccountChoiceVisibility();
+}
+
+void IssuesWidget::updateAccountChoiceVisibility()
+{
+    bool visible = _ui->filterAccount->count() > 2;
+    _ui->filterAccount->setVisible(visible);
+    _ui->accountLabel->setVisible(visible);
+    slotUpdateFolderFilters();
 }
 
 AccountState *IssuesWidget::currentAccountFilter() const
@@ -228,6 +240,12 @@ void IssuesWidget::slotUpdateFolderFilters()
 {
     auto account = _ui->filterAccount->currentData().value<AccountState *>();
 
+    // If there is no account selector, show folders for the single
+    // available account
+    if (_ui->filterAccount->isHidden() && _ui->filterAccount->count() > 1) {
+        account = _ui->filterAccount->itemData(1).value<AccountState *>();
+    }
+
     if (!account) {
         _ui->filterFolder->setCurrentIndex(0);
     }
@@ -236,10 +254,29 @@ void IssuesWidget::slotUpdateFolderFilters()
     for (int i = _ui->filterFolder->count() - 1; i >= 1; --i) {
         _ui->filterFolder->removeItem(i);
     }
+
+    // Find all selectable folders while figuring out if we need a folder
+    // selector in the first place
+    bool anyAccountHasMultipleFolders = false;
+    QSet<AccountState *> accountsWithFolders;
     for (auto folder : FolderMan::instance()->map().values()) {
+        if (accountsWithFolders.contains(folder->accountState()))
+            anyAccountHasMultipleFolders = true;
+        accountsWithFolders.insert(folder->accountState());
+
         if (folder->accountState() != account)
             continue;
         _ui->filterFolder->addItem(folder->shortGuiLocalPath(), folder->alias());
+    }
+
+    // If we don't need the combo box, hide it.
+    _ui->filterFolder->setVisible(anyAccountHasMultipleFolders);
+    _ui->folderLabel->setVisible(anyAccountHasMultipleFolders);
+
+    // If there's no choice, select the only folder and disable
+    if (_ui->filterFolder->count() == 2 && anyAccountHasMultipleFolders) {
+        _ui->filterFolder->setCurrentIndex(1);
+        _ui->filterFolder->setEnabled(false);
     }
 }
 

@@ -69,6 +69,7 @@ private slots:
     void slotAccountRemoved(AccountState *account);
 
 private:
+    void updateAccountChoiceVisibility();
     AccountState *currentAccountFilter() const;
     QString currentFolderFilter() const;
     bool shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAccount,
