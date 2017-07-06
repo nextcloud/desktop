@@ -110,7 +110,6 @@ private Q_SLOTS:
     void slotWriteClientCertPEMJobDone(QKeychain::Job *);
     void slotWriteClientKeyPEMJobDone(QKeychain::Job *);
     void slotWriteJobDone(QKeychain::Job *);
-    void clearQNAMCache();
 
 protected:
     QString _user;

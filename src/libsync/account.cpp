@@ -391,6 +391,11 @@ void Account::handleInvalidCredentials()
     emit invalidCredentials();
 }
 
+void Account::clearQNAMCache()
+{
+    _am->clearAccessCache();
+}
+
 const Capabilities &Account::capabilities() const
 {
     return _capabilities;

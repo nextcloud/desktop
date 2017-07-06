@@ -197,6 +197,10 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
+public slots:
+    /// Used when forgetting credentials
+    void clearQNAMCache();
+
 signals:
     /// Emitted whenever there's network activity
     void propagatorNetworkActivity();
