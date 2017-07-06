@@ -526,8 +526,7 @@ void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListe
 void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
 {
     static std::array<std::pair<const char *, QString>, 5> strings { {
-        { "SHARE_MENU_TITLE", tr("Share with %1...", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()) },
-        { "APPNAME", Theme::instance()->appNameGUI() },
+        { "SHARE_MENU_TITLE", tr("Share...") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
