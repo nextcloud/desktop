@@ -11,10 +11,6 @@
 
 #include "utility.h"
 
-#define STR_(X) #X
-#define STR(X) STR_(X)
-#define BIN_PATH STR(OWNCLOUD_BIN_PATH)
-
 using namespace OCC::Utility;
 
 class TestUtility : public QObject
@@ -118,7 +114,7 @@ private slots:
             }
             // pass the binary name owncloud to the next call. This brakes branding,
             // but branding is not supposed to work with this.
-            QString ver = versionOfInstalledBinary(BIN_PATH+QLatin1String("/owncloud"));
+            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN_PATH+QLatin1String("/owncloud"));
 	    qDebug() << "Version of installed ownCloud Binary: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
