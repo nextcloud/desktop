@@ -240,15 +240,15 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
         # Add permalink menu options, but hide these options for older clients
         # that don't have these actions.
-        if 'COPY_PRIVATE_LINK_TITLE' in self.strings:
+        if 'COPY_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_copyprivatelink = Nautilus.MenuItem(
-                name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_TITLE', 'Copy private link to clipboard'))
+                name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_MENU_TITLE', 'Copy private link to clipboard'))
             item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', file)
             menu.append_item(item_copyprivatelink)
 
-        if 'EMAIL_PRIVATE_LINK_TITLE' in self.strings:
+        if 'EMAIL_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_emailprivatelink = Nautilus.MenuItem(
-                name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_TITLE', 'Send private link by email...'))
+                name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_MENU_TITLE', 'Send private link by email...'))
             item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', file)
             menu.append_item(item_emailprivatelink)
 

@@ -529,8 +529,8 @@ void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
         { "SHARE_MENU_TITLE", tr("Share with %1...", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()) },
         { "APPNAME", Theme::instance()->appNameGUI() },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
-        { "COPY_PRIVATE_LINK_TITLE", tr("Copy private link to clipboard") },
-        { "EMAIL_PRIVATE_LINK_TITLE", tr("Send private link by email...") },
+        { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
+        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
     } };
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
     for (auto key_value : strings) {

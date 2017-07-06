@@ -41,8 +41,8 @@ public:
         return _strings.value("SHARE_MENU_TITLE", "Share...");
     }
 
-    QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_TITLE"]; }
-    QString emailPrivateLinkTitle() const { return _strings["EMAIL_PRIVATE_LINK_TITLE"]; }
+    QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }
+    QString emailPrivateLinkTitle() const { return _strings["EMAIL_PRIVATE_LINK_MENU_TITLE"]; }
 
 signals:
     void commandRecieved(const QByteArray &cmd);

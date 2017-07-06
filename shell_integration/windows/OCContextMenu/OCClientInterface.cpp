@@ -64,9 +64,9 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
                     info.shareMenuTitle = move(stringValue);
                 else if (stringName == L"CONTEXT_MENU_TITLE")
                     info.contextMenuTitle = move(stringValue);
-                else if (stringName == L"COPY_PRIVATE_LINK_TITLE")
+                else if (stringName == L"COPY_PRIVATE_LINK_MENU_TITLE")
                     info.copyLinkMenuTitle = move(stringValue);
-                else if (stringName == L"EMAIL_PRIVATE_LINK_TITLE")
+                else if (stringName == L"EMAIL_PRIVATE_LINK_MENU_TITLE")
                     info.emailLinkMenuTitle = move(stringValue);
             }
             else if (StringUtil::begins_with(response, wstring(L"GET_STRINGS:END"))) {

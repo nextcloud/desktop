@@ -103,8 +103,8 @@
 
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
 	id shareTitle = [_strings objectForKey:@"SHARE_MENU_TITLE"];
-	id copyLinkTitle = [_strings objectForKey:@"COPY_PRIVATE_LINK_TITLE"];
-	id emailLinkTitle = [_strings objectForKey:@"EMAIL_PRIVATE_LINK_TITLE"];
+	id copyLinkTitle = [_strings objectForKey:@"COPY_PRIVATE_LINK_MENU_TITLE"];
+	id emailLinkTitle = [_strings objectForKey:@"EMAIL_PRIVATE_LINK_MENU_TITLE"];
 	if (contextMenuTitle && !onlyRootsSelected) {
         NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
         NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
