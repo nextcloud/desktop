@@ -79,7 +79,7 @@ public:
     HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
     QString authType() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager *getQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;

@@ -136,11 +136,13 @@ void Account::setCredentials(AbstractCredentials *cred)
 
     // The order for these two is important! Reading the credential's
     // settings accesses the account as well as account->_credentials,
-    // so deleteLater must be used.
-    _credentials = QSharedPointer<AbstractCredentials>(cred, &QObject::deleteLater);
+    _credentials.reset(cred);
     cred->setAccount(this);
 
-    _am = QSharedPointer<QNetworkAccessManager>(_credentials->getQNAM(), &QObject::deleteLater);
+    // Note: This way the QNAM can outlive the Account and Credentials.
+    // This is necessary to avoid issues with the QNAM being deleted while
+    // processing slotHandleSslErrors().
+    _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
     if (jar) {
         _am->setCookieJar(jar);
@@ -205,7 +207,7 @@ void Account::resetNetworkAccessManager()
 
     // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
     // Make it call deleteLater to make sure that we can return to any QNAM stack frames safely.
-    _am = QSharedPointer<QNetworkAccessManager>(_credentials->getQNAM(), &QObject::deleteLater);
+    _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),

@@ -58,7 +58,7 @@ protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE
     {
         QNetworkRequest req(request);
-        if (!_cred->password().isEmpty()) {
+        if (_cred && !_cred->password().isEmpty()) {
             if (_cred->isUsingOAuth()) {
                 req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
             } else {
@@ -72,7 +72,7 @@ protected:
             req.setRawHeader("Authorization", "Basic " + credHash);
         }
 
-        if (!_cred->_clientSslKey.isNull() && !_cred->_clientSslCertificate.isNull()) {
+        if (_cred && !_cred->_clientSslKey.isNull() && !_cred->_clientSslCertificate.isNull()) {
             // SSL configuration
             QSslConfiguration sslConfiguration = req.sslConfiguration();
             sslConfiguration.setLocalCertificate(_cred->_clientSslCertificate);
@@ -85,7 +85,9 @@ protected:
     }
 
 private:
-    const HttpCredentials *_cred;
+    // The credentials object dies along with the account, while the QNAM might
+    // outlive both.
+    QPointer<const HttpCredentials> _cred;
 };
 
 
@@ -135,7 +137,7 @@ void HttpCredentials::setAccount(Account *account)
     }
 }
 
-QNetworkAccessManager *HttpCredentials::getQNAM() const
+QNetworkAccessManager *HttpCredentials::createQNAM() const
 {
     AccessManager *qnam = new HttpCredentialsAccessManager(this);
 
