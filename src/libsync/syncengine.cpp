@@ -272,6 +272,10 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     auto waitSecondsStr = Utility::durationToDescriptiveString1(1000 * waitSeconds);
     item._errorString = tr("%1 (skipped due to earlier error, trying again in %2)").arg(entry._errorString, waitSecondsStr);
 
+    if (entry._errorCategory == SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage) {
+        slotInsufficientRemoteStorage();
+    }
+
     return true;
 }
 
@@ -1040,6 +1044,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
     connect(_propagator.data(), SIGNAL(touchedFile(QString)), SLOT(slotAddTouchedFile(QString)));
     connect(_propagator.data(), SIGNAL(insufficientLocalStorage()), SLOT(slotInsufficientLocalStorage()));
+    connect(_propagator.data(), SIGNAL(insufficientRemoteStorage()), SLOT(slotInsufficientRemoteStorage()));
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -1555,6 +1560,11 @@ void SyncEngine::slotInsufficientLocalStorage()
         tr("Disk space is low: Downloads that would reduce free space "
            "below %1 were skipped.")
             .arg(Utility::octetsToString(freeSpaceLimit())));
+}
+
+void SyncEngine::slotInsufficientRemoteStorage()
+{
+    slotSummaryError(tr("There is insufficient space available on the server for some uploads."));
 }
 
 } // namespace OCC

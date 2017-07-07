@@ -445,6 +445,7 @@ signals:
     void touchedFile(const QString &fileName);
 
     void insufficientLocalStorage();
+    void insufficientRemoteStorage();
 
 private:
     AccountPtr _account;

@@ -129,15 +129,7 @@ static time_t getMaxBlacklistTime()
 static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     const SyncJournalErrorBlacklistRecord &old, const SyncFileItem &item)
 {
-    SyncJournalErrorBlacklistRecord entry;
-
-    entry._errorString = item._errorString;
-    entry._lastTryModtime = item._modtime;
-    entry._lastTryEtag = item._etag;
-    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
-    entry._file = item._file;
-    entry._renameTarget = item._renameTarget;
-
+    auto entry = SyncJournalErrorBlacklistRecord::fromSyncFileItem(item);
     entry._retryCount = old._retryCount + 1;
 
     static time_t minBlacklistTime(getMinBlacklistTime());
@@ -160,6 +152,10 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     if (item._status == SyncFileItem::SoftError) {
         // Track these errors, but don't actively suppress them.
         entry._ignoreDuration = 0;
+    }
+
+    if (item._httpErrorCode == 507) {
+        entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
     }
 
     return entry;
@@ -189,7 +185,7 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     }
 
     auto newEntry = createBlacklistEntry(oldEntry, item);
-    journal->updateErrorBlacklistEntry(newEntry);
+    journal->setErrorBlacklistEntry(newEntry);
 
     // Suppress the error if it was and continues to be blacklisted.
     // An ignoreDuration of 0 mean we're tracking the error, but not actively
@@ -243,8 +239,13 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
+    case SyncFileItem::BlacklistedError:
         // Check the blacklist, possibly adjusting the item (including its status)
-        blacklistUpdate(propagator()->_journal, *_item);
+        // but not if this status comes from blacklisting in the first place
+        if (!(_item->_status == SyncFileItem::BlacklistedError
+                && _item->_instruction == CSYNC_INSTRUCTION_IGNORE)) {
+            blacklistUpdate(propagator()->_journal, *_item);
+        }
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
@@ -260,7 +261,6 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::Conflict:
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
-    case SyncFileItem::BlacklistedError:
         // nothing
         break;
     }

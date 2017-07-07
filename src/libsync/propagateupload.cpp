@@ -542,6 +542,15 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
     SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
         &propagator()->_anotherSyncNeeded);
+
+    if (_item->_httpErrorCode == 507) {
+        // Insufficient remote storage.
+        _item->_errorMayBeBlacklisted = true;
+        status = SyncFileItem::BlacklistedError;
+        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size));
+        emit propagator()->insufficientRemoteStorage();
+    }
+
     abortWithError(status, errorString);
 }
 

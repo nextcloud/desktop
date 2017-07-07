@@ -167,6 +167,7 @@ private slots:
     void slotSummaryError(const QString &message);
 
     void slotInsufficientLocalStorage();
+    void slotInsufficientRemoteStorage();
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);

@@ -75,19 +75,32 @@ operator==(const SyncJournalFileRecord &lhs,
 class SyncJournalErrorBlacklistRecord
 {
 public:
+    enum Category {
+        /// Normal errors have no special behavior
+        Normal = 0,
+        /// These get a special summary message
+        InsufficientRemoteStorage
+    };
+
     SyncJournalErrorBlacklistRecord()
         : _retryCount(0)
+        , _errorCategory(Category::Normal)
         , _lastTryModtime(0)
         , _lastTryTime(0)
         , _ignoreDuration(0)
     {
     }
 
+    /// Create a record based on an item.
+    static SyncJournalErrorBlacklistRecord fromSyncFileItem(const SyncFileItem &item);
+
     /// The number of times the operation was unsuccessful so far.
     int _retryCount;
 
     /// The last error string.
     QString _errorString;
+    /// The error category. Sometimes used for special actions.
+    Category _errorCategory;
 
     time_t _lastTryModtime;
     QByteArray _lastTryEtag;
