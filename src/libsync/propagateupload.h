@@ -277,6 +277,11 @@ protected:
      */
     void checkResettingErrors();
 
+    /**
+     * Error handling functionality that is shared between jobs.
+     */
+    void commonErrorHandling(AbstractNetworkJob *job);
+
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
 };

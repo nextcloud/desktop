@@ -522,6 +522,29 @@ void PropagateUploadFileCommon::checkResettingErrors()
     }
 }
 
+void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
+{
+    QByteArray replyContent;
+    QString errorString = job->errorStringParsingBody(&replyContent);
+    qCDebug(lcPropagateUpload) << replyContent; // display the XML error in the debug
+
+    if (_item->_httpErrorCode == 412) {
+        // Precondition Failed: Either an etag or a checksum mismatch.
+
+        // Maybe the bad etag is in the database, we need to clear the
+        // parent folder etag so we won't read from DB next sync.
+        propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
+        propagator()->_anotherSyncNeeded = true;
+    }
+
+    // Ensure errors that should eventually reset the chunked upload are tracked.
+    checkResettingErrors();
+
+    SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
+        &propagator()->_anotherSyncNeeded);
+    abortWithError(status, errorString);
+}
+
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 {
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
