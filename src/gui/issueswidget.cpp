@@ -186,6 +186,8 @@ void IssuesWidget::slotRefreshIssues()
         auto item = tree->topLevelItem(i);
         item->setHidden(!shouldBeVisible(item, filterAccount, filterFolderAlias));
     }
+
+    _ui->_treeWidget->setColumnHidden(2, !filterFolderAlias.isEmpty());
 }
 
 void IssuesWidget::slotAccountAdded(AccountState *account)
