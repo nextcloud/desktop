@@ -32,6 +32,8 @@
 #include "accountstate.h"
 #include "account.h"
 #include "accountmanager.h"
+#include "syncjournalfilerecord.h"
+#include "elidedlabel.h"
 
 #include "ui_issueswidget.h"
 
@@ -49,8 +51,8 @@ IssuesWidget::IssuesWidget(QWidget *parent)
         this, SLOT(slotProgressInfo(QString, ProgressInfo)));
     connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
         this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
-    connect(ProgressDispatcher::instance(), SIGNAL(syncError(QString, QString)),
-        this, SLOT(addLine(QString, QString)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
+        this, &IssuesWidget::addError);
 
     connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
     connect(_ui->copyIssuesButton, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
@@ -138,7 +140,20 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
 {
     if (!item)
         return;
-    _ui->_treeWidget->insertTopLevelItem(0, item);
+
+    int insertLoc = 0;
+
+    // Insert item specific errors behind the others
+    if (!item->text(1).isEmpty()) {
+        for (int i = 0; i < _ui->_treeWidget->topLevelItemCount(); ++i) {
+            if (!_ui->_treeWidget->topLevelItem(i)->text(1).isEmpty()) {
+                insertLoc = i;
+                break;
+            }
+        }
+    }
+
+    _ui->_treeWidget->insertTopLevelItem(insertLoc, item);
     item->setHidden(!shouldBeVisible(item, currentAccountFilter(), currentFolderFilter()));
     emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
 }
@@ -337,10 +352,9 @@ void IssuesWidget::showFolderErrors(const QString &folderAlias)
     _ui->showWarnings->setChecked(false);
 }
 
-void IssuesWidget::addLine(const QString &folderAlias, const QString &message)
+void IssuesWidget::addError(const QString &folderAlias, const QString &message,
+    ErrorCategory category)
 {
-    SyncFileItem::Status status = SyncFileItem::NormalError;
-
     auto folder = FolderMan::instance()->folder(folderAlias);
     if (!folder)
         return;
@@ -351,26 +365,58 @@ void IssuesWidget::addLine(const QString &folderAlias, const QString &message)
     const QString longTimeStr = ProtocolWidget::timeString(timestamp, QLocale::LongFormat);
 
     columns << timeStr;
-    columns << tr("<global error>");
+    columns << ""; // no "File" entry
     columns << folder->shortGuiLocalPath();
     columns << message;
 
-    QIcon icon;
-    if (status == SyncFileItem::NormalError
-        || status == SyncFileItem::FatalError) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
-    } else if (Progress::isWarningKind(status)) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
-    }
+    QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Error);
 
     QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(3, message);
-    twitem->setData(0, Qt::UserRole, status);
+    twitem->setData(0, Qt::UserRole, SyncFileItem::NormalError);
     twitem->setData(2, Qt::UserRole, folderAlias);
 
     addItem(twitem);
+    addErrorWidget(twitem, message, category);
+}
+
+void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message, ErrorCategory category)
+{
+    QWidget *widget = 0;
+    if (category == ErrorCategory::InsufficientRemoteStorage) {
+        widget = new QWidget;
+        auto layout = new QHBoxLayout;
+        widget->setLayout(layout);
+
+        auto label = new ElidedLabel(message, widget);
+        label->setElideMode(Qt::ElideMiddle);
+        layout->addWidget(label);
+
+        auto button = new QPushButton("Retry all uploads", widget);
+        button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+        auto folderAlias = item->data(2, Qt::UserRole).toString();
+        connect(button, &QPushButton::clicked,
+            this, [this, folderAlias]() { retryInsufficentRemoteStorageErrors(folderAlias); });
+        layout->addWidget(button);
+    }
+
+    if (widget) {
+        item->setText(3, QString());
+    }
+    _ui->_treeWidget->setItemWidget(item, 3, widget);
+}
+
+void IssuesWidget::retryInsufficentRemoteStorageErrors(const QString &folderAlias)
+{
+    auto folderman = FolderMan::instance();
+    auto folder = folderman->folder(folderAlias);
+    if (!folder)
+        return;
+
+    folder->journalDb()->wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage);
+    folderman->scheduleFolderNext(folder);
 }
 }

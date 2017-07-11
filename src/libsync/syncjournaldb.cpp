@@ -1513,6 +1513,20 @@ void SyncJournalDb::wipeErrorBlacklistEntry(const QString &file)
     }
 }
 
+void SyncJournalDb::wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category)
+{
+    QMutexLocker locker(&_mutex);
+    if (checkConnect()) {
+        SqlQuery query(_db);
+
+        query.prepare("DELETE FROM blacklist WHERE errorCategory=?1");
+        query.bindValue(1, category);
+        if (!query.exec()) {
+            sqlFail("Deletion of blacklist category failed.", query);
+        }
+    }
+}
+
 void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item)
 {
     QMutexLocker locker(&_mutex);

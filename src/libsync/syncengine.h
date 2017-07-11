@@ -104,7 +104,6 @@ public:
     static qint64 minimumFileAgeForUpload; // in ms
 
 signals:
-    void csyncError(const QString &);
     void csyncUnavailable();
 
     // During update, before reconcile
@@ -120,8 +119,8 @@ signals:
 
     void transmissionProgress(const ProgressInfo &progress);
 
-    /// We've produced a new summary error.
-    void summaryError(const QString &message);
+    /// We've produced a new sync error of a type.
+    void syncError(const QString &message, ErrorCategory category);
 
     void finished(bool success);
     void started();
@@ -171,6 +170,7 @@ private slots:
 
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
+    void csyncError(const QString &message);
 
     QString journalDbFilePath() const;
 

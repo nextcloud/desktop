@@ -709,10 +709,16 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
     } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE) || CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_CONNECT_ERROR)) {
         emit csyncUnavailable();
     } else {
-        emit csyncError(errStr);
+        csyncError(errStr);
     }
     finalize(false);
 }
+
+void SyncEngine::csyncError(const QString &message)
+{
+    emit syncError(message, ErrorCategory::Normal);
+}
+
 
 void SyncEngine::startSync()
 {
@@ -744,7 +750,7 @@ void SyncEngine::startSync()
     if (!QDir(_localPath).exists()) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
-        emit csyncError("Unable to find local sync folder.");
+        csyncError("Unable to find local sync folder.");
         finalize(false);
         return;
     }
@@ -757,11 +763,11 @@ void SyncEngine::startSync()
                          << "and at least" << minFree << "are required";
         if (freeBytes < minFree) {
             _anotherSyncNeeded = DelayedFollowUp;
-            emit csyncError(tr("Only %1 are available, need at least %2 to start",
+            csyncError(tr("Only %1 are available, need at least %2 to start",
                 "Placeholders are postfixed with file sizes using Utility::octetsToString()")
-                                .arg(
-                                    Utility::octetsToString(freeBytes),
-                                    Utility::octetsToString(minFree)));
+                           .arg(
+                               Utility::octetsToString(freeBytes),
+                               Utility::octetsToString(minFree)));
             finalize(false);
             return;
         }
@@ -794,7 +800,7 @@ void SyncEngine::startSync()
 
     if (fileRecordCount == -1) {
         qCWarning(lcEngine) << "No way to create a sync journal!";
-        emit csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
+        csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
         return;
         // database creation error!
@@ -813,7 +819,7 @@ void SyncEngine::startSync()
         qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
     } else {
         qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
-        emit csyncError(tr("Unable to read the blacklist from the local database"));
+        csyncError(tr("Unable to read the blacklist from the local database"));
         finalize(false);
         return;
     }
@@ -854,7 +860,7 @@ void SyncEngine::startSync()
     if (!ok) {
         delete discoveryJob;
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
-        emit csyncError(tr("Unable to read from the sync journal."));
+        csyncError(tr("Unable to read from the sync journal."));
         finalize(false);
         return;
     }
@@ -903,7 +909,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // Sanity check
     if (!_journal->isConnected()) {
         qCWarning(lcEngine) << "Bailing out, DB failure";
-        emit csyncError(tr("Cannot open the sync journal"));
+        csyncError(tr("Cannot open the sync journal"));
         finalize(false);
         return;
     } else {
@@ -1101,7 +1107,7 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
     _progressInfo->setProgressComplete(*item);
 
     if (item->_status == SyncFileItem::FatalError) {
-        emit csyncError(item->_errorString);
+        csyncError(item->_errorString);
     }
 
     emit transmissionProgress(*_progressInfo);
@@ -1551,7 +1557,7 @@ void SyncEngine::slotSummaryError(const QString &message)
         return;
 
     _uniqueErrors.insert(message);
-    emit summaryError(message);
+    emit syncError(message, ErrorCategory::Normal);
 }
 
 void SyncEngine::slotInsufficientLocalStorage()
@@ -1564,7 +1570,12 @@ void SyncEngine::slotInsufficientLocalStorage()
 
 void SyncEngine::slotInsufficientRemoteStorage()
 {
-    slotSummaryError(tr("There is insufficient space available on the server for some uploads."));
+    auto msg = tr("There is insufficient space available on the server for some uploads.");
+    if (_uniqueErrors.contains(msg))
+        return;
+
+    _uniqueErrors.insert(msg);
+    emit syncError(msg, ErrorCategory::InsufficientRemoteStorage);
 }
 
 } // namespace OCC

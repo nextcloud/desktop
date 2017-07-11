@@ -248,6 +248,16 @@ namespace Progress {
     OWNCLOUDSYNC_EXPORT bool isIgnoredKind(SyncFileItem::Status);
 }
 
+/** Type of error
+ *
+ * Used for ProgressDispatcher::syncError. May trigger error interactivity
+ * in IssuesWidget.
+ */
+enum class ErrorCategory {
+    Normal,
+    InsufficientRemoteStorage,
+};
+
 /**
  * @file progressdispatcher.h
  * @brief A singleton class to provide sync progress information to other gui classes.
@@ -283,7 +293,7 @@ signals:
     /**
      * @brief A new folder-wide sync error was seen.
      */
-    void syncError(const QString &folder, const QString &message);
+    void syncError(const QString &folder, const QString &message, ErrorCategory category);
 
 protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);

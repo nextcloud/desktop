@@ -50,7 +50,7 @@ public:
     void showFolderErrors(const QString &folderAlias);
 
 public slots:
-    void addLine(const QString &folderAlias, const QString &message);
+    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
     void slotOpenFile(QTreeWidgetItem *item, int);
@@ -77,6 +77,12 @@ private:
         const QString &filterFolderAlias) const;
     void cleanItems(const QString &folder);
     void addItem(QTreeWidgetItem *item);
+
+    /// Add the special error widget for the category, if any
+    void addErrorWidget(QTreeWidgetItem *item, const QString &message, ErrorCategory category);
+
+    /// Wipes all insufficient remote storgage blacklist entries
+    void retryInsufficentRemoteStorageErrors(const QString &folderAlias);
 
     Ui::IssuesWidget *_ui;
 };
