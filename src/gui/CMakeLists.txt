@@ -95,6 +95,7 @@ set(client_SRCS
     notificationconfirmjob.cpp
     servernotificationhandler.cpp
     guiutility.cpp
+    elidedlabel.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
