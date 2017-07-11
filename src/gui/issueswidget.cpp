@@ -160,11 +160,9 @@ void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 
 void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
-    if (!progress.isUpdatingEstimates()) {
+    if (progress.status() == ProgressInfo::Starting) {
         // The sync is restarting, clean the old items
         cleanItems(folder);
-    } else if (progress.completedFiles() >= progress.totalFiles()) {
-        //Sync completed
     }
 }
 

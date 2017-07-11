@@ -109,7 +109,6 @@ signals:
 
     // During update, before reconcile
     void rootEtag(QString);
-    void folderDiscovered(bool local, const QString &folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem &);
@@ -150,6 +149,7 @@ signals:
     void seenLockedFile(const QString &fileName);
 
 private slots:
+    void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);

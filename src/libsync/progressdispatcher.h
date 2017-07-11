@@ -41,6 +41,35 @@ public:
      */
     void reset();
 
+    /** Records the status of the sync run
+     */
+    enum Status {
+        /// Emitted once at start
+        Starting,
+
+        /**
+         * Emitted once without _currentDiscoveredFolder when it starts,
+         * then for each folder.
+         */
+        Discovery,
+
+        /// Emitted once when reconcile starts
+        Reconcile,
+
+        /// Emitted during propagation, with progress data
+        Propagation,
+
+        /**
+         * Emitted once when done
+         *
+         * Except when SyncEngine jumps directly to finalize() without going
+         * through slotFinished().
+         */
+        Done
+    };
+
+    Status status() const;
+
     /**
      * Called when propagation starts.
      *
@@ -139,6 +168,8 @@ public:
 
         friend class ProgressInfo;
     };
+
+    Status _status;
 
     struct OWNCLOUDSYNC_EXPORT ProgressItem
     {

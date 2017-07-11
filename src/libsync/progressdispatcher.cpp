@@ -136,6 +136,8 @@ ProgressInfo::ProgressInfo()
 
 void ProgressInfo::reset()
 {
+    _status = Starting;
+
     _currentItems.clear();
     _currentDiscoveredFolder.clear();
     _sizeProgress = Progress();
@@ -149,6 +151,11 @@ void ProgressInfo::reset()
 
     _updateEstimatesTimer.stop();
     _lastCompletedItem = SyncFileItem();
+}
+
+ProgressInfo::Status ProgressInfo::status() const
+{
+    return _status;
 }
 
 void ProgressInfo::startEstimateUpdates()

@@ -748,10 +748,19 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
 {
     Q_UNUSED(folder);
 
-    if (!progress._currentDiscoveredFolder.isEmpty()) {
-        _actionStatus->setText(tr("Checking for changes in '%1'")
-                                   .arg(progress._currentDiscoveredFolder));
-    } else if (progress.totalSize() == 0) {
+    if (progress.status() == ProgressInfo::Discovery) {
+        if (!progress._currentDiscoveredFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in '%1'")
+                                       .arg(progress._currentDiscoveredFolder));
+        }
+    } else if (progress.status() == ProgressInfo::Done) {
+        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+    }
+    if (progress.status() != ProgressInfo::Propagation) {
+        return;
+    }
+
+    if (progress.totalSize() == 0) {
         quint64 currentFile = progress.currentFile();
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         QString msg;
@@ -813,12 +822,6 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         if (updateWhileVisible() && contextMenuVisible()) {
             slotRebuildRecentMenus();
         }
-    }
-
-    if (progress.isUpdatingEstimates()
-        && progress.completedFiles() >= progress.totalFiles()
-        && progress._currentDiscoveredFolder.isEmpty()) {
-        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }
 

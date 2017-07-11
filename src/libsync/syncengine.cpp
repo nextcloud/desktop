@@ -820,8 +820,12 @@ void SyncEngine::startSync()
     _csync_ctx->callbacks.checksum_userdata = &_checksum_hook;
 
     _stopWatch.start();
+    _progressInfo->_status = ProgressInfo::Starting;
+    emit transmissionProgress(*_progressInfo);
 
     qCInfo(lcEngine) << "#### Discovery start ####################################################";
+    _progressInfo->_status = ProgressInfo::Discovery;
+    emit transmissionProgress(*_progressInfo);
 
     // Usually the discovery runs in the background: We want to avoid
     // stealing too much time from other processes that the user might
@@ -855,7 +859,7 @@ void SyncEngine::startSync()
     discoveryJob->moveToThread(&_thread);
     connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
     connect(discoveryJob, SIGNAL(folderDiscovered(bool, QString)),
-        this, SIGNAL(folderDiscovered(bool, QString)));
+        this, SLOT(slotFolderDiscovered(bool, QString)));
 
     connect(discoveryJob, SIGNAL(newBigFolder(QString, bool)),
         this, SIGNAL(newBigFolder(QString, bool)));
@@ -869,6 +873,12 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
+void SyncEngine::slotFolderDiscovered(bool /*local*/, const QString &folder)
+{
+    _progressInfo->_currentDiscoveredFolder = folder;
+    emit transmissionProgress(*_progressInfo);
+}
+
 void SyncEngine::slotRootEtagReceived(const QString &e)
 {
     if (_remoteRootEtag.isEmpty()) {
@@ -880,9 +890,6 @@ void SyncEngine::slotRootEtagReceived(const QString &e)
 
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 {
-    // To clean the progress info
-    emit folderDiscovered(false, QString());
-
     if (discoveryResult < 0) {
         handleSyncError(_csync_ctx, "csync_update");
         return;
@@ -899,6 +906,10 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
         _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
+
+    _progressInfo->_currentDiscoveredFolder.clear();
+    _progressInfo->_status = ProgressInfo::Reconcile;
+    emit transmissionProgress(*_progressInfo);
 
     if (csync_reconcile(_csync_ctx) < 0) {
         handleSyncError(_csync_ctx, "csync_reconcile");
@@ -997,7 +1008,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
+
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
+    _progressInfo->_status = ProgressInfo::Propagation;
     emit transmissionProgress(*_progressInfo);
     _progressInfo->startEstimateUpdates();
 
@@ -1111,6 +1124,7 @@ void SyncEngine::slotFinished(bool success)
     // files needed propagation, but clear the lastCompletedItem
     // so we don't count this twice (like Recent Files)
     _progressInfo->_lastCompletedItem = SyncFileItem();
+    _progressInfo->_status = ProgressInfo::Done;
     emit transmissionProgress(*_progressInfo);
 
     finalize(success);

@@ -97,7 +97,6 @@ Folder::Folder(const FolderDefinition &definition,
         SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *)));
     connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool *)),
         SLOT(slotAboutToRestoreBackup(bool *)));
-    connect(_engine.data(), SIGNAL(folderDiscovered(bool, QString)), this, SLOT(slotFolderDiscovered(bool, QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
         this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
@@ -823,16 +822,6 @@ void Folder::slotEmitFinishedDelayed()
 {
     emit syncFinished(_syncResult);
 }
-
-
-void Folder::slotFolderDiscovered(bool, QString folderName)
-{
-    ProgressInfo pi;
-    pi._currentDiscoveredFolder = folderName;
-    emit progressInfo(pi);
-    ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
-}
-
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.
