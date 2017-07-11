@@ -1,6 +1,18 @@
 ChangeLog
 =========
 
+version 2.3.3 (2017-07-XX)
+* Chunking NG: Don't use old chunking on new DAV endpoint (#5855)
+* Selective Sync: Skip excluded folders when reading DB, don't let them show errors
+* Settings: Make window bigger so Qt version is always visible (#5760)
+* Share links: Show warning that public link shares are public
+* Downloads: Re-trigger folder discovery on HTTP 404
+* Overlay Icons: Fix potential hangs on Windows
+* SyncJournalDB: Don't use ._ as filename pattern if that does not work because of SMB storage settings
+* SyncJournalDB: Log reason for sqlite3 opening errors
+* Switch Linux build also to Qt 5.6.2
+* Stopped maintaining Qt 4 buildability
+
 version 2.3.2 (2017-05-08)
 * Fix more crashes (thanks to everyone submitting to our crash reporter!)
 * Improve compatibility with server 10.0 (#5691, X-OC-Total-Size)
