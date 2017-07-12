@@ -64,12 +64,24 @@ public:
         FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
         Restoration, ///< The file was restored because what should have been done was not allowed
 
-        /** For files whose errors were blacklisted.
+        /** For errors that should only appear in the error view.
          *
-         * If _instruction == IGNORE, the file wasn't even reattempted.
+         * Some errors also produce a summary message. Usually displaying that message is
+         * sufficient, but the individual errors should still appear in the issues tab.
          *
-         * These errors should usually be shown as NormalErrors, but not be as loud
-         * as them.
+         * These errors do cause the sync to fail.
+         *
+         * A NormalError that isn't as prominent.
+         */
+        DetailError,
+
+        /** For files whose errors were blacklisted
+         *
+         * If an file is blacklisted due to an error it isn't even reattempted. These
+         * errors should appear in the issues tab, but not on the account settings and
+         * should not cause the sync run to fail.
+         *
+         * A DetailError that doesn't cause sync failure.
          */
         BlacklistedError
     };

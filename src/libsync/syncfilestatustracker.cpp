@@ -94,6 +94,7 @@ static inline bool showErrorInSocketApi(const SyncFileItem &item)
     return item._instruction == CSYNC_INSTRUCTION_ERROR
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::FatalError
+        || status == SyncFileItem::DetailError
         || status == SyncFileItem::BlacklistedError
         || item._hasBlacklistEntry;
 }

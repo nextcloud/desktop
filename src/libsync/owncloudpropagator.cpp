@@ -172,7 +172,8 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     bool mayBlacklist =
         item._errorMayBeBlacklisted // explicitly flagged for blacklisting
         || ((item._status == SyncFileItem::NormalError
-                || item._status == SyncFileItem::SoftError)
+                || item._status == SyncFileItem::SoftError
+                || item._status == SyncFileItem::DetailError)
                && item._httpErrorCode != 0 // or non-local error
                );
 
@@ -239,13 +240,9 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
-    case SyncFileItem::BlacklistedError:
+    case SyncFileItem::DetailError:
         // Check the blacklist, possibly adjusting the item (including its status)
-        // but not if this status comes from blacklisting in the first place
-        if (!(_item->_status == SyncFileItem::BlacklistedError
-                && _item->_instruction == CSYNC_INSTRUCTION_IGNORE)) {
-            blacklistUpdate(propagator()->_journal, *_item);
-        }
+        blacklistUpdate(propagator()->_journal, *_item);
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
@@ -261,6 +258,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::Conflict:
     case SyncFileItem::FileIgnored:
     case SyncFileItem::NoStatus:
+    case SyncFileItem::BlacklistedError:
         // nothing
         break;
     }
@@ -805,7 +803,8 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     if (status == SyncFileItem::FatalError
         || status == SyncFileItem::NormalError
-        || status == SyncFileItem::SoftError) {
+        || status == SyncFileItem::SoftError
+        || status == SyncFileItem::DetailError) {
         _hasError = status;
     }
 

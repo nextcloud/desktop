@@ -147,6 +147,7 @@ QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &fo
     QIcon icon;
     if (item._status == SyncFileItem::NormalError
         || item._status == SyncFileItem::FatalError
+        || item._status == SyncFileItem::DetailError
         || item._status == SyncFileItem::BlacklistedError) {
         icon = Theme::instance()->syncStateIcon(SyncResult::Error);
     } else if (Progress::isWarningKind(item._status)) {
