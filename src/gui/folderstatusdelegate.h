@@ -33,6 +33,7 @@ public:
         HeaderRole,
         FolderPathRole, // for a SubFolder it's the complete path
         FolderSecondPathRole,
+        FolderConflictMsg,
         FolderErrorMsg,
         FolderSyncPaused,
         FolderStatusIconRole,

@@ -226,6 +226,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return f->shortGuiLocalPath();
     case FolderStatusDelegate::FolderSecondPathRole:
         return f->remotePath();
+    case FolderStatusDelegate::FolderConflictMsg:
+        return (f->syncResult().numNewConflictItems() + f->syncResult().numOldConflictItems() > 0)
+            ? QStringList(tr("There are unresolved conflicts. Click for details."))
+            : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
     case FolderStatusDelegate::SyncRunning:
