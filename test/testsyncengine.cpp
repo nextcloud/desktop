@@ -465,6 +465,54 @@ private slots:
 
         QVERIFY(fakeFolder.syncOnce());
     }
+
+    /**
+     * Checks whether subsequent large uploads are skipped after a 507 error
+     */
+    void testInsufficientRemoteStorage()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // Disable parallel uploads
+        SyncOptions syncOptions;
+        syncOptions._parallelNetworkJobs = false;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        // Produce an error based on upload size
+        int remoteQuota = 1000;
+        int n507 = 0, nPUT = 0;
+        auto parent = new QObject;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                nPUT++;
+                if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
+                    n507++;
+                    return new FakeErrorReply(op, request, parent, 507);
+                }
+            }
+            return nullptr;
+        });
+
+        fakeFolder.localModifier().insert("A/big", 800);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(n507, 0);
+
+        nPUT = 0;
+        fakeFolder.localModifier().insert("A/big1", 500); // ok
+        fakeFolder.localModifier().insert("A/big2", 1200); // 507 (quota guess now 1199)
+        fakeFolder.localModifier().insert("A/big3", 1200); // skipped
+        fakeFolder.localModifier().insert("A/big4", 1500); // skipped
+        fakeFolder.localModifier().insert("A/big5", 1100); // 507 (quota guess now 1099)
+        fakeFolder.localModifier().insert("A/big6", 900); // ok (quota guess now 199)
+        fakeFolder.localModifier().insert("A/big7", 200); // skipped
+        fakeFolder.localModifier().insert("A/big8", 199); // ok (quota guess now 0)
+
+        fakeFolder.localModifier().insert("B/big8", 1150); // 507
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 6);
+        QCOMPARE(n507, 3);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
