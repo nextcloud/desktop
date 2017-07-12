@@ -176,6 +176,17 @@ void PropagateUploadFileCommon::start()
         return;
     }
 
+    // Check if we believe that the upload will fail due to remote quota limits
+    const quint64 quotaGuess = propagator()->_folderQuota.value(
+        QFileInfo(_item->_file).path(), std::numeric_limits<quint64>::max());
+    if (_item->_size > quotaGuess) {
+        // Necessary for blacklisting logic
+        _item->_httpErrorCode = 507;
+        emit propagator()->insufficientRemoteStorage();
+        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size)));
+        return;
+    }
+
     propagator()->_activeJobList.append(this);
 
     if (!_deleteExisting) {
@@ -522,8 +533,18 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
         &propagator()->_anotherSyncNeeded);
 
+    // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {
-        // Insufficient remote storage.
+        // Update the quota expectation
+        const auto path = QFileInfo(_item->_file).path();
+        auto quotaIt = propagator()->_folderQuota.find(path);
+        if (quotaIt != propagator()->_folderQuota.end()) {
+            quotaIt.value() = qMin(quotaIt.value(), _item->_size - 1);
+        } else {
+            propagator()->_folderQuota[path] = _item->_size - 1;
+        }
+
+        // Set up the error
         status = SyncFileItem::DetailError;
         errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size));
         emit propagator()->insufficientRemoteStorage();
@@ -587,10 +608,17 @@ void PropagateUploadFileCommon::finalize()
 {
     _finished = true;
 
+    // Update the quota, if known
+    auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
+    if (quotaIt != propagator()->_folderQuota.end())
+        quotaIt.value() -= _item->_size;
+
+    // Update the database entry
     if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, propagator()->getFilePath(_item->_file)))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
+
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     propagator()->_journal->commit("upload file start");
