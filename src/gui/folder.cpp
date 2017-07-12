@@ -341,8 +341,8 @@ void Folder::showSyncResultPopup()
             _syncResult.numRenamedItems(), _syncResult.firstItemRenamed()->_renameTarget);
     }
 
-    if (_syncResult.firstConflictItem()) {
-        createGuiLog(_syncResult.firstConflictItem()->_file, LogStatusConflict, _syncResult.numConflictItems());
+    if (_syncResult.firstNewConflictItem()) {
+        createGuiLog(_syncResult.firstNewConflictItem()->_file, LogStatusConflict, _syncResult.numNewConflictItems());
     }
     if (int errorCount = _syncResult.numErrorItems()) {
         createGuiLog(_syncResult.firstItemError()->_file, LogStatusError, errorCount);

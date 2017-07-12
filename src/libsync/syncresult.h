@@ -66,14 +66,15 @@ public:
     int numRemovedItems() const { return _numRemovedItems; }
     int numUpdatedItems() const { return _numUpdatedItems; }
     int numRenamedItems() const { return _numRenamedItems; }
-    int numConflictItems() const { return _numConflictItems; }
+    int numNewConflictItems() const { return _numNewConflictItems; }
+    int numOldConflictItems() const { return _numOldConflictItems; }
     int numErrorItems() const { return _numErrorItems; }
 
     const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }
     const SyncFileItemPtr &firstItemDeleted() const { return _firstItemDeleted; }
     const SyncFileItemPtr &firstItemUpdated() const { return _firstItemUpdated; }
     const SyncFileItemPtr &firstItemRenamed() const { return _firstItemRenamed; }
-    const SyncFileItemPtr &firstConflictItem() const { return _firstConflictItem; }
+    const SyncFileItemPtr &firstNewConflictItem() const { return _firstNewConflictItem; }
     const SyncFileItemPtr &firstItemError() const { return _firstItemError; }
 
     void processCompletedItem(const SyncFileItemPtr &item);
@@ -95,14 +96,15 @@ private:
     int _numRemovedItems;
     int _numUpdatedItems;
     int _numRenamedItems;
-    int _numConflictItems;
+    int _numNewConflictItems;
+    int _numOldConflictItems;
     int _numErrorItems;
 
     SyncFileItemPtr _firstItemNew;
     SyncFileItemPtr _firstItemDeleted;
     SyncFileItemPtr _firstItemUpdated;
     SyncFileItemPtr _firstItemRenamed;
-    SyncFileItemPtr _firstConflictItem;
+    SyncFileItemPtr _firstNewConflictItem;
     SyncFileItemPtr _firstItemError;
 };
 }

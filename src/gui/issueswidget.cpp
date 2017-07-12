@@ -247,7 +247,6 @@ bool IssuesWidget::shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAc
     visible &= (_ui->showIgnores->isChecked() || status != SyncFileItem::FileIgnored);
     visible &= (_ui->showWarnings->isChecked()
         || (status != SyncFileItem::SoftError
-               && status != SyncFileItem::Conflict
                && status != SyncFileItem::Restoration));
 
     auto folderalias = item->data(2, Qt::UserRole).toString();

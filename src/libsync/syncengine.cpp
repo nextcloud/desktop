@@ -495,6 +495,10 @@ int SyncEngine::treewalkFile(TREE_WALK_FILE *file, bool remote)
     case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
         item->_errorString = tr("Folder hierarchy is too deep");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE:
+        item->_status = SyncFileItem::Conflict;
+        item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
+        break;
     case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
         item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
