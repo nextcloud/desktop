@@ -80,7 +80,9 @@ OwncloudPropagator::~OwncloudPropagator()
 
 int OwncloudPropagator::maximumActiveTransferJob()
 {
-    if (_downloadLimit.fetchAndAddAcquire(0) != 0 || _uploadLimit.fetchAndAddAcquire(0) != 0) {
+    if (_downloadLimit.fetchAndAddAcquire(0) != 0
+        || _uploadLimit.fetchAndAddAcquire(0) != 0
+        || !_syncOptions._parallelNetworkJobs) {
         // disable parallelism when there is a network limit.
         return 1;
     }
@@ -90,6 +92,8 @@ int OwncloudPropagator::maximumActiveTransferJob()
 /* The maximum number of active jobs in parallel  */
 int OwncloudPropagator::hardMaximumActiveJob()
 {
+    if (!_syncOptions._parallelNetworkJobs)
+        return 1;
     static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
     if (max)
         return max;
