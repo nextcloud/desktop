@@ -438,9 +438,7 @@ private slots:
             QVERIFY(a1);
             QCOMPARE(a1->_instruction, CSYNC_INSTRUCTION_SYNC);
             QCOMPARE(a1->_direction, SyncFileItem::Up);
-
-            // NOTE: This is currently a bug! #5855
-            //QCOMPARE(a1->_size, quint64(5));
+            QCOMPARE(a1->_size, quint64(5));
 
             QCOMPARE(Utility::qDateTimeFromTime_t(a1->_modtime), changedMtime);
             QCOMPARE(a1->log._other_size, quint64(4));
