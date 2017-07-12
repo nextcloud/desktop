@@ -44,6 +44,7 @@ struct SyncOptions
         , _minChunkSize(1 * 1000 * 1000) // 1 MB
         , _maxChunkSize(100 * 1000 * 1000) // 100 MB
         , _targetChunkUploadDuration(60 * 1000) // 1 minute
+        , _parallelNetworkJobs(true)
     {
     }
 
@@ -74,6 +75,9 @@ struct SyncOptions
      * Set to 0 it will disable dynamic chunk sizing.
      */
     quint64 _targetChunkUploadDuration;
+
+    /** Whether parallel network jobs are allowed. */
+    bool _parallelNetworkJobs;
 };
 
 
