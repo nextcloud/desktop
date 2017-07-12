@@ -395,8 +395,10 @@ int SyncEngine::treewalkFile(TREE_WALK_FILE *file, bool remote)
 
     if (item->_instruction == CSYNC_INSTRUCTION_NONE
         || (item->_instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {
+        // Take values from side (local/remote) where instruction is not _NONE
         item->_instruction = instruction;
         item->_modtime = file->modtime;
+        item->_size = file->size;
     } else {
         if (instruction != CSYNC_INSTRUCTION_NONE) {
             qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
@@ -532,7 +534,7 @@ int SyncEngine::treewalkFile(TREE_WALK_FILE *file, bool remote)
     if (file->etag && file->etag[0]) {
         item->_etag = file->etag;
     }
-    item->_size = file->size;
+
 
     if (!item->_inode) {
         item->_inode = file->inode;
