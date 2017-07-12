@@ -146,8 +146,9 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
     // Insert item specific errors behind the others
     if (!item->text(1).isEmpty()) {
         for (int i = 0; i < _ui->_treeWidget->topLevelItemCount(); ++i) {
-            if (!_ui->_treeWidget->topLevelItem(i)->text(1).isEmpty()) {
-                insertLoc = i;
+            if (_ui->_treeWidget->topLevelItem(i)->text(1).isEmpty()) {
+                insertLoc = i + 1;
+            } else {
                 break;
             }
         }
