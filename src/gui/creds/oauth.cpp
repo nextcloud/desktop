@@ -131,17 +131,18 @@ void OAuth::start()
     QTimer::singleShot(5 * 60 * 1000, this, [this] { result(Error); });
 }
 
-
-bool OAuth::openBrowser()
+QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
-    auto url = QUrl(_account->url().toString()
+    return QUrl(_account->url().toString()
         + QLatin1String("/index.php/apps/oauth2/authorize?response_type=code&client_id=")
         + Theme::instance()->oauthClientId()
         + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
+}
 
-
-    if (!QDesktopServices::openUrl(url)) {
+bool OAuth::openBrowser()
+{
+    if (!QDesktopServices::openUrl(authorisationLink())) {
         // We cannot open the browser, then we claim we don't support OAuth.
         emit result(NotSupported, QString());
         return false;

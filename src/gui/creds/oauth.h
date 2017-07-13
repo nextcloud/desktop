@@ -15,6 +15,7 @@
 #pragma once
 #include <QPointer>
 #include <QTcpServer>
+#include <QUrl>
 
 namespace OCC {
 
@@ -53,6 +54,7 @@ public:
     Q_ENUM(Result);
     void start();
     bool openBrowser();
+    QUrl authorisationLink() const;
 
 signals:
     /**

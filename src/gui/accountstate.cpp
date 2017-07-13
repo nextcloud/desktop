@@ -133,6 +133,8 @@ QString AccountState::stateString(State state)
         return tr("Network error");
     case ConfigurationError:
         return tr("Configuration error");
+    case AskingCredentials:
+        return tr("Asking Credentials");
     }
     return tr("Unknown account state");
 }
@@ -307,7 +309,7 @@ void AccountState::slotInvalidCredentials()
         account()->credentials()->invalidateToken();
     account()->credentials()->askFromUser();
 
-    setState(ConfigurationError);
+    setState(AskingCredentials);
     _waitingForNewCredentials = true;
 }
 

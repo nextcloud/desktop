@@ -64,8 +64,11 @@ public:
         /// again automatically.
         NetworkError,
 
-        /// An error like invalid credentials where retrying won't help.
-        ConfigurationError
+        /// Server configuration error. (For example: unsupported version)
+        ConfigurationError,
+
+        /// We are currently asking the user for credentials
+        AskingCredentials
     };
 
     /// The actual current connectivity status.

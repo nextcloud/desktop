@@ -42,7 +42,10 @@ void HttpCredentialsGui::askFromUser()
             _asyncAuth.reset(new OAuth(_account, this));
             connect(_asyncAuth.data(), &OAuth::result,
                 this, &HttpCredentialsGui::asyncAuthResult);
+            connect(_asyncAuth.data(), &OAuth::destroyed,
+                this, &HttpCredentialsGui::authorisationLinkChanged);
             _asyncAuth->start();
+            emit authorisationLinkChanged();
         } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
             // Show the dialog
             // We will re-enter the event loop, so better wait the next iteration

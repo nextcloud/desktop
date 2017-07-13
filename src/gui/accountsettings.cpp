@@ -30,6 +30,7 @@
 #include "accountmanager.h"
 #include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
+#include "creds/httpcredentialsgui.h"
 #include "tooltipupdater.h"
 #include "filesystem.h"
 
@@ -180,8 +181,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     ui->connectLabel->setText(tr("No account configured."));
 
-    connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
-    slotAccountStateChanged(_accountState->state());
+    connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
+    slotAccountStateChanged();
 
     connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)),
         this, SLOT(slotUpdateQuota(qint64, qint64)));
@@ -622,8 +623,9 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     }
 }
 
-void AccountSettings::slotAccountStateChanged(int state)
+void AccountSettings::slotAccountStateChanged()
 {
+    int state = _accountState ? _accountState->state() : AccountState::Disconnected;
     if (_accountState) {
         ui->sslButton->updateAccountState(_accountState);
         AccountPtr account = _accountState->account();
@@ -654,6 +656,20 @@ void AccountSettings::slotAccountStateChanged(int state)
             showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
         } else if (state == AccountState::SignedOut) {
             showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
+        } else if (state == AccountState::AskingCredentials) {
+            QUrl url;
+            if (auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
+                connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
+                    this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
+                url = cred->authorisationLink();
+            }
+            if (url.isValid()) {
+                showConnectionLabel(tr("Obtaining authorization from the browser. "
+                                       "<a href='%1'>Click here</a> to re-open the browser.")
+                                        .arg(url.toString(QUrl::FullyEncoded)));
+            } else {
+                showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
+            }
         } else {
             showConnectionLabel(tr("No connection to %1 at %2.")
                                     .arg(Utility::escape(Theme::instance()->appNameGUI()), server),

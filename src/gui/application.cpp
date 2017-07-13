@@ -308,7 +308,8 @@ void Application::slotCheckConnection()
         // Don't check if we're manually signed out or
         // when the error is permanent.
         if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError) {
+            && state != AccountState::ConfigurationError
+            && state != AccountState::AskingCredentials) {
             accountState->checkConnectivity();
         }
     }
