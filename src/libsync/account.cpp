@@ -33,8 +33,6 @@
 #include <QDir>
 #include <QSslKey>
 
-#include <QUuid>
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
@@ -125,13 +123,6 @@ AbstractCredentials *Account::credentials() const
     return _credentials.data();
 }
 
-static QByteArray generateRequestId()
-{
-    // Use a UUID with the starting and ending curly brace removed.
-    auto uuid = QUuid::createUuid().toByteArray();
-    return uuid.mid(1, uuid.size() - 2);
-}
-
 void Account::setCredentials(AbstractCredentials *cred)
 {
     // set active credential manager
@@ -164,10 +155,6 @@ void Account::setCredentials(AbstractCredentials *cred)
         SLOT(slotCredentialsFetched()));
     connect(_credentials.data(), SIGNAL(asked()),
         SLOT(slotCredentialsAsked()));
-
-    // Generate a new request id
-    _requestId = generateRequestId();
-    qCInfo(lcAccount) << "Account for" << url() << "has X-Request-ID" << _requestId;
 }
 
 QUrl Account::davUrl() const
@@ -243,7 +230,6 @@ QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNe
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
-    req.setRawHeader("X-Request-ID", _requestId);
     if (verb == "HEAD" && !data) {
         return _am->head(req);
     } else if (verb == "GET" && !data) {

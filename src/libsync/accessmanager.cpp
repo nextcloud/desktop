@@ -21,6 +21,7 @@
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
 #include <QNetworkConfiguration>
+#include <QUuid>
 
 #include "cookiejar.h"
 #include "accessmanager.h"
@@ -59,6 +60,13 @@ void AccessManager::setRawCookie(const QByteArray &rawCookie, const QUrl &url)
     jar->setCookiesFromUrl(cookieList, url);
 }
 
+static QByteArray generateRequestId()
+{
+    // Use a UUID with the starting and ending curly brace removed.
+    auto uuid = QUuid::createUuid().toByteArray();
+    return uuid.mid(1, uuid.size() - 2);
+}
+
 QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkRequest newRequest(request);
@@ -79,6 +87,12 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     if (verb == "PROPFIND") {
         newRequest.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
     }
+
+    // Generate a new request id
+    QByteArray requestId = generateRequestId();
+    qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
+    newRequest.setRawHeader("X-Request-ID", requestId);
+
     return QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
 }
 

@@ -251,9 +251,6 @@ private:
     /// Certificates that were explicitly rejected by the user
     QList<QSslCertificate> _rejectedCertificates;
 
-    /// X-Request-ID to send in network requests
-    QByteArray _requestId;
-
     static QString _configFileName;
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
