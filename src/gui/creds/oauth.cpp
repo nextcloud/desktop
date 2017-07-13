@@ -116,6 +116,18 @@ void OAuth::start()
                         emit result(Error);
                         return;
                     }
+                    if (!_expectedUser.isNull() && user != _expectedUser) {
+                        // Connected with the wrong user
+                        QString message = tr("<h1>Wrong user</h1>"
+                                             "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
+                                             "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
+                                             "and log in as user %2</p>")
+                                              .arg(user, _expectedUser, Theme::instance()->appNameGUI(),
+                                                  authorisationLink().toString(QUrl::FullyEncoded));
+                        httpReplyAndClose(socket, "200 OK", message.toUtf8().constData());
+                        // We are still listening on the socket so we will get the new connection
+                        return;
+                    }
                     const char *loginSuccessfullHtml = "<h1>Login Successful</h1><p>You can close this window.</p>";
                     if (messageUrl.isValid()) {
                         httpReplyAndClose(socket, "303 See Other", loginSuccessfullHtml,

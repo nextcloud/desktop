@@ -66,6 +66,9 @@ signals:
 private:
     Account *_account;
     QTcpServer _server;
+
+public:
+    QString _expectedUser;
 };
 
 
