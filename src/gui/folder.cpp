@@ -62,7 +62,6 @@ Folder::Folder(const FolderDefinition &definition,
     , _fileLog(new SyncRunFileLog)
     , _saveBackwardsCompatible(false)
 {
-    qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
 

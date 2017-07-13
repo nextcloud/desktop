@@ -17,6 +17,7 @@
 #include "application.h"
 
 #include <iostream>
+#include <random>
 
 #include "config.h"
 #include "account.h"
@@ -108,6 +109,8 @@ Application::Application(int &argc, char **argv)
     , _debugMode(false)
 {
     _startedAt.start();
+
+    qsrand(std::random_device()());
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory

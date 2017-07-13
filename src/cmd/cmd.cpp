@@ -15,6 +15,7 @@
  */
 
 #include <iostream>
+#include <random>
 #include <qcoreapplication.h>
 #include <QStringList>
 #include <QUrl>
@@ -311,7 +312,7 @@ int main(int argc, char **argv)
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
 
-    qsrand(QTime::currentTime().msec() * QCoreApplication::applicationPid());
+    qsrand(std::random_device()());
 
     CmdOptions options;
     options.silent = false;
