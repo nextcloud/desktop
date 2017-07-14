@@ -442,6 +442,11 @@ int main(int argc, char **argv)
     loop.exec();
 #endif
 
+    if (job->reply()->error() != QNetworkReply::NoError){
+        std::cout<<"Authentication Error\n";
+        return EXIT_FAILURE;
+    }
+
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
     SyncEngine::minimumFileAgeForUpload = 0;
 
