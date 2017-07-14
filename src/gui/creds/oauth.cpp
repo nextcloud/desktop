@@ -146,10 +146,13 @@ void OAuth::start()
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
-    return QUrl(_account->url().toString()
+    QUrl url = QUrl(_account->url().toString()
         + QLatin1String("/index.php/apps/oauth2/authorize?response_type=code&client_id=")
         + Theme::instance()->oauthClientId()
         + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
+    if (!_expectedUser.isNull())
+        url.addQueryItem("user", _expectedUser);
+    return url;
 }
 
 bool OAuth::openBrowser()
