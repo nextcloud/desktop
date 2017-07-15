@@ -154,10 +154,6 @@ signals:
     void finishedSignal();
     void uploadProgress(qint64, qint64);
 
-private slots:
-#if QT_VERSION < 0x050402
-    void slotSoftAbort();
-#endif
 };
 
 /**

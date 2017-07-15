@@ -35,12 +35,6 @@
 #include <cmath>
 #include <cstring>
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-namespace {
-const char owncloudShouldSoftCancelPropertyName[] = "owncloud-should-soft-cancel";
-}
-#endif
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)
@@ -93,26 +87,9 @@ void PUTFileJob::start()
 
     connect(reply(), SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
     connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
-
-// For Qt versions not including https://codereview.qt-project.org/110150
-// Also do the runtime check if compiled with an old Qt but running with fixed one.
-// (workaround disabled on windows and mac because the binaries we ship have patched qt)
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2) && !defined Q_OS_WIN && !defined Q_OS_MAC
-    if (QLatin1String(qVersion()) < QLatin1String("5.4.2"))
-        connect(_device, SIGNAL(wasReset()), this, SLOT(slotSoftAbort()));
-#endif
-
     _requestTimer.start();
     AbstractNetworkJob::start();
 }
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-void PUTFileJob::slotSoftAbort()
-{
-    reply()->setProperty(owncloudShouldSoftCancelPropertyName, true);
-    reply()->abort();
-}
-#endif
 
 void PollJob::start()
 {
