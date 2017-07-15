@@ -425,7 +425,6 @@ int main(int argc, char **argv)
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     //obtain capabilities using event loop
     QEventLoop loop;
 
@@ -440,10 +439,9 @@ int main(int argc, char **argv)
     job->start();
 
     loop.exec();
-#endif
 
     if (job->reply()->error() != QNetworkReply::NoError){
-        std::cout<<"Authentication Error\n";
+        std::cout<<"Error connecting to server\n";
         return EXIT_FAILURE;
     }
 
