@@ -1,0 +1,31 @@
+pipeline:
+    clone:
+        image: plugins/git
+        depth: 1
+    qt-5.6:
+        image: nextcloudci/client-5.6:latest
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              source /opt/qt56/bin/qt56-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.8.0 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              source /opt/qt56/bin/qt56-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 ../ &&
+              make"
+
+#  Qt-5.6.2:
+#    image: nextcloudci/client-5.6:client-5.6-1
+#    commands:
+#        - ls -l
