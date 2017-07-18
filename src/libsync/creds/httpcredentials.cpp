@@ -292,8 +292,11 @@ void HttpCredentials::slotReadJobDone(QKeychain::Job *incomingJob)
     }
 }
 
-void HttpCredentials::refreshAccessToken()
+bool HttpCredentials::refreshAccessToken()
 {
+    if (_refreshToken.isEmpty())
+        return false;
+
     QUrl requestToken(_account->url().toString()
         + QLatin1String("/index.php/apps/oauth2/api/v1/token?grant_type=refresh_token&refresh_token=")
         + _refreshToken);
@@ -324,6 +327,7 @@ void HttpCredentials::refreshAccessToken()
         }
         emit fetched();
     });
+    return true;
 }
 
 
@@ -344,6 +348,9 @@ void HttpCredentials::invalidateToken()
         return;
     }
 
+    // clear the session cookie.
+    _account->clearCookieJar();
+
     if (!_refreshToken.isEmpty()) {
         // Only invalidate the access_token (_password) but keep the _refreshToken in the keychain
         // (when coming from forgetSensitiveData, the _refreshToken is cleared)
@@ -363,9 +370,6 @@ void HttpCredentials::invalidateToken()
     job2->setInsecureFallback(true);
     job2->setKey(kck);
     job2->start();
-
-    // clear the session cookie.
-    _account->clearCookieJar();
 
     // let QNAM forget about the password
     // This needs to be done later in the event loop because we might be called (directly or

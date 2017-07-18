@@ -46,8 +46,8 @@ namespace OCC {
 
    1) First, AccountState will attempt to load the certificate from the keychain
 
-   ---->  fetchFromKeychain  ------------------------> shortcut to refreshAccessToken if the cached
-                |                           }                            information is still valid
+   ---->  fetchFromKeychain
+                |                           }
                 v                            }
           slotReadClientCertPEMJobDone       }     There are first 3 QtKeychain jobs to fetch
                 |                             }   the TLS client keys, if any, and the password
@@ -92,7 +92,10 @@ public:
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
-    void refreshAccessToken();
+    /* If we still have a valid refresh token, try to refresh it assynchronously and emit fetched()
+     * otherwise return false
+     */
+    bool refreshAccessToken();
 
     // To fetch the user name as early as possible
     void setAccount(Account *account) Q_DECL_OVERRIDE;

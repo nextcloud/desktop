@@ -16,6 +16,7 @@
 #include "accountmanager.h"
 #include "account.h"
 #include "creds/abstractcredentials.h"
+#include "creds/httpcredentials.h"
 #include "logger.h"
 #include "configfile.h"
 
@@ -305,12 +306,17 @@ void AccountState::slotInvalidCredentials()
     qCInfo(lcAccountState) << "Invalid credentials for" << _account->url().toString()
                            << "asking user";
 
-    if (account()->credentials()->ready())
-        account()->credentials()->invalidateToken();
-    account()->credentials()->askFromUser();
-
-    setState(AskingCredentials);
     _waitingForNewCredentials = true;
+    setState(AskingCredentials);
+
+    if (account()->credentials()->ready()) {
+        account()->credentials()->invalidateToken();
+        if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
+            if (creds->refreshAccessToken())
+                return;
+        }
+    }
+    account()->credentials()->askFromUser();
 }
 
 void AccountState::slotCredentialsFetched(AbstractCredentials *)
