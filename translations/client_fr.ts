@@ -384,7 +384,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="532"/>
         <source>Sync Protocol</source>
-        <translation>Activité locale</translation>
+        <translation>Activité de synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="540"/>
@@ -2311,7 +2311,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="78"/>
         <source>Local sync protocol</source>
-        <translation>Historique des opérations locales</translation>
+        <translation>Historique des opérations de synchronisation locale</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="80"/>
