@@ -34,10 +34,16 @@
 #include "accountmanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
+#ifdef WITH_LIBCLOUDPROVIDERS
+#include "cloudproviders/cloudprovidermanager.h"
+#endif
 
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
+#include <QSignalMapper>
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusInterface>
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -60,6 +66,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 #endif
     _logBrowser(0)
     , _contextMenuVisibleOsx(false)
+    , _bus(QDBusConnection::sessionBus())
     , _recentActionsMenu(0)
     , _qdbusmenuWorkaround(false)
     , _app(parent)
@@ -98,6 +105,28 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
 }
+
+#ifdef WITH_LIBCLOUDPROVIDERS
+void ownCloudGui::setupCloudProviders()
+{
+    new CloudProviderManager(this);
+}
+
+bool ownCloudGui::cloudProviderApiAvailable()
+{
+    if (!_bus.isConnected()) {
+        return false;
+    }
+    QDBusInterface dbus_iface("org.freedesktop.CloudProviderManager", "/org/freedesktop/CloudProviderManager",
+                              "org.freedesktop.CloudProvider.Manager1", _bus);
+
+    if (!dbus_iface.isValid()) {
+        qCInfo(lcApplication) << "DBus interface unavailable";
+        return false;
+    }
+    return true;
+}
+#endif
 
 // This should rather be in application.... or rather in ConfigFile?
 void ownCloudGui::slotOpenSettingsDialog()

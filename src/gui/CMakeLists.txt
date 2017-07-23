@@ -182,6 +182,20 @@ set(3rdparty_INC
 
 include_directories(${3rdparty_INC})
 
+IF( NOT WIN32 AND NOT APPLE AND WITH_DBUS AND LIBCLOUDPROVIDERS_FOUND)
+    message("Building with libcloudproviderssupport")
+    add_definitions(-DWITH_LIBCLOUDPROVIDERS)
+    set(client_SRCS ${client_SRCS} cloudproviders/cloudprovidermanager.cpp)
+    set(client_SRCS ${client_SRCS} cloudproviders/cloudproviderwrapper.cpp)
+
+    include_directories(${GLib2_INCLUDE_DIRS})
+    include_directories(${GIO_INCLUDE_DIRS})
+    include_directories(${LIBCLOUDPROVIDERS_INCLUDE_DIR})
+ENDIF()
+
+
+
+
 # csync is required.
 include_directories(${CMAKE_SOURCE_DIR}/src/csync
                     ${CMAKE_BINARY_DIR}/src/csync
@@ -309,6 +323,20 @@ target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
+IF( LIBCLOUDPROVIDERS_FOUND )
+    string(TOLOWER "${APPLICATION_VENDOR}" DBUS_VENDOR)
+    string(REGEX REPLACE "[^A-z0-9]" "" DBUS_VENDOR "${DBUS_VENDOR}")
+    string(REGEX REPLACE "[^A-z0-9]" "" DBUS_APPLICATION_NAME "${APPLICATION_SHORTNAME}")
+    if(NOT DBUS_PREFIX)
+        set(DBUS_PREFIX "com")
+    endif(NOT DBUS_PREFIX)
+    set(LIBCLOUDPROVIDERS_DBUS_BUS_NAME "${DBUS_PREFIX}.${DBUS_VENDOR}.${DBUS_APPLICATION_NAME}")
+    set(LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH "/${DBUS_PREFIX}/${DBUS_VENDOR}/${DBUS_APPLICATION_NAME}")
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cloudproviders/cloudproviderconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/cloudproviderconfig.h)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} ${GLib2_LDFLAGS} ${GIO_LDFLAGS} ${LIBCLOUDPROVIDERS_LIBRARY} )
+ENDIF()
+
 
 if(WITH_CRASHREPORTER)
     target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
