@@ -54,12 +54,14 @@ Q_LOGGING_CATEGORY(lcFileSystem, "sync.filesystem", QtInfoMsg)
 
 QString FileSystem::longWinPath(const QString &inpath)
 {
-    QString path(inpath);
-
 #ifdef Q_OS_WIN
-    path = QString::fromWCharArray(static_cast<wchar_t *>(c_utf8_path_to_locale(inpath.toUtf8())));
-#endif
+    const char *unc_str = c_path_to_UNC(inpath.toUtf8());
+    QString path = QString::fromUtf8(unc_str);
+    free((void*)unc_str);
     return path;
+#else
+    return inpath;
+#endif
 }
 
 bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
