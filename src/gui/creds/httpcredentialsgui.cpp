@@ -120,6 +120,7 @@ void HttpCredentialsGui::showDialog()
     bool ok = dialog.exec();
     if (ok) {
         _password = dialog.textValue();
+        _refreshToken.clear();
         _ready = true;
         persist();
     }

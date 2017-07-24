@@ -397,6 +397,7 @@ void HttpCredentials::persist()
 
     _account->setCredentialSetting(QLatin1String(userC), _user);
     _account->setCredentialSetting(QLatin1String(isOAuthC), isUsingOAuth());
+    _account->wantsAccountSaved(_account);
 
     // write cert
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
