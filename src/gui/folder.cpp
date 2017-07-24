@@ -459,9 +459,8 @@ void Folder::slotWatchedPathChanged(const QString &path)
 // own process. Therefore nothing needs to be done here!
 #else
     // Use the path to figure out whether it was our own change
-    const auto maxNotificationDelay = 15 * 1000;
-    qint64 time = _engine->timeSinceFileTouched(path);
-    if (time != -1 && time < maxNotificationDelay) {
+    if (_engine->wasFileTouched(path)) {
+        qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
 #endif

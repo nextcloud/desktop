@@ -87,11 +87,7 @@ public:
     /* Returns whether another sync is needed to complete the sync */
     AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    /** Get the ms since a file was touched, or -1 if it wasn't.
-     *
-     * Thread-safe.
-     */
-    qint64 timeSinceFileTouched(const QString &fn) const;
+    bool wasFileTouched(const QString &fn) const;
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
@@ -272,7 +268,7 @@ private:
     AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
-    QHash<QString, QElapsedTimer> _touchedFiles;
+    QMultiMap<QElapsedTimer, QString> _touchedFiles;
 
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;

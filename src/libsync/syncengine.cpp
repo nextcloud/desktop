@@ -55,6 +55,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
+static const int s_touchedFilesMaxAgeMs = 15 * 1000;
 bool SyncEngine::s_anySyncRunning = false;
 
 qint64 SyncEngine::minimumFileAgeForUpload = 2000;
@@ -1512,12 +1513,27 @@ void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
 
 void SyncEngine::slotAddTouchedFile(const QString &fn)
 {
+    QElapsedTimer now;
+    now.start();
     QString file = QDir::cleanPath(fn);
 
-    QElapsedTimer timer;
-    timer.start();
+    // Iterate from the oldest and remove anything older than 15 seconds.
+    while (true) {
+        auto first = _touchedFiles.begin();
+        if (first == _touchedFiles.end())
+            break;
+        // Compare to our new QElapsedTimer instead of using elapsed().
+        // This avoids querying the current time from the OS for every loop.
+        if (now.msecsSinceReference() - first.key().msecsSinceReference() <= s_touchedFilesMaxAgeMs) {
+            // We found the first path younger than 15 second, keep the rest.
+            break;
+        }
 
-    _touchedFiles.insert(file, timer);
+        _touchedFiles.erase(first);
+    }
+
+    // This should be the largest QElapsedTimer yet, use constEnd() as hint.
+    _touchedFiles.insert(_touchedFiles.constEnd(), now, file);
 }
 
 void SyncEngine::slotClearTouchedFiles()
@@ -1525,13 +1541,15 @@ void SyncEngine::slotClearTouchedFiles()
     _touchedFiles.clear();
 }
 
-qint64 SyncEngine::timeSinceFileTouched(const QString &fn) const
+bool SyncEngine::wasFileTouched(const QString &fn) const
 {
-    if (!_touchedFiles.contains(fn)) {
-        return -1;
+    // Start from the end (most recent) and look for our path. Check the time just in case.
+    auto begin = _touchedFiles.constBegin();
+    for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
+        if ((it-1).value() == fn)
+            return (it-1).key().elapsed() <= s_touchedFilesMaxAgeMs;
     }
-
-    return _touchedFiles[fn].elapsed();
+    return false;
 }
 
 AccountPtr SyncEngine::account() const
