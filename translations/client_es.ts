@@ -2,7 +2,7 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/libsync/filesystem.cpp" line="286"/>
+        <location filename="../src/libsync/filesystem.cpp" line="288"/>
         <source>The destination file has an unexpected size or modification time</source>
         <translation>El archivo destino tiene un tamaño o fecha/hora de modificación no esperado.</translation>
     </message>

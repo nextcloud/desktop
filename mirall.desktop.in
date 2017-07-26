@@ -142,6 +142,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -197,6 +200,10 @@ Comment[fr]=Synchronisez vos dossiers avec un serveur @APPLICATION_NAME@
 GenericName[fr]=Synchronisation de dossier
 Name[fr]=Client de synchronisation @APPLICATION_NAME@
 Icon[fr]=@APPLICATION_EXECUTABLE@
+Comment[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
+GenericName[gl]=Sincronizar Cartafol
+Name[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
+Icon[gl]=@APPLICATION_EXECUTABLE@
 Comment[he]=@APPLICATION_NAME@ לקוח סנכון שולחן עבודה
 GenericName[he]=סנכון תיקייה
 Name[he]=@APPLICATION_NAME@ לקוח סנכרון שולחן עבודה 
