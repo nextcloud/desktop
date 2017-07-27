@@ -804,9 +804,12 @@ void AccountSettings::refreshSelectiveSyncStatus()
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);
         anim->start(QAbstractAnimation::DeleteWhenStopped);
-        if (!shouldBeVisible) {
-            connect(anim, SIGNAL(finished()), ui->selectiveSyncStatus, SLOT(hide()));
-        }
+        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
+            ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
+            if (!shouldBeVisible) {
+                ui->selectiveSyncStatus->hide();
+            }
+        });
     }
 }
 
