@@ -22,6 +22,7 @@
 #include "accountstate.h"
 #include "creds/abstractcredentials.h"
 #include "wizard/owncloudwizard.h"
+#include "asserts.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -229,7 +230,8 @@ void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 
 void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply * /*reply*/)
 {
-    auto job = qobject_cast<MkColJob *>(sender());
+    auto job = qobject_cast<LsColJob *>(sender());
+    ASSERT(job);
     showWarn(tr("Failed to list a folder. Error: %1")
                  .arg(job->errorStringParsingBody()));
 }
