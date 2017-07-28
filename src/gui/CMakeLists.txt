@@ -232,7 +232,7 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon*.png")
+kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-*.png")
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 
