@@ -396,6 +396,7 @@ void AccountSettings::slotFolderWizardAccepted()
             }
         }
         FileSystem::setFolderMinimumPermissions(definition.localPath);
+        Utility::setupFavLink(definition.localPath);
     }
 
     /* take the value from the definition of already existing folders. All folders have
