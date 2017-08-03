@@ -24,6 +24,8 @@
 #include <QUrl>
 
 #define OCS_SUCCESS_STATUS_CODE 100
+// Apparantly the v2.php URLs can return that
+#define OCS_SUCCESS_STATUS_CODE_V2 200
 
 namespace OCC {
 

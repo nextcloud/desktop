@@ -125,8 +125,8 @@ void NotificationWidget::slotNotificationRequestFinished(int statusCode)
 
     QString timeStr = locale.toString(QTime::currentTime());
 
-    // the ocs API returns stat code 100 if it succeeded.
-    if( statusCode != OCS_SUCCESS_STATUS_CODE  ) {
+    // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
+    if( statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2 ) {
         qDebug() << Q_FUNC_INFO << "Notification Request to Server failed, leave button visible.";
         for( i = 0; i < _buttons.count(); i++ ) {
             _buttons.at(i)->setEnabled(true);

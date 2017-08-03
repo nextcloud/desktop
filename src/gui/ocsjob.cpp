@@ -25,6 +25,7 @@ OcsJob::OcsJob(AccountPtr account)
 : AbstractNetworkJob(account, "")
 {
     _passStatusCodes.append(OCS_SUCCESS_STATUS_CODE);
+    _passStatusCodes.append(OCS_SUCCESS_STATUS_CODE_V2);
     setIgnoreCredentialFailure(true);
 }
 
