@@ -284,9 +284,9 @@ void PropagateUploadFileNG::startNextChunk()
             headers["If"] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
         }
         if (!_transmissionChecksumHeader.isEmpty()) {
+            qCInfo(lcPropagateUpload) << destination << _transmissionChecksumHeader;
             headers[checkSumHeaderC] = _transmissionChecksumHeader;
         }
-
         headers["OC-Total-Length"] = QByteArray::number(fileSize);
 
         auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
@@ -333,8 +333,6 @@ void PropagateUploadFileNG::startNextChunk()
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
-
-    // FIXME! parallel chunk?
 }
 
 void PropagateUploadFileNG::slotPutFinished()
