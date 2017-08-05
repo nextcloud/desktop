@@ -77,9 +77,35 @@ pipeline:
         when:
             matrix:
                 TESTS: qt-5.8
+    qt-5.9:
+        image: nextcloudci/client-5.9:latest
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              source /opt/qt59/bin/qt59-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.8.0 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              source /opt/qt59/bin/qt59-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 ../ &&
+              make"
+        when:
+            matrix:
+                TESTS: qt-5.9
 
 matrix:
     include:
         - TESTS: qt-5.6
         - TESTS: qt-5.7
         - TESTS: qt-5.8
+        - TESTS: qt-5.9
