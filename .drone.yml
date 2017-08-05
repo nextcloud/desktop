@@ -24,8 +24,62 @@ pipeline:
               cd build &&
               cmake -D NO_SHIBBOLETH=1 ../ &&
               make"
+        when:
+            matrix:
+                TESTS: qt-5.6
+    qt-5.7:
+        image: nextcloudci/client-5.7:latest
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              source /opt/qt57/bin/qt57-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.8.0 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              source /opt/qt57/bin/qt57-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 ../ &&
+              make"
+        when:
+            matrix:
+                TESTS: qt-5.7
+    qt-5.8:
+        image: nextcloudci/client-5.8:latest
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              source /opt/qt58/bin/qt58-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.8.0 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              source /opt/qt58/bin/qt58-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 ../ &&
+              make"
+        when:
+            matrix:
+                TESTS: qt-5.8
 
-#  Qt-5.6.2:
-#    image: nextcloudci/client-5.6:client-5.6-1
-#    commands:
-#        - ls -l
+matrix:
+    include:
+        - TESTS: qt-5.6
+        - TESTS: qt-5.7
+        - TESTS: qt-5.8
