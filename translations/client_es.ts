@@ -376,59 +376,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="525"/>
-        <location filename="../src/gui/activitywidget.cpp" line="581"/>
+        <location filename="../src/gui/activitywidget.cpp" line="524"/>
+        <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Server Activity</source>
         <translation>Actividad del servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="532"/>
+        <location filename="../src/gui/activitywidget.cpp" line="531"/>
         <source>Sync Protocol</source>
         <translation>Protocolo de Sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="540"/>
+        <location filename="../src/gui/activitywidget.cpp" line="539"/>
         <source>List of ignored or erroneous files</source>
         <translation>Lista de archivos erróneos o ignorados</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="544"/>
+        <location filename="../src/gui/activitywidget.cpp" line="543"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="545"/>
+        <location filename="../src/gui/activitywidget.cpp" line="544"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copie la lista de actividades al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="587"/>
+        <location filename="../src/gui/activitywidget.cpp" line="586"/>
         <source>Not Synced</source>
         <translation>No sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="590"/>
+        <location filename="../src/gui/activitywidget.cpp" line="589"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>No Sincronizado (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="613"/>
+        <location filename="../src/gui/activitywidget.cpp" line="612"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>La lista de la actividad del servidor se ha copiado en el portapapeles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="617"/>
+        <location filename="../src/gui/activitywidget.cpp" line="616"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>La lista de actividades de sincronización se ha copiado en el portapapeles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="620"/>
+        <location filename="../src/gui/activitywidget.cpp" line="619"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
         <translation>La lista de elementos sin sincronizar, ha sido copiada al portapapeles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="625"/>
+        <location filename="../src/gui/activitywidget.cpp" line="624"/>
         <source>Copied to clipboard</source>
         <translation>Copiado al portapapeles</translation>
     </message>
@@ -2395,6 +2395,14 @@ No se recomienda usarla.</translation>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="270"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Ha ocurrido un error mientras cargaba la lista de carpetas.</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ServerNotificationHandler</name>
+    <message>
+        <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

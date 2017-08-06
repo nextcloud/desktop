@@ -376,59 +376,59 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="525"/>
-        <location filename="../src/gui/activitywidget.cpp" line="581"/>
+        <location filename="../src/gui/activitywidget.cpp" line="524"/>
+        <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Server Activity</source>
         <translation>กิจกรรมของเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="532"/>
+        <location filename="../src/gui/activitywidget.cpp" line="531"/>
         <source>Sync Protocol</source>
         <translation>โปรโตคอลที่ใช้ในการผสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="540"/>
+        <location filename="../src/gui/activitywidget.cpp" line="539"/>
         <source>List of ignored or erroneous files</source>
         <translation>รายชื่อของไฟล์ที่ถูกเพิกเฉยหรือมีผิดพลาด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="544"/>
+        <location filename="../src/gui/activitywidget.cpp" line="543"/>
         <source>Copy</source>
         <translation>คัดลอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="545"/>
+        <location filename="../src/gui/activitywidget.cpp" line="544"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>คัดลอกรายชื่อกิจกรรมไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="587"/>
+        <location filename="../src/gui/activitywidget.cpp" line="586"/>
         <source>Not Synced</source>
         <translation>ไม่ถูกประสานข้อมูลให้ตรงกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="590"/>
+        <location filename="../src/gui/activitywidget.cpp" line="589"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>ไม่ถูกประสานข้อมูล (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="613"/>
+        <location filename="../src/gui/activitywidget.cpp" line="612"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>รายการกิจกรรมเซิร์ฟเวอร์ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="617"/>
+        <location filename="../src/gui/activitywidget.cpp" line="616"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>รายการกิจกรรมการประสานข้อมูลได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="620"/>
+        <location filename="../src/gui/activitywidget.cpp" line="619"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
         <translation>รายชื่อของรายการที่ไม่ได้ประสานข้อมูล ได้ถูกคัดลอกไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="625"/>
+        <location filename="../src/gui/activitywidget.cpp" line="624"/>
         <source>Copied to clipboard</source>
         <translation>คัดลอกไปยังคลิปบอร์ด</translation>
     </message>
@@ -2397,6 +2397,14 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="270"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>เกิดข้อผิดพลาดขณะโหลดรายชื่อของโฟลเดอร์ย่อย</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ServerNotificationHandler</name>
+    <message>
+        <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
